@@ -2,7 +2,7 @@
 
 import { type Client, type Options as Options2, type TDataShape, urlSearchParamsBodySerializer } from './client';
 import { client } from './client.gen';
-import type { ActivateUserAccountData, ActivateUserAccountResponses, ChangeUserAccountPasswordData, ChangeUserAccountPasswordResponses, CreateUserAccountData, CreateUserAccountResponses, DeactivateUserAccountData, DeactivateUserAccountResponses, DeleteUserAccountData, DeleteUserAccountResponses, EditUserAccountData, EditUserAccountResponses, GetCurrentUserAccountData, GetCurrentUserAccountResponses, GetSupervisorNamesData, GetSupervisorNamesResponses, GetUserAccountByIdData, GetUserAccountByIdResponses, GetUserAccountsData, GetUserAccountsResponses, LogUserAccountLogoutData, LogUserAccountLogoutResponses, RegisterUserAccountData, RegisterUserAccountResponses } from './types.gen';
+import type { ActivateInstitutionData, ActivateInstitutionResponses, ActivateLmsSetupData, ActivateLmsSetupResponses, ActivateSebClientConfigData, ActivateSebClientConfigResponses, ActivateTownhallData, ActivateTownhallResponses, ActivateUserAccountData, ActivateUserAccountResponses, AddNewTableRow1Data, AddNewTableRow1Responses, AddNewTableRowData, AddNewTableRowResponses, ApplySebRestrictionData, ApplySebRestrictionResponses, ArchiveData, ArchiveResponses, AttachDefaultTemplateAttributeOrientationData, AttachDefaultTemplateAttributeOrientationResponses, ChangeUserAccountPasswordData, ChangeUserAccountPasswordResponses, CheckExamConsistencyData, CheckExamConsistencyResponses, CheckImportedData, CheckImportedResponses, CheckSebRestrictionData, CheckSebRestrictionResponses, CloseProctoringRoomData, CloseProctoringRoomResponses, ConfirmNotificationData, ConfirmNotificationResponses, CopyConfigurationData, CopyConfigurationResponses, CopyExamTemplateData, CopyExamTemplateResponses, Create1Data, Create1Responses, Create2Data, Create2Responses, Create3Data, Create3Responses, Create4Data, Create4Responses, Create5Data, Create5Responses, CreateBatchActionData, CreateBatchActionResponses, CreateClientGroupData, CreateClientGroupResponses, CreateClientGroupTemplateData, CreateClientGroupTemplateResponses, CreateConfigurationAttributeData, CreateConfigurationAttributeResponses, CreateConfigurationNodeData, CreateConfigurationNodeResponses, CreateConfigurationValueData, CreateConfigurationValueResponses, CreateData, CreateExamAdministrationData, CreateExamAdministrationResponses, CreateExamData, CreateExamResponses, CreateExamTemplate1Data, CreateExamTemplate1Responses, CreateExamTemplateData, CreateExamTemplateResponses, CreateIndicatorData, CreateIndicatorResponses, CreateIndicatorTemplateData, CreateIndicatorTemplateResponses, CreateInstitutionData, CreateInstitutionResponses, CreateLmsSetupData, CreateLmsSetupResponses, CreateOrientationData, CreateOrientationResponses, CreateResponses, CreateSebClientConfigData, CreateSebClientConfigResponses, CreateTemporaryConfigurationTemplateData, CreateTemporaryConfigurationTemplateResponses, CreateUserAccountData, CreateUserAccountResponses, CreateViewData, CreateViewResponses, DeactivateInstitutionData, DeactivateInstitutionResponses, DeactivateLmsSetupData, DeactivateLmsSetupResponses, DeactivateSebClientConfigData, DeactivateSebClientConfigResponses, DeactivateUserAccountData, DeactivateUserAccountResponses, DeleteAllBatchActionsData, DeleteAllBatchActionsResponses, DeleteAllClientGroupsData, DeleteAllClientGroupsResponses, DeleteAllConfigurationAttributesData, DeleteAllConfigurationAttributesResponses, DeleteAllConfigurationNodesData, DeleteAllConfigurationNodesResponses, DeleteAllConfigurationValuesData, DeleteAllConfigurationValuesResponses, DeleteAllExamConfigurationMappingsData, DeleteAllExamConfigurationMappingsResponses, DeleteAllExamTemplatesData, DeleteAllExamTemplatesResponses, DeleteAllIndicatorsData, DeleteAllIndicatorsResponses, DeleteAllInstitutionsData, DeleteAllInstitutionsResponses, DeleteAllLmsSetupsData, DeleteAllLmsSetupsResponses, DeleteAllOrientationsData, DeleteAllOrientationsResponses, DeleteAllSebClientConfigsData, DeleteAllSebClientConfigsResponses, DeleteAllUserAccountsData, DeleteAllUserAccountsResponses, DeleteAllViewsData, DeleteAllViewsResponses, DeleteBatchActionData, DeleteBatchActionResponses, DeleteCertificateData, DeleteCertificateResponses, DeleteClientGroupData, DeleteClientGroupResponses, DeleteClientGroupTemplateData, DeleteClientGroupTemplateResponses, DeleteConfigurationAttributeData, DeleteConfigurationAttributeResponses, DeleteConfigurationNodeData, DeleteConfigurationNodeResponses, DeleteData, DeleteExamData, DeleteExamResponses, DeleteExamTemplateData, DeleteExamTemplateResponses, DeleteIndicatorData, DeleteIndicatorResponses, DeleteIndicatorTemplateData, DeleteIndicatorTemplateResponses, DeleteInstitutionData, DeleteInstitutionResponses, DeleteLmsSetupData, DeleteLmsSetupResponses, DeleteOrientationData, DeleteOrientationResponses, DeleteResponses, DeleteSebClientConfigData, DeleteSebClientConfigResponses, DeleteSebRestrictionData, DeleteSebRestrictionResponses, DeleteSecurityGrantData, DeleteSecurityGrantResponses, DeleteSessionsData, DeleteSessionsResponses, DeleteTableRow1Data, DeleteTableRow1Responses, DeleteTableRowData, DeleteTableRowResponses, DeleteUserAccountData, DeleteUserAccountResponses, DeleteViewData, DeleteViewResponses, DisableConnectionData, DisableConnectionResponses, DownloadPlainXmlConfigData, DownloadPlainXmlConfigResponses, DownloadSebConfigData, DownloadSebConfigResponses, EditBatchActionData, EditBatchActionResponses, EditClientGroupData, EditClientGroupResponses, EditConfigurationAttributeData, EditConfigurationAttributeResponses, EditConfigurationNodeData, EditConfigurationNodeResponses, EditConfigurationValueData, EditConfigurationValueResponses, EditExamAdministrationData, EditExamAdministrationResponses, EditExamConfigurationMappingData, EditExamConfigurationMappingResponses, EditExamTemplateData, EditExamTemplateResponses, EditIndicatorData, EditIndicatorResponses, EditInstitutionData, EditInstitutionResponses, EditLmsSetupData, EditLmsSetupResponses, EditOrientationData, EditOrientationResponses, EditSebClientConfigData, EditSebClientConfigResponses, EditUserAccountData, EditUserAccountResponses, EditViewData, EditViewResponses, EventData, EventResponses, ExportEventsData, ExportEventsResponses, ForceDeleteBatchActionData, ForceDeleteBatchActionResponses, ForceDeleteClientConnectionData, ForceDeleteClientConnectionResponses, ForceDeleteClientEventData, ForceDeleteClientEventResponses, ForceDeleteClientGroupData, ForceDeleteClientGroupResponses, ForceDeleteConfigurationAttributeData, ForceDeleteConfigurationAttributeResponses, ForceDeleteConfigurationData, ForceDeleteConfigurationNodeData, ForceDeleteConfigurationNodeResponses, ForceDeleteConfigurationResponses, ForceDeleteConfigurationValueData, ForceDeleteConfigurationValueResponses, ForceDeleteExamConfigurationMappingData, ForceDeleteExamConfigurationMappingResponses, ForceDeleteExamTemplateData, ForceDeleteExamTemplateResponses, ForceDeleteIndicatorData, ForceDeleteIndicatorResponses, ForceDeleteInstitutionData, ForceDeleteInstitutionResponses, ForceDeleteLmsSetupData, ForceDeleteLmsSetupResponses, ForceDeleteOrientationData, ForceDeleteOrientationResponses, ForceDeleteSebClientConfigData, ForceDeleteSebClientConfigResponses, ForceDeleteUserAccountData, ForceDeleteUserAccountResponses, ForceDeleteUserActivityLogData, ForceDeleteUserActivityLogResponses, ForceDeleteViewData, ForceDeleteViewResponses, ForceHardDeleteData, ForceHardDeleteResponses, GetActiveInstitutionsData, GetActiveInstitutionsResponses, GetActiveLmsSetupsData, GetActiveLmsSetupsResponses, GetActiveSebClientConfigsData, GetActiveSebClientConfigsResponses, GetActiveSebClientsData, GetActiveSebClientsResponses, GetActiveUserAccountsData, GetActiveUserAccountsResponses, GetAliasData, GetAliasResponses, GetAllClientConnectionsInRoomData, GetAllClientConnectionsInRoomResponses, GetAppSignatureKeyData, GetAppSignatureKeyInfoData, GetAppSignatureKeyInfoResponses, GetAppSignatureKeyResponses, GetBatchActionByIdData, GetBatchActionByIdResponses, GetBatchActionDependenciesData, GetBatchActionDependenciesResponses, GetBatchActionNamesData, GetBatchActionNamesResponses, GetBatchActionsByIdsData, GetBatchActionsByIdsResponses, GetBatchActionsData, GetBatchActionsResponses, GetBy1Data, GetBy1Responses, GetBy2Data, GetBy2Responses, GetByData, GetByResponses, GetChaptersData, GetChaptersResponses, GetClientConnectionByIdData, GetClientConnectionByIdResponses, GetClientConnectionDataByData, GetClientConnectionDataByResponses, GetClientConnectionDataPageData, GetClientConnectionDataPageResponses, GetClientConnectionNamesData, GetClientConnectionNamesResponses, GetClientConnectionsByIdsData, GetClientConnectionsByIdsResponses, GetClientCredentialsData, GetClientCredentialsResponses, GetClientEventByIdData, GetClientEventByIdResponses, GetClientEventNamesData, GetClientEventNamesResponses, GetClientEventsByIdsData, GetClientEventsByIdsResponses, GetClientEventsData, GetClientEventsResponses, GetClientGroupByIdData, GetClientGroupByIdResponses, GetClientGroupDependenciesData, GetClientGroupDependenciesResponses, GetClientGroupNamesData, GetClientGroupNamesResponses, GetClientGroupsByIdsData, GetClientGroupsByIdsResponses, GetClientGroupsData, GetClientGroupsResponses, GetClientGroupTemplateByData, GetClientGroupTemplateByResponses, GetClientGroupTemplatePageData, GetClientGroupTemplatePageResponses, GetCollectingRoomsOfExamData, GetCollectingRoomsOfExamResponses, GetConfigData, GetConfigKeyData, GetConfigKeyResponses, GetConfigResponses, GetConfigurationAttributeByIdData, GetConfigurationAttributeByIdResponses, GetConfigurationAttributeDependenciesData, GetConfigurationAttributeDependenciesResponses, GetConfigurationAttributeNamesData, GetConfigurationAttributeNamesResponses, GetConfigurationAttributesData, GetConfigurationAttributesResponses, GetConfigurationByIdData, GetConfigurationByIdResponses, GetConfigurationNamesData, GetConfigurationNamesResponses, GetConfigurationNodeByIdData, GetConfigurationNodeByIdResponses, GetConfigurationNodeDependenciesData, GetConfigurationNodeDependenciesResponses, GetConfigurationNodeNamesData, GetConfigurationNodeNamesResponses, GetConfigurationNodesByIdsData, GetConfigurationNodesByIdsResponses, GetConfigurationNodesData, GetConfigurationNodesResponses, GetConfigurationsByIdsData, GetConfigurationsByIdsResponses, GetConfigurationsData, GetConfigurationsResponses, GetConfigurationValueByIdData, GetConfigurationValueByIdResponses, GetConfigurationValueDependenciesData, GetConfigurationValueDependenciesResponses, GetConfigurationValueNamesData, GetConfigurationValueNamesResponses, GetConfigurationValuesByIdsData, GetConfigurationValuesByIdsResponses, GetConfigurationValuesData, GetConfigurationValuesResponses, GetConnectionConfigurationData, GetConnectionConfigurationResponses, GetConnectionDataData, GetConnectionDataForSingleConnectionData, GetConnectionDataForSingleConnectionResponses, GetConnectionDataResponses, GetCurrentUserAccountData, GetCurrentUserAccountResponses, GetDefaultData, GetDefaultResponses, GetDeletionReportData, GetDeletionReportResponses, GetDependencies1Data, GetDependencies1Responses, GetDependencies2Data, GetDependencies2Responses, GetDependenciesData, GetDependenciesResponses, GetDiscoveryData, GetDiscoveryResponses, GetExamAdministrationByIdData, GetExamAdministrationByIdResponses, GetExamAdministrationDependenciesData, GetExamAdministrationDependenciesResponses, GetExamAdministrationNamesData, GetExamAdministrationNamesResponses, GetExamAdministrationsByIdsData, GetExamAdministrationsByIdsResponses, GetExamAdministrationsData, GetExamAdministrationsResponses, GetExamConfigMappingsData, GetExamConfigMappingsResponses, GetExamConfigurationMappingByIdData, GetExamConfigurationMappingByIdResponses, GetExamConfigurationMappingDependenciesData, GetExamConfigurationMappingDependenciesResponses, GetExamConfigurationMappingNamesData, GetExamConfigurationMappingNamesResponses, GetExamConfigurationMappingsByIdsData, GetExamConfigurationMappingsByIdsResponses, GetExamConfigurationMappingsData, GetExamConfigurationMappingsResponses, GetExamKeysForFollowupData, GetExamKeysForFollowupResponses, GetExamTemplateDependenciesData, GetExamTemplateDependenciesResponses, GetExamTemplateNamesData, GetExamTemplateNamesResponses, GetExamTemplatesByIdsData, GetExamTemplatesByIdsResponses, GetExamTemplatesData, GetExamTemplatesResponses, GetExtendedPageData, GetExtendedPageResponses, GetFinishedExamsPageData, GetFinishedExamsPageResponses, GetFollowupData, GetFollowupResponses, GetForIdsData, GetForIdsResponses, GetFullMonitoringPageDataData, GetFullMonitoringPageDataResponses, GetFullReportByIdData, GetFullReportByIdResponses, GetInactiveInstitutionsData, GetInactiveInstitutionsResponses, GetInactiveLmsSetupsData, GetInactiveLmsSetupsResponses, GetInactiveSebClientConfigsData, GetInactiveSebClientConfigsResponses, GetInactiveUserAccountsData, GetInactiveUserAccountsResponses, GetIndicatorByData, GetIndicatorByIdData, GetIndicatorByIdResponses, GetIndicatorByResponses, GetIndicatorDependenciesData, GetIndicatorDependenciesResponses, GetIndicatorNamesData, GetIndicatorNamesResponses, GetIndicatorPageData, GetIndicatorPageResponses, GetIndicatorsByIdsData, GetIndicatorsByIdsResponses, GetIndicatorsData, GetIndicatorsResponses, GetInstitutionByIdData, GetInstitutionByIdResponses, GetInstitutionDependenciesData, GetInstitutionDependenciesResponses, GetInstitutionInfo1Data, GetInstitutionInfo1Responses, GetInstitutionInfoData, GetInstitutionInfoResponses, GetInstitutionNamesData, GetInstitutionNamesResponses, GetInstitutionsByIdsData, GetInstitutionsByIdsResponses, GetInstitutionsData, GetInstitutionsResponses, GetLmsSetupDependenciesData, GetLmsSetupDependenciesResponses, GetLmsSetupNamesData, GetLmsSetupNamesResponses, GetLmsSetupsByIdsData, GetLmsSetupsByIdsResponses, GetLmsSetupsData, GetLmsSetupsResponses, GetMonitoringExamListDataData, GetMonitoringExamListDataResponses, GetMonitoringStaticClientDataData, GetMonitoringStaticClientDataResponses, GetNamesData, GetNamesResponses, GetOneTimeLoginTokenData, GetOneTimeLoginTokenResponses, GetOrientationByIdData, GetOrientationByIdResponses, GetOrientationDependenciesData, GetOrientationDependenciesResponses, GetOrientationNamesData, GetOrientationNamesResponses, GetOrientationsByIdsData, GetOrientationsByIdsResponses, GetOrientationsData, GetOrientationsResponses, GetOverviewDataData, GetOverviewDataResponses, GetOwnData, GetOwnResponses, GetPage1Data, GetPage1Responses, GetPage2Data, GetPage2Responses, GetPage3Data, GetPage3Responses, GetPageData, GetPageResponses, GetProctoringServiceSettingsData, GetProctoringServiceSettingsResponses, GetProctorRoomConnectionData, GetProctorRoomConnectionResponses, GetQuizData, GetQuizPageData, GetQuizPageResponses, GetQuizResponses, GetScreenProctoringGroupsOfExamData, GetScreenProctoringGroupsOfExamResponses, GetScreenProctoringSettings1Data, GetScreenProctoringSettings1Responses, GetScreenProctoringSettingsData, GetScreenProctoringSettingsResponses, GetSebClientConfigDependenciesData, GetSebClientConfigDependenciesResponses, GetSebClientConfigNamesData, GetSebClientConfigNamesResponses, GetSebClientConfigsByIdsData, GetSebClientConfigsByIdsResponses, GetSebClientConfigsData, GetSebClientConfigsResponses, GetSebRestrictionData, GetSebRestrictionResponses, GetSebSettings1Data, GetSebSettings1Responses, GetSebSettingsData, GetSebSettingsResponses, GetSecurityKeyEntriesData, GetSecurityKeyEntriesResponses, GetServiceFeaturesData, GetServiceFeaturesResponses, GetTableValueData, GetTableValueResponses, GetTableValues1Data, GetTableValues1Responses, GetTableValuesData, GetTableValuesResponses, GetTemplateAttributeData, GetTemplateAttributePageData, GetTemplateAttributePageResponses, GetTemplateAttributeResponses, GetTownhallRoomData, GetTownhallRoomResponses, GetUserAccountByIdData, GetUserAccountByIdResponses, GetUserAccountDependenciesData, GetUserAccountDependenciesResponses, GetUserAccountNamesData, GetUserAccountNamesResponses, GetUserAccountsByIdsData, GetUserAccountsByIdsResponses, GetUserAccountsData, GetUserAccountsResponses, GetUserAccountSupervisorsData, GetUserAccountSupervisorsResponses, GetUserActivityLogByIdData, GetUserActivityLogByIdResponses, GetUserActivityLogDependenciesData, GetUserActivityLogDependenciesResponses, GetUserActivityLogNamesData, GetUserActivityLogNamesResponses, GetUserActivityLogsByIdsData, GetUserActivityLogsByIdsResponses, GetUserActivityLogsData, GetUserActivityLogsResponses, GetViewByIdData, GetViewByIdResponses, GetViewDependenciesData, GetViewDependenciesResponses, GetViewNamesData, GetViewNamesResponses, GetViewsByIdsData, GetViewsByIdsResponses, GetViewsData, GetViewsResponses, GrantAppSignatureKeyData, GrantAppSignatureKeyResponses, HandshakeCreateData, HandshakeCreateResponses, HandshakeDeleteData, HandshakeDeleteResponses, HandshakeEstablishData, HandshakeEstablishResponses, HandshakeUpdateData, HandshakeUpdateResponses, HardDelete1Data, HardDelete1Responses, HardDelete2Data, HardDelete2Responses, HardDelete3Data, HardDelete3Responses, HardDelete4Data, HardDelete4Responses, HardDelete5Data, HardDelete5Responses, HardDelete6Data, HardDelete6Responses, HardDeleteAll1Data, HardDeleteAll1Responses, HardDeleteAll2Data, HardDeleteAll2Responses, HardDeleteAll3Data, HardDeleteAll3Responses, HardDeleteAll4Data, HardDeleteAll4Responses, HardDeleteAllData, HardDeleteAllResponses, HardDeleteData, HardDeleteResponses, ImportCertificateData, ImportCertificateResponses, ImportExamConfigData, ImportExamConfigOnExistingConfigData, ImportExamConfigOnExistingConfigResponses, ImportExamConfigResponses, IsTownhallRoomAvialbaleData, IsTownhallRoomAvialbaleResponses, LogoData, LogoResponses, LogUserAccountLogoutData, LogUserAccountLogoutResponses, MarkExcludeData, MarkExcludeResponses, NotifyProctoringRoomOpenedData, NotifyProctoringRoomOpenedResponses, OpenBreakOutRoomData, OpenBreakOutRoomResponses, PendingNotificationsData, PendingNotificationsResponses, PingData, PingResponses, PrivilegesData, PrivilegesResponses, PublishData, PublishResponses, QuitAllActiveSebClientsData, QuitAllActiveSebClientsResponses, RegisterInstructionData, RegisterInstructionResponses, RegisterUserAccountData, RegisterUserAccountResponses, RemoveTemplateAttributeOrientationData, RemoveTemplateAttributeOrientationResponses, ResetTemplateAttributeValuesData, ResetTemplateAttributeValuesResponses, ResetToTemplateValuesData, ResetToTemplateValuesResponses, RestoreFormHistoryData, RestoreFormHistoryResponses, SaveAppSignatureKeySettingsData, SaveAppSignatureKeySettingsResponses, SaveClientGroupTemplateData, SaveClientGroupTemplateResponses, SaveIndicatorPutData, SaveIndicatorPutResponses, SaveProctoringServiceSettingsData, SaveProctoringServiceSettingsResponses, SavePut1Data, SavePut1Responses, SavePut2Data, SavePut2Responses, SavePut3Data, SavePut3Responses, SavePut4Data, SavePut4Responses, SavePutData, SavePutResponses, SaveScreenProctoringSettings1Data, SaveScreenProctoringSettings1Responses, SaveScreenProctoringSettingsData, SaveScreenProctoringSettingsResponses, SaveSebRestrictionDataData, SaveSebRestrictionDataResponses, SaveSingleValue1Data, SaveSingleValue1Responses, SaveSingleValueData, SaveSingleValueResponses, SaveToHistoryData, SaveToHistoryResponses, ScreenProctoringActivationData, ScreenProctoringActivationResponses, ScreenProctoringGroupApplyData, ScreenProctoringGroupApplyResponses, SebVersionInfoPageData, SebVersionInfoPageResponses, SendReconfigurationAttributesData, SendReconfigurationAttributesResponses, SetQuitPasswordData, SetQuitPasswordResponses, SettingsPublishedData, SettingsPublishedResponses, TestLmsAdHocData, TestLmsAdHocResponses, TestLmsData, TestLmsResponses, ToggleTestRunForExamData, ToggleTestRunForExamResponses, UndoChangesData, UndoChangesResponses, UndoData, UndoResponses, UnmarkIncludeData, UnmarkIncludeResponses, VerifyJwtTokenData, VerifyJwtTokenResponses } from './types.gen';
 
 export type Options<TData extends TDataShape = TDataShape, ThrowOnError extends boolean = boolean, TResponse = unknown> = Options2<TData, ThrowOnError, TResponse> & {
     /**
@@ -17,6 +17,133 @@ export type Options<TData extends TDataShape = TDataShape, ThrowOnError extends 
      */
     meta?: Record<string, unknown>;
 };
+
+export const handshakeDelete = <ThrowOnError extends boolean = true>(options: Options<HandshakeDeleteData, ThrowOnError>) => (options.client ?? client).delete<HandshakeDeleteResponses, unknown, ThrowOnError>({
+    security: [{ scheme: 'bearer', type: 'http' }],
+    url: '/exam-api/v1/handshake',
+    ...options
+});
+
+export const handshakeUpdate = <ThrowOnError extends boolean = true>(options: Options<HandshakeUpdateData, ThrowOnError>) => (options.client ?? client).patch<HandshakeUpdateResponses, unknown, ThrowOnError>({
+    ...urlSearchParamsBodySerializer,
+    security: [{ scheme: 'bearer', type: 'http' }],
+    url: '/exam-api/v1/handshake',
+    ...options,
+    headers: {
+        'Content-Type': 'application/x-www-form-urlencoded',
+        ...options.headers
+    }
+});
+
+export const handshakeCreate = <ThrowOnError extends boolean = true>(options?: Options<HandshakeCreateData, ThrowOnError>) => (options?.client ?? client).post<HandshakeCreateResponses, unknown, ThrowOnError>({
+    ...urlSearchParamsBodySerializer,
+    responseType: 'json',
+    security: [{ scheme: 'bearer', type: 'http' }],
+    url: '/exam-api/v1/handshake',
+    ...options,
+    headers: {
+        'Content-Type': 'application/x-www-form-urlencoded',
+        ...options?.headers
+    }
+});
+
+export const handshakeEstablish = <ThrowOnError extends boolean = true>(options: Options<HandshakeEstablishData, ThrowOnError>) => (options.client ?? client).put<HandshakeEstablishResponses, unknown, ThrowOnError>({
+    ...urlSearchParamsBodySerializer,
+    security: [{ scheme: 'bearer', type: 'http' }],
+    url: '/exam-api/v1/handshake',
+    ...options,
+    headers: {
+        'Content-Type': 'application/x-www-form-urlencoded',
+        ...options.headers
+    }
+});
+
+/**
+ * Deletes all given entity (and all its dependencies) by a given list of model identifiers.
+ *
+ * To check or report what dependent object also would be deleted for a certain entity object, please use the dependency endpoint to get a report of all dependent entity objects.
+ */
+export const hardDeleteAll = <ThrowOnError extends boolean = true>(options?: Options<HardDeleteAllData, ThrowOnError>) => (options?.client ?? client).delete<HardDeleteAllResponses, unknown, ThrowOnError>({
+    ...urlSearchParamsBodySerializer,
+    responseType: 'json',
+    security: [{ scheme: 'bearer', type: 'http' }],
+    url: '/admin-api/v1/useractivity',
+    ...options,
+    headers: {
+        'Content-Type': 'application/x-www-form-urlencoded',
+        ...options?.headers
+    }
+});
+
+/**
+ * Get a page of the specific domain entity. Sorting and filtering is applied before paging
+ *
+ * Sorting: the sort parameter to sort the list of entities before paging
+ * the sort parameter is the name of the entity-model attribute to sort with a leading '-' sign for
+ * descending sort order. Note that not all entity-model attribute are suited for sorting while the most
+ * are.
+ * </p>
+ * Filter: The filter attributes accepted by this API depend on the actual entity model (domain object)
+ * and are of the form [domain-attribute-name]=[filter-value]. E.g.: name=abc or type=EXAM. Usually
+ * filter attributes of text type are treated as SQL wildcard with %[text]% to filter all text containing
+ * a given text-snippet.
+ */
+export const getUserActivityLogs = <ThrowOnError extends boolean = true>(options?: Options<GetUserActivityLogsData, ThrowOnError>) => (options?.client ?? client).get<GetUserActivityLogsResponses, unknown, ThrowOnError>({
+    responseType: 'json',
+    security: [{ scheme: 'bearer', type: 'http' }],
+    url: '/admin-api/v1/useractivity',
+    ...options
+});
+
+/**
+ * Create a new entity object of specifies type by using the given form parameter
+ *
+ * This expects application/x-www-form-urlencoded format for the form parameter and tries to create a new entity object from this form parameter, resulting in an error if there are missing or incorrect form paramter. The needed form paramter can be verified within the specific entity object.
+ */
+export const create = <ThrowOnError extends boolean = true>(options?: Options<CreateData, ThrowOnError>) => (options?.client ?? client).post<CreateResponses, unknown, ThrowOnError>({
+    ...urlSearchParamsBodySerializer,
+    responseType: 'json',
+    security: [{ scheme: 'bearer', type: 'http' }],
+    url: '/admin-api/v1/useractivity',
+    ...options,
+    headers: {
+        'Content-Type': 'application/x-www-form-urlencoded',
+        ...options?.headers
+    }
+});
+
+/**
+ * Modifies an already existing entity object of the specific type.
+ *
+ * This expects application/json format for the response data and verifies consistencies within the definition of the specific entity object type. Missing (NULL) parameter that are not mandatory will be ignored and the original value will not be affected
+ */
+export const savePut = <ThrowOnError extends boolean = true>(options: Options<SavePutData, ThrowOnError>) => (options.client ?? client).put<SavePutResponses, unknown, ThrowOnError>({
+    responseType: 'json',
+    security: [{ scheme: 'bearer', type: 'http' }],
+    url: '/admin-api/v1/useractivity',
+    ...options,
+    headers: {
+        'Content-Type': 'application/json',
+        ...options.headers
+    }
+});
+
+/**
+ * Deletes all given entity (and all its dependencies) by a given list of model identifiers.
+ *
+ * To check or report what dependent object also would be deleted for a certain entity object, please use the dependency endpoint to get a report of all dependent entity objects.
+ */
+export const deleteAllUserAccounts = <ThrowOnError extends boolean = true>(options?: Options<DeleteAllUserAccountsData, ThrowOnError>) => (options?.client ?? client).delete<DeleteAllUserAccountsResponses, unknown, ThrowOnError>({
+    ...urlSearchParamsBodySerializer,
+    responseType: 'json',
+    security: [{ scheme: 'bearer', type: 'http' }],
+    url: '/admin-api/v1/useraccount',
+    ...options,
+    headers: {
+        'Content-Type': 'application/x-www-form-urlencoded',
+        ...options?.headers
+    }
+});
 
 /**
  * Get a page of the specific domain entity. Sorting and filtering is applied before paging
@@ -33,7 +160,8 @@ export type Options<TData extends TDataShape = TDataShape, ThrowOnError extends 
  */
 export const getUserAccounts = <ThrowOnError extends boolean = true>(options?: Options<GetUserAccountsData, ThrowOnError>) => (options?.client ?? client).get<GetUserAccountsResponses, unknown, ThrowOnError>({
     responseType: 'json',
-    url: '/useraccount',
+    security: [{ scheme: 'bearer', type: 'http' }],
+    url: '/admin-api/v1/useraccount',
     ...options
 });
 
@@ -45,7 +173,8 @@ export const getUserAccounts = <ThrowOnError extends boolean = true>(options?: O
 export const createUserAccount = <ThrowOnError extends boolean = true>(options: Options<CreateUserAccountData, ThrowOnError>) => (options.client ?? client).post<CreateUserAccountResponses, unknown, ThrowOnError>({
     ...urlSearchParamsBodySerializer,
     responseType: 'json',
-    url: '/useraccount',
+    security: [{ scheme: 'bearer', type: 'http' }],
+    url: '/admin-api/v1/useraccount',
     ...options,
     headers: {
         'Content-Type': 'application/x-www-form-urlencoded',
@@ -60,7 +189,8 @@ export const createUserAccount = <ThrowOnError extends boolean = true>(options: 
  */
 export const editUserAccount = <ThrowOnError extends boolean = true>(options: Options<EditUserAccountData, ThrowOnError>) => (options.client ?? client).put<EditUserAccountResponses, unknown, ThrowOnError>({
     responseType: 'json',
-    url: '/useraccount',
+    security: [{ scheme: 'bearer', type: 'http' }],
+    url: '/admin-api/v1/useraccount',
     ...options,
     headers: {
         'Content-Type': 'application/json',
@@ -73,7 +203,1378 @@ export const editUserAccount = <ThrowOnError extends boolean = true>(options: Op
  */
 export const changeUserAccountPassword = <ThrowOnError extends boolean = true>(options: Options<ChangeUserAccountPasswordData, ThrowOnError>) => (options.client ?? client).put<ChangeUserAccountPasswordResponses, unknown, ThrowOnError>({
     responseType: 'json',
-    url: '/useraccount/password',
+    security: [{ scheme: 'bearer', type: 'http' }],
+    url: '/admin-api/v1/useraccount/password',
+    ...options,
+    headers: {
+        'Content-Type': 'application/json',
+        ...options.headers
+    }
+});
+
+/**
+ * Deletes all given entity (and all its dependencies) by a given list of model identifiers.
+ *
+ * To check or report what dependent object also would be deleted for a certain entity object, please use the dependency endpoint to get a report of all dependent entity objects.
+ */
+export const hardDeleteAll1 = <ThrowOnError extends boolean = true>(options?: Options<HardDeleteAll1Data, ThrowOnError>) => (options?.client ?? client).delete<HardDeleteAll1Responses, unknown, ThrowOnError>({
+    ...urlSearchParamsBodySerializer,
+    responseType: 'json',
+    security: [{ scheme: 'bearer', type: 'http' }],
+    url: '/admin-api/v1/seb-client-event',
+    ...options,
+    headers: {
+        'Content-Type': 'application/x-www-form-urlencoded',
+        ...options?.headers
+    }
+});
+
+/**
+ * Get a page of the specific domain entity. Sorting and filtering is applied before paging
+ *
+ * Sorting: the sort parameter to sort the list of entities before paging
+ * the sort parameter is the name of the entity-model attribute to sort with a leading '-' sign for
+ * descending sort order. Note that not all entity-model attribute are suited for sorting while the most
+ * are.
+ * </p>
+ * Filter: The filter attributes accepted by this API depend on the actual entity model (domain object)
+ * and are of the form [domain-attribute-name]=[filter-value]. E.g.: name=abc or type=EXAM. Usually
+ * filter attributes of text type are treated as SQL wildcard with %[text]% to filter all text containing
+ * a given text-snippet.
+ */
+export const getClientEvents = <ThrowOnError extends boolean = true>(options?: Options<GetClientEventsData, ThrowOnError>) => (options?.client ?? client).get<GetClientEventsResponses, unknown, ThrowOnError>({
+    responseType: 'json',
+    security: [{ scheme: 'bearer', type: 'http' }],
+    url: '/admin-api/v1/seb-client-event',
+    ...options
+});
+
+/**
+ * Create a new entity object of specifies type by using the given form parameter
+ *
+ * This expects application/x-www-form-urlencoded format for the form parameter and tries to create a new entity object from this form parameter, resulting in an error if there are missing or incorrect form paramter. The needed form paramter can be verified within the specific entity object.
+ */
+export const create1 = <ThrowOnError extends boolean = true>(options?: Options<Create1Data, ThrowOnError>) => (options?.client ?? client).post<Create1Responses, unknown, ThrowOnError>({
+    ...urlSearchParamsBodySerializer,
+    responseType: 'json',
+    security: [{ scheme: 'bearer', type: 'http' }],
+    url: '/admin-api/v1/seb-client-event',
+    ...options,
+    headers: {
+        'Content-Type': 'application/x-www-form-urlencoded',
+        ...options?.headers
+    }
+});
+
+/**
+ * Modifies an already existing entity object of the specific type.
+ *
+ * This expects application/json format for the response data and verifies consistencies within the definition of the specific entity object type. Missing (NULL) parameter that are not mandatory will be ignored and the original value will not be affected
+ */
+export const savePut1 = <ThrowOnError extends boolean = true>(options: Options<SavePut1Data, ThrowOnError>) => (options.client ?? client).put<SavePut1Responses, unknown, ThrowOnError>({
+    responseType: 'json',
+    security: [{ scheme: 'bearer', type: 'http' }],
+    url: '/admin-api/v1/seb-client-event',
+    ...options,
+    headers: {
+        'Content-Type': 'application/json',
+        ...options.headers
+    }
+});
+
+/**
+ * Deletes all given entity (and all its dependencies) by a given list of model identifiers.
+ *
+ * To check or report what dependent object also would be deleted for a certain entity object, please use the dependency endpoint to get a report of all dependent entity objects.
+ */
+export const hardDeleteAll2 = <ThrowOnError extends boolean = true>(options?: Options<HardDeleteAll2Data, ThrowOnError>) => (options?.client ?? client).delete<HardDeleteAll2Responses, unknown, ThrowOnError>({
+    ...urlSearchParamsBodySerializer,
+    responseType: 'json',
+    security: [{ scheme: 'bearer', type: 'http' }],
+    url: '/admin-api/v1/seb-client-connection',
+    ...options,
+    headers: {
+        'Content-Type': 'application/x-www-form-urlencoded',
+        ...options?.headers
+    }
+});
+
+/**
+ * Get a page of the specific domain entity. Sorting and filtering is applied before paging
+ *
+ * Sorting: the sort parameter to sort the list of entities before paging
+ * the sort parameter is the name of the entity-model attribute to sort with a leading '-' sign for
+ * descending sort order. Note that not all entity-model attribute are suited for sorting while the most
+ * are.
+ * </p>
+ * Filter: The filter attributes accepted by this API depend on the actual entity model (domain object)
+ * and are of the form [domain-attribute-name]=[filter-value]. E.g.: name=abc or type=EXAM. Usually
+ * filter attributes of text type are treated as SQL wildcard with %[text]% to filter all text containing
+ * a given text-snippet.
+ */
+export const getPage = <ThrowOnError extends boolean = true>(options: Options<GetPageData, ThrowOnError>) => (options.client ?? client).get<GetPageResponses, unknown, ThrowOnError>({
+    responseType: 'json',
+    security: [{ scheme: 'bearer', type: 'http' }],
+    url: '/admin-api/v1/seb-client-connection',
+    ...options
+});
+
+/**
+ * Create a new entity object of specifies type by using the given form parameter
+ *
+ * This expects application/x-www-form-urlencoded format for the form parameter and tries to create a new entity object from this form parameter, resulting in an error if there are missing or incorrect form paramter. The needed form paramter can be verified within the specific entity object.
+ */
+export const create2 = <ThrowOnError extends boolean = true>(options?: Options<Create2Data, ThrowOnError>) => (options?.client ?? client).post<Create2Responses, unknown, ThrowOnError>({
+    ...urlSearchParamsBodySerializer,
+    responseType: 'json',
+    security: [{ scheme: 'bearer', type: 'http' }],
+    url: '/admin-api/v1/seb-client-connection',
+    ...options,
+    headers: {
+        'Content-Type': 'application/x-www-form-urlencoded',
+        ...options?.headers
+    }
+});
+
+/**
+ * Modifies an already existing entity object of the specific type.
+ *
+ * This expects application/json format for the response data and verifies consistencies within the definition of the specific entity object type. Missing (NULL) parameter that are not mandatory will be ignored and the original value will not be affected
+ */
+export const savePut2 = <ThrowOnError extends boolean = true>(options: Options<SavePut2Data, ThrowOnError>) => (options.client ?? client).put<SavePut2Responses, unknown, ThrowOnError>({
+    responseType: 'json',
+    security: [{ scheme: 'bearer', type: 'http' }],
+    url: '/admin-api/v1/seb-client-connection',
+    ...options,
+    headers: {
+        'Content-Type': 'application/json',
+        ...options.headers
+    }
+});
+
+/**
+ * Deletes all given entity (and all its dependencies) by a given list of model identifiers.
+ *
+ * To check or report what dependent object also would be deleted for a certain entity object, please use the dependency endpoint to get a report of all dependent entity objects.
+ */
+export const deleteAllOrientations = <ThrowOnError extends boolean = true>(options?: Options<DeleteAllOrientationsData, ThrowOnError>) => (options?.client ?? client).delete<DeleteAllOrientationsResponses, unknown, ThrowOnError>({
+    ...urlSearchParamsBodySerializer,
+    responseType: 'json',
+    security: [{ scheme: 'bearer', type: 'http' }],
+    url: '/admin-api/v1/orientation',
+    ...options,
+    headers: {
+        'Content-Type': 'application/x-www-form-urlencoded',
+        ...options?.headers
+    }
+});
+
+/**
+ * Get a page of the specific domain entity. Sorting and filtering is applied before paging
+ *
+ * Sorting: the sort parameter to sort the list of entities before paging
+ * the sort parameter is the name of the entity-model attribute to sort with a leading '-' sign for
+ * descending sort order. Note that not all entity-model attribute are suited for sorting while the most
+ * are.
+ * </p>
+ * Filter: The filter attributes accepted by this API depend on the actual entity model (domain object)
+ * and are of the form [domain-attribute-name]=[filter-value]. E.g.: name=abc or type=EXAM. Usually
+ * filter attributes of text type are treated as SQL wildcard with %[text]% to filter all text containing
+ * a given text-snippet.
+ */
+export const getOrientations = <ThrowOnError extends boolean = true>(options?: Options<GetOrientationsData, ThrowOnError>) => (options?.client ?? client).get<GetOrientationsResponses, unknown, ThrowOnError>({
+    responseType: 'json',
+    security: [{ scheme: 'bearer', type: 'http' }],
+    url: '/admin-api/v1/orientation',
+    ...options
+});
+
+/**
+ * Create orientation
+ *
+ * Creates orientation from application/x-www-form-urlencoded fields matching Orientation.
+ */
+export const createOrientation = <ThrowOnError extends boolean = true>(options: Options<CreateOrientationData, ThrowOnError>) => (options.client ?? client).post<CreateOrientationResponses, unknown, ThrowOnError>({
+    ...urlSearchParamsBodySerializer,
+    responseType: 'json',
+    security: [{ scheme: 'bearer', type: 'http' }],
+    url: '/admin-api/v1/orientation',
+    ...options,
+    headers: {
+        'Content-Type': 'application/x-www-form-urlencoded',
+        ...options.headers
+    }
+});
+
+/**
+ * Modifies an already existing entity object of the specific type.
+ *
+ * This expects application/json format for the response data and verifies consistencies within the definition of the specific entity object type. Missing (NULL) parameter that are not mandatory will be ignored and the original value will not be affected
+ */
+export const editOrientation = <ThrowOnError extends boolean = true>(options: Options<EditOrientationData, ThrowOnError>) => (options.client ?? client).put<EditOrientationResponses, unknown, ThrowOnError>({
+    responseType: 'json',
+    security: [{ scheme: 'bearer', type: 'http' }],
+    url: '/admin-api/v1/orientation',
+    ...options,
+    headers: {
+        'Content-Type': 'application/json',
+        ...options.headers
+    }
+});
+
+/**
+ * Deletes all given entity (and all its dependencies) by a given list of model identifiers.
+ *
+ * To check or report what dependent object also would be deleted for a certain entity object, please use the dependency endpoint to get a report of all dependent entity objects.
+ */
+export const deleteAllViews = <ThrowOnError extends boolean = true>(options?: Options<DeleteAllViewsData, ThrowOnError>) => (options?.client ?? client).delete<DeleteAllViewsResponses, unknown, ThrowOnError>({
+    ...urlSearchParamsBodySerializer,
+    responseType: 'json',
+    security: [{ scheme: 'bearer', type: 'http' }],
+    url: '/admin-api/v1/orientation/view',
+    ...options,
+    headers: {
+        'Content-Type': 'application/x-www-form-urlencoded',
+        ...options?.headers
+    }
+});
+
+/**
+ * Get a page of the specific domain entity. Sorting and filtering is applied before paging
+ *
+ * Sorting: the sort parameter to sort the list of entities before paging
+ * the sort parameter is the name of the entity-model attribute to sort with a leading '-' sign for
+ * descending sort order. Note that not all entity-model attribute are suited for sorting while the most
+ * are.
+ * </p>
+ * Filter: The filter attributes accepted by this API depend on the actual entity model (domain object)
+ * and are of the form [domain-attribute-name]=[filter-value]. E.g.: name=abc or type=EXAM. Usually
+ * filter attributes of text type are treated as SQL wildcard with %[text]% to filter all text containing
+ * a given text-snippet.
+ */
+export const getViews = <ThrowOnError extends boolean = true>(options?: Options<GetViewsData, ThrowOnError>) => (options?.client ?? client).get<GetViewsResponses, unknown, ThrowOnError>({
+    responseType: 'json',
+    security: [{ scheme: 'bearer', type: 'http' }],
+    url: '/admin-api/v1/orientation/view',
+    ...options
+});
+
+/**
+ * Create view
+ *
+ * Creates view from application/x-www-form-urlencoded fields matching View.
+ */
+export const createView = <ThrowOnError extends boolean = true>(options: Options<CreateViewData, ThrowOnError>) => (options.client ?? client).post<CreateViewResponses, unknown, ThrowOnError>({
+    ...urlSearchParamsBodySerializer,
+    responseType: 'json',
+    security: [{ scheme: 'bearer', type: 'http' }],
+    url: '/admin-api/v1/orientation/view',
+    ...options,
+    headers: {
+        'Content-Type': 'application/x-www-form-urlencoded',
+        ...options.headers
+    }
+});
+
+/**
+ * Modifies an already existing entity object of the specific type.
+ *
+ * This expects application/json format for the response data and verifies consistencies within the definition of the specific entity object type. Missing (NULL) parameter that are not mandatory will be ignored and the original value will not be affected
+ */
+export const editView = <ThrowOnError extends boolean = true>(options: Options<EditViewData, ThrowOnError>) => (options.client ?? client).put<EditViewResponses, unknown, ThrowOnError>({
+    responseType: 'json',
+    security: [{ scheme: 'bearer', type: 'http' }],
+    url: '/admin-api/v1/orientation/view',
+    ...options,
+    headers: {
+        'Content-Type': 'application/json',
+        ...options.headers
+    }
+});
+
+/**
+ * Deletes all given entity (and all its dependencies) by a given list of model identifiers.
+ *
+ * To check or report what dependent object also would be deleted for a certain entity object, please use the dependency endpoint to get a report of all dependent entity objects.
+ */
+export const deleteAllLmsSetups = <ThrowOnError extends boolean = true>(options?: Options<DeleteAllLmsSetupsData, ThrowOnError>) => (options?.client ?? client).delete<DeleteAllLmsSetupsResponses, unknown, ThrowOnError>({
+    ...urlSearchParamsBodySerializer,
+    responseType: 'json',
+    security: [{ scheme: 'bearer', type: 'http' }],
+    url: '/admin-api/v1/lms-setup',
+    ...options,
+    headers: {
+        'Content-Type': 'application/x-www-form-urlencoded',
+        ...options?.headers
+    }
+});
+
+/**
+ * Get a page of the specific domain entity. Sorting and filtering is applied before paging
+ *
+ * Sorting: the sort parameter to sort the list of entities before paging
+ * the sort parameter is the name of the entity-model attribute to sort with a leading '-' sign for
+ * descending sort order. Note that not all entity-model attribute are suited for sorting while the most
+ * are.
+ * </p>
+ * Filter: The filter attributes accepted by this API depend on the actual entity model (domain object)
+ * and are of the form [domain-attribute-name]=[filter-value]. E.g.: name=abc or type=EXAM. Usually
+ * filter attributes of text type are treated as SQL wildcard with %[text]% to filter all text containing
+ * a given text-snippet.
+ */
+export const getLmsSetups = <ThrowOnError extends boolean = true>(options?: Options<GetLmsSetupsData, ThrowOnError>) => (options?.client ?? client).get<GetLmsSetupsResponses, unknown, ThrowOnError>({
+    responseType: 'json',
+    security: [{ scheme: 'bearer', type: 'http' }],
+    url: '/admin-api/v1/lms-setup',
+    ...options
+});
+
+/**
+ * Create lms setup
+ *
+ * Creates lms setup from application/x-www-form-urlencoded fields matching LmsSetup.
+ */
+export const createLmsSetup = <ThrowOnError extends boolean = true>(options: Options<CreateLmsSetupData, ThrowOnError>) => (options.client ?? client).post<CreateLmsSetupResponses, unknown, ThrowOnError>({
+    ...urlSearchParamsBodySerializer,
+    responseType: 'json',
+    security: [{ scheme: 'bearer', type: 'http' }],
+    url: '/admin-api/v1/lms-setup',
+    ...options,
+    headers: {
+        'Content-Type': 'application/x-www-form-urlencoded',
+        ...options.headers
+    }
+});
+
+/**
+ * Modifies an already existing entity object of the specific type.
+ *
+ * This expects application/json format for the response data and verifies consistencies within the definition of the specific entity object type. Missing (NULL) parameter that are not mandatory will be ignored and the original value will not be affected
+ */
+export const editLmsSetup = <ThrowOnError extends boolean = true>(options: Options<EditLmsSetupData, ThrowOnError>) => (options.client ?? client).put<EditLmsSetupResponses, unknown, ThrowOnError>({
+    responseType: 'json',
+    security: [{ scheme: 'bearer', type: 'http' }],
+    url: '/admin-api/v1/lms-setup',
+    ...options,
+    headers: {
+        'Content-Type': 'application/json',
+        ...options.headers
+    }
+});
+
+export const testLmsAdHoc = <ThrowOnError extends boolean = true>(options: Options<TestLmsAdHocData, ThrowOnError>) => (options.client ?? client).put<TestLmsAdHocResponses, unknown, ThrowOnError>({
+    responseType: 'json',
+    security: [{ scheme: 'bearer', type: 'http' }],
+    url: '/admin-api/v1/lms-setup/test/adhoc',
+    ...options,
+    headers: {
+        'Content-Type': 'application/json',
+        ...options.headers
+    }
+});
+
+/**
+ * Deletes all given entity (and all its dependencies) by a given list of model identifiers.
+ *
+ * To check or report what dependent object also would be deleted for a certain entity object, please use the dependency endpoint to get a report of all dependent entity objects.
+ */
+export const deleteAllInstitutions = <ThrowOnError extends boolean = true>(options?: Options<DeleteAllInstitutionsData, ThrowOnError>) => (options?.client ?? client).delete<DeleteAllInstitutionsResponses, unknown, ThrowOnError>({
+    ...urlSearchParamsBodySerializer,
+    responseType: 'json',
+    security: [{ scheme: 'bearer', type: 'http' }],
+    url: '/admin-api/v1/institution',
+    ...options,
+    headers: {
+        'Content-Type': 'application/x-www-form-urlencoded',
+        ...options?.headers
+    }
+});
+
+/**
+ * Get a page of the specific domain entity. Sorting and filtering is applied before paging
+ *
+ * Sorting: the sort parameter to sort the list of entities before paging
+ * the sort parameter is the name of the entity-model attribute to sort with a leading '-' sign for
+ * descending sort order. Note that not all entity-model attribute are suited for sorting while the most
+ * are.
+ * </p>
+ * Filter: The filter attributes accepted by this API depend on the actual entity model (domain object)
+ * and are of the form [domain-attribute-name]=[filter-value]. E.g.: name=abc or type=EXAM. Usually
+ * filter attributes of text type are treated as SQL wildcard with %[text]% to filter all text containing
+ * a given text-snippet.
+ */
+export const getInstitutions = <ThrowOnError extends boolean = true>(options?: Options<GetInstitutionsData, ThrowOnError>) => (options?.client ?? client).get<GetInstitutionsResponses, unknown, ThrowOnError>({
+    responseType: 'json',
+    security: [{ scheme: 'bearer', type: 'http' }],
+    url: '/admin-api/v1/institution',
+    ...options
+});
+
+/**
+ * Create institution
+ *
+ * Creates institution from application/x-www-form-urlencoded fields matching Institution.
+ */
+export const createInstitution = <ThrowOnError extends boolean = true>(options: Options<CreateInstitutionData, ThrowOnError>) => (options.client ?? client).post<CreateInstitutionResponses, unknown, ThrowOnError>({
+    ...urlSearchParamsBodySerializer,
+    responseType: 'json',
+    security: [{ scheme: 'bearer', type: 'http' }],
+    url: '/admin-api/v1/institution',
+    ...options,
+    headers: {
+        'Content-Type': 'application/x-www-form-urlencoded',
+        ...options.headers
+    }
+});
+
+/**
+ * Modifies an already existing entity object of the specific type.
+ *
+ * This expects application/json format for the response data and verifies consistencies within the definition of the specific entity object type. Missing (NULL) parameter that are not mandatory will be ignored and the original value will not be affected
+ */
+export const editInstitution = <ThrowOnError extends boolean = true>(options: Options<EditInstitutionData, ThrowOnError>) => (options.client ?? client).put<EditInstitutionResponses, unknown, ThrowOnError>({
+    responseType: 'json',
+    security: [{ scheme: 'bearer', type: 'http' }],
+    url: '/admin-api/v1/institution',
+    ...options,
+    headers: {
+        'Content-Type': 'application/json',
+        ...options.headers
+    }
+});
+
+/**
+ * Deletes all given entity (and all its dependencies) by a given list of model identifiers.
+ *
+ * To check or report what dependent object also would be deleted for a certain entity object, please use the dependency endpoint to get a report of all dependent entity objects.
+ */
+export const deleteAllIndicators = <ThrowOnError extends boolean = true>(options?: Options<DeleteAllIndicatorsData, ThrowOnError>) => (options?.client ?? client).delete<DeleteAllIndicatorsResponses, unknown, ThrowOnError>({
+    ...urlSearchParamsBodySerializer,
+    responseType: 'json',
+    security: [{ scheme: 'bearer', type: 'http' }],
+    url: '/admin-api/v1/indicator',
+    ...options,
+    headers: {
+        'Content-Type': 'application/x-www-form-urlencoded',
+        ...options?.headers
+    }
+});
+
+/**
+ * Get a page of the specific domain entity. Sorting and filtering is applied before paging
+ *
+ * Sorting: the sort parameter to sort the list of entities before paging
+ * the sort parameter is the name of the entity-model attribute to sort with a leading '-' sign for
+ * descending sort order. Note that not all entity-model attribute are suited for sorting while the most
+ * are.
+ * </p>
+ * Filter: The filter attributes accepted by this API depend on the actual entity model (domain object)
+ * and are of the form [domain-attribute-name]=[filter-value]. E.g.: name=abc or type=EXAM. Usually
+ * filter attributes of text type are treated as SQL wildcard with %[text]% to filter all text containing
+ * a given text-snippet.
+ */
+export const getIndicators = <ThrowOnError extends boolean = true>(options?: Options<GetIndicatorsData, ThrowOnError>) => (options?.client ?? client).get<GetIndicatorsResponses, unknown, ThrowOnError>({
+    responseType: 'json',
+    security: [{ scheme: 'bearer', type: 'http' }],
+    url: '/admin-api/v1/indicator',
+    ...options
+});
+
+/**
+ * Create indicator
+ *
+ * Creates indicator from application/x-www-form-urlencoded fields matching Indicator.
+ */
+export const createIndicator = <ThrowOnError extends boolean = true>(options: Options<CreateIndicatorData, ThrowOnError>) => (options.client ?? client).post<CreateIndicatorResponses, unknown, ThrowOnError>({
+    ...urlSearchParamsBodySerializer,
+    responseType: 'json',
+    security: [{ scheme: 'bearer', type: 'http' }],
+    url: '/admin-api/v1/indicator',
+    ...options,
+    headers: {
+        'Content-Type': 'application/x-www-form-urlencoded',
+        ...options.headers
+    }
+});
+
+/**
+ * Modifies an already existing entity object of the specific type.
+ *
+ * This expects application/json format for the response data and verifies consistencies within the definition of the specific entity object type. Missing (NULL) parameter that are not mandatory will be ignored and the original value will not be affected
+ */
+export const editIndicator = <ThrowOnError extends boolean = true>(options: Options<EditIndicatorData, ThrowOnError>) => (options.client ?? client).put<EditIndicatorResponses, unknown, ThrowOnError>({
+    responseType: 'json',
+    security: [{ scheme: 'bearer', type: 'http' }],
+    url: '/admin-api/v1/indicator',
+    ...options,
+    headers: {
+        'Content-Type': 'application/json',
+        ...options.headers
+    }
+});
+
+/**
+ * Deletes all given entity (and all its dependencies) by a given list of model identifiers.
+ *
+ * To check or report what dependent object also would be deleted for a certain entity object, please use the dependency endpoint to get a report of all dependent entity objects.
+ */
+export const hardDeleteAll3 = <ThrowOnError extends boolean = true>(options?: Options<HardDeleteAll3Data, ThrowOnError>) => (options?.client ?? client).delete<HardDeleteAll3Responses, unknown, ThrowOnError>({
+    ...urlSearchParamsBodySerializer,
+    responseType: 'json',
+    security: [{ scheme: 'bearer', type: 'http' }],
+    url: '/admin-api/v1/exam',
+    ...options,
+    headers: {
+        'Content-Type': 'application/x-www-form-urlencoded',
+        ...options?.headers
+    }
+});
+
+/**
+ * Get a page of the specific domain entity. Sorting and filtering is applied before paging
+ *
+ * Sorting: the sort parameter to sort the list of entities before paging
+ * the sort parameter is the name of the entity-model attribute to sort with a leading '-' sign for
+ * descending sort order. Note that not all entity-model attribute are suited for sorting while the most
+ * are.
+ * </p>
+ * Filter: The filter attributes accepted by this API depend on the actual entity model (domain object)
+ * and are of the form [domain-attribute-name]=[filter-value]. E.g.: name=abc or type=EXAM. Usually
+ * filter attributes of text type are treated as SQL wildcard with %[text]% to filter all text containing
+ * a given text-snippet.
+ */
+export const getExamAdministrations = <ThrowOnError extends boolean = true>(options?: Options<GetExamAdministrationsData, ThrowOnError>) => (options?.client ?? client).get<GetExamAdministrationsResponses, unknown, ThrowOnError>({
+    responseType: 'json',
+    security: [{ scheme: 'bearer', type: 'http' }],
+    url: '/admin-api/v1/exam',
+    ...options
+});
+
+/**
+ * Create exam administration
+ *
+ * Creates exam administration from application/x-www-form-urlencoded fields matching Exam.
+ */
+export const createExamAdministration = <ThrowOnError extends boolean = true>(options: Options<CreateExamAdministrationData, ThrowOnError>) => (options.client ?? client).post<CreateExamAdministrationResponses, unknown, ThrowOnError>({
+    ...urlSearchParamsBodySerializer,
+    responseType: 'json',
+    security: [{ scheme: 'bearer', type: 'http' }],
+    url: '/admin-api/v1/exam',
+    ...options,
+    headers: {
+        'Content-Type': 'application/x-www-form-urlencoded',
+        ...options.headers
+    }
+});
+
+/**
+ * Modifies an already existing entity object of the specific type.
+ *
+ * This expects application/json format for the response data and verifies consistencies within the definition of the specific entity object type. Missing (NULL) parameter that are not mandatory will be ignored and the original value will not be affected
+ */
+export const editExamAdministration = <ThrowOnError extends boolean = true>(options: Options<EditExamAdministrationData, ThrowOnError>) => (options.client ?? client).put<EditExamAdministrationResponses, unknown, ThrowOnError>({
+    responseType: 'json',
+    security: [{ scheme: 'bearer', type: 'http' }],
+    url: '/admin-api/v1/exam',
+    ...options,
+    headers: {
+        'Content-Type': 'application/json',
+        ...options.headers
+    }
+});
+
+export const deleteSebRestriction = <ThrowOnError extends boolean = true>(options: Options<DeleteSebRestrictionData, ThrowOnError>) => (options.client ?? client).delete<DeleteSebRestrictionResponses, unknown, ThrowOnError>({
+    responseType: 'json',
+    security: [{ scheme: 'bearer', type: 'http' }],
+    url: '/admin-api/v1/exam/{modelId}/seb-restriction',
+    ...options
+});
+
+export const getSebRestriction = <ThrowOnError extends boolean = true>(options: Options<GetSebRestrictionData, ThrowOnError>) => (options.client ?? client).get<GetSebRestrictionResponses, unknown, ThrowOnError>({
+    responseType: 'json',
+    security: [{ scheme: 'bearer', type: 'http' }],
+    url: '/admin-api/v1/exam/{modelId}/seb-restriction',
+    ...options
+});
+
+export const saveSebRestrictionData = <ThrowOnError extends boolean = true>(options: Options<SaveSebRestrictionDataData, ThrowOnError>) => (options.client ?? client).post<SaveSebRestrictionDataResponses, unknown, ThrowOnError>({
+    responseType: 'json',
+    security: [{ scheme: 'bearer', type: 'http' }],
+    url: '/admin-api/v1/exam/{modelId}/seb-restriction',
+    ...options,
+    headers: {
+        'Content-Type': 'application/json',
+        ...options.headers
+    }
+});
+
+export const applySebRestriction = <ThrowOnError extends boolean = true>(options: Options<ApplySebRestrictionData, ThrowOnError>) => (options.client ?? client).put<ApplySebRestrictionResponses, unknown, ThrowOnError>({
+    responseType: 'json',
+    security: [{ scheme: 'bearer', type: 'http' }],
+    url: '/admin-api/v1/exam/{modelId}/seb-restriction',
+    ...options
+});
+
+/**
+ * Deletes all given entity (and all its dependencies) by a given list of model identifiers.
+ *
+ * To check or report what dependent object also would be deleted for a certain entity object, please use the dependency endpoint to get a report of all dependent entity objects.
+ */
+export const deleteAllExamTemplates = <ThrowOnError extends boolean = true>(options?: Options<DeleteAllExamTemplatesData, ThrowOnError>) => (options?.client ?? client).delete<DeleteAllExamTemplatesResponses, unknown, ThrowOnError>({
+    ...urlSearchParamsBodySerializer,
+    responseType: 'json',
+    security: [{ scheme: 'bearer', type: 'http' }],
+    url: '/admin-api/v1/exam-template',
+    ...options,
+    headers: {
+        'Content-Type': 'application/x-www-form-urlencoded',
+        ...options?.headers
+    }
+});
+
+/**
+ * Get a page of the specific domain entity. Sorting and filtering is applied before paging
+ *
+ * Sorting: the sort parameter to sort the list of entities before paging
+ * the sort parameter is the name of the entity-model attribute to sort with a leading '-' sign for
+ * descending sort order. Note that not all entity-model attribute are suited for sorting while the most
+ * are.
+ * </p>
+ * Filter: The filter attributes accepted by this API depend on the actual entity model (domain object)
+ * and are of the form [domain-attribute-name]=[filter-value]. E.g.: name=abc or type=EXAM. Usually
+ * filter attributes of text type are treated as SQL wildcard with %[text]% to filter all text containing
+ * a given text-snippet.
+ */
+export const getExamTemplates = <ThrowOnError extends boolean = true>(options?: Options<GetExamTemplatesData, ThrowOnError>) => (options?.client ?? client).get<GetExamTemplatesResponses, unknown, ThrowOnError>({
+    responseType: 'json',
+    security: [{ scheme: 'bearer', type: 'http' }],
+    url: '/admin-api/v1/exam-template',
+    ...options
+});
+
+/**
+ * Create exam template
+ *
+ * Creates exam template from application/x-www-form-urlencoded fields matching ExamTemplate.
+ */
+export const createExamTemplate = <ThrowOnError extends boolean = true>(options: Options<CreateExamTemplateData, ThrowOnError>) => (options.client ?? client).post<CreateExamTemplateResponses, unknown, ThrowOnError>({
+    ...urlSearchParamsBodySerializer,
+    responseType: 'json',
+    security: [{ scheme: 'bearer', type: 'http' }],
+    url: '/admin-api/v1/exam-template',
+    ...options,
+    headers: {
+        'Content-Type': 'application/x-www-form-urlencoded',
+        ...options.headers
+    }
+});
+
+/**
+ * Modifies an already existing entity object of the specific type.
+ *
+ * This expects application/json format for the response data and verifies consistencies within the definition of the specific entity object type. Missing (NULL) parameter that are not mandatory will be ignored and the original value will not be affected
+ */
+export const editExamTemplate = <ThrowOnError extends boolean = true>(options: Options<EditExamTemplateData, ThrowOnError>) => (options.client ?? client).put<EditExamTemplateResponses, unknown, ThrowOnError>({
+    responseType: 'json',
+    security: [{ scheme: 'bearer', type: 'http' }],
+    url: '/admin-api/v1/exam-template',
+    ...options,
+    headers: {
+        'Content-Type': 'application/json',
+        ...options.headers
+    }
+});
+
+export const createIndicatorTemplate = <ThrowOnError extends boolean = true>(options?: Options<CreateIndicatorTemplateData, ThrowOnError>) => (options?.client ?? client).post<CreateIndicatorTemplateResponses, unknown, ThrowOnError>({
+    ...urlSearchParamsBodySerializer,
+    responseType: 'json',
+    security: [{ scheme: 'bearer', type: 'http' }],
+    url: '/admin-api/v1/exam-template/indicator',
+    ...options,
+    headers: {
+        'Content-Type': 'application/x-www-form-urlencoded',
+        ...options?.headers
+    }
+});
+
+export const saveIndicatorPut = <ThrowOnError extends boolean = true>(options: Options<SaveIndicatorPutData, ThrowOnError>) => (options.client ?? client).put<SaveIndicatorPutResponses, unknown, ThrowOnError>({
+    responseType: 'json',
+    security: [{ scheme: 'bearer', type: 'http' }],
+    url: '/admin-api/v1/exam-template/indicator',
+    ...options,
+    headers: {
+        'Content-Type': 'application/json',
+        ...options.headers
+    }
+});
+
+export const createClientGroupTemplate = <ThrowOnError extends boolean = true>(options?: Options<CreateClientGroupTemplateData, ThrowOnError>) => (options?.client ?? client).post<CreateClientGroupTemplateResponses, unknown, ThrowOnError>({
+    ...urlSearchParamsBodySerializer,
+    responseType: 'json',
+    security: [{ scheme: 'bearer', type: 'http' }],
+    url: '/admin-api/v1/exam-template/client-group',
+    ...options,
+    headers: {
+        'Content-Type': 'application/x-www-form-urlencoded',
+        ...options?.headers
+    }
+});
+
+export const saveClientGroupTemplate = <ThrowOnError extends boolean = true>(options: Options<SaveClientGroupTemplateData, ThrowOnError>) => (options.client ?? client).put<SaveClientGroupTemplateResponses, unknown, ThrowOnError>({
+    responseType: 'json',
+    security: [{ scheme: 'bearer', type: 'http' }],
+    url: '/admin-api/v1/exam-template/client-group',
+    ...options,
+    headers: {
+        'Content-Type': 'application/json',
+        ...options.headers
+    }
+});
+
+/**
+ * Deletes all given entity (and all its dependencies) by a given list of model identifiers.
+ *
+ * To check or report what dependent object also would be deleted for a certain entity object, please use the dependency endpoint to get a report of all dependent entity objects.
+ */
+export const deleteAllExamConfigurationMappings = <ThrowOnError extends boolean = true>(options?: Options<DeleteAllExamConfigurationMappingsData, ThrowOnError>) => (options?.client ?? client).delete<DeleteAllExamConfigurationMappingsResponses, unknown, ThrowOnError>({
+    ...urlSearchParamsBodySerializer,
+    responseType: 'json',
+    security: [{ scheme: 'bearer', type: 'http' }],
+    url: '/admin-api/v1/exam-configuration-map',
+    ...options,
+    headers: {
+        'Content-Type': 'application/x-www-form-urlencoded',
+        ...options?.headers
+    }
+});
+
+/**
+ * Get a page of the specific domain entity. Sorting and filtering is applied before paging
+ *
+ * Sorting: the sort parameter to sort the list of entities before paging
+ * the sort parameter is the name of the entity-model attribute to sort with a leading '-' sign for
+ * descending sort order. Note that not all entity-model attribute are suited for sorting while the most
+ * are.
+ * </p>
+ * Filter: The filter attributes accepted by this API depend on the actual entity model (domain object)
+ * and are of the form [domain-attribute-name]=[filter-value]. E.g.: name=abc or type=EXAM. Usually
+ * filter attributes of text type are treated as SQL wildcard with %[text]% to filter all text containing
+ * a given text-snippet.
+ */
+export const getExamConfigurationMappings = <ThrowOnError extends boolean = true>(options?: Options<GetExamConfigurationMappingsData, ThrowOnError>) => (options?.client ?? client).get<GetExamConfigurationMappingsResponses, unknown, ThrowOnError>({
+    responseType: 'json',
+    security: [{ scheme: 'bearer', type: 'http' }],
+    url: '/admin-api/v1/exam-configuration-map',
+    ...options
+});
+
+/**
+ * Create a new entity object of specifies type by using the given form parameter
+ *
+ * This expects application/x-www-form-urlencoded format for the form parameter and tries to create a new entity object from this form parameter, resulting in an error if there are missing or incorrect form paramter. The needed form paramter can be verified within the specific entity object.
+ */
+export const create3 = <ThrowOnError extends boolean = true>(options?: Options<Create3Data, ThrowOnError>) => (options?.client ?? client).post<Create3Responses, unknown, ThrowOnError>({
+    ...urlSearchParamsBodySerializer,
+    responseType: 'json',
+    security: [{ scheme: 'bearer', type: 'http' }],
+    url: '/admin-api/v1/exam-configuration-map',
+    ...options,
+    headers: {
+        'Content-Type': 'application/x-www-form-urlencoded',
+        ...options?.headers
+    }
+});
+
+/**
+ * Modifies an already existing entity object of the specific type.
+ *
+ * This expects application/json format for the response data and verifies consistencies within the definition of the specific entity object type. Missing (NULL) parameter that are not mandatory will be ignored and the original value will not be affected
+ */
+export const editExamConfigurationMapping = <ThrowOnError extends boolean = true>(options: Options<EditExamConfigurationMappingData, ThrowOnError>) => (options.client ?? client).put<EditExamConfigurationMappingResponses, unknown, ThrowOnError>({
+    responseType: 'json',
+    security: [{ scheme: 'bearer', type: 'http' }],
+    url: '/admin-api/v1/exam-configuration-map',
+    ...options,
+    headers: {
+        'Content-Type': 'application/json',
+        ...options.headers
+    }
+});
+
+/**
+ * Deletes all given entity (and all its dependencies) by a given list of model identifiers.
+ *
+ * To check or report what dependent object also would be deleted for a certain entity object, please use the dependency endpoint to get a report of all dependent entity objects.
+ */
+export const deleteAllConfigurationValues = <ThrowOnError extends boolean = true>(options?: Options<DeleteAllConfigurationValuesData, ThrowOnError>) => (options?.client ?? client).delete<DeleteAllConfigurationValuesResponses, unknown, ThrowOnError>({
+    ...urlSearchParamsBodySerializer,
+    responseType: 'json',
+    security: [{ scheme: 'bearer', type: 'http' }],
+    url: '/admin-api/v1/configuration_value',
+    ...options,
+    headers: {
+        'Content-Type': 'application/x-www-form-urlencoded',
+        ...options?.headers
+    }
+});
+
+/**
+ * Get a page of the specific domain entity. Sorting and filtering is applied before paging
+ *
+ * Sorting: the sort parameter to sort the list of entities before paging
+ * the sort parameter is the name of the entity-model attribute to sort with a leading '-' sign for
+ * descending sort order. Note that not all entity-model attribute are suited for sorting while the most
+ * are.
+ * </p>
+ * Filter: The filter attributes accepted by this API depend on the actual entity model (domain object)
+ * and are of the form [domain-attribute-name]=[filter-value]. E.g.: name=abc or type=EXAM. Usually
+ * filter attributes of text type are treated as SQL wildcard with %[text]% to filter all text containing
+ * a given text-snippet.
+ */
+export const getConfigurationValues = <ThrowOnError extends boolean = true>(options?: Options<GetConfigurationValuesData, ThrowOnError>) => (options?.client ?? client).get<GetConfigurationValuesResponses, unknown, ThrowOnError>({
+    responseType: 'json',
+    security: [{ scheme: 'bearer', type: 'http' }],
+    url: '/admin-api/v1/configuration_value',
+    ...options
+});
+
+/**
+ * Create configuration value
+ *
+ * Creates configuration value from application/x-www-form-urlencoded fields matching ConfigurationValue.
+ */
+export const createConfigurationValue = <ThrowOnError extends boolean = true>(options: Options<CreateConfigurationValueData, ThrowOnError>) => (options.client ?? client).post<CreateConfigurationValueResponses, unknown, ThrowOnError>({
+    ...urlSearchParamsBodySerializer,
+    responseType: 'json',
+    security: [{ scheme: 'bearer', type: 'http' }],
+    url: '/admin-api/v1/configuration_value',
+    ...options,
+    headers: {
+        'Content-Type': 'application/x-www-form-urlencoded',
+        ...options.headers
+    }
+});
+
+/**
+ * Modifies an already existing entity object of the specific type.
+ *
+ * This expects application/json format for the response data and verifies consistencies within the definition of the specific entity object type. Missing (NULL) parameter that are not mandatory will be ignored and the original value will not be affected
+ */
+export const editConfigurationValue = <ThrowOnError extends boolean = true>(options: Options<EditConfigurationValueData, ThrowOnError>) => (options.client ?? client).put<EditConfigurationValueResponses, unknown, ThrowOnError>({
+    responseType: 'json',
+    security: [{ scheme: 'bearer', type: 'http' }],
+    url: '/admin-api/v1/configuration_value',
+    ...options,
+    headers: {
+        'Content-Type': 'application/json',
+        ...options.headers
+    }
+});
+
+export const getTableValue = <ThrowOnError extends boolean = true>(options: Options<GetTableValueData, ThrowOnError>) => (options.client ?? client).get<GetTableValueResponses, unknown, ThrowOnError>({
+    responseType: 'json',
+    security: [{ scheme: 'bearer', type: 'http' }],
+    url: '/admin-api/v1/configuration_value/table',
+    ...options
+});
+
+export const savePut3 = <ThrowOnError extends boolean = true>(options: Options<SavePut3Data, ThrowOnError>) => (options.client ?? client).put<SavePut3Responses, unknown, ThrowOnError>({
+    responseType: 'json',
+    security: [{ scheme: 'bearer', type: 'http' }],
+    url: '/admin-api/v1/configuration_value/table',
+    ...options,
+    headers: {
+        'Content-Type': 'application/json',
+        ...options.headers
+    }
+});
+
+/**
+ * Deletes all given entity (and all its dependencies) by a given list of model identifiers.
+ *
+ * To check or report what dependent object also would be deleted for a certain entity object, please use the dependency endpoint to get a report of all dependent entity objects.
+ */
+export const deleteAllConfigurationAttributes = <ThrowOnError extends boolean = true>(options?: Options<DeleteAllConfigurationAttributesData, ThrowOnError>) => (options?.client ?? client).delete<DeleteAllConfigurationAttributesResponses, unknown, ThrowOnError>({
+    ...urlSearchParamsBodySerializer,
+    responseType: 'json',
+    security: [{ scheme: 'bearer', type: 'http' }],
+    url: '/admin-api/v1/configuration_attribute',
+    ...options,
+    headers: {
+        'Content-Type': 'application/x-www-form-urlencoded',
+        ...options?.headers
+    }
+});
+
+/**
+ * Get a page of the specific domain entity. Sorting and filtering is applied before paging
+ *
+ * Sorting: the sort parameter to sort the list of entities before paging
+ * the sort parameter is the name of the entity-model attribute to sort with a leading '-' sign for
+ * descending sort order. Note that not all entity-model attribute are suited for sorting while the most
+ * are.
+ * </p>
+ * Filter: The filter attributes accepted by this API depend on the actual entity model (domain object)
+ * and are of the form [domain-attribute-name]=[filter-value]. E.g.: name=abc or type=EXAM. Usually
+ * filter attributes of text type are treated as SQL wildcard with %[text]% to filter all text containing
+ * a given text-snippet.
+ */
+export const getConfigurationAttributes = <ThrowOnError extends boolean = true>(options?: Options<GetConfigurationAttributesData, ThrowOnError>) => (options?.client ?? client).get<GetConfigurationAttributesResponses, unknown, ThrowOnError>({
+    responseType: 'json',
+    security: [{ scheme: 'bearer', type: 'http' }],
+    url: '/admin-api/v1/configuration_attribute',
+    ...options
+});
+
+/**
+ * Create configuration attribute
+ *
+ * Creates configuration attribute from application/x-www-form-urlencoded fields matching ConfigurationAttribute.
+ */
+export const createConfigurationAttribute = <ThrowOnError extends boolean = true>(options: Options<CreateConfigurationAttributeData, ThrowOnError>) => (options.client ?? client).post<CreateConfigurationAttributeResponses, unknown, ThrowOnError>({
+    ...urlSearchParamsBodySerializer,
+    responseType: 'json',
+    security: [{ scheme: 'bearer', type: 'http' }],
+    url: '/admin-api/v1/configuration_attribute',
+    ...options,
+    headers: {
+        'Content-Type': 'application/x-www-form-urlencoded',
+        ...options.headers
+    }
+});
+
+/**
+ * Modifies an already existing entity object of the specific type.
+ *
+ * This expects application/json format for the response data and verifies consistencies within the definition of the specific entity object type. Missing (NULL) parameter that are not mandatory will be ignored and the original value will not be affected
+ */
+export const editConfigurationAttribute = <ThrowOnError extends boolean = true>(options: Options<EditConfigurationAttributeData, ThrowOnError>) => (options.client ?? client).put<EditConfigurationAttributeResponses, unknown, ThrowOnError>({
+    responseType: 'json',
+    security: [{ scheme: 'bearer', type: 'http' }],
+    url: '/admin-api/v1/configuration_attribute',
+    ...options,
+    headers: {
+        'Content-Type': 'application/json',
+        ...options.headers
+    }
+});
+
+/**
+ * Deletes all given entity (and all its dependencies) by a given list of model identifiers.
+ *
+ * To check or report what dependent object also would be deleted for a certain entity object, please use the dependency endpoint to get a report of all dependent entity objects.
+ */
+export const hardDeleteAll4 = <ThrowOnError extends boolean = true>(options?: Options<HardDeleteAll4Data, ThrowOnError>) => (options?.client ?? client).delete<HardDeleteAll4Responses, unknown, ThrowOnError>({
+    ...urlSearchParamsBodySerializer,
+    responseType: 'json',
+    security: [{ scheme: 'bearer', type: 'http' }],
+    url: '/admin-api/v1/configuration',
+    ...options,
+    headers: {
+        'Content-Type': 'application/x-www-form-urlencoded',
+        ...options?.headers
+    }
+});
+
+/**
+ * Get a page of the specific domain entity. Sorting and filtering is applied before paging
+ *
+ * Sorting: the sort parameter to sort the list of entities before paging
+ * the sort parameter is the name of the entity-model attribute to sort with a leading '-' sign for
+ * descending sort order. Note that not all entity-model attribute are suited for sorting while the most
+ * are.
+ * </p>
+ * Filter: The filter attributes accepted by this API depend on the actual entity model (domain object)
+ * and are of the form [domain-attribute-name]=[filter-value]. E.g.: name=abc or type=EXAM. Usually
+ * filter attributes of text type are treated as SQL wildcard with %[text]% to filter all text containing
+ * a given text-snippet.
+ */
+export const getConfigurations = <ThrowOnError extends boolean = true>(options?: Options<GetConfigurationsData, ThrowOnError>) => (options?.client ?? client).get<GetConfigurationsResponses, unknown, ThrowOnError>({
+    responseType: 'json',
+    security: [{ scheme: 'bearer', type: 'http' }],
+    url: '/admin-api/v1/configuration',
+    ...options
+});
+
+/**
+ * Create a new entity object of specifies type by using the given form parameter
+ *
+ * This expects application/x-www-form-urlencoded format for the form parameter and tries to create a new entity object from this form parameter, resulting in an error if there are missing or incorrect form paramter. The needed form paramter can be verified within the specific entity object.
+ */
+export const create4 = <ThrowOnError extends boolean = true>(options?: Options<Create4Data, ThrowOnError>) => (options?.client ?? client).post<Create4Responses, unknown, ThrowOnError>({
+    ...urlSearchParamsBodySerializer,
+    responseType: 'json',
+    security: [{ scheme: 'bearer', type: 'http' }],
+    url: '/admin-api/v1/configuration',
+    ...options,
+    headers: {
+        'Content-Type': 'application/x-www-form-urlencoded',
+        ...options?.headers
+    }
+});
+
+/**
+ * Modifies an already existing entity object of the specific type.
+ *
+ * This expects application/json format for the response data and verifies consistencies within the definition of the specific entity object type. Missing (NULL) parameter that are not mandatory will be ignored and the original value will not be affected
+ */
+export const savePut4 = <ThrowOnError extends boolean = true>(options: Options<SavePut4Data, ThrowOnError>) => (options.client ?? client).put<SavePut4Responses, unknown, ThrowOnError>({
+    responseType: 'json',
+    security: [{ scheme: 'bearer', type: 'http' }],
+    url: '/admin-api/v1/configuration',
+    ...options,
+    headers: {
+        'Content-Type': 'application/json',
+        ...options.headers
+    }
+});
+
+/**
+ * Deletes all given entity (and all its dependencies) by a given list of model identifiers.
+ *
+ * To check or report what dependent object also would be deleted for a certain entity object, please use the dependency endpoint to get a report of all dependent entity objects.
+ */
+export const deleteAllConfigurationNodes = <ThrowOnError extends boolean = true>(options?: Options<DeleteAllConfigurationNodesData, ThrowOnError>) => (options?.client ?? client).delete<DeleteAllConfigurationNodesResponses, unknown, ThrowOnError>({
+    ...urlSearchParamsBodySerializer,
+    responseType: 'json',
+    security: [{ scheme: 'bearer', type: 'http' }],
+    url: '/admin-api/v1/configuration-node',
+    ...options,
+    headers: {
+        'Content-Type': 'application/x-www-form-urlencoded',
+        ...options?.headers
+    }
+});
+
+/**
+ * Get a page of the specific domain entity. Sorting and filtering is applied before paging
+ *
+ * Sorting: the sort parameter to sort the list of entities before paging
+ * the sort parameter is the name of the entity-model attribute to sort with a leading '-' sign for
+ * descending sort order. Note that not all entity-model attribute are suited for sorting while the most
+ * are.
+ * </p>
+ * Filter: The filter attributes accepted by this API depend on the actual entity model (domain object)
+ * and are of the form [domain-attribute-name]=[filter-value]. E.g.: name=abc or type=EXAM. Usually
+ * filter attributes of text type are treated as SQL wildcard with %[text]% to filter all text containing
+ * a given text-snippet.
+ */
+export const getConfigurationNodes = <ThrowOnError extends boolean = true>(options?: Options<GetConfigurationNodesData, ThrowOnError>) => (options?.client ?? client).get<GetConfigurationNodesResponses, unknown, ThrowOnError>({
+    responseType: 'json',
+    security: [{ scheme: 'bearer', type: 'http' }],
+    url: '/admin-api/v1/configuration-node',
+    ...options
+});
+
+/**
+ * Create configuration node
+ *
+ * Creates configuration node from application/x-www-form-urlencoded fields matching ConfigurationNode.
+ */
+export const createConfigurationNode = <ThrowOnError extends boolean = true>(options: Options<CreateConfigurationNodeData, ThrowOnError>) => (options.client ?? client).post<CreateConfigurationNodeResponses, unknown, ThrowOnError>({
+    ...urlSearchParamsBodySerializer,
+    responseType: 'json',
+    security: [{ scheme: 'bearer', type: 'http' }],
+    url: '/admin-api/v1/configuration-node',
+    ...options,
+    headers: {
+        'Content-Type': 'application/x-www-form-urlencoded',
+        ...options.headers
+    }
+});
+
+/**
+ * Modifies an already existing entity object of the specific type.
+ *
+ * This expects application/json format for the response data and verifies consistencies within the definition of the specific entity object type. Missing (NULL) parameter that are not mandatory will be ignored and the original value will not be affected
+ */
+export const editConfigurationNode = <ThrowOnError extends boolean = true>(options: Options<EditConfigurationNodeData, ThrowOnError>) => (options.client ?? client).put<EditConfigurationNodeResponses, unknown, ThrowOnError>({
+    responseType: 'json',
+    security: [{ scheme: 'bearer', type: 'http' }],
+    url: '/admin-api/v1/configuration-node',
+    ...options,
+    headers: {
+        'Content-Type': 'application/json',
+        ...options.headers
+    }
+});
+
+export const copyConfiguration = <ThrowOnError extends boolean = true>(options: Options<CopyConfigurationData, ThrowOnError>) => (options.client ?? client).put<CopyConfigurationResponses, unknown, ThrowOnError>({
+    responseType: 'json',
+    security: [{ scheme: 'bearer', type: 'http' }],
+    url: '/admin-api/v1/configuration-node/copy',
+    ...options,
+    headers: {
+        'Content-Type': 'application/json',
+        ...options.headers
+    }
+});
+
+/**
+ * Deletes all given entity (and all its dependencies) by a given list of model identifiers.
+ *
+ * To check or report what dependent object also would be deleted for a certain entity object, please use the dependency endpoint to get a report of all dependent entity objects.
+ */
+export const deleteAllSebClientConfigs = <ThrowOnError extends boolean = true>(options?: Options<DeleteAllSebClientConfigsData, ThrowOnError>) => (options?.client ?? client).delete<DeleteAllSebClientConfigsResponses, unknown, ThrowOnError>({
+    ...urlSearchParamsBodySerializer,
+    responseType: 'json',
+    security: [{ scheme: 'bearer', type: 'http' }],
+    url: '/admin-api/v1/client_configuration',
+    ...options,
+    headers: {
+        'Content-Type': 'application/x-www-form-urlencoded',
+        ...options?.headers
+    }
+});
+
+/**
+ * Get a page of the specific domain entity. Sorting and filtering is applied before paging
+ *
+ * Sorting: the sort parameter to sort the list of entities before paging
+ * the sort parameter is the name of the entity-model attribute to sort with a leading '-' sign for
+ * descending sort order. Note that not all entity-model attribute are suited for sorting while the most
+ * are.
+ * </p>
+ * Filter: The filter attributes accepted by this API depend on the actual entity model (domain object)
+ * and are of the form [domain-attribute-name]=[filter-value]. E.g.: name=abc or type=EXAM. Usually
+ * filter attributes of text type are treated as SQL wildcard with %[text]% to filter all text containing
+ * a given text-snippet.
+ */
+export const getSebClientConfigs = <ThrowOnError extends boolean = true>(options?: Options<GetSebClientConfigsData, ThrowOnError>) => (options?.client ?? client).get<GetSebClientConfigsResponses, unknown, ThrowOnError>({
+    responseType: 'json',
+    security: [{ scheme: 'bearer', type: 'http' }],
+    url: '/admin-api/v1/client_configuration',
+    ...options
+});
+
+/**
+ * Create s e b client config
+ *
+ * Creates s e b client config from application/x-www-form-urlencoded fields matching SEBClientConfig.
+ */
+export const createSebClientConfig = <ThrowOnError extends boolean = true>(options: Options<CreateSebClientConfigData, ThrowOnError>) => (options.client ?? client).post<CreateSebClientConfigResponses, unknown, ThrowOnError>({
+    ...urlSearchParamsBodySerializer,
+    responseType: 'json',
+    security: [{ scheme: 'bearer', type: 'http' }],
+    url: '/admin-api/v1/client_configuration',
+    ...options,
+    headers: {
+        'Content-Type': 'application/x-www-form-urlencoded',
+        ...options.headers
+    }
+});
+
+/**
+ * Modifies an already existing entity object of the specific type.
+ *
+ * This expects application/json format for the response data and verifies consistencies within the definition of the specific entity object type. Missing (NULL) parameter that are not mandatory will be ignored and the original value will not be affected
+ */
+export const editSebClientConfig = <ThrowOnError extends boolean = true>(options: Options<EditSebClientConfigData, ThrowOnError>) => (options.client ?? client).put<EditSebClientConfigResponses, unknown, ThrowOnError>({
+    responseType: 'json',
+    security: [{ scheme: 'bearer', type: 'http' }],
+    url: '/admin-api/v1/client_configuration',
+    ...options,
+    headers: {
+        'Content-Type': 'application/json',
+        ...options.headers
+    }
+});
+
+/**
+ * Deletes all given entity (and all its dependencies) by a given list of model identifiers.
+ *
+ * To check or report what dependent object also would be deleted for a certain entity object, please use the dependency endpoint to get a report of all dependent entity objects.
+ */
+export const deleteAllClientGroups = <ThrowOnError extends boolean = true>(options?: Options<DeleteAllClientGroupsData, ThrowOnError>) => (options?.client ?? client).delete<DeleteAllClientGroupsResponses, unknown, ThrowOnError>({
+    ...urlSearchParamsBodySerializer,
+    responseType: 'json',
+    security: [{ scheme: 'bearer', type: 'http' }],
+    url: '/admin-api/v1/client-group',
+    ...options,
+    headers: {
+        'Content-Type': 'application/x-www-form-urlencoded',
+        ...options?.headers
+    }
+});
+
+/**
+ * Get a page of the specific domain entity. Sorting and filtering is applied before paging
+ *
+ * Sorting: the sort parameter to sort the list of entities before paging
+ * the sort parameter is the name of the entity-model attribute to sort with a leading '-' sign for
+ * descending sort order. Note that not all entity-model attribute are suited for sorting while the most
+ * are.
+ * </p>
+ * Filter: The filter attributes accepted by this API depend on the actual entity model (domain object)
+ * and are of the form [domain-attribute-name]=[filter-value]. E.g.: name=abc or type=EXAM. Usually
+ * filter attributes of text type are treated as SQL wildcard with %[text]% to filter all text containing
+ * a given text-snippet.
+ */
+export const getClientGroups = <ThrowOnError extends boolean = true>(options?: Options<GetClientGroupsData, ThrowOnError>) => (options?.client ?? client).get<GetClientGroupsResponses, unknown, ThrowOnError>({
+    responseType: 'json',
+    security: [{ scheme: 'bearer', type: 'http' }],
+    url: '/admin-api/v1/client-group',
+    ...options
+});
+
+/**
+ * Create client group
+ *
+ * Creates client group from application/x-www-form-urlencoded fields matching ClientGroup.
+ */
+export const createClientGroup = <ThrowOnError extends boolean = true>(options: Options<CreateClientGroupData, ThrowOnError>) => (options.client ?? client).post<CreateClientGroupResponses, unknown, ThrowOnError>({
+    ...urlSearchParamsBodySerializer,
+    responseType: 'json',
+    security: [{ scheme: 'bearer', type: 'http' }],
+    url: '/admin-api/v1/client-group',
+    ...options,
+    headers: {
+        'Content-Type': 'application/x-www-form-urlencoded',
+        ...options.headers
+    }
+});
+
+/**
+ * Modifies an already existing entity object of the specific type.
+ *
+ * This expects application/json format for the response data and verifies consistencies within the definition of the specific entity object type. Missing (NULL) parameter that are not mandatory will be ignored and the original value will not be affected
+ */
+export const editClientGroup = <ThrowOnError extends boolean = true>(options: Options<EditClientGroupData, ThrowOnError>) => (options.client ?? client).put<EditClientGroupResponses, unknown, ThrowOnError>({
+    responseType: 'json',
+    security: [{ scheme: 'bearer', type: 'http' }],
+    url: '/admin-api/v1/client-group',
+    ...options,
+    headers: {
+        'Content-Type': 'application/json',
+        ...options.headers
+    }
+});
+
+/**
+ * Deletes all given entity (and all its dependencies) by a given list of model identifiers.
+ *
+ * To check or report what dependent object also would be deleted for a certain entity object, please use the dependency endpoint to get a report of all dependent entity objects.
+ */
+export const deleteAllBatchActions = <ThrowOnError extends boolean = true>(options?: Options<DeleteAllBatchActionsData, ThrowOnError>) => (options?.client ?? client).delete<DeleteAllBatchActionsResponses, unknown, ThrowOnError>({
+    ...urlSearchParamsBodySerializer,
+    responseType: 'json',
+    security: [{ scheme: 'bearer', type: 'http' }],
+    url: '/admin-api/v1/batch-action',
+    ...options,
+    headers: {
+        'Content-Type': 'application/x-www-form-urlencoded',
+        ...options?.headers
+    }
+});
+
+/**
+ * Get a page of the specific domain entity. Sorting and filtering is applied before paging
+ *
+ * Sorting: the sort parameter to sort the list of entities before paging
+ * the sort parameter is the name of the entity-model attribute to sort with a leading '-' sign for
+ * descending sort order. Note that not all entity-model attribute are suited for sorting while the most
+ * are.
+ * </p>
+ * Filter: The filter attributes accepted by this API depend on the actual entity model (domain object)
+ * and are of the form [domain-attribute-name]=[filter-value]. E.g.: name=abc or type=EXAM. Usually
+ * filter attributes of text type are treated as SQL wildcard with %[text]% to filter all text containing
+ * a given text-snippet.
+ */
+export const getBatchActions = <ThrowOnError extends boolean = true>(options?: Options<GetBatchActionsData, ThrowOnError>) => (options?.client ?? client).get<GetBatchActionsResponses, unknown, ThrowOnError>({
+    responseType: 'json',
+    security: [{ scheme: 'bearer', type: 'http' }],
+    url: '/admin-api/v1/batch-action',
+    ...options
+});
+
+/**
+ * Create batch action
+ *
+ * Creates batch action from application/x-www-form-urlencoded fields matching BatchAction.
+ */
+export const createBatchAction = <ThrowOnError extends boolean = true>(options: Options<CreateBatchActionData, ThrowOnError>) => (options.client ?? client).post<CreateBatchActionResponses, unknown, ThrowOnError>({
+    ...urlSearchParamsBodySerializer,
+    responseType: 'json',
+    security: [{ scheme: 'bearer', type: 'http' }],
+    url: '/admin-api/v1/batch-action',
+    ...options,
+    headers: {
+        'Content-Type': 'application/x-www-form-urlencoded',
+        ...options.headers
+    }
+});
+
+/**
+ * Modifies an already existing entity object of the specific type.
+ *
+ * This expects application/json format for the response data and verifies consistencies within the definition of the specific entity object type. Missing (NULL) parameter that are not mandatory will be ignored and the original value will not be affected
+ */
+export const editBatchAction = <ThrowOnError extends boolean = true>(options: Options<EditBatchActionData, ThrowOnError>) => (options.client ?? client).put<EditBatchActionResponses, unknown, ThrowOnError>({
+    responseType: 'json',
+    security: [{ scheme: 'bearer', type: 'http' }],
+    url: '/admin-api/v1/batch-action',
+    ...options,
+    headers: {
+        'Content-Type': 'application/json',
+        ...options.headers
+    }
+});
+
+export const verifyJwtToken = <ThrowOnError extends boolean = true>(options: Options<VerifyJwtTokenData, ThrowOnError>) => (options.client ?? client).post<VerifyJwtTokenResponses, unknown, ThrowOnError>({
+    responseType: 'json',
+    url: '/oauth/jwttoken/verify',
+    ...options
+});
+
+export const getConnectionConfiguration = <ThrowOnError extends boolean = true>(options?: Options<GetConnectionConfigurationData, ThrowOnError>) => (options?.client ?? client).post<GetConnectionConfigurationResponses, unknown, ThrowOnError>({
+    ...urlSearchParamsBodySerializer,
+    url: '/lms-api/v1/seb_config',
+    ...options,
+    headers: {
+        'Content-Type': 'application/x-www-form-urlencoded',
+        ...options?.headers
+    }
+});
+
+export const getOneTimeLoginToken = <ThrowOnError extends boolean = true>(options?: Options<GetOneTimeLoginTokenData, ThrowOnError>) => (options?.client ?? client).post<GetOneTimeLoginTokenResponses, unknown, ThrowOnError>({
+    ...urlSearchParamsBodySerializer,
+    url: '/lms-api/v1/login_token',
+    ...options,
+    headers: {
+        'Content-Type': 'application/x-www-form-urlencoded',
+        ...options?.headers
+    }
+});
+
+export const deleteExam = <ThrowOnError extends boolean = true>(options?: Options<DeleteExamData, ThrowOnError>) => (options?.client ?? client).delete<DeleteExamResponses, unknown, ThrowOnError>({
+    ...urlSearchParamsBodySerializer,
+    url: '/lms-api/v1/exam',
+    ...options,
+    headers: {
+        'Content-Type': 'application/x-www-form-urlencoded',
+        ...options?.headers
+    }
+});
+
+export const createExam = <ThrowOnError extends boolean = true>(options?: Options<CreateExamData, ThrowOnError>) => (options?.client ?? client).post<CreateExamResponses, unknown, ThrowOnError>({
+    ...urlSearchParamsBodySerializer,
+    url: '/lms-api/v1/exam',
+    ...options,
+    headers: {
+        'Content-Type': 'application/x-www-form-urlencoded',
+        ...options?.headers
+    }
+});
+
+export const ping = <ThrowOnError extends boolean = true>(options?: Options<PingData, ThrowOnError>) => (options?.client ?? client).post<PingResponses, unknown, ThrowOnError>({
+    security: [{ scheme: 'bearer', type: 'http' }],
+    url: '/exam-api/v1/sebping',
+    ...options
+});
+
+export const event = <ThrowOnError extends boolean = true>(options: Options<EventData, ThrowOnError>) => (options.client ?? client).post<EventResponses, unknown, ThrowOnError>({
+    security: [{ scheme: 'bearer', type: 'http' }],
+    url: '/exam-api/v1/seblog',
     ...options,
     headers: {
         'Content-Type': 'application/json',
@@ -87,7 +1588,8 @@ export const changeUserAccountPassword = <ThrowOnError extends boolean = true>(o
 export const deactivateUserAccount = <ThrowOnError extends boolean = true>(options: Options<DeactivateUserAccountData, ThrowOnError>) => (options.client ?? client).post<DeactivateUserAccountResponses, unknown, ThrowOnError>({
     ...urlSearchParamsBodySerializer,
     responseType: 'json',
-    url: '/useraccount/{modelId}/inactive',
+    security: [{ scheme: 'bearer', type: 'http' }],
+    url: '/admin-api/v1/useraccount/{modelId}/inactive',
     ...options,
     headers: {
         'Content-Type': 'application/x-www-form-urlencoded',
@@ -101,7 +1603,8 @@ export const deactivateUserAccount = <ThrowOnError extends boolean = true>(optio
 export const activateUserAccount = <ThrowOnError extends boolean = true>(options: Options<ActivateUserAccountData, ThrowOnError>) => (options.client ?? client).post<ActivateUserAccountResponses, unknown, ThrowOnError>({
     ...urlSearchParamsBodySerializer,
     responseType: 'json',
-    url: '/useraccount/{modelId}/active',
+    security: [{ scheme: 'bearer', type: 'http' }],
+    url: '/admin-api/v1/useraccount/{modelId}/active',
     ...options,
     headers: {
         'Content-Type': 'application/x-www-form-urlencoded',
@@ -114,7 +1617,68 @@ export const activateUserAccount = <ThrowOnError extends boolean = true>(options
  *
  * Attempts to revoke the current bearer token and records a logout activity.
  */
-export const logUserAccountLogout = <ThrowOnError extends boolean = true>(options?: Options<LogUserAccountLogoutData, ThrowOnError>) => (options?.client ?? client).post<LogUserAccountLogoutResponses, unknown, ThrowOnError>({ url: '/useraccount/logout', ...options });
+export const logUserAccountLogout = <ThrowOnError extends boolean = true>(options?: Options<LogUserAccountLogoutData, ThrowOnError>) => (options?.client ?? client).post<LogUserAccountLogoutResponses, unknown, ThrowOnError>({
+    security: [{ scheme: 'bearer', type: 'http' }],
+    url: '/admin-api/v1/useraccount/logout',
+    ...options
+});
+
+export const getDeletionReport = <ThrowOnError extends boolean = true>(options: Options<GetDeletionReportData, ThrowOnError>) => (options.client ?? client).get<GetDeletionReportResponses, unknown, ThrowOnError>({
+    responseType: 'json',
+    security: [{ scheme: 'bearer', type: 'http' }],
+    url: '/admin-api/v1/session-delete',
+    ...options
+});
+
+export const deleteSessions = <ThrowOnError extends boolean = true>(options: Options<DeleteSessionsData, ThrowOnError>) => (options.client ?? client).post<DeleteSessionsResponses, unknown, ThrowOnError>({
+    responseType: 'json',
+    security: [{ scheme: 'bearer', type: 'http' }],
+    url: '/admin-api/v1/session-delete',
+    ...options
+});
+
+export const getPage1 = <ThrowOnError extends boolean = true>(options: Options<GetPage1Data, ThrowOnError>) => (options.client ?? client).get<GetPage1Responses, unknown, ThrowOnError>({
+    responseType: 'json',
+    security: [{ scheme: 'bearer', type: 'http' }],
+    url: '/admin-api/v1/scheduled-delete',
+    ...options
+});
+
+export const create5 = <ThrowOnError extends boolean = true>(options?: Options<Create5Data, ThrowOnError>) => (options?.client ?? client).post<Create5Responses, unknown, ThrowOnError>({
+    ...urlSearchParamsBodySerializer,
+    responseType: 'json',
+    security: [{ scheme: 'bearer', type: 'http' }],
+    url: '/admin-api/v1/scheduled-delete',
+    ...options,
+    headers: {
+        'Content-Type': 'application/x-www-form-urlencoded',
+        ...options?.headers
+    }
+});
+
+export const unmarkInclude = <ThrowOnError extends boolean = true>(options: Options<UnmarkIncludeData, ThrowOnError>) => (options.client ?? client).post<UnmarkIncludeResponses, unknown, ThrowOnError>({
+    ...urlSearchParamsBodySerializer,
+    responseType: 'json',
+    security: [{ scheme: 'bearer', type: 'http' }],
+    url: '/admin-api/v1/scheduled-delete/unmark-exclude/{modelId}',
+    ...options,
+    headers: {
+        'Content-Type': 'application/x-www-form-urlencoded',
+        ...options.headers
+    }
+});
+
+export const markExclude = <ThrowOnError extends boolean = true>(options: Options<MarkExcludeData, ThrowOnError>) => (options.client ?? client).post<MarkExcludeResponses, unknown, ThrowOnError>({
+    ...urlSearchParamsBodySerializer,
+    responseType: 'json',
+    security: [{ scheme: 'bearer', type: 'http' }],
+    url: '/admin-api/v1/scheduled-delete/mark-exclude/{modelId}',
+    ...options,
+    headers: {
+        'Content-Type': 'application/x-www-form-urlencoded',
+        ...options.headers
+    }
+});
 
 /**
  * Register a user account
@@ -124,12 +1688,624 @@ export const logUserAccountLogout = <ThrowOnError extends boolean = true>(option
 export const registerUserAccount = <ThrowOnError extends boolean = true>(options: Options<RegisterUserAccountData, ThrowOnError>) => (options.client ?? client).post<RegisterUserAccountResponses, unknown, ThrowOnError>({
     ...urlSearchParamsBodySerializer,
     responseType: 'json',
-    url: '/register',
+    url: '/admin-api/v1/register',
     ...options,
     headers: {
         'Content-Type': 'application/x-www-form-urlencoded',
         ...options.headers
     }
+});
+
+export const getMonitoringStaticClientData = <ThrowOnError extends boolean = true>(options: Options<GetMonitoringStaticClientDataData, ThrowOnError>) => (options.client ?? client).post<GetMonitoringStaticClientDataResponses, unknown, ThrowOnError>({
+    ...urlSearchParamsBodySerializer,
+    responseType: 'json',
+    security: [{ scheme: 'bearer', type: 'http' }],
+    url: '/admin-api/v1/monitoring/{parentModelId}/static-client-data',
+    ...options,
+    headers: {
+        'Content-Type': 'application/x-www-form-urlencoded',
+        ...options.headers
+    }
+});
+
+export const quitAllActiveSebClients = <ThrowOnError extends boolean = true>(options: Options<QuitAllActiveSebClientsData, ThrowOnError>) => (options.client ?? client).post<QuitAllActiveSebClientsResponses, unknown, ThrowOnError>({
+    security: [{ scheme: 'bearer', type: 'http' }],
+    url: '/admin-api/v1/monitoring/{parentModelId}/quitAll',
+    ...options
+});
+
+export const confirmNotification = <ThrowOnError extends boolean = true>(options: Options<ConfirmNotificationData, ThrowOnError>) => (options.client ?? client).post<ConfirmNotificationResponses, unknown, ThrowOnError>({
+    security: [{ scheme: 'bearer', type: 'http' }],
+    url: '/admin-api/v1/monitoring/{parentModelId}/notification/{modelId}/{SEBConnectionToken}',
+    ...options
+});
+
+export const registerInstruction = <ThrowOnError extends boolean = true>(options: Options<RegisterInstructionData, ThrowOnError>) => (options.client ?? client).post<RegisterInstructionResponses, unknown, ThrowOnError>({
+    security: [{ scheme: 'bearer', type: 'http' }],
+    url: '/admin-api/v1/monitoring/{parentModelId}/instruction',
+    ...options,
+    headers: {
+        'Content-Type': 'application/json',
+        ...options.headers
+    }
+});
+
+export const disableConnection = <ThrowOnError extends boolean = true>(options: Options<DisableConnectionData, ThrowOnError>) => (options.client ?? client).post<DisableConnectionResponses, unknown, ThrowOnError>({
+    ...urlSearchParamsBodySerializer,
+    security: [{ scheme: 'bearer', type: 'http' }],
+    url: '/admin-api/v1/monitoring/{parentModelId}/disable-connection',
+    ...options,
+    headers: {
+        'Content-Type': 'application/x-www-form-urlencoded',
+        ...options.headers
+    }
+});
+
+export const toggleTestRunForExam = <ThrowOnError extends boolean = true>(options: Options<ToggleTestRunForExamData, ThrowOnError>) => (options.client ?? client).post<ToggleTestRunForExamResponses, unknown, ThrowOnError>({
+    responseType: 'json',
+    security: [{ scheme: 'bearer', type: 'http' }],
+    url: '/admin-api/v1/monitoring/testrun/{modelId}',
+    ...options
+});
+
+export const activateTownhall = <ThrowOnError extends boolean = true>(options: Options<ActivateTownhallData, ThrowOnError>) => (options.client ?? client).post<ActivateTownhallResponses, unknown, ThrowOnError>({
+    responseType: 'json',
+    security: [{ scheme: 'bearer', type: 'http' }],
+    url: '/admin-api/v1/monitoring/proctoring/{modelId}activate-towhall-room',
+    ...options
+});
+
+export const sendReconfigurationAttributes = <ThrowOnError extends boolean = true>(options: Options<SendReconfigurationAttributesData, ThrowOnError>) => (options.client ?? client).post<SendReconfigurationAttributesResponses, unknown, ThrowOnError>({
+    security: [{ scheme: 'bearer', type: 'http' }],
+    url: '/admin-api/v1/monitoring/proctoring/{modelId}/reconfiguration-attributes',
+    ...options
+});
+
+export const openBreakOutRoom = <ThrowOnError extends boolean = true>(options: Options<OpenBreakOutRoomData, ThrowOnError>) => (options.client ?? client).post<OpenBreakOutRoomResponses, unknown, ThrowOnError>({
+    responseType: 'json',
+    security: [{ scheme: 'bearer', type: 'http' }],
+    url: '/admin-api/v1/monitoring/proctoring/{modelId}/open',
+    ...options
+});
+
+export const notifyProctoringRoomOpened = <ThrowOnError extends boolean = true>(options: Options<NotifyProctoringRoomOpenedData, ThrowOnError>) => (options.client ?? client).post<NotifyProctoringRoomOpenedResponses, unknown, ThrowOnError>({
+    ...urlSearchParamsBodySerializer,
+    security: [{ scheme: 'bearer', type: 'http' }],
+    url: '/admin-api/v1/monitoring/proctoring/{modelId}/notify-open-room',
+    ...options,
+    headers: {
+        'Content-Type': 'application/x-www-form-urlencoded',
+        ...options.headers
+    }
+});
+
+export const closeProctoringRoom = <ThrowOnError extends boolean = true>(options: Options<CloseProctoringRoomData, ThrowOnError>) => (options.client ?? client).post<CloseProctoringRoomResponses, unknown, ThrowOnError>({
+    security: [{ scheme: 'bearer', type: 'http' }],
+    url: '/admin-api/v1/monitoring/proctoring/{modelId}/close',
+    ...options
+});
+
+/**
+ * Dectivate a single entity by its modelId.
+ */
+export const deactivateLmsSetup = <ThrowOnError extends boolean = true>(options: Options<DeactivateLmsSetupData, ThrowOnError>) => (options.client ?? client).post<DeactivateLmsSetupResponses, unknown, ThrowOnError>({
+    ...urlSearchParamsBodySerializer,
+    responseType: 'json',
+    security: [{ scheme: 'bearer', type: 'http' }],
+    url: '/admin-api/v1/lms-setup/{modelId}/inactive',
+    ...options,
+    headers: {
+        'Content-Type': 'application/x-www-form-urlencoded',
+        ...options.headers
+    }
+});
+
+/**
+ * Activate a single entity by its modelId.
+ */
+export const activateLmsSetup = <ThrowOnError extends boolean = true>(options: Options<ActivateLmsSetupData, ThrowOnError>) => (options.client ?? client).post<ActivateLmsSetupResponses, unknown, ThrowOnError>({
+    ...urlSearchParamsBodySerializer,
+    responseType: 'json',
+    security: [{ scheme: 'bearer', type: 'http' }],
+    url: '/admin-api/v1/lms-setup/{modelId}/active',
+    ...options,
+    headers: {
+        'Content-Type': 'application/x-www-form-urlencoded',
+        ...options.headers
+    }
+});
+
+/**
+ * Dectivate a single entity by its modelId.
+ */
+export const deactivateInstitution = <ThrowOnError extends boolean = true>(options: Options<DeactivateInstitutionData, ThrowOnError>) => (options.client ?? client).post<DeactivateInstitutionResponses, unknown, ThrowOnError>({
+    ...urlSearchParamsBodySerializer,
+    responseType: 'json',
+    security: [{ scheme: 'bearer', type: 'http' }],
+    url: '/admin-api/v1/institution/{modelId}/inactive',
+    ...options,
+    headers: {
+        'Content-Type': 'application/x-www-form-urlencoded',
+        ...options.headers
+    }
+});
+
+/**
+ * Activate a single entity by its modelId.
+ */
+export const activateInstitution = <ThrowOnError extends boolean = true>(options: Options<ActivateInstitutionData, ThrowOnError>) => (options.client ?? client).post<ActivateInstitutionResponses, unknown, ThrowOnError>({
+    ...urlSearchParamsBodySerializer,
+    responseType: 'json',
+    security: [{ scheme: 'bearer', type: 'http' }],
+    url: '/admin-api/v1/institution/{modelId}/active',
+    ...options,
+    headers: {
+        'Content-Type': 'application/x-www-form-urlencoded',
+        ...options.headers
+    }
+});
+
+export const getAppSignatureKeyInfo = <ThrowOnError extends boolean = true>(options: Options<GetAppSignatureKeyInfoData, ThrowOnError>) => (options.client ?? client).get<GetAppSignatureKeyInfoResponses, unknown, ThrowOnError>({
+    responseType: 'json',
+    security: [{ scheme: 'bearer', type: 'http' }],
+    url: '/admin-api/v1/exam/{parentModelId}/sebkeyinfo',
+    ...options
+});
+
+export const saveAppSignatureKeySettings = <ThrowOnError extends boolean = true>(options: Options<SaveAppSignatureKeySettingsData, ThrowOnError>) => (options.client ?? client).post<SaveAppSignatureKeySettingsResponses, unknown, ThrowOnError>({
+    ...urlSearchParamsBodySerializer,
+    security: [{ scheme: 'bearer', type: 'http' }],
+    url: '/admin-api/v1/exam/{parentModelId}/sebkeyinfo',
+    ...options,
+    headers: {
+        'Content-Type': 'application/x-www-form-urlencoded',
+        ...options.headers
+    }
+});
+
+export const deleteSecurityGrant = <ThrowOnError extends boolean = true>(options: Options<DeleteSecurityGrantData, ThrowOnError>) => (options.client ?? client).delete<DeleteSecurityGrantResponses, unknown, ThrowOnError>({
+    responseType: 'json',
+    security: [{ scheme: 'bearer', type: 'http' }],
+    url: '/admin-api/v1/exam/{parentModelId}/grant/{modelId}',
+    ...options
+});
+
+export const grantAppSignatureKey = <ThrowOnError extends boolean = true>(options: Options<GrantAppSignatureKeyData, ThrowOnError>) => (options.client ?? client).post<GrantAppSignatureKeyResponses, unknown, ThrowOnError>({
+    ...urlSearchParamsBodySerializer,
+    responseType: 'json',
+    security: [{ scheme: 'bearer', type: 'http' }],
+    url: '/admin-api/v1/exam/{parentModelId}/grant/{modelId}',
+    ...options,
+    headers: {
+        'Content-Type': 'application/x-www-form-urlencoded',
+        ...options.headers
+    }
+});
+
+export const getScreenProctoringSettings = <ThrowOnError extends boolean = true>(options: Options<GetScreenProctoringSettingsData, ThrowOnError>) => (options.client ?? client).get<GetScreenProctoringSettingsResponses, unknown, ThrowOnError>({
+    responseType: 'json',
+    security: [{ scheme: 'bearer', type: 'http' }],
+    url: '/admin-api/v1/exam/{modelId}/screen-proctoring',
+    ...options
+});
+
+export const saveScreenProctoringSettings = <ThrowOnError extends boolean = true>(options: Options<SaveScreenProctoringSettingsData, ThrowOnError>) => (options.client ?? client).post<SaveScreenProctoringSettingsResponses, unknown, ThrowOnError>({
+    responseType: 'json',
+    security: [{ scheme: 'bearer', type: 'http' }],
+    url: '/admin-api/v1/exam/{modelId}/screen-proctoring',
+    ...options,
+    headers: {
+        'Content-Type': 'application/json',
+        ...options.headers
+    }
+});
+
+export const screenProctoringGroupApply = <ThrowOnError extends boolean = true>(options: Options<ScreenProctoringGroupApplyData, ThrowOnError>) => (options.client ?? client).post<ScreenProctoringGroupApplyResponses, unknown, ThrowOnError>({
+    responseType: 'json',
+    security: [{ scheme: 'bearer', type: 'http' }],
+    url: '/admin-api/v1/exam/{modelId}/screen-proctoring/apply-groups',
+    ...options
+});
+
+export const screenProctoringActivation = <ThrowOnError extends boolean = true>(options: Options<ScreenProctoringActivationData, ThrowOnError>) => (options.client ?? client).post<ScreenProctoringActivationResponses, unknown, ThrowOnError>({
+    responseType: 'json',
+    security: [{ scheme: 'bearer', type: 'http' }],
+    url: '/admin-api/v1/exam/{modelId}/screen-proctoring/activation',
+    ...options
+});
+
+export const getProctoringServiceSettings = <ThrowOnError extends boolean = true>(options: Options<GetProctoringServiceSettingsData, ThrowOnError>) => (options.client ?? client).get<GetProctoringServiceSettingsResponses, unknown, ThrowOnError>({
+    responseType: 'json',
+    security: [{ scheme: 'bearer', type: 'http' }],
+    url: '/admin-api/v1/exam/{modelId}/proctoring',
+    ...options
+});
+
+export const saveProctoringServiceSettings = <ThrowOnError extends boolean = true>(options: Options<SaveProctoringServiceSettingsData, ThrowOnError>) => (options.client ?? client).post<SaveProctoringServiceSettingsResponses, unknown, ThrowOnError>({
+    responseType: 'json',
+    security: [{ scheme: 'bearer', type: 'http' }],
+    url: '/admin-api/v1/exam/{modelId}/proctoring',
+    ...options,
+    headers: {
+        'Content-Type': 'application/json',
+        ...options.headers
+    }
+});
+
+export const getSebSettings = <ThrowOnError extends boolean = true>(options: Options<GetSebSettingsData, ThrowOnError>) => (options.client ?? client).get<GetSebSettingsResponses, unknown, ThrowOnError>({
+    responseType: 'json',
+    security: [{ scheme: 'bearer', type: 'http' }],
+    url: '/admin-api/v1/exam/seb-settings/{modelId}',
+    ...options
+});
+
+export const saveSingleValue = <ThrowOnError extends boolean = true>(options: Options<SaveSingleValueData, ThrowOnError>) => (options.client ?? client).post<SaveSingleValueResponses, unknown, ThrowOnError>({
+    ...urlSearchParamsBodySerializer,
+    responseType: 'json',
+    security: [{ scheme: 'bearer', type: 'http' }],
+    url: '/admin-api/v1/exam/seb-settings/{modelId}',
+    ...options,
+    headers: {
+        'Content-Type': 'application/x-www-form-urlencoded',
+        ...options.headers
+    }
+});
+
+export const undoChanges = <ThrowOnError extends boolean = true>(options: Options<UndoChangesData, ThrowOnError>) => (options.client ?? client).post<UndoChangesResponses, unknown, ThrowOnError>({
+    responseType: 'json',
+    security: [{ scheme: 'bearer', type: 'http' }],
+    url: '/admin-api/v1/exam/seb-settings/{modelId}/undo-changes',
+    ...options
+});
+
+export const deleteTableRow = <ThrowOnError extends boolean = true>(options: Options<DeleteTableRowData, ThrowOnError>) => (options.client ?? client).delete<DeleteTableRowResponses, unknown, ThrowOnError>({
+    responseType: 'json',
+    security: [{ scheme: 'bearer', type: 'http' }],
+    url: '/admin-api/v1/exam/seb-settings/{modelId}/table/row',
+    ...options
+});
+
+export const addNewTableRow = <ThrowOnError extends boolean = true>(options: Options<AddNewTableRowData, ThrowOnError>) => (options.client ?? client).post<AddNewTableRowResponses, unknown, ThrowOnError>({
+    ...urlSearchParamsBodySerializer,
+    responseType: 'json',
+    security: [{ scheme: 'bearer', type: 'http' }],
+    url: '/admin-api/v1/exam/seb-settings/{modelId}/table/row',
+    ...options,
+    headers: {
+        'Content-Type': 'application/x-www-form-urlencoded',
+        ...options.headers
+    }
+});
+
+export const publish = <ThrowOnError extends boolean = true>(options: Options<PublishData, ThrowOnError>) => (options.client ?? client).post<PublishResponses, unknown, ThrowOnError>({
+    responseType: 'json',
+    security: [{ scheme: 'bearer', type: 'http' }],
+    url: '/admin-api/v1/exam/seb-settings/{modelId}/publish',
+    ...options
+});
+
+export const getScreenProctoringSettings1 = <ThrowOnError extends boolean = true>(options: Options<GetScreenProctoringSettings1Data, ThrowOnError>) => (options.client ?? client).get<GetScreenProctoringSettings1Responses, unknown, ThrowOnError>({
+    responseType: 'json',
+    security: [{ scheme: 'bearer', type: 'http' }],
+    url: '/admin-api/v1/exam-template/{modelId}/screen-proctoring',
+    ...options
+});
+
+export const saveScreenProctoringSettings1 = <ThrowOnError extends boolean = true>(options: Options<SaveScreenProctoringSettings1Data, ThrowOnError>) => (options.client ?? client).post<SaveScreenProctoringSettings1Responses, unknown, ThrowOnError>({
+    responseType: 'json',
+    security: [{ scheme: 'bearer', type: 'http' }],
+    url: '/admin-api/v1/exam-template/{modelId}/screen-proctoring',
+    ...options,
+    headers: {
+        'Content-Type': 'application/json',
+        ...options.headers
+    }
+});
+
+export const copyExamTemplate = <ThrowOnError extends boolean = true>(options: Options<CopyExamTemplateData, ThrowOnError>) => (options.client ?? client).post<CopyExamTemplateResponses, unknown, ThrowOnError>({
+    responseType: 'json',
+    security: [{ scheme: 'bearer', type: 'http' }],
+    url: '/admin-api/v1/exam-template/{modelId}/copy',
+    ...options
+});
+
+export const createExamTemplate1 = <ThrowOnError extends boolean = true>(options: Options<CreateExamTemplate1Data, ThrowOnError>) => (options.client ?? client).post<CreateExamTemplate1Responses, unknown, ThrowOnError>({
+    responseType: 'json',
+    security: [{ scheme: 'bearer', type: 'http' }],
+    url: '/admin-api/v1/exam-template/create',
+    ...options,
+    headers: {
+        'Content-Type': 'application/json',
+        ...options.headers
+    }
+});
+
+export const createTemporaryConfigurationTemplate = <ThrowOnError extends boolean = true>(options?: Options<CreateTemporaryConfigurationTemplateData, ThrowOnError>) => (options?.client ?? client).post<CreateTemporaryConfigurationTemplateResponses, unknown, ThrowOnError>({
+    responseType: 'json',
+    security: [{ scheme: 'bearer', type: 'http' }],
+    url: '/admin-api/v1/exam-template/create-config-template',
+    ...options
+});
+
+export const undo = <ThrowOnError extends boolean = true>(options: Options<UndoData, ThrowOnError>) => (options.client ?? client).post<UndoResponses, unknown, ThrowOnError>({
+    responseType: 'json',
+    security: [{ scheme: 'bearer', type: 'http' }],
+    url: '/admin-api/v1/configuration/undo/{modelId}',
+    ...options
+});
+
+export const saveToHistory = <ThrowOnError extends boolean = true>(options: Options<SaveToHistoryData, ThrowOnError>) => (options.client ?? client).post<SaveToHistoryResponses, unknown, ThrowOnError>({
+    responseType: 'json',
+    security: [{ scheme: 'bearer', type: 'http' }],
+    url: '/admin-api/v1/configuration/save-to-history/{modelId}',
+    ...options
+});
+
+export const restoreFormHistory = <ThrowOnError extends boolean = true>(options: Options<RestoreFormHistoryData, ThrowOnError>) => (options.client ?? client).post<RestoreFormHistoryResponses, unknown, ThrowOnError>({
+    responseType: 'json',
+    security: [{ scheme: 'bearer', type: 'http' }],
+    url: '/admin-api/v1/configuration/restore/{modelId}',
+    ...options
+});
+
+export const setQuitPassword = <ThrowOnError extends boolean = true>(options: Options<SetQuitPasswordData, ThrowOnError>) => (options.client ?? client).post<SetQuitPasswordResponses, unknown, ThrowOnError>({
+    ...urlSearchParamsBodySerializer,
+    responseType: 'json',
+    security: [{ scheme: 'bearer', type: 'http' }],
+    url: '/admin-api/v1/configuration-node/{modelId}/quitpwd',
+    ...options,
+    headers: {
+        'Content-Type': 'application/x-www-form-urlencoded',
+        ...options.headers
+    }
+});
+
+export const importExamConfigOnExistingConfig = <ThrowOnError extends boolean = true>(options: Options<ImportExamConfigOnExistingConfigData, ThrowOnError>) => (options.client ?? client).post<ImportExamConfigOnExistingConfigResponses, unknown, ThrowOnError>({
+    responseType: 'json',
+    security: [{ scheme: 'bearer', type: 'http' }],
+    url: '/admin-api/v1/configuration-node/{modelId}/import',
+    ...options
+});
+
+/**
+ * @deprecated
+ */
+export const importExamConfig = <ThrowOnError extends boolean = true>(options?: Options<ImportExamConfigData, ThrowOnError>) => (options?.client ?? client).post<ImportExamConfigResponses, unknown, ThrowOnError>({
+    responseType: 'json',
+    security: [{ scheme: 'bearer', type: 'http' }],
+    url: '/admin-api/v1/configuration-node/import',
+    ...options
+});
+
+export const getSebSettings1 = <ThrowOnError extends boolean = true>(options: Options<GetSebSettings1Data, ThrowOnError>) => (options.client ?? client).get<GetSebSettings1Responses, unknown, ThrowOnError>({
+    responseType: 'json',
+    security: [{ scheme: 'bearer', type: 'http' }],
+    url: '/admin-api/v1/config-template/seb-settings/{modelId}',
+    ...options
+});
+
+export const saveSingleValue1 = <ThrowOnError extends boolean = true>(options: Options<SaveSingleValue1Data, ThrowOnError>) => (options.client ?? client).post<SaveSingleValue1Responses, unknown, ThrowOnError>({
+    ...urlSearchParamsBodySerializer,
+    responseType: 'json',
+    security: [{ scheme: 'bearer', type: 'http' }],
+    url: '/admin-api/v1/config-template/seb-settings/{modelId}',
+    ...options,
+    headers: {
+        'Content-Type': 'application/x-www-form-urlencoded',
+        ...options.headers
+    }
+});
+
+export const deleteTableRow1 = <ThrowOnError extends boolean = true>(options: Options<DeleteTableRow1Data, ThrowOnError>) => (options.client ?? client).delete<DeleteTableRow1Responses, unknown, ThrowOnError>({
+    responseType: 'json',
+    security: [{ scheme: 'bearer', type: 'http' }],
+    url: '/admin-api/v1/config-template/seb-settings/{modelId}/table/row',
+    ...options
+});
+
+export const addNewTableRow1 = <ThrowOnError extends boolean = true>(options: Options<AddNewTableRow1Data, ThrowOnError>) => (options.client ?? client).post<AddNewTableRow1Responses, unknown, ThrowOnError>({
+    ...urlSearchParamsBodySerializer,
+    responseType: 'json',
+    security: [{ scheme: 'bearer', type: 'http' }],
+    url: '/admin-api/v1/config-template/seb-settings/{modelId}/table/row',
+    ...options,
+    headers: {
+        'Content-Type': 'application/x-www-form-urlencoded',
+        ...options.headers
+    }
+});
+
+/**
+ * Dectivate a single entity by its modelId.
+ */
+export const deactivateSebClientConfig = <ThrowOnError extends boolean = true>(options: Options<DeactivateSebClientConfigData, ThrowOnError>) => (options.client ?? client).post<DeactivateSebClientConfigResponses, unknown, ThrowOnError>({
+    ...urlSearchParamsBodySerializer,
+    responseType: 'json',
+    security: [{ scheme: 'bearer', type: 'http' }],
+    url: '/admin-api/v1/client_configuration/{modelId}/inactive',
+    ...options,
+    headers: {
+        'Content-Type': 'application/x-www-form-urlencoded',
+        ...options.headers
+    }
+});
+
+/**
+ * Activate a single entity by its modelId.
+ */
+export const activateSebClientConfig = <ThrowOnError extends boolean = true>(options: Options<ActivateSebClientConfigData, ThrowOnError>) => (options.client ?? client).post<ActivateSebClientConfigResponses, unknown, ThrowOnError>({
+    ...urlSearchParamsBodySerializer,
+    responseType: 'json',
+    security: [{ scheme: 'bearer', type: 'http' }],
+    url: '/admin-api/v1/client_configuration/{modelId}/active',
+    ...options,
+    headers: {
+        'Content-Type': 'application/x-www-form-urlencoded',
+        ...options.headers
+    }
+});
+
+export const deleteCertificate = <ThrowOnError extends boolean = true>(options?: Options<DeleteCertificateData, ThrowOnError>) => (options?.client ?? client).delete<DeleteCertificateResponses, unknown, ThrowOnError>({
+    ...urlSearchParamsBodySerializer,
+    responseType: 'json',
+    security: [{ scheme: 'bearer', type: 'http' }],
+    url: '/admin-api/v1/certificate',
+    ...options,
+    headers: {
+        'Content-Type': 'application/x-www-form-urlencoded',
+        ...options?.headers
+    }
+});
+
+export const getPage2 = <ThrowOnError extends boolean = true>(options: Options<GetPage2Data, ThrowOnError>) => (options.client ?? client).get<GetPage2Responses, unknown, ThrowOnError>({
+    responseType: 'json',
+    security: [{ scheme: 'bearer', type: 'http' }],
+    url: '/admin-api/v1/certificate',
+    ...options
+});
+
+export const importCertificate = <ThrowOnError extends boolean = true>(options: Options<ImportCertificateData, ThrowOnError>) => (options.client ?? client).post<ImportCertificateResponses, unknown, ThrowOnError>({
+    responseType: 'json',
+    security: [{ scheme: 'bearer', type: 'http' }],
+    url: '/admin-api/v1/certificate',
+    ...options
+});
+
+export const archive = <ThrowOnError extends boolean = true>(options: Options<ArchiveData, ThrowOnError>) => (options.client ?? client).patch<ArchiveResponses, unknown, ThrowOnError>({
+    responseType: 'json',
+    security: [{ scheme: 'bearer', type: 'http' }],
+    url: '/admin-api/v1/exam/{modelId}/archive',
+    ...options
+});
+
+export const resetTemplateAttributeValues = <ThrowOnError extends boolean = true>(options: Options<ResetTemplateAttributeValuesData, ThrowOnError>) => (options.client ?? client).patch<ResetTemplateAttributeValuesResponses, unknown, ThrowOnError>({
+    ...urlSearchParamsBodySerializer,
+    responseType: 'json',
+    security: [{ scheme: 'bearer', type: 'http' }],
+    url: '/admin-api/v1/configuration-node/{parentModelId}/template-attribute/{modelId}/reset',
+    ...options,
+    headers: {
+        'Content-Type': 'application/x-www-form-urlencoded',
+        ...options.headers
+    }
+});
+
+export const removeTemplateAttributeOrientation = <ThrowOnError extends boolean = true>(options: Options<RemoveTemplateAttributeOrientationData, ThrowOnError>) => (options.client ?? client).patch<RemoveTemplateAttributeOrientationResponses, unknown, ThrowOnError>({
+    ...urlSearchParamsBodySerializer,
+    responseType: 'json',
+    security: [{ scheme: 'bearer', type: 'http' }],
+    url: '/admin-api/v1/configuration-node/{parentModelId}/template-attribute/{modelId}/remove-orientation',
+    ...options,
+    headers: {
+        'Content-Type': 'application/x-www-form-urlencoded',
+        ...options.headers
+    }
+});
+
+/**
+ * @deprecated
+ */
+export const attachDefaultTemplateAttributeOrientation = <ThrowOnError extends boolean = true>(options: Options<AttachDefaultTemplateAttributeOrientationData, ThrowOnError>) => (options.client ?? client).patch<AttachDefaultTemplateAttributeOrientationResponses, unknown, ThrowOnError>({
+    ...urlSearchParamsBodySerializer,
+    responseType: 'json',
+    security: [{ scheme: 'bearer', type: 'http' }],
+    url: '/admin-api/v1/configuration-node/{parentModelId}/template-attribute/{modelId}/attach-default-orientation',
+    ...options,
+    headers: {
+        'Content-Type': 'application/x-www-form-urlencoded',
+        ...options.headers
+    }
+});
+
+export const resetToTemplateValues = <ThrowOnError extends boolean = true>(options: Options<ResetToTemplateValuesData, ThrowOnError>) => (options.client ?? client).patch<ResetToTemplateValuesResponses, unknown, ThrowOnError>({
+    responseType: 'json',
+    security: [{ scheme: 'bearer', type: 'http' }],
+    url: '/admin-api/v1/configuration-node/{modelId}/reset-to-template',
+    ...options
+});
+
+export const getConfig = <ThrowOnError extends boolean = true>(options: Options<GetConfigData, ThrowOnError>) => (options.client ?? client).get<GetConfigResponses, unknown, ThrowOnError>({
+    security: [{ scheme: 'bearer', type: 'http' }],
+    url: '/exam-api/v1/examconfig',
+    ...options
+});
+
+export const getDiscovery = <ThrowOnError extends boolean = true>(options?: Options<GetDiscoveryData, ThrowOnError>) => (options?.client ?? client).get<GetDiscoveryResponses, unknown, ThrowOnError>({
+    responseType: 'json',
+    url: '/exam-api/discovery',
+    ...options
+});
+
+/**
+ * Deletes a single entity (and all its dependencies) by its modelId.
+ *
+ * To check or report what dependent object also would be deleted for a certain entity object, please use the dependency endpoint to get a report of all dependent entity objects.
+ */
+export const hardDelete = <ThrowOnError extends boolean = true>(options: Options<HardDeleteData, ThrowOnError>) => (options.client ?? client).delete<HardDeleteResponses, unknown, ThrowOnError>({
+    ...urlSearchParamsBodySerializer,
+    responseType: 'json',
+    security: [{ scheme: 'bearer', type: 'http' }],
+    url: '/admin-api/v1/useractivity/{modelId}',
+    ...options,
+    headers: {
+        'Content-Type': 'application/x-www-form-urlencoded',
+        ...options.headers
+    }
+});
+
+/**
+ * Get a single entity by its modelId.
+ */
+export const getUserActivityLogById = <ThrowOnError extends boolean = true>(options: Options<GetUserActivityLogByIdData, ThrowOnError>) => (options.client ?? client).get<GetUserActivityLogByIdResponses, unknown, ThrowOnError>({
+    ...urlSearchParamsBodySerializer,
+    responseType: 'json',
+    security: [{ scheme: 'bearer', type: 'http' }],
+    url: '/admin-api/v1/useractivity/{modelId}',
+    ...options,
+    headers: {
+        'Content-Type': 'application/x-www-form-urlencoded',
+        ...options.headers
+    }
+});
+
+/**
+ * Get a list of dependency keys of all dependent entity objects for a specified source entity and bulk action.
+ *
+ * Get a list of dependency keys of all dependent entity objects for a specified source entity and bulk action.
+ * This can be used to verify depended objects for a certain bulk action to give a report of affected objects beforehand.
+ * For example for a delete action of a certain object, this gives all objects that will also be deleted within the deletion of the source object
+ */
+export const getUserActivityLogDependencies = <ThrowOnError extends boolean = true>(options: Options<GetUserActivityLogDependenciesData, ThrowOnError>) => (options.client ?? client).get<GetUserActivityLogDependenciesResponses, unknown, ThrowOnError>({
+    responseType: 'json',
+    security: [{ scheme: 'bearer', type: 'http' }],
+    url: '/admin-api/v1/useractivity/{modelId}/dependency',
+    ...options
+});
+
+/**
+ * Get a filtered list of specific entity name keys.
+ *
+ * An entity name key is a minimal entity data object with the entity-type, modelId and the name of the entity.</p>
+ * Filter: The filter attributes accepted by this API depend on the actual entity model (domain object)
+ * and are of the form [domain-attribute-name]=[filter-value]. E.g.: name=abc or type=EXAM. Usually
+ * filter attributes of text type are treated as SQL wildcard with %[text]% to filter all text containing
+ * a given text-snippet.
+ */
+export const getUserActivityLogNames = <ThrowOnError extends boolean = true>(options?: Options<GetUserActivityLogNamesData, ThrowOnError>) => (options?.client ?? client).get<GetUserActivityLogNamesResponses, unknown, ThrowOnError>({
+    responseType: 'json',
+    security: [{ scheme: 'bearer', type: 'http' }],
+    url: '/admin-api/v1/useractivity/names',
+    ...options
+});
+
+/**
+ * Get a list of entity objects by a given list of model identifiers of entities.
+ */
+export const getUserActivityLogsByIds = <ThrowOnError extends boolean = true>(options: Options<GetUserActivityLogsByIdsData, ThrowOnError>) => (options.client ?? client).get<GetUserActivityLogsByIdsResponses, unknown, ThrowOnError>({
+    responseType: 'json',
+    security: [{ scheme: 'bearer', type: 'http' }],
+    url: '/admin-api/v1/useractivity/list',
+    ...options
 });
 
 /**
@@ -140,7 +2316,8 @@ export const registerUserAccount = <ThrowOnError extends boolean = true>(options
 export const deleteUserAccount = <ThrowOnError extends boolean = true>(options: Options<DeleteUserAccountData, ThrowOnError>) => (options.client ?? client).delete<DeleteUserAccountResponses, unknown, ThrowOnError>({
     ...urlSearchParamsBodySerializer,
     responseType: 'json',
-    url: '/useraccount/{modelId}',
+    security: [{ scheme: 'bearer', type: 'http' }],
+    url: '/admin-api/v1/useraccount/{modelId}',
     ...options,
     headers: {
         'Content-Type': 'application/x-www-form-urlencoded',
@@ -154,7 +2331,8 @@ export const deleteUserAccount = <ThrowOnError extends boolean = true>(options: 
 export const getUserAccountById = <ThrowOnError extends boolean = true>(options: Options<GetUserAccountByIdData, ThrowOnError>) => (options.client ?? client).get<GetUserAccountByIdResponses, unknown, ThrowOnError>({
     ...urlSearchParamsBodySerializer,
     responseType: 'json',
-    url: '/useraccount/{modelId}',
+    security: [{ scheme: 'bearer', type: 'http' }],
+    url: '/admin-api/v1/useraccount/{modelId}',
     ...options,
     headers: {
         'Content-Type': 'application/x-www-form-urlencoded',
@@ -163,13 +2341,44 @@ export const getUserAccountById = <ThrowOnError extends boolean = true>(options:
 });
 
 /**
+ * Get a list of dependency keys of all dependent entity objects for a specified source entity and bulk action.
+ *
+ * Get a list of dependency keys of all dependent entity objects for a specified source entity and bulk action.
+ * This can be used to verify depended objects for a certain bulk action to give a report of affected objects beforehand.
+ * For example for a delete action of a certain object, this gives all objects that will also be deleted within the deletion of the source object
+ */
+export const getUserAccountDependencies = <ThrowOnError extends boolean = true>(options: Options<GetUserAccountDependenciesData, ThrowOnError>) => (options.client ?? client).get<GetUserAccountDependenciesResponses, unknown, ThrowOnError>({
+    responseType: 'json',
+    security: [{ scheme: 'bearer', type: 'http' }],
+    url: '/admin-api/v1/useraccount/{modelId}/dependency',
+    ...options
+});
+
+/**
  * Get active supporter user names
  *
  * Returns active EXAM_SUPPORTER user account names for the given institution.
  */
-export const getSupervisorNames = <ThrowOnError extends boolean = true>(options?: Options<GetSupervisorNamesData, ThrowOnError>) => (options?.client ?? client).get<GetSupervisorNamesResponses, unknown, ThrowOnError>({
+export const getUserAccountSupervisors = <ThrowOnError extends boolean = true>(options?: Options<GetUserAccountSupervisorsData, ThrowOnError>) => (options?.client ?? client).get<GetUserAccountSupervisorsResponses, unknown, ThrowOnError>({
     responseType: 'json',
-    url: '/useraccount/supervisors',
+    security: [{ scheme: 'bearer', type: 'http' }],
+    url: '/admin-api/v1/useraccount/supervisors',
+    ...options
+});
+
+/**
+ * Get a filtered list of specific entity name keys.
+ *
+ * An entity name key is a minimal entity data object with the entity-type, modelId and the name of the entity.</p>
+ * Filter: The filter attributes accepted by this API depend on the actual entity model (domain object)
+ * and are of the form [domain-attribute-name]=[filter-value]. E.g.: name=abc or type=EXAM. Usually
+ * filter attributes of text type are treated as SQL wildcard with %[text]% to filter all text containing
+ * a given text-snippet.
+ */
+export const getUserAccountNames = <ThrowOnError extends boolean = true>(options?: Options<GetUserAccountNamesData, ThrowOnError>) => (options?.client ?? client).get<GetUserAccountNamesResponses, unknown, ThrowOnError>({
+    responseType: 'json',
+    security: [{ scheme: 'bearer', type: 'http' }],
+    url: '/admin-api/v1/useraccount/names',
     ...options
 });
 
@@ -178,6 +2387,2124 @@ export const getSupervisorNames = <ThrowOnError extends boolean = true>(options?
  */
 export const getCurrentUserAccount = <ThrowOnError extends boolean = true>(options?: Options<GetCurrentUserAccountData, ThrowOnError>) => (options?.client ?? client).get<GetCurrentUserAccountResponses, unknown, ThrowOnError>({
     responseType: 'json',
-    url: '/useraccount/me',
+    security: [{ scheme: 'bearer', type: 'http' }],
+    url: '/admin-api/v1/useraccount/me',
     ...options
+});
+
+/**
+ * Get a list of entity objects by a given list of model identifiers of entities.
+ */
+export const getUserAccountsByIds = <ThrowOnError extends boolean = true>(options: Options<GetUserAccountsByIdsData, ThrowOnError>) => (options.client ?? client).get<GetUserAccountsByIdsResponses, unknown, ThrowOnError>({
+    responseType: 'json',
+    security: [{ scheme: 'bearer', type: 'http' }],
+    url: '/admin-api/v1/useraccount/list',
+    ...options
+});
+
+/**
+ * Get a page of all specific domain entity that are currently inactive.
+ *
+ * Sorting: the sort parameter to sort the list of entities before paging
+ * the sort parameter is the name of the entity-model attribute to sort with a leading '-' sign for
+ * descending sort order. Note that not all entity-model attribute are suited for sorting while the most
+ * are.
+ *
+ */
+export const getInactiveUserAccounts = <ThrowOnError extends boolean = true>(options?: Options<GetInactiveUserAccountsData, ThrowOnError>) => (options?.client ?? client).get<GetInactiveUserAccountsResponses, unknown, ThrowOnError>({
+    responseType: 'json',
+    security: [{ scheme: 'bearer', type: 'http' }],
+    url: '/admin-api/v1/useraccount/inactive',
+    ...options
+});
+
+/**
+ * Get a page of all specific domain entity that are currently active.
+ *
+ * Sorting: the sort parameter to sort the list of entities before paging
+ * the sort parameter is the name of the entity-model attribute to sort with a leading '-' sign for
+ * descending sort order. Note that not all entity-model attribute are suited for sorting while the most
+ * are.
+ *
+ */
+export const getActiveUserAccounts = <ThrowOnError extends boolean = true>(options?: Options<GetActiveUserAccountsData, ThrowOnError>) => (options?.client ?? client).get<GetActiveUserAccountsResponses, unknown, ThrowOnError>({
+    responseType: 'json',
+    security: [{ scheme: 'bearer', type: 'http' }],
+    url: '/admin-api/v1/useraccount/active',
+    ...options
+});
+
+export const sebVersionInfoPage = <ThrowOnError extends boolean = true>(options?: Options<SebVersionInfoPageData, ThrowOnError>) => (options?.client ?? client).get<SebVersionInfoPageResponses, unknown, ThrowOnError>({
+    responseType: 'text',
+    url: '/admin-api/v1/seb-version-info',
+    ...options
+});
+
+/**
+ * Deletes a single entity (and all its dependencies) by its modelId.
+ *
+ * To check or report what dependent object also would be deleted for a certain entity object, please use the dependency endpoint to get a report of all dependent entity objects.
+ */
+export const hardDelete1 = <ThrowOnError extends boolean = true>(options: Options<HardDelete1Data, ThrowOnError>) => (options.client ?? client).delete<HardDelete1Responses, unknown, ThrowOnError>({
+    ...urlSearchParamsBodySerializer,
+    responseType: 'json',
+    security: [{ scheme: 'bearer', type: 'http' }],
+    url: '/admin-api/v1/seb-client-event/{modelId}',
+    ...options,
+    headers: {
+        'Content-Type': 'application/x-www-form-urlencoded',
+        ...options.headers
+    }
+});
+
+/**
+ * Get a single entity by its modelId.
+ */
+export const getClientEventById = <ThrowOnError extends boolean = true>(options: Options<GetClientEventByIdData, ThrowOnError>) => (options.client ?? client).get<GetClientEventByIdResponses, unknown, ThrowOnError>({
+    ...urlSearchParamsBodySerializer,
+    responseType: 'json',
+    security: [{ scheme: 'bearer', type: 'http' }],
+    url: '/admin-api/v1/seb-client-event/{modelId}',
+    ...options,
+    headers: {
+        'Content-Type': 'application/x-www-form-urlencoded',
+        ...options.headers
+    }
+});
+
+/**
+ * Get a list of dependency keys of all dependent entity objects for a specified source entity and bulk action.
+ *
+ * Get a list of dependency keys of all dependent entity objects for a specified source entity and bulk action.
+ * This can be used to verify depended objects for a certain bulk action to give a report of affected objects beforehand.
+ * For example for a delete action of a certain object, this gives all objects that will also be deleted within the deletion of the source object
+ */
+export const getDependencies = <ThrowOnError extends boolean = true>(options: Options<GetDependenciesData, ThrowOnError>) => (options.client ?? client).get<GetDependenciesResponses, unknown, ThrowOnError>({
+    responseType: 'json',
+    security: [{ scheme: 'bearer', type: 'http' }],
+    url: '/admin-api/v1/seb-client-event/{modelId}/dependency',
+    ...options
+});
+
+/**
+ * Get a page of ExtendedClientEvent. Sorting and filtering is applied before paging
+ *
+ * Sorting: the sort parameter to sort the list of entities before paging
+ * the sort parameter is the name of the entity-model attribute to sort with a leading '-' sign for
+ * descending sort order. Note that not all entity-model attribute are suited for sorting while the most
+ * are.
+ * </p>
+ * Filter: The filter attributes accepted by this API depend on the actual entity model (domain object)
+ * and are of the form [domain-attribute-name]=[filter-value]. E.g.: name=abc or type=EXAM. Usually
+ * filter attributes of text type are treated as SQL wildcard with %[text]% to filter all text containing
+ * a given text-snippet.
+ */
+export const getExtendedPage = <ThrowOnError extends boolean = true>(options: Options<GetExtendedPageData, ThrowOnError>) => (options.client ?? client).get<GetExtendedPageResponses, unknown, ThrowOnError>({
+    responseType: 'json',
+    security: [{ scheme: 'bearer', type: 'http' }],
+    url: '/admin-api/v1/seb-client-event/search',
+    ...options
+});
+
+/**
+ * Get a filtered list of specific entity name keys.
+ *
+ * An entity name key is a minimal entity data object with the entity-type, modelId and the name of the entity.</p>
+ * Filter: The filter attributes accepted by this API depend on the actual entity model (domain object)
+ * and are of the form [domain-attribute-name]=[filter-value]. E.g.: name=abc or type=EXAM. Usually
+ * filter attributes of text type are treated as SQL wildcard with %[text]% to filter all text containing
+ * a given text-snippet.
+ */
+export const getClientEventNames = <ThrowOnError extends boolean = true>(options?: Options<GetClientEventNamesData, ThrowOnError>) => (options?.client ?? client).get<GetClientEventNamesResponses, unknown, ThrowOnError>({
+    responseType: 'json',
+    security: [{ scheme: 'bearer', type: 'http' }],
+    url: '/admin-api/v1/seb-client-event/names',
+    ...options
+});
+
+/**
+ * Get a list of entity objects by a given list of model identifiers of entities.
+ */
+export const getClientEventsByIds = <ThrowOnError extends boolean = true>(options: Options<GetClientEventsByIdsData, ThrowOnError>) => (options.client ?? client).get<GetClientEventsByIdsResponses, unknown, ThrowOnError>({
+    responseType: 'json',
+    security: [{ scheme: 'bearer', type: 'http' }],
+    url: '/admin-api/v1/seb-client-event/list',
+    ...options
+});
+
+export const exportEvents = <ThrowOnError extends boolean = true>(options: Options<ExportEventsData, ThrowOnError>) => (options.client ?? client).get<ExportEventsResponses, unknown, ThrowOnError>({
+    security: [{ scheme: 'bearer', type: 'http' }],
+    url: '/admin-api/v1/seb-client-event/export',
+    ...options
+});
+
+/**
+ * Deletes a single entity (and all its dependencies) by its modelId.
+ *
+ * To check or report what dependent object also would be deleted for a certain entity object, please use the dependency endpoint to get a report of all dependent entity objects.
+ */
+export const hardDelete2 = <ThrowOnError extends boolean = true>(options: Options<HardDelete2Data, ThrowOnError>) => (options.client ?? client).delete<HardDelete2Responses, unknown, ThrowOnError>({
+    ...urlSearchParamsBodySerializer,
+    responseType: 'json',
+    security: [{ scheme: 'bearer', type: 'http' }],
+    url: '/admin-api/v1/seb-client-connection/{modelId}',
+    ...options,
+    headers: {
+        'Content-Type': 'application/x-www-form-urlencoded',
+        ...options.headers
+    }
+});
+
+/**
+ * Get a single entity by its modelId.
+ */
+export const getClientConnectionById = <ThrowOnError extends boolean = true>(options: Options<GetClientConnectionByIdData, ThrowOnError>) => (options.client ?? client).get<GetClientConnectionByIdResponses, unknown, ThrowOnError>({
+    ...urlSearchParamsBodySerializer,
+    responseType: 'json',
+    security: [{ scheme: 'bearer', type: 'http' }],
+    url: '/admin-api/v1/seb-client-connection/{modelId}',
+    ...options,
+    headers: {
+        'Content-Type': 'application/x-www-form-urlencoded',
+        ...options.headers
+    }
+});
+
+/**
+ * Get a list of dependency keys of all dependent entity objects for a specified source entity and bulk action.
+ *
+ * Get a list of dependency keys of all dependent entity objects for a specified source entity and bulk action.
+ * This can be used to verify depended objects for a certain bulk action to give a report of affected objects beforehand.
+ * For example for a delete action of a certain object, this gives all objects that will also be deleted within the deletion of the source object
+ */
+export const getDependencies1 = <ThrowOnError extends boolean = true>(options: Options<GetDependencies1Data, ThrowOnError>) => (options.client ?? client).get<GetDependencies1Responses, unknown, ThrowOnError>({
+    responseType: 'json',
+    security: [{ scheme: 'bearer', type: 'http' }],
+    url: '/admin-api/v1/seb-client-connection/{modelId}/dependency',
+    ...options
+});
+
+/**
+ * Get a filtered list of specific entity name keys.
+ *
+ * An entity name key is a minimal entity data object with the entity-type, modelId and the name of the entity.</p>
+ * Filter: The filter attributes accepted by this API depend on the actual entity model (domain object)
+ * and are of the form [domain-attribute-name]=[filter-value]. E.g.: name=abc or type=EXAM. Usually
+ * filter attributes of text type are treated as SQL wildcard with %[text]% to filter all text containing
+ * a given text-snippet.
+ */
+export const getClientConnectionNames = <ThrowOnError extends boolean = true>(options?: Options<GetClientConnectionNamesData, ThrowOnError>) => (options?.client ?? client).get<GetClientConnectionNamesResponses, unknown, ThrowOnError>({
+    responseType: 'json',
+    security: [{ scheme: 'bearer', type: 'http' }],
+    url: '/admin-api/v1/seb-client-connection/names',
+    ...options
+});
+
+/**
+ * Get a list of entity objects by a given list of model identifiers of entities.
+ */
+export const getClientConnectionsByIds = <ThrowOnError extends boolean = true>(options: Options<GetClientConnectionsByIdsData, ThrowOnError>) => (options.client ?? client).get<GetClientConnectionsByIdsResponses, unknown, ThrowOnError>({
+    responseType: 'json',
+    security: [{ scheme: 'bearer', type: 'http' }],
+    url: '/admin-api/v1/seb-client-connection/list',
+    ...options
+});
+
+/**
+ * Get a page of ClientConnectionData domain entity. Sorting and filtering is applied before paging
+ *
+ * Sorting: the sort parameter to sort the list of entities before paging
+ * the sort parameter is the name of the entity-model attribute to sort with a leading '-' sign for
+ * descending sort order. Note that not all entity-model attribute are suited for sorting while the most
+ * are.
+ * </p>
+ * Filter: The filter attributes accepted by this API depend on the actual entity model (domain object)
+ * and are of the form [domain-attribute-name]=[filter-value]. E.g.: name=abc or type=EXAM. Usually
+ * filter attributes of text type are treated as SQL wildcard with %[text]% to filter all text containing
+ * a given text-snippet.
+ */
+export const getClientConnectionDataPage = <ThrowOnError extends boolean = true>(options: Options<GetClientConnectionDataPageData, ThrowOnError>) => (options.client ?? client).get<GetClientConnectionDataPageResponses, unknown, ThrowOnError>({
+    ...urlSearchParamsBodySerializer,
+    responseType: 'json',
+    security: [{ scheme: 'bearer', type: 'http' }],
+    url: '/admin-api/v1/seb-client-connection/data',
+    ...options,
+    headers: {
+        'Content-Type': 'application/x-www-form-urlencoded',
+        ...options.headers
+    }
+});
+
+export const getClientConnectionDataBy = <ThrowOnError extends boolean = true>(options: Options<GetClientConnectionDataByData, ThrowOnError>) => (options.client ?? client).get<GetClientConnectionDataByResponses, unknown, ThrowOnError>({
+    responseType: 'json',
+    security: [{ scheme: 'bearer', type: 'http' }],
+    url: '/admin-api/v1/seb-client-connection/data/{modelId}',
+    ...options
+});
+
+export const delete_ = <ThrowOnError extends boolean = true>(options: Options<DeleteData, ThrowOnError>) => (options.client ?? client).delete<DeleteResponses, unknown, ThrowOnError>({
+    responseType: 'json',
+    security: [{ scheme: 'bearer', type: 'http' }],
+    url: '/admin-api/v1/scheduled-delete/{modelId}',
+    ...options
+});
+
+export const getFullReportById = <ThrowOnError extends boolean = true>(options: Options<GetFullReportByIdData, ThrowOnError>) => (options.client ?? client).get<GetFullReportByIdResponses, unknown, ThrowOnError>({
+    responseType: 'json',
+    security: [{ scheme: 'bearer', type: 'http' }],
+    url: '/admin-api/v1/scheduled-delete/{modelId}',
+    ...options
+});
+
+export const getQuizPage = <ThrowOnError extends boolean = true>(options: Options<GetQuizPageData, ThrowOnError>) => (options.client ?? client).get<GetQuizPageResponses, unknown, ThrowOnError>({
+    responseType: 'json',
+    security: [{ scheme: 'bearer', type: 'http' }],
+    url: '/admin-api/v1/quiz',
+    ...options
+});
+
+export const getQuiz = <ThrowOnError extends boolean = true>(options: Options<GetQuizData, ThrowOnError>) => (options.client ?? client).get<GetQuizResponses, unknown, ThrowOnError>({
+    responseType: 'json',
+    security: [{ scheme: 'bearer', type: 'http' }],
+    url: '/admin-api/v1/quiz/{modelId}',
+    ...options
+});
+
+/**
+ * Deletes a single entity (and all its dependencies) by its modelId.
+ *
+ * To check or report what dependent object also would be deleted for a certain entity object, please use the dependency endpoint to get a report of all dependent entity objects.
+ */
+export const deleteOrientation = <ThrowOnError extends boolean = true>(options: Options<DeleteOrientationData, ThrowOnError>) => (options.client ?? client).delete<DeleteOrientationResponses, unknown, ThrowOnError>({
+    ...urlSearchParamsBodySerializer,
+    responseType: 'json',
+    security: [{ scheme: 'bearer', type: 'http' }],
+    url: '/admin-api/v1/orientation/{modelId}',
+    ...options,
+    headers: {
+        'Content-Type': 'application/x-www-form-urlencoded',
+        ...options.headers
+    }
+});
+
+/**
+ * Get a single entity by its modelId.
+ */
+export const getOrientationById = <ThrowOnError extends boolean = true>(options: Options<GetOrientationByIdData, ThrowOnError>) => (options.client ?? client).get<GetOrientationByIdResponses, unknown, ThrowOnError>({
+    ...urlSearchParamsBodySerializer,
+    responseType: 'json',
+    security: [{ scheme: 'bearer', type: 'http' }],
+    url: '/admin-api/v1/orientation/{modelId}',
+    ...options,
+    headers: {
+        'Content-Type': 'application/x-www-form-urlencoded',
+        ...options.headers
+    }
+});
+
+/**
+ * Get a list of dependency keys of all dependent entity objects for a specified source entity and bulk action.
+ *
+ * Get a list of dependency keys of all dependent entity objects for a specified source entity and bulk action.
+ * This can be used to verify depended objects for a certain bulk action to give a report of affected objects beforehand.
+ * For example for a delete action of a certain object, this gives all objects that will also be deleted within the deletion of the source object
+ */
+export const getOrientationDependencies = <ThrowOnError extends boolean = true>(options: Options<GetOrientationDependenciesData, ThrowOnError>) => (options.client ?? client).get<GetOrientationDependenciesResponses, unknown, ThrowOnError>({
+    responseType: 'json',
+    security: [{ scheme: 'bearer', type: 'http' }],
+    url: '/admin-api/v1/orientation/{modelId}/dependency',
+    ...options
+});
+
+/**
+ * Deletes a single entity (and all its dependencies) by its modelId.
+ *
+ * To check or report what dependent object also would be deleted for a certain entity object, please use the dependency endpoint to get a report of all dependent entity objects.
+ */
+export const deleteView = <ThrowOnError extends boolean = true>(options: Options<DeleteViewData, ThrowOnError>) => (options.client ?? client).delete<DeleteViewResponses, unknown, ThrowOnError>({
+    ...urlSearchParamsBodySerializer,
+    responseType: 'json',
+    security: [{ scheme: 'bearer', type: 'http' }],
+    url: '/admin-api/v1/orientation/view/{modelId}',
+    ...options,
+    headers: {
+        'Content-Type': 'application/x-www-form-urlencoded',
+        ...options.headers
+    }
+});
+
+/**
+ * Get a single entity by its modelId.
+ */
+export const getViewById = <ThrowOnError extends boolean = true>(options: Options<GetViewByIdData, ThrowOnError>) => (options.client ?? client).get<GetViewByIdResponses, unknown, ThrowOnError>({
+    ...urlSearchParamsBodySerializer,
+    responseType: 'json',
+    security: [{ scheme: 'bearer', type: 'http' }],
+    url: '/admin-api/v1/orientation/view/{modelId}',
+    ...options,
+    headers: {
+        'Content-Type': 'application/x-www-form-urlencoded',
+        ...options.headers
+    }
+});
+
+/**
+ * Get a list of dependency keys of all dependent entity objects for a specified source entity and bulk action.
+ *
+ * Get a list of dependency keys of all dependent entity objects for a specified source entity and bulk action.
+ * This can be used to verify depended objects for a certain bulk action to give a report of affected objects beforehand.
+ * For example for a delete action of a certain object, this gives all objects that will also be deleted within the deletion of the source object
+ */
+export const getViewDependencies = <ThrowOnError extends boolean = true>(options: Options<GetViewDependenciesData, ThrowOnError>) => (options.client ?? client).get<GetViewDependenciesResponses, unknown, ThrowOnError>({
+    responseType: 'json',
+    security: [{ scheme: 'bearer', type: 'http' }],
+    url: '/admin-api/v1/orientation/view/{modelId}/dependency',
+    ...options
+});
+
+/**
+ * Get a filtered list of specific entity name keys.
+ *
+ * An entity name key is a minimal entity data object with the entity-type, modelId and the name of the entity.</p>
+ * Filter: The filter attributes accepted by this API depend on the actual entity model (domain object)
+ * and are of the form [domain-attribute-name]=[filter-value]. E.g.: name=abc or type=EXAM. Usually
+ * filter attributes of text type are treated as SQL wildcard with %[text]% to filter all text containing
+ * a given text-snippet.
+ */
+export const getViewNames = <ThrowOnError extends boolean = true>(options?: Options<GetViewNamesData, ThrowOnError>) => (options?.client ?? client).get<GetViewNamesResponses, unknown, ThrowOnError>({
+    responseType: 'json',
+    security: [{ scheme: 'bearer', type: 'http' }],
+    url: '/admin-api/v1/orientation/view/names',
+    ...options
+});
+
+/**
+ * Get a list of entity objects by a given list of model identifiers of entities.
+ */
+export const getViewsByIds = <ThrowOnError extends boolean = true>(options: Options<GetViewsByIdsData, ThrowOnError>) => (options.client ?? client).get<GetViewsByIdsResponses, unknown, ThrowOnError>({
+    responseType: 'json',
+    security: [{ scheme: 'bearer', type: 'http' }],
+    url: '/admin-api/v1/orientation/view/list',
+    ...options
+});
+
+/**
+ * Get a filtered list of specific entity name keys.
+ *
+ * An entity name key is a minimal entity data object with the entity-type, modelId and the name of the entity.</p>
+ * Filter: The filter attributes accepted by this API depend on the actual entity model (domain object)
+ * and are of the form [domain-attribute-name]=[filter-value]. E.g.: name=abc or type=EXAM. Usually
+ * filter attributes of text type are treated as SQL wildcard with %[text]% to filter all text containing
+ * a given text-snippet.
+ */
+export const getOrientationNames = <ThrowOnError extends boolean = true>(options?: Options<GetOrientationNamesData, ThrowOnError>) => (options?.client ?? client).get<GetOrientationNamesResponses, unknown, ThrowOnError>({
+    responseType: 'json',
+    security: [{ scheme: 'bearer', type: 'http' }],
+    url: '/admin-api/v1/orientation/names',
+    ...options
+});
+
+/**
+ * Get a list of entity objects by a given list of model identifiers of entities.
+ */
+export const getOrientationsByIds = <ThrowOnError extends boolean = true>(options: Options<GetOrientationsByIdsData, ThrowOnError>) => (options.client ?? client).get<GetOrientationsByIdsResponses, unknown, ThrowOnError>({
+    responseType: 'json',
+    security: [{ scheme: 'bearer', type: 'http' }],
+    url: '/admin-api/v1/orientation/list',
+    ...options
+});
+
+export const getPage3 = <ThrowOnError extends boolean = true>(options: Options<GetPage3Data, ThrowOnError>) => (options.client ?? client).get<GetPage3Responses, unknown, ThrowOnError>({
+    responseType: 'json',
+    security: [{ scheme: 'bearer', type: 'http' }],
+    url: '/admin-api/v1/monitoring',
+    ...options
+});
+
+export const getConnectionData = <ThrowOnError extends boolean = true>(options: Options<GetConnectionDataData, ThrowOnError>) => (options.client ?? client).get<GetConnectionDataResponses, unknown, ThrowOnError>({
+    responseType: 'json',
+    security: [{ scheme: 'bearer', type: 'http' }],
+    url: '/admin-api/v1/monitoring/{parentModelId}',
+    ...options
+});
+
+export const getConnectionDataForSingleConnection = <ThrowOnError extends boolean = true>(options: Options<GetConnectionDataForSingleConnectionData, ThrowOnError>) => (options.client ?? client).get<GetConnectionDataForSingleConnectionResponses, unknown, ThrowOnError>({
+    responseType: 'json',
+    security: [{ scheme: 'bearer', type: 'http' }],
+    url: '/admin-api/v1/monitoring/{parentModelId}/{SEBConnectionToken}',
+    ...options
+});
+
+export const getAppSignatureKey = <ThrowOnError extends boolean = true>(options: Options<GetAppSignatureKeyData, ThrowOnError>) => (options.client ?? client).get<GetAppSignatureKeyResponses, unknown, ThrowOnError>({
+    responseType: 'json',
+    security: [{ scheme: 'bearer', type: 'http' }],
+    url: '/admin-api/v1/monitoring/{parentModelId}/signature/{modelId}',
+    ...options
+});
+
+export const pendingNotifications = <ThrowOnError extends boolean = true>(options: Options<PendingNotificationsData, ThrowOnError>) => (options.client ?? client).get<PendingNotificationsResponses, unknown, ThrowOnError>({
+    responseType: 'json',
+    security: [{ scheme: 'bearer', type: 'http' }],
+    url: '/admin-api/v1/monitoring/{parentModelId}/notification/{SEBConnectionToken}',
+    ...options
+});
+
+export const getFullMonitoringPageData = <ThrowOnError extends boolean = true>(options: Options<GetFullMonitoringPageDataData, ThrowOnError>) => (options.client ?? client).get<GetFullMonitoringPageDataResponses, unknown, ThrowOnError>({
+    responseType: 'json',
+    security: [{ scheme: 'bearer', type: 'http' }],
+    url: '/admin-api/v1/monitoring/{parentModelId}/fullpage',
+    ...options
+});
+
+export const getTownhallRoom = <ThrowOnError extends boolean = true>(options: Options<GetTownhallRoomData, ThrowOnError>) => (options.client ?? client).get<GetTownhallRoomResponses, unknown, ThrowOnError>({
+    responseType: 'json',
+    security: [{ scheme: 'bearer', type: 'http' }],
+    url: '/admin-api/v1/monitoring/proctoring/{modelId}towhall-room-data',
+    ...options
+});
+
+export const isTownhallRoomAvialbale = <ThrowOnError extends boolean = true>(options: Options<IsTownhallRoomAvialbaleData, ThrowOnError>) => (options.client ?? client).get<IsTownhallRoomAvialbaleResponses, unknown, ThrowOnError>({
+    responseType: 'json',
+    security: [{ scheme: 'bearer', type: 'http' }],
+    url: '/admin-api/v1/monitoring/proctoring/{modelId}towhall-available',
+    ...options
+});
+
+export const getProctorRoomConnection = <ThrowOnError extends boolean = true>(options: Options<GetProctorRoomConnectionData, ThrowOnError>) => (options.client ?? client).get<GetProctorRoomConnectionResponses, unknown, ThrowOnError>({
+    responseType: 'json',
+    security: [{ scheme: 'bearer', type: 'http' }],
+    url: '/admin-api/v1/monitoring/proctoring/{modelId}',
+    ...options
+});
+
+export const getScreenProctoringGroupsOfExam = <ThrowOnError extends boolean = true>(options: Options<GetScreenProctoringGroupsOfExamData, ThrowOnError>) => (options.client ?? client).get<GetScreenProctoringGroupsOfExamResponses, unknown, ThrowOnError>({
+    responseType: 'json',
+    security: [{ scheme: 'bearer', type: 'http' }],
+    url: '/admin-api/v1/monitoring/proctoring/{modelId}/screenproctoring-groups',
+    ...options
+});
+
+export const getAllClientConnectionsInRoom = <ThrowOnError extends boolean = true>(options: Options<GetAllClientConnectionsInRoomData, ThrowOnError>) => (options.client ?? client).get<GetAllClientConnectionsInRoomResponses, unknown, ThrowOnError>({
+    responseType: 'json',
+    security: [{ scheme: 'bearer', type: 'http' }],
+    url: '/admin-api/v1/monitoring/proctoring/{modelId}/room-connections',
+    ...options
+});
+
+export const getCollectingRoomsOfExam = <ThrowOnError extends boolean = true>(options: Options<GetCollectingRoomsOfExamData, ThrowOnError>) => (options.client ?? client).get<GetCollectingRoomsOfExamResponses, unknown, ThrowOnError>({
+    responseType: 'json',
+    security: [{ scheme: 'bearer', type: 'http' }],
+    url: '/admin-api/v1/monitoring/proctoring/{modelId}/collecting-rooms',
+    ...options
+});
+
+export const getOverviewData = <ThrowOnError extends boolean = true>(options: Options<GetOverviewDataData, ThrowOnError>) => (options.client ?? client).get<GetOverviewDataResponses, unknown, ThrowOnError>({
+    responseType: 'json',
+    security: [{ scheme: 'bearer', type: 'http' }],
+    url: '/admin-api/v1/monitoring/overview/{modelId}',
+    ...options
+});
+
+export const getFinishedExamsPage = <ThrowOnError extends boolean = true>(options: Options<GetFinishedExamsPageData, ThrowOnError>) => (options.client ?? client).get<GetFinishedExamsPageResponses, unknown, ThrowOnError>({
+    responseType: 'json',
+    security: [{ scheme: 'bearer', type: 'http' }],
+    url: '/admin-api/v1/monitoring/finishedexams',
+    ...options
+});
+
+export const getMonitoringExamListData = <ThrowOnError extends boolean = true>(options: Options<GetMonitoringExamListDataData, ThrowOnError>) => (options.client ?? client).get<GetMonitoringExamListDataResponses, unknown, ThrowOnError>({
+    responseType: 'json',
+    security: [{ scheme: 'bearer', type: 'http' }],
+    url: '/admin-api/v1/monitoring/connections/{modelId}',
+    ...options
+});
+
+/**
+ * Deletes a single entity (and all its dependencies) by its modelId.
+ *
+ * To check or report what dependent object also would be deleted for a certain entity object, please use the dependency endpoint to get a report of all dependent entity objects.
+ */
+export const deleteLmsSetup = <ThrowOnError extends boolean = true>(options: Options<DeleteLmsSetupData, ThrowOnError>) => (options.client ?? client).delete<DeleteLmsSetupResponses, unknown, ThrowOnError>({
+    ...urlSearchParamsBodySerializer,
+    responseType: 'json',
+    security: [{ scheme: 'bearer', type: 'http' }],
+    url: '/admin-api/v1/lms-setup/{modelId}',
+    ...options,
+    headers: {
+        'Content-Type': 'application/x-www-form-urlencoded',
+        ...options.headers
+    }
+});
+
+/**
+ * Get a single entity by its modelId.
+ */
+export const getBy = <ThrowOnError extends boolean = true>(options: Options<GetByData, ThrowOnError>) => (options.client ?? client).get<GetByResponses, unknown, ThrowOnError>({
+    ...urlSearchParamsBodySerializer,
+    responseType: 'json',
+    security: [{ scheme: 'bearer', type: 'http' }],
+    url: '/admin-api/v1/lms-setup/{modelId}',
+    ...options,
+    headers: {
+        'Content-Type': 'application/x-www-form-urlencoded',
+        ...options.headers
+    }
+});
+
+/**
+ * Get a list of dependency keys of all dependent entity objects for a specified source entity and bulk action.
+ *
+ * Get a list of dependency keys of all dependent entity objects for a specified source entity and bulk action.
+ * This can be used to verify depended objects for a certain bulk action to give a report of affected objects beforehand.
+ * For example for a delete action of a certain object, this gives all objects that will also be deleted within the deletion of the source object
+ */
+export const getLmsSetupDependencies = <ThrowOnError extends boolean = true>(options: Options<GetLmsSetupDependenciesData, ThrowOnError>) => (options.client ?? client).get<GetLmsSetupDependenciesResponses, unknown, ThrowOnError>({
+    responseType: 'json',
+    security: [{ scheme: 'bearer', type: 'http' }],
+    url: '/admin-api/v1/lms-setup/{modelId}/dependency',
+    ...options
+});
+
+export const testLms = <ThrowOnError extends boolean = true>(options: Options<TestLmsData, ThrowOnError>) => (options.client ?? client).get<TestLmsResponses, unknown, ThrowOnError>({
+    responseType: 'json',
+    security: [{ scheme: 'bearer', type: 'http' }],
+    url: '/admin-api/v1/lms-setup/test/{modelId}',
+    ...options
+});
+
+/**
+ * Get a filtered list of specific entity name keys.
+ *
+ * An entity name key is a minimal entity data object with the entity-type, modelId and the name of the entity.</p>
+ * Filter: The filter attributes accepted by this API depend on the actual entity model (domain object)
+ * and are of the form [domain-attribute-name]=[filter-value]. E.g.: name=abc or type=EXAM. Usually
+ * filter attributes of text type are treated as SQL wildcard with %[text]% to filter all text containing
+ * a given text-snippet.
+ */
+export const getLmsSetupNames = <ThrowOnError extends boolean = true>(options?: Options<GetLmsSetupNamesData, ThrowOnError>) => (options?.client ?? client).get<GetLmsSetupNamesResponses, unknown, ThrowOnError>({
+    responseType: 'json',
+    security: [{ scheme: 'bearer', type: 'http' }],
+    url: '/admin-api/v1/lms-setup/names',
+    ...options
+});
+
+/**
+ * Get a list of entity objects by a given list of model identifiers of entities.
+ */
+export const getLmsSetupsByIds = <ThrowOnError extends boolean = true>(options: Options<GetLmsSetupsByIdsData, ThrowOnError>) => (options.client ?? client).get<GetLmsSetupsByIdsResponses, unknown, ThrowOnError>({
+    responseType: 'json',
+    security: [{ scheme: 'bearer', type: 'http' }],
+    url: '/admin-api/v1/lms-setup/list',
+    ...options
+});
+
+/**
+ * Get a page of all specific domain entity that are currently inactive.
+ *
+ * Sorting: the sort parameter to sort the list of entities before paging
+ * the sort parameter is the name of the entity-model attribute to sort with a leading '-' sign for
+ * descending sort order. Note that not all entity-model attribute are suited for sorting while the most
+ * are.
+ *
+ */
+export const getInactiveLmsSetups = <ThrowOnError extends boolean = true>(options?: Options<GetInactiveLmsSetupsData, ThrowOnError>) => (options?.client ?? client).get<GetInactiveLmsSetupsResponses, unknown, ThrowOnError>({
+    responseType: 'json',
+    security: [{ scheme: 'bearer', type: 'http' }],
+    url: '/admin-api/v1/lms-setup/inactive',
+    ...options
+});
+
+/**
+ * Get a page of all specific domain entity that are currently active.
+ *
+ * Sorting: the sort parameter to sort the list of entities before paging
+ * the sort parameter is the name of the entity-model attribute to sort with a leading '-' sign for
+ * descending sort order. Note that not all entity-model attribute are suited for sorting while the most
+ * are.
+ *
+ */
+export const getActiveLmsSetups = <ThrowOnError extends boolean = true>(options?: Options<GetActiveLmsSetupsData, ThrowOnError>) => (options?.client ?? client).get<GetActiveLmsSetupsResponses, unknown, ThrowOnError>({
+    responseType: 'json',
+    security: [{ scheme: 'bearer', type: 'http' }],
+    url: '/admin-api/v1/lms-setup/active',
+    ...options
+});
+
+/**
+ * Deletes a single entity (and all its dependencies) by its modelId.
+ *
+ * To check or report what dependent object also would be deleted for a certain entity object, please use the dependency endpoint to get a report of all dependent entity objects.
+ */
+export const deleteInstitution = <ThrowOnError extends boolean = true>(options: Options<DeleteInstitutionData, ThrowOnError>) => (options.client ?? client).delete<DeleteInstitutionResponses, unknown, ThrowOnError>({
+    ...urlSearchParamsBodySerializer,
+    responseType: 'json',
+    security: [{ scheme: 'bearer', type: 'http' }],
+    url: '/admin-api/v1/institution/{modelId}',
+    ...options,
+    headers: {
+        'Content-Type': 'application/x-www-form-urlencoded',
+        ...options.headers
+    }
+});
+
+/**
+ * Get a single entity by its modelId.
+ */
+export const getInstitutionById = <ThrowOnError extends boolean = true>(options: Options<GetInstitutionByIdData, ThrowOnError>) => (options.client ?? client).get<GetInstitutionByIdResponses, unknown, ThrowOnError>({
+    ...urlSearchParamsBodySerializer,
+    responseType: 'json',
+    security: [{ scheme: 'bearer', type: 'http' }],
+    url: '/admin-api/v1/institution/{modelId}',
+    ...options,
+    headers: {
+        'Content-Type': 'application/x-www-form-urlencoded',
+        ...options.headers
+    }
+});
+
+/**
+ * Get a list of dependency keys of all dependent entity objects for a specified source entity and bulk action.
+ *
+ * Get a list of dependency keys of all dependent entity objects for a specified source entity and bulk action.
+ * This can be used to verify depended objects for a certain bulk action to give a report of affected objects beforehand.
+ * For example for a delete action of a certain object, this gives all objects that will also be deleted within the deletion of the source object
+ */
+export const getInstitutionDependencies = <ThrowOnError extends boolean = true>(options: Options<GetInstitutionDependenciesData, ThrowOnError>) => (options.client ?? client).get<GetInstitutionDependenciesResponses, unknown, ThrowOnError>({
+    responseType: 'json',
+    security: [{ scheme: 'bearer', type: 'http' }],
+    url: '/admin-api/v1/institution/{modelId}/dependency',
+    ...options
+});
+
+export const getOwn = <ThrowOnError extends boolean = true>(options?: Options<GetOwnData, ThrowOnError>) => (options?.client ?? client).get<GetOwnResponses, unknown, ThrowOnError>({
+    security: [{ scheme: 'bearer', type: 'http' }],
+    url: '/admin-api/v1/institution/self',
+    ...options
+});
+
+/**
+ * Get a filtered list of specific entity name keys.
+ *
+ * An entity name key is a minimal entity data object with the entity-type, modelId and the name of the entity.</p>
+ * Filter: The filter attributes accepted by this API depend on the actual entity model (domain object)
+ * and are of the form [domain-attribute-name]=[filter-value]. E.g.: name=abc or type=EXAM. Usually
+ * filter attributes of text type are treated as SQL wildcard with %[text]% to filter all text containing
+ * a given text-snippet.
+ */
+export const getInstitutionNames = <ThrowOnError extends boolean = true>(options?: Options<GetInstitutionNamesData, ThrowOnError>) => (options?.client ?? client).get<GetInstitutionNamesResponses, unknown, ThrowOnError>({
+    responseType: 'json',
+    security: [{ scheme: 'bearer', type: 'http' }],
+    url: '/admin-api/v1/institution/names',
+    ...options
+});
+
+/**
+ * Get a list of entity objects by a given list of model identifiers of entities.
+ */
+export const getInstitutionsByIds = <ThrowOnError extends boolean = true>(options: Options<GetInstitutionsByIdsData, ThrowOnError>) => (options.client ?? client).get<GetInstitutionsByIdsResponses, unknown, ThrowOnError>({
+    responseType: 'json',
+    security: [{ scheme: 'bearer', type: 'http' }],
+    url: '/admin-api/v1/institution/list',
+    ...options
+});
+
+/**
+ * Get a page of all specific domain entity that are currently inactive.
+ *
+ * Sorting: the sort parameter to sort the list of entities before paging
+ * the sort parameter is the name of the entity-model attribute to sort with a leading '-' sign for
+ * descending sort order. Note that not all entity-model attribute are suited for sorting while the most
+ * are.
+ *
+ */
+export const getInactiveInstitutions = <ThrowOnError extends boolean = true>(options?: Options<GetInactiveInstitutionsData, ThrowOnError>) => (options?.client ?? client).get<GetInactiveInstitutionsResponses, unknown, ThrowOnError>({
+    responseType: 'json',
+    security: [{ scheme: 'bearer', type: 'http' }],
+    url: '/admin-api/v1/institution/inactive',
+    ...options
+});
+
+/**
+ * Get a page of all specific domain entity that are currently active.
+ *
+ * Sorting: the sort parameter to sort the list of entities before paging
+ * the sort parameter is the name of the entity-model attribute to sort with a leading '-' sign for
+ * descending sort order. Note that not all entity-model attribute are suited for sorting while the most
+ * are.
+ *
+ */
+export const getActiveInstitutions = <ThrowOnError extends boolean = true>(options?: Options<GetActiveInstitutionsData, ThrowOnError>) => (options?.client ?? client).get<GetActiveInstitutionsResponses, unknown, ThrowOnError>({
+    responseType: 'json',
+    security: [{ scheme: 'bearer', type: 'http' }],
+    url: '/admin-api/v1/institution/active',
+    ...options
+});
+
+export const privileges = <ThrowOnError extends boolean = true>(options?: Options<PrivilegesData, ThrowOnError>) => (options?.client ?? client).get<PrivilegesResponses, unknown, ThrowOnError>({
+    responseType: 'json',
+    security: [{ scheme: 'bearer', type: 'http' }],
+    url: '/admin-api/v1/info/privileges',
+    ...options
+});
+
+export const logo = <ThrowOnError extends boolean = true>(options: Options<LogoData, ThrowOnError>) => (options.client ?? client).get<LogoResponses, unknown, ThrowOnError>({
+    responseType: 'blob',
+    security: [{ scheme: 'bearer', type: 'http' }],
+    url: '/admin-api/v1/info/logo/{urlSuffix}',
+    ...options
+});
+
+export const getInstitutionInfo = <ThrowOnError extends boolean = true>(options?: Options<GetInstitutionInfoData, ThrowOnError>) => (options?.client ?? client).get<GetInstitutionInfoResponses, unknown, ThrowOnError>({
+    responseType: 'json',
+    security: [{ scheme: 'bearer', type: 'http' }],
+    url: '/admin-api/v1/info/institution',
+    ...options
+});
+
+export const getInstitutionInfo1 = <ThrowOnError extends boolean = true>(options: Options<GetInstitutionInfo1Data, ThrowOnError>) => (options.client ?? client).get<GetInstitutionInfo1Responses, unknown, ThrowOnError>({
+    responseType: 'json',
+    security: [{ scheme: 'bearer', type: 'http' }],
+    url: '/admin-api/v1/info/institution/{urlSuffix}',
+    ...options
+});
+
+export const getServiceFeatures = <ThrowOnError extends boolean = true>(options?: Options<GetServiceFeaturesData, ThrowOnError>) => (options?.client ?? client).get<GetServiceFeaturesResponses, unknown, ThrowOnError>({
+    responseType: 'json',
+    security: [{ scheme: 'bearer', type: 'http' }],
+    url: '/admin-api/v1/info/features',
+    ...options
+});
+
+/**
+ * Deletes a single entity (and all its dependencies) by its modelId.
+ *
+ * To check or report what dependent object also would be deleted for a certain entity object, please use the dependency endpoint to get a report of all dependent entity objects.
+ */
+export const deleteIndicator = <ThrowOnError extends boolean = true>(options: Options<DeleteIndicatorData, ThrowOnError>) => (options.client ?? client).delete<DeleteIndicatorResponses, unknown, ThrowOnError>({
+    ...urlSearchParamsBodySerializer,
+    responseType: 'json',
+    security: [{ scheme: 'bearer', type: 'http' }],
+    url: '/admin-api/v1/indicator/{modelId}',
+    ...options,
+    headers: {
+        'Content-Type': 'application/x-www-form-urlencoded',
+        ...options.headers
+    }
+});
+
+/**
+ * Get a single entity by its modelId.
+ */
+export const getIndicatorById = <ThrowOnError extends boolean = true>(options: Options<GetIndicatorByIdData, ThrowOnError>) => (options.client ?? client).get<GetIndicatorByIdResponses, unknown, ThrowOnError>({
+    ...urlSearchParamsBodySerializer,
+    responseType: 'json',
+    security: [{ scheme: 'bearer', type: 'http' }],
+    url: '/admin-api/v1/indicator/{modelId}',
+    ...options,
+    headers: {
+        'Content-Type': 'application/x-www-form-urlencoded',
+        ...options.headers
+    }
+});
+
+/**
+ * Get a list of dependency keys of all dependent entity objects for a specified source entity and bulk action.
+ *
+ * Get a list of dependency keys of all dependent entity objects for a specified source entity and bulk action.
+ * This can be used to verify depended objects for a certain bulk action to give a report of affected objects beforehand.
+ * For example for a delete action of a certain object, this gives all objects that will also be deleted within the deletion of the source object
+ */
+export const getIndicatorDependencies = <ThrowOnError extends boolean = true>(options: Options<GetIndicatorDependenciesData, ThrowOnError>) => (options.client ?? client).get<GetIndicatorDependenciesResponses, unknown, ThrowOnError>({
+    responseType: 'json',
+    security: [{ scheme: 'bearer', type: 'http' }],
+    url: '/admin-api/v1/indicator/{modelId}/dependency',
+    ...options
+});
+
+/**
+ * Get a filtered list of specific entity name keys.
+ *
+ * An entity name key is a minimal entity data object with the entity-type, modelId and the name of the entity.</p>
+ * Filter: The filter attributes accepted by this API depend on the actual entity model (domain object)
+ * and are of the form [domain-attribute-name]=[filter-value]. E.g.: name=abc or type=EXAM. Usually
+ * filter attributes of text type are treated as SQL wildcard with %[text]% to filter all text containing
+ * a given text-snippet.
+ */
+export const getIndicatorNames = <ThrowOnError extends boolean = true>(options?: Options<GetIndicatorNamesData, ThrowOnError>) => (options?.client ?? client).get<GetIndicatorNamesResponses, unknown, ThrowOnError>({
+    responseType: 'json',
+    security: [{ scheme: 'bearer', type: 'http' }],
+    url: '/admin-api/v1/indicator/names',
+    ...options
+});
+
+/**
+ * Get a list of entity objects by a given list of model identifiers of entities.
+ */
+export const getIndicatorsByIds = <ThrowOnError extends boolean = true>(options: Options<GetIndicatorsByIdsData, ThrowOnError>) => (options.client ?? client).get<GetIndicatorsByIdsResponses, unknown, ThrowOnError>({
+    responseType: 'json',
+    security: [{ scheme: 'bearer', type: 'http' }],
+    url: '/admin-api/v1/indicator/list',
+    ...options
+});
+
+export const getSecurityKeyEntries = <ThrowOnError extends boolean = true>(options: Options<GetSecurityKeyEntriesData, ThrowOnError>) => (options.client ?? client).get<GetSecurityKeyEntriesResponses, unknown, ThrowOnError>({
+    responseType: 'json',
+    security: [{ scheme: 'bearer', type: 'http' }],
+    url: '/admin-api/v1/exam/{parentModelId}/grant',
+    ...options
+});
+
+/**
+ * Deletes a single entity (and all its dependencies) by its modelId.
+ *
+ * To check or report what dependent object also would be deleted for a certain entity object, please use the dependency endpoint to get a report of all dependent entity objects.
+ */
+export const hardDelete3 = <ThrowOnError extends boolean = true>(options: Options<HardDelete3Data, ThrowOnError>) => (options.client ?? client).delete<HardDelete3Responses, unknown, ThrowOnError>({
+    ...urlSearchParamsBodySerializer,
+    responseType: 'json',
+    security: [{ scheme: 'bearer', type: 'http' }],
+    url: '/admin-api/v1/exam/{modelId}',
+    ...options,
+    headers: {
+        'Content-Type': 'application/x-www-form-urlencoded',
+        ...options.headers
+    }
+});
+
+/**
+ * Get a single entity by its modelId.
+ */
+export const getExamAdministrationById = <ThrowOnError extends boolean = true>(options: Options<GetExamAdministrationByIdData, ThrowOnError>) => (options.client ?? client).get<GetExamAdministrationByIdResponses, unknown, ThrowOnError>({
+    ...urlSearchParamsBodySerializer,
+    responseType: 'json',
+    security: [{ scheme: 'bearer', type: 'http' }],
+    url: '/admin-api/v1/exam/{modelId}',
+    ...options,
+    headers: {
+        'Content-Type': 'application/x-www-form-urlencoded',
+        ...options.headers
+    }
+});
+
+export const getExamKeysForFollowup = <ThrowOnError extends boolean = true>(options: Options<GetExamKeysForFollowupData, ThrowOnError>) => (options.client ?? client).get<GetExamKeysForFollowupResponses, unknown, ThrowOnError>({
+    responseType: 'json',
+    security: [{ scheme: 'bearer', type: 'http' }],
+    url: '/admin-api/v1/exam/{modelId}/followup',
+    ...options
+});
+
+/**
+ * Get a list of dependency keys of all dependent entity objects for a specified source entity and bulk action.
+ *
+ * Get a list of dependency keys of all dependent entity objects for a specified source entity and bulk action.
+ * This can be used to verify depended objects for a certain bulk action to give a report of affected objects beforehand.
+ * For example for a delete action of a certain object, this gives all objects that will also be deleted within the deletion of the source object
+ */
+export const getExamAdministrationDependencies = <ThrowOnError extends boolean = true>(options: Options<GetExamAdministrationDependenciesData, ThrowOnError>) => (options.client ?? client).get<GetExamAdministrationDependenciesResponses, unknown, ThrowOnError>({
+    responseType: 'json',
+    security: [{ scheme: 'bearer', type: 'http' }],
+    url: '/admin-api/v1/exam/{modelId}/dependency',
+    ...options
+});
+
+export const checkSebRestriction = <ThrowOnError extends boolean = true>(options: Options<CheckSebRestrictionData, ThrowOnError>) => (options.client ?? client).get<CheckSebRestrictionResponses, unknown, ThrowOnError>({
+    responseType: 'json',
+    security: [{ scheme: 'bearer', type: 'http' }],
+    url: '/admin-api/v1/exam/{modelId}/check-seb-restriction',
+    ...options
+});
+
+export const checkImported = <ThrowOnError extends boolean = true>(options: Options<CheckImportedData, ThrowOnError>) => (options.client ?? client).get<CheckImportedResponses, unknown, ThrowOnError>({
+    responseType: 'json',
+    security: [{ scheme: 'bearer', type: 'http' }],
+    url: '/admin-api/v1/exam/{modelId}/check-imported',
+    ...options
+});
+
+export const checkExamConsistency = <ThrowOnError extends boolean = true>(options: Options<CheckExamConsistencyData, ThrowOnError>) => (options.client ?? client).get<CheckExamConsistencyResponses, unknown, ThrowOnError>({
+    responseType: 'json',
+    security: [{ scheme: 'bearer', type: 'http' }],
+    url: '/admin-api/v1/exam/{modelId}/check-consistency',
+    ...options
+});
+
+export const getChapters = <ThrowOnError extends boolean = true>(options: Options<GetChaptersData, ThrowOnError>) => (options.client ?? client).get<GetChaptersResponses, unknown, ThrowOnError>({
+    responseType: 'json',
+    security: [{ scheme: 'bearer', type: 'http' }],
+    url: '/admin-api/v1/exam/{modelId}/chapters',
+    ...options
+});
+
+export const getTableValues = <ThrowOnError extends boolean = true>(options: Options<GetTableValuesData, ThrowOnError>) => (options.client ?? client).get<GetTableValuesResponses, unknown, ThrowOnError>({
+    responseType: 'json',
+    security: [{ scheme: 'bearer', type: 'http' }],
+    url: '/admin-api/v1/exam/seb-settings/{modelId}/table',
+    ...options
+});
+
+export const getExamConfigMappings = <ThrowOnError extends boolean = true>(options: Options<GetExamConfigMappingsData, ThrowOnError>) => (options.client ?? client).get<GetExamConfigMappingsResponses, unknown, ThrowOnError>({
+    responseType: 'json',
+    security: [{ scheme: 'bearer', type: 'http' }],
+    url: '/admin-api/v1/exam/seb-settings/{modelId}/examConfigMapping',
+    ...options
+});
+
+export const getActiveSebClients = <ThrowOnError extends boolean = true>(options: Options<GetActiveSebClientsData, ThrowOnError>) => (options.client ?? client).get<GetActiveSebClientsResponses, unknown, ThrowOnError>({
+    responseType: 'json',
+    security: [{ scheme: 'bearer', type: 'http' }],
+    url: '/admin-api/v1/exam/seb-settings/{modelId}/active-seb-clients',
+    ...options
+});
+
+/**
+ * Get a filtered list of specific entity name keys.
+ *
+ * An entity name key is a minimal entity data object with the entity-type, modelId and the name of the entity.</p>
+ * Filter: The filter attributes accepted by this API depend on the actual entity model (domain object)
+ * and are of the form [domain-attribute-name]=[filter-value]. E.g.: name=abc or type=EXAM. Usually
+ * filter attributes of text type are treated as SQL wildcard with %[text]% to filter all text containing
+ * a given text-snippet.
+ */
+export const getExamAdministrationNames = <ThrowOnError extends boolean = true>(options?: Options<GetExamAdministrationNamesData, ThrowOnError>) => (options?.client ?? client).get<GetExamAdministrationNamesResponses, unknown, ThrowOnError>({
+    responseType: 'json',
+    security: [{ scheme: 'bearer', type: 'http' }],
+    url: '/admin-api/v1/exam/names',
+    ...options
+});
+
+/**
+ * Get a list of entity objects by a given list of model identifiers of entities.
+ */
+export const getExamAdministrationsByIds = <ThrowOnError extends boolean = true>(options: Options<GetExamAdministrationsByIdsData, ThrowOnError>) => (options.client ?? client).get<GetExamAdministrationsByIdsResponses, unknown, ThrowOnError>({
+    responseType: 'json',
+    security: [{ scheme: 'bearer', type: 'http' }],
+    url: '/admin-api/v1/exam/list',
+    ...options
+});
+
+export const deleteIndicatorTemplate = <ThrowOnError extends boolean = true>(options: Options<DeleteIndicatorTemplateData, ThrowOnError>) => (options.client ?? client).delete<DeleteIndicatorTemplateResponses, unknown, ThrowOnError>({
+    responseType: 'json',
+    security: [{ scheme: 'bearer', type: 'http' }],
+    url: '/admin-api/v1/exam-template/{parentModelId}/indicator/{modelId}',
+    ...options
+});
+
+export const getIndicatorBy = <ThrowOnError extends boolean = true>(options: Options<GetIndicatorByData, ThrowOnError>) => (options.client ?? client).get<GetIndicatorByResponses, unknown, ThrowOnError>({
+    responseType: 'json',
+    security: [{ scheme: 'bearer', type: 'http' }],
+    url: '/admin-api/v1/exam-template/{parentModelId}/indicator/{modelId}',
+    ...options
+});
+
+export const deleteClientGroupTemplate = <ThrowOnError extends boolean = true>(options: Options<DeleteClientGroupTemplateData, ThrowOnError>) => (options.client ?? client).delete<DeleteClientGroupTemplateResponses, unknown, ThrowOnError>({
+    responseType: 'json',
+    security: [{ scheme: 'bearer', type: 'http' }],
+    url: '/admin-api/v1/exam-template/{parentModelId}/client-group/{modelId}',
+    ...options
+});
+
+export const getClientGroupTemplateBy = <ThrowOnError extends boolean = true>(options: Options<GetClientGroupTemplateByData, ThrowOnError>) => (options.client ?? client).get<GetClientGroupTemplateByResponses, unknown, ThrowOnError>({
+    responseType: 'json',
+    security: [{ scheme: 'bearer', type: 'http' }],
+    url: '/admin-api/v1/exam-template/{parentModelId}/client-group/{modelId}',
+    ...options
+});
+
+/**
+ * Deletes a single entity (and all its dependencies) by its modelId.
+ *
+ * To check or report what dependent object also would be deleted for a certain entity object, please use the dependency endpoint to get a report of all dependent entity objects.
+ */
+export const deleteExamTemplate = <ThrowOnError extends boolean = true>(options: Options<DeleteExamTemplateData, ThrowOnError>) => (options.client ?? client).delete<DeleteExamTemplateResponses, unknown, ThrowOnError>({
+    ...urlSearchParamsBodySerializer,
+    responseType: 'json',
+    security: [{ scheme: 'bearer', type: 'http' }],
+    url: '/admin-api/v1/exam-template/{modelId}',
+    ...options,
+    headers: {
+        'Content-Type': 'application/x-www-form-urlencoded',
+        ...options.headers
+    }
+});
+
+/**
+ * Get a single entity by its modelId.
+ */
+export const getBy1 = <ThrowOnError extends boolean = true>(options: Options<GetBy1Data, ThrowOnError>) => (options.client ?? client).get<GetBy1Responses, unknown, ThrowOnError>({
+    ...urlSearchParamsBodySerializer,
+    responseType: 'json',
+    security: [{ scheme: 'bearer', type: 'http' }],
+    url: '/admin-api/v1/exam-template/{modelId}',
+    ...options,
+    headers: {
+        'Content-Type': 'application/x-www-form-urlencoded',
+        ...options.headers
+    }
+});
+
+export const getIndicatorPage = <ThrowOnError extends boolean = true>(options: Options<GetIndicatorPageData, ThrowOnError>) => (options.client ?? client).get<GetIndicatorPageResponses, unknown, ThrowOnError>({
+    responseType: 'json',
+    security: [{ scheme: 'bearer', type: 'http' }],
+    url: '/admin-api/v1/exam-template/{modelId}/indicator',
+    ...options
+});
+
+/**
+ * Get a list of dependency keys of all dependent entity objects for a specified source entity and bulk action.
+ *
+ * Get a list of dependency keys of all dependent entity objects for a specified source entity and bulk action.
+ * This can be used to verify depended objects for a certain bulk action to give a report of affected objects beforehand.
+ * For example for a delete action of a certain object, this gives all objects that will also be deleted within the deletion of the source object
+ */
+export const getExamTemplateDependencies = <ThrowOnError extends boolean = true>(options: Options<GetExamTemplateDependenciesData, ThrowOnError>) => (options.client ?? client).get<GetExamTemplateDependenciesResponses, unknown, ThrowOnError>({
+    responseType: 'json',
+    security: [{ scheme: 'bearer', type: 'http' }],
+    url: '/admin-api/v1/exam-template/{modelId}/dependency',
+    ...options
+});
+
+export const getClientGroupTemplatePage = <ThrowOnError extends boolean = true>(options: Options<GetClientGroupTemplatePageData, ThrowOnError>) => (options.client ?? client).get<GetClientGroupTemplatePageResponses, unknown, ThrowOnError>({
+    responseType: 'json',
+    security: [{ scheme: 'bearer', type: 'http' }],
+    url: '/admin-api/v1/exam-template/{modelId}/client-group',
+    ...options
+});
+
+/**
+ * Get a filtered list of specific entity name keys.
+ *
+ * An entity name key is a minimal entity data object with the entity-type, modelId and the name of the entity.</p>
+ * Filter: The filter attributes accepted by this API depend on the actual entity model (domain object)
+ * and are of the form [domain-attribute-name]=[filter-value]. E.g.: name=abc or type=EXAM. Usually
+ * filter attributes of text type are treated as SQL wildcard with %[text]% to filter all text containing
+ * a given text-snippet.
+ */
+export const getExamTemplateNames = <ThrowOnError extends boolean = true>(options?: Options<GetExamTemplateNamesData, ThrowOnError>) => (options?.client ?? client).get<GetExamTemplateNamesResponses, unknown, ThrowOnError>({
+    responseType: 'json',
+    security: [{ scheme: 'bearer', type: 'http' }],
+    url: '/admin-api/v1/exam-template/names',
+    ...options
+});
+
+/**
+ * Get a list of entity objects by a given list of model identifiers of entities.
+ */
+export const getExamTemplatesByIds = <ThrowOnError extends boolean = true>(options: Options<GetExamTemplatesByIdsData, ThrowOnError>) => (options.client ?? client).get<GetExamTemplatesByIdsResponses, unknown, ThrowOnError>({
+    responseType: 'json',
+    security: [{ scheme: 'bearer', type: 'http' }],
+    url: '/admin-api/v1/exam-template/list',
+    ...options
+});
+
+export const getDefault = <ThrowOnError extends boolean = true>(options?: Options<GetDefaultData, ThrowOnError>) => (options?.client ?? client).get<GetDefaultResponses, unknown, ThrowOnError>({
+    responseType: 'json',
+    security: [{ scheme: 'bearer', type: 'http' }],
+    url: '/admin-api/v1/exam-template/default',
+    ...options
+});
+
+/**
+ * Deletes a single entity (and all its dependencies) by its modelId.
+ *
+ * To check or report what dependent object also would be deleted for a certain entity object, please use the dependency endpoint to get a report of all dependent entity objects.
+ */
+export const hardDelete4 = <ThrowOnError extends boolean = true>(options: Options<HardDelete4Data, ThrowOnError>) => (options.client ?? client).delete<HardDelete4Responses, unknown, ThrowOnError>({
+    ...urlSearchParamsBodySerializer,
+    responseType: 'json',
+    security: [{ scheme: 'bearer', type: 'http' }],
+    url: '/admin-api/v1/exam-configuration-map/{modelId}',
+    ...options,
+    headers: {
+        'Content-Type': 'application/x-www-form-urlencoded',
+        ...options.headers
+    }
+});
+
+/**
+ * Get a single entity by its modelId.
+ */
+export const getExamConfigurationMappingById = <ThrowOnError extends boolean = true>(options: Options<GetExamConfigurationMappingByIdData, ThrowOnError>) => (options.client ?? client).get<GetExamConfigurationMappingByIdResponses, unknown, ThrowOnError>({
+    ...urlSearchParamsBodySerializer,
+    responseType: 'json',
+    security: [{ scheme: 'bearer', type: 'http' }],
+    url: '/admin-api/v1/exam-configuration-map/{modelId}',
+    ...options,
+    headers: {
+        'Content-Type': 'application/x-www-form-urlencoded',
+        ...options.headers
+    }
+});
+
+/**
+ * Get a list of dependency keys of all dependent entity objects for a specified source entity and bulk action.
+ *
+ * Get a list of dependency keys of all dependent entity objects for a specified source entity and bulk action.
+ * This can be used to verify depended objects for a certain bulk action to give a report of affected objects beforehand.
+ * For example for a delete action of a certain object, this gives all objects that will also be deleted within the deletion of the source object
+ */
+export const getExamConfigurationMappingDependencies = <ThrowOnError extends boolean = true>(options: Options<GetExamConfigurationMappingDependenciesData, ThrowOnError>) => (options.client ?? client).get<GetExamConfigurationMappingDependenciesResponses, unknown, ThrowOnError>({
+    responseType: 'json',
+    security: [{ scheme: 'bearer', type: 'http' }],
+    url: '/admin-api/v1/exam-configuration-map/{modelId}/dependency',
+    ...options
+});
+
+/**
+ * Get a filtered list of specific entity name keys.
+ *
+ * An entity name key is a minimal entity data object with the entity-type, modelId and the name of the entity.</p>
+ * Filter: The filter attributes accepted by this API depend on the actual entity model (domain object)
+ * and are of the form [domain-attribute-name]=[filter-value]. E.g.: name=abc or type=EXAM. Usually
+ * filter attributes of text type are treated as SQL wildcard with %[text]% to filter all text containing
+ * a given text-snippet.
+ */
+export const getExamConfigurationMappingNames = <ThrowOnError extends boolean = true>(options?: Options<GetExamConfigurationMappingNamesData, ThrowOnError>) => (options?.client ?? client).get<GetExamConfigurationMappingNamesResponses, unknown, ThrowOnError>({
+    responseType: 'json',
+    security: [{ scheme: 'bearer', type: 'http' }],
+    url: '/admin-api/v1/exam-configuration-map/names',
+    ...options
+});
+
+/**
+ * Get a list of entity objects by a given list of model identifiers of entities.
+ */
+export const getExamConfigurationMappingsByIds = <ThrowOnError extends boolean = true>(options: Options<GetExamConfigurationMappingsByIdsData, ThrowOnError>) => (options.client ?? client).get<GetExamConfigurationMappingsByIdsResponses, unknown, ThrowOnError>({
+    responseType: 'json',
+    security: [{ scheme: 'bearer', type: 'http' }],
+    url: '/admin-api/v1/exam-configuration-map/list',
+    ...options
+});
+
+/**
+ * Deletes a single entity (and all its dependencies) by its modelId.
+ *
+ * To check or report what dependent object also would be deleted for a certain entity object, please use the dependency endpoint to get a report of all dependent entity objects.
+ */
+export const hardDelete5 = <ThrowOnError extends boolean = true>(options: Options<HardDelete5Data, ThrowOnError>) => (options.client ?? client).delete<HardDelete5Responses, unknown, ThrowOnError>({
+    ...urlSearchParamsBodySerializer,
+    responseType: 'json',
+    security: [{ scheme: 'bearer', type: 'http' }],
+    url: '/admin-api/v1/configuration_value/{modelId}',
+    ...options,
+    headers: {
+        'Content-Type': 'application/x-www-form-urlencoded',
+        ...options.headers
+    }
+});
+
+/**
+ * Get a single entity by its modelId.
+ */
+export const getConfigurationValueById = <ThrowOnError extends boolean = true>(options: Options<GetConfigurationValueByIdData, ThrowOnError>) => (options.client ?? client).get<GetConfigurationValueByIdResponses, unknown, ThrowOnError>({
+    ...urlSearchParamsBodySerializer,
+    responseType: 'json',
+    security: [{ scheme: 'bearer', type: 'http' }],
+    url: '/admin-api/v1/configuration_value/{modelId}',
+    ...options,
+    headers: {
+        'Content-Type': 'application/x-www-form-urlencoded',
+        ...options.headers
+    }
+});
+
+/**
+ * Get a list of dependency keys of all dependent entity objects for a specified source entity and bulk action.
+ *
+ * Get a list of dependency keys of all dependent entity objects for a specified source entity and bulk action.
+ * This can be used to verify depended objects for a certain bulk action to give a report of affected objects beforehand.
+ * For example for a delete action of a certain object, this gives all objects that will also be deleted within the deletion of the source object
+ */
+export const getConfigurationValueDependencies = <ThrowOnError extends boolean = true>(options: Options<GetConfigurationValueDependenciesData, ThrowOnError>) => (options.client ?? client).get<GetConfigurationValueDependenciesResponses, unknown, ThrowOnError>({
+    responseType: 'json',
+    security: [{ scheme: 'bearer', type: 'http' }],
+    url: '/admin-api/v1/configuration_value/{modelId}/dependency',
+    ...options
+});
+
+/**
+ * Get a filtered list of specific entity name keys.
+ *
+ * An entity name key is a minimal entity data object with the entity-type, modelId and the name of the entity.</p>
+ * Filter: The filter attributes accepted by this API depend on the actual entity model (domain object)
+ * and are of the form [domain-attribute-name]=[filter-value]. E.g.: name=abc or type=EXAM. Usually
+ * filter attributes of text type are treated as SQL wildcard with %[text]% to filter all text containing
+ * a given text-snippet.
+ */
+export const getConfigurationValueNames = <ThrowOnError extends boolean = true>(options?: Options<GetConfigurationValueNamesData, ThrowOnError>) => (options?.client ?? client).get<GetConfigurationValueNamesResponses, unknown, ThrowOnError>({
+    responseType: 'json',
+    security: [{ scheme: 'bearer', type: 'http' }],
+    url: '/admin-api/v1/configuration_value/names',
+    ...options
+});
+
+/**
+ * Get a list of entity objects by a given list of model identifiers of entities.
+ */
+export const getConfigurationValuesByIds = <ThrowOnError extends boolean = true>(options: Options<GetConfigurationValuesByIdsData, ThrowOnError>) => (options.client ?? client).get<GetConfigurationValuesByIdsResponses, unknown, ThrowOnError>({
+    responseType: 'json',
+    security: [{ scheme: 'bearer', type: 'http' }],
+    url: '/admin-api/v1/configuration_value/list',
+    ...options
+});
+
+/**
+ * Deletes a single entity (and all its dependencies) by its modelId.
+ *
+ * To check or report what dependent object also would be deleted for a certain entity object, please use the dependency endpoint to get a report of all dependent entity objects.
+ */
+export const deleteConfigurationAttribute = <ThrowOnError extends boolean = true>(options: Options<DeleteConfigurationAttributeData, ThrowOnError>) => (options.client ?? client).delete<DeleteConfigurationAttributeResponses, unknown, ThrowOnError>({
+    ...urlSearchParamsBodySerializer,
+    responseType: 'json',
+    security: [{ scheme: 'bearer', type: 'http' }],
+    url: '/admin-api/v1/configuration_attribute/{modelId}',
+    ...options,
+    headers: {
+        'Content-Type': 'application/x-www-form-urlencoded',
+        ...options.headers
+    }
+});
+
+/**
+ * Get a single entity by its modelId.
+ */
+export const getConfigurationAttributeById = <ThrowOnError extends boolean = true>(options: Options<GetConfigurationAttributeByIdData, ThrowOnError>) => (options.client ?? client).get<GetConfigurationAttributeByIdResponses, unknown, ThrowOnError>({
+    ...urlSearchParamsBodySerializer,
+    responseType: 'json',
+    security: [{ scheme: 'bearer', type: 'http' }],
+    url: '/admin-api/v1/configuration_attribute/{modelId}',
+    ...options,
+    headers: {
+        'Content-Type': 'application/x-www-form-urlencoded',
+        ...options.headers
+    }
+});
+
+/**
+ * Get a list of dependency keys of all dependent entity objects for a specified source entity and bulk action.
+ *
+ * Get a list of dependency keys of all dependent entity objects for a specified source entity and bulk action.
+ * This can be used to verify depended objects for a certain bulk action to give a report of affected objects beforehand.
+ * For example for a delete action of a certain object, this gives all objects that will also be deleted within the deletion of the source object
+ */
+export const getConfigurationAttributeDependencies = <ThrowOnError extends boolean = true>(options: Options<GetConfigurationAttributeDependenciesData, ThrowOnError>) => (options.client ?? client).get<GetConfigurationAttributeDependenciesResponses, unknown, ThrowOnError>({
+    responseType: 'json',
+    security: [{ scheme: 'bearer', type: 'http' }],
+    url: '/admin-api/v1/configuration_attribute/{modelId}/dependency',
+    ...options
+});
+
+/**
+ * Get a filtered list of specific entity name keys.
+ *
+ * An entity name key is a minimal entity data object with the entity-type, modelId and the name of the entity.</p>
+ * Filter: The filter attributes accepted by this API depend on the actual entity model (domain object)
+ * and are of the form [domain-attribute-name]=[filter-value]. E.g.: name=abc or type=EXAM. Usually
+ * filter attributes of text type are treated as SQL wildcard with %[text]% to filter all text containing
+ * a given text-snippet.
+ */
+export const getConfigurationAttributeNames = <ThrowOnError extends boolean = true>(options?: Options<GetConfigurationAttributeNamesData, ThrowOnError>) => (options?.client ?? client).get<GetConfigurationAttributeNamesResponses, unknown, ThrowOnError>({
+    responseType: 'json',
+    security: [{ scheme: 'bearer', type: 'http' }],
+    url: '/admin-api/v1/configuration_attribute/names',
+    ...options
+});
+
+/**
+ * Get a list of entity objects by a given list of model identifiers of entities.
+ */
+export const getForIds = <ThrowOnError extends boolean = true>(options?: Options<GetForIdsData, ThrowOnError>) => (options?.client ?? client).get<GetForIdsResponses, unknown, ThrowOnError>({
+    responseType: 'json',
+    security: [{ scheme: 'bearer', type: 'http' }],
+    url: '/admin-api/v1/configuration_attribute/list',
+    ...options
+});
+
+/**
+ * Deletes a single entity (and all its dependencies) by its modelId.
+ *
+ * To check or report what dependent object also would be deleted for a certain entity object, please use the dependency endpoint to get a report of all dependent entity objects.
+ */
+export const hardDelete6 = <ThrowOnError extends boolean = true>(options: Options<HardDelete6Data, ThrowOnError>) => (options.client ?? client).delete<HardDelete6Responses, unknown, ThrowOnError>({
+    ...urlSearchParamsBodySerializer,
+    responseType: 'json',
+    security: [{ scheme: 'bearer', type: 'http' }],
+    url: '/admin-api/v1/configuration/{modelId}',
+    ...options,
+    headers: {
+        'Content-Type': 'application/x-www-form-urlencoded',
+        ...options.headers
+    }
+});
+
+/**
+ * Get a single entity by its modelId.
+ */
+export const getConfigurationById = <ThrowOnError extends boolean = true>(options: Options<GetConfigurationByIdData, ThrowOnError>) => (options.client ?? client).get<GetConfigurationByIdResponses, unknown, ThrowOnError>({
+    ...urlSearchParamsBodySerializer,
+    responseType: 'json',
+    security: [{ scheme: 'bearer', type: 'http' }],
+    url: '/admin-api/v1/configuration/{modelId}',
+    ...options,
+    headers: {
+        'Content-Type': 'application/x-www-form-urlencoded',
+        ...options.headers
+    }
+});
+
+/**
+ * Get a list of dependency keys of all dependent entity objects for a specified source entity and bulk action.
+ *
+ * Get a list of dependency keys of all dependent entity objects for a specified source entity and bulk action.
+ * This can be used to verify depended objects for a certain bulk action to give a report of affected objects beforehand.
+ * For example for a delete action of a certain object, this gives all objects that will also be deleted within the deletion of the source object
+ */
+export const getDependencies2 = <ThrowOnError extends boolean = true>(options: Options<GetDependencies2Data, ThrowOnError>) => (options.client ?? client).get<GetDependencies2Responses, unknown, ThrowOnError>({
+    responseType: 'json',
+    security: [{ scheme: 'bearer', type: 'http' }],
+    url: '/admin-api/v1/configuration/{modelId}/dependency',
+    ...options
+});
+
+/**
+ * Get a filtered list of specific entity name keys.
+ *
+ * An entity name key is a minimal entity data object with the entity-type, modelId and the name of the entity.</p>
+ * Filter: The filter attributes accepted by this API depend on the actual entity model (domain object)
+ * and are of the form [domain-attribute-name]=[filter-value]. E.g.: name=abc or type=EXAM. Usually
+ * filter attributes of text type are treated as SQL wildcard with %[text]% to filter all text containing
+ * a given text-snippet.
+ */
+export const getConfigurationNames = <ThrowOnError extends boolean = true>(options?: Options<GetConfigurationNamesData, ThrowOnError>) => (options?.client ?? client).get<GetConfigurationNamesResponses, unknown, ThrowOnError>({
+    responseType: 'json',
+    security: [{ scheme: 'bearer', type: 'http' }],
+    url: '/admin-api/v1/configuration/names',
+    ...options
+});
+
+/**
+ * Get a list of entity objects by a given list of model identifiers of entities.
+ */
+export const getConfigurationsByIds = <ThrowOnError extends boolean = true>(options: Options<GetConfigurationsByIdsData, ThrowOnError>) => (options.client ?? client).get<GetConfigurationsByIdsResponses, unknown, ThrowOnError>({
+    responseType: 'json',
+    security: [{ scheme: 'bearer', type: 'http' }],
+    url: '/admin-api/v1/configuration/list',
+    ...options
+});
+
+export const getTemplateAttributePage = <ThrowOnError extends boolean = true>(options: Options<GetTemplateAttributePageData, ThrowOnError>) => (options.client ?? client).get<GetTemplateAttributePageResponses, unknown, ThrowOnError>({
+    responseType: 'json',
+    security: [{ scheme: 'bearer', type: 'http' }],
+    url: '/admin-api/v1/configuration-node/{parentModelId}/template-attribute',
+    ...options
+});
+
+export const getTemplateAttribute = <ThrowOnError extends boolean = true>(options: Options<GetTemplateAttributeData, ThrowOnError>) => (options.client ?? client).get<GetTemplateAttributeResponses, unknown, ThrowOnError>({
+    responseType: 'json',
+    security: [{ scheme: 'bearer', type: 'http' }],
+    url: '/admin-api/v1/configuration-node/{parentModelId}/template-attribute/{modelId}',
+    ...options
+});
+
+/**
+ * Deletes a single entity (and all its dependencies) by its modelId.
+ *
+ * To check or report what dependent object also would be deleted for a certain entity object, please use the dependency endpoint to get a report of all dependent entity objects.
+ */
+export const deleteConfigurationNode = <ThrowOnError extends boolean = true>(options: Options<DeleteConfigurationNodeData, ThrowOnError>) => (options.client ?? client).delete<DeleteConfigurationNodeResponses, unknown, ThrowOnError>({
+    ...urlSearchParamsBodySerializer,
+    responseType: 'json',
+    security: [{ scheme: 'bearer', type: 'http' }],
+    url: '/admin-api/v1/configuration-node/{modelId}',
+    ...options,
+    headers: {
+        'Content-Type': 'application/x-www-form-urlencoded',
+        ...options.headers
+    }
+});
+
+/**
+ * Get a single entity by its modelId.
+ */
+export const getConfigurationNodeById = <ThrowOnError extends boolean = true>(options: Options<GetConfigurationNodeByIdData, ThrowOnError>) => (options.client ?? client).get<GetConfigurationNodeByIdResponses, unknown, ThrowOnError>({
+    ...urlSearchParamsBodySerializer,
+    responseType: 'json',
+    security: [{ scheme: 'bearer', type: 'http' }],
+    url: '/admin-api/v1/configuration-node/{modelId}',
+    ...options,
+    headers: {
+        'Content-Type': 'application/x-www-form-urlencoded',
+        ...options.headers
+    }
+});
+
+export const settingsPublished = <ThrowOnError extends boolean = true>(options: Options<SettingsPublishedData, ThrowOnError>) => (options.client ?? client).get<SettingsPublishedResponses, unknown, ThrowOnError>({
+    responseType: 'json',
+    security: [{ scheme: 'bearer', type: 'http' }],
+    url: '/admin-api/v1/configuration-node/{modelId}/settings_published',
+    ...options
+});
+
+export const getFollowup = <ThrowOnError extends boolean = true>(options: Options<GetFollowupData, ThrowOnError>) => (options.client ?? client).get<GetFollowupResponses, unknown, ThrowOnError>({
+    responseType: 'json',
+    security: [{ scheme: 'bearer', type: 'http' }],
+    url: '/admin-api/v1/configuration-node/{modelId}/followup',
+    ...options
+});
+
+export const downloadPlainXmlConfig = <ThrowOnError extends boolean = true>(options: Options<DownloadPlainXmlConfigData, ThrowOnError>) => (options.client ?? client).get<DownloadPlainXmlConfigResponses, unknown, ThrowOnError>({
+    security: [{ scheme: 'bearer', type: 'http' }],
+    url: '/admin-api/v1/configuration-node/{modelId}/downloadSettings',
+    ...options
+});
+
+/**
+ * Get a list of dependency keys of all dependent entity objects for a specified source entity and bulk action.
+ *
+ * Get a list of dependency keys of all dependent entity objects for a specified source entity and bulk action.
+ * This can be used to verify depended objects for a certain bulk action to give a report of affected objects beforehand.
+ * For example for a delete action of a certain object, this gives all objects that will also be deleted within the deletion of the source object
+ */
+export const getConfigurationNodeDependencies = <ThrowOnError extends boolean = true>(options: Options<GetConfigurationNodeDependenciesData, ThrowOnError>) => (options.client ?? client).get<GetConfigurationNodeDependenciesResponses, unknown, ThrowOnError>({
+    responseType: 'json',
+    security: [{ scheme: 'bearer', type: 'http' }],
+    url: '/admin-api/v1/configuration-node/{modelId}/dependency',
+    ...options
+});
+
+export const getConfigKey = <ThrowOnError extends boolean = true>(options: Options<GetConfigKeyData, ThrowOnError>) => (options.client ?? client).get<GetConfigKeyResponses, unknown, ThrowOnError>({
+    responseType: 'json',
+    security: [{ scheme: 'bearer', type: 'http' }],
+    url: '/admin-api/v1/configuration-node/{modelId}/configkey',
+    ...options
+});
+
+/**
+ * Get a filtered list of specific entity name keys.
+ *
+ * An entity name key is a minimal entity data object with the entity-type, modelId and the name of the entity.</p>
+ * Filter: The filter attributes accepted by this API depend on the actual entity model (domain object)
+ * and are of the form [domain-attribute-name]=[filter-value]. E.g.: name=abc or type=EXAM. Usually
+ * filter attributes of text type are treated as SQL wildcard with %[text]% to filter all text containing
+ * a given text-snippet.
+ */
+export const getConfigurationNodeNames = <ThrowOnError extends boolean = true>(options?: Options<GetConfigurationNodeNamesData, ThrowOnError>) => (options?.client ?? client).get<GetConfigurationNodeNamesResponses, unknown, ThrowOnError>({
+    responseType: 'json',
+    security: [{ scheme: 'bearer', type: 'http' }],
+    url: '/admin-api/v1/configuration-node/names',
+    ...options
+});
+
+/**
+ * Get a list of entity objects by a given list of model identifiers of entities.
+ */
+export const getConfigurationNodesByIds = <ThrowOnError extends boolean = true>(options: Options<GetConfigurationNodesByIdsData, ThrowOnError>) => (options.client ?? client).get<GetConfigurationNodesByIdsResponses, unknown, ThrowOnError>({
+    responseType: 'json',
+    security: [{ scheme: 'bearer', type: 'http' }],
+    url: '/admin-api/v1/configuration-node/list',
+    ...options
+});
+
+export const getTableValues1 = <ThrowOnError extends boolean = true>(options: Options<GetTableValues1Data, ThrowOnError>) => (options.client ?? client).get<GetTableValues1Responses, unknown, ThrowOnError>({
+    responseType: 'json',
+    security: [{ scheme: 'bearer', type: 'http' }],
+    url: '/admin-api/v1/config-template/seb-settings/{modelId}/table',
+    ...options
+});
+
+/**
+ * Deletes a single entity (and all its dependencies) by its modelId.
+ *
+ * To check or report what dependent object also would be deleted for a certain entity object, please use the dependency endpoint to get a report of all dependent entity objects.
+ */
+export const deleteSebClientConfig = <ThrowOnError extends boolean = true>(options: Options<DeleteSebClientConfigData, ThrowOnError>) => (options.client ?? client).delete<DeleteSebClientConfigResponses, unknown, ThrowOnError>({
+    ...urlSearchParamsBodySerializer,
+    responseType: 'json',
+    security: [{ scheme: 'bearer', type: 'http' }],
+    url: '/admin-api/v1/client_configuration/{modelId}',
+    ...options,
+    headers: {
+        'Content-Type': 'application/x-www-form-urlencoded',
+        ...options.headers
+    }
+});
+
+/**
+ * Get a single entity by its modelId.
+ */
+export const getBy2 = <ThrowOnError extends boolean = true>(options: Options<GetBy2Data, ThrowOnError>) => (options.client ?? client).get<GetBy2Responses, unknown, ThrowOnError>({
+    ...urlSearchParamsBodySerializer,
+    responseType: 'json',
+    security: [{ scheme: 'bearer', type: 'http' }],
+    url: '/admin-api/v1/client_configuration/{modelId}',
+    ...options,
+    headers: {
+        'Content-Type': 'application/x-www-form-urlencoded',
+        ...options.headers
+    }
+});
+
+/**
+ * Get a list of dependency keys of all dependent entity objects for a specified source entity and bulk action.
+ *
+ * Get a list of dependency keys of all dependent entity objects for a specified source entity and bulk action.
+ * This can be used to verify depended objects for a certain bulk action to give a report of affected objects beforehand.
+ * For example for a delete action of a certain object, this gives all objects that will also be deleted within the deletion of the source object
+ */
+export const getSebClientConfigDependencies = <ThrowOnError extends boolean = true>(options: Options<GetSebClientConfigDependenciesData, ThrowOnError>) => (options.client ?? client).get<GetSebClientConfigDependenciesResponses, unknown, ThrowOnError>({
+    responseType: 'json',
+    security: [{ scheme: 'bearer', type: 'http' }],
+    url: '/admin-api/v1/client_configuration/{modelId}/dependency',
+    ...options
+});
+
+/**
+ * Get a filtered list of specific entity name keys.
+ *
+ * An entity name key is a minimal entity data object with the entity-type, modelId and the name of the entity.</p>
+ * Filter: The filter attributes accepted by this API depend on the actual entity model (domain object)
+ * and are of the form [domain-attribute-name]=[filter-value]. E.g.: name=abc or type=EXAM. Usually
+ * filter attributes of text type are treated as SQL wildcard with %[text]% to filter all text containing
+ * a given text-snippet.
+ */
+export const getSebClientConfigNames = <ThrowOnError extends boolean = true>(options?: Options<GetSebClientConfigNamesData, ThrowOnError>) => (options?.client ?? client).get<GetSebClientConfigNamesResponses, unknown, ThrowOnError>({
+    responseType: 'json',
+    security: [{ scheme: 'bearer', type: 'http' }],
+    url: '/admin-api/v1/client_configuration/names',
+    ...options
+});
+
+/**
+ * Get a list of entity objects by a given list of model identifiers of entities.
+ */
+export const getSebClientConfigsByIds = <ThrowOnError extends boolean = true>(options: Options<GetSebClientConfigsByIdsData, ThrowOnError>) => (options.client ?? client).get<GetSebClientConfigsByIdsResponses, unknown, ThrowOnError>({
+    responseType: 'json',
+    security: [{ scheme: 'bearer', type: 'http' }],
+    url: '/admin-api/v1/client_configuration/list',
+    ...options
+});
+
+/**
+ * Get a page of all specific domain entity that are currently inactive.
+ *
+ * Sorting: the sort parameter to sort the list of entities before paging
+ * the sort parameter is the name of the entity-model attribute to sort with a leading '-' sign for
+ * descending sort order. Note that not all entity-model attribute are suited for sorting while the most
+ * are.
+ *
+ */
+export const getInactiveSebClientConfigs = <ThrowOnError extends boolean = true>(options?: Options<GetInactiveSebClientConfigsData, ThrowOnError>) => (options?.client ?? client).get<GetInactiveSebClientConfigsResponses, unknown, ThrowOnError>({
+    responseType: 'json',
+    security: [{ scheme: 'bearer', type: 'http' }],
+    url: '/admin-api/v1/client_configuration/inactive',
+    ...options
+});
+
+export const downloadSebConfig = <ThrowOnError extends boolean = true>(options: Options<DownloadSebConfigData, ThrowOnError>) => (options.client ?? client).get<DownloadSebConfigResponses, unknown, ThrowOnError>({
+    security: [{ scheme: 'bearer', type: 'http' }],
+    url: '/admin-api/v1/client_configuration/download/{modelId}',
+    ...options
+});
+
+export const getClientCredentials = <ThrowOnError extends boolean = true>(options: Options<GetClientCredentialsData, ThrowOnError>) => (options.client ?? client).get<GetClientCredentialsResponses, unknown, ThrowOnError>({
+    responseType: 'json',
+    security: [{ scheme: 'bearer', type: 'http' }],
+    url: '/admin-api/v1/client_configuration/credentials/{modelId}',
+    ...options
+});
+
+/**
+ * Get a page of all specific domain entity that are currently active.
+ *
+ * Sorting: the sort parameter to sort the list of entities before paging
+ * the sort parameter is the name of the entity-model attribute to sort with a leading '-' sign for
+ * descending sort order. Note that not all entity-model attribute are suited for sorting while the most
+ * are.
+ *
+ */
+export const getActiveSebClientConfigs = <ThrowOnError extends boolean = true>(options?: Options<GetActiveSebClientConfigsData, ThrowOnError>) => (options?.client ?? client).get<GetActiveSebClientConfigsResponses, unknown, ThrowOnError>({
+    responseType: 'json',
+    security: [{ scheme: 'bearer', type: 'http' }],
+    url: '/admin-api/v1/client_configuration/active',
+    ...options
+});
+
+/**
+ * Deletes a single entity (and all its dependencies) by its modelId.
+ *
+ * To check or report what dependent object also would be deleted for a certain entity object, please use the dependency endpoint to get a report of all dependent entity objects.
+ */
+export const deleteClientGroup = <ThrowOnError extends boolean = true>(options: Options<DeleteClientGroupData, ThrowOnError>) => (options.client ?? client).delete<DeleteClientGroupResponses, unknown, ThrowOnError>({
+    ...urlSearchParamsBodySerializer,
+    responseType: 'json',
+    security: [{ scheme: 'bearer', type: 'http' }],
+    url: '/admin-api/v1/client-group/{modelId}',
+    ...options,
+    headers: {
+        'Content-Type': 'application/x-www-form-urlencoded',
+        ...options.headers
+    }
+});
+
+/**
+ * Get a single entity by its modelId.
+ */
+export const getClientGroupById = <ThrowOnError extends boolean = true>(options: Options<GetClientGroupByIdData, ThrowOnError>) => (options.client ?? client).get<GetClientGroupByIdResponses, unknown, ThrowOnError>({
+    ...urlSearchParamsBodySerializer,
+    responseType: 'json',
+    security: [{ scheme: 'bearer', type: 'http' }],
+    url: '/admin-api/v1/client-group/{modelId}',
+    ...options,
+    headers: {
+        'Content-Type': 'application/x-www-form-urlencoded',
+        ...options.headers
+    }
+});
+
+/**
+ * Get a list of dependency keys of all dependent entity objects for a specified source entity and bulk action.
+ *
+ * Get a list of dependency keys of all dependent entity objects for a specified source entity and bulk action.
+ * This can be used to verify depended objects for a certain bulk action to give a report of affected objects beforehand.
+ * For example for a delete action of a certain object, this gives all objects that will also be deleted within the deletion of the source object
+ */
+export const getClientGroupDependencies = <ThrowOnError extends boolean = true>(options: Options<GetClientGroupDependenciesData, ThrowOnError>) => (options.client ?? client).get<GetClientGroupDependenciesResponses, unknown, ThrowOnError>({
+    responseType: 'json',
+    security: [{ scheme: 'bearer', type: 'http' }],
+    url: '/admin-api/v1/client-group/{modelId}/dependency',
+    ...options
+});
+
+/**
+ * Get a filtered list of specific entity name keys.
+ *
+ * An entity name key is a minimal entity data object with the entity-type, modelId and the name of the entity.</p>
+ * Filter: The filter attributes accepted by this API depend on the actual entity model (domain object)
+ * and are of the form [domain-attribute-name]=[filter-value]. E.g.: name=abc or type=EXAM. Usually
+ * filter attributes of text type are treated as SQL wildcard with %[text]% to filter all text containing
+ * a given text-snippet.
+ */
+export const getClientGroupNames = <ThrowOnError extends boolean = true>(options?: Options<GetClientGroupNamesData, ThrowOnError>) => (options?.client ?? client).get<GetClientGroupNamesResponses, unknown, ThrowOnError>({
+    responseType: 'json',
+    security: [{ scheme: 'bearer', type: 'http' }],
+    url: '/admin-api/v1/client-group/names',
+    ...options
+});
+
+/**
+ * Get a list of entity objects by a given list of model identifiers of entities.
+ */
+export const getClientGroupsByIds = <ThrowOnError extends boolean = true>(options: Options<GetClientGroupsByIdsData, ThrowOnError>) => (options.client ?? client).get<GetClientGroupsByIdsResponses, unknown, ThrowOnError>({
+    responseType: 'json',
+    security: [{ scheme: 'bearer', type: 'http' }],
+    url: '/admin-api/v1/client-group/list',
+    ...options
+});
+
+export const getAlias = <ThrowOnError extends boolean = true>(options: Options<GetAliasData, ThrowOnError>) => (options.client ?? client).get<GetAliasResponses, unknown, ThrowOnError>({
+    responseType: 'json',
+    security: [{ scheme: 'bearer', type: 'http' }],
+    url: '/admin-api/v1/certificate/{alias}',
+    ...options
+});
+
+export const getNames = <ThrowOnError extends boolean = true>(options: Options<GetNamesData, ThrowOnError>) => (options.client ?? client).get<GetNamesResponses, unknown, ThrowOnError>({
+    responseType: 'json',
+    security: [{ scheme: 'bearer', type: 'http' }],
+    url: '/admin-api/v1/certificate/names',
+    ...options
+});
+
+/**
+ * Deletes a single entity (and all its dependencies) by its modelId.
+ *
+ * To check or report what dependent object also would be deleted for a certain entity object, please use the dependency endpoint to get a report of all dependent entity objects.
+ */
+export const deleteBatchAction = <ThrowOnError extends boolean = true>(options: Options<DeleteBatchActionData, ThrowOnError>) => (options.client ?? client).delete<DeleteBatchActionResponses, unknown, ThrowOnError>({
+    ...urlSearchParamsBodySerializer,
+    responseType: 'json',
+    security: [{ scheme: 'bearer', type: 'http' }],
+    url: '/admin-api/v1/batch-action/{modelId}',
+    ...options,
+    headers: {
+        'Content-Type': 'application/x-www-form-urlencoded',
+        ...options.headers
+    }
+});
+
+/**
+ * Get a single entity by its modelId.
+ */
+export const getBatchActionById = <ThrowOnError extends boolean = true>(options: Options<GetBatchActionByIdData, ThrowOnError>) => (options.client ?? client).get<GetBatchActionByIdResponses, unknown, ThrowOnError>({
+    ...urlSearchParamsBodySerializer,
+    responseType: 'json',
+    security: [{ scheme: 'bearer', type: 'http' }],
+    url: '/admin-api/v1/batch-action/{modelId}',
+    ...options,
+    headers: {
+        'Content-Type': 'application/x-www-form-urlencoded',
+        ...options.headers
+    }
+});
+
+/**
+ * Get a list of dependency keys of all dependent entity objects for a specified source entity and bulk action.
+ *
+ * Get a list of dependency keys of all dependent entity objects for a specified source entity and bulk action.
+ * This can be used to verify depended objects for a certain bulk action to give a report of affected objects beforehand.
+ * For example for a delete action of a certain object, this gives all objects that will also be deleted within the deletion of the source object
+ */
+export const getBatchActionDependencies = <ThrowOnError extends boolean = true>(options: Options<GetBatchActionDependenciesData, ThrowOnError>) => (options.client ?? client).get<GetBatchActionDependenciesResponses, unknown, ThrowOnError>({
+    responseType: 'json',
+    security: [{ scheme: 'bearer', type: 'http' }],
+    url: '/admin-api/v1/batch-action/{modelId}/dependency',
+    ...options
+});
+
+/**
+ * Get a filtered list of specific entity name keys.
+ *
+ * An entity name key is a minimal entity data object with the entity-type, modelId and the name of the entity.</p>
+ * Filter: The filter attributes accepted by this API depend on the actual entity model (domain object)
+ * and are of the form [domain-attribute-name]=[filter-value]. E.g.: name=abc or type=EXAM. Usually
+ * filter attributes of text type are treated as SQL wildcard with %[text]% to filter all text containing
+ * a given text-snippet.
+ */
+export const getBatchActionNames = <ThrowOnError extends boolean = true>(options?: Options<GetBatchActionNamesData, ThrowOnError>) => (options?.client ?? client).get<GetBatchActionNamesResponses, unknown, ThrowOnError>({
+    responseType: 'json',
+    security: [{ scheme: 'bearer', type: 'http' }],
+    url: '/admin-api/v1/batch-action/names',
+    ...options
+});
+
+/**
+ * Get a list of entity objects by a given list of model identifiers of entities.
+ */
+export const getBatchActionsByIds = <ThrowOnError extends boolean = true>(options: Options<GetBatchActionsByIdsData, ThrowOnError>) => (options.client ?? client).get<GetBatchActionsByIdsResponses, unknown, ThrowOnError>({
+    responseType: 'json',
+    security: [{ scheme: 'bearer', type: 'http' }],
+    url: '/admin-api/v1/batch-action/list',
+    ...options
+});
+
+/**
+ * Force deletes a single entity (and all its dependencies) by its modelId.
+ *
+ * To check or report what dependent object also would be deleted for a certain entity object, please use the dependency endpoint to get a report of all dependent entity objects.
+ */
+export const forceDeleteUserActivityLog = <ThrowOnError extends boolean = true>(options: Options<ForceDeleteUserActivityLogData, ThrowOnError>) => (options.client ?? client).delete<ForceDeleteUserActivityLogResponses, unknown, ThrowOnError>({
+    ...urlSearchParamsBodySerializer,
+    responseType: 'json',
+    security: [{ scheme: 'bearer', type: 'http' }],
+    url: '/admin-api/v1/useractivity/{modelId}/force',
+    ...options,
+    headers: {
+        'Content-Type': 'application/x-www-form-urlencoded',
+        ...options.headers
+    }
+});
+
+/**
+ * Force deletes a single entity (and all its dependencies) by its modelId.
+ *
+ * To check or report what dependent object also would be deleted for a certain entity object, please use the dependency endpoint to get a report of all dependent entity objects.
+ */
+export const forceDeleteUserAccount = <ThrowOnError extends boolean = true>(options: Options<ForceDeleteUserAccountData, ThrowOnError>) => (options.client ?? client).delete<ForceDeleteUserAccountResponses, unknown, ThrowOnError>({
+    ...urlSearchParamsBodySerializer,
+    responseType: 'json',
+    security: [{ scheme: 'bearer', type: 'http' }],
+    url: '/admin-api/v1/useraccount/{modelId}/force',
+    ...options,
+    headers: {
+        'Content-Type': 'application/x-www-form-urlencoded',
+        ...options.headers
+    }
+});
+
+/**
+ * Force deletes a single entity (and all its dependencies) by its modelId.
+ *
+ * To check or report what dependent object also would be deleted for a certain entity object, please use the dependency endpoint to get a report of all dependent entity objects.
+ */
+export const forceDeleteClientEvent = <ThrowOnError extends boolean = true>(options: Options<ForceDeleteClientEventData, ThrowOnError>) => (options.client ?? client).delete<ForceDeleteClientEventResponses, unknown, ThrowOnError>({
+    ...urlSearchParamsBodySerializer,
+    responseType: 'json',
+    security: [{ scheme: 'bearer', type: 'http' }],
+    url: '/admin-api/v1/seb-client-event/{modelId}/force',
+    ...options,
+    headers: {
+        'Content-Type': 'application/x-www-form-urlencoded',
+        ...options.headers
+    }
+});
+
+/**
+ * Force deletes a single entity (and all its dependencies) by its modelId.
+ *
+ * To check or report what dependent object also would be deleted for a certain entity object, please use the dependency endpoint to get a report of all dependent entity objects.
+ */
+export const forceDeleteClientConnection = <ThrowOnError extends boolean = true>(options: Options<ForceDeleteClientConnectionData, ThrowOnError>) => (options.client ?? client).delete<ForceDeleteClientConnectionResponses, unknown, ThrowOnError>({
+    ...urlSearchParamsBodySerializer,
+    responseType: 'json',
+    security: [{ scheme: 'bearer', type: 'http' }],
+    url: '/admin-api/v1/seb-client-connection/{modelId}/force',
+    ...options,
+    headers: {
+        'Content-Type': 'application/x-www-form-urlencoded',
+        ...options.headers
+    }
+});
+
+/**
+ * Force deletes a single entity (and all its dependencies) by its modelId.
+ *
+ * To check or report what dependent object also would be deleted for a certain entity object, please use the dependency endpoint to get a report of all dependent entity objects.
+ */
+export const forceDeleteOrientation = <ThrowOnError extends boolean = true>(options: Options<ForceDeleteOrientationData, ThrowOnError>) => (options.client ?? client).delete<ForceDeleteOrientationResponses, unknown, ThrowOnError>({
+    ...urlSearchParamsBodySerializer,
+    responseType: 'json',
+    security: [{ scheme: 'bearer', type: 'http' }],
+    url: '/admin-api/v1/orientation/{modelId}/force',
+    ...options,
+    headers: {
+        'Content-Type': 'application/x-www-form-urlencoded',
+        ...options.headers
+    }
+});
+
+/**
+ * Force deletes a single entity (and all its dependencies) by its modelId.
+ *
+ * To check or report what dependent object also would be deleted for a certain entity object, please use the dependency endpoint to get a report of all dependent entity objects.
+ */
+export const forceDeleteView = <ThrowOnError extends boolean = true>(options: Options<ForceDeleteViewData, ThrowOnError>) => (options.client ?? client).delete<ForceDeleteViewResponses, unknown, ThrowOnError>({
+    ...urlSearchParamsBodySerializer,
+    responseType: 'json',
+    security: [{ scheme: 'bearer', type: 'http' }],
+    url: '/admin-api/v1/orientation/view/{modelId}/force',
+    ...options,
+    headers: {
+        'Content-Type': 'application/x-www-form-urlencoded',
+        ...options.headers
+    }
+});
+
+/**
+ * Force deletes a single entity (and all its dependencies) by its modelId.
+ *
+ * To check or report what dependent object also would be deleted for a certain entity object, please use the dependency endpoint to get a report of all dependent entity objects.
+ */
+export const forceDeleteLmsSetup = <ThrowOnError extends boolean = true>(options: Options<ForceDeleteLmsSetupData, ThrowOnError>) => (options.client ?? client).delete<ForceDeleteLmsSetupResponses, unknown, ThrowOnError>({
+    ...urlSearchParamsBodySerializer,
+    responseType: 'json',
+    security: [{ scheme: 'bearer', type: 'http' }],
+    url: '/admin-api/v1/lms-setup/{modelId}/force',
+    ...options,
+    headers: {
+        'Content-Type': 'application/x-www-form-urlencoded',
+        ...options.headers
+    }
+});
+
+/**
+ * Force deletes a single entity (and all its dependencies) by its modelId.
+ *
+ * To check or report what dependent object also would be deleted for a certain entity object, please use the dependency endpoint to get a report of all dependent entity objects.
+ */
+export const forceDeleteInstitution = <ThrowOnError extends boolean = true>(options: Options<ForceDeleteInstitutionData, ThrowOnError>) => (options.client ?? client).delete<ForceDeleteInstitutionResponses, unknown, ThrowOnError>({
+    ...urlSearchParamsBodySerializer,
+    responseType: 'json',
+    security: [{ scheme: 'bearer', type: 'http' }],
+    url: '/admin-api/v1/institution/{modelId}/force',
+    ...options,
+    headers: {
+        'Content-Type': 'application/x-www-form-urlencoded',
+        ...options.headers
+    }
+});
+
+/**
+ * Force deletes a single entity (and all its dependencies) by its modelId.
+ *
+ * To check or report what dependent object also would be deleted for a certain entity object, please use the dependency endpoint to get a report of all dependent entity objects.
+ */
+export const forceDeleteIndicator = <ThrowOnError extends boolean = true>(options: Options<ForceDeleteIndicatorData, ThrowOnError>) => (options.client ?? client).delete<ForceDeleteIndicatorResponses, unknown, ThrowOnError>({
+    ...urlSearchParamsBodySerializer,
+    responseType: 'json',
+    security: [{ scheme: 'bearer', type: 'http' }],
+    url: '/admin-api/v1/indicator/{modelId}/force',
+    ...options,
+    headers: {
+        'Content-Type': 'application/x-www-form-urlencoded',
+        ...options.headers
+    }
+});
+
+/**
+ * Force deletes a single entity (and all its dependencies) by its modelId.
+ *
+ * To check or report what dependent object also would be deleted for a certain entity object, please use the dependency endpoint to get a report of all dependent entity objects.
+ */
+export const forceHardDelete = <ThrowOnError extends boolean = true>(options: Options<ForceHardDeleteData, ThrowOnError>) => (options.client ?? client).delete<ForceHardDeleteResponses, unknown, ThrowOnError>({
+    ...urlSearchParamsBodySerializer,
+    responseType: 'json',
+    security: [{ scheme: 'bearer', type: 'http' }],
+    url: '/admin-api/v1/exam/{modelId}/force',
+    ...options,
+    headers: {
+        'Content-Type': 'application/x-www-form-urlencoded',
+        ...options.headers
+    }
+});
+
+/**
+ * Force deletes a single entity (and all its dependencies) by its modelId.
+ *
+ * To check or report what dependent object also would be deleted for a certain entity object, please use the dependency endpoint to get a report of all dependent entity objects.
+ */
+export const forceDeleteExamTemplate = <ThrowOnError extends boolean = true>(options: Options<ForceDeleteExamTemplateData, ThrowOnError>) => (options.client ?? client).delete<ForceDeleteExamTemplateResponses, unknown, ThrowOnError>({
+    ...urlSearchParamsBodySerializer,
+    responseType: 'json',
+    security: [{ scheme: 'bearer', type: 'http' }],
+    url: '/admin-api/v1/exam-template/{modelId}/force',
+    ...options,
+    headers: {
+        'Content-Type': 'application/x-www-form-urlencoded',
+        ...options.headers
+    }
+});
+
+/**
+ * Force deletes a single entity (and all its dependencies) by its modelId.
+ *
+ * To check or report what dependent object also would be deleted for a certain entity object, please use the dependency endpoint to get a report of all dependent entity objects.
+ */
+export const forceDeleteExamConfigurationMapping = <ThrowOnError extends boolean = true>(options: Options<ForceDeleteExamConfigurationMappingData, ThrowOnError>) => (options.client ?? client).delete<ForceDeleteExamConfigurationMappingResponses, unknown, ThrowOnError>({
+    ...urlSearchParamsBodySerializer,
+    responseType: 'json',
+    security: [{ scheme: 'bearer', type: 'http' }],
+    url: '/admin-api/v1/exam-configuration-map/{modelId}/force',
+    ...options,
+    headers: {
+        'Content-Type': 'application/x-www-form-urlencoded',
+        ...options.headers
+    }
+});
+
+/**
+ * Force deletes a single entity (and all its dependencies) by its modelId.
+ *
+ * To check or report what dependent object also would be deleted for a certain entity object, please use the dependency endpoint to get a report of all dependent entity objects.
+ */
+export const forceDeleteConfigurationValue = <ThrowOnError extends boolean = true>(options: Options<ForceDeleteConfigurationValueData, ThrowOnError>) => (options.client ?? client).delete<ForceDeleteConfigurationValueResponses, unknown, ThrowOnError>({
+    ...urlSearchParamsBodySerializer,
+    responseType: 'json',
+    security: [{ scheme: 'bearer', type: 'http' }],
+    url: '/admin-api/v1/configuration_value/{modelId}/force',
+    ...options,
+    headers: {
+        'Content-Type': 'application/x-www-form-urlencoded',
+        ...options.headers
+    }
+});
+
+/**
+ * Force deletes a single entity (and all its dependencies) by its modelId.
+ *
+ * To check or report what dependent object also would be deleted for a certain entity object, please use the dependency endpoint to get a report of all dependent entity objects.
+ */
+export const forceDeleteConfigurationAttribute = <ThrowOnError extends boolean = true>(options: Options<ForceDeleteConfigurationAttributeData, ThrowOnError>) => (options.client ?? client).delete<ForceDeleteConfigurationAttributeResponses, unknown, ThrowOnError>({
+    ...urlSearchParamsBodySerializer,
+    responseType: 'json',
+    security: [{ scheme: 'bearer', type: 'http' }],
+    url: '/admin-api/v1/configuration_attribute/{modelId}/force',
+    ...options,
+    headers: {
+        'Content-Type': 'application/x-www-form-urlencoded',
+        ...options.headers
+    }
+});
+
+/**
+ * Force deletes a single entity (and all its dependencies) by its modelId.
+ *
+ * To check or report what dependent object also would be deleted for a certain entity object, please use the dependency endpoint to get a report of all dependent entity objects.
+ */
+export const forceDeleteConfiguration = <ThrowOnError extends boolean = true>(options: Options<ForceDeleteConfigurationData, ThrowOnError>) => (options.client ?? client).delete<ForceDeleteConfigurationResponses, unknown, ThrowOnError>({
+    ...urlSearchParamsBodySerializer,
+    responseType: 'json',
+    security: [{ scheme: 'bearer', type: 'http' }],
+    url: '/admin-api/v1/configuration/{modelId}/force',
+    ...options,
+    headers: {
+        'Content-Type': 'application/x-www-form-urlencoded',
+        ...options.headers
+    }
+});
+
+/**
+ * Force deletes a single entity (and all its dependencies) by its modelId.
+ *
+ * To check or report what dependent object also would be deleted for a certain entity object, please use the dependency endpoint to get a report of all dependent entity objects.
+ */
+export const forceDeleteConfigurationNode = <ThrowOnError extends boolean = true>(options: Options<ForceDeleteConfigurationNodeData, ThrowOnError>) => (options.client ?? client).delete<ForceDeleteConfigurationNodeResponses, unknown, ThrowOnError>({
+    ...urlSearchParamsBodySerializer,
+    responseType: 'json',
+    security: [{ scheme: 'bearer', type: 'http' }],
+    url: '/admin-api/v1/configuration-node/{modelId}/force',
+    ...options,
+    headers: {
+        'Content-Type': 'application/x-www-form-urlencoded',
+        ...options.headers
+    }
+});
+
+/**
+ * Force deletes a single entity (and all its dependencies) by its modelId.
+ *
+ * To check or report what dependent object also would be deleted for a certain entity object, please use the dependency endpoint to get a report of all dependent entity objects.
+ */
+export const forceDeleteSebClientConfig = <ThrowOnError extends boolean = true>(options: Options<ForceDeleteSebClientConfigData, ThrowOnError>) => (options.client ?? client).delete<ForceDeleteSebClientConfigResponses, unknown, ThrowOnError>({
+    ...urlSearchParamsBodySerializer,
+    responseType: 'json',
+    security: [{ scheme: 'bearer', type: 'http' }],
+    url: '/admin-api/v1/client_configuration/{modelId}/force',
+    ...options,
+    headers: {
+        'Content-Type': 'application/x-www-form-urlencoded',
+        ...options.headers
+    }
+});
+
+/**
+ * Force deletes a single entity (and all its dependencies) by its modelId.
+ *
+ * To check or report what dependent object also would be deleted for a certain entity object, please use the dependency endpoint to get a report of all dependent entity objects.
+ */
+export const forceDeleteClientGroup = <ThrowOnError extends boolean = true>(options: Options<ForceDeleteClientGroupData, ThrowOnError>) => (options.client ?? client).delete<ForceDeleteClientGroupResponses, unknown, ThrowOnError>({
+    ...urlSearchParamsBodySerializer,
+    responseType: 'json',
+    security: [{ scheme: 'bearer', type: 'http' }],
+    url: '/admin-api/v1/client-group/{modelId}/force',
+    ...options,
+    headers: {
+        'Content-Type': 'application/x-www-form-urlencoded',
+        ...options.headers
+    }
+});
+
+/**
+ * Force deletes a single entity (and all its dependencies) by its modelId.
+ *
+ * To check or report what dependent object also would be deleted for a certain entity object, please use the dependency endpoint to get a report of all dependent entity objects.
+ */
+export const forceDeleteBatchAction = <ThrowOnError extends boolean = true>(options: Options<ForceDeleteBatchActionData, ThrowOnError>) => (options.client ?? client).delete<ForceDeleteBatchActionResponses, unknown, ThrowOnError>({
+    ...urlSearchParamsBodySerializer,
+    responseType: 'json',
+    security: [{ scheme: 'bearer', type: 'http' }],
+    url: '/admin-api/v1/batch-action/{modelId}/force',
+    ...options,
+    headers: {
+        'Content-Type': 'application/x-www-form-urlencoded',
+        ...options.headers
+    }
 });

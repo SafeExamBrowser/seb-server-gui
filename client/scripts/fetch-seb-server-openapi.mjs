@@ -4,25 +4,25 @@ import { mkdir, writeFile } from "node:fs/promises";
 import { dirname, resolve } from "node:path";
 import { format } from "prettier";
 
-import { transformSebServerSpec } from "./openapi/transformSebServerSpec.mjs";
-
 const DEFAULT_OPENAPI_URL = "http://localhost:8080/v3/api-docs";
 const OPENAPI_URL = process.env.SEB_SERVER_OPENAPI_URL ?? DEFAULT_OPENAPI_URL;
 
-const RAW_OUTPUT = resolve(
-    "src/api/seb-server/openapi/seb-server.openapi.json",
-);
-const USER_ACCOUNT_OUTPUT = resolve(
-    "src/api/seb-server/openapi/seb-server.user-account.openapi.json",
-);
+const OUTPUT = resolve("src/api/seb-server/openapi/seb-server.openapi.json");
 
-const writeJson = async (path, value) => {
-    await mkdir(dirname(path), { recursive: true });
-    const formatted = await format(JSON.stringify(value), {
-        parser: "json",
-        tabWidth: 4,
-    });
-    await writeFile(path, formatted);
+/** Strip every `format: int64` so generated TS uses `number` and Zod uses `z.number()`
+ *  instead of drifting between `number` and `bigint`. Safe because all SEB Server ids
+ *  fit in JavaScript's 53-bit safe integer range. */
+const dropInt64Format = (value) => {
+    if (Array.isArray(value)) {
+        value.forEach(dropInt64Format);
+        return;
+    }
+    if (value && typeof value === "object") {
+        if (value.type === "integer" && value.format === "int64") {
+            delete value.format;
+        }
+        Object.values(value).forEach(dropInt64Format);
+    }
 };
 
 const response = await fetch(OPENAPI_URL, {
@@ -35,13 +35,18 @@ if (!response.ok) {
     );
 }
 
-const rawSpec = await response.json();
-const userAccountSpec = transformSebServerSpec(rawSpec);
+const spec = await response.json();
+dropInt64Format(spec);
 
-await writeJson(RAW_OUTPUT, rawSpec);
-await writeJson(USER_ACCOUNT_OUTPUT, userAccountSpec);
+const formatted = await format(JSON.stringify(spec), {
+    parser: "json",
+    tabWidth: 4,
+});
 
-const operationCount = Object.values(userAccountSpec.paths).reduce(
+await mkdir(dirname(OUTPUT), { recursive: true });
+await writeFile(OUTPUT, formatted);
+
+const operationCount = Object.values(spec.paths ?? {}).reduce(
     (count, pathItem) =>
         count +
         Object.keys(pathItem).filter((method) =>
@@ -51,7 +56,4 @@ const operationCount = Object.values(userAccountSpec.paths).reduce(
 );
 
 console.log(`Fetched ${OPENAPI_URL}`);
-console.log(`Wrote ${RAW_OUTPUT}`);
-console.log(
-    `Wrote ${USER_ACCOUNT_OUTPUT} with ${operationCount} User Account operations`,
-);
+console.log(`Wrote ${OUTPUT} (${operationCount} operations)`);

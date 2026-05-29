@@ -7,8 +7,8 @@ import {
     deleteUserAccount as deleteUserAccountSdk,
     editUserAccount as editUserAccountSdk,
     getCurrentUserAccount as getCurrentUserAccountSdk,
-    getSupervisorNames as getSupervisorNamesSdk,
     getUserAccountById as getUserAccountByIdSdk,
+    getUserAccountSupervisors as getUserAccountSupervisorsSdk,
     getUserAccounts as getUserAccountsSdk,
     registerUserAccount as registerUserAccountSdk,
 } from "@/api/seb-server/generated/hey-api/sdk.gen.ts";
@@ -26,9 +26,9 @@ import {
     zEditUserAccountBody,
     zEditUserAccountResponse,
     zGetCurrentUserAccountResponse,
-    zGetSupervisorNamesQuery,
-    zGetSupervisorNamesResponse,
     zGetUserAccountByIdPath,
+    zGetUserAccountSupervisorsQuery,
+    zGetUserAccountSupervisorsResponse,
     zGetUserAccountByIdResponse,
     zGetUserAccountsQuery,
     zGetUserAccountsResponse,
@@ -73,15 +73,15 @@ export const getCurrentUserAccount = (opts?: RequestOptions) =>
         ({ data }) => zGetCurrentUserAccountResponse.parse(data),
     );
 
-export const getSupervisorNames = (
+export const getUserAccountSupervisors = (
     query?: OptionalParInstitutionId,
     opts?: RequestOptions,
 ) =>
-    getSupervisorNamesSdk({
+    getUserAccountSupervisorsSdk({
         client,
-        query: query ? zGetSupervisorNamesQuery.parse(query) : undefined,
+        query: query ? zGetUserAccountSupervisorsQuery.parse(query) : undefined,
         signal: opts?.signal,
-    }).then(({ data }) => zGetSupervisorNamesResponse.parse(data));
+    }).then(({ data }) => zGetUserAccountSupervisorsResponse.parse(data));
 
 export const createUserAccount = (body: UserAccountCreateRequest) =>
     createUserAccountSdk({

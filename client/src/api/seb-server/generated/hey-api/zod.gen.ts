@@ -2,60 +2,27 @@
 
 import * as z from 'zod';
 
-/**
- * Structured SEB Server API error or validation message.
- */
-export const zApiMessage = z.object({
-    messageCode: z.string().optional(),
-    systemMessage: z.string().optional(),
-    details: z.string().optional(),
-    attributes: z.array(z.string()).optional()
-});
-
-/**
- * User account creation and self-registration form model.
- */
-export const zUserMod = z.object({
-    uuid: z.string().optional(),
-    institutionId: z.int(),
-    name: z.string().min(0).max(255),
-    surname: z.string().min(0).max(255),
-    username: z.string().min(3).max(255),
-    newPassword: z.string().min(8).max(255),
-    confirmNewPassword: z.string(),
-    email: z.string().optional(),
-    language: z.string(),
-    timezone: z.string(),
-    localAccount: z.boolean().optional(),
-    directLogin: z.boolean().optional(),
-    userRoles: z.array(z.enum([
-        'SEB_SERVER_ADMIN',
-        'INSTITUTIONAL_ADMIN',
-        'EXAM_ADMIN',
-        'EXAM_SUPPORTER',
-        'TEACHER'
-    ])).min(1),
-    retypedNewPassword: z.object({
-        empty: z.boolean().optional()
-    }).optional(),
-    creationDate: z.iso.datetime().optional()
-});
-
-/**
- * Request model for changing a user account password.
- */
-export const zPasswordChange = z.object({
-    uuid: z.string(),
-    password: z.string().min(1).optional(),
-    newPassword: z.string().min(8).max(255).optional(),
-    confirmNewPassword: z.string().min(1).optional()
-});
-
-/**
- * Display name key for a SEB Server domain entity.
- */
-export const zEntityName = z.object({
-    modelId: z.string(),
+export const zUserActivityLog = z.object({
+    id: z.int().optional(),
+    userUuid: z.string().optional(),
+    username: z.string().optional(),
+    timestamp: z.int().optional(),
+    activityType: z.enum([
+        'REGISTER',
+        'CREATE',
+        'IMPORT',
+        'EXPORT',
+        'MODIFY',
+        'PASSWORD_CHANGE',
+        'DEACTIVATE',
+        'ACTIVATE',
+        'FINISHED',
+        'DELETE',
+        'LOGIN',
+        'LOGOUT',
+        'ARCHIVE',
+        'REGISTER_INSTRUCTION'
+    ]).optional(),
     entityType: z.enum([
         'CONFIGURATION_ATTRIBUTE',
         'CONFIGURATION_VALUE',
@@ -94,8 +61,9 @@ export const zEntityName = z.object({
         'SCHEDULED_DELETE',
         'SCHEDULED_DELETE_INFO',
         'CONFIGURATION_ATTRIBUTE_DEPRECATION'
-    ]),
-    name: z.string()
+    ]).optional(),
+    entityId: z.string().optional(),
+    message: z.string().optional()
 });
 
 /**
@@ -186,13 +154,499 @@ export const zUserInfo = z.object({
     featurePrivileges: z.array(zFeaturePrivilege).optional()
 });
 
-export const zPageUserInfo = z.object({
-    number_of_pages: z.int().min(-2147483648, { error: 'Invalid value: Expected int32 to be >= -2147483648' }).max(2147483647, { error: 'Invalid value: Expected int32 to be <= 2147483647' }).optional(),
-    page_number: z.int().gte(1).lte(2147483647).optional(),
-    page_size: z.int().gte(1).lte(2147483647).optional(),
-    sort: z.string().optional(),
-    content: z.array(zUserInfo).optional(),
-    complete: z.boolean().optional()
+/**
+ * Request model for changing a user account password.
+ */
+export const zPasswordChange = z.object({
+    uuid: z.string(),
+    password: z.string().min(1).optional(),
+    newPassword: z.string().min(8).max(255).optional(),
+    confirmNewPassword: z.string().min(1).optional()
+});
+
+export const zClientEvent = z.object({
+    id: z.int().optional(),
+    clientConnectionId: z.int().optional(),
+    type: z.enum([
+        'UNKNOWN',
+        'DEBUG_LOG',
+        'INFO_LOG',
+        'WARN_LOG',
+        'ERROR_LOG',
+        'NOTIFICATION',
+        'NOTIFICATION_CONFIRMED'
+    ]).optional(),
+    timestamp: z.int().optional(),
+    serverTime: z.int().optional(),
+    numericValue: z.number().optional(),
+    text: z.string().optional(),
+    value: z.number().optional()
+});
+
+export const zClientConnection = z.object({
+    id: z.int().optional(),
+    institutionId: z.int().optional(),
+    examId: z.int().optional(),
+    status: z.enum([
+        'UNDEFINED',
+        'CONNECTION_REQUESTED',
+        'READY',
+        'ACTIVE',
+        'CLOSED',
+        'DISABLED'
+    ]).optional(),
+    connectionToken: z.string().optional(),
+    examUserSessionId: z.string().optional(),
+    seb_info: z.string().optional(),
+    clientAddress: z.string().optional(),
+    clientOsName: z.string().optional(),
+    clientVersion: z.string().optional(),
+    securityCheckGranted: z.boolean().optional(),
+    clientVersionGranted: z.boolean().optional()
+});
+
+export const zOrientation = z.object({
+    id: z.int().optional(),
+    configAttributeId: z.int(),
+    templateId: z.int().optional(),
+    viewId: z.int().optional(),
+    groupId: z.string().optional(),
+    xPosition: z.int().min(-2147483648, { error: 'Invalid value: Expected int32 to be >= -2147483648' }).max(2147483647, { error: 'Invalid value: Expected int32 to be <= 2147483647' }).optional(),
+    yPosition: z.int().min(-2147483648, { error: 'Invalid value: Expected int32 to be >= -2147483648' }).max(2147483647, { error: 'Invalid value: Expected int32 to be <= 2147483647' }).optional(),
+    width: z.int().min(-2147483648, { error: 'Invalid value: Expected int32 to be >= -2147483648' }).max(2147483647, { error: 'Invalid value: Expected int32 to be <= 2147483647' }).optional(),
+    height: z.int().min(-2147483648, { error: 'Invalid value: Expected int32 to be >= -2147483648' }).max(2147483647, { error: 'Invalid value: Expected int32 to be <= 2147483647' }).optional(),
+    title: z.enum([
+        'NONE',
+        'LEFT',
+        'LEFT_SPAN',
+        'RIGHT',
+        'RIGHT_SPAN',
+        'TOP'
+    ]).optional()
+});
+
+export const zView = z.object({
+    id: z.int().optional(),
+    name: z.string().optional(),
+    columns: z.int().min(-2147483648, { error: 'Invalid value: Expected int32 to be >= -2147483648' }).max(2147483647, { error: 'Invalid value: Expected int32 to be <= 2147483647' }),
+    position: z.int().min(-2147483648, { error: 'Invalid value: Expected int32 to be >= -2147483648' }).max(2147483647, { error: 'Invalid value: Expected int32 to be <= 2147483647' }),
+    templateId: z.int().optional()
+});
+
+export const zLmsSetup = z.object({
+    id: z.int().optional(),
+    institutionId: z.int(),
+    name: z.string().min(3).max(255),
+    lmsType: z.enum([
+        'MOCKUP',
+        'OPEN_EDX',
+        'MOODLE',
+        'MOODLE_PLUGIN',
+        'ANS_DELFT',
+        'OPEN_OLAT'
+    ]),
+    lmsClientname: z.string().optional(),
+    lmsClientsecret: z.string().optional(),
+    lmsUrl: z.string().optional(),
+    lmsRestApiToken: z.string().optional(),
+    lmsProxyHost: z.string().optional(),
+    lmsProxyPort: z.int().min(-2147483648, { error: 'Invalid value: Expected int32 to be >= -2147483648' }).max(2147483647, { error: 'Invalid value: Expected int32 to be <= 2147483647' }).optional(),
+    lmsProxyAuthUsername: z.string().optional(),
+    lmsProxyAuthSecret: z.string().optional(),
+    active: z.boolean().optional(),
+    updateTime: z.int().optional(),
+    connectionId: z.string().optional(),
+    integrationActive: z.boolean().optional()
+});
+
+/**
+ * Structured SEB Server API error or validation message.
+ */
+export const zApiMessage = z.object({
+    messageCode: z.string().optional(),
+    systemMessage: z.string().optional(),
+    details: z.string().optional(),
+    attributes: z.array(z.string()).optional()
+});
+
+export const zLmsSetupError = z.object({
+    errorType: z.enum([
+        'API_NOT_SUPPORTED',
+        'MISSING_ATTRIBUTE',
+        'TOKEN_REQUEST',
+        'QUIZ_ACCESS_API_REQUEST',
+        'QUIZ_RESTRICTION_API_REQUEST',
+        'TEMPLATE_CREATION',
+        'APPLY_FULL_INTEGRATION'
+    ]).optional(),
+    errorMessage: z.string().optional()
+});
+
+export const zLmsSetupTestResult = z.object({
+    lmsType: z.enum([
+        'MOCKUP',
+        'OPEN_EDX',
+        'MOODLE',
+        'MOODLE_PLUGIN',
+        'ANS_DELFT',
+        'OPEN_OLAT'
+    ]).optional(),
+    errors: z.array(zLmsSetupError).optional(),
+    missingLMSSetupAttribute: z.array(zApiMessage).optional()
+});
+
+export const zInstitution = z.object({
+    id: z.int().optional(),
+    name: z.string().min(3).max(255),
+    urlSuffix: z.string().regex(/(^$|.{3,45})/).optional(),
+    logoImage: z.string().optional(),
+    themeName: z.string().optional(),
+    active: z.boolean().optional()
+});
+
+export const zThreshold = z.object({
+    value: z.number(),
+    color: z.string().optional(),
+    icon: z.string().optional()
+});
+
+export const zIndicator = z.object({
+    id: z.int().optional(),
+    examId: z.int(),
+    name: z.string().min(3).max(255),
+    type: z.enum([
+        'UNKNOWN',
+        'LAST_PING',
+        'ERROR_COUNT',
+        'WARN_COUNT',
+        'INFO_COUNT',
+        'BATTERY_STATUS',
+        'WLAN_STATUS'
+    ]),
+    color: z.string().optional(),
+    icon: z.string().optional(),
+    tags: z.string().optional(),
+    thresholds: z.array(zThreshold).optional()
+});
+
+export const zExam = z.object({
+    id: z.int().optional(),
+    institutionId: z.int(),
+    lmsSetupId: z.int().optional(),
+    externalId: z.string(),
+    lmsAvailable: z.boolean().optional(),
+    quizName: z.string().optional(),
+    quizStartTime: z.iso.datetime().optional(),
+    quizEndTime: z.iso.datetime().optional(),
+    type: z.enum([
+        'UNDEFINED',
+        'MANAGED',
+        'BYOD',
+        'VDI'
+    ]),
+    owner: z.string().optional(),
+    supporter: z.array(z.string()).optional(),
+    status: z.enum([
+        'UP_COMING',
+        'TEST_RUN',
+        'RUNNING',
+        'FINISHED',
+        'ARCHIVED'
+    ]).optional(),
+    quitPassword: z.string().optional(),
+    lmsSebRestriction: z.boolean().optional(),
+    browserKeys: z.string().optional(),
+    active: z.boolean().optional(),
+    lastupdate: z.string().optional(),
+    examTemplateId: z.int().optional(),
+    lastModified: z.int().optional(),
+    followupId: z.int().optional(),
+    excludeFromDeletion: z.boolean().optional(),
+    additionalAttributes: z.record(z.string(), z.string()).optional(),
+    startURL: z.string().optional(),
+    description: z.string().optional()
+});
+
+export const zClientGroupTemplate = z.object({
+    id: z.int().optional(),
+    name: z.string().min(3).max(255),
+    type: z.enum([
+        'NONE',
+        'IP_V4_RANGE',
+        'CLIENT_OS',
+        'NAME_ALPHABETICAL_RANGE'
+    ]),
+    color: z.string().optional(),
+    icon: z.string().optional(),
+    ipRangeStart: z.string().optional(),
+    ipRangeEnd: z.string().optional(),
+    clientOS: z.enum([
+        'NONE',
+        'WINDOWS',
+        'MAC_OS',
+        'I_OS',
+        'IPAD_OS',
+        'I_OS_OR_IPAD_OS'
+    ]).optional(),
+    nameRangeStartLetter: z.string().optional(),
+    nameRangeEndLetter: z.string().optional(),
+    screenProctoringEnabled: z.boolean().optional(),
+    examTemplateId: z.int().optional()
+});
+
+export const zIndicatorTemplate = z.object({
+    id: z.int().optional(),
+    examTemplateId: z.int().optional(),
+    name: z.string().min(3).max(255),
+    type: z.enum([
+        'UNKNOWN',
+        'LAST_PING',
+        'ERROR_COUNT',
+        'WARN_COUNT',
+        'INFO_COUNT',
+        'BATTERY_STATUS',
+        'WLAN_STATUS'
+    ]),
+    color: z.string().optional(),
+    icon: z.string().optional(),
+    tags: z.string().optional(),
+    thresholds: z.array(zThreshold).optional()
+});
+
+export const zExamTemplate = z.object({
+    id: z.int().optional(),
+    institutionId: z.int(),
+    name: z.string().min(3).max(255),
+    description: z.string().min(0).max(4000).optional(),
+    examType: z.enum([
+        'UNDEFINED',
+        'MANAGED',
+        'BYOD',
+        'VDI'
+    ]).optional(),
+    supporter: z.array(z.string()).optional(),
+    configurationTemplateId: z.int().optional(),
+    institutionalDefault: z.boolean().optional(),
+    lmsIntegration: z.boolean().optional(),
+    clientConfigurationId: z.int().optional(),
+    indicatorTemplates: z.array(zIndicatorTemplate).optional(),
+    CLIENT_GROUP_TEMPLATES: z.array(zClientGroupTemplate).optional(),
+    EXAM_ATTRIBUTES: z.record(z.string(), z.string()).optional()
+});
+
+export const zExamConfigurationMap = z.object({
+    id: z.int().optional(),
+    institutionId: z.int(),
+    examId: z.int(),
+    quiz_name: z.string().optional(),
+    quiz_description: z.string().optional(),
+    quiz_start_time: z.iso.datetime().optional(),
+    type: z.enum([
+        'UNDEFINED',
+        'MANAGED',
+        'BYOD',
+        'VDI'
+    ]).optional(),
+    examStatus: z.enum([
+        'UP_COMING',
+        'TEST_RUN',
+        'RUNNING',
+        'FINISHED',
+        'ARCHIVED'
+    ]).optional(),
+    configurationNodeId: z.int(),
+    clientGroupId: z.int().optional(),
+    encryptSecret: z.object({
+        empty: z.boolean().optional()
+    }).optional(),
+    confirm_encrypt_secret: z.object({
+        empty: z.boolean().optional()
+    }).optional(),
+    name: z.string().optional(),
+    description: z.string().optional(),
+    status: z.enum([
+        'CONSTRUCTION',
+        'READY_TO_USE',
+        'IN_USE',
+        'ARCHIVED'
+    ]).optional()
+});
+
+export const zConfigurationValue = z.object({
+    id: z.int().optional(),
+    institutionId: z.int().optional(),
+    configurationId: z.int().optional(),
+    configurationAttributeId: z.int().optional(),
+    listIndex: z.int().min(-2147483648, { error: 'Invalid value: Expected int32 to be >= -2147483648' }).max(2147483647, { error: 'Invalid value: Expected int32 to be <= 2147483647' }).optional(),
+    value: z.string().optional()
+});
+
+export const zTableValue = z.object({
+    configurationAttributeId: z.int().optional(),
+    listIndex: z.int().min(-2147483648, { error: 'Invalid value: Expected int32 to be >= -2147483648' }).max(2147483647, { error: 'Invalid value: Expected int32 to be <= 2147483647' }).optional(),
+    value: z.string().optional()
+});
+
+export const zConfigurationTableValues = z.object({
+    institutionId: z.int(),
+    configurationId: z.int(),
+    configurationAttributeId: z.int(),
+    tableValues: z.array(zTableValue).optional()
+});
+
+export const zConfigurationAttribute = z.object({
+    id: z.int().optional(),
+    parentId: z.int().optional(),
+    name: z.string().min(3).max(255),
+    type: z.enum([
+        'LABEL',
+        'TEXT_FIELD',
+        'PASSWORD_FIELD',
+        'TEXT_AREA',
+        'TEXT_FIELD_LIST',
+        'CHECKBOX',
+        'SLIDER',
+        'INTEGER',
+        'DECIMAL',
+        'SINGLE_SELECTION',
+        'COMBO_SELECTION',
+        'RADIO_SELECTION',
+        'MULTI_SELECTION',
+        'MULTI_CHECKBOX_SELECTION',
+        'COLOR_SELECTOR',
+        'FILE_UPLOAD',
+        'TABLE',
+        'INLINE_TABLE',
+        'COMPOSITE_TABLE'
+    ]),
+    resources: z.string().optional(),
+    validator: z.string().optional(),
+    dependencies: z.string().optional(),
+    defaultValue: z.string().optional()
+});
+
+export const zConfiguration = z.object({
+    id: z.int().optional(),
+    institutionId: z.int(),
+    configurationNodeId: z.int(),
+    version: z.string().optional(),
+    versionDate: z.iso.datetime(),
+    followup: z.boolean()
+});
+
+export const zConfigurationNode = z.object({
+    id: z.int().optional(),
+    institutionId: z.int(),
+    templateId: z.int().optional(),
+    name: z.string().min(3).max(255),
+    description: z.string().min(0).max(4000).optional(),
+    type: z.enum(['TEMPLATE', 'EXAM_CONFIG']),
+    owner: z.string().optional(),
+    status: z.enum([
+        'CONSTRUCTION',
+        'READY_TO_USE',
+        'IN_USE',
+        'ARCHIVED'
+    ]).optional(),
+    lastUpdateTime: z.iso.datetime().optional(),
+    lastUpdateUser: z.string().optional()
+});
+
+export const zConfigCreationInfo = z.object({
+    id: z.int(),
+    name: z.string().min(3).max(255),
+    description: z.string().min(0).max(4000).optional(),
+    'with-history': z.boolean().optional(),
+    type: z.enum(['TEMPLATE', 'EXAM_CONFIG']).optional()
+});
+
+export const zSebClientConfig = z.object({
+    id: z.int().optional(),
+    institutionId: z.int(),
+    name: z.string().min(3).max(255),
+    sebConfigPurpose: z.enum(['START_EXAM', 'CONFIGURE_CLIENT']),
+    sebServerPingTime: z.int().optional(),
+    vdiSetup: z.enum(['NO', 'VM_WARE']).optional(),
+    vdiExecutable: z.string().optional(),
+    vdiPath: z.string().optional(),
+    vdiArguments: z.string().optional(),
+    sebServerFallback: z.boolean().optional(),
+    startURL: z.string().optional(),
+    sebServerFallbackTimeout: z.int().optional(),
+    sebServerFallbackAttempts: z.int().min(-2147483648, { error: 'Invalid value: Expected int32 to be >= -2147483648' }).max(2147483647, { error: 'Invalid value: Expected int32 to be <= 2147483647' }).optional(),
+    sebServerFallbackAttemptInterval: z.int().min(-2147483648, { error: 'Invalid value: Expected int32 to be >= -2147483648' }).max(2147483647, { error: 'Invalid value: Expected int32 to be <= 2147483647' }).optional(),
+    sebServerFallbackPasswordHash: z.object({
+        empty: z.boolean().optional()
+    }).optional(),
+    sebServerFallbackPasswordHashConfirm: z.object({
+        empty: z.boolean().optional()
+    }).optional(),
+    hashedQuitPassword: z.object({
+        empty: z.boolean().optional()
+    }).optional(),
+    hashedQuitPasswordConfirm: z.object({
+        empty: z.boolean().optional()
+    }).optional(),
+    date: z.iso.datetime().optional(),
+    encryptSecret: z.object({
+        empty: z.boolean().optional()
+    }).optional(),
+    confirm_encrypt_secret: z.object({
+        empty: z.boolean().optional()
+    }).optional(),
+    cert_alias: z.string().optional(),
+    cert_encryption_asym: z.boolean().optional(),
+    active: z.boolean().optional(),
+    lastUpdateTime: z.iso.datetime().optional(),
+    lastUpdateUser: z.string().optional(),
+    exam_selection: z.array(z.int()).optional()
+});
+
+export const zClientGroup = z.object({
+    id: z.int().optional(),
+    examId: z.int(),
+    name: z.string().min(3).max(255),
+    type: z.enum([
+        'NONE',
+        'IP_V4_RANGE',
+        'CLIENT_OS',
+        'NAME_ALPHABETICAL_RANGE'
+    ]),
+    color: z.string().optional(),
+    icon: z.string().optional(),
+    ipRangeStart: z.string().optional(),
+    ipRangeEnd: z.string().optional(),
+    clientOS: z.enum([
+        'NONE',
+        'WINDOWS',
+        'MAC_OS',
+        'I_OS',
+        'IPAD_OS',
+        'I_OS_OR_IPAD_OS'
+    ]).optional(),
+    nameRangeStartLetter: z.string().optional(),
+    nameRangeEndLetter: z.string().optional(),
+    isSPSGroup: z.boolean().optional(),
+    spsgroup: z.boolean().optional()
+});
+
+export const zBatchAction = z.object({
+    id: z.int().optional(),
+    institutionId: z.int(),
+    owner: z.string(),
+    actionType: z.enum([
+        'EXAM_CONFIG_STATE_CHANGE',
+        'EXAM_CONFIG_REST_TEMPLATE_SETTINGS',
+        'EXAM_CONFIG_DELETE',
+        'ARCHIVE_EXAM',
+        'DELETE_EXAM'
+    ]),
+    attributes: z.record(z.string(), z.string()).optional(),
+    sourceIds: z.array(z.string()),
+    successful: z.array(z.string()).optional(),
+    lastUpdate: z.int().optional(),
+    processorId: z.string().optional(),
+    failures: z.record(z.string(), zApiMessage).optional()
 });
 
 /**
@@ -241,6 +695,34 @@ export const zEntityKey = z.object({
     ])
 });
 
+export const zLoginForward = z.object({
+    entityKey: zEntityKey.optional(),
+    actionName: z.string().optional()
+});
+
+export const zTokenLoginInfo = z.object({
+    username: z.string().optional(),
+    userUUID: z.string().optional(),
+    redirect: zLoginForward.optional(),
+    token: z.string().optional()
+});
+
+export const zTokenLoginResponse = z.object({
+    id: z.string().optional(),
+    login_link: z.string().optional()
+});
+
+export const zMultiValueMapStringString = z.object({
+    empty: z.boolean().optional()
+});
+
+export const zRunningExamInfo = z.object({
+    examId: z.string().optional(),
+    name: z.string().optional(),
+    url: z.string().optional(),
+    lmsType: z.string().optional()
+});
+
 /**
  * Error entry inside an entity processing report.
  */
@@ -263,13 +745,1165 @@ export const zEntityProcessingReport = z.object({
     ])
 });
 
+export const zSessionInfo = z.object({
+    uuid: z.string().optional(),
+    clientName: z.string().optional(),
+    clientIp: z.string().optional(),
+    clientMachineName: z.string().optional(),
+    clientOsName: z.string().optional(),
+    clientVersion: z.string().optional(),
+    creationTime: z.int().optional(),
+    terminationTime: z.int().optional(),
+    error: z.string().optional()
+});
+
+export const zSessionDeletionInfo = z.object({
+    session: zSessionInfo.optional(),
+    groupName: z.string().optional(),
+    examName: z.string().optional(),
+    examUUID: z.string().optional(),
+    institutionId: z.int().optional(),
+    numberOfScreenshots: z.int().optional()
+});
+
+export const zSessionDeletionReport = z.object({
+    searchName: z.string().optional(),
+    deleteDueTime: z.int().optional(),
+    sebServerDeletions: z.array(zSessionInfo).optional(),
+    spsDeletions: z.array(zSessionDeletionInfo).optional()
+});
+
+export const zScheduledDeleteViewInfo = z.object({
+    examUUID: z.string().optional(),
+    examName: z.string().optional(),
+    examStartTime: z.int().optional(),
+    numberOfSessions: z.string().optional(),
+    spsExamName: z.string().optional(),
+    spsGroups: z.array(z.string()).optional()
+});
+
+export const zScheduledDeleteReport = z.object({
+    id: z.int().optional(),
+    spsId: z.int().optional(),
+    state: z.enum([
+        'PENDING',
+        'SPS_RUNNING',
+        'RUNNING',
+        'FINISHED'
+    ]).optional(),
+    deleteDueTime: z.int().optional(),
+    scheduleTime: z.int().optional(),
+    startTime: z.int().optional(),
+    endTime: z.int().optional(),
+    institutionId: z.int().optional(),
+    examDeletions: z.array(zScheduledDeleteViewInfo).optional(),
+    spsOnlyDeletions: z.array(zScheduledDeleteViewInfo).optional()
+});
+
+/**
+ * User account creation and self-registration form model.
+ */
+export const zUserMod = z.object({
+    uuid: z.string().optional(),
+    institutionId: z.int(),
+    name: z.string().min(0).max(255),
+    surname: z.string().min(0).max(255),
+    username: z.string().min(3).max(255),
+    newPassword: z.string().min(8).max(255),
+    confirmNewPassword: z.string(),
+    email: z.string().optional(),
+    language: z.string(),
+    timezone: z.string(),
+    localAccount: z.boolean().optional(),
+    directLogin: z.boolean().optional(),
+    userRoles: z.array(z.enum([
+        'SEB_SERVER_ADMIN',
+        'INSTITUTIONAL_ADMIN',
+        'EXAM_ADMIN',
+        'EXAM_SUPPORTER',
+        'TEACHER'
+    ])).min(1),
+    creationDate: z.iso.datetime().optional(),
+    retypedNewPassword: z.object({
+        empty: z.boolean().optional()
+    }).optional()
+});
+
+export const zClientStaticData = z.object({
+    id: z.int().optional(),
+    connectionToken: z.string().optional(),
+    examUserSessionId: z.string().optional(),
+    ask: z.string().optional(),
+    seb_info: z.string().optional(),
+    cg: z.array(z.int()).optional()
+});
+
+export const zMonitoringStaticClientData = z.object({
+    staticClientConnectionData: z.array(zClientStaticData).optional(),
+    duplications: z.array(z.int()).optional()
+});
+
+export const zClientInstruction = z.object({
+    id: z.int().optional(),
+    examId: z.int(),
+    type: z.enum([
+        'SEB_QUIT',
+        'SEB_PROCTORING',
+        'SEB_RECONFIGURE_SETTINGS',
+        'NOTIFICATION_CONFIRM',
+        'SEB_FORCE_LOCK_SCREEN'
+    ]),
+    connectionToken: z.string().min(1).optional(),
+    attributes: z.record(z.string(), z.string()).optional()
+});
+
+export const zProctoringRoomConnection = z.object({
+    serverType: z.enum(['JITSI_MEET', 'ZOOM']).optional(),
+    connectionToken: z.string().optional(),
+    serverHost: z.string().optional(),
+    serverURL: z.string().optional(),
+    roomName: z.string().optional(),
+    subject: z.string().optional(),
+    accessToken: z.object({
+        empty: z.boolean().optional()
+    }).optional(),
+    sdkToken: z.object({
+        empty: z.boolean().optional()
+    }).optional(),
+    roomKey: z.object({
+        empty: z.boolean().optional()
+    }).optional(),
+    apiKey: z.object({
+        empty: z.boolean().optional()
+    }).optional(),
+    meetingId: z.string().optional(),
+    userName: z.string().optional(),
+    roomData: z.string().optional()
+});
+
+export const zSecurityKey = z.object({
+    id: z.int().optional(),
+    institutionId: z.int(),
+    keyType: z.enum([
+        'UNDEFINED',
+        'CONFIG_KEY',
+        'BROWSER_EXAM_KEY',
+        'APP_SIGNATURE_KEY'
+    ]),
+    keyValue: z.object({
+        empty: z.boolean().optional()
+    }),
+    tag: z.string().optional(),
+    examId: z.int().optional(),
+    examTemplateId: z.int().optional()
+});
+
+export const zSebRestriction = z.object({
+    id: z.int().optional(),
+    configKeys: z.array(z.string()).optional(),
+    browserExamKeys: z.array(z.string()).optional(),
+    additionalProperties: z.record(z.string(), z.string()).optional(),
+    warningMessage: z.string().optional()
+});
+
+export const zScreenProctoringSettings = z.object({
+    id: z.int().optional(),
+    enableScreenProctoring: z.boolean().optional(),
+    spsServiceURL: z.string().optional(),
+    spsAPIKey: z.string().optional(),
+    spsAPISecret: z.object({
+        empty: z.boolean().optional()
+    }).optional(),
+    spsAccountId: z.string().optional(),
+    spsAccountPassword: z.object({
+        empty: z.boolean().optional()
+    }).optional(),
+    spsCollectingStrategy: z.enum(['EXAM', 'APPLY_SEB_GROUPS']).optional(),
+    spsCollectingGroupName: z.string().min(3).max(255).optional(),
+    spsCollectingGroupSize: z.int().min(-2147483648, { error: 'Invalid value: Expected int32 to be >= -2147483648' }).max(2147483647, { error: 'Invalid value: Expected int32 to be <= 2147483647' }).optional(),
+    spsSEBGroupsSelection: z.string().optional(),
+    bundled: z.boolean().optional(),
+    changeStrategyConfirm: z.boolean().optional()
+});
+
+export const zProctoringServiceSettings = z.object({
+    id: z.int().optional(),
+    enableProctoring: z.boolean().optional(),
+    serverType: z.enum(['JITSI_MEET', 'ZOOM']).optional(),
+    serverURL: z.string().optional(),
+    collectingRoomSize: z.int().min(-2147483648, { error: 'Invalid value: Expected int32 to be >= -2147483648' }).max(2147483647, { error: 'Invalid value: Expected int32 to be <= 2147483647' }).optional(),
+    enabledFeatures: z.array(z.enum([
+        'TOWN_HALL',
+        'ONE_TO_ONE',
+        'BROADCAST',
+        'ENABLE_CHAT'
+    ])).optional(),
+    serviceInUse: z.boolean().optional(),
+    appKey: z.string().optional(),
+    appSecret: z.object({
+        empty: z.boolean().optional()
+    }).optional(),
+    accountId: z.string().optional(),
+    clientId: z.string().optional(),
+    clientSecret: z.object({
+        empty: z.boolean().optional()
+    }).optional(),
+    sdkKey: z.string().optional(),
+    sdkSecret: z.object({
+        empty: z.boolean().optional()
+    }).optional(),
+    useZoomAppClientForCollectingRoom: z.boolean().optional()
+});
+
+export const zValue = z.object({
+    id: z.int().optional(),
+    value: z.string().optional()
+});
+
+export const zTableRowValues = z.object({
+    name: z.string().optional(),
+    listIndex: z.int().min(-2147483648, { error: 'Invalid value: Expected int32 to be >= -2147483648' }).max(2147483647, { error: 'Invalid value: Expected int32 to be <= 2147483647' }).optional(),
+    rowValues: z.record(z.string(), zValue).optional()
+});
+
+export const zCertificateInfo = z.object({
+    alias: z.string().optional(),
+    validityFrom: z.iso.datetime().optional(),
+    validityTo: z.iso.datetime().optional(),
+    certType: z.array(z.enum([
+        'UNKNOWN',
+        'DIGITAL_SIGNATURE',
+        'DATA_ENCIPHERMENT',
+        'DATA_ENCIPHERMENT_PRIVATE_KEY',
+        'KEY_CERT_SIGN'
+    ])).optional()
+});
+
+export const zTemplateAttribute = z.object({
+    institutionId: z.int(),
+    configurationNodeId: z.int(),
+    configAttribute: zConfigurationAttribute,
+    orientation: zOrientation.optional()
+});
+
+export const zEndpoint = z.object({
+    name: z.string().optional(),
+    description: z.string().optional(),
+    location: z.string().optional(),
+    authorization: z.string().optional()
+});
+
+export const zExamApiVersion = z.object({
+    name: z.string().optional(),
+    endpoints: z.array(zEndpoint).optional()
+});
+
+export const zExamApiDiscovery = z.object({
+    title: z.string().optional(),
+    description: z.string().optional(),
+    'server-location': z.string().optional(),
+    'api-versions': z.array(zExamApiVersion).optional()
+});
+
+export const zPageUserActivityLog = z.object({
+    number_of_pages: z.int().min(-2147483648, { error: 'Invalid value: Expected int32 to be >= -2147483648' }).max(2147483647, { error: 'Invalid value: Expected int32 to be <= 2147483647' }).optional(),
+    page_number: z.int().gte(1).lte(2147483647).optional(),
+    page_size: z.int().gte(1).lte(2147483647).optional(),
+    sort: z.string().optional(),
+    content: z.array(zUserActivityLog).optional(),
+    complete: z.boolean().optional()
+});
+
+export const zEntityDependency = z.object({
+    parent: zEntityKey,
+    self: zEntityKey,
+    name: z.string().optional(),
+    description: z.string().optional()
+});
+
+/**
+ * Display name key for a SEB Server domain entity.
+ */
+export const zEntityName = z.object({
+    modelId: z.string(),
+    entityType: z.enum([
+        'CONFIGURATION_ATTRIBUTE',
+        'CONFIGURATION_VALUE',
+        'VIEW',
+        'ORIENTATION',
+        'CONFIGURATION',
+        'CONFIGURATION_NODE',
+        'EXAM_CONFIGURATION_MAP',
+        'EXAM',
+        'EXAM_SEB_RESTRICTION',
+        'EXAM_PROCTOR_DATA',
+        'CLIENT_CONNECTION',
+        'REMOTE_PROCTORING_ROOM',
+        'SCREEN_PROCTORING_GROUP',
+        'CLIENT_EVENT',
+        'CLIENT_INSTRUCTION',
+        'INDICATOR',
+        'THRESHOLD',
+        'INSTITUTION',
+        'SEB_CLIENT_CONFIGURATION',
+        'LMS_SETUP',
+        'USER',
+        'USER_ROLE',
+        'USER_ACTIVITY_LOG',
+        'ADDITIONAL_ATTRIBUTES',
+        'WEBSERVICE_SERVER_INFO',
+        'CERTIFICATE',
+        'EXAM_TEMPLATE',
+        'BATCH_ACTION',
+        'CLIENT_INDICATOR',
+        'CLIENT_NOTIFICATION',
+        'CLIENT_GROUP',
+        'SEB_SECURITY_KEY_REGISTRY',
+        'ENTITY_PRIVILEGE',
+        'FEATURE_PRIVILEGE',
+        'SCHEDULED_DELETE',
+        'SCHEDULED_DELETE_INFO',
+        'CONFIGURATION_ATTRIBUTE_DEPRECATION'
+    ]),
+    name: z.string()
+});
+
+export const zPageUserInfo = z.object({
+    number_of_pages: z.int().min(-2147483648, { error: 'Invalid value: Expected int32 to be >= -2147483648' }).max(2147483647, { error: 'Invalid value: Expected int32 to be <= 2147483647' }).optional(),
+    page_number: z.int().gte(1).lte(2147483647).optional(),
+    page_size: z.int().gte(1).lte(2147483647).optional(),
+    sort: z.string().optional(),
+    content: z.array(zUserInfo).optional(),
+    complete: z.boolean().optional()
+});
+
+export const zPageClientEvent = z.object({
+    number_of_pages: z.int().min(-2147483648, { error: 'Invalid value: Expected int32 to be >= -2147483648' }).max(2147483647, { error: 'Invalid value: Expected int32 to be <= 2147483647' }).optional(),
+    page_number: z.int().gte(1).lte(2147483647).optional(),
+    page_size: z.int().gte(1).lte(2147483647).optional(),
+    sort: z.string().optional(),
+    content: z.array(zClientEvent).optional(),
+    complete: z.boolean().optional()
+});
+
+export const zExtendedClientEvent = z.object({
+    institutionId: z.int().optional(),
+    examId: z.int().optional(),
+    examUserSessionId: z.string().optional(),
+    id: z.int().optional(),
+    clientConnectionId: z.int().optional(),
+    type: z.enum([
+        'UNKNOWN',
+        'DEBUG_LOG',
+        'INFO_LOG',
+        'WARN_LOG',
+        'ERROR_LOG',
+        'NOTIFICATION',
+        'NOTIFICATION_CONFIRMED'
+    ]).optional(),
+    timestamp: z.int().optional(),
+    serverTime: z.int().optional(),
+    numericValue: z.number().optional(),
+    text: z.string().optional(),
+    value: z.number().optional()
+});
+
+export const zPageExtendedClientEvent = z.object({
+    number_of_pages: z.int().min(-2147483648, { error: 'Invalid value: Expected int32 to be >= -2147483648' }).max(2147483647, { error: 'Invalid value: Expected int32 to be <= 2147483647' }).optional(),
+    page_number: z.int().gte(1).lte(2147483647).optional(),
+    page_size: z.int().gte(1).lte(2147483647).optional(),
+    sort: z.string().optional(),
+    content: z.array(zExtendedClientEvent).optional(),
+    complete: z.boolean().optional()
+});
+
+export const zPageClientConnection = z.object({
+    number_of_pages: z.int().min(-2147483648, { error: 'Invalid value: Expected int32 to be >= -2147483648' }).max(2147483647, { error: 'Invalid value: Expected int32 to be <= 2147483647' }).optional(),
+    page_number: z.int().gte(1).lte(2147483647).optional(),
+    page_size: z.int().gte(1).lte(2147483647).optional(),
+    sort: z.string().optional(),
+    content: z.array(zClientConnection).optional(),
+    complete: z.boolean().optional()
+});
+
+export const zIndicatorValue = z.object({
+    id: z.int().optional(),
+    val: z.number().optional()
+});
+
+export const zClientConnectionData = z.object({
+    miss: z.boolean().optional(),
+    pnot: z.boolean().optional(),
+    cdat: zClientConnection.optional(),
+    iVal: z.array(zIndicatorValue).optional(),
+    cg: z.array(z.int()).optional()
+});
+
+export const zPageClientConnectionData = z.object({
+    number_of_pages: z.int().min(-2147483648, { error: 'Invalid value: Expected int32 to be >= -2147483648' }).max(2147483647, { error: 'Invalid value: Expected int32 to be <= 2147483647' }).optional(),
+    page_number: z.int().gte(1).lte(2147483647).optional(),
+    page_size: z.int().gte(1).lte(2147483647).optional(),
+    sort: z.string().optional(),
+    content: z.array(zClientConnectionData).optional(),
+    complete: z.boolean().optional()
+});
+
+export const zScheduledDeleteInfo = z.object({
+    id: z.int().readonly().optional(),
+    scheduledDeleteId: z.int().optional(),
+    state: z.enum([
+        'PENDING',
+        'RUNNING',
+        'DELETED',
+        'ERROR'
+    ]).optional(),
+    examUuid: z.string().optional(),
+    deletionInfo: z.record(z.string(), z.string()).optional(),
+    errorInfo: z.string().optional()
+});
+
+export const zScheduledDelete = z.object({
+    id: z.int().readonly().optional(),
+    spsId: z.int().optional(),
+    state: z.enum([
+        'PENDING',
+        'SPS_RUNNING',
+        'RUNNING',
+        'FINISHED'
+    ]).optional(),
+    deleteDueTime: z.int().optional(),
+    scheduleTime: z.int().optional(),
+    startTime: z.int().optional(),
+    endTime: z.int().optional(),
+    owner: z.string().optional(),
+    institutionId: z.int().optional(),
+    info: z.array(zScheduledDeleteInfo).optional()
+});
+
+export const zPageScheduledDelete = z.object({
+    number_of_pages: z.int().min(-2147483648, { error: 'Invalid value: Expected int32 to be >= -2147483648' }).max(2147483647, { error: 'Invalid value: Expected int32 to be <= 2147483647' }).optional(),
+    page_number: z.int().gte(1).lte(2147483647).optional(),
+    page_size: z.int().gte(1).lte(2147483647).optional(),
+    sort: z.string().optional(),
+    content: z.array(zScheduledDelete).optional(),
+    complete: z.boolean().optional()
+});
+
+export const zQuizData = z.object({
+    quiz_id: z.string().optional(),
+    institutionId: z.int().optional(),
+    lms_setup_id: z.int().optional(),
+    lms_setup_type: z.enum([
+        'MOCKUP',
+        'OPEN_EDX',
+        'MOODLE',
+        'MOODLE_PLUGIN',
+        'ANS_DELFT',
+        'OPEN_OLAT'
+    ]).optional(),
+    quiz_name: z.string().optional(),
+    quiz_description: z.string().optional(),
+    quiz_start_time: z.iso.datetime().optional(),
+    quiz_end_time: z.iso.datetime().optional(),
+    quiz_start_url: z.string().optional(),
+    additionalAttributes: z.record(z.string(), z.string()).optional()
+});
+
+export const zPageQuizData = z.object({
+    number_of_pages: z.int().min(-2147483648, { error: 'Invalid value: Expected int32 to be >= -2147483648' }).max(2147483647, { error: 'Invalid value: Expected int32 to be <= 2147483647' }).optional(),
+    page_number: z.int().gte(1).lte(2147483647).optional(),
+    page_size: z.int().gte(1).lte(2147483647).optional(),
+    sort: z.string().optional(),
+    content: z.array(zQuizData).optional(),
+    complete: z.boolean().optional()
+});
+
+export const zPageOrientation = z.object({
+    number_of_pages: z.int().min(-2147483648, { error: 'Invalid value: Expected int32 to be >= -2147483648' }).max(2147483647, { error: 'Invalid value: Expected int32 to be <= 2147483647' }).optional(),
+    page_number: z.int().gte(1).lte(2147483647).optional(),
+    page_size: z.int().gte(1).lte(2147483647).optional(),
+    sort: z.string().optional(),
+    content: z.array(zOrientation).optional(),
+    complete: z.boolean().optional()
+});
+
+export const zPageView = z.object({
+    number_of_pages: z.int().min(-2147483648, { error: 'Invalid value: Expected int32 to be >= -2147483648' }).max(2147483647, { error: 'Invalid value: Expected int32 to be <= 2147483647' }).optional(),
+    page_number: z.int().gte(1).lte(2147483647).optional(),
+    page_size: z.int().gte(1).lte(2147483647).optional(),
+    sort: z.string().optional(),
+    content: z.array(zView).optional(),
+    complete: z.boolean().optional()
+});
+
+export const zPageExam = z.object({
+    number_of_pages: z.int().min(-2147483648, { error: 'Invalid value: Expected int32 to be >= -2147483648' }).max(2147483647, { error: 'Invalid value: Expected int32 to be <= 2147483647' }).optional(),
+    page_number: z.int().gte(1).lte(2147483647).optional(),
+    page_size: z.int().gte(1).lte(2147483647).optional(),
+    sort: z.string().optional(),
+    content: z.array(zExam).optional(),
+    complete: z.boolean().optional()
+});
+
+export const zClientNotification = z.object({
+    id: z.int().optional(),
+    clientConnectionId: z.int().optional(),
+    type: z.enum([
+        'UNKNOWN',
+        'DEBUG_LOG',
+        'INFO_LOG',
+        'WARN_LOG',
+        'ERROR_LOG',
+        'NOTIFICATION',
+        'NOTIFICATION_CONFIRMED'
+    ]).optional(),
+    timestamp: z.int().optional(),
+    serverTime: z.int().optional(),
+    numericValue: z.number().optional(),
+    text: z.string().optional(),
+    notificationType: z.enum([
+        'UNKNOWN',
+        'LOCK_SCREEN',
+        'RAISE_HAND'
+    ]).optional(),
+    value: z.number().optional()
+});
+
+export const zClientMonitoringDataView = z.object({
+    missingPing: z.boolean().optional(),
+    grantChecked: z.boolean().optional(),
+    grantDenied: z.boolean().optional(),
+    sebversionDenied: z.boolean().optional(),
+    pendingNotification: z.boolean().optional(),
+    nf: z.int().min(-2147483648, { error: 'Invalid value: Expected int32 to be >= -2147483648' }).max(2147483647, { error: 'Invalid value: Expected int32 to be <= 2147483647' }).optional(),
+    iv: z.record(z.string(), z.string()).optional(),
+    st: z.enum([
+        'UNDEFINED',
+        'CONNECTION_REQUESTED',
+        'READY',
+        'ACTIVE',
+        'CLOSED',
+        'DISABLED'
+    ]).optional(),
+    lat: z.int().optional(),
+    id: z.int().optional()
+});
+
+export const zMonitoringSebConnectionData = z.object({
+    cons: z.array(zClientMonitoringDataView).optional(),
+    sm: z.array(z.int().min(-2147483648, { error: 'Invalid value: Expected int32 to be >= -2147483648' }).max(2147483647, { error: 'Invalid value: Expected int32 to be <= 2147483647' })).optional(),
+    im: z.array(z.int().min(-2147483648, { error: 'Invalid value: Expected int32 to be >= -2147483648' }).max(2147483647, { error: 'Invalid value: Expected int32 to be <= 2147483647' })).optional(),
+    cgm: z.record(z.string(), z.int().min(-2147483648, { error: 'Invalid value: Expected int32 to be >= -2147483648' }).max(2147483647, { error: 'Invalid value: Expected int32 to be <= 2147483647' })).optional()
+});
+
+export const zProctoringGroupMonitoringData = z.object({
+    uuid: z.string().optional(),
+    name: z.string().optional(),
+    size: z.int().min(-2147483648, { error: 'Invalid value: Expected int32 to be >= -2147483648' }).max(2147483647, { error: 'Invalid value: Expected int32 to be <= 2147483647' }).optional()
+});
+
+export const zMonitoringFullPageData = z.object({
+    examId: z.int().optional(),
+    monitoringConnectionData: zMonitoringSebConnectionData.optional(),
+    screenProctoringData: z.array(zProctoringGroupMonitoringData).optional()
+});
+
+export const zRemoteProctoringRoom = z.object({
+    id: z.int().optional(),
+    examId: z.int().optional(),
+    name: z.string().optional(),
+    size: z.int().min(-2147483648, { error: 'Invalid value: Expected int32 to be >= -2147483648' }).max(2147483647, { error: 'Invalid value: Expected int32 to be <= 2147483647' }).optional(),
+    subject: z.string().optional(),
+    townhallRoom: z.boolean().optional(),
+    breakOutConnections: z.array(z.string()).optional(),
+    joinKey: z.object({
+        empty: z.boolean().optional()
+    }).optional(),
+    roomData: z.string().optional(),
+    isOpen: z.boolean().optional()
+});
+
+export const zScreenProctoringGroup = z.object({
+    id: z.int().optional(),
+    examId: z.int().optional(),
+    uuid: z.string().optional(),
+    name: z.string().optional(),
+    size: z.int().min(-2147483648, { error: 'Invalid value: Expected int32 to be >= -2147483648' }).max(2147483647, { error: 'Invalid value: Expected int32 to be <= 2147483647' }).optional(),
+    data: z.string().optional(),
+    isFallback: z.boolean().optional(),
+    sebGroupId: z.int().optional(),
+    fallback: z.boolean().optional()
+});
+
+export const zClientStatesData = z.object({
+    total: z.int().min(-2147483648, { error: 'Invalid value: Expected int32 to be >= -2147483648' }).max(2147483647, { error: 'Invalid value: Expected int32 to be <= 2147483647' }).optional(),
+    CONNECTION_REQUESTED: z.int().min(-2147483648, { error: 'Invalid value: Expected int32 to be >= -2147483648' }).max(2147483647, { error: 'Invalid value: Expected int32 to be <= 2147483647' }).optional(),
+    READY: z.int().min(-2147483648, { error: 'Invalid value: Expected int32 to be >= -2147483648' }).max(2147483647, { error: 'Invalid value: Expected int32 to be <= 2147483647' }).optional(),
+    ACTIVE: z.int().min(-2147483648, { error: 'Invalid value: Expected int32 to be >= -2147483648' }).max(2147483647, { error: 'Invalid value: Expected int32 to be <= 2147483647' }).optional(),
+    CLOSED: z.int().min(-2147483648, { error: 'Invalid value: Expected int32 to be >= -2147483648' }).max(2147483647, { error: 'Invalid value: Expected int32 to be <= 2147483647' }).optional(),
+    DISABLED: z.int().min(-2147483648, { error: 'Invalid value: Expected int32 to be >= -2147483648' }).max(2147483647, { error: 'Invalid value: Expected int32 to be <= 2147483647' }).optional(),
+    MISSING: z.int().min(-2147483648, { error: 'Invalid value: Expected int32 to be >= -2147483648' }).max(2147483647, { error: 'Invalid value: Expected int32 to be <= 2147483647' }).optional()
+});
+
+export const zIndicatorData = z.object({
+    color: z.string().optional(),
+    incident: z.int().min(-2147483648, { error: 'Invalid value: Expected int32 to be >= -2147483648' }).max(2147483647, { error: 'Invalid value: Expected int32 to be <= 2147483647' }).optional(),
+    warning: z.int().min(-2147483648, { error: 'Invalid value: Expected int32 to be >= -2147483648' }).max(2147483647, { error: 'Invalid value: Expected int32 to be <= 2147483647' }).optional()
+});
+
+export const zIndicators = z.object({
+    WLAN_STATUS: zIndicatorData.optional(),
+    BATTERY_STATUS: zIndicatorData.optional()
+});
+
+export const zNotificationData = z.object({
+    total: z.int().min(-2147483648, { error: 'Invalid value: Expected int32 to be >= -2147483648' }).max(2147483647, { error: 'Invalid value: Expected int32 to be <= 2147483647' }).optional(),
+    LOCK_SCREEN: z.int().min(-2147483648, { error: 'Invalid value: Expected int32 to be >= -2147483648' }).max(2147483647, { error: 'Invalid value: Expected int32 to be <= 2147483647' }).optional(),
+    RAISE_HAND: z.int().min(-2147483648, { error: 'Invalid value: Expected int32 to be >= -2147483648' }).max(2147483647, { error: 'Invalid value: Expected int32 to be <= 2147483647' }).optional()
+});
+
+export const zExamMonitoringOverviewData = z.object({
+    clientStates: zClientStatesData.optional(),
+    clientGroups: z.array(zClientGroup).optional(),
+    indicators: zIndicators.optional(),
+    notifications: zNotificationData.optional()
+});
+
+export const zPageLmsSetup = z.object({
+    number_of_pages: z.int().min(-2147483648, { error: 'Invalid value: Expected int32 to be >= -2147483648' }).max(2147483647, { error: 'Invalid value: Expected int32 to be <= 2147483647' }).optional(),
+    page_number: z.int().gte(1).lte(2147483647).optional(),
+    page_size: z.int().gte(1).lte(2147483647).optional(),
+    sort: z.string().optional(),
+    content: z.array(zLmsSetup).optional(),
+    complete: z.boolean().optional()
+});
+
+export const zPageInstitution = z.object({
+    number_of_pages: z.int().min(-2147483648, { error: 'Invalid value: Expected int32 to be >= -2147483648' }).max(2147483647, { error: 'Invalid value: Expected int32 to be <= 2147483647' }).optional(),
+    page_number: z.int().gte(1).lte(2147483647).optional(),
+    page_size: z.int().gte(1).lte(2147483647).optional(),
+    sort: z.string().optional(),
+    content: z.array(zInstitution).optional(),
+    complete: z.boolean().optional()
+});
+
+export const zRoleTypeKey = z.object({
+    entityType: z.enum([
+        'CONFIGURATION_ATTRIBUTE',
+        'CONFIGURATION_VALUE',
+        'VIEW',
+        'ORIENTATION',
+        'CONFIGURATION',
+        'CONFIGURATION_NODE',
+        'EXAM_CONFIGURATION_MAP',
+        'EXAM',
+        'EXAM_SEB_RESTRICTION',
+        'EXAM_PROCTOR_DATA',
+        'CLIENT_CONNECTION',
+        'REMOTE_PROCTORING_ROOM',
+        'SCREEN_PROCTORING_GROUP',
+        'CLIENT_EVENT',
+        'CLIENT_INSTRUCTION',
+        'INDICATOR',
+        'THRESHOLD',
+        'INSTITUTION',
+        'SEB_CLIENT_CONFIGURATION',
+        'LMS_SETUP',
+        'USER',
+        'USER_ROLE',
+        'USER_ACTIVITY_LOG',
+        'ADDITIONAL_ATTRIBUTES',
+        'WEBSERVICE_SERVER_INFO',
+        'CERTIFICATE',
+        'EXAM_TEMPLATE',
+        'BATCH_ACTION',
+        'CLIENT_INDICATOR',
+        'CLIENT_NOTIFICATION',
+        'CLIENT_GROUP',
+        'SEB_SECURITY_KEY_REGISTRY',
+        'ENTITY_PRIVILEGE',
+        'FEATURE_PRIVILEGE',
+        'SCHEDULED_DELETE',
+        'SCHEDULED_DELETE_INFO',
+        'CONFIGURATION_ATTRIBUTE_DEPRECATION'
+    ]).optional(),
+    userRole: z.enum([
+        'SEB_SERVER_ADMIN',
+        'INSTITUTIONAL_ADMIN',
+        'EXAM_ADMIN',
+        'EXAM_SUPPORTER',
+        'TEACHER'
+    ]).optional()
+});
+
+export const zPrivilege = z.object({
+    roleTypeKey: zRoleTypeKey.optional(),
+    basePrivilege: z.enum([
+        'NONE',
+        'ASSIGNED',
+        'READ',
+        'MODIFY',
+        'WRITE'
+    ]).optional(),
+    institutionalPrivilege: z.enum([
+        'NONE',
+        'ASSIGNED',
+        'READ',
+        'MODIFY',
+        'WRITE'
+    ]).optional(),
+    ownershipPrivilege: z.enum([
+        'NONE',
+        'ASSIGNED',
+        'READ',
+        'MODIFY',
+        'WRITE'
+    ]).optional()
+});
+
+export const zPageIndicator = z.object({
+    number_of_pages: z.int().min(-2147483648, { error: 'Invalid value: Expected int32 to be >= -2147483648' }).max(2147483647, { error: 'Invalid value: Expected int32 to be <= 2147483647' }).optional(),
+    page_number: z.int().gte(1).lte(2147483647).optional(),
+    page_size: z.int().gte(1).lte(2147483647).optional(),
+    sort: z.string().optional(),
+    content: z.array(zIndicator).optional(),
+    complete: z.boolean().optional()
+});
+
+export const zAppSignatureKeyInfo = z.object({
+    institutionId: z.int(),
+    examId: z.int(),
+    keyValue: z.string().optional(),
+    connectionIds: z.record(z.string(), z.string()).optional()
+});
+
+export const zChapter = z.object({
+    name: z.string().optional(),
+    id: z.string().optional()
+});
+
+export const zChapters = z.object({
+    chapters: z.array(zChapter).optional(),
+    chapter_list: z.array(zChapter).optional()
+});
+
+export const zSebSettingsView = z.object({
+    viewType: z.enum([
+        'GENERAL',
+        'USER_INTERFACE',
+        'BROWSER',
+        'DOWN_UPLOAD',
+        'EXAM',
+        'APPLICATION',
+        'RESOURCES',
+        'NETWORK',
+        'SECURITY',
+        'REGISTRY',
+        'HOOKED_KEYS',
+        'PROCTORING'
+    ]).optional(),
+    configurationNodeId: z.int().optional(),
+    configurationId: z.int().optional(),
+    attributes: z.record(z.string(), zConfigurationAttribute).optional(),
+    singleValues: z.record(z.string(), zValue).optional(),
+    tableValues: z.record(z.string(), z.array(zTableRowValues)).optional()
+});
+
+export const zPageExamTemplate = z.object({
+    number_of_pages: z.int().min(-2147483648, { error: 'Invalid value: Expected int32 to be >= -2147483648' }).max(2147483647, { error: 'Invalid value: Expected int32 to be <= 2147483647' }).optional(),
+    page_number: z.int().gte(1).lte(2147483647).optional(),
+    page_size: z.int().gte(1).lte(2147483647).optional(),
+    sort: z.string().optional(),
+    content: z.array(zExamTemplate).optional(),
+    complete: z.boolean().optional()
+});
+
+export const zPageIndicatorTemplate = z.object({
+    number_of_pages: z.int().min(-2147483648, { error: 'Invalid value: Expected int32 to be >= -2147483648' }).max(2147483647, { error: 'Invalid value: Expected int32 to be <= 2147483647' }).optional(),
+    page_number: z.int().gte(1).lte(2147483647).optional(),
+    page_size: z.int().gte(1).lte(2147483647).optional(),
+    sort: z.string().optional(),
+    content: z.array(zIndicatorTemplate).optional(),
+    complete: z.boolean().optional()
+});
+
+export const zPageClientGroupTemplate = z.object({
+    number_of_pages: z.int().min(-2147483648, { error: 'Invalid value: Expected int32 to be >= -2147483648' }).max(2147483647, { error: 'Invalid value: Expected int32 to be <= 2147483647' }).optional(),
+    page_number: z.int().gte(1).lte(2147483647).optional(),
+    page_size: z.int().gte(1).lte(2147483647).optional(),
+    sort: z.string().optional(),
+    content: z.array(zClientGroupTemplate).optional(),
+    complete: z.boolean().optional()
+});
+
+export const zPageExamConfigurationMap = z.object({
+    number_of_pages: z.int().min(-2147483648, { error: 'Invalid value: Expected int32 to be >= -2147483648' }).max(2147483647, { error: 'Invalid value: Expected int32 to be <= 2147483647' }).optional(),
+    page_number: z.int().gte(1).lte(2147483647).optional(),
+    page_size: z.int().gte(1).lte(2147483647).optional(),
+    sort: z.string().optional(),
+    content: z.array(zExamConfigurationMap).optional(),
+    complete: z.boolean().optional()
+});
+
+export const zPageConfigurationValue = z.object({
+    number_of_pages: z.int().min(-2147483648, { error: 'Invalid value: Expected int32 to be >= -2147483648' }).max(2147483647, { error: 'Invalid value: Expected int32 to be <= 2147483647' }).optional(),
+    page_number: z.int().gte(1).lte(2147483647).optional(),
+    page_size: z.int().gte(1).lte(2147483647).optional(),
+    sort: z.string().optional(),
+    content: z.array(zConfigurationValue).optional(),
+    complete: z.boolean().optional()
+});
+
+export const zPageConfigurationAttribute = z.object({
+    number_of_pages: z.int().min(-2147483648, { error: 'Invalid value: Expected int32 to be >= -2147483648' }).max(2147483647, { error: 'Invalid value: Expected int32 to be <= 2147483647' }).optional(),
+    page_number: z.int().gte(1).lte(2147483647).optional(),
+    page_size: z.int().gte(1).lte(2147483647).optional(),
+    sort: z.string().optional(),
+    content: z.array(zConfigurationAttribute).optional(),
+    complete: z.boolean().optional()
+});
+
+export const zPageConfiguration = z.object({
+    number_of_pages: z.int().min(-2147483648, { error: 'Invalid value: Expected int32 to be >= -2147483648' }).max(2147483647, { error: 'Invalid value: Expected int32 to be <= 2147483647' }).optional(),
+    page_number: z.int().gte(1).lte(2147483647).optional(),
+    page_size: z.int().gte(1).lte(2147483647).optional(),
+    sort: z.string().optional(),
+    content: z.array(zConfiguration).optional(),
+    complete: z.boolean().optional()
+});
+
+export const zPageConfigurationNode = z.object({
+    number_of_pages: z.int().min(-2147483648, { error: 'Invalid value: Expected int32 to be >= -2147483648' }).max(2147483647, { error: 'Invalid value: Expected int32 to be <= 2147483647' }).optional(),
+    page_number: z.int().gte(1).lte(2147483647).optional(),
+    page_size: z.int().gte(1).lte(2147483647).optional(),
+    sort: z.string().optional(),
+    content: z.array(zConfigurationNode).optional(),
+    complete: z.boolean().optional()
+});
+
+export const zPageTemplateAttribute = z.object({
+    number_of_pages: z.int().min(-2147483648, { error: 'Invalid value: Expected int32 to be >= -2147483648' }).max(2147483647, { error: 'Invalid value: Expected int32 to be <= 2147483647' }).optional(),
+    page_number: z.int().gte(1).lte(2147483647).optional(),
+    page_size: z.int().gte(1).lte(2147483647).optional(),
+    sort: z.string().optional(),
+    content: z.array(zTemplateAttribute).optional(),
+    complete: z.boolean().optional()
+});
+
+export const zSettingsPublished = z.object({
+    settingsPublished: z.boolean()
+});
+
+export const zConfigKey = z.object({
+    key: z.string().optional()
+});
+
+export const zPageSebClientConfig = z.object({
+    number_of_pages: z.int().min(-2147483648, { error: 'Invalid value: Expected int32 to be >= -2147483648' }).max(2147483647, { error: 'Invalid value: Expected int32 to be <= 2147483647' }).optional(),
+    page_number: z.int().gte(1).lte(2147483647).optional(),
+    page_size: z.int().gte(1).lte(2147483647).optional(),
+    sort: z.string().optional(),
+    content: z.array(zSebClientConfig).optional(),
+    complete: z.boolean().optional()
+});
+
+export const zClientCredentials = z.object({
+    clientId: z.object({
+        empty: z.boolean().optional()
+    }).optional(),
+    secret: z.object({
+        empty: z.boolean().optional()
+    }).optional(),
+    accessToken: z.object({
+        empty: z.boolean().optional()
+    }).optional()
+});
+
+export const zPageClientGroup = z.object({
+    number_of_pages: z.int().min(-2147483648, { error: 'Invalid value: Expected int32 to be >= -2147483648' }).max(2147483647, { error: 'Invalid value: Expected int32 to be <= 2147483647' }).optional(),
+    page_number: z.int().gte(1).lte(2147483647).optional(),
+    page_size: z.int().gte(1).lte(2147483647).optional(),
+    sort: z.string().optional(),
+    content: z.array(zClientGroup).optional(),
+    complete: z.boolean().optional()
+});
+
+export const zPageCertificateInfo = z.object({
+    number_of_pages: z.int().min(-2147483648, { error: 'Invalid value: Expected int32 to be >= -2147483648' }).max(2147483647, { error: 'Invalid value: Expected int32 to be <= 2147483647' }).optional(),
+    page_number: z.int().gte(1).lte(2147483647).optional(),
+    page_size: z.int().gte(1).lte(2147483647).optional(),
+    sort: z.string().optional(),
+    content: z.array(zCertificateInfo).optional(),
+    complete: z.boolean().optional()
+});
+
+export const zPageBatchAction = z.object({
+    number_of_pages: z.int().min(-2147483648, { error: 'Invalid value: Expected int32 to be >= -2147483648' }).max(2147483647, { error: 'Invalid value: Expected int32 to be <= 2147483647' }).optional(),
+    page_number: z.int().gte(1).lte(2147483647).optional(),
+    page_size: z.int().gte(1).lte(2147483647).optional(),
+    sort: z.string().optional(),
+    content: z.array(zBatchAction).optional(),
+    complete: z.boolean().optional()
+});
+
+export const zClientGroupTemplateWritable = z.object({
+    id: z.int().optional(),
+    examId: z.int().optional(),
+    name: z.string().min(3).max(255),
+    type: z.enum([
+        'NONE',
+        'IP_V4_RANGE',
+        'CLIENT_OS',
+        'NAME_ALPHABETICAL_RANGE'
+    ]),
+    color: z.string().optional(),
+    icon: z.string().optional(),
+    ipRangeStart: z.string().optional(),
+    ipRangeEnd: z.string().optional(),
+    clientOS: z.enum([
+        'NONE',
+        'WINDOWS',
+        'MAC_OS',
+        'I_OS',
+        'IPAD_OS',
+        'I_OS_OR_IPAD_OS'
+    ]).optional(),
+    nameRangeStartLetter: z.string().optional(),
+    nameRangeEndLetter: z.string().optional(),
+    screenProctoringEnabled: z.boolean().optional(),
+    examTemplateId: z.int().optional()
+});
+
+export const zExamTemplateWritable = z.object({
+    id: z.int().optional(),
+    institutionId: z.int(),
+    name: z.string().min(3).max(255),
+    description: z.string().min(0).max(4000).optional(),
+    examType: z.enum([
+        'UNDEFINED',
+        'MANAGED',
+        'BYOD',
+        'VDI'
+    ]).optional(),
+    supporter: z.array(z.string()).optional(),
+    configurationTemplateId: z.int().optional(),
+    institutionalDefault: z.boolean().optional(),
+    lmsIntegration: z.boolean().optional(),
+    clientConfigurationId: z.int().optional(),
+    indicatorTemplates: z.array(zIndicatorTemplate).optional(),
+    CLIENT_GROUP_TEMPLATES: z.array(zClientGroupTemplateWritable).optional(),
+    EXAM_ATTRIBUTES: z.record(z.string(), z.string()).optional()
+});
+
+export const zMultiValueMapStringStringWritable = z.object({
+    all: z.record(z.string(), z.string()).optional(),
+    empty: z.boolean().optional()
+});
+
+export const zScheduledDeleteViewInfoWritable = z.object({
+    examUUID: z.string().optional(),
+    examName: z.string().optional(),
+    examStartTime: z.int().optional(),
+    numberOfSessions: z.string().optional(),
+    spsExamName: z.string().optional(),
+    spsGroupNames: z.array(z.string()).optional(),
+    spsGroups: z.array(z.string()).optional()
+});
+
+export const zScheduledDeleteReportWritable = z.object({
+    id: z.int().optional(),
+    spsId: z.int().optional(),
+    state: z.enum([
+        'PENDING',
+        'SPS_RUNNING',
+        'RUNNING',
+        'FINISHED'
+    ]).optional(),
+    deleteDueTime: z.int().optional(),
+    scheduleTime: z.int().optional(),
+    startTime: z.int().optional(),
+    endTime: z.int().optional(),
+    institutionId: z.int().optional(),
+    examDeletions: z.array(zScheduledDeleteViewInfoWritable).optional(),
+    spsOnlyDeletions: z.array(zScheduledDeleteViewInfoWritable).optional()
+});
+
+export const zScheduledDeleteInfoWritable = z.object({
+    scheduledDeleteId: z.int().optional(),
+    state: z.enum([
+        'PENDING',
+        'RUNNING',
+        'DELETED',
+        'ERROR'
+    ]).optional(),
+    examUuid: z.string().optional(),
+    deletionInfo: z.record(z.string(), z.string()).optional(),
+    errorInfo: z.string().optional()
+});
+
+export const zScheduledDeleteWritable = z.object({
+    spsId: z.int().optional(),
+    state: z.enum([
+        'PENDING',
+        'SPS_RUNNING',
+        'RUNNING',
+        'FINISHED'
+    ]).optional(),
+    deleteDueTime: z.int().optional(),
+    scheduleTime: z.int().optional(),
+    startTime: z.int().optional(),
+    endTime: z.int().optional(),
+    owner: z.string().optional(),
+    institutionId: z.int().optional(),
+    info: z.array(zScheduledDeleteInfoWritable).optional()
+});
+
+export const zPageScheduledDeleteWritable = z.object({
+    number_of_pages: z.int().min(-2147483648, { error: 'Invalid value: Expected int32 to be >= -2147483648' }).max(2147483647, { error: 'Invalid value: Expected int32 to be <= 2147483647' }).optional(),
+    page_number: z.int().gte(1).lte(2147483647).optional(),
+    page_size: z.int().gte(1).lte(2147483647).optional(),
+    sort: z.string().optional(),
+    content: z.array(zScheduledDeleteWritable).optional(),
+    complete: z.boolean().optional()
+});
+
+export const zPageExamTemplateWritable = z.object({
+    number_of_pages: z.int().min(-2147483648, { error: 'Invalid value: Expected int32 to be >= -2147483648' }).max(2147483647, { error: 'Invalid value: Expected int32 to be <= 2147483647' }).optional(),
+    page_number: z.int().gte(1).lte(2147483647).optional(),
+    page_size: z.int().gte(1).lte(2147483647).optional(),
+    sort: z.string().optional(),
+    content: z.array(zExamTemplateWritable).optional(),
+    complete: z.boolean().optional()
+});
+
+export const zPageClientGroupTemplateWritable = z.object({
+    number_of_pages: z.int().min(-2147483648, { error: 'Invalid value: Expected int32 to be >= -2147483648' }).max(2147483647, { error: 'Invalid value: Expected int32 to be <= 2147483647' }).optional(),
+    page_number: z.int().gte(1).lte(2147483647).optional(),
+    page_size: z.int().gte(1).lte(2147483647).optional(),
+    sort: z.string().optional(),
+    content: z.array(zClientGroupTemplateWritable).optional(),
+    complete: z.boolean().optional()
+});
+
+export const zHandshakeDeleteHeaders = z.object({
+    SEBConnectionToken: z.string()
+});
+
+export const zHandshakeUpdateBody = z.object({
+    examId: z.int().optional(),
+    seb_user_session_id: z.string().optional(),
+    seb_version: z.string().optional(),
+    seb_os_name: z.string().optional(),
+    seb_machine_name: z.string().optional(),
+    seb_signature_key: z.string().optional(),
+    client_id: z.string().optional()
+});
+
+export const zHandshakeUpdateHeaders = z.object({
+    SEBConnectionToken: z.string()
+});
+
+export const zHandshakeCreateBody = z.object({
+    institutionId: z.int().optional(),
+    examId: z.int().optional(),
+    client_id: z.string().optional(),
+    formParams: zMultiValueMapStringStringWritable.optional()
+});
+
+/**
+ * OK
+ */
+export const zHandshakeCreateResponse = z.array(zRunningExamInfo);
+
+export const zHandshakeEstablishBody = z.object({
+    examId: z.int().optional(),
+    seb_user_session_id: z.string().optional(),
+    seb_version: z.string().optional(),
+    seb_os_name: z.string().optional(),
+    seb_machine_name: z.string().optional(),
+    seb_signature_key: z.string().optional(),
+    client_id: z.string().optional()
+});
+
+export const zHandshakeEstablishHeaders = z.object({
+    SEBConnectionToken: z.string()
+});
+
+export const zHardDeleteAllBody = z.object({
+    modelIds: z.array(z.string()),
+    bulkActionAddIncludes: z.boolean().optional().default(false),
+    bulkActionIncludes: z.array(z.string()).optional(),
+    institutionId: z.int().optional()
+});
+
+export const zHardDeleteAllQuery = z.object({
+    modelIds: z.unknown().optional(),
+    bulkActionAddIncludes: z.unknown().optional(),
+    bulkActionIncludes: z.unknown().optional()
+});
+
+/**
+ * OK
+ */
+export const zHardDeleteAllResponse = zEntityProcessingReport;
+
+export const zGetUserActivityLogsQuery = z.object({
+    page_number: z.int().min(-2147483648, { error: 'Invalid value: Expected int32 to be >= -2147483648' }).max(2147483647, { error: 'Invalid value: Expected int32 to be <= 2147483647' }).optional(),
+    page_size: z.int().min(-2147483648, { error: 'Invalid value: Expected int32 to be >= -2147483648' }).max(2147483647, { error: 'Invalid value: Expected int32 to be <= 2147483647' }).optional(),
+    sort: z.string().optional(),
+    institutionId: z.int().optional()
+});
+
+/**
+ * OK
+ */
+export const zGetUserActivityLogsResponse = zPageUserActivityLog;
+
+export const zCreateBody = z.object({
+    allRequestParams: zMultiValueMapStringStringWritable,
+    institutionId: z.int().optional()
+});
+
+export const zCreateQuery = z.object({
+    formParams: z.unknown().optional(),
+    institutionId: z.unknown().optional()
+});
+
+/**
+ * OK
+ */
+export const zCreateResponse = zUserActivityLog;
+
+export const zSavePutBody = zUserActivityLog;
+
+/**
+ * OK
+ */
+export const zSavePutResponse = zUserActivityLog;
+
+export const zDeleteAllUserAccountsBody = z.object({
+    modelIds: z.array(z.string()),
+    bulkActionAddIncludes: z.boolean().optional().default(false),
+    bulkActionIncludes: z.array(z.string()).optional(),
+    institutionId: z.int().optional()
+});
+
+export const zDeleteAllUserAccountsQuery = z.object({
+    modelIds: z.unknown().optional(),
+    bulkActionAddIncludes: z.unknown().optional(),
+    bulkActionIncludes: z.unknown().optional()
+});
+
+/**
+ * OK
+ */
+export const zDeleteAllUserAccountsResponse = zEntityProcessingReport;
+
 export const zGetUserAccountsQuery = z.object({
     page_number: z.int().min(-2147483648, { error: 'Invalid value: Expected int32 to be >= -2147483648' }).max(2147483647, { error: 'Invalid value: Expected int32 to be <= 2147483647' }).optional(),
     page_size: z.int().min(-2147483648, { error: 'Invalid value: Expected int32 to be >= -2147483648' }).max(2147483647, { error: 'Invalid value: Expected int32 to be <= 2147483647' }).optional(),
     sort: z.string().optional(),
-    institutionId: z.int().optional(),
-    surname: z.string().optional(),
-    active: z.string().optional()
+    institutionId: z.int().optional()
 });
 
 /**
@@ -280,7 +1914,7 @@ export const zGetUserAccountsResponse = zPageUserInfo;
 export const zCreateUserAccountBody = zUserMod;
 
 export const zCreateUserAccountQuery = z.object({
-    institutionId: z.int().optional()
+    institutionId: z.unknown().optional()
 });
 
 /**
@@ -301,6 +1935,1029 @@ export const zChangeUserAccountPasswordBody = zPasswordChange;
  * User account after password change.
  */
 export const zChangeUserAccountPasswordResponse = zUserInfo;
+
+export const zHardDeleteAll1Body = z.object({
+    modelIds: z.array(z.string()),
+    bulkActionAddIncludes: z.boolean().optional().default(false),
+    bulkActionIncludes: z.array(z.string()).optional(),
+    institutionId: z.int().optional()
+});
+
+export const zHardDeleteAll1Query = z.object({
+    modelIds: z.unknown().optional(),
+    bulkActionAddIncludes: z.unknown().optional(),
+    bulkActionIncludes: z.unknown().optional()
+});
+
+/**
+ * OK
+ */
+export const zHardDeleteAll1Response = zEntityProcessingReport;
+
+export const zGetClientEventsQuery = z.object({
+    page_number: z.int().min(-2147483648, { error: 'Invalid value: Expected int32 to be >= -2147483648' }).max(2147483647, { error: 'Invalid value: Expected int32 to be <= 2147483647' }).optional(),
+    page_size: z.int().min(-2147483648, { error: 'Invalid value: Expected int32 to be >= -2147483648' }).max(2147483647, { error: 'Invalid value: Expected int32 to be <= 2147483647' }).optional(),
+    sort: z.string().optional(),
+    institutionId: z.int().optional()
+});
+
+/**
+ * OK
+ */
+export const zGetClientEventsResponse = zPageClientEvent;
+
+export const zCreate1Body = z.object({
+    allRequestParams: zMultiValueMapStringStringWritable,
+    institutionId: z.int().optional()
+});
+
+export const zCreate1Query = z.object({
+    formParams: z.unknown().optional(),
+    institutionId: z.unknown().optional()
+});
+
+/**
+ * OK
+ */
+export const zCreate1Response = zClientEvent;
+
+export const zSavePut1Body = zClientEvent;
+
+/**
+ * OK
+ */
+export const zSavePut1Response = zClientEvent;
+
+export const zHardDeleteAll2Body = z.object({
+    modelIds: z.array(z.string()),
+    bulkActionAddIncludes: z.boolean().optional().default(false),
+    bulkActionIncludes: z.array(z.string()).optional(),
+    institutionId: z.int().optional()
+});
+
+export const zHardDeleteAll2Query = z.object({
+    modelIds: z.unknown().optional(),
+    bulkActionAddIncludes: z.unknown().optional(),
+    bulkActionIncludes: z.unknown().optional()
+});
+
+/**
+ * OK
+ */
+export const zHardDeleteAll2Response = zEntityProcessingReport;
+
+export const zGetPageQuery = z.object({
+    page_number: z.int().min(-2147483648, { error: 'Invalid value: Expected int32 to be >= -2147483648' }).max(2147483647, { error: 'Invalid value: Expected int32 to be <= 2147483647' }).optional(),
+    page_size: z.int().min(-2147483648, { error: 'Invalid value: Expected int32 to be >= -2147483648' }).max(2147483647, { error: 'Invalid value: Expected int32 to be <= 2147483647' }).optional(),
+    sort: z.string().optional(),
+    institutionId: z.int().optional(),
+    filterCriteria: zMultiValueMapStringStringWritable
+});
+
+/**
+ * OK
+ */
+export const zGetPageResponse = zPageClientConnection;
+
+export const zCreate2Body = z.object({
+    allRequestParams: zMultiValueMapStringStringWritable,
+    institutionId: z.int().optional()
+});
+
+export const zCreate2Query = z.object({
+    formParams: z.unknown().optional(),
+    institutionId: z.unknown().optional()
+});
+
+/**
+ * OK
+ */
+export const zCreate2Response = zClientConnection;
+
+export const zSavePut2Body = zClientConnection;
+
+/**
+ * OK
+ */
+export const zSavePut2Response = zClientConnection;
+
+export const zDeleteAllOrientationsBody = z.object({
+    modelIds: z.array(z.string()),
+    bulkActionAddIncludes: z.boolean().optional().default(false),
+    bulkActionIncludes: z.array(z.string()).optional(),
+    institutionId: z.int().optional()
+});
+
+export const zDeleteAllOrientationsQuery = z.object({
+    modelIds: z.unknown().optional(),
+    bulkActionAddIncludes: z.unknown().optional(),
+    bulkActionIncludes: z.unknown().optional()
+});
+
+/**
+ * OK
+ */
+export const zDeleteAllOrientationsResponse = zEntityProcessingReport;
+
+export const zGetOrientationsQuery = z.object({
+    page_number: z.int().min(-2147483648, { error: 'Invalid value: Expected int32 to be >= -2147483648' }).max(2147483647, { error: 'Invalid value: Expected int32 to be <= 2147483647' }).optional(),
+    page_size: z.int().min(-2147483648, { error: 'Invalid value: Expected int32 to be >= -2147483648' }).max(2147483647, { error: 'Invalid value: Expected int32 to be <= 2147483647' }).optional(),
+    sort: z.string().optional(),
+    institutionId: z.int().optional()
+});
+
+/**
+ * OK
+ */
+export const zGetOrientationsResponse = zPageOrientation;
+
+export const zCreateOrientationBody = zOrientation;
+
+export const zCreateOrientationQuery = z.object({
+    institutionId: z.unknown().optional()
+});
+
+/**
+ * Created orientation.
+ */
+export const zCreateOrientationResponse = zOrientation;
+
+export const zEditOrientationBody = zOrientation;
+
+/**
+ * OK
+ */
+export const zEditOrientationResponse = zOrientation;
+
+export const zDeleteAllViewsBody = z.object({
+    modelIds: z.array(z.string()),
+    bulkActionAddIncludes: z.boolean().optional().default(false),
+    bulkActionIncludes: z.array(z.string()).optional(),
+    institutionId: z.int().optional()
+});
+
+export const zDeleteAllViewsQuery = z.object({
+    modelIds: z.unknown().optional(),
+    bulkActionAddIncludes: z.unknown().optional(),
+    bulkActionIncludes: z.unknown().optional()
+});
+
+/**
+ * OK
+ */
+export const zDeleteAllViewsResponse = zEntityProcessingReport;
+
+export const zGetViewsQuery = z.object({
+    page_number: z.int().min(-2147483648, { error: 'Invalid value: Expected int32 to be >= -2147483648' }).max(2147483647, { error: 'Invalid value: Expected int32 to be <= 2147483647' }).optional(),
+    page_size: z.int().min(-2147483648, { error: 'Invalid value: Expected int32 to be >= -2147483648' }).max(2147483647, { error: 'Invalid value: Expected int32 to be <= 2147483647' }).optional(),
+    sort: z.string().optional(),
+    institutionId: z.int().optional()
+});
+
+/**
+ * OK
+ */
+export const zGetViewsResponse = zPageView;
+
+export const zCreateViewBody = zView;
+
+export const zCreateViewQuery = z.object({
+    institutionId: z.unknown().optional()
+});
+
+/**
+ * Created view.
+ */
+export const zCreateViewResponse = zView;
+
+export const zEditViewBody = zView;
+
+/**
+ * OK
+ */
+export const zEditViewResponse = zView;
+
+export const zDeleteAllLmsSetupsBody = z.object({
+    modelIds: z.array(z.string()),
+    bulkActionAddIncludes: z.boolean().optional().default(false),
+    bulkActionIncludes: z.array(z.string()).optional(),
+    institutionId: z.int().optional()
+});
+
+export const zDeleteAllLmsSetupsQuery = z.object({
+    modelIds: z.unknown().optional(),
+    bulkActionAddIncludes: z.unknown().optional(),
+    bulkActionIncludes: z.unknown().optional()
+});
+
+/**
+ * OK
+ */
+export const zDeleteAllLmsSetupsResponse = zEntityProcessingReport;
+
+export const zGetLmsSetupsQuery = z.object({
+    page_number: z.int().min(-2147483648, { error: 'Invalid value: Expected int32 to be >= -2147483648' }).max(2147483647, { error: 'Invalid value: Expected int32 to be <= 2147483647' }).optional(),
+    page_size: z.int().min(-2147483648, { error: 'Invalid value: Expected int32 to be >= -2147483648' }).max(2147483647, { error: 'Invalid value: Expected int32 to be <= 2147483647' }).optional(),
+    sort: z.string().optional(),
+    institutionId: z.int().optional()
+});
+
+/**
+ * OK
+ */
+export const zGetLmsSetupsResponse = zPageLmsSetup;
+
+export const zCreateLmsSetupBody = zLmsSetup;
+
+export const zCreateLmsSetupQuery = z.object({
+    institutionId: z.unknown().optional()
+});
+
+/**
+ * Created lms setup.
+ */
+export const zCreateLmsSetupResponse = zLmsSetup;
+
+export const zEditLmsSetupBody = zLmsSetup;
+
+/**
+ * OK
+ */
+export const zEditLmsSetupResponse = zLmsSetup;
+
+export const zTestLmsAdHocBody = zLmsSetup;
+
+/**
+ * OK
+ */
+export const zTestLmsAdHocResponse = zLmsSetupTestResult;
+
+export const zDeleteAllInstitutionsBody = z.object({
+    modelIds: z.array(z.string()),
+    bulkActionAddIncludes: z.boolean().optional().default(false),
+    bulkActionIncludes: z.array(z.string()).optional(),
+    institutionId: z.int().optional()
+});
+
+export const zDeleteAllInstitutionsQuery = z.object({
+    modelIds: z.unknown().optional(),
+    bulkActionAddIncludes: z.unknown().optional(),
+    bulkActionIncludes: z.unknown().optional()
+});
+
+/**
+ * OK
+ */
+export const zDeleteAllInstitutionsResponse = zEntityProcessingReport;
+
+export const zGetInstitutionsQuery = z.object({
+    page_number: z.int().min(-2147483648, { error: 'Invalid value: Expected int32 to be >= -2147483648' }).max(2147483647, { error: 'Invalid value: Expected int32 to be <= 2147483647' }).optional(),
+    page_size: z.int().min(-2147483648, { error: 'Invalid value: Expected int32 to be >= -2147483648' }).max(2147483647, { error: 'Invalid value: Expected int32 to be <= 2147483647' }).optional(),
+    sort: z.string().optional(),
+    institutionId: z.int().optional()
+});
+
+/**
+ * OK
+ */
+export const zGetInstitutionsResponse = zPageInstitution;
+
+export const zCreateInstitutionBody = zInstitution;
+
+export const zCreateInstitutionQuery = z.object({
+    institutionId: z.unknown().optional()
+});
+
+/**
+ * Created institution.
+ */
+export const zCreateInstitutionResponse = zInstitution;
+
+export const zEditInstitutionBody = zInstitution;
+
+/**
+ * OK
+ */
+export const zEditInstitutionResponse = zInstitution;
+
+export const zDeleteAllIndicatorsBody = z.object({
+    modelIds: z.array(z.string()),
+    bulkActionAddIncludes: z.boolean().optional().default(false),
+    bulkActionIncludes: z.array(z.string()).optional(),
+    institutionId: z.int().optional()
+});
+
+export const zDeleteAllIndicatorsQuery = z.object({
+    modelIds: z.unknown().optional(),
+    bulkActionAddIncludes: z.unknown().optional(),
+    bulkActionIncludes: z.unknown().optional()
+});
+
+/**
+ * OK
+ */
+export const zDeleteAllIndicatorsResponse = zEntityProcessingReport;
+
+export const zGetIndicatorsQuery = z.object({
+    page_number: z.int().min(-2147483648, { error: 'Invalid value: Expected int32 to be >= -2147483648' }).max(2147483647, { error: 'Invalid value: Expected int32 to be <= 2147483647' }).optional(),
+    page_size: z.int().min(-2147483648, { error: 'Invalid value: Expected int32 to be >= -2147483648' }).max(2147483647, { error: 'Invalid value: Expected int32 to be <= 2147483647' }).optional(),
+    sort: z.string().optional(),
+    institutionId: z.int().optional()
+});
+
+/**
+ * OK
+ */
+export const zGetIndicatorsResponse = zPageIndicator;
+
+export const zCreateIndicatorBody = zIndicator;
+
+export const zCreateIndicatorQuery = z.object({
+    institutionId: z.unknown().optional()
+});
+
+/**
+ * Created indicator.
+ */
+export const zCreateIndicatorResponse = zIndicator;
+
+export const zEditIndicatorBody = zIndicator;
+
+/**
+ * OK
+ */
+export const zEditIndicatorResponse = zIndicator;
+
+export const zHardDeleteAll3Body = z.object({
+    modelIds: z.array(z.string()),
+    bulkActionAddIncludes: z.boolean().optional().default(false),
+    bulkActionIncludes: z.array(z.string()).optional(),
+    institutionId: z.int().optional()
+});
+
+export const zHardDeleteAll3Query = z.object({
+    modelIds: z.unknown().optional(),
+    bulkActionAddIncludes: z.unknown().optional(),
+    bulkActionIncludes: z.unknown().optional()
+});
+
+/**
+ * OK
+ */
+export const zHardDeleteAll3Response = zEntityProcessingReport;
+
+export const zGetExamAdministrationsQuery = z.object({
+    page_number: z.int().min(-2147483648, { error: 'Invalid value: Expected int32 to be >= -2147483648' }).max(2147483647, { error: 'Invalid value: Expected int32 to be <= 2147483647' }).optional(),
+    page_size: z.int().min(-2147483648, { error: 'Invalid value: Expected int32 to be >= -2147483648' }).max(2147483647, { error: 'Invalid value: Expected int32 to be <= 2147483647' }).optional(),
+    sort: z.string().optional(),
+    institutionId: z.int().optional()
+});
+
+/**
+ * OK
+ */
+export const zGetExamAdministrationsResponse = zPageExam;
+
+export const zCreateExamAdministrationBody = zExam;
+
+export const zCreateExamAdministrationQuery = z.object({
+    institutionId: z.unknown().optional()
+});
+
+/**
+ * Created exam administration.
+ */
+export const zCreateExamAdministrationResponse = zExam;
+
+export const zEditExamAdministrationBody = zExam;
+
+/**
+ * OK
+ */
+export const zEditExamAdministrationResponse = zExam;
+
+export const zDeleteSebRestrictionPath = z.object({
+    modelId: z.int()
+});
+
+export const zDeleteSebRestrictionQuery = z.object({
+    institutionId: z.int().optional()
+});
+
+/**
+ * OK
+ */
+export const zDeleteSebRestrictionResponse = zExam;
+
+export const zGetSebRestrictionPath = z.object({
+    modelId: z.int()
+});
+
+export const zGetSebRestrictionQuery = z.object({
+    institutionId: z.int().optional()
+});
+
+/**
+ * OK
+ */
+export const zGetSebRestrictionResponse = zSebRestriction;
+
+export const zSaveSebRestrictionDataBody = zSebRestriction;
+
+export const zSaveSebRestrictionDataPath = z.object({
+    modelId: z.int()
+});
+
+export const zSaveSebRestrictionDataQuery = z.object({
+    institutionId: z.int().optional()
+});
+
+/**
+ * OK
+ */
+export const zSaveSebRestrictionDataResponse = zExam;
+
+export const zApplySebRestrictionPath = z.object({
+    modelId: z.int()
+});
+
+export const zApplySebRestrictionQuery = z.object({
+    institutionId: z.int().optional()
+});
+
+/**
+ * OK
+ */
+export const zApplySebRestrictionResponse = zExam;
+
+export const zDeleteAllExamTemplatesBody = z.object({
+    modelIds: z.array(z.string()),
+    bulkActionAddIncludes: z.boolean().optional().default(false),
+    bulkActionIncludes: z.array(z.string()).optional(),
+    institutionId: z.int().optional()
+});
+
+export const zDeleteAllExamTemplatesQuery = z.object({
+    modelIds: z.unknown().optional(),
+    bulkActionAddIncludes: z.unknown().optional(),
+    bulkActionIncludes: z.unknown().optional()
+});
+
+/**
+ * OK
+ */
+export const zDeleteAllExamTemplatesResponse = zEntityProcessingReport;
+
+export const zGetExamTemplatesQuery = z.object({
+    page_number: z.int().min(-2147483648, { error: 'Invalid value: Expected int32 to be >= -2147483648' }).max(2147483647, { error: 'Invalid value: Expected int32 to be <= 2147483647' }).optional(),
+    page_size: z.int().min(-2147483648, { error: 'Invalid value: Expected int32 to be >= -2147483648' }).max(2147483647, { error: 'Invalid value: Expected int32 to be <= 2147483647' }).optional(),
+    sort: z.string().optional(),
+    institutionId: z.int().optional()
+});
+
+/**
+ * OK
+ */
+export const zGetExamTemplatesResponse = zPageExamTemplate;
+
+export const zCreateExamTemplateBody = zExamTemplateWritable;
+
+export const zCreateExamTemplateQuery = z.object({
+    institutionId: z.unknown().optional()
+});
+
+/**
+ * Created exam template.
+ */
+export const zCreateExamTemplateResponse = zExamTemplate;
+
+export const zEditExamTemplateBody = zExamTemplateWritable;
+
+/**
+ * OK
+ */
+export const zEditExamTemplateResponse = zExamTemplate;
+
+export const zCreateIndicatorTemplateBody = z.object({
+    allRequestParams: zMultiValueMapStringStringWritable,
+    institutionId: z.int().optional()
+});
+
+/**
+ * OK
+ */
+export const zCreateIndicatorTemplateResponse = zIndicatorTemplate;
+
+export const zSaveIndicatorPutBody = zIndicatorTemplate;
+
+export const zSaveIndicatorPutQuery = z.object({
+    institutionId: z.int().optional()
+});
+
+/**
+ * OK
+ */
+export const zSaveIndicatorPutResponse = zIndicatorTemplate;
+
+export const zCreateClientGroupTemplateBody = z.object({
+    allRequestParams: zMultiValueMapStringStringWritable,
+    institutionId: z.int().optional()
+});
+
+/**
+ * OK
+ */
+export const zCreateClientGroupTemplateResponse = zClientGroupTemplate;
+
+export const zSaveClientGroupTemplateBody = zClientGroupTemplateWritable;
+
+export const zSaveClientGroupTemplateQuery = z.object({
+    institutionId: z.int().optional()
+});
+
+/**
+ * OK
+ */
+export const zSaveClientGroupTemplateResponse = zClientGroupTemplate;
+
+export const zDeleteAllExamConfigurationMappingsBody = z.object({
+    modelIds: z.array(z.string()),
+    bulkActionAddIncludes: z.boolean().optional().default(false),
+    bulkActionIncludes: z.array(z.string()).optional(),
+    institutionId: z.int().optional()
+});
+
+export const zDeleteAllExamConfigurationMappingsQuery = z.object({
+    modelIds: z.unknown().optional(),
+    bulkActionAddIncludes: z.unknown().optional(),
+    bulkActionIncludes: z.unknown().optional()
+});
+
+/**
+ * OK
+ */
+export const zDeleteAllExamConfigurationMappingsResponse = zEntityProcessingReport;
+
+export const zGetExamConfigurationMappingsQuery = z.object({
+    page_number: z.int().min(-2147483648, { error: 'Invalid value: Expected int32 to be >= -2147483648' }).max(2147483647, { error: 'Invalid value: Expected int32 to be <= 2147483647' }).optional(),
+    page_size: z.int().min(-2147483648, { error: 'Invalid value: Expected int32 to be >= -2147483648' }).max(2147483647, { error: 'Invalid value: Expected int32 to be <= 2147483647' }).optional(),
+    sort: z.string().optional(),
+    institutionId: z.int().optional()
+});
+
+/**
+ * OK
+ */
+export const zGetExamConfigurationMappingsResponse = zPageExamConfigurationMap;
+
+export const zCreate3Body = z.object({
+    allRequestParams: zMultiValueMapStringStringWritable,
+    institutionId: z.int().optional()
+});
+
+export const zCreate3Query = z.object({
+    formParams: z.unknown().optional(),
+    institutionId: z.unknown().optional()
+});
+
+/**
+ * OK
+ */
+export const zCreate3Response = zExamConfigurationMap;
+
+export const zEditExamConfigurationMappingBody = zExamConfigurationMap;
+
+/**
+ * OK
+ */
+export const zEditExamConfigurationMappingResponse = zExamConfigurationMap;
+
+export const zDeleteAllConfigurationValuesBody = z.object({
+    modelIds: z.array(z.string()),
+    bulkActionAddIncludes: z.boolean().optional().default(false),
+    bulkActionIncludes: z.array(z.string()).optional(),
+    institutionId: z.int().optional()
+});
+
+export const zDeleteAllConfigurationValuesQuery = z.object({
+    modelIds: z.unknown().optional(),
+    bulkActionAddIncludes: z.unknown().optional(),
+    bulkActionIncludes: z.unknown().optional()
+});
+
+/**
+ * OK
+ */
+export const zDeleteAllConfigurationValuesResponse = zEntityProcessingReport;
+
+export const zGetConfigurationValuesQuery = z.object({
+    page_number: z.int().min(-2147483648, { error: 'Invalid value: Expected int32 to be >= -2147483648' }).max(2147483647, { error: 'Invalid value: Expected int32 to be <= 2147483647' }).optional(),
+    page_size: z.int().min(-2147483648, { error: 'Invalid value: Expected int32 to be >= -2147483648' }).max(2147483647, { error: 'Invalid value: Expected int32 to be <= 2147483647' }).optional(),
+    sort: z.string().optional(),
+    institutionId: z.int().optional()
+});
+
+/**
+ * OK
+ */
+export const zGetConfigurationValuesResponse = zPageConfigurationValue;
+
+export const zCreateConfigurationValueBody = zConfigurationValue;
+
+export const zCreateConfigurationValueQuery = z.object({
+    institutionId: z.unknown().optional()
+});
+
+/**
+ * Created configuration value.
+ */
+export const zCreateConfigurationValueResponse = zConfigurationValue;
+
+export const zEditConfigurationValueBody = zConfigurationValue;
+
+/**
+ * OK
+ */
+export const zEditConfigurationValueResponse = zConfigurationValue;
+
+export const zGetTableValueQuery = z.object({
+    configurationAttributeId: z.int(),
+    configurationId: z.int()
+});
+
+/**
+ * OK
+ */
+export const zGetTableValueResponse = zConfigurationTableValues;
+
+export const zSavePut3Body = zConfigurationTableValues;
+
+/**
+ * OK
+ */
+export const zSavePut3Response = zConfigurationTableValues;
+
+export const zDeleteAllConfigurationAttributesBody = z.object({
+    modelIds: z.array(z.string()),
+    bulkActionAddIncludes: z.boolean().optional().default(false),
+    bulkActionIncludes: z.array(z.string()).optional(),
+    institutionId: z.int().optional()
+});
+
+export const zDeleteAllConfigurationAttributesQuery = z.object({
+    modelIds: z.unknown().optional(),
+    bulkActionAddIncludes: z.unknown().optional(),
+    bulkActionIncludes: z.unknown().optional()
+});
+
+/**
+ * OK
+ */
+export const zDeleteAllConfigurationAttributesResponse = zEntityProcessingReport;
+
+export const zGetConfigurationAttributesQuery = z.object({
+    page_number: z.int().min(-2147483648, { error: 'Invalid value: Expected int32 to be >= -2147483648' }).max(2147483647, { error: 'Invalid value: Expected int32 to be <= 2147483647' }).optional(),
+    page_size: z.int().min(-2147483648, { error: 'Invalid value: Expected int32 to be >= -2147483648' }).max(2147483647, { error: 'Invalid value: Expected int32 to be <= 2147483647' }).optional(),
+    sort: z.string().optional(),
+    institutionId: z.int().optional()
+});
+
+/**
+ * OK
+ */
+export const zGetConfigurationAttributesResponse = zPageConfigurationAttribute;
+
+export const zCreateConfigurationAttributeBody = zConfigurationAttribute;
+
+export const zCreateConfigurationAttributeQuery = z.object({
+    institutionId: z.unknown().optional()
+});
+
+/**
+ * Created configuration attribute.
+ */
+export const zCreateConfigurationAttributeResponse = zConfigurationAttribute;
+
+export const zEditConfigurationAttributeBody = zConfigurationAttribute;
+
+/**
+ * OK
+ */
+export const zEditConfigurationAttributeResponse = zConfigurationAttribute;
+
+export const zHardDeleteAll4Body = z.object({
+    modelIds: z.array(z.string()),
+    bulkActionAddIncludes: z.boolean().optional().default(false),
+    bulkActionIncludes: z.array(z.string()).optional(),
+    institutionId: z.int().optional()
+});
+
+export const zHardDeleteAll4Query = z.object({
+    modelIds: z.unknown().optional(),
+    bulkActionAddIncludes: z.unknown().optional(),
+    bulkActionIncludes: z.unknown().optional()
+});
+
+/**
+ * OK
+ */
+export const zHardDeleteAll4Response = zEntityProcessingReport;
+
+export const zGetConfigurationsQuery = z.object({
+    page_number: z.int().min(-2147483648, { error: 'Invalid value: Expected int32 to be >= -2147483648' }).max(2147483647, { error: 'Invalid value: Expected int32 to be <= 2147483647' }).optional(),
+    page_size: z.int().min(-2147483648, { error: 'Invalid value: Expected int32 to be >= -2147483648' }).max(2147483647, { error: 'Invalid value: Expected int32 to be <= 2147483647' }).optional(),
+    sort: z.string().optional(),
+    institutionId: z.int().optional()
+});
+
+/**
+ * OK
+ */
+export const zGetConfigurationsResponse = zPageConfiguration;
+
+export const zCreate4Body = z.object({
+    allRequestParams: zMultiValueMapStringStringWritable,
+    institutionId: z.int().optional()
+});
+
+export const zCreate4Query = z.object({
+    formParams: z.unknown().optional(),
+    institutionId: z.unknown().optional()
+});
+
+/**
+ * OK
+ */
+export const zCreate4Response = zConfiguration;
+
+export const zSavePut4Body = zConfiguration;
+
+/**
+ * OK
+ */
+export const zSavePut4Response = zConfiguration;
+
+export const zDeleteAllConfigurationNodesBody = z.object({
+    modelIds: z.array(z.string()),
+    bulkActionAddIncludes: z.boolean().optional().default(false),
+    bulkActionIncludes: z.array(z.string()).optional(),
+    institutionId: z.int().optional()
+});
+
+export const zDeleteAllConfigurationNodesQuery = z.object({
+    modelIds: z.unknown().optional(),
+    bulkActionAddIncludes: z.unknown().optional(),
+    bulkActionIncludes: z.unknown().optional()
+});
+
+/**
+ * OK
+ */
+export const zDeleteAllConfigurationNodesResponse = zEntityProcessingReport;
+
+export const zGetConfigurationNodesQuery = z.object({
+    page_number: z.int().min(-2147483648, { error: 'Invalid value: Expected int32 to be >= -2147483648' }).max(2147483647, { error: 'Invalid value: Expected int32 to be <= 2147483647' }).optional(),
+    page_size: z.int().min(-2147483648, { error: 'Invalid value: Expected int32 to be >= -2147483648' }).max(2147483647, { error: 'Invalid value: Expected int32 to be <= 2147483647' }).optional(),
+    sort: z.string().optional(),
+    institutionId: z.int().optional()
+});
+
+/**
+ * OK
+ */
+export const zGetConfigurationNodesResponse = zPageConfigurationNode;
+
+export const zCreateConfigurationNodeBody = zConfigurationNode;
+
+export const zCreateConfigurationNodeQuery = z.object({
+    institutionId: z.unknown().optional()
+});
+
+/**
+ * Created configuration node.
+ */
+export const zCreateConfigurationNodeResponse = zConfigurationNode;
+
+export const zEditConfigurationNodeBody = zConfigurationNode;
+
+/**
+ * OK
+ */
+export const zEditConfigurationNodeResponse = zConfigurationNode;
+
+export const zCopyConfigurationBody = zConfigCreationInfo;
+
+export const zCopyConfigurationQuery = z.object({
+    institutionId: z.int().optional()
+});
+
+/**
+ * OK
+ */
+export const zCopyConfigurationResponse = zConfigurationNode;
+
+export const zDeleteAllSebClientConfigsBody = z.object({
+    modelIds: z.array(z.string()),
+    bulkActionAddIncludes: z.boolean().optional().default(false),
+    bulkActionIncludes: z.array(z.string()).optional(),
+    institutionId: z.int().optional()
+});
+
+export const zDeleteAllSebClientConfigsQuery = z.object({
+    modelIds: z.unknown().optional(),
+    bulkActionAddIncludes: z.unknown().optional(),
+    bulkActionIncludes: z.unknown().optional()
+});
+
+/**
+ * OK
+ */
+export const zDeleteAllSebClientConfigsResponse = zEntityProcessingReport;
+
+export const zGetSebClientConfigsQuery = z.object({
+    page_number: z.int().min(-2147483648, { error: 'Invalid value: Expected int32 to be >= -2147483648' }).max(2147483647, { error: 'Invalid value: Expected int32 to be <= 2147483647' }).optional(),
+    page_size: z.int().min(-2147483648, { error: 'Invalid value: Expected int32 to be >= -2147483648' }).max(2147483647, { error: 'Invalid value: Expected int32 to be <= 2147483647' }).optional(),
+    sort: z.string().optional(),
+    institutionId: z.int().optional()
+});
+
+/**
+ * OK
+ */
+export const zGetSebClientConfigsResponse = zPageSebClientConfig;
+
+export const zCreateSebClientConfigBody = zSebClientConfig;
+
+export const zCreateSebClientConfigQuery = z.object({
+    institutionId: z.unknown().optional()
+});
+
+/**
+ * Created s e b client config.
+ */
+export const zCreateSebClientConfigResponse = zSebClientConfig;
+
+export const zEditSebClientConfigBody = zSebClientConfig;
+
+/**
+ * OK
+ */
+export const zEditSebClientConfigResponse = zSebClientConfig;
+
+export const zDeleteAllClientGroupsBody = z.object({
+    modelIds: z.array(z.string()),
+    bulkActionAddIncludes: z.boolean().optional().default(false),
+    bulkActionIncludes: z.array(z.string()).optional(),
+    institutionId: z.int().optional()
+});
+
+export const zDeleteAllClientGroupsQuery = z.object({
+    modelIds: z.unknown().optional(),
+    bulkActionAddIncludes: z.unknown().optional(),
+    bulkActionIncludes: z.unknown().optional()
+});
+
+/**
+ * OK
+ */
+export const zDeleteAllClientGroupsResponse = zEntityProcessingReport;
+
+export const zGetClientGroupsQuery = z.object({
+    page_number: z.int().min(-2147483648, { error: 'Invalid value: Expected int32 to be >= -2147483648' }).max(2147483647, { error: 'Invalid value: Expected int32 to be <= 2147483647' }).optional(),
+    page_size: z.int().min(-2147483648, { error: 'Invalid value: Expected int32 to be >= -2147483648' }).max(2147483647, { error: 'Invalid value: Expected int32 to be <= 2147483647' }).optional(),
+    sort: z.string().optional(),
+    institutionId: z.int().optional()
+});
+
+/**
+ * OK
+ */
+export const zGetClientGroupsResponse = zPageClientGroup;
+
+export const zCreateClientGroupBody = zClientGroup;
+
+export const zCreateClientGroupQuery = z.object({
+    institutionId: z.unknown().optional()
+});
+
+/**
+ * Created client group.
+ */
+export const zCreateClientGroupResponse = zClientGroup;
+
+export const zEditClientGroupBody = zClientGroup;
+
+/**
+ * OK
+ */
+export const zEditClientGroupResponse = zClientGroup;
+
+export const zDeleteAllBatchActionsBody = z.object({
+    modelIds: z.array(z.string()),
+    bulkActionAddIncludes: z.boolean().optional().default(false),
+    bulkActionIncludes: z.array(z.string()).optional(),
+    institutionId: z.int().optional()
+});
+
+export const zDeleteAllBatchActionsQuery = z.object({
+    modelIds: z.unknown().optional(),
+    bulkActionAddIncludes: z.unknown().optional(),
+    bulkActionIncludes: z.unknown().optional()
+});
+
+/**
+ * OK
+ */
+export const zDeleteAllBatchActionsResponse = zEntityProcessingReport;
+
+export const zGetBatchActionsQuery = z.object({
+    page_number: z.int().min(-2147483648, { error: 'Invalid value: Expected int32 to be >= -2147483648' }).max(2147483647, { error: 'Invalid value: Expected int32 to be <= 2147483647' }).optional(),
+    page_size: z.int().min(-2147483648, { error: 'Invalid value: Expected int32 to be >= -2147483648' }).max(2147483647, { error: 'Invalid value: Expected int32 to be <= 2147483647' }).optional(),
+    sort: z.string().optional(),
+    institutionId: z.int().optional()
+});
+
+/**
+ * OK
+ */
+export const zGetBatchActionsResponse = zPageBatchAction;
+
+export const zCreateBatchActionBody = zBatchAction;
+
+export const zCreateBatchActionQuery = z.object({
+    institutionId: z.unknown().optional()
+});
+
+/**
+ * Created batch action.
+ */
+export const zCreateBatchActionResponse = zBatchAction;
+
+export const zEditBatchActionBody = zBatchAction;
+
+/**
+ * OK
+ */
+export const zEditBatchActionResponse = zBatchAction;
+
+export const zVerifyJwtTokenHeaders = z.object({
+    'one-time-token-to-verify': z.string()
+});
+
+/**
+ * OK
+ */
+export const zVerifyJwtTokenResponse = zTokenLoginInfo;
+
+export const zGetConnectionConfigurationBody = z.object({
+    id: z.string(),
+    course_id: z.string(),
+    quiz_id: z.string()
+});
+
+export const zGetOneTimeLoginTokenBody = z.object({
+    id: z.string(),
+    course_id: z.string(),
+    quiz_id: z.string(),
+    user_id: z.string(),
+    user_username: z.string().optional(),
+    user_email: z.string().optional(),
+    user_firstname: z.string().optional(),
+    user_lastname: z.string().optional(),
+    account_time_zone: z.string().optional()
+});
+
+/**
+ * OK
+ */
+export const zGetOneTimeLoginTokenResponse = zTokenLoginResponse;
+
+export const zDeleteExamBody = z.object({
+    id: z.string(),
+    course_id: z.string(),
+    quiz_id: z.string()
+});
+
+export const zCreateExamBody = z.object({
+    id: z.string(),
+    course_id: z.string(),
+    quiz_id: z.string(),
+    exam_template_id: z.string(),
+    exam_data: z.string().optional(),
+    quit_password: z.string().optional(),
+    quit_link: z.int().min(-2147483648, { error: 'Invalid value: Expected int32 to be >= -2147483648' }).max(2147483647, { error: 'Invalid value: Expected int32 to be <= 2147483647' }).optional()
+});
+
+export const zEventBody = z.string();
+
+export const zEventHeaders = z.object({
+    SEBConnectionToken: z.string()
+});
+
+/**
+ * No Content
+ */
+export const zEventResponse = z.void();
 
 export const zDeactivateUserAccountBody = z.unknown();
 
@@ -324,12 +2981,853 @@ export const zActivateUserAccountPath = z.object({
  */
 export const zActivateUserAccountResponse = zEntityProcessingReport;
 
+export const zGetDeletionReportQuery = z.object({
+    searchName: z.string(),
+    deleteDueTime: z.int().optional()
+});
+
+/**
+ * OK
+ */
+export const zGetDeletionReportResponse = zSessionDeletionReport;
+
+export const zDeleteSessionsQuery = z.object({
+    searchName: z.string(),
+    deleteDueTime: z.int().optional(),
+    excludes: z.array(z.string()).optional()
+});
+
+/**
+ * OK
+ */
+export const zDeleteSessionsResponse = zSessionDeletionReport;
+
+export const zGetPage1Query = z.object({
+    page_number: z.int().min(-2147483648, { error: 'Invalid value: Expected int32 to be >= -2147483648' }).max(2147483647, { error: 'Invalid value: Expected int32 to be <= 2147483647' }).optional(),
+    page_size: z.int().min(-2147483648, { error: 'Invalid value: Expected int32 to be >= -2147483648' }).max(2147483647, { error: 'Invalid value: Expected int32 to be <= 2147483647' }).optional(),
+    sort: z.string().optional(),
+    filterCriteria: zMultiValueMapStringStringWritable
+});
+
+/**
+ * OK
+ */
+export const zGetPage1Response = zPageScheduledDelete;
+
+export const zCreate5Body = z.int();
+
+/**
+ * OK
+ */
+export const zCreate5Response = zScheduledDeleteReport;
+
+export const zUnmarkIncludeBody = z.unknown();
+
+export const zUnmarkIncludePath = z.object({
+    modelId: z.string()
+});
+
+/**
+ * OK
+ */
+export const zUnmarkIncludeResponse = zScheduledDeleteReport;
+
+export const zMarkExcludeBody = z.unknown();
+
+export const zMarkExcludePath = z.object({
+    modelId: z.string()
+});
+
+/**
+ * OK
+ */
+export const zMarkExcludeResponse = zScheduledDeleteReport;
+
 export const zRegisterUserAccountBody = zUserMod;
 
 /**
  * Registered user account.
  */
 export const zRegisterUserAccountResponse = zUserInfo;
+
+export const zGetMonitoringStaticClientDataBody = z.object({
+    institutionId: z.int().optional(),
+    modelIds: z.string()
+});
+
+export const zGetMonitoringStaticClientDataPath = z.object({
+    parentModelId: z.int()
+});
+
+/**
+ * OK
+ */
+export const zGetMonitoringStaticClientDataResponse = zMonitoringStaticClientData;
+
+export const zQuitAllActiveSebClientsPath = z.object({
+    parentModelId: z.int()
+});
+
+export const zQuitAllActiveSebClientsQuery = z.object({
+    institutionId: z.int().optional()
+});
+
+export const zConfirmNotificationPath = z.object({
+    parentModelId: z.int(),
+    modelId: z.int(),
+    SEBConnectionToken: z.string()
+});
+
+export const zConfirmNotificationQuery = z.object({
+    institutionId: z.int().optional()
+});
+
+export const zRegisterInstructionBody = zClientInstruction;
+
+export const zRegisterInstructionPath = z.object({
+    parentModelId: z.int()
+});
+
+export const zRegisterInstructionQuery = z.object({
+    institutionId: z.int().optional()
+});
+
+export const zDisableConnectionBody = z.object({
+    institutionId: z.int().optional(),
+    connectionToken: z.string()
+});
+
+export const zDisableConnectionPath = z.object({
+    parentModelId: z.int()
+});
+
+export const zToggleTestRunForExamPath = z.object({
+    modelId: z.int()
+});
+
+export const zToggleTestRunForExamQuery = z.object({
+    institutionId: z.int().optional()
+});
+
+/**
+ * OK
+ */
+export const zToggleTestRunForExamResponse = zExam;
+
+export const zActivateTownhallPath = z.object({
+    modelId: z.int()
+});
+
+export const zActivateTownhallQuery = z.object({
+    institutionId: z.int().optional(),
+    subject: z.string().optional()
+});
+
+/**
+ * OK
+ */
+export const zActivateTownhallResponse = zProctoringRoomConnection;
+
+export const zSendReconfigurationAttributesPath = z.object({
+    modelId: z.int()
+});
+
+export const zSendReconfigurationAttributesQuery = z.object({
+    institutionId: z.int().optional(),
+    id: z.string().optional(),
+    receive_audio: z.string().optional().default('false'),
+    receive_video: z.string().optional().default('false'),
+    allow_chat: z.string().optional().default('false')
+});
+
+export const zOpenBreakOutRoomPath = z.object({
+    modelId: z.int()
+});
+
+export const zOpenBreakOutRoomQuery = z.object({
+    institutionId: z.int().optional(),
+    subject: z.string().optional(),
+    SEBConnectionToken: z.string()
+});
+
+/**
+ * OK
+ */
+export const zOpenBreakOutRoomResponse = zProctoringRoomConnection;
+
+export const zNotifyProctoringRoomOpenedBody = z.object({
+    institutionId: z.int().optional(),
+    roomName: z.string()
+});
+
+export const zNotifyProctoringRoomOpenedPath = z.object({
+    modelId: z.int()
+});
+
+export const zCloseProctoringRoomPath = z.object({
+    modelId: z.int()
+});
+
+export const zCloseProctoringRoomQuery = z.object({
+    institutionId: z.int().optional(),
+    roomName: z.string()
+});
+
+export const zDeactivateLmsSetupBody = z.unknown();
+
+export const zDeactivateLmsSetupPath = z.object({
+    modelId: z.string()
+});
+
+/**
+ * OK
+ */
+export const zDeactivateLmsSetupResponse = zEntityProcessingReport;
+
+export const zActivateLmsSetupBody = z.unknown();
+
+export const zActivateLmsSetupPath = z.object({
+    modelId: z.string()
+});
+
+/**
+ * OK
+ */
+export const zActivateLmsSetupResponse = zEntityProcessingReport;
+
+export const zDeactivateInstitutionBody = z.unknown();
+
+export const zDeactivateInstitutionPath = z.object({
+    modelId: z.string()
+});
+
+/**
+ * OK
+ */
+export const zDeactivateInstitutionResponse = zEntityProcessingReport;
+
+export const zActivateInstitutionBody = z.unknown();
+
+export const zActivateInstitutionPath = z.object({
+    modelId: z.string()
+});
+
+/**
+ * OK
+ */
+export const zActivateInstitutionResponse = zEntityProcessingReport;
+
+export const zGetAppSignatureKeyInfoPath = z.object({
+    parentModelId: z.int()
+});
+
+export const zGetAppSignatureKeyInfoQuery = z.object({
+    institutionId: z.int().optional()
+});
+
+/**
+ * OK
+ */
+export const zGetAppSignatureKeyInfoResponse = z.array(zAppSignatureKeyInfo);
+
+export const zSaveAppSignatureKeySettingsBody = z.object({
+    institutionId: z.int().optional(),
+    SIGNATURE_KEY_CHECK_ENABLED: z.boolean(),
+    NUMERICAL_TRUST_THRESHOLD: z.int().min(-2147483648, { error: 'Invalid value: Expected int32 to be >= -2147483648' }).max(2147483647, { error: 'Invalid value: Expected int32 to be <= 2147483647' })
+});
+
+export const zSaveAppSignatureKeySettingsPath = z.object({
+    parentModelId: z.int()
+});
+
+export const zDeleteSecurityGrantPath = z.object({
+    parentModelId: z.int(),
+    modelId: z.int()
+});
+
+export const zDeleteSecurityGrantQuery = z.object({
+    institutionId: z.int().optional()
+});
+
+/**
+ * OK
+ */
+export const zDeleteSecurityGrantResponse = zEntityKey;
+
+export const zGrantAppSignatureKeyBody = z.object({
+    institutionId: z.int().optional(),
+    tag: z.string().optional()
+});
+
+export const zGrantAppSignatureKeyPath = z.object({
+    parentModelId: z.int(),
+    modelId: z.int()
+});
+
+/**
+ * OK
+ */
+export const zGrantAppSignatureKeyResponse = zSecurityKey;
+
+export const zGetScreenProctoringSettingsPath = z.object({
+    modelId: z.int()
+});
+
+export const zGetScreenProctoringSettingsQuery = z.object({
+    institutionId: z.int().optional()
+});
+
+/**
+ * OK
+ */
+export const zGetScreenProctoringSettingsResponse = zScreenProctoringSettings;
+
+export const zSaveScreenProctoringSettingsBody = zScreenProctoringSettings;
+
+export const zSaveScreenProctoringSettingsPath = z.object({
+    modelId: z.int()
+});
+
+export const zSaveScreenProctoringSettingsQuery = z.object({
+    institutionId: z.int().optional()
+});
+
+/**
+ * OK
+ */
+export const zSaveScreenProctoringSettingsResponse = zExam;
+
+export const zScreenProctoringGroupApplyPath = z.object({
+    modelId: z.int()
+});
+
+export const zScreenProctoringGroupApplyQuery = z.object({
+    institutionId: z.int().optional(),
+    spsSEBGroupsSelection: z.string().optional()
+});
+
+/**
+ * OK
+ */
+export const zScreenProctoringGroupApplyResponse = zExam;
+
+export const zScreenProctoringActivationPath = z.object({
+    modelId: z.int()
+});
+
+export const zScreenProctoringActivationQuery = z.object({
+    institutionId: z.int().optional(),
+    enableScreenProctoring: z.boolean()
+});
+
+/**
+ * OK
+ */
+export const zScreenProctoringActivationResponse = zExam;
+
+export const zGetProctoringServiceSettingsPath = z.object({
+    modelId: z.int()
+});
+
+export const zGetProctoringServiceSettingsQuery = z.object({
+    institutionId: z.int().optional()
+});
+
+/**
+ * OK
+ */
+export const zGetProctoringServiceSettingsResponse = zProctoringServiceSettings;
+
+export const zSaveProctoringServiceSettingsBody = zProctoringServiceSettings;
+
+export const zSaveProctoringServiceSettingsPath = z.object({
+    modelId: z.int()
+});
+
+export const zSaveProctoringServiceSettingsQuery = z.object({
+    institutionId: z.int().optional()
+});
+
+/**
+ * OK
+ */
+export const zSaveProctoringServiceSettingsResponse = zExam;
+
+export const zGetSebSettingsPath = z.object({
+    modelId: z.int()
+});
+
+export const zGetSebSettingsQuery = z.object({
+    viewType: z.enum([
+        'GENERAL',
+        'USER_INTERFACE',
+        'BROWSER',
+        'DOWN_UPLOAD',
+        'EXAM',
+        'APPLICATION',
+        'RESOURCES',
+        'NETWORK',
+        'SECURITY',
+        'REGISTRY',
+        'HOOKED_KEYS',
+        'PROCTORING'
+    ])
+});
+
+/**
+ * OK
+ */
+export const zGetSebSettingsResponse = zSebSettingsView;
+
+export const zSaveSingleValueBody = z.object({
+    id: z.int(),
+    value: z.string()
+});
+
+export const zSaveSingleValuePath = z.object({
+    modelId: z.int()
+});
+
+/**
+ * OK
+ */
+export const zSaveSingleValueResponse = zValue;
+
+export const zUndoChangesPath = z.object({
+    modelId: z.int()
+});
+
+/**
+ * OK
+ */
+export const zUndoChangesResponse = zExam;
+
+export const zDeleteTableRowPath = z.object({
+    modelId: z.int()
+});
+
+export const zDeleteTableRowQuery = z.object({
+    name: z.string(),
+    listIndex: z.int().min(-2147483648, { error: 'Invalid value: Expected int32 to be >= -2147483648' }).max(2147483647, { error: 'Invalid value: Expected int32 to be <= 2147483647' })
+});
+
+/**
+ * OK
+ */
+export const zDeleteTableRowResponse = z.array(zTableRowValues);
+
+export const zAddNewTableRowBody = z.string();
+
+export const zAddNewTableRowPath = z.object({
+    modelId: z.int()
+});
+
+/**
+ * OK
+ */
+export const zAddNewTableRowResponse = zTableRowValues;
+
+export const zPublishPath = z.object({
+    modelId: z.int()
+});
+
+/**
+ * OK
+ */
+export const zPublishResponse = zExam;
+
+export const zGetScreenProctoringSettings1Path = z.object({
+    modelId: z.int()
+});
+
+export const zGetScreenProctoringSettings1Query = z.object({
+    institutionId: z.int().optional()
+});
+
+/**
+ * OK
+ */
+export const zGetScreenProctoringSettings1Response = zScreenProctoringSettings;
+
+export const zSaveScreenProctoringSettings1Body = zScreenProctoringSettings;
+
+export const zSaveScreenProctoringSettings1Path = z.object({
+    modelId: z.int()
+});
+
+export const zSaveScreenProctoringSettings1Query = z.object({
+    institutionId: z.int().optional()
+});
+
+/**
+ * OK
+ */
+export const zSaveScreenProctoringSettings1Response = zExamTemplate;
+
+export const zCopyExamTemplatePath = z.object({
+    modelId: z.string()
+});
+
+/**
+ * OK
+ */
+export const zCopyExamTemplateResponse = zExamTemplate;
+
+export const zCreateExamTemplate1Body = zExamTemplateWritable;
+
+export const zCreateExamTemplate1Query = z.object({
+    institutionId: z.int().optional()
+});
+
+/**
+ * OK
+ */
+export const zCreateExamTemplate1Response = zExamTemplate;
+
+/**
+ * OK
+ */
+export const zCreateTemporaryConfigurationTemplateResponse = zConfigurationNode;
+
+export const zUndoPath = z.object({
+    modelId: z.string()
+});
+
+/**
+ * OK
+ */
+export const zUndoResponse = zConfiguration;
+
+export const zSaveToHistoryPath = z.object({
+    modelId: z.int()
+});
+
+/**
+ * OK
+ */
+export const zSaveToHistoryResponse = zConfiguration;
+
+export const zRestoreFormHistoryPath = z.object({
+    modelId: z.string()
+});
+
+export const zRestoreFormHistoryQuery = z.object({
+    parentModelId: z.int()
+});
+
+/**
+ * OK
+ */
+export const zRestoreFormHistoryResponse = zConfiguration;
+
+export const zSetQuitPasswordBody = z.object({
+    institutionId: z.int().optional(),
+    quitPassword: z.string().optional()
+});
+
+export const zSetQuitPasswordPath = z.object({
+    modelId: z.int()
+});
+
+/**
+ * OK
+ */
+export const zSetQuitPasswordResponse = zConfigurationNode;
+
+export const zImportExamConfigOnExistingConfigHeaders = z.object({
+    importFilePassword: z.string().optional(),
+    quitPassword: z.string().optional()
+});
+
+export const zImportExamConfigOnExistingConfigPath = z.object({
+    modelId: z.int()
+});
+
+export const zImportExamConfigOnExistingConfigQuery = z.object({
+    institutionId: z.int().optional()
+});
+
+/**
+ * OK
+ */
+export const zImportExamConfigOnExistingConfigResponse = zConfiguration;
+
+export const zImportExamConfigHeaders = z.object({
+    name: z.string().optional(),
+    description: z.string().optional(),
+    templateId: z.string().optional(),
+    importFilePassword: z.string().optional()
+});
+
+export const zImportExamConfigQuery = z.object({
+    institutionId: z.int().optional()
+});
+
+/**
+ * OK
+ */
+export const zImportExamConfigResponse = zConfiguration;
+
+export const zGetSebSettings1Path = z.object({
+    modelId: z.int()
+});
+
+export const zGetSebSettings1Query = z.object({
+    viewType: z.enum([
+        'GENERAL',
+        'USER_INTERFACE',
+        'BROWSER',
+        'DOWN_UPLOAD',
+        'EXAM',
+        'APPLICATION',
+        'RESOURCES',
+        'NETWORK',
+        'SECURITY',
+        'REGISTRY',
+        'HOOKED_KEYS',
+        'PROCTORING'
+    ])
+});
+
+/**
+ * OK
+ */
+export const zGetSebSettings1Response = zSebSettingsView;
+
+export const zSaveSingleValue1Body = z.object({
+    id: z.int(),
+    value: z.string()
+});
+
+export const zSaveSingleValue1Path = z.object({
+    modelId: z.int()
+});
+
+/**
+ * OK
+ */
+export const zSaveSingleValue1Response = zValue;
+
+export const zDeleteTableRow1Path = z.object({
+    modelId: z.int()
+});
+
+export const zDeleteTableRow1Query = z.object({
+    name: z.string(),
+    listIndex: z.int().min(-2147483648, { error: 'Invalid value: Expected int32 to be >= -2147483648' }).max(2147483647, { error: 'Invalid value: Expected int32 to be <= 2147483647' })
+});
+
+/**
+ * OK
+ */
+export const zDeleteTableRow1Response = z.array(zTableRowValues);
+
+export const zAddNewTableRow1Body = z.string();
+
+export const zAddNewTableRow1Path = z.object({
+    modelId: z.int()
+});
+
+/**
+ * OK
+ */
+export const zAddNewTableRow1Response = zTableRowValues;
+
+export const zDeactivateSebClientConfigBody = z.unknown();
+
+export const zDeactivateSebClientConfigPath = z.object({
+    modelId: z.string()
+});
+
+/**
+ * OK
+ */
+export const zDeactivateSebClientConfigResponse = zEntityProcessingReport;
+
+export const zActivateSebClientConfigBody = z.unknown();
+
+export const zActivateSebClientConfigPath = z.object({
+    modelId: z.string()
+});
+
+/**
+ * OK
+ */
+export const zActivateSebClientConfigResponse = zEntityProcessingReport;
+
+export const zDeleteCertificateBody = z.object({
+    institutionId: z.int().optional(),
+    alias: z.string()
+});
+
+/**
+ * OK
+ */
+export const zDeleteCertificateResponse = z.array(zEntityKey);
+
+export const zGetPage2Query = z.object({
+    institutionId: z.int().optional(),
+    page_number: z.int().min(-2147483648, { error: 'Invalid value: Expected int32 to be >= -2147483648' }).max(2147483647, { error: 'Invalid value: Expected int32 to be <= 2147483647' }).optional(),
+    page_size: z.int().min(-2147483648, { error: 'Invalid value: Expected int32 to be >= -2147483648' }).max(2147483647, { error: 'Invalid value: Expected int32 to be <= 2147483647' }).optional(),
+    sort: z.string().optional(),
+    allRequestParams: zMultiValueMapStringStringWritable
+});
+
+/**
+ * OK
+ */
+export const zGetPage2Response = zPageCertificateInfo;
+
+export const zImportCertificateHeaders = z.object({
+    importFile: z.string(),
+    alias: z.string().optional(),
+    importFilePassword: z.object({
+        empty: z.boolean().optional()
+    }).optional()
+});
+
+export const zImportCertificateQuery = z.object({
+    institutionId: z.int().optional()
+});
+
+/**
+ * OK
+ */
+export const zImportCertificateResponse = zCertificateInfo;
+
+export const zArchivePath = z.object({
+    modelId: z.int()
+});
+
+export const zArchiveQuery = z.object({
+    institutionId: z.int().optional()
+});
+
+/**
+ * OK
+ */
+export const zArchiveResponse = zExam;
+
+export const zResetTemplateAttributeValuesBody = z.int();
+
+export const zResetTemplateAttributeValuesPath = z.object({
+    parentModelId: z.int(),
+    modelId: z.int()
+});
+
+/**
+ * OK
+ */
+export const zResetTemplateAttributeValuesResponse = zTemplateAttribute;
+
+export const zRemoveTemplateAttributeOrientationBody = z.int();
+
+export const zRemoveTemplateAttributeOrientationPath = z.object({
+    parentModelId: z.int(),
+    modelId: z.int()
+});
+
+/**
+ * OK
+ */
+export const zRemoveTemplateAttributeOrientationResponse = zTemplateAttribute;
+
+export const zAttachDefaultTemplateAttributeOrientationBody = z.object({
+    institutionId: z.int().optional(),
+    viewId: z.int().optional()
+});
+
+export const zAttachDefaultTemplateAttributeOrientationPath = z.object({
+    parentModelId: z.int(),
+    modelId: z.int()
+});
+
+/**
+ * OK
+ */
+export const zAttachDefaultTemplateAttributeOrientationResponse = zTemplateAttribute;
+
+export const zResetToTemplateValuesPath = z.object({
+    modelId: z.string()
+});
+
+/**
+ * OK
+ */
+export const zResetToTemplateValuesResponse = zConfigurationNode;
+
+export const zGetConfigHeaders = z.object({
+    SEBConnectionToken: z.string()
+});
+
+/**
+ * OK
+ */
+export const zGetDiscoveryResponse = zExamApiDiscovery;
+
+export const zHardDeleteBody = z.unknown();
+
+export const zHardDeletePath = z.object({
+    modelId: z.string()
+});
+
+export const zHardDeleteQuery = z.object({
+    bulkActionAddIncludes: z.boolean().optional().default(false),
+    bulkActionIncludes: z.array(z.string()).optional()
+});
+
+/**
+ * OK
+ */
+export const zHardDeleteResponse = zEntityProcessingReport;
+
+export const zGetUserActivityLogByIdBody = z.unknown();
+
+export const zGetUserActivityLogByIdPath = z.object({
+    modelId: z.string()
+});
+
+/**
+ * OK
+ */
+export const zGetUserActivityLogByIdResponse = zUserActivityLog;
+
+export const zGetUserActivityLogDependenciesPath = z.object({
+    modelId: z.string()
+});
+
+export const zGetUserActivityLogDependenciesQuery = z.object({
+    bulkActionType: z.enum([
+        'HARD_DELETE',
+        'DEACTIVATE',
+        'ACTIVATE'
+    ]),
+    bulkActionAddIncludes: z.boolean().optional().default(false),
+    bulkActionIncludes: z.array(z.string()).optional()
+});
+
+/**
+ * OK
+ */
+export const zGetUserActivityLogDependenciesResponse = z.array(zEntityDependency);
+
+export const zGetUserActivityLogNamesQuery = z.object({
+    institutionId: z.int().optional()
+});
+
+/**
+ * OK
+ */
+export const zGetUserActivityLogNamesResponse = z.array(zEntityName);
+
+export const zGetUserActivityLogsByIdsQuery = z.object({
+    modelIds: z.string()
+});
+
+/**
+ * OK
+ */
+export const zGetUserActivityLogsByIdsResponse = z.array(zUserActivityLog);
 
 export const zDeleteUserAccountBody = z.unknown();
 
@@ -358,16 +3856,2245 @@ export const zGetUserAccountByIdPath = z.object({
  */
 export const zGetUserAccountByIdResponse = zUserInfo;
 
-export const zGetSupervisorNamesQuery = z.object({
+export const zGetUserAccountDependenciesPath = z.object({
+    modelId: z.string()
+});
+
+export const zGetUserAccountDependenciesQuery = z.object({
+    bulkActionType: z.enum([
+        'HARD_DELETE',
+        'DEACTIVATE',
+        'ACTIVATE'
+    ]),
+    bulkActionAddIncludes: z.boolean().optional().default(false),
+    bulkActionIncludes: z.array(z.string()).optional()
+});
+
+/**
+ * OK
+ */
+export const zGetUserAccountDependenciesResponse = z.array(zEntityDependency);
+
+export const zGetUserAccountSupervisorsQuery = z.object({
     institutionId: z.int().optional()
 });
 
 /**
  * Active supporter user names.
  */
-export const zGetSupervisorNamesResponse = z.array(zEntityName);
+export const zGetUserAccountSupervisorsResponse = z.array(zEntityName);
+
+export const zGetUserAccountNamesQuery = z.object({
+    institutionId: z.int().optional()
+});
+
+/**
+ * OK
+ */
+export const zGetUserAccountNamesResponse = z.array(zEntityName);
 
 /**
  * Current user account.
  */
 export const zGetCurrentUserAccountResponse = zUserInfo;
+
+export const zGetUserAccountsByIdsQuery = z.object({
+    modelIds: z.string()
+});
+
+/**
+ * OK
+ */
+export const zGetUserAccountsByIdsResponse = z.array(zUserInfo);
+
+export const zGetInactiveUserAccountsQuery = z.object({
+    page_number: z.int().min(-2147483648, { error: 'Invalid value: Expected int32 to be >= -2147483648' }).max(2147483647, { error: 'Invalid value: Expected int32 to be <= 2147483647' }).optional(),
+    page_size: z.int().min(-2147483648, { error: 'Invalid value: Expected int32 to be >= -2147483648' }).max(2147483647, { error: 'Invalid value: Expected int32 to be <= 2147483647' }).optional(),
+    sort: z.string().optional(),
+    institutionId: z.int().optional()
+});
+
+/**
+ * OK
+ */
+export const zGetInactiveUserAccountsResponse = zPageUserInfo;
+
+export const zGetActiveUserAccountsQuery = z.object({
+    page_number: z.int().min(-2147483648, { error: 'Invalid value: Expected int32 to be >= -2147483648' }).max(2147483647, { error: 'Invalid value: Expected int32 to be <= 2147483647' }).optional(),
+    page_size: z.int().min(-2147483648, { error: 'Invalid value: Expected int32 to be >= -2147483648' }).max(2147483647, { error: 'Invalid value: Expected int32 to be <= 2147483647' }).optional(),
+    sort: z.string().optional(),
+    institutionId: z.int().optional()
+});
+
+/**
+ * OK
+ */
+export const zGetActiveUserAccountsResponse = zPageUserInfo;
+
+/**
+ * OK
+ */
+export const zSebVersionInfoPageResponse = z.string();
+
+export const zHardDelete1Body = z.unknown();
+
+export const zHardDelete1Path = z.object({
+    modelId: z.string()
+});
+
+export const zHardDelete1Query = z.object({
+    bulkActionAddIncludes: z.boolean().optional().default(false),
+    bulkActionIncludes: z.array(z.string()).optional()
+});
+
+/**
+ * OK
+ */
+export const zHardDelete1Response = zEntityProcessingReport;
+
+export const zGetClientEventByIdBody = z.unknown();
+
+export const zGetClientEventByIdPath = z.object({
+    modelId: z.string()
+});
+
+/**
+ * OK
+ */
+export const zGetClientEventByIdResponse = zClientEvent;
+
+export const zGetDependenciesPath = z.object({
+    modelId: z.string()
+});
+
+export const zGetDependenciesQuery = z.object({
+    bulkActionType: z.enum([
+        'HARD_DELETE',
+        'DEACTIVATE',
+        'ACTIVATE'
+    ]),
+    bulkActionAddIncludes: z.boolean().optional().default(false),
+    bulkActionIncludes: z.array(z.string()).optional()
+});
+
+/**
+ * OK
+ */
+export const zGetDependenciesResponse = z.array(zEntityDependency);
+
+export const zGetExtendedPageQuery = z.object({
+    page_number: z.int().min(-2147483648, { error: 'Invalid value: Expected int32 to be >= -2147483648' }).max(2147483647, { error: 'Invalid value: Expected int32 to be <= 2147483647' }).optional(),
+    page_size: z.int().min(-2147483648, { error: 'Invalid value: Expected int32 to be >= -2147483648' }).max(2147483647, { error: 'Invalid value: Expected int32 to be <= 2147483647' }).optional(),
+    sort: z.string().optional(),
+    institutionId: z.int().optional(),
+    filterCriteria: zMultiValueMapStringStringWritable
+});
+
+/**
+ * OK
+ */
+export const zGetExtendedPageResponse = zPageExtendedClientEvent;
+
+export const zGetClientEventNamesQuery = z.object({
+    institutionId: z.int().optional()
+});
+
+/**
+ * OK
+ */
+export const zGetClientEventNamesResponse = z.array(zEntityName);
+
+export const zGetClientEventsByIdsQuery = z.object({
+    modelIds: z.string()
+});
+
+/**
+ * OK
+ */
+export const zGetClientEventsByIdsResponse = z.array(zClientEvent);
+
+export const zExportEventsQuery = z.object({
+    institutionId: z.int().optional(),
+    exportType: z.enum(['CSV']),
+    includeConnectionDetails: z.boolean().optional().default(true),
+    includeExamDetails: z.boolean().optional().default(false),
+    sort: z.string().optional(),
+    allRequestParams: zMultiValueMapStringStringWritable
+});
+
+export const zHardDelete2Body = z.unknown();
+
+export const zHardDelete2Path = z.object({
+    modelId: z.string()
+});
+
+export const zHardDelete2Query = z.object({
+    bulkActionAddIncludes: z.boolean().optional().default(false),
+    bulkActionIncludes: z.array(z.string()).optional()
+});
+
+/**
+ * OK
+ */
+export const zHardDelete2Response = zEntityProcessingReport;
+
+export const zGetClientConnectionByIdBody = z.unknown();
+
+export const zGetClientConnectionByIdPath = z.object({
+    modelId: z.string()
+});
+
+/**
+ * OK
+ */
+export const zGetClientConnectionByIdResponse = zClientConnection;
+
+export const zGetDependencies1Path = z.object({
+    modelId: z.string()
+});
+
+export const zGetDependencies1Query = z.object({
+    bulkActionType: z.enum([
+        'HARD_DELETE',
+        'DEACTIVATE',
+        'ACTIVATE'
+    ]),
+    bulkActionAddIncludes: z.boolean().optional().default(false),
+    bulkActionIncludes: z.array(z.string()).optional()
+});
+
+/**
+ * OK
+ */
+export const zGetDependencies1Response = z.array(zEntityDependency);
+
+export const zGetClientConnectionNamesQuery = z.object({
+    institutionId: z.int().optional()
+});
+
+/**
+ * OK
+ */
+export const zGetClientConnectionNamesResponse = z.array(zEntityName);
+
+export const zGetClientConnectionsByIdsQuery = z.object({
+    modelIds: z.string()
+});
+
+/**
+ * OK
+ */
+export const zGetClientConnectionsByIdsResponse = z.array(zClientConnection);
+
+export const zGetClientConnectionDataPageBody = z.unknown();
+
+export const zGetClientConnectionDataPageQuery = z.object({
+    page_number: z.int().min(-2147483648, { error: 'Invalid value: Expected int32 to be >= -2147483648' }).max(2147483647, { error: 'Invalid value: Expected int32 to be <= 2147483647' }).optional(),
+    page_size: z.int().min(-2147483648, { error: 'Invalid value: Expected int32 to be >= -2147483648' }).max(2147483647, { error: 'Invalid value: Expected int32 to be <= 2147483647' }).optional(),
+    sort: z.string().optional(),
+    institutionId: z.int().optional(),
+    filterCriteria: zMultiValueMapStringStringWritable
+});
+
+/**
+ * OK
+ */
+export const zGetClientConnectionDataPageResponse = zPageClientConnectionData;
+
+export const zGetClientConnectionDataByPath = z.object({
+    modelId: z.string()
+});
+
+/**
+ * OK
+ */
+export const zGetClientConnectionDataByResponse = zClientConnectionData;
+
+export const zDeletePath = z.object({
+    modelId: z.string()
+});
+
+/**
+ * OK
+ */
+export const zDeleteResponse = zEntityKey;
+
+export const zGetFullReportByIdPath = z.object({
+    modelId: z.string()
+});
+
+/**
+ * OK
+ */
+export const zGetFullReportByIdResponse = zScheduledDeleteReport;
+
+export const zGetQuizPageQuery = z.object({
+    institutionId: z.int().optional(),
+    page_number: z.int().min(-2147483648, { error: 'Invalid value: Expected int32 to be >= -2147483648' }).max(2147483647, { error: 'Invalid value: Expected int32 to be <= 2147483647' }).optional(),
+    page_size: z.int().min(-2147483648, { error: 'Invalid value: Expected int32 to be >= -2147483648' }).max(2147483647, { error: 'Invalid value: Expected int32 to be <= 2147483647' }).optional(),
+    sort: z.string().optional(),
+    allRequestParams: zMultiValueMapStringStringWritable
+});
+
+/**
+ * OK
+ */
+export const zGetQuizPageResponse = zPageQuizData;
+
+export const zGetQuizPath = z.object({
+    modelId: z.string()
+});
+
+export const zGetQuizQuery = z.object({
+    lms_setup_id: z.int()
+});
+
+/**
+ * OK
+ */
+export const zGetQuizResponse = zQuizData;
+
+export const zDeleteOrientationBody = z.unknown();
+
+export const zDeleteOrientationPath = z.object({
+    modelId: z.string()
+});
+
+export const zDeleteOrientationQuery = z.object({
+    bulkActionAddIncludes: z.boolean().optional().default(false),
+    bulkActionIncludes: z.array(z.string()).optional()
+});
+
+/**
+ * OK
+ */
+export const zDeleteOrientationResponse = zEntityProcessingReport;
+
+export const zGetOrientationByIdBody = z.unknown();
+
+export const zGetOrientationByIdPath = z.object({
+    modelId: z.string()
+});
+
+/**
+ * OK
+ */
+export const zGetOrientationByIdResponse = zOrientation;
+
+export const zGetOrientationDependenciesPath = z.object({
+    modelId: z.string()
+});
+
+export const zGetOrientationDependenciesQuery = z.object({
+    bulkActionType: z.enum([
+        'HARD_DELETE',
+        'DEACTIVATE',
+        'ACTIVATE'
+    ]),
+    bulkActionAddIncludes: z.boolean().optional().default(false),
+    bulkActionIncludes: z.array(z.string()).optional()
+});
+
+/**
+ * OK
+ */
+export const zGetOrientationDependenciesResponse = z.array(zEntityDependency);
+
+export const zDeleteViewBody = z.unknown();
+
+export const zDeleteViewPath = z.object({
+    modelId: z.string()
+});
+
+export const zDeleteViewQuery = z.object({
+    bulkActionAddIncludes: z.boolean().optional().default(false),
+    bulkActionIncludes: z.array(z.string()).optional()
+});
+
+/**
+ * OK
+ */
+export const zDeleteViewResponse = zEntityProcessingReport;
+
+export const zGetViewByIdBody = z.unknown();
+
+export const zGetViewByIdPath = z.object({
+    modelId: z.string()
+});
+
+/**
+ * OK
+ */
+export const zGetViewByIdResponse = zView;
+
+export const zGetViewDependenciesPath = z.object({
+    modelId: z.string()
+});
+
+export const zGetViewDependenciesQuery = z.object({
+    bulkActionType: z.enum([
+        'HARD_DELETE',
+        'DEACTIVATE',
+        'ACTIVATE'
+    ]),
+    bulkActionAddIncludes: z.boolean().optional().default(false),
+    bulkActionIncludes: z.array(z.string()).optional()
+});
+
+/**
+ * OK
+ */
+export const zGetViewDependenciesResponse = z.array(zEntityDependency);
+
+export const zGetViewNamesQuery = z.object({
+    institutionId: z.int().optional()
+});
+
+/**
+ * OK
+ */
+export const zGetViewNamesResponse = z.array(zEntityName);
+
+export const zGetViewsByIdsQuery = z.object({
+    modelIds: z.string()
+});
+
+/**
+ * OK
+ */
+export const zGetViewsByIdsResponse = z.array(zView);
+
+export const zGetOrientationNamesQuery = z.object({
+    institutionId: z.int().optional()
+});
+
+/**
+ * OK
+ */
+export const zGetOrientationNamesResponse = z.array(zEntityName);
+
+export const zGetOrientationsByIdsQuery = z.object({
+    modelIds: z.string()
+});
+
+/**
+ * OK
+ */
+export const zGetOrientationsByIdsResponse = z.array(zOrientation);
+
+export const zGetPage3Query = z.object({
+    institutionId: z.int().optional(),
+    page_number: z.int().min(-2147483648, { error: 'Invalid value: Expected int32 to be >= -2147483648' }).max(2147483647, { error: 'Invalid value: Expected int32 to be <= 2147483647' }).optional(),
+    page_size: z.int().min(-2147483648, { error: 'Invalid value: Expected int32 to be >= -2147483648' }).max(2147483647, { error: 'Invalid value: Expected int32 to be <= 2147483647' }).optional(),
+    sort: z.string().optional(),
+    allRequestParams: zMultiValueMapStringStringWritable
+});
+
+/**
+ * OK
+ */
+export const zGetPage3Response = zPageExam;
+
+export const zGetConnectionDataHeaders = z.object({
+    'hidden-states': z.string().optional(),
+    'hidden-client-group': z.string().optional(),
+    'hidden-issues': z.string().optional()
+});
+
+export const zGetConnectionDataPath = z.object({
+    parentModelId: z.int()
+});
+
+export const zGetConnectionDataQuery = z.object({
+    institutionId: z.int().optional()
+});
+
+/**
+ * OK
+ */
+export const zGetConnectionDataResponse = z.array(zClientConnectionData);
+
+export const zGetConnectionDataForSingleConnectionPath = z.object({
+    parentModelId: z.int(),
+    SEBConnectionToken: z.string()
+});
+
+export const zGetConnectionDataForSingleConnectionQuery = z.object({
+    institutionId: z.int().optional()
+});
+
+/**
+ * OK
+ */
+export const zGetConnectionDataForSingleConnectionResponse = zClientConnectionData;
+
+export const zGetAppSignatureKeyPath = z.object({
+    parentModelId: z.int(),
+    modelId: z.int()
+});
+
+export const zGetAppSignatureKeyQuery = z.object({
+    institutionId: z.int().optional()
+});
+
+/**
+ * OK
+ */
+export const zGetAppSignatureKeyResponse = zSecurityKey;
+
+export const zPendingNotificationsPath = z.object({
+    parentModelId: z.int(),
+    SEBConnectionToken: z.string()
+});
+
+export const zPendingNotificationsQuery = z.object({
+    institutionId: z.int().optional()
+});
+
+/**
+ * OK
+ */
+export const zPendingNotificationsResponse = z.array(zClientNotification);
+
+export const zGetFullMonitoringPageDataHeaders = z.object({
+    'hidden-states': z.string().optional(),
+    'hidden-client-group': z.string().optional(),
+    'hidden-issues': z.string().optional()
+});
+
+export const zGetFullMonitoringPageDataPath = z.object({
+    parentModelId: z.int()
+});
+
+export const zGetFullMonitoringPageDataQuery = z.object({
+    institutionId: z.int().optional()
+});
+
+/**
+ * OK
+ */
+export const zGetFullMonitoringPageDataResponse = zMonitoringFullPageData;
+
+export const zGetTownhallRoomPath = z.object({
+    modelId: z.int()
+});
+
+export const zGetTownhallRoomQuery = z.object({
+    institutionId: z.int().optional()
+});
+
+/**
+ * OK
+ */
+export const zGetTownhallRoomResponse = zRemoteProctoringRoom;
+
+export const zIsTownhallRoomAvialbalePath = z.object({
+    modelId: z.int()
+});
+
+export const zIsTownhallRoomAvialbaleQuery = z.object({
+    institutionId: z.int().optional()
+});
+
+/**
+ * OK
+ */
+export const zIsTownhallRoomAvialbaleResponse = z.string();
+
+export const zGetProctorRoomConnectionPath = z.object({
+    modelId: z.int()
+});
+
+export const zGetProctorRoomConnectionQuery = z.object({
+    institutionId: z.int().optional(),
+    roomName: z.string(),
+    subject: z.string().optional()
+});
+
+/**
+ * OK
+ */
+export const zGetProctorRoomConnectionResponse = zProctoringRoomConnection;
+
+export const zGetScreenProctoringGroupsOfExamPath = z.object({
+    modelId: z.int()
+});
+
+export const zGetScreenProctoringGroupsOfExamQuery = z.object({
+    institutionId: z.int().optional()
+});
+
+/**
+ * OK
+ */
+export const zGetScreenProctoringGroupsOfExamResponse = z.array(zScreenProctoringGroup);
+
+export const zGetAllClientConnectionsInRoomPath = z.object({
+    modelId: z.int()
+});
+
+export const zGetAllClientConnectionsInRoomQuery = z.object({
+    institutionId: z.int().optional(),
+    id: z.string()
+});
+
+/**
+ * OK
+ */
+export const zGetAllClientConnectionsInRoomResponse = z.array(zClientConnection);
+
+export const zGetCollectingRoomsOfExamPath = z.object({
+    modelId: z.int()
+});
+
+export const zGetCollectingRoomsOfExamQuery = z.object({
+    institutionId: z.int().optional()
+});
+
+/**
+ * OK
+ */
+export const zGetCollectingRoomsOfExamResponse = z.array(zRemoteProctoringRoom);
+
+export const zGetOverviewDataPath = z.object({
+    modelId: z.int()
+});
+
+export const zGetOverviewDataQuery = z.object({
+    institutionId: z.int().optional()
+});
+
+/**
+ * OK
+ */
+export const zGetOverviewDataResponse = zExamMonitoringOverviewData;
+
+export const zGetFinishedExamsPageQuery = z.object({
+    institutionId: z.int().optional(),
+    page_number: z.int().min(-2147483648, { error: 'Invalid value: Expected int32 to be >= -2147483648' }).max(2147483647, { error: 'Invalid value: Expected int32 to be <= 2147483647' }).optional(),
+    page_size: z.int().min(-2147483648, { error: 'Invalid value: Expected int32 to be >= -2147483648' }).max(2147483647, { error: 'Invalid value: Expected int32 to be <= 2147483647' }).optional(),
+    sort: z.string().optional(),
+    allRequestParams: zMultiValueMapStringStringWritable
+});
+
+/**
+ * OK
+ */
+export const zGetFinishedExamsPageResponse = zPageExam;
+
+export const zGetMonitoringExamListDataHeaders = z.object({
+    'show-all': z.boolean().optional(),
+    'show-states': z.string().optional(),
+    'show-client-groups': z.string().optional(),
+    'show-indicators': z.string().optional(),
+    'show-notifications': z.string().optional()
+});
+
+export const zGetMonitoringExamListDataPath = z.object({
+    modelId: z.int()
+});
+
+export const zGetMonitoringExamListDataQuery = z.object({
+    institutionId: z.int().optional()
+});
+
+/**
+ * OK
+ */
+export const zGetMonitoringExamListDataResponse = zMonitoringFullPageData;
+
+export const zDeleteLmsSetupBody = z.unknown();
+
+export const zDeleteLmsSetupPath = z.object({
+    modelId: z.string()
+});
+
+export const zDeleteLmsSetupQuery = z.object({
+    bulkActionAddIncludes: z.boolean().optional().default(false),
+    bulkActionIncludes: z.array(z.string()).optional()
+});
+
+/**
+ * OK
+ */
+export const zDeleteLmsSetupResponse = zEntityProcessingReport;
+
+export const zGetByBody = z.unknown();
+
+export const zGetByPath = z.object({
+    modelId: z.string()
+});
+
+/**
+ * OK
+ */
+export const zGetByResponse = zLmsSetup;
+
+export const zGetLmsSetupDependenciesPath = z.object({
+    modelId: z.string()
+});
+
+export const zGetLmsSetupDependenciesQuery = z.object({
+    bulkActionType: z.enum([
+        'HARD_DELETE',
+        'DEACTIVATE',
+        'ACTIVATE'
+    ]),
+    bulkActionAddIncludes: z.boolean().optional().default(false),
+    bulkActionIncludes: z.array(z.string()).optional()
+});
+
+/**
+ * OK
+ */
+export const zGetLmsSetupDependenciesResponse = z.array(zEntityDependency);
+
+export const zTestLmsPath = z.object({
+    modelId: z.int()
+});
+
+export const zTestLmsQuery = z.object({
+    institutionId: z.int().optional()
+});
+
+/**
+ * OK
+ */
+export const zTestLmsResponse = zLmsSetupTestResult;
+
+export const zGetLmsSetupNamesQuery = z.object({
+    institutionId: z.int().optional()
+});
+
+/**
+ * OK
+ */
+export const zGetLmsSetupNamesResponse = z.array(zEntityName);
+
+export const zGetLmsSetupsByIdsQuery = z.object({
+    modelIds: z.string()
+});
+
+/**
+ * OK
+ */
+export const zGetLmsSetupsByIdsResponse = z.array(zLmsSetup);
+
+export const zGetInactiveLmsSetupsQuery = z.object({
+    page_number: z.int().min(-2147483648, { error: 'Invalid value: Expected int32 to be >= -2147483648' }).max(2147483647, { error: 'Invalid value: Expected int32 to be <= 2147483647' }).optional(),
+    page_size: z.int().min(-2147483648, { error: 'Invalid value: Expected int32 to be >= -2147483648' }).max(2147483647, { error: 'Invalid value: Expected int32 to be <= 2147483647' }).optional(),
+    sort: z.string().optional(),
+    institutionId: z.int().optional()
+});
+
+/**
+ * OK
+ */
+export const zGetInactiveLmsSetupsResponse = zPageLmsSetup;
+
+export const zGetActiveLmsSetupsQuery = z.object({
+    page_number: z.int().min(-2147483648, { error: 'Invalid value: Expected int32 to be >= -2147483648' }).max(2147483647, { error: 'Invalid value: Expected int32 to be <= 2147483647' }).optional(),
+    page_size: z.int().min(-2147483648, { error: 'Invalid value: Expected int32 to be >= -2147483648' }).max(2147483647, { error: 'Invalid value: Expected int32 to be <= 2147483647' }).optional(),
+    sort: z.string().optional(),
+    institutionId: z.int().optional()
+});
+
+/**
+ * OK
+ */
+export const zGetActiveLmsSetupsResponse = zPageLmsSetup;
+
+export const zDeleteInstitutionBody = z.unknown();
+
+export const zDeleteInstitutionPath = z.object({
+    modelId: z.string()
+});
+
+export const zDeleteInstitutionQuery = z.object({
+    bulkActionAddIncludes: z.boolean().optional().default(false),
+    bulkActionIncludes: z.array(z.string()).optional()
+});
+
+/**
+ * OK
+ */
+export const zDeleteInstitutionResponse = zEntityProcessingReport;
+
+export const zGetInstitutionByIdBody = z.unknown();
+
+export const zGetInstitutionByIdPath = z.object({
+    modelId: z.string()
+});
+
+/**
+ * OK
+ */
+export const zGetInstitutionByIdResponse = zInstitution;
+
+export const zGetInstitutionDependenciesPath = z.object({
+    modelId: z.string()
+});
+
+export const zGetInstitutionDependenciesQuery = z.object({
+    bulkActionType: z.enum([
+        'HARD_DELETE',
+        'DEACTIVATE',
+        'ACTIVATE'
+    ]),
+    bulkActionAddIncludes: z.boolean().optional().default(false),
+    bulkActionIncludes: z.array(z.string()).optional()
+});
+
+/**
+ * OK
+ */
+export const zGetInstitutionDependenciesResponse = z.array(zEntityDependency);
+
+/**
+ * OK
+ */
+export const zGetOwnResponse = zInstitution;
+
+export const zGetInstitutionNamesQuery = z.object({
+    institutionId: z.int().optional()
+});
+
+/**
+ * OK
+ */
+export const zGetInstitutionNamesResponse = z.array(zEntityName);
+
+export const zGetInstitutionsByIdsQuery = z.object({
+    modelIds: z.string()
+});
+
+/**
+ * OK
+ */
+export const zGetInstitutionsByIdsResponse = z.array(zInstitution);
+
+export const zGetInactiveInstitutionsQuery = z.object({
+    page_number: z.int().min(-2147483648, { error: 'Invalid value: Expected int32 to be >= -2147483648' }).max(2147483647, { error: 'Invalid value: Expected int32 to be <= 2147483647' }).optional(),
+    page_size: z.int().min(-2147483648, { error: 'Invalid value: Expected int32 to be >= -2147483648' }).max(2147483647, { error: 'Invalid value: Expected int32 to be <= 2147483647' }).optional(),
+    sort: z.string().optional(),
+    institutionId: z.int().optional()
+});
+
+/**
+ * OK
+ */
+export const zGetInactiveInstitutionsResponse = zPageInstitution;
+
+export const zGetActiveInstitutionsQuery = z.object({
+    page_number: z.int().min(-2147483648, { error: 'Invalid value: Expected int32 to be >= -2147483648' }).max(2147483647, { error: 'Invalid value: Expected int32 to be <= 2147483647' }).optional(),
+    page_size: z.int().min(-2147483648, { error: 'Invalid value: Expected int32 to be >= -2147483648' }).max(2147483647, { error: 'Invalid value: Expected int32 to be <= 2147483647' }).optional(),
+    sort: z.string().optional(),
+    institutionId: z.int().optional()
+});
+
+/**
+ * OK
+ */
+export const zGetActiveInstitutionsResponse = zPageInstitution;
+
+/**
+ * OK
+ */
+export const zPrivilegesResponse = z.array(zPrivilege);
+
+export const zLogoPath = z.object({
+    urlSuffix: z.string()
+});
+
+/**
+ * OK
+ */
+export const zLogoResponse = z.string();
+
+/**
+ * OK
+ */
+export const zGetInstitutionInfoResponse = z.array(zEntityName);
+
+export const zGetInstitutionInfo1Path = z.object({
+    urlSuffix: z.string()
+});
+
+/**
+ * OK
+ */
+export const zGetInstitutionInfo1Response = z.array(zEntityName);
+
+/**
+ * OK
+ */
+export const zGetServiceFeaturesResponse = z.record(z.string(), z.boolean());
+
+export const zDeleteIndicatorBody = z.unknown();
+
+export const zDeleteIndicatorPath = z.object({
+    modelId: z.string()
+});
+
+export const zDeleteIndicatorQuery = z.object({
+    bulkActionAddIncludes: z.boolean().optional().default(false),
+    bulkActionIncludes: z.array(z.string()).optional()
+});
+
+/**
+ * OK
+ */
+export const zDeleteIndicatorResponse = zEntityProcessingReport;
+
+export const zGetIndicatorByIdBody = z.unknown();
+
+export const zGetIndicatorByIdPath = z.object({
+    modelId: z.string()
+});
+
+/**
+ * OK
+ */
+export const zGetIndicatorByIdResponse = zIndicator;
+
+export const zGetIndicatorDependenciesPath = z.object({
+    modelId: z.string()
+});
+
+export const zGetIndicatorDependenciesQuery = z.object({
+    bulkActionType: z.enum([
+        'HARD_DELETE',
+        'DEACTIVATE',
+        'ACTIVATE'
+    ]),
+    bulkActionAddIncludes: z.boolean().optional().default(false),
+    bulkActionIncludes: z.array(z.string()).optional()
+});
+
+/**
+ * OK
+ */
+export const zGetIndicatorDependenciesResponse = z.array(zEntityDependency);
+
+export const zGetIndicatorNamesQuery = z.object({
+    institutionId: z.int().optional()
+});
+
+/**
+ * OK
+ */
+export const zGetIndicatorNamesResponse = z.array(zEntityName);
+
+export const zGetIndicatorsByIdsQuery = z.object({
+    modelIds: z.string()
+});
+
+/**
+ * OK
+ */
+export const zGetIndicatorsByIdsResponse = z.array(zIndicator);
+
+export const zGetSecurityKeyEntriesPath = z.object({
+    parentModelId: z.int()
+});
+
+export const zGetSecurityKeyEntriesQuery = z.object({
+    institutionId: z.int().optional()
+});
+
+/**
+ * OK
+ */
+export const zGetSecurityKeyEntriesResponse = z.array(zSecurityKey);
+
+export const zHardDelete3Body = z.unknown();
+
+export const zHardDelete3Path = z.object({
+    modelId: z.string()
+});
+
+export const zHardDelete3Query = z.object({
+    bulkActionAddIncludes: z.boolean().optional().default(false),
+    bulkActionIncludes: z.array(z.string()).optional()
+});
+
+/**
+ * OK
+ */
+export const zHardDelete3Response = zEntityProcessingReport;
+
+export const zGetExamAdministrationByIdBody = z.unknown();
+
+export const zGetExamAdministrationByIdPath = z.object({
+    modelId: z.string()
+});
+
+/**
+ * OK
+ */
+export const zGetExamAdministrationByIdResponse = zExam;
+
+export const zGetExamKeysForFollowupPath = z.object({
+    modelId: z.int()
+});
+
+export const zGetExamKeysForFollowupQuery = z.object({
+    institutionId: z.int().optional()
+});
+
+/**
+ * OK
+ */
+export const zGetExamKeysForFollowupResponse = z.array(zEntityName);
+
+export const zGetExamAdministrationDependenciesPath = z.object({
+    modelId: z.string()
+});
+
+export const zGetExamAdministrationDependenciesQuery = z.object({
+    bulkActionType: z.enum([
+        'HARD_DELETE',
+        'DEACTIVATE',
+        'ACTIVATE'
+    ]),
+    bulkActionAddIncludes: z.boolean().optional().default(false),
+    bulkActionIncludes: z.array(z.string()).optional()
+});
+
+/**
+ * OK
+ */
+export const zGetExamAdministrationDependenciesResponse = z.array(zEntityDependency);
+
+export const zCheckSebRestrictionPath = z.object({
+    modelId: z.int()
+});
+
+export const zCheckSebRestrictionQuery = z.object({
+    institutionId: z.int().optional()
+});
+
+/**
+ * OK
+ */
+export const zCheckSebRestrictionResponse = z.boolean();
+
+export const zCheckImportedPath = z.object({
+    modelId: z.string()
+});
+
+export const zCheckImportedQuery = z.object({
+    institutionId: z.int().optional()
+});
+
+/**
+ * OK
+ */
+export const zCheckImportedResponse = z.array(zEntityKey);
+
+export const zCheckExamConsistencyPath = z.object({
+    modelId: z.int()
+});
+
+export const zCheckExamConsistencyQuery = z.object({
+    institutionId: z.int().optional(),
+    'include-restriction': z.boolean().optional().default(false)
+});
+
+/**
+ * OK
+ */
+export const zCheckExamConsistencyResponse = z.array(zApiMessage);
+
+export const zGetChaptersPath = z.object({
+    modelId: z.int()
+});
+
+export const zGetChaptersQuery = z.object({
+    institutionId: z.int().optional()
+});
+
+/**
+ * OK
+ */
+export const zGetChaptersResponse = zChapters;
+
+export const zGetTableValuesPath = z.object({
+    modelId: z.int()
+});
+
+export const zGetTableValuesQuery = z.object({
+    name: z.string()
+});
+
+/**
+ * OK
+ */
+export const zGetTableValuesResponse = z.array(zTableRowValues);
+
+export const zGetExamConfigMappingsPath = z.object({
+    modelId: z.int()
+});
+
+/**
+ * OK
+ */
+export const zGetExamConfigMappingsResponse = z.array(zExamConfigurationMap);
+
+export const zGetActiveSebClientsPath = z.object({
+    modelId: z.int()
+});
+
+/**
+ * OK
+ */
+export const zGetActiveSebClientsResponse = z.int().min(-2147483648, { error: 'Invalid value: Expected int32 to be >= -2147483648' }).max(2147483647, { error: 'Invalid value: Expected int32 to be <= 2147483647' });
+
+export const zGetExamAdministrationNamesQuery = z.object({
+    institutionId: z.int().optional()
+});
+
+/**
+ * OK
+ */
+export const zGetExamAdministrationNamesResponse = z.array(zEntityName);
+
+export const zGetExamAdministrationsByIdsQuery = z.object({
+    modelIds: z.string()
+});
+
+/**
+ * OK
+ */
+export const zGetExamAdministrationsByIdsResponse = z.array(zExam);
+
+export const zDeleteIndicatorTemplatePath = z.object({
+    parentModelId: z.string(),
+    modelId: z.string()
+});
+
+export const zDeleteIndicatorTemplateQuery = z.object({
+    institutionId: z.int().optional()
+});
+
+/**
+ * OK
+ */
+export const zDeleteIndicatorTemplateResponse = zEntityKey;
+
+export const zGetIndicatorByPath = z.object({
+    parentModelId: z.string(),
+    modelId: z.string()
+});
+
+export const zGetIndicatorByQuery = z.object({
+    institutionId: z.int().optional()
+});
+
+/**
+ * OK
+ */
+export const zGetIndicatorByResponse = zIndicatorTemplate;
+
+export const zDeleteClientGroupTemplatePath = z.object({
+    parentModelId: z.string(),
+    modelId: z.string()
+});
+
+export const zDeleteClientGroupTemplateQuery = z.object({
+    institutionId: z.int().optional()
+});
+
+/**
+ * OK
+ */
+export const zDeleteClientGroupTemplateResponse = zEntityKey;
+
+export const zGetClientGroupTemplateByPath = z.object({
+    parentModelId: z.string(),
+    modelId: z.string()
+});
+
+export const zGetClientGroupTemplateByQuery = z.object({
+    institutionId: z.int().optional()
+});
+
+/**
+ * OK
+ */
+export const zGetClientGroupTemplateByResponse = zClientGroupTemplate;
+
+export const zDeleteExamTemplateBody = z.unknown();
+
+export const zDeleteExamTemplatePath = z.object({
+    modelId: z.string()
+});
+
+export const zDeleteExamTemplateQuery = z.object({
+    bulkActionAddIncludes: z.boolean().optional().default(false),
+    bulkActionIncludes: z.array(z.string()).optional()
+});
+
+/**
+ * OK
+ */
+export const zDeleteExamTemplateResponse = zEntityProcessingReport;
+
+export const zGetBy1Body = z.unknown();
+
+export const zGetBy1Path = z.object({
+    modelId: z.string()
+});
+
+/**
+ * OK
+ */
+export const zGetBy1Response = zExamTemplate;
+
+export const zGetIndicatorPagePath = z.object({
+    modelId: z.string()
+});
+
+export const zGetIndicatorPageQuery = z.object({
+    institutionId: z.int().optional(),
+    page_number: z.int().min(-2147483648, { error: 'Invalid value: Expected int32 to be >= -2147483648' }).max(2147483647, { error: 'Invalid value: Expected int32 to be <= 2147483647' }).optional(),
+    page_size: z.int().min(-2147483648, { error: 'Invalid value: Expected int32 to be >= -2147483648' }).max(2147483647, { error: 'Invalid value: Expected int32 to be <= 2147483647' }).optional(),
+    sort: z.string().optional(),
+    allRequestParams: zMultiValueMapStringStringWritable
+});
+
+/**
+ * OK
+ */
+export const zGetIndicatorPageResponse = zPageIndicatorTemplate;
+
+export const zGetExamTemplateDependenciesPath = z.object({
+    modelId: z.string()
+});
+
+export const zGetExamTemplateDependenciesQuery = z.object({
+    bulkActionType: z.enum([
+        'HARD_DELETE',
+        'DEACTIVATE',
+        'ACTIVATE'
+    ]),
+    bulkActionAddIncludes: z.boolean().optional().default(false),
+    bulkActionIncludes: z.array(z.string()).optional()
+});
+
+/**
+ * OK
+ */
+export const zGetExamTemplateDependenciesResponse = z.array(zEntityDependency);
+
+export const zGetClientGroupTemplatePagePath = z.object({
+    modelId: z.string()
+});
+
+export const zGetClientGroupTemplatePageQuery = z.object({
+    institutionId: z.int().optional(),
+    page_number: z.int().min(-2147483648, { error: 'Invalid value: Expected int32 to be >= -2147483648' }).max(2147483647, { error: 'Invalid value: Expected int32 to be <= 2147483647' }).optional(),
+    page_size: z.int().min(-2147483648, { error: 'Invalid value: Expected int32 to be >= -2147483648' }).max(2147483647, { error: 'Invalid value: Expected int32 to be <= 2147483647' }).optional(),
+    sort: z.string().optional()
+});
+
+/**
+ * OK
+ */
+export const zGetClientGroupTemplatePageResponse = zPageClientGroupTemplate;
+
+export const zGetExamTemplateNamesQuery = z.object({
+    institutionId: z.int().optional()
+});
+
+/**
+ * OK
+ */
+export const zGetExamTemplateNamesResponse = z.array(zEntityName);
+
+export const zGetExamTemplatesByIdsQuery = z.object({
+    modelIds: z.string()
+});
+
+/**
+ * OK
+ */
+export const zGetExamTemplatesByIdsResponse = z.array(zExamTemplate);
+
+/**
+ * OK
+ */
+export const zGetDefaultResponse = zExamTemplate;
+
+export const zHardDelete4Body = z.unknown();
+
+export const zHardDelete4Path = z.object({
+    modelId: z.string()
+});
+
+export const zHardDelete4Query = z.object({
+    bulkActionAddIncludes: z.boolean().optional().default(false),
+    bulkActionIncludes: z.array(z.string()).optional()
+});
+
+/**
+ * OK
+ */
+export const zHardDelete4Response = zEntityProcessingReport;
+
+export const zGetExamConfigurationMappingByIdBody = z.unknown();
+
+export const zGetExamConfigurationMappingByIdPath = z.object({
+    modelId: z.string()
+});
+
+/**
+ * OK
+ */
+export const zGetExamConfigurationMappingByIdResponse = zExamConfigurationMap;
+
+export const zGetExamConfigurationMappingDependenciesPath = z.object({
+    modelId: z.string()
+});
+
+export const zGetExamConfigurationMappingDependenciesQuery = z.object({
+    bulkActionType: z.enum([
+        'HARD_DELETE',
+        'DEACTIVATE',
+        'ACTIVATE'
+    ]),
+    bulkActionAddIncludes: z.boolean().optional().default(false),
+    bulkActionIncludes: z.array(z.string()).optional()
+});
+
+/**
+ * OK
+ */
+export const zGetExamConfigurationMappingDependenciesResponse = z.array(zEntityDependency);
+
+export const zGetExamConfigurationMappingNamesQuery = z.object({
+    institutionId: z.int().optional()
+});
+
+/**
+ * OK
+ */
+export const zGetExamConfigurationMappingNamesResponse = z.array(zEntityName);
+
+export const zGetExamConfigurationMappingsByIdsQuery = z.object({
+    modelIds: z.string()
+});
+
+/**
+ * OK
+ */
+export const zGetExamConfigurationMappingsByIdsResponse = z.array(zExamConfigurationMap);
+
+export const zHardDelete5Body = z.unknown();
+
+export const zHardDelete5Path = z.object({
+    modelId: z.string()
+});
+
+export const zHardDelete5Query = z.object({
+    bulkActionAddIncludes: z.boolean().optional().default(false),
+    bulkActionIncludes: z.array(z.string()).optional()
+});
+
+/**
+ * OK
+ */
+export const zHardDelete5Response = zEntityProcessingReport;
+
+export const zGetConfigurationValueByIdBody = z.unknown();
+
+export const zGetConfigurationValueByIdPath = z.object({
+    modelId: z.string()
+});
+
+/**
+ * OK
+ */
+export const zGetConfigurationValueByIdResponse = zConfigurationValue;
+
+export const zGetConfigurationValueDependenciesPath = z.object({
+    modelId: z.string()
+});
+
+export const zGetConfigurationValueDependenciesQuery = z.object({
+    bulkActionType: z.enum([
+        'HARD_DELETE',
+        'DEACTIVATE',
+        'ACTIVATE'
+    ]),
+    bulkActionAddIncludes: z.boolean().optional().default(false),
+    bulkActionIncludes: z.array(z.string()).optional()
+});
+
+/**
+ * OK
+ */
+export const zGetConfigurationValueDependenciesResponse = z.array(zEntityDependency);
+
+export const zGetConfigurationValueNamesQuery = z.object({
+    institutionId: z.int().optional()
+});
+
+/**
+ * OK
+ */
+export const zGetConfigurationValueNamesResponse = z.array(zEntityName);
+
+export const zGetConfigurationValuesByIdsQuery = z.object({
+    modelIds: z.string()
+});
+
+/**
+ * OK
+ */
+export const zGetConfigurationValuesByIdsResponse = z.array(zConfigurationValue);
+
+export const zDeleteConfigurationAttributeBody = z.unknown();
+
+export const zDeleteConfigurationAttributePath = z.object({
+    modelId: z.string()
+});
+
+export const zDeleteConfigurationAttributeQuery = z.object({
+    bulkActionAddIncludes: z.boolean().optional().default(false),
+    bulkActionIncludes: z.array(z.string()).optional()
+});
+
+/**
+ * OK
+ */
+export const zDeleteConfigurationAttributeResponse = zEntityProcessingReport;
+
+export const zGetConfigurationAttributeByIdBody = z.unknown();
+
+export const zGetConfigurationAttributeByIdPath = z.object({
+    modelId: z.string()
+});
+
+/**
+ * OK
+ */
+export const zGetConfigurationAttributeByIdResponse = zConfigurationAttribute;
+
+export const zGetConfigurationAttributeDependenciesPath = z.object({
+    modelId: z.string()
+});
+
+export const zGetConfigurationAttributeDependenciesQuery = z.object({
+    bulkActionType: z.enum([
+        'HARD_DELETE',
+        'DEACTIVATE',
+        'ACTIVATE'
+    ]),
+    bulkActionAddIncludes: z.boolean().optional().default(false),
+    bulkActionIncludes: z.array(z.string()).optional()
+});
+
+/**
+ * OK
+ */
+export const zGetConfigurationAttributeDependenciesResponse = z.array(zEntityDependency);
+
+export const zGetConfigurationAttributeNamesQuery = z.object({
+    institutionId: z.int().optional()
+});
+
+/**
+ * OK
+ */
+export const zGetConfigurationAttributeNamesResponse = z.array(zEntityName);
+
+export const zGetForIdsQuery = z.object({
+    modelIds: z.string().optional()
+});
+
+/**
+ * OK
+ */
+export const zGetForIdsResponse = z.array(zConfigurationAttribute);
+
+export const zHardDelete6Body = z.unknown();
+
+export const zHardDelete6Path = z.object({
+    modelId: z.string()
+});
+
+export const zHardDelete6Query = z.object({
+    bulkActionAddIncludes: z.boolean().optional().default(false),
+    bulkActionIncludes: z.array(z.string()).optional()
+});
+
+/**
+ * OK
+ */
+export const zHardDelete6Response = zEntityProcessingReport;
+
+export const zGetConfigurationByIdBody = z.unknown();
+
+export const zGetConfigurationByIdPath = z.object({
+    modelId: z.string()
+});
+
+/**
+ * OK
+ */
+export const zGetConfigurationByIdResponse = zConfiguration;
+
+export const zGetDependencies2Path = z.object({
+    modelId: z.string()
+});
+
+export const zGetDependencies2Query = z.object({
+    bulkActionType: z.enum([
+        'HARD_DELETE',
+        'DEACTIVATE',
+        'ACTIVATE'
+    ]),
+    bulkActionAddIncludes: z.boolean().optional().default(false),
+    bulkActionIncludes: z.array(z.string()).optional()
+});
+
+/**
+ * OK
+ */
+export const zGetDependencies2Response = z.array(zEntityDependency);
+
+export const zGetConfigurationNamesQuery = z.object({
+    institutionId: z.int().optional()
+});
+
+/**
+ * OK
+ */
+export const zGetConfigurationNamesResponse = z.array(zEntityName);
+
+export const zGetConfigurationsByIdsQuery = z.object({
+    modelIds: z.string()
+});
+
+/**
+ * OK
+ */
+export const zGetConfigurationsByIdsResponse = z.array(zConfiguration);
+
+export const zGetTemplateAttributePagePath = z.object({
+    parentModelId: z.int()
+});
+
+export const zGetTemplateAttributePageQuery = z.object({
+    institutionId: z.int().optional(),
+    page_number: z.int().min(-2147483648, { error: 'Invalid value: Expected int32 to be >= -2147483648' }).max(2147483647, { error: 'Invalid value: Expected int32 to be <= 2147483647' }).optional(),
+    page_size: z.int().min(-2147483648, { error: 'Invalid value: Expected int32 to be >= -2147483648' }).max(2147483647, { error: 'Invalid value: Expected int32 to be <= 2147483647' }).optional(),
+    sort: z.string().optional(),
+    allRequestParams: zMultiValueMapStringStringWritable
+});
+
+/**
+ * OK
+ */
+export const zGetTemplateAttributePageResponse = zPageTemplateAttribute;
+
+export const zGetTemplateAttributePath = z.object({
+    parentModelId: z.int(),
+    modelId: z.int()
+});
+
+export const zGetTemplateAttributeQuery = z.object({
+    institutionId: z.int().optional()
+});
+
+/**
+ * OK
+ */
+export const zGetTemplateAttributeResponse = zTemplateAttribute;
+
+export const zDeleteConfigurationNodeBody = z.unknown();
+
+export const zDeleteConfigurationNodePath = z.object({
+    modelId: z.string()
+});
+
+export const zDeleteConfigurationNodeQuery = z.object({
+    bulkActionAddIncludes: z.boolean().optional().default(false),
+    bulkActionIncludes: z.array(z.string()).optional()
+});
+
+/**
+ * OK
+ */
+export const zDeleteConfigurationNodeResponse = zEntityProcessingReport;
+
+export const zGetConfigurationNodeByIdBody = z.unknown();
+
+export const zGetConfigurationNodeByIdPath = z.object({
+    modelId: z.string()
+});
+
+/**
+ * OK
+ */
+export const zGetConfigurationNodeByIdResponse = zConfigurationNode;
+
+export const zSettingsPublishedPath = z.object({
+    modelId: z.int()
+});
+
+export const zSettingsPublishedQuery = z.object({
+    institutionId: z.int().optional()
+});
+
+/**
+ * OK
+ */
+export const zSettingsPublishedResponse = zSettingsPublished;
+
+export const zGetFollowupPath = z.object({
+    modelId: z.int()
+});
+
+/**
+ * OK
+ */
+export const zGetFollowupResponse = zConfiguration;
+
+export const zDownloadPlainXmlConfigPath = z.object({
+    modelId: z.int()
+});
+
+export const zDownloadPlainXmlConfigQuery = z.object({
+    institutionId: z.int().optional()
+});
+
+export const zGetConfigurationNodeDependenciesPath = z.object({
+    modelId: z.string()
+});
+
+export const zGetConfigurationNodeDependenciesQuery = z.object({
+    bulkActionType: z.enum([
+        'HARD_DELETE',
+        'DEACTIVATE',
+        'ACTIVATE'
+    ]),
+    bulkActionAddIncludes: z.boolean().optional().default(false),
+    bulkActionIncludes: z.array(z.string()).optional()
+});
+
+/**
+ * OK
+ */
+export const zGetConfigurationNodeDependenciesResponse = z.array(zEntityDependency);
+
+export const zGetConfigKeyPath = z.object({
+    modelId: z.int()
+});
+
+export const zGetConfigKeyQuery = z.object({
+    institutionId: z.int().optional(),
+    followup: z.boolean().optional().default(false)
+});
+
+/**
+ * OK
+ */
+export const zGetConfigKeyResponse = zConfigKey;
+
+export const zGetConfigurationNodeNamesQuery = z.object({
+    institutionId: z.int().optional()
+});
+
+/**
+ * OK
+ */
+export const zGetConfigurationNodeNamesResponse = z.array(zEntityName);
+
+export const zGetConfigurationNodesByIdsQuery = z.object({
+    modelIds: z.string()
+});
+
+/**
+ * OK
+ */
+export const zGetConfigurationNodesByIdsResponse = z.array(zConfigurationNode);
+
+export const zGetTableValues1Path = z.object({
+    modelId: z.int()
+});
+
+export const zGetTableValues1Query = z.object({
+    name: z.string()
+});
+
+/**
+ * OK
+ */
+export const zGetTableValues1Response = z.array(zTableRowValues);
+
+export const zDeleteSebClientConfigBody = z.unknown();
+
+export const zDeleteSebClientConfigPath = z.object({
+    modelId: z.string()
+});
+
+export const zDeleteSebClientConfigQuery = z.object({
+    bulkActionAddIncludes: z.boolean().optional().default(false),
+    bulkActionIncludes: z.array(z.string()).optional()
+});
+
+/**
+ * OK
+ */
+export const zDeleteSebClientConfigResponse = zEntityProcessingReport;
+
+export const zGetBy2Body = z.unknown();
+
+export const zGetBy2Path = z.object({
+    modelId: z.string()
+});
+
+/**
+ * OK
+ */
+export const zGetBy2Response = zSebClientConfig;
+
+export const zGetSebClientConfigDependenciesPath = z.object({
+    modelId: z.string()
+});
+
+export const zGetSebClientConfigDependenciesQuery = z.object({
+    bulkActionType: z.enum([
+        'HARD_DELETE',
+        'DEACTIVATE',
+        'ACTIVATE'
+    ]),
+    bulkActionAddIncludes: z.boolean().optional().default(false),
+    bulkActionIncludes: z.array(z.string()).optional()
+});
+
+/**
+ * OK
+ */
+export const zGetSebClientConfigDependenciesResponse = z.array(zEntityDependency);
+
+export const zGetSebClientConfigNamesQuery = z.object({
+    institutionId: z.int().optional()
+});
+
+/**
+ * OK
+ */
+export const zGetSebClientConfigNamesResponse = z.array(zEntityName);
+
+export const zGetSebClientConfigsByIdsQuery = z.object({
+    modelIds: z.string()
+});
+
+/**
+ * OK
+ */
+export const zGetSebClientConfigsByIdsResponse = z.array(zSebClientConfig);
+
+export const zGetInactiveSebClientConfigsQuery = z.object({
+    page_number: z.int().min(-2147483648, { error: 'Invalid value: Expected int32 to be >= -2147483648' }).max(2147483647, { error: 'Invalid value: Expected int32 to be <= 2147483647' }).optional(),
+    page_size: z.int().min(-2147483648, { error: 'Invalid value: Expected int32 to be >= -2147483648' }).max(2147483647, { error: 'Invalid value: Expected int32 to be <= 2147483647' }).optional(),
+    sort: z.string().optional(),
+    institutionId: z.int().optional()
+});
+
+/**
+ * OK
+ */
+export const zGetInactiveSebClientConfigsResponse = zPageSebClientConfig;
+
+export const zDownloadSebConfigPath = z.object({
+    modelId: z.string()
+});
+
+export const zDownloadSebConfigQuery = z.object({
+    institutionId: z.int().optional(),
+    id: z.int().optional()
+});
+
+export const zGetClientCredentialsPath = z.object({
+    modelId: z.string()
+});
+
+export const zGetClientCredentialsQuery = z.object({
+    institutionId: z.int().optional()
+});
+
+/**
+ * OK
+ */
+export const zGetClientCredentialsResponse = zClientCredentials;
+
+export const zGetActiveSebClientConfigsQuery = z.object({
+    page_number: z.int().min(-2147483648, { error: 'Invalid value: Expected int32 to be >= -2147483648' }).max(2147483647, { error: 'Invalid value: Expected int32 to be <= 2147483647' }).optional(),
+    page_size: z.int().min(-2147483648, { error: 'Invalid value: Expected int32 to be >= -2147483648' }).max(2147483647, { error: 'Invalid value: Expected int32 to be <= 2147483647' }).optional(),
+    sort: z.string().optional(),
+    institutionId: z.int().optional()
+});
+
+/**
+ * OK
+ */
+export const zGetActiveSebClientConfigsResponse = zPageSebClientConfig;
+
+export const zDeleteClientGroupBody = z.unknown();
+
+export const zDeleteClientGroupPath = z.object({
+    modelId: z.string()
+});
+
+export const zDeleteClientGroupQuery = z.object({
+    bulkActionAddIncludes: z.boolean().optional().default(false),
+    bulkActionIncludes: z.array(z.string()).optional()
+});
+
+/**
+ * OK
+ */
+export const zDeleteClientGroupResponse = zEntityProcessingReport;
+
+export const zGetClientGroupByIdBody = z.unknown();
+
+export const zGetClientGroupByIdPath = z.object({
+    modelId: z.string()
+});
+
+/**
+ * OK
+ */
+export const zGetClientGroupByIdResponse = zClientGroup;
+
+export const zGetClientGroupDependenciesPath = z.object({
+    modelId: z.string()
+});
+
+export const zGetClientGroupDependenciesQuery = z.object({
+    bulkActionType: z.enum([
+        'HARD_DELETE',
+        'DEACTIVATE',
+        'ACTIVATE'
+    ]),
+    bulkActionAddIncludes: z.boolean().optional().default(false),
+    bulkActionIncludes: z.array(z.string()).optional()
+});
+
+/**
+ * OK
+ */
+export const zGetClientGroupDependenciesResponse = z.array(zEntityDependency);
+
+export const zGetClientGroupNamesQuery = z.object({
+    institutionId: z.int().optional()
+});
+
+/**
+ * OK
+ */
+export const zGetClientGroupNamesResponse = z.array(zEntityName);
+
+export const zGetClientGroupsByIdsQuery = z.object({
+    modelIds: z.string()
+});
+
+/**
+ * OK
+ */
+export const zGetClientGroupsByIdsResponse = z.array(zClientGroup);
+
+export const zGetAliasPath = z.object({
+    alias: z.string()
+});
+
+export const zGetAliasQuery = z.object({
+    institutionId: z.int().optional()
+});
+
+/**
+ * OK
+ */
+export const zGetAliasResponse = zCertificateInfo;
+
+export const zGetNamesQuery = z.object({
+    institutionId: z.int().optional(),
+    allRequestParams: zMultiValueMapStringStringWritable
+});
+
+/**
+ * OK
+ */
+export const zGetNamesResponse = z.array(zEntityName);
+
+export const zDeleteBatchActionBody = z.unknown();
+
+export const zDeleteBatchActionPath = z.object({
+    modelId: z.string()
+});
+
+export const zDeleteBatchActionQuery = z.object({
+    bulkActionAddIncludes: z.boolean().optional().default(false),
+    bulkActionIncludes: z.array(z.string()).optional()
+});
+
+/**
+ * OK
+ */
+export const zDeleteBatchActionResponse = zEntityProcessingReport;
+
+export const zGetBatchActionByIdBody = z.unknown();
+
+export const zGetBatchActionByIdPath = z.object({
+    modelId: z.string()
+});
+
+/**
+ * OK
+ */
+export const zGetBatchActionByIdResponse = zBatchAction;
+
+export const zGetBatchActionDependenciesPath = z.object({
+    modelId: z.string()
+});
+
+export const zGetBatchActionDependenciesQuery = z.object({
+    bulkActionType: z.enum([
+        'HARD_DELETE',
+        'DEACTIVATE',
+        'ACTIVATE'
+    ]),
+    bulkActionAddIncludes: z.boolean().optional().default(false),
+    bulkActionIncludes: z.array(z.string()).optional()
+});
+
+/**
+ * OK
+ */
+export const zGetBatchActionDependenciesResponse = z.array(zEntityDependency);
+
+export const zGetBatchActionNamesQuery = z.object({
+    institutionId: z.int().optional()
+});
+
+/**
+ * OK
+ */
+export const zGetBatchActionNamesResponse = z.array(zEntityName);
+
+export const zGetBatchActionsByIdsQuery = z.object({
+    modelIds: z.string()
+});
+
+/**
+ * OK
+ */
+export const zGetBatchActionsByIdsResponse = z.array(zBatchAction);
+
+export const zForceDeleteUserActivityLogBody = z.unknown();
+
+export const zForceDeleteUserActivityLogPath = z.object({
+    modelId: z.string()
+});
+
+export const zForceDeleteUserActivityLogQuery = z.object({
+    bulkActionAddIncludes: z.boolean().optional().default(false),
+    bulkActionIncludes: z.array(z.string()).optional()
+});
+
+/**
+ * OK
+ */
+export const zForceDeleteUserActivityLogResponse = zEntityProcessingReport;
+
+export const zForceDeleteUserAccountBody = z.unknown();
+
+export const zForceDeleteUserAccountPath = z.object({
+    modelId: z.string()
+});
+
+export const zForceDeleteUserAccountQuery = z.object({
+    bulkActionAddIncludes: z.boolean().optional().default(false),
+    bulkActionIncludes: z.array(z.string()).optional()
+});
+
+/**
+ * OK
+ */
+export const zForceDeleteUserAccountResponse = zEntityProcessingReport;
+
+export const zForceDeleteClientEventBody = z.unknown();
+
+export const zForceDeleteClientEventPath = z.object({
+    modelId: z.string()
+});
+
+export const zForceDeleteClientEventQuery = z.object({
+    bulkActionAddIncludes: z.boolean().optional().default(false),
+    bulkActionIncludes: z.array(z.string()).optional()
+});
+
+/**
+ * OK
+ */
+export const zForceDeleteClientEventResponse = zEntityProcessingReport;
+
+export const zForceDeleteClientConnectionBody = z.unknown();
+
+export const zForceDeleteClientConnectionPath = z.object({
+    modelId: z.string()
+});
+
+export const zForceDeleteClientConnectionQuery = z.object({
+    bulkActionAddIncludes: z.boolean().optional().default(false),
+    bulkActionIncludes: z.array(z.string()).optional()
+});
+
+/**
+ * OK
+ */
+export const zForceDeleteClientConnectionResponse = zEntityProcessingReport;
+
+export const zForceDeleteOrientationBody = z.unknown();
+
+export const zForceDeleteOrientationPath = z.object({
+    modelId: z.string()
+});
+
+export const zForceDeleteOrientationQuery = z.object({
+    bulkActionAddIncludes: z.boolean().optional().default(false),
+    bulkActionIncludes: z.array(z.string()).optional()
+});
+
+/**
+ * OK
+ */
+export const zForceDeleteOrientationResponse = zEntityProcessingReport;
+
+export const zForceDeleteViewBody = z.unknown();
+
+export const zForceDeleteViewPath = z.object({
+    modelId: z.string()
+});
+
+export const zForceDeleteViewQuery = z.object({
+    bulkActionAddIncludes: z.boolean().optional().default(false),
+    bulkActionIncludes: z.array(z.string()).optional()
+});
+
+/**
+ * OK
+ */
+export const zForceDeleteViewResponse = zEntityProcessingReport;
+
+export const zForceDeleteLmsSetupBody = z.unknown();
+
+export const zForceDeleteLmsSetupPath = z.object({
+    modelId: z.string()
+});
+
+export const zForceDeleteLmsSetupQuery = z.object({
+    bulkActionAddIncludes: z.boolean().optional().default(false),
+    bulkActionIncludes: z.array(z.string()).optional()
+});
+
+/**
+ * OK
+ */
+export const zForceDeleteLmsSetupResponse = zEntityProcessingReport;
+
+export const zForceDeleteInstitutionBody = z.unknown();
+
+export const zForceDeleteInstitutionPath = z.object({
+    modelId: z.string()
+});
+
+export const zForceDeleteInstitutionQuery = z.object({
+    bulkActionAddIncludes: z.boolean().optional().default(false),
+    bulkActionIncludes: z.array(z.string()).optional()
+});
+
+/**
+ * OK
+ */
+export const zForceDeleteInstitutionResponse = zEntityProcessingReport;
+
+export const zForceDeleteIndicatorBody = z.unknown();
+
+export const zForceDeleteIndicatorPath = z.object({
+    modelId: z.string()
+});
+
+export const zForceDeleteIndicatorQuery = z.object({
+    bulkActionAddIncludes: z.boolean().optional().default(false),
+    bulkActionIncludes: z.array(z.string()).optional()
+});
+
+/**
+ * OK
+ */
+export const zForceDeleteIndicatorResponse = zEntityProcessingReport;
+
+export const zForceHardDeleteBody = z.unknown();
+
+export const zForceHardDeletePath = z.object({
+    modelId: z.string()
+});
+
+export const zForceHardDeleteQuery = z.object({
+    bulkActionAddIncludes: z.boolean().optional().default(false),
+    bulkActionIncludes: z.array(z.string()).optional()
+});
+
+/**
+ * OK
+ */
+export const zForceHardDeleteResponse = zEntityProcessingReport;
+
+export const zForceDeleteExamTemplateBody = z.unknown();
+
+export const zForceDeleteExamTemplatePath = z.object({
+    modelId: z.string()
+});
+
+export const zForceDeleteExamTemplateQuery = z.object({
+    bulkActionAddIncludes: z.boolean().optional().default(false),
+    bulkActionIncludes: z.array(z.string()).optional()
+});
+
+/**
+ * OK
+ */
+export const zForceDeleteExamTemplateResponse = zEntityProcessingReport;
+
+export const zForceDeleteExamConfigurationMappingBody = z.unknown();
+
+export const zForceDeleteExamConfigurationMappingPath = z.object({
+    modelId: z.string()
+});
+
+export const zForceDeleteExamConfigurationMappingQuery = z.object({
+    bulkActionAddIncludes: z.boolean().optional().default(false),
+    bulkActionIncludes: z.array(z.string()).optional()
+});
+
+/**
+ * OK
+ */
+export const zForceDeleteExamConfigurationMappingResponse = zEntityProcessingReport;
+
+export const zForceDeleteConfigurationValueBody = z.unknown();
+
+export const zForceDeleteConfigurationValuePath = z.object({
+    modelId: z.string()
+});
+
+export const zForceDeleteConfigurationValueQuery = z.object({
+    bulkActionAddIncludes: z.boolean().optional().default(false),
+    bulkActionIncludes: z.array(z.string()).optional()
+});
+
+/**
+ * OK
+ */
+export const zForceDeleteConfigurationValueResponse = zEntityProcessingReport;
+
+export const zForceDeleteConfigurationAttributeBody = z.unknown();
+
+export const zForceDeleteConfigurationAttributePath = z.object({
+    modelId: z.string()
+});
+
+export const zForceDeleteConfigurationAttributeQuery = z.object({
+    bulkActionAddIncludes: z.boolean().optional().default(false),
+    bulkActionIncludes: z.array(z.string()).optional()
+});
+
+/**
+ * OK
+ */
+export const zForceDeleteConfigurationAttributeResponse = zEntityProcessingReport;
+
+export const zForceDeleteConfigurationBody = z.unknown();
+
+export const zForceDeleteConfigurationPath = z.object({
+    modelId: z.string()
+});
+
+export const zForceDeleteConfigurationQuery = z.object({
+    bulkActionAddIncludes: z.boolean().optional().default(false),
+    bulkActionIncludes: z.array(z.string()).optional()
+});
+
+/**
+ * OK
+ */
+export const zForceDeleteConfigurationResponse = zEntityProcessingReport;
+
+export const zForceDeleteConfigurationNodeBody = z.unknown();
+
+export const zForceDeleteConfigurationNodePath = z.object({
+    modelId: z.string()
+});
+
+export const zForceDeleteConfigurationNodeQuery = z.object({
+    bulkActionAddIncludes: z.boolean().optional().default(false),
+    bulkActionIncludes: z.array(z.string()).optional()
+});
+
+/**
+ * OK
+ */
+export const zForceDeleteConfigurationNodeResponse = zEntityProcessingReport;
+
+export const zForceDeleteSebClientConfigBody = z.unknown();
+
+export const zForceDeleteSebClientConfigPath = z.object({
+    modelId: z.string()
+});
+
+export const zForceDeleteSebClientConfigQuery = z.object({
+    bulkActionAddIncludes: z.boolean().optional().default(false),
+    bulkActionIncludes: z.array(z.string()).optional()
+});
+
+/**
+ * OK
+ */
+export const zForceDeleteSebClientConfigResponse = zEntityProcessingReport;
+
+export const zForceDeleteClientGroupBody = z.unknown();
+
+export const zForceDeleteClientGroupPath = z.object({
+    modelId: z.string()
+});
+
+export const zForceDeleteClientGroupQuery = z.object({
+    bulkActionAddIncludes: z.boolean().optional().default(false),
+    bulkActionIncludes: z.array(z.string()).optional()
+});
+
+/**
+ * OK
+ */
+export const zForceDeleteClientGroupResponse = zEntityProcessingReport;
+
+export const zForceDeleteBatchActionBody = z.unknown();
+
+export const zForceDeleteBatchActionPath = z.object({
+    modelId: z.string()
+});
+
+export const zForceDeleteBatchActionQuery = z.object({
+    bulkActionAddIncludes: z.boolean().optional().default(false),
+    bulkActionIncludes: z.array(z.string()).optional()
+});
+
+/**
+ * OK
+ */
+export const zForceDeleteBatchActionResponse = zEntityProcessingReport;

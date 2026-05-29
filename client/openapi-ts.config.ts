@@ -1,7 +1,7 @@
 import { defineConfig } from "@hey-api/openapi-ts";
 
 export default defineConfig({
-    input: "./src/api/seb-server/openapi/seb-server.user-account.openapi.json",
+    input: "./src/api/seb-server/openapi/seb-server.openapi.json",
     output: {
         clean: true,
         path: "./src/api/seb-server/generated/hey-api",
