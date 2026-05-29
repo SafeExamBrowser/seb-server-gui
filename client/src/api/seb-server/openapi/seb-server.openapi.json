@@ -185,7 +185,7 @@
                 "tags": ["user-activity-log-controller"],
                 "summary": "Modifies an already existing entity object of the specific type.",
                 "description": "This expects application/json format for the response data and verifies consistencies within the definition of the specific entity object type. Missing (NULL) parameter that are not mandatory will be ignored and the original value will not be affected",
-                "operationId": "savePut",
+                "operationId": "editUserActivityLog",
                 "requestBody": {
                     "content": {
                         "application/json": {
@@ -212,15 +212,10 @@
             },
             "post": {
                 "tags": ["user-activity-log-controller"],
-                "summary": "Create a new entity object of specifies type by using the given form parameter",
-                "description": "This expects application/x-www-form-urlencoded format for the form parameter and tries to create a new entity object from this form parameter, resulting in an error if there are missing or incorrect form paramter. The needed form paramter can be verified within the specific entity object.",
-                "operationId": "create",
+                "summary": "Create user activity log",
+                "description": "Creates user activity log from application/x-www-form-urlencoded fields matching UserActivityLog.",
+                "operationId": "createUserActivityLog",
                 "parameters": [
-                    {
-                        "name": "formParams",
-                        "in": "query",
-                        "description": "The from paramter value map that is been used to create a new entity object."
-                    },
                     {
                         "name": "institutionId",
                         "in": "query",
@@ -231,21 +226,15 @@
                     "content": {
                         "application/x-www-form-urlencoded": {
                             "schema": {
-                                "type": "object",
-                                "properties": {
-                                    "allRequestParams": {
-                                        "$ref": "#/components/schemas/MultiValueMapStringString"
-                                    },
-                                    "institutionId": { "type": "integer" }
-                                },
-                                "required": ["allRequestParams"]
+                                "$ref": "#/components/schemas/UserActivityLog"
                             }
                         }
-                    }
+                    },
+                    "required": true
                 },
                 "responses": {
                     "200": {
-                        "description": "OK",
+                        "description": "Created user activity log.",
                         "content": {
                             "application/json": {
                                 "schema": {
@@ -261,7 +250,7 @@
                 "tags": ["user-activity-log-controller"],
                 "summary": "Deletes all given entity (and all its dependencies) by a given list of model identifiers.",
                 "description": "To check or report what dependent object also would be deleted for a certain entity object, please use the dependency endpoint to get a report of all dependent entity objects.",
-                "operationId": "hardDeleteAll",
+                "operationId": "deleteAllUserActivityLogs",
                 "parameters": [
                     {
                         "name": "modelIds",
@@ -359,49 +348,49 @@
                         "in": "query",
                         "description": "Filters user accounts by first or full name.",
                         "required": false,
-                        "schema": {}
+                        "schema": { "type": "string" }
                     },
                     {
                         "name": "surname",
                         "in": "query",
                         "description": "Filters user accounts by surname.",
                         "required": false,
-                        "schema": {}
+                        "schema": { "type": "string" }
                     },
                     {
                         "name": "username",
                         "in": "query",
                         "description": "Filters user accounts by login username.",
                         "required": false,
-                        "schema": {}
+                        "schema": { "type": "string" }
                     },
                     {
                         "name": "email",
                         "in": "query",
                         "description": "Filters user accounts by email address.",
                         "required": false,
-                        "schema": {}
+                        "schema": { "type": "string" }
                     },
                     {
                         "name": "language",
                         "in": "query",
                         "description": "Filters user accounts by language.",
                         "required": false,
-                        "schema": {}
+                        "schema": { "type": "string" }
                     },
                     {
                         "name": "role",
                         "in": "query",
                         "description": "Filters user accounts by role.",
                         "required": false,
-                        "schema": {}
+                        "schema": { "type": "string" }
                     },
                     {
                         "name": "active",
                         "in": "query",
                         "description": "Filters user accounts by active state.",
                         "required": false,
-                        "schema": {}
+                        "schema": { "type": "boolean" }
                     }
                 ],
                 "responses": {
@@ -627,7 +616,7 @@
                 "tags": ["client-event-controller"],
                 "summary": "Modifies an already existing entity object of the specific type.",
                 "description": "This expects application/json format for the response data and verifies consistencies within the definition of the specific entity object type. Missing (NULL) parameter that are not mandatory will be ignored and the original value will not be affected",
-                "operationId": "savePut_1",
+                "operationId": "editClientEvent",
                 "requestBody": {
                     "content": {
                         "application/json": {
@@ -654,15 +643,10 @@
             },
             "post": {
                 "tags": ["client-event-controller"],
-                "summary": "Create a new entity object of specifies type by using the given form parameter",
-                "description": "This expects application/x-www-form-urlencoded format for the form parameter and tries to create a new entity object from this form parameter, resulting in an error if there are missing or incorrect form paramter. The needed form paramter can be verified within the specific entity object.",
-                "operationId": "create_1",
+                "summary": "Create client event",
+                "description": "Creates client event from application/x-www-form-urlencoded fields matching ClientEvent.",
+                "operationId": "createClientEvent",
                 "parameters": [
-                    {
-                        "name": "formParams",
-                        "in": "query",
-                        "description": "The from paramter value map that is been used to create a new entity object."
-                    },
                     {
                         "name": "institutionId",
                         "in": "query",
@@ -673,21 +657,15 @@
                     "content": {
                         "application/x-www-form-urlencoded": {
                             "schema": {
-                                "type": "object",
-                                "properties": {
-                                    "allRequestParams": {
-                                        "$ref": "#/components/schemas/MultiValueMapStringString"
-                                    },
-                                    "institutionId": { "type": "integer" }
-                                },
-                                "required": ["allRequestParams"]
+                                "$ref": "#/components/schemas/ClientEvent"
                             }
                         }
-                    }
+                    },
+                    "required": true
                 },
                 "responses": {
                     "200": {
-                        "description": "OK",
+                        "description": "Created client event.",
                         "content": {
                             "application/json": {
                                 "schema": {
@@ -703,7 +681,7 @@
                 "tags": ["client-event-controller"],
                 "summary": "Deletes all given entity (and all its dependencies) by a given list of model identifiers.",
                 "description": "To check or report what dependent object also would be deleted for a certain entity object, please use the dependency endpoint to get a report of all dependent entity objects.",
-                "operationId": "hardDeleteAll_1",
+                "operationId": "deleteAllClientEvents",
                 "parameters": [
                     {
                         "name": "modelIds",
@@ -766,7 +744,7 @@
                 "tags": ["client-connection-controller"],
                 "summary": "Get a page of the specific domain entity. Sorting and filtering is applied before paging",
                 "description": "Sorting: the sort parameter to sort the list of entities before paging\nthe sort parameter is the name of the entity-model attribute to sort with a leading '-' sign for\ndescending sort order. Note that not all entity-model attribute are suited for sorting while the most\nare.\n</p>\nFilter: The filter attributes accepted by this API depend on the actual entity model (domain object)\nand are of the form [domain-attribute-name]=[filter-value]. E.g.: name=abc or type=EXAM. Usually\nfilter attributes of text type are treated as SQL wildcard with %[text]% to filter all text containing\na given text-snippet.",
-                "operationId": "getPage",
+                "operationId": "getClientConnections",
                 "parameters": [
                     {
                         "name": "page_number",
@@ -795,16 +773,6 @@
                         "description": "The institution identifier of the request.\nDefault is the institution identifier of the institution of the current user",
                         "required": false,
                         "schema": { "type": "integer" }
-                    },
-                    {
-                        "name": "filterCriteria",
-                        "in": "query",
-                        "description": "Additional filter criterias \nFor OpenAPI 3 input please use the form: {\"columnName\":\"filterValue\"}",
-                        "required": true,
-                        "schema": {
-                            "$ref": "#/components/schemas/MultiValueMapStringString"
-                        },
-                        "example": {}
                     }
                 ],
                 "responses": {
@@ -825,7 +793,7 @@
                 "tags": ["client-connection-controller"],
                 "summary": "Modifies an already existing entity object of the specific type.",
                 "description": "This expects application/json format for the response data and verifies consistencies within the definition of the specific entity object type. Missing (NULL) parameter that are not mandatory will be ignored and the original value will not be affected",
-                "operationId": "savePut_2",
+                "operationId": "editClientConnection",
                 "requestBody": {
                     "content": {
                         "application/json": {
@@ -852,15 +820,10 @@
             },
             "post": {
                 "tags": ["client-connection-controller"],
-                "summary": "Create a new entity object of specifies type by using the given form parameter",
-                "description": "This expects application/x-www-form-urlencoded format for the form parameter and tries to create a new entity object from this form parameter, resulting in an error if there are missing or incorrect form paramter. The needed form paramter can be verified within the specific entity object.",
-                "operationId": "create_2",
+                "summary": "Create client connection",
+                "description": "Creates client connection from application/x-www-form-urlencoded fields matching ClientConnection.",
+                "operationId": "createClientConnection",
                 "parameters": [
-                    {
-                        "name": "formParams",
-                        "in": "query",
-                        "description": "The from paramter value map that is been used to create a new entity object."
-                    },
                     {
                         "name": "institutionId",
                         "in": "query",
@@ -871,21 +834,15 @@
                     "content": {
                         "application/x-www-form-urlencoded": {
                             "schema": {
-                                "type": "object",
-                                "properties": {
-                                    "allRequestParams": {
-                                        "$ref": "#/components/schemas/MultiValueMapStringString"
-                                    },
-                                    "institutionId": { "type": "integer" }
-                                },
-                                "required": ["allRequestParams"]
+                                "$ref": "#/components/schemas/ClientConnection"
                             }
                         }
-                    }
+                    },
+                    "required": true
                 },
                 "responses": {
                     "200": {
-                        "description": "OK",
+                        "description": "Created client connection.",
                         "content": {
                             "application/json": {
                                 "schema": {
@@ -901,7 +858,7 @@
                 "tags": ["client-connection-controller"],
                 "summary": "Deletes all given entity (and all its dependencies) by a given list of model identifiers.",
                 "description": "To check or report what dependent object also would be deleted for a certain entity object, please use the dependency endpoint to get a report of all dependent entity objects.",
-                "operationId": "hardDeleteAll_2",
+                "operationId": "deleteAllClientConnections",
                 "parameters": [
                     {
                         "name": "modelIds",
@@ -1984,7 +1941,7 @@
                 "tags": ["exam-administration-controller"],
                 "summary": "Deletes all given entity (and all its dependencies) by a given list of model identifiers.",
                 "description": "To check or report what dependent object also would be deleted for a certain entity object, please use the dependency endpoint to get a report of all dependent entity objects.",
-                "operationId": "hardDeleteAll_3",
+                "operationId": "deleteAllExamAdministrations",
                 "parameters": [
                     {
                         "name": "modelIds",
@@ -2578,7 +2535,7 @@
                 "tags": ["exam-configuration-mapping-controller"],
                 "summary": "Create a new entity object of specifies type by using the given form parameter",
                 "description": "This expects application/x-www-form-urlencoded format for the form parameter and tries to create a new entity object from this form parameter, resulting in an error if there are missing or incorrect form paramter. The needed form paramter can be verified within the specific entity object.",
-                "operationId": "create_3",
+                "operationId": "createExamConfigurationMapping",
                 "parameters": [
                     {
                         "name": "formParams",
@@ -2894,7 +2851,7 @@
             },
             "put": {
                 "tags": ["configuration-value-controller"],
-                "operationId": "savePut_3",
+                "operationId": "editConfigurationValue_1",
                 "requestBody": {
                     "content": {
                         "application/json": {
@@ -3151,7 +3108,7 @@
                 "tags": ["configuration-controller"],
                 "summary": "Modifies an already existing entity object of the specific type.",
                 "description": "This expects application/json format for the response data and verifies consistencies within the definition of the specific entity object type. Missing (NULL) parameter that are not mandatory will be ignored and the original value will not be affected",
-                "operationId": "savePut_4",
+                "operationId": "editConfiguration",
                 "requestBody": {
                     "content": {
                         "application/json": {
@@ -3178,15 +3135,10 @@
             },
             "post": {
                 "tags": ["configuration-controller"],
-                "summary": "Create a new entity object of specifies type by using the given form parameter",
-                "description": "This expects application/x-www-form-urlencoded format for the form parameter and tries to create a new entity object from this form parameter, resulting in an error if there are missing or incorrect form paramter. The needed form paramter can be verified within the specific entity object.",
-                "operationId": "create_4",
+                "summary": "Create configuration",
+                "description": "Creates configuration from application/x-www-form-urlencoded fields matching Configuration.",
+                "operationId": "createConfiguration",
                 "parameters": [
-                    {
-                        "name": "formParams",
-                        "in": "query",
-                        "description": "The from paramter value map that is been used to create a new entity object."
-                    },
                     {
                         "name": "institutionId",
                         "in": "query",
@@ -3197,21 +3149,15 @@
                     "content": {
                         "application/x-www-form-urlencoded": {
                             "schema": {
-                                "type": "object",
-                                "properties": {
-                                    "allRequestParams": {
-                                        "$ref": "#/components/schemas/MultiValueMapStringString"
-                                    },
-                                    "institutionId": { "type": "integer" }
-                                },
-                                "required": ["allRequestParams"]
+                                "$ref": "#/components/schemas/Configuration"
                             }
                         }
-                    }
+                    },
+                    "required": true
                 },
                 "responses": {
                     "200": {
-                        "description": "OK",
+                        "description": "Created configuration.",
                         "content": {
                             "application/json": {
                                 "schema": {
@@ -3227,7 +3173,7 @@
                 "tags": ["configuration-controller"],
                 "summary": "Deletes all given entity (and all its dependencies) by a given list of model identifiers.",
                 "description": "To check or report what dependent object also would be deleted for a certain entity object, please use the dependency endpoint to get a report of all dependent entity objects.",
-                "operationId": "hardDeleteAll_4",
+                "operationId": "deleteAllConfigurations",
                 "parameters": [
                     {
                         "name": "modelIds",
@@ -4358,7 +4304,7 @@
         "/admin-api/v1/scheduled-delete": {
             "get": {
                 "tags": ["scheduled-delete-controller"],
-                "operationId": "getPage_1",
+                "operationId": "getScheduledDeletes",
                 "parameters": [
                     {
                         "name": "page_number",
@@ -4377,14 +4323,6 @@
                         "in": "query",
                         "required": false,
                         "schema": { "type": "string" }
-                    },
-                    {
-                        "name": "filterCriteria",
-                        "in": "query",
-                        "required": true,
-                        "schema": {
-                            "$ref": "#/components/schemas/MultiValueMapStringString"
-                        }
                     }
                 ],
                 "responses": {
@@ -4403,7 +4341,7 @@
             },
             "post": {
                 "tags": ["scheduled-delete-controller"],
-                "operationId": "create_5",
+                "operationId": "createScheduledDelete",
                 "requestBody": {
                     "content": {
                         "application/x-www-form-urlencoded": {
@@ -6230,7 +6168,7 @@
         "/admin-api/v1/certificate": {
             "get": {
                 "tags": ["certificate-controller"],
-                "operationId": "getPage_2",
+                "operationId": "getCertificates",
                 "parameters": [
                     {
                         "name": "institutionId",
@@ -6616,7 +6554,7 @@
                 "tags": ["user-activity-log-controller"],
                 "summary": "Deletes a single entity (and all its dependencies) by its modelId.",
                 "description": "To check or report what dependent object also would be deleted for a certain entity object, please use the dependency endpoint to get a report of all dependent entity objects.",
-                "operationId": "hardDelete",
+                "operationId": "deleteUserActivityLog",
                 "parameters": [
                     {
                         "name": "modelId",
@@ -7195,7 +7133,7 @@
                 "tags": ["client-event-controller"],
                 "summary": "Deletes a single entity (and all its dependencies) by its modelId.",
                 "description": "To check or report what dependent object also would be deleted for a certain entity object, please use the dependency endpoint to get a report of all dependent entity objects.",
-                "operationId": "hardDelete_1",
+                "operationId": "deleteClientEvent",
                 "parameters": [
                     {
                         "name": "modelId",
@@ -7245,7 +7183,7 @@
                 "tags": ["client-event-controller"],
                 "summary": "Get a list of dependency keys of all dependent entity objects for a specified source entity and bulk action.",
                 "description": "Get a list of dependency keys of all dependent entity objects for a specified source entity and bulk action.\n This can be used to verify depended objects for a certain bulk action to give a report of affected objects beforehand.\n For example for a delete action of a certain object, this gives all objects that will also be deleted within the deletion of the source object",
-                "operationId": "getDependencies",
+                "operationId": "getClientEventDependencies",
                 "parameters": [
                     {
                         "name": "modelId",
@@ -7509,7 +7447,7 @@
                 "tags": ["client-connection-controller"],
                 "summary": "Deletes a single entity (and all its dependencies) by its modelId.",
                 "description": "To check or report what dependent object also would be deleted for a certain entity object, please use the dependency endpoint to get a report of all dependent entity objects.",
-                "operationId": "hardDelete_2",
+                "operationId": "deleteClientConnection",
                 "parameters": [
                     {
                         "name": "modelId",
@@ -7559,7 +7497,7 @@
                 "tags": ["client-connection-controller"],
                 "summary": "Get a list of dependency keys of all dependent entity objects for a specified source entity and bulk action.",
                 "description": "Get a list of dependency keys of all dependent entity objects for a specified source entity and bulk action.\n This can be used to verify depended objects for a certain bulk action to give a report of affected objects beforehand.\n For example for a delete action of a certain object, this gives all objects that will also be deleted within the deletion of the source object",
-                "operationId": "getDependencies_1",
+                "operationId": "getClientConnectionDependencies",
                 "parameters": [
                     {
                         "name": "modelId",
@@ -8321,7 +8259,7 @@
         "/admin-api/v1/monitoring": {
             "get": {
                 "tags": ["exam-monitoring-controller"],
-                "operationId": "getPage_3",
+                "operationId": "getExamMonitorings",
                 "parameters": [
                     {
                         "name": "institutionId",
@@ -8972,7 +8910,7 @@
             "get": {
                 "tags": ["lms-setup-controller"],
                 "summary": "Get a single entity by its modelId.",
-                "operationId": "getBy",
+                "operationId": "getLmsSetupById",
                 "parameters": [
                     {
                         "name": "modelId",
@@ -10032,7 +9970,7 @@
                 "tags": ["exam-administration-controller"],
                 "summary": "Deletes a single entity (and all its dependencies) by its modelId.",
                 "description": "To check or report what dependent object also would be deleted for a certain entity object, please use the dependency endpoint to get a report of all dependent entity objects.",
-                "operationId": "hardDelete_3",
+                "operationId": "deleteExamAdministration",
                 "parameters": [
                     {
                         "name": "modelId",
@@ -10630,7 +10568,7 @@
             "get": {
                 "tags": ["exam-template-controller"],
                 "summary": "Get a single entity by its modelId.",
-                "operationId": "getBy_1",
+                "operationId": "getExamTemplateById",
                 "parameters": [
                     {
                         "name": "modelId",
@@ -10995,7 +10933,7 @@
                 "tags": ["exam-configuration-mapping-controller"],
                 "summary": "Deletes a single entity (and all its dependencies) by its modelId.",
                 "description": "To check or report what dependent object also would be deleted for a certain entity object, please use the dependency endpoint to get a report of all dependent entity objects.",
-                "operationId": "hardDelete_4",
+                "operationId": "deleteExamConfigurationMapping",
                 "parameters": [
                     {
                         "name": "modelId",
@@ -11200,7 +11138,7 @@
                 "tags": ["configuration-value-controller"],
                 "summary": "Deletes a single entity (and all its dependencies) by its modelId.",
                 "description": "To check or report what dependent object also would be deleted for a certain entity object, please use the dependency endpoint to get a report of all dependent entity objects.",
-                "operationId": "hardDelete_5",
+                "operationId": "deleteConfigurationValue",
                 "parameters": [
                     {
                         "name": "modelId",
@@ -11547,7 +11485,7 @@
             "get": {
                 "tags": ["configuration-attribute-controller"],
                 "summary": "Get a list of entity objects by a given list of model identifiers of entities.",
-                "operationId": "getForIds",
+                "operationId": "getConfigurationAttributesByIds",
                 "parameters": [
                     {
                         "name": "modelIds",
@@ -11610,7 +11548,7 @@
                 "tags": ["configuration-controller"],
                 "summary": "Deletes a single entity (and all its dependencies) by its modelId.",
                 "description": "To check or report what dependent object also would be deleted for a certain entity object, please use the dependency endpoint to get a report of all dependent entity objects.",
-                "operationId": "hardDelete_6",
+                "operationId": "deleteConfiguration",
                 "parameters": [
                     {
                         "name": "modelId",
@@ -11660,7 +11598,7 @@
                 "tags": ["configuration-controller"],
                 "summary": "Get a list of dependency keys of all dependent entity objects for a specified source entity and bulk action.",
                 "description": "Get a list of dependency keys of all dependent entity objects for a specified source entity and bulk action.\n This can be used to verify depended objects for a certain bulk action to give a report of affected objects beforehand.\n For example for a delete action of a certain object, this gives all objects that will also be deleted within the deletion of the source object",
-                "operationId": "getDependencies_2",
+                "operationId": "getConfigurationDependencies",
                 "parameters": [
                     {
                         "name": "modelId",
@@ -12244,7 +12182,7 @@
             "get": {
                 "tags": ["seb-client-config-controller"],
                 "summary": "Get a single entity by its modelId.",
-                "operationId": "getBy_2",
+                "operationId": "getSEBClientConfigById",
                 "parameters": [
                     {
                         "name": "modelId",
@@ -12849,7 +12787,7 @@
         "/admin-api/v1/certificate/names": {
             "get": {
                 "tags": ["certificate-controller"],
-                "operationId": "getNames",
+                "operationId": "getCertificateNames",
                 "parameters": [
                     {
                         "name": "institutionId",
@@ -13544,7 +13482,7 @@
                 "tags": ["exam-administration-controller"],
                 "summary": "Force deletes a single entity (and all its dependencies) by its modelId.",
                 "description": "To check or report what dependent object also would be deleted for a certain entity object, please use the dependency endpoint to get a report of all dependent entity objects.",
-                "operationId": "forceHardDelete",
+                "operationId": "forceDeleteExamAdministration",
                 "parameters": [
                     {
                         "name": "modelId",
@@ -14235,6 +14173,7 @@
                     },
                     "email": {
                         "type": "string",
+                        "format": "email",
                         "description": "User email address.",
                         "example": "ada@example.org"
                     },
@@ -14634,8 +14573,8 @@
                         "type": "object",
                         "additionalProperties": { "type": "string" }
                     },
-                    "description": { "type": "string" },
-                    "startURL": { "type": "string" }
+                    "startURL": { "type": "string" },
+                    "description": { "type": "string" }
                 },
                 "required": ["externalId", "institutionId", "type"]
             },
@@ -15411,6 +15350,7 @@
                     },
                     "email": {
                         "type": "string",
+                        "format": "email",
                         "description": "User email address.",
                         "example": "ada@example.org"
                     },
@@ -15448,12 +15388,7 @@
                         },
                         "minItems": 1,
                         "uniqueItems": true
-                    },
-                    "retypedNewPassword": {
-                        "type": "object",
-                        "properties": { "empty": { "type": "boolean" } }
-                    },
-                    "creationDate": { "type": "string", "format": "date-time" }
+                    }
                 },
                 "required": [
                     "confirmNewPassword",
@@ -16387,16 +16322,12 @@
             "ClientMonitoringDataView": {
                 "type": "object",
                 "properties": {
-                    "pendingNotification": { "type": "boolean" },
                     "missingPing": { "type": "boolean" },
                     "grantChecked": { "type": "boolean" },
                     "grantDenied": { "type": "boolean" },
                     "sebversionDenied": { "type": "boolean" },
-                    "lat": { "type": "integer" },
-                    "iv": {
-                        "type": "object",
-                        "additionalProperties": { "type": "string" }
-                    },
+                    "pendingNotification": { "type": "boolean" },
+                    "nf": { "type": "integer", "format": "int32" },
                     "st": {
                         "type": "string",
                         "enum": [
@@ -16408,7 +16339,11 @@
                             "DISABLED"
                         ]
                     },
-                    "nf": { "type": "integer", "format": "int32" },
+                    "iv": {
+                        "type": "object",
+                        "additionalProperties": { "type": "string" }
+                    },
+                    "lat": { "type": "integer" },
                     "id": { "type": "integer" }
                 }
             },

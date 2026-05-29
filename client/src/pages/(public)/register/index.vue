@@ -373,7 +373,7 @@ const registerSuccess = computed(() => !!registered.value);
 const formRef = ref();
 
 const rules = useRules();
-const { isRequired, lengthRules } = useZodFormRules();
+const { isRequired, lengthRules, formatRules } = useZodFormRules();
 
 const withRequiredRule = (schema: z.ZodType) =>
     isRequired(schema) ? [rules.required()] : [];
@@ -403,6 +403,7 @@ const emailRequired = isRequired(zUserMod.shape.email);
 const emailRules = [
     ...withRequiredRule(zUserMod.shape.email),
     ...lengthRules(zUserMod.shape.email),
+    ...formatRules(zUserMod.shape.email),
 ];
 
 const timezoneRequired = isRequired(zUserMod.shape.timezone);
@@ -421,6 +422,9 @@ const confirmPasswordRequired = isRequired(zUserMod.shape.confirmNewPassword);
 const confirmPasswordRules = [
     ...withRequiredRule(zUserMod.shape.confirmNewPassword),
     ...lengthRules(zUserMod.shape.confirmNewPassword),
+    (value: string | undefined) =>
+        value === password.value ||
+        translate("userAccount.general.validation.passwordsDontMatch"),
 ];
 
 async function register() {

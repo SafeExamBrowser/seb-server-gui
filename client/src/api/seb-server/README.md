@@ -47,7 +47,7 @@ The generated source grows with each backend operation, but tree-shaking removes
 
 Two backend changes underpin the cleanliness of the generated client. Both live in `EntityControllerOpenApiCustomizer` in the backend repo:
 
-- Operation IDs on inherited `EntityController`/`ActivatableEntityController` methods are remapped from `getPage_1`/`hardDelete_1`/etc. to domain-named ids (`getUserAccounts`, `deleteUserAccount`, ...). Without this, the generated client identifiers are unreadable.
-- The generic `filterCriteria` Spring `MultiValueMap` parameter is removed from inherited list endpoints. Without this, every list query is forced to carry an untyped map param. Per-domain filter fields can still be passed as flat query parameters — they're handled by Spring's `MultiValueMap` binding even when undocumented.
+- Operation IDs on generic-looking controller methods are remapped from `getPage_1`/`hardDelete_1`/etc. to domain-named ids (`getUserAccounts`, `deleteUserAccount`, ...). Without this, the generated client identifiers are unreadable.
+- The generic `filterCriteria` Spring `MultiValueMap` parameter is removed from inherited list endpoints. Without this, every list query is forced to carry an untyped map param. Per-domain flat filters must be registered in the backend customiser with real OpenAPI schemas so TypeScript and Zod generate useful query types.
 
-If you migrate a new domain and the generated identifiers look wrong, check whether the corresponding backend operation has an explicit `@Operation(operationId = ...)` or relies on one of these customiser fallbacks.
+If you migrate a new domain and the generated identifiers or query params look wrong, check whether the corresponding backend operation has an explicit `@Operation(operationId = ...)`, relies on one of these customiser fallbacks, or needs domain filter metadata added in the backend.

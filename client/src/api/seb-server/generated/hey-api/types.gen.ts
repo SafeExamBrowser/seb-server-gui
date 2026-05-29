@@ -279,8 +279,8 @@ export type Exam = {
     additionalAttributes?: {
         [key: string]: string;
     };
-    description?: string;
     startURL?: string;
+    description?: string;
 };
 
 export type ClientGroupTemplate = {
@@ -669,10 +669,6 @@ export type UserMod = {
      */
     directLogin?: boolean;
     userRoles: Array<'SEB_SERVER_ADMIN' | 'INSTITUTIONAL_ADMIN' | 'EXAM_ADMIN' | 'EXAM_SUPPORTER' | 'TEACHER'>;
-    retypedNewPassword?: {
-        empty?: boolean;
-    };
-    creationDate?: string;
 };
 
 export type ClientStaticData = {
@@ -1203,17 +1199,17 @@ export type ClientNotification = {
 };
 
 export type ClientMonitoringDataView = {
-    pendingNotification?: boolean;
     missingPing?: boolean;
     grantChecked?: boolean;
     grantDenied?: boolean;
     sebversionDenied?: boolean;
-    lat?: number;
+    pendingNotification?: boolean;
+    nf?: number;
+    st?: 'UNDEFINED' | 'CONNECTION_REQUESTED' | 'READY' | 'ACTIVE' | 'CLOSED' | 'DISABLED';
     iv?: {
         [key: string]: string;
     };
-    st?: 'UNDEFINED' | 'CONNECTION_REQUESTED' | 'READY' | 'ACTIVE' | 'CLOSED' | 'DISABLED';
-    nf?: number;
+    lat?: number;
     id?: number;
 };
 
@@ -1998,7 +1994,7 @@ export type HandshakeEstablishResponses = {
     200: unknown;
 };
 
-export type HardDeleteAllData = {
+export type DeleteAllUserActivityLogsData = {
     body?: {
         modelIds: Array<string>;
         bulkActionAddIncludes?: boolean;
@@ -2024,14 +2020,14 @@ export type HardDeleteAllData = {
     url: '/admin-api/v1/useractivity';
 };
 
-export type HardDeleteAllResponses = {
+export type DeleteAllUserActivityLogsResponses = {
     /**
      * OK
      */
     200: EntityProcessingReport;
 };
 
-export type HardDeleteAllResponse = HardDeleteAllResponses[keyof HardDeleteAllResponses];
+export type DeleteAllUserActivityLogsResponse = DeleteAllUserActivityLogsResponses[keyof DeleteAllUserActivityLogsResponses];
 
 export type GetUserActivityLogsData = {
     body?: never;
@@ -2067,17 +2063,10 @@ export type GetUserActivityLogsResponses = {
 
 export type GetUserActivityLogsResponse = GetUserActivityLogsResponses[keyof GetUserActivityLogsResponses];
 
-export type CreateData = {
-    body?: {
-        allRequestParams: MultiValueMapStringStringWritable;
-        institutionId?: number;
-    };
+export type CreateUserActivityLogData = {
+    body: UserActivityLog;
     path?: never;
     query?: {
-        /**
-         * The from paramter value map that is been used to create a new entity object.
-         */
-        formParams?: unknown;
         /**
          * The institution identifier of the request.
          * Default is the institution identifier of the institution of the current user
@@ -2087,30 +2076,30 @@ export type CreateData = {
     url: '/admin-api/v1/useractivity';
 };
 
-export type CreateResponses = {
+export type CreateUserActivityLogResponses = {
     /**
-     * OK
+     * Created user activity log.
      */
     200: UserActivityLog;
 };
 
-export type CreateResponse = CreateResponses[keyof CreateResponses];
+export type CreateUserActivityLogResponse = CreateUserActivityLogResponses[keyof CreateUserActivityLogResponses];
 
-export type SavePutData = {
+export type EditUserActivityLogData = {
     body: UserActivityLog;
     path?: never;
     query?: never;
     url: '/admin-api/v1/useractivity';
 };
 
-export type SavePutResponses = {
+export type EditUserActivityLogResponses = {
     /**
      * OK
      */
     200: UserActivityLog;
 };
 
-export type SavePutResponse = SavePutResponses[keyof SavePutResponses];
+export type EditUserActivityLogResponse = EditUserActivityLogResponses[keyof EditUserActivityLogResponses];
 
 export type DeleteAllUserAccountsData = {
     body?: {
@@ -2171,31 +2160,31 @@ export type GetUserAccountsData = {
         /**
          * Filters user accounts by first or full name.
          */
-        name?: unknown;
+        name?: string;
         /**
          * Filters user accounts by surname.
          */
-        surname?: unknown;
+        surname?: string;
         /**
          * Filters user accounts by login username.
          */
-        username?: unknown;
+        username?: string;
         /**
          * Filters user accounts by email address.
          */
-        email?: unknown;
+        email?: string;
         /**
          * Filters user accounts by language.
          */
-        language?: unknown;
+        language?: string;
         /**
          * Filters user accounts by role.
          */
-        role?: unknown;
+        role?: string;
         /**
          * Filters user accounts by active state.
          */
-        active?: unknown;
+        active?: boolean;
     };
     url: '/admin-api/v1/useraccount';
 };
@@ -2263,7 +2252,7 @@ export type ChangeUserAccountPasswordResponses = {
 
 export type ChangeUserAccountPasswordResponse = ChangeUserAccountPasswordResponses[keyof ChangeUserAccountPasswordResponses];
 
-export type HardDeleteAll1Data = {
+export type DeleteAllClientEventsData = {
     body?: {
         modelIds: Array<string>;
         bulkActionAddIncludes?: boolean;
@@ -2289,14 +2278,14 @@ export type HardDeleteAll1Data = {
     url: '/admin-api/v1/seb-client-event';
 };
 
-export type HardDeleteAll1Responses = {
+export type DeleteAllClientEventsResponses = {
     /**
      * OK
      */
     200: EntityProcessingReport;
 };
 
-export type HardDeleteAll1Response = HardDeleteAll1Responses[keyof HardDeleteAll1Responses];
+export type DeleteAllClientEventsResponse = DeleteAllClientEventsResponses[keyof DeleteAllClientEventsResponses];
 
 export type GetClientEventsData = {
     body?: never;
@@ -2332,17 +2321,10 @@ export type GetClientEventsResponses = {
 
 export type GetClientEventsResponse = GetClientEventsResponses[keyof GetClientEventsResponses];
 
-export type Create1Data = {
-    body?: {
-        allRequestParams: MultiValueMapStringStringWritable;
-        institutionId?: number;
-    };
+export type CreateClientEventData = {
+    body: ClientEvent;
     path?: never;
     query?: {
-        /**
-         * The from paramter value map that is been used to create a new entity object.
-         */
-        formParams?: unknown;
         /**
          * The institution identifier of the request.
          * Default is the institution identifier of the institution of the current user
@@ -2352,32 +2334,32 @@ export type Create1Data = {
     url: '/admin-api/v1/seb-client-event';
 };
 
-export type Create1Responses = {
+export type CreateClientEventResponses = {
     /**
-     * OK
+     * Created client event.
      */
     200: ClientEvent;
 };
 
-export type Create1Response = Create1Responses[keyof Create1Responses];
+export type CreateClientEventResponse = CreateClientEventResponses[keyof CreateClientEventResponses];
 
-export type SavePut1Data = {
+export type EditClientEventData = {
     body: ClientEvent;
     path?: never;
     query?: never;
     url: '/admin-api/v1/seb-client-event';
 };
 
-export type SavePut1Responses = {
+export type EditClientEventResponses = {
     /**
      * OK
      */
     200: ClientEvent;
 };
 
-export type SavePut1Response = SavePut1Responses[keyof SavePut1Responses];
+export type EditClientEventResponse = EditClientEventResponses[keyof EditClientEventResponses];
 
-export type HardDeleteAll2Data = {
+export type DeleteAllClientConnectionsData = {
     body?: {
         modelIds: Array<string>;
         bulkActionAddIncludes?: boolean;
@@ -2403,19 +2385,19 @@ export type HardDeleteAll2Data = {
     url: '/admin-api/v1/seb-client-connection';
 };
 
-export type HardDeleteAll2Responses = {
+export type DeleteAllClientConnectionsResponses = {
     /**
      * OK
      */
     200: EntityProcessingReport;
 };
 
-export type HardDeleteAll2Response = HardDeleteAll2Responses[keyof HardDeleteAll2Responses];
+export type DeleteAllClientConnectionsResponse = DeleteAllClientConnectionsResponses[keyof DeleteAllClientConnectionsResponses];
 
-export type GetPageData = {
+export type GetClientConnectionsData = {
     body?: never;
     path?: never;
-    query: {
+    query?: {
         /**
          * The number of the page to get from the whole list. If the page does not exists, the API retruns with the first page.
          */
@@ -2433,35 +2415,23 @@ export type GetPageData = {
          * Default is the institution identifier of the institution of the current user
          */
         institutionId?: number;
-        /**
-         * Additional filter criterias
-         * For OpenAPI 3 input please use the form: {"columnName":"filterValue"}
-         */
-        filterCriteria: MultiValueMapStringStringWritable;
     };
     url: '/admin-api/v1/seb-client-connection';
 };
 
-export type GetPageResponses = {
+export type GetClientConnectionsResponses = {
     /**
      * OK
      */
     200: PageClientConnection;
 };
 
-export type GetPageResponse = GetPageResponses[keyof GetPageResponses];
+export type GetClientConnectionsResponse = GetClientConnectionsResponses[keyof GetClientConnectionsResponses];
 
-export type Create2Data = {
-    body?: {
-        allRequestParams: MultiValueMapStringStringWritable;
-        institutionId?: number;
-    };
+export type CreateClientConnectionData = {
+    body: ClientConnection;
     path?: never;
     query?: {
-        /**
-         * The from paramter value map that is been used to create a new entity object.
-         */
-        formParams?: unknown;
         /**
          * The institution identifier of the request.
          * Default is the institution identifier of the institution of the current user
@@ -2471,30 +2441,30 @@ export type Create2Data = {
     url: '/admin-api/v1/seb-client-connection';
 };
 
-export type Create2Responses = {
+export type CreateClientConnectionResponses = {
     /**
-     * OK
+     * Created client connection.
      */
     200: ClientConnection;
 };
 
-export type Create2Response = Create2Responses[keyof Create2Responses];
+export type CreateClientConnectionResponse = CreateClientConnectionResponses[keyof CreateClientConnectionResponses];
 
-export type SavePut2Data = {
+export type EditClientConnectionData = {
     body: ClientConnection;
     path?: never;
     query?: never;
     url: '/admin-api/v1/seb-client-connection';
 };
 
-export type SavePut2Responses = {
+export type EditClientConnectionResponses = {
     /**
      * OK
      */
     200: ClientConnection;
 };
 
-export type SavePut2Response = SavePut2Responses[keyof SavePut2Responses];
+export type EditClientConnectionResponse = EditClientConnectionResponses[keyof EditClientConnectionResponses];
 
 export type DeleteAllOrientationsData = {
     body?: {
@@ -3047,7 +3017,7 @@ export type EditIndicatorResponses = {
 
 export type EditIndicatorResponse = EditIndicatorResponses[keyof EditIndicatorResponses];
 
-export type HardDeleteAll3Data = {
+export type DeleteAllExamAdministrationsData = {
     body?: {
         modelIds: Array<string>;
         bulkActionAddIncludes?: boolean;
@@ -3073,14 +3043,14 @@ export type HardDeleteAll3Data = {
     url: '/admin-api/v1/exam';
 };
 
-export type HardDeleteAll3Responses = {
+export type DeleteAllExamAdministrationsResponses = {
     /**
      * OK
      */
     200: EntityProcessingReport;
 };
 
-export type HardDeleteAll3Response = HardDeleteAll3Responses[keyof HardDeleteAll3Responses];
+export type DeleteAllExamAdministrationsResponse = DeleteAllExamAdministrationsResponses[keyof DeleteAllExamAdministrationsResponses];
 
 export type GetExamAdministrationsData = {
     body?: never;
@@ -3484,7 +3454,7 @@ export type GetExamConfigurationMappingsResponses = {
 
 export type GetExamConfigurationMappingsResponse = GetExamConfigurationMappingsResponses[keyof GetExamConfigurationMappingsResponses];
 
-export type Create3Data = {
+export type CreateExamConfigurationMappingData = {
     body?: {
         allRequestParams: MultiValueMapStringStringWritable;
         institutionId?: number;
@@ -3504,14 +3474,14 @@ export type Create3Data = {
     url: '/admin-api/v1/exam-configuration-map';
 };
 
-export type Create3Responses = {
+export type CreateExamConfigurationMappingResponses = {
     /**
      * OK
      */
     200: ExamConfigurationMap;
 };
 
-export type Create3Response = Create3Responses[keyof Create3Responses];
+export type CreateExamConfigurationMappingResponse = CreateExamConfigurationMappingResponses[keyof CreateExamConfigurationMappingResponses];
 
 export type EditExamConfigurationMappingData = {
     body: ExamConfigurationMap;
@@ -3655,21 +3625,21 @@ export type GetTableValueResponses = {
 
 export type GetTableValueResponse = GetTableValueResponses[keyof GetTableValueResponses];
 
-export type SavePut3Data = {
+export type EditConfigurationValue1Data = {
     body: ConfigurationTableValues;
     path?: never;
     query?: never;
     url: '/admin-api/v1/configuration_value/table';
 };
 
-export type SavePut3Responses = {
+export type EditConfigurationValue1Responses = {
     /**
      * OK
      */
     200: ConfigurationTableValues;
 };
 
-export type SavePut3Response = SavePut3Responses[keyof SavePut3Responses];
+export type EditConfigurationValue1Response = EditConfigurationValue1Responses[keyof EditConfigurationValue1Responses];
 
 export type DeleteAllConfigurationAttributesData = {
     body?: {
@@ -3778,7 +3748,7 @@ export type EditConfigurationAttributeResponses = {
 
 export type EditConfigurationAttributeResponse = EditConfigurationAttributeResponses[keyof EditConfigurationAttributeResponses];
 
-export type HardDeleteAll4Data = {
+export type DeleteAllConfigurationsData = {
     body?: {
         modelIds: Array<string>;
         bulkActionAddIncludes?: boolean;
@@ -3804,14 +3774,14 @@ export type HardDeleteAll4Data = {
     url: '/admin-api/v1/configuration';
 };
 
-export type HardDeleteAll4Responses = {
+export type DeleteAllConfigurationsResponses = {
     /**
      * OK
      */
     200: EntityProcessingReport;
 };
 
-export type HardDeleteAll4Response = HardDeleteAll4Responses[keyof HardDeleteAll4Responses];
+export type DeleteAllConfigurationsResponse = DeleteAllConfigurationsResponses[keyof DeleteAllConfigurationsResponses];
 
 export type GetConfigurationsData = {
     body?: never;
@@ -3847,17 +3817,10 @@ export type GetConfigurationsResponses = {
 
 export type GetConfigurationsResponse = GetConfigurationsResponses[keyof GetConfigurationsResponses];
 
-export type Create4Data = {
-    body?: {
-        allRequestParams: MultiValueMapStringStringWritable;
-        institutionId?: number;
-    };
+export type CreateConfigurationData = {
+    body: Configuration;
     path?: never;
     query?: {
-        /**
-         * The from paramter value map that is been used to create a new entity object.
-         */
-        formParams?: unknown;
         /**
          * The institution identifier of the request.
          * Default is the institution identifier of the institution of the current user
@@ -3867,30 +3830,30 @@ export type Create4Data = {
     url: '/admin-api/v1/configuration';
 };
 
-export type Create4Responses = {
+export type CreateConfigurationResponses = {
     /**
-     * OK
+     * Created configuration.
      */
     200: Configuration;
 };
 
-export type Create4Response = Create4Responses[keyof Create4Responses];
+export type CreateConfigurationResponse = CreateConfigurationResponses[keyof CreateConfigurationResponses];
 
-export type SavePut4Data = {
+export type EditConfigurationData = {
     body: Configuration;
     path?: never;
     query?: never;
     url: '/admin-api/v1/configuration';
 };
 
-export type SavePut4Responses = {
+export type EditConfigurationResponses = {
     /**
      * OK
      */
     200: Configuration;
 };
 
-export type SavePut4Response = SavePut4Responses[keyof SavePut4Responses];
+export type EditConfigurationResponse = EditConfigurationResponses[keyof EditConfigurationResponses];
 
 export type DeleteAllConfigurationNodesData = {
     body?: {
@@ -4569,42 +4532,41 @@ export type DeleteSessionsResponses = {
 
 export type DeleteSessionsResponse = DeleteSessionsResponses[keyof DeleteSessionsResponses];
 
-export type GetPage1Data = {
+export type GetScheduledDeletesData = {
     body?: never;
     path?: never;
-    query: {
+    query?: {
         page_number?: number;
         page_size?: number;
         sort?: string;
-        filterCriteria: MultiValueMapStringStringWritable;
     };
     url: '/admin-api/v1/scheduled-delete';
 };
 
-export type GetPage1Responses = {
+export type GetScheduledDeletesResponses = {
     /**
      * OK
      */
     200: PageScheduledDelete;
 };
 
-export type GetPage1Response = GetPage1Responses[keyof GetPage1Responses];
+export type GetScheduledDeletesResponse = GetScheduledDeletesResponses[keyof GetScheduledDeletesResponses];
 
-export type Create5Data = {
+export type CreateScheduledDeleteData = {
     body?: number;
     path?: never;
     query?: never;
     url: '/admin-api/v1/scheduled-delete';
 };
 
-export type Create5Responses = {
+export type CreateScheduledDeleteResponses = {
     /**
      * OK
      */
     200: ScheduledDeleteReport;
 };
 
-export type Create5Response = Create5Responses[keyof Create5Responses];
+export type CreateScheduledDeleteResponse = CreateScheduledDeleteResponses[keyof CreateScheduledDeleteResponses];
 
 export type UnmarkIncludeData = {
     body?: unknown;
@@ -5640,7 +5602,7 @@ export type DeleteCertificateResponses = {
 
 export type DeleteCertificateResponse = DeleteCertificateResponses[keyof DeleteCertificateResponses];
 
-export type GetPage2Data = {
+export type GetCertificatesData = {
     body?: never;
     path?: never;
     query: {
@@ -5653,14 +5615,14 @@ export type GetPage2Data = {
     url: '/admin-api/v1/certificate';
 };
 
-export type GetPage2Responses = {
+export type GetCertificatesResponses = {
     /**
      * OK
      */
     200: PageCertificateInfo;
 };
 
-export type GetPage2Response = GetPage2Responses[keyof GetPage2Responses];
+export type GetCertificatesResponse = GetCertificatesResponses[keyof GetCertificatesResponses];
 
 export type ImportCertificateData = {
     body?: never;
@@ -5818,7 +5780,7 @@ export type GetDiscoveryResponses = {
 
 export type GetDiscoveryResponse = GetDiscoveryResponses[keyof GetDiscoveryResponses];
 
-export type HardDeleteData = {
+export type DeleteUserActivityLogData = {
     body?: unknown;
     path: {
         /**
@@ -5840,14 +5802,14 @@ export type HardDeleteData = {
     url: '/admin-api/v1/useractivity/{modelId}';
 };
 
-export type HardDeleteResponses = {
+export type DeleteUserActivityLogResponses = {
     /**
      * OK
      */
     200: EntityProcessingReport;
 };
 
-export type HardDeleteResponse = HardDeleteResponses[keyof HardDeleteResponses];
+export type DeleteUserActivityLogResponse = DeleteUserActivityLogResponses[keyof DeleteUserActivityLogResponses];
 
 export type GetUserActivityLogByIdData = {
     body?: unknown;
@@ -6201,7 +6163,7 @@ export type SebVersionInfoPageResponses = {
 
 export type SebVersionInfoPageResponse = SebVersionInfoPageResponses[keyof SebVersionInfoPageResponses];
 
-export type HardDelete1Data = {
+export type DeleteClientEventData = {
     body?: unknown;
     path: {
         /**
@@ -6223,14 +6185,14 @@ export type HardDelete1Data = {
     url: '/admin-api/v1/seb-client-event/{modelId}';
 };
 
-export type HardDelete1Responses = {
+export type DeleteClientEventResponses = {
     /**
      * OK
      */
     200: EntityProcessingReport;
 };
 
-export type HardDelete1Response = HardDelete1Responses[keyof HardDelete1Responses];
+export type DeleteClientEventResponse = DeleteClientEventResponses[keyof DeleteClientEventResponses];
 
 export type GetClientEventByIdData = {
     body?: unknown;
@@ -6253,7 +6215,7 @@ export type GetClientEventByIdResponses = {
 
 export type GetClientEventByIdResponse = GetClientEventByIdResponses[keyof GetClientEventByIdResponses];
 
-export type GetDependenciesData = {
+export type GetClientEventDependenciesData = {
     body?: never;
     path: {
         /**
@@ -6280,14 +6242,14 @@ export type GetDependenciesData = {
     url: '/admin-api/v1/seb-client-event/{modelId}/dependency';
 };
 
-export type GetDependenciesResponses = {
+export type GetClientEventDependenciesResponses = {
     /**
      * OK
      */
     200: Array<EntityDependency>;
 };
 
-export type GetDependenciesResponse = GetDependenciesResponses[keyof GetDependenciesResponses];
+export type GetClientEventDependenciesResponse = GetClientEventDependenciesResponses[keyof GetClientEventDependenciesResponses];
 
 export type GetExtendedPageData = {
     body?: never;
@@ -6392,7 +6354,7 @@ export type ExportEventsResponses = {
     200: unknown;
 };
 
-export type HardDelete2Data = {
+export type DeleteClientConnectionData = {
     body?: unknown;
     path: {
         /**
@@ -6414,14 +6376,14 @@ export type HardDelete2Data = {
     url: '/admin-api/v1/seb-client-connection/{modelId}';
 };
 
-export type HardDelete2Responses = {
+export type DeleteClientConnectionResponses = {
     /**
      * OK
      */
     200: EntityProcessingReport;
 };
 
-export type HardDelete2Response = HardDelete2Responses[keyof HardDelete2Responses];
+export type DeleteClientConnectionResponse = DeleteClientConnectionResponses[keyof DeleteClientConnectionResponses];
 
 export type GetClientConnectionByIdData = {
     body?: unknown;
@@ -6444,7 +6406,7 @@ export type GetClientConnectionByIdResponses = {
 
 export type GetClientConnectionByIdResponse = GetClientConnectionByIdResponses[keyof GetClientConnectionByIdResponses];
 
-export type GetDependencies1Data = {
+export type GetClientConnectionDependenciesData = {
     body?: never;
     path: {
         /**
@@ -6471,14 +6433,14 @@ export type GetDependencies1Data = {
     url: '/admin-api/v1/seb-client-connection/{modelId}/dependency';
 };
 
-export type GetDependencies1Responses = {
+export type GetClientConnectionDependenciesResponses = {
     /**
      * OK
      */
     200: Array<EntityDependency>;
 };
 
-export type GetDependencies1Response = GetDependencies1Responses[keyof GetDependencies1Responses];
+export type GetClientConnectionDependenciesResponse = GetClientConnectionDependenciesResponses[keyof GetClientConnectionDependenciesResponses];
 
 export type GetClientConnectionNamesData = {
     body?: never;
@@ -6920,7 +6882,7 @@ export type GetOrientationsByIdsResponses = {
 
 export type GetOrientationsByIdsResponse = GetOrientationsByIdsResponses[keyof GetOrientationsByIdsResponses];
 
-export type GetPage3Data = {
+export type GetExamMonitoringsData = {
     body?: never;
     path?: never;
     query: {
@@ -6933,14 +6895,14 @@ export type GetPage3Data = {
     url: '/admin-api/v1/monitoring';
 };
 
-export type GetPage3Responses = {
+export type GetExamMonitoringsResponses = {
     /**
      * OK
      */
     200: PageExam;
 };
 
-export type GetPage3Response = GetPage3Responses[keyof GetPage3Responses];
+export type GetExamMonitoringsResponse = GetExamMonitoringsResponses[keyof GetExamMonitoringsResponses];
 
 export type GetConnectionDataData = {
     body?: never;
@@ -7278,7 +7240,7 @@ export type DeleteLmsSetupResponses = {
 
 export type DeleteLmsSetupResponse = DeleteLmsSetupResponses[keyof DeleteLmsSetupResponses];
 
-export type GetByData = {
+export type GetLmsSetupByIdData = {
     body?: unknown;
     path: {
         /**
@@ -7290,14 +7252,14 @@ export type GetByData = {
     url: '/admin-api/v1/lms-setup/{modelId}';
 };
 
-export type GetByResponses = {
+export type GetLmsSetupByIdResponses = {
     /**
      * OK
      */
     200: LmsSetup;
 };
 
-export type GetByResponse = GetByResponses[keyof GetByResponses];
+export type GetLmsSetupByIdResponse = GetLmsSetupByIdResponses[keyof GetLmsSetupByIdResponses];
 
 export type GetLmsSetupDependenciesData = {
     body?: never;
@@ -7918,7 +7880,7 @@ export type GetSecurityKeyEntriesResponses = {
 
 export type GetSecurityKeyEntriesResponse = GetSecurityKeyEntriesResponses[keyof GetSecurityKeyEntriesResponses];
 
-export type HardDelete3Data = {
+export type DeleteExamAdministrationData = {
     body?: unknown;
     path: {
         /**
@@ -7940,14 +7902,14 @@ export type HardDelete3Data = {
     url: '/admin-api/v1/exam/{modelId}';
 };
 
-export type HardDelete3Responses = {
+export type DeleteExamAdministrationResponses = {
     /**
      * OK
      */
     200: EntityProcessingReport;
 };
 
-export type HardDelete3Response = HardDelete3Responses[keyof HardDelete3Responses];
+export type DeleteExamAdministrationResponse = DeleteExamAdministrationResponses[keyof DeleteExamAdministrationResponses];
 
 export type GetExamAdministrationByIdData = {
     body?: unknown;
@@ -8321,7 +8283,7 @@ export type DeleteExamTemplateResponses = {
 
 export type DeleteExamTemplateResponse = DeleteExamTemplateResponses[keyof DeleteExamTemplateResponses];
 
-export type GetBy1Data = {
+export type GetExamTemplateByIdData = {
     body?: unknown;
     path: {
         /**
@@ -8333,14 +8295,14 @@ export type GetBy1Data = {
     url: '/admin-api/v1/exam-template/{modelId}';
 };
 
-export type GetBy1Responses = {
+export type GetExamTemplateByIdResponses = {
     /**
      * OK
      */
     200: ExamTemplate;
 };
 
-export type GetBy1Response = GetBy1Responses[keyof GetBy1Responses];
+export type GetExamTemplateByIdResponse = GetExamTemplateByIdResponses[keyof GetExamTemplateByIdResponses];
 
 export type GetIndicatorPageData = {
     body?: never;
@@ -8484,7 +8446,7 @@ export type GetDefaultResponses = {
 
 export type GetDefaultResponse = GetDefaultResponses[keyof GetDefaultResponses];
 
-export type HardDelete4Data = {
+export type DeleteExamConfigurationMappingData = {
     body?: unknown;
     path: {
         /**
@@ -8506,14 +8468,14 @@ export type HardDelete4Data = {
     url: '/admin-api/v1/exam-configuration-map/{modelId}';
 };
 
-export type HardDelete4Responses = {
+export type DeleteExamConfigurationMappingResponses = {
     /**
      * OK
      */
     200: EntityProcessingReport;
 };
 
-export type HardDelete4Response = HardDelete4Responses[keyof HardDelete4Responses];
+export type DeleteExamConfigurationMappingResponse = DeleteExamConfigurationMappingResponses[keyof DeleteExamConfigurationMappingResponses];
 
 export type GetExamConfigurationMappingByIdData = {
     body?: unknown;
@@ -8615,7 +8577,7 @@ export type GetExamConfigurationMappingsByIdsResponses = {
 
 export type GetExamConfigurationMappingsByIdsResponse = GetExamConfigurationMappingsByIdsResponses[keyof GetExamConfigurationMappingsByIdsResponses];
 
-export type HardDelete5Data = {
+export type DeleteConfigurationValueData = {
     body?: unknown;
     path: {
         /**
@@ -8637,14 +8599,14 @@ export type HardDelete5Data = {
     url: '/admin-api/v1/configuration_value/{modelId}';
 };
 
-export type HardDelete5Responses = {
+export type DeleteConfigurationValueResponses = {
     /**
      * OK
      */
     200: EntityProcessingReport;
 };
 
-export type HardDelete5Response = HardDelete5Responses[keyof HardDelete5Responses];
+export type DeleteConfigurationValueResponse = DeleteConfigurationValueResponses[keyof DeleteConfigurationValueResponses];
 
 export type GetConfigurationValueByIdData = {
     body?: unknown;
@@ -8856,7 +8818,7 @@ export type GetConfigurationAttributeNamesResponses = {
 
 export type GetConfigurationAttributeNamesResponse = GetConfigurationAttributeNamesResponses[keyof GetConfigurationAttributeNamesResponses];
 
-export type GetForIdsData = {
+export type GetConfigurationAttributesByIdsData = {
     body?: never;
     path?: never;
     query?: {
@@ -8868,16 +8830,16 @@ export type GetForIdsData = {
     url: '/admin-api/v1/configuration_attribute/list';
 };
 
-export type GetForIdsResponses = {
+export type GetConfigurationAttributesByIdsResponses = {
     /**
      * OK
      */
     200: Array<ConfigurationAttribute>;
 };
 
-export type GetForIdsResponse = GetForIdsResponses[keyof GetForIdsResponses];
+export type GetConfigurationAttributesByIdsResponse = GetConfigurationAttributesByIdsResponses[keyof GetConfigurationAttributesByIdsResponses];
 
-export type HardDelete6Data = {
+export type DeleteConfigurationData = {
     body?: unknown;
     path: {
         /**
@@ -8899,14 +8861,14 @@ export type HardDelete6Data = {
     url: '/admin-api/v1/configuration/{modelId}';
 };
 
-export type HardDelete6Responses = {
+export type DeleteConfigurationResponses = {
     /**
      * OK
      */
     200: EntityProcessingReport;
 };
 
-export type HardDelete6Response = HardDelete6Responses[keyof HardDelete6Responses];
+export type DeleteConfigurationResponse = DeleteConfigurationResponses[keyof DeleteConfigurationResponses];
 
 export type GetConfigurationByIdData = {
     body?: unknown;
@@ -8929,7 +8891,7 @@ export type GetConfigurationByIdResponses = {
 
 export type GetConfigurationByIdResponse = GetConfigurationByIdResponses[keyof GetConfigurationByIdResponses];
 
-export type GetDependencies2Data = {
+export type GetConfigurationDependenciesData = {
     body?: never;
     path: {
         /**
@@ -8956,14 +8918,14 @@ export type GetDependencies2Data = {
     url: '/admin-api/v1/configuration/{modelId}/dependency';
 };
 
-export type GetDependencies2Responses = {
+export type GetConfigurationDependenciesResponses = {
     /**
      * OK
      */
     200: Array<EntityDependency>;
 };
 
-export type GetDependencies2Response = GetDependencies2Responses[keyof GetDependencies2Responses];
+export type GetConfigurationDependenciesResponse = GetConfigurationDependenciesResponses[keyof GetConfigurationDependenciesResponses];
 
 export type GetConfigurationNamesData = {
     body?: never;
@@ -9312,7 +9274,7 @@ export type DeleteSebClientConfigResponses = {
 
 export type DeleteSebClientConfigResponse = DeleteSebClientConfigResponses[keyof DeleteSebClientConfigResponses];
 
-export type GetBy2Data = {
+export type GetSebClientConfigByIdData = {
     body?: unknown;
     path: {
         /**
@@ -9324,14 +9286,14 @@ export type GetBy2Data = {
     url: '/admin-api/v1/client_configuration/{modelId}';
 };
 
-export type GetBy2Responses = {
+export type GetSebClientConfigByIdResponses = {
     /**
      * OK
      */
     200: SebClientConfig;
 };
 
-export type GetBy2Response = GetBy2Responses[keyof GetBy2Responses];
+export type GetSebClientConfigByIdResponse = GetSebClientConfigByIdResponses[keyof GetSebClientConfigByIdResponses];
 
 export type GetSebClientConfigDependenciesData = {
     body?: never;
@@ -9670,7 +9632,7 @@ export type GetAliasResponses = {
 
 export type GetAliasResponse = GetAliasResponses[keyof GetAliasResponses];
 
-export type GetNamesData = {
+export type GetCertificateNamesData = {
     body?: never;
     path?: never;
     query: {
@@ -9680,14 +9642,14 @@ export type GetNamesData = {
     url: '/admin-api/v1/certificate/names';
 };
 
-export type GetNamesResponses = {
+export type GetCertificateNamesResponses = {
     /**
      * OK
      */
     200: Array<EntityName>;
 };
 
-export type GetNamesResponse = GetNamesResponses[keyof GetNamesResponses];
+export type GetCertificateNamesResponse = GetCertificateNamesResponses[keyof GetCertificateNamesResponses];
 
 export type DeleteBatchActionData = {
     body?: unknown;
@@ -10099,7 +10061,7 @@ export type ForceDeleteIndicatorResponses = {
 
 export type ForceDeleteIndicatorResponse = ForceDeleteIndicatorResponses[keyof ForceDeleteIndicatorResponses];
 
-export type ForceHardDeleteData = {
+export type ForceDeleteExamAdministrationData = {
     body?: unknown;
     path: {
         /**
@@ -10121,14 +10083,14 @@ export type ForceHardDeleteData = {
     url: '/admin-api/v1/exam/{modelId}/force';
 };
 
-export type ForceHardDeleteResponses = {
+export type ForceDeleteExamAdministrationResponses = {
     /**
      * OK
      */
     200: EntityProcessingReport;
 };
 
-export type ForceHardDeleteResponse = ForceHardDeleteResponses[keyof ForceHardDeleteResponses];
+export type ForceDeleteExamAdministrationResponse = ForceDeleteExamAdministrationResponses[keyof ForceDeleteExamAdministrationResponses];
 
 export type ForceDeleteExamTemplateData = {
     body?: unknown;

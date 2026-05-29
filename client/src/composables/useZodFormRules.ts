@@ -37,5 +37,13 @@ export const useZodFormRules = () => {
         return out;
     };
 
-    return { isRequired, lengthRules };
+    const formatRules = (schema: z.ZodType): ValidationRules => {
+        const inner = unwrap(schema) as z.ZodType & { format?: unknown };
+        if (inner.format === "email") {
+            return [rules.email()];
+        }
+        return [];
+    };
+
+    return { isRequired, lengthRules, formatRules };
 };

@@ -15,6 +15,9 @@ export const useChangePasswordFormFields = () => {
     const confirmNewPassword = ref<string | undefined>(undefined);
 
     const { isRequired, lengthRules } = useZodFormRules();
+    const confirmNewPasswordRule = (value: string | undefined) =>
+        value === newPassword.value ||
+        i18n.global.t("userAccount.general.validation.passwordsDontMatch");
 
     const formFields = computed<FormField[]>(() => [
         {
@@ -39,6 +42,7 @@ export const useChangePasswordFormFields = () => {
             model: confirmNewPassword,
             label: t("fields.confirmNewPassword.label"),
             required: isRequired(zUserMod.shape.confirmNewPassword),
+            rules: [confirmNewPasswordRule],
             validationDependsOn: ["newPassword"],
         },
     ]);

@@ -137,7 +137,7 @@ export const zUserInfo = z.object({
     name: z.string().min(0).max(255),
     surname: z.string().min(0).max(255),
     username: z.string().min(3).max(255),
-    email: z.string().optional(),
+    email: z.email().optional(),
     active: z.boolean(),
     directLogin: z.boolean().optional(),
     localAccount: z.boolean().optional(),
@@ -363,8 +363,8 @@ export const zExam = z.object({
     followupId: z.int().optional(),
     excludeFromDeletion: z.boolean().optional(),
     additionalAttributes: z.record(z.string(), z.string()).optional(),
-    description: z.string().optional(),
-    startURL: z.string().optional()
+    startURL: z.string().optional(),
+    description: z.string().optional()
 });
 
 export const zClientGroupTemplate = z.object({
@@ -811,7 +811,7 @@ export const zUserMod = z.object({
     username: z.string().min(3).max(255),
     newPassword: z.string().min(8).max(255),
     confirmNewPassword: z.string(),
-    email: z.string().optional(),
+    email: z.email().optional(),
     language: z.string(),
     timezone: z.string(),
     localAccount: z.boolean().optional(),
@@ -822,11 +822,7 @@ export const zUserMod = z.object({
         'EXAM_ADMIN',
         'EXAM_SUPPORTER',
         'TEACHER'
-    ])).min(1),
-    retypedNewPassword: z.object({
-        empty: z.boolean().optional()
-    }).optional(),
-    creationDate: z.iso.datetime().optional()
+    ])).min(1)
 });
 
 export const zClientStaticData = z.object({
@@ -1270,13 +1266,12 @@ export const zClientNotification = z.object({
 });
 
 export const zClientMonitoringDataView = z.object({
-    pendingNotification: z.boolean().optional(),
     missingPing: z.boolean().optional(),
     grantChecked: z.boolean().optional(),
     grantDenied: z.boolean().optional(),
     sebversionDenied: z.boolean().optional(),
-    lat: z.int().optional(),
-    iv: z.record(z.string(), z.string()).optional(),
+    pendingNotification: z.boolean().optional(),
+    nf: z.int().min(-2147483648, { error: 'Invalid value: Expected int32 to be >= -2147483648' }).max(2147483647, { error: 'Invalid value: Expected int32 to be <= 2147483647' }).optional(),
     st: z.enum([
         'UNDEFINED',
         'CONNECTION_REQUESTED',
@@ -1285,7 +1280,8 @@ export const zClientMonitoringDataView = z.object({
         'CLOSED',
         'DISABLED'
     ]).optional(),
-    nf: z.int().min(-2147483648, { error: 'Invalid value: Expected int32 to be >= -2147483648' }).max(2147483647, { error: 'Invalid value: Expected int32 to be <= 2147483647' }).optional(),
+    iv: z.record(z.string(), z.string()).optional(),
+    lat: z.int().optional(),
     id: z.int().optional()
 });
 
@@ -1829,14 +1825,14 @@ export const zHandshakeEstablishHeaders = z.object({
     SEBConnectionToken: z.string()
 });
 
-export const zHardDeleteAllBody = z.object({
+export const zDeleteAllUserActivityLogsBody = z.object({
     modelIds: z.array(z.string()),
     bulkActionAddIncludes: z.boolean().optional().default(false),
     bulkActionIncludes: z.array(z.string()).optional(),
     institutionId: z.int().optional()
 });
 
-export const zHardDeleteAllQuery = z.object({
+export const zDeleteAllUserActivityLogsQuery = z.object({
     modelIds: z.unknown().optional(),
     bulkActionAddIncludes: z.unknown().optional(),
     bulkActionIncludes: z.unknown().optional()
@@ -1845,7 +1841,7 @@ export const zHardDeleteAllQuery = z.object({
 /**
  * OK
  */
-export const zHardDeleteAllResponse = zEntityProcessingReport;
+export const zDeleteAllUserActivityLogsResponse = zEntityProcessingReport;
 
 export const zGetUserActivityLogsQuery = z.object({
     page_number: z.int().min(-2147483648, { error: 'Invalid value: Expected int32 to be >= -2147483648' }).max(2147483647, { error: 'Invalid value: Expected int32 to be <= 2147483647' }).optional(),
@@ -1859,27 +1855,23 @@ export const zGetUserActivityLogsQuery = z.object({
  */
 export const zGetUserActivityLogsResponse = zPageUserActivityLog;
 
-export const zCreateBody = z.object({
-    allRequestParams: zMultiValueMapStringStringWritable,
-    institutionId: z.int().optional()
-});
+export const zCreateUserActivityLogBody = zUserActivityLog;
 
-export const zCreateQuery = z.object({
-    formParams: z.unknown().optional(),
+export const zCreateUserActivityLogQuery = z.object({
     institutionId: z.unknown().optional()
 });
 
 /**
- * OK
+ * Created user activity log.
  */
-export const zCreateResponse = zUserActivityLog;
+export const zCreateUserActivityLogResponse = zUserActivityLog;
 
-export const zSavePutBody = zUserActivityLog;
+export const zEditUserActivityLogBody = zUserActivityLog;
 
 /**
  * OK
  */
-export const zSavePutResponse = zUserActivityLog;
+export const zEditUserActivityLogResponse = zUserActivityLog;
 
 export const zDeleteAllUserAccountsBody = z.object({
     modelIds: z.array(z.string()),
@@ -1904,13 +1896,13 @@ export const zGetUserAccountsQuery = z.object({
     page_size: z.int().min(-2147483648, { error: 'Invalid value: Expected int32 to be >= -2147483648' }).max(2147483647, { error: 'Invalid value: Expected int32 to be <= 2147483647' }).optional(),
     sort: z.string().optional(),
     institutionId: z.int().optional(),
-    name: z.unknown().optional(),
-    surname: z.unknown().optional(),
-    username: z.unknown().optional(),
-    email: z.unknown().optional(),
-    language: z.unknown().optional(),
-    role: z.unknown().optional(),
-    active: z.unknown().optional()
+    name: z.string().optional(),
+    surname: z.string().optional(),
+    username: z.string().optional(),
+    email: z.string().optional(),
+    language: z.string().optional(),
+    role: z.string().optional(),
+    active: z.boolean().optional()
 });
 
 /**
@@ -1943,14 +1935,14 @@ export const zChangeUserAccountPasswordBody = zPasswordChange;
  */
 export const zChangeUserAccountPasswordResponse = zUserInfo;
 
-export const zHardDeleteAll1Body = z.object({
+export const zDeleteAllClientEventsBody = z.object({
     modelIds: z.array(z.string()),
     bulkActionAddIncludes: z.boolean().optional().default(false),
     bulkActionIncludes: z.array(z.string()).optional(),
     institutionId: z.int().optional()
 });
 
-export const zHardDeleteAll1Query = z.object({
+export const zDeleteAllClientEventsQuery = z.object({
     modelIds: z.unknown().optional(),
     bulkActionAddIncludes: z.unknown().optional(),
     bulkActionIncludes: z.unknown().optional()
@@ -1959,7 +1951,7 @@ export const zHardDeleteAll1Query = z.object({
 /**
  * OK
  */
-export const zHardDeleteAll1Response = zEntityProcessingReport;
+export const zDeleteAllClientEventsResponse = zEntityProcessingReport;
 
 export const zGetClientEventsQuery = z.object({
     page_number: z.int().min(-2147483648, { error: 'Invalid value: Expected int32 to be >= -2147483648' }).max(2147483647, { error: 'Invalid value: Expected int32 to be <= 2147483647' }).optional(),
@@ -1973,36 +1965,32 @@ export const zGetClientEventsQuery = z.object({
  */
 export const zGetClientEventsResponse = zPageClientEvent;
 
-export const zCreate1Body = z.object({
-    allRequestParams: zMultiValueMapStringStringWritable,
-    institutionId: z.int().optional()
-});
+export const zCreateClientEventBody = zClientEvent;
 
-export const zCreate1Query = z.object({
-    formParams: z.unknown().optional(),
+export const zCreateClientEventQuery = z.object({
     institutionId: z.unknown().optional()
 });
 
 /**
- * OK
+ * Created client event.
  */
-export const zCreate1Response = zClientEvent;
+export const zCreateClientEventResponse = zClientEvent;
 
-export const zSavePut1Body = zClientEvent;
+export const zEditClientEventBody = zClientEvent;
 
 /**
  * OK
  */
-export const zSavePut1Response = zClientEvent;
+export const zEditClientEventResponse = zClientEvent;
 
-export const zHardDeleteAll2Body = z.object({
+export const zDeleteAllClientConnectionsBody = z.object({
     modelIds: z.array(z.string()),
     bulkActionAddIncludes: z.boolean().optional().default(false),
     bulkActionIncludes: z.array(z.string()).optional(),
     institutionId: z.int().optional()
 });
 
-export const zHardDeleteAll2Query = z.object({
+export const zDeleteAllClientConnectionsQuery = z.object({
     modelIds: z.unknown().optional(),
     bulkActionAddIncludes: z.unknown().optional(),
     bulkActionIncludes: z.unknown().optional()
@@ -2011,42 +1999,37 @@ export const zHardDeleteAll2Query = z.object({
 /**
  * OK
  */
-export const zHardDeleteAll2Response = zEntityProcessingReport;
+export const zDeleteAllClientConnectionsResponse = zEntityProcessingReport;
 
-export const zGetPageQuery = z.object({
+export const zGetClientConnectionsQuery = z.object({
     page_number: z.int().min(-2147483648, { error: 'Invalid value: Expected int32 to be >= -2147483648' }).max(2147483647, { error: 'Invalid value: Expected int32 to be <= 2147483647' }).optional(),
     page_size: z.int().min(-2147483648, { error: 'Invalid value: Expected int32 to be >= -2147483648' }).max(2147483647, { error: 'Invalid value: Expected int32 to be <= 2147483647' }).optional(),
     sort: z.string().optional(),
-    institutionId: z.int().optional(),
-    filterCriteria: zMultiValueMapStringStringWritable
+    institutionId: z.int().optional()
 });
 
 /**
  * OK
  */
-export const zGetPageResponse = zPageClientConnection;
+export const zGetClientConnectionsResponse = zPageClientConnection;
 
-export const zCreate2Body = z.object({
-    allRequestParams: zMultiValueMapStringStringWritable,
-    institutionId: z.int().optional()
-});
+export const zCreateClientConnectionBody = zClientConnection;
 
-export const zCreate2Query = z.object({
-    formParams: z.unknown().optional(),
+export const zCreateClientConnectionQuery = z.object({
     institutionId: z.unknown().optional()
 });
 
 /**
- * OK
+ * Created client connection.
  */
-export const zCreate2Response = zClientConnection;
+export const zCreateClientConnectionResponse = zClientConnection;
 
-export const zSavePut2Body = zClientConnection;
+export const zEditClientConnectionBody = zClientConnection;
 
 /**
  * OK
  */
-export const zSavePut2Response = zClientConnection;
+export const zEditClientConnectionResponse = zClientConnection;
 
 export const zDeleteAllOrientationsBody = z.object({
     modelIds: z.array(z.string()),
@@ -2295,14 +2278,14 @@ export const zEditIndicatorBody = zIndicator;
  */
 export const zEditIndicatorResponse = zIndicator;
 
-export const zHardDeleteAll3Body = z.object({
+export const zDeleteAllExamAdministrationsBody = z.object({
     modelIds: z.array(z.string()),
     bulkActionAddIncludes: z.boolean().optional().default(false),
     bulkActionIncludes: z.array(z.string()).optional(),
     institutionId: z.int().optional()
 });
 
-export const zHardDeleteAll3Query = z.object({
+export const zDeleteAllExamAdministrationsQuery = z.object({
     modelIds: z.unknown().optional(),
     bulkActionAddIncludes: z.unknown().optional(),
     bulkActionIncludes: z.unknown().optional()
@@ -2311,7 +2294,7 @@ export const zHardDeleteAll3Query = z.object({
 /**
  * OK
  */
-export const zHardDeleteAll3Response = zEntityProcessingReport;
+export const zDeleteAllExamAdministrationsResponse = zEntityProcessingReport;
 
 export const zGetExamAdministrationsQuery = z.object({
     page_number: z.int().min(-2147483648, { error: 'Invalid value: Expected int32 to be >= -2147483648' }).max(2147483647, { error: 'Invalid value: Expected int32 to be <= 2147483647' }).optional(),
@@ -2517,12 +2500,12 @@ export const zGetExamConfigurationMappingsQuery = z.object({
  */
 export const zGetExamConfigurationMappingsResponse = zPageExamConfigurationMap;
 
-export const zCreate3Body = z.object({
+export const zCreateExamConfigurationMappingBody = z.object({
     allRequestParams: zMultiValueMapStringStringWritable,
     institutionId: z.int().optional()
 });
 
-export const zCreate3Query = z.object({
+export const zCreateExamConfigurationMappingQuery = z.object({
     formParams: z.unknown().optional(),
     institutionId: z.unknown().optional()
 });
@@ -2530,7 +2513,7 @@ export const zCreate3Query = z.object({
 /**
  * OK
  */
-export const zCreate3Response = zExamConfigurationMap;
+export const zCreateExamConfigurationMappingResponse = zExamConfigurationMap;
 
 export const zEditExamConfigurationMappingBody = zExamConfigurationMap;
 
@@ -2597,12 +2580,12 @@ export const zGetTableValueQuery = z.object({
  */
 export const zGetTableValueResponse = zConfigurationTableValues;
 
-export const zSavePut3Body = zConfigurationTableValues;
+export const zEditConfigurationValue1Body = zConfigurationTableValues;
 
 /**
  * OK
  */
-export const zSavePut3Response = zConfigurationTableValues;
+export const zEditConfigurationValue1Response = zConfigurationTableValues;
 
 export const zDeleteAllConfigurationAttributesBody = z.object({
     modelIds: z.array(z.string()),
@@ -2652,14 +2635,14 @@ export const zEditConfigurationAttributeBody = zConfigurationAttribute;
  */
 export const zEditConfigurationAttributeResponse = zConfigurationAttribute;
 
-export const zHardDeleteAll4Body = z.object({
+export const zDeleteAllConfigurationsBody = z.object({
     modelIds: z.array(z.string()),
     bulkActionAddIncludes: z.boolean().optional().default(false),
     bulkActionIncludes: z.array(z.string()).optional(),
     institutionId: z.int().optional()
 });
 
-export const zHardDeleteAll4Query = z.object({
+export const zDeleteAllConfigurationsQuery = z.object({
     modelIds: z.unknown().optional(),
     bulkActionAddIncludes: z.unknown().optional(),
     bulkActionIncludes: z.unknown().optional()
@@ -2668,7 +2651,7 @@ export const zHardDeleteAll4Query = z.object({
 /**
  * OK
  */
-export const zHardDeleteAll4Response = zEntityProcessingReport;
+export const zDeleteAllConfigurationsResponse = zEntityProcessingReport;
 
 export const zGetConfigurationsQuery = z.object({
     page_number: z.int().min(-2147483648, { error: 'Invalid value: Expected int32 to be >= -2147483648' }).max(2147483647, { error: 'Invalid value: Expected int32 to be <= 2147483647' }).optional(),
@@ -2682,27 +2665,23 @@ export const zGetConfigurationsQuery = z.object({
  */
 export const zGetConfigurationsResponse = zPageConfiguration;
 
-export const zCreate4Body = z.object({
-    allRequestParams: zMultiValueMapStringStringWritable,
-    institutionId: z.int().optional()
-});
+export const zCreateConfigurationBody = zConfiguration;
 
-export const zCreate4Query = z.object({
-    formParams: z.unknown().optional(),
+export const zCreateConfigurationQuery = z.object({
     institutionId: z.unknown().optional()
 });
 
 /**
- * OK
+ * Created configuration.
  */
-export const zCreate4Response = zConfiguration;
+export const zCreateConfigurationResponse = zConfiguration;
 
-export const zSavePut4Body = zConfiguration;
+export const zEditConfigurationBody = zConfiguration;
 
 /**
  * OK
  */
-export const zSavePut4Response = zConfiguration;
+export const zEditConfigurationResponse = zConfiguration;
 
 export const zDeleteAllConfigurationNodesBody = z.object({
     modelIds: z.array(z.string()),
@@ -3009,24 +2988,23 @@ export const zDeleteSessionsQuery = z.object({
  */
 export const zDeleteSessionsResponse = zSessionDeletionReport;
 
-export const zGetPage1Query = z.object({
+export const zGetScheduledDeletesQuery = z.object({
     page_number: z.int().min(-2147483648, { error: 'Invalid value: Expected int32 to be >= -2147483648' }).max(2147483647, { error: 'Invalid value: Expected int32 to be <= 2147483647' }).optional(),
     page_size: z.int().min(-2147483648, { error: 'Invalid value: Expected int32 to be >= -2147483648' }).max(2147483647, { error: 'Invalid value: Expected int32 to be <= 2147483647' }).optional(),
-    sort: z.string().optional(),
-    filterCriteria: zMultiValueMapStringStringWritable
+    sort: z.string().optional()
 });
 
 /**
  * OK
  */
-export const zGetPage1Response = zPageScheduledDelete;
+export const zGetScheduledDeletesResponse = zPageScheduledDelete;
 
-export const zCreate5Body = z.int();
+export const zCreateScheduledDeleteBody = z.int();
 
 /**
  * OK
  */
-export const zCreate5Response = zScheduledDeleteReport;
+export const zCreateScheduledDeleteResponse = zScheduledDeleteReport;
 
 export const zUnmarkIncludeBody = z.unknown();
 
@@ -3672,7 +3650,7 @@ export const zDeleteCertificateBody = z.object({
  */
 export const zDeleteCertificateResponse = z.array(zEntityKey);
 
-export const zGetPage2Query = z.object({
+export const zGetCertificatesQuery = z.object({
     institutionId: z.int().optional(),
     page_number: z.int().min(-2147483648, { error: 'Invalid value: Expected int32 to be >= -2147483648' }).max(2147483647, { error: 'Invalid value: Expected int32 to be <= 2147483647' }).optional(),
     page_size: z.int().min(-2147483648, { error: 'Invalid value: Expected int32 to be >= -2147483648' }).max(2147483647, { error: 'Invalid value: Expected int32 to be <= 2147483647' }).optional(),
@@ -3683,7 +3661,7 @@ export const zGetPage2Query = z.object({
 /**
  * OK
  */
-export const zGetPage2Response = zPageCertificateInfo;
+export const zGetCertificatesResponse = zPageCertificateInfo;
 
 export const zImportCertificateHeaders = z.object({
     importFile: z.string(),
@@ -3772,13 +3750,13 @@ export const zGetConfigHeaders = z.object({
  */
 export const zGetDiscoveryResponse = zExamApiDiscovery;
 
-export const zHardDeleteBody = z.unknown();
+export const zDeleteUserActivityLogBody = z.unknown();
 
-export const zHardDeletePath = z.object({
+export const zDeleteUserActivityLogPath = z.object({
     modelId: z.string()
 });
 
-export const zHardDeleteQuery = z.object({
+export const zDeleteUserActivityLogQuery = z.object({
     bulkActionAddIncludes: z.boolean().optional().default(false),
     bulkActionIncludes: z.array(z.string()).optional()
 });
@@ -3786,7 +3764,7 @@ export const zHardDeleteQuery = z.object({
 /**
  * OK
  */
-export const zHardDeleteResponse = zEntityProcessingReport;
+export const zDeleteUserActivityLogResponse = zEntityProcessingReport;
 
 export const zGetUserActivityLogByIdBody = z.unknown();
 
@@ -3943,13 +3921,13 @@ export const zGetActiveUserAccountsResponse = zPageUserInfo;
  */
 export const zSebVersionInfoPageResponse = z.string();
 
-export const zHardDelete1Body = z.unknown();
+export const zDeleteClientEventBody = z.unknown();
 
-export const zHardDelete1Path = z.object({
+export const zDeleteClientEventPath = z.object({
     modelId: z.string()
 });
 
-export const zHardDelete1Query = z.object({
+export const zDeleteClientEventQuery = z.object({
     bulkActionAddIncludes: z.boolean().optional().default(false),
     bulkActionIncludes: z.array(z.string()).optional()
 });
@@ -3957,7 +3935,7 @@ export const zHardDelete1Query = z.object({
 /**
  * OK
  */
-export const zHardDelete1Response = zEntityProcessingReport;
+export const zDeleteClientEventResponse = zEntityProcessingReport;
 
 export const zGetClientEventByIdBody = z.unknown();
 
@@ -3970,11 +3948,11 @@ export const zGetClientEventByIdPath = z.object({
  */
 export const zGetClientEventByIdResponse = zClientEvent;
 
-export const zGetDependenciesPath = z.object({
+export const zGetClientEventDependenciesPath = z.object({
     modelId: z.string()
 });
 
-export const zGetDependenciesQuery = z.object({
+export const zGetClientEventDependenciesQuery = z.object({
     bulkActionType: z.enum([
         'HARD_DELETE',
         'DEACTIVATE',
@@ -3987,7 +3965,7 @@ export const zGetDependenciesQuery = z.object({
 /**
  * OK
  */
-export const zGetDependenciesResponse = z.array(zEntityDependency);
+export const zGetClientEventDependenciesResponse = z.array(zEntityDependency);
 
 export const zGetExtendedPageQuery = z.object({
     page_number: z.int().min(-2147483648, { error: 'Invalid value: Expected int32 to be >= -2147483648' }).max(2147483647, { error: 'Invalid value: Expected int32 to be <= 2147483647' }).optional(),
@@ -4029,13 +4007,13 @@ export const zExportEventsQuery = z.object({
     allRequestParams: zMultiValueMapStringStringWritable
 });
 
-export const zHardDelete2Body = z.unknown();
+export const zDeleteClientConnectionBody = z.unknown();
 
-export const zHardDelete2Path = z.object({
+export const zDeleteClientConnectionPath = z.object({
     modelId: z.string()
 });
 
-export const zHardDelete2Query = z.object({
+export const zDeleteClientConnectionQuery = z.object({
     bulkActionAddIncludes: z.boolean().optional().default(false),
     bulkActionIncludes: z.array(z.string()).optional()
 });
@@ -4043,7 +4021,7 @@ export const zHardDelete2Query = z.object({
 /**
  * OK
  */
-export const zHardDelete2Response = zEntityProcessingReport;
+export const zDeleteClientConnectionResponse = zEntityProcessingReport;
 
 export const zGetClientConnectionByIdBody = z.unknown();
 
@@ -4056,11 +4034,11 @@ export const zGetClientConnectionByIdPath = z.object({
  */
 export const zGetClientConnectionByIdResponse = zClientConnection;
 
-export const zGetDependencies1Path = z.object({
+export const zGetClientConnectionDependenciesPath = z.object({
     modelId: z.string()
 });
 
-export const zGetDependencies1Query = z.object({
+export const zGetClientConnectionDependenciesQuery = z.object({
     bulkActionType: z.enum([
         'HARD_DELETE',
         'DEACTIVATE',
@@ -4073,7 +4051,7 @@ export const zGetDependencies1Query = z.object({
 /**
  * OK
  */
-export const zGetDependencies1Response = z.array(zEntityDependency);
+export const zGetClientConnectionDependenciesResponse = z.array(zEntityDependency);
 
 export const zGetClientConnectionNamesQuery = z.object({
     institutionId: z.int().optional()
@@ -4289,7 +4267,7 @@ export const zGetOrientationsByIdsQuery = z.object({
  */
 export const zGetOrientationsByIdsResponse = z.array(zOrientation);
 
-export const zGetPage3Query = z.object({
+export const zGetExamMonitoringsQuery = z.object({
     institutionId: z.int().optional(),
     page_number: z.int().min(-2147483648, { error: 'Invalid value: Expected int32 to be >= -2147483648' }).max(2147483647, { error: 'Invalid value: Expected int32 to be <= 2147483647' }).optional(),
     page_size: z.int().min(-2147483648, { error: 'Invalid value: Expected int32 to be >= -2147483648' }).max(2147483647, { error: 'Invalid value: Expected int32 to be <= 2147483647' }).optional(),
@@ -4300,7 +4278,7 @@ export const zGetPage3Query = z.object({
 /**
  * OK
  */
-export const zGetPage3Response = zPageExam;
+export const zGetExamMonitoringsResponse = zPageExam;
 
 export const zGetConnectionDataHeaders = z.object({
     'hidden-states': z.string().optional(),
@@ -4526,16 +4504,16 @@ export const zDeleteLmsSetupQuery = z.object({
  */
 export const zDeleteLmsSetupResponse = zEntityProcessingReport;
 
-export const zGetByBody = z.unknown();
+export const zGetLmsSetupByIdBody = z.unknown();
 
-export const zGetByPath = z.object({
+export const zGetLmsSetupByIdPath = z.object({
     modelId: z.string()
 });
 
 /**
  * OK
  */
-export const zGetByResponse = zLmsSetup;
+export const zGetLmsSetupByIdResponse = zLmsSetup;
 
 export const zGetLmsSetupDependenciesPath = z.object({
     modelId: z.string()
@@ -4814,13 +4792,13 @@ export const zGetSecurityKeyEntriesQuery = z.object({
  */
 export const zGetSecurityKeyEntriesResponse = z.array(zSecurityKey);
 
-export const zHardDelete3Body = z.unknown();
+export const zDeleteExamAdministrationBody = z.unknown();
 
-export const zHardDelete3Path = z.object({
+export const zDeleteExamAdministrationPath = z.object({
     modelId: z.string()
 });
 
-export const zHardDelete3Query = z.object({
+export const zDeleteExamAdministrationQuery = z.object({
     bulkActionAddIncludes: z.boolean().optional().default(false),
     bulkActionIncludes: z.array(z.string()).optional()
 });
@@ -4828,7 +4806,7 @@ export const zHardDelete3Query = z.object({
 /**
  * OK
  */
-export const zHardDelete3Response = zEntityProcessingReport;
+export const zDeleteExamAdministrationResponse = zEntityProcessingReport;
 
 export const zGetExamAdministrationByIdBody = z.unknown();
 
@@ -5047,16 +5025,16 @@ export const zDeleteExamTemplateQuery = z.object({
  */
 export const zDeleteExamTemplateResponse = zEntityProcessingReport;
 
-export const zGetBy1Body = z.unknown();
+export const zGetExamTemplateByIdBody = z.unknown();
 
-export const zGetBy1Path = z.object({
+export const zGetExamTemplateByIdPath = z.object({
     modelId: z.string()
 });
 
 /**
  * OK
  */
-export const zGetBy1Response = zExamTemplate;
+export const zGetExamTemplateByIdResponse = zExamTemplate;
 
 export const zGetIndicatorPagePath = z.object({
     modelId: z.string()
@@ -5133,13 +5111,13 @@ export const zGetExamTemplatesByIdsResponse = z.array(zExamTemplate);
  */
 export const zGetDefaultResponse = zExamTemplate;
 
-export const zHardDelete4Body = z.unknown();
+export const zDeleteExamConfigurationMappingBody = z.unknown();
 
-export const zHardDelete4Path = z.object({
+export const zDeleteExamConfigurationMappingPath = z.object({
     modelId: z.string()
 });
 
-export const zHardDelete4Query = z.object({
+export const zDeleteExamConfigurationMappingQuery = z.object({
     bulkActionAddIncludes: z.boolean().optional().default(false),
     bulkActionIncludes: z.array(z.string()).optional()
 });
@@ -5147,7 +5125,7 @@ export const zHardDelete4Query = z.object({
 /**
  * OK
  */
-export const zHardDelete4Response = zEntityProcessingReport;
+export const zDeleteExamConfigurationMappingResponse = zEntityProcessingReport;
 
 export const zGetExamConfigurationMappingByIdBody = z.unknown();
 
@@ -5197,13 +5175,13 @@ export const zGetExamConfigurationMappingsByIdsQuery = z.object({
  */
 export const zGetExamConfigurationMappingsByIdsResponse = z.array(zExamConfigurationMap);
 
-export const zHardDelete5Body = z.unknown();
+export const zDeleteConfigurationValueBody = z.unknown();
 
-export const zHardDelete5Path = z.object({
+export const zDeleteConfigurationValuePath = z.object({
     modelId: z.string()
 });
 
-export const zHardDelete5Query = z.object({
+export const zDeleteConfigurationValueQuery = z.object({
     bulkActionAddIncludes: z.boolean().optional().default(false),
     bulkActionIncludes: z.array(z.string()).optional()
 });
@@ -5211,7 +5189,7 @@ export const zHardDelete5Query = z.object({
 /**
  * OK
  */
-export const zHardDelete5Response = zEntityProcessingReport;
+export const zDeleteConfigurationValueResponse = zEntityProcessingReport;
 
 export const zGetConfigurationValueByIdBody = z.unknown();
 
@@ -5316,22 +5294,22 @@ export const zGetConfigurationAttributeNamesQuery = z.object({
  */
 export const zGetConfigurationAttributeNamesResponse = z.array(zEntityName);
 
-export const zGetForIdsQuery = z.object({
+export const zGetConfigurationAttributesByIdsQuery = z.object({
     modelIds: z.string().optional()
 });
 
 /**
  * OK
  */
-export const zGetForIdsResponse = z.array(zConfigurationAttribute);
+export const zGetConfigurationAttributesByIdsResponse = z.array(zConfigurationAttribute);
 
-export const zHardDelete6Body = z.unknown();
+export const zDeleteConfigurationBody = z.unknown();
 
-export const zHardDelete6Path = z.object({
+export const zDeleteConfigurationPath = z.object({
     modelId: z.string()
 });
 
-export const zHardDelete6Query = z.object({
+export const zDeleteConfigurationQuery = z.object({
     bulkActionAddIncludes: z.boolean().optional().default(false),
     bulkActionIncludes: z.array(z.string()).optional()
 });
@@ -5339,7 +5317,7 @@ export const zHardDelete6Query = z.object({
 /**
  * OK
  */
-export const zHardDelete6Response = zEntityProcessingReport;
+export const zDeleteConfigurationResponse = zEntityProcessingReport;
 
 export const zGetConfigurationByIdBody = z.unknown();
 
@@ -5352,11 +5330,11 @@ export const zGetConfigurationByIdPath = z.object({
  */
 export const zGetConfigurationByIdResponse = zConfiguration;
 
-export const zGetDependencies2Path = z.object({
+export const zGetConfigurationDependenciesPath = z.object({
     modelId: z.string()
 });
 
-export const zGetDependencies2Query = z.object({
+export const zGetConfigurationDependenciesQuery = z.object({
     bulkActionType: z.enum([
         'HARD_DELETE',
         'DEACTIVATE',
@@ -5369,7 +5347,7 @@ export const zGetDependencies2Query = z.object({
 /**
  * OK
  */
-export const zGetDependencies2Response = z.array(zEntityDependency);
+export const zGetConfigurationDependenciesResponse = z.array(zEntityDependency);
 
 export const zGetConfigurationNamesQuery = z.object({
     institutionId: z.int().optional()
@@ -5557,16 +5535,16 @@ export const zDeleteSebClientConfigQuery = z.object({
  */
 export const zDeleteSebClientConfigResponse = zEntityProcessingReport;
 
-export const zGetBy2Body = z.unknown();
+export const zGetSebClientConfigByIdBody = z.unknown();
 
-export const zGetBy2Path = z.object({
+export const zGetSebClientConfigByIdPath = z.object({
     modelId: z.string()
 });
 
 /**
  * OK
  */
-export const zGetBy2Response = zSebClientConfig;
+export const zGetSebClientConfigByIdResponse = zSebClientConfig;
 
 export const zGetSebClientConfigDependenciesPath = z.object({
     modelId: z.string()
@@ -5728,7 +5706,7 @@ export const zGetAliasQuery = z.object({
  */
 export const zGetAliasResponse = zCertificateInfo;
 
-export const zGetNamesQuery = z.object({
+export const zGetCertificateNamesQuery = z.object({
     institutionId: z.int().optional(),
     allRequestParams: zMultiValueMapStringStringWritable
 });
@@ -5736,7 +5714,7 @@ export const zGetNamesQuery = z.object({
 /**
  * OK
  */
-export const zGetNamesResponse = z.array(zEntityName);
+export const zGetCertificateNamesResponse = z.array(zEntityName);
 
 export const zDeleteBatchActionBody = z.unknown();
 
@@ -5946,13 +5924,13 @@ export const zForceDeleteIndicatorQuery = z.object({
  */
 export const zForceDeleteIndicatorResponse = zEntityProcessingReport;
 
-export const zForceHardDeleteBody = z.unknown();
+export const zForceDeleteExamAdministrationBody = z.unknown();
 
-export const zForceHardDeletePath = z.object({
+export const zForceDeleteExamAdministrationPath = z.object({
     modelId: z.string()
 });
 
-export const zForceHardDeleteQuery = z.object({
+export const zForceDeleteExamAdministrationQuery = z.object({
     bulkActionAddIncludes: z.boolean().optional().default(false),
     bulkActionIncludes: z.array(z.string()).optional()
 });
@@ -5960,7 +5938,7 @@ export const zForceHardDeleteQuery = z.object({
 /**
  * OK
  */
-export const zForceHardDeleteResponse = zEntityProcessingReport;
+export const zForceDeleteExamAdministrationResponse = zEntityProcessingReport;
 
 export const zForceDeleteExamTemplateBody = z.unknown();
 

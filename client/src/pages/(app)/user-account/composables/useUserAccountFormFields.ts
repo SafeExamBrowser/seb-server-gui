@@ -49,7 +49,7 @@ export const useUserAccountFormFields = (mode: UserAccountFormMode) => {
     const confirmPassword = ref<string | undefined>(undefined);
     const role = ref<UserAccountRole | undefined>(undefined);
 
-    const { isRequired, lengthRules } = useZodFormRules();
+    const { isRequired, lengthRules, formatRules } = useZodFormRules();
 
     const {
         data: institutions,
@@ -114,6 +114,9 @@ export const useUserAccountFormFields = (mode: UserAccountFormMode) => {
     const errors = computed(() =>
         [errorInstitutions.value].filter((e) => e !== undefined),
     );
+    const confirmPasswordRule = (value: string | undefined) =>
+        value === password.value ||
+        i18n.global.t("userAccount.general.validation.passwordsDontMatch");
 
     const leftFormFields = computed<FormField[]>(() => {
         if (loading.value) return [];
@@ -158,7 +161,10 @@ export const useUserAccountFormFields = (mode: UserAccountFormMode) => {
                 model: email,
                 label: t("fields.email.label"),
                 required: isRequired(zUserInfo.shape.email),
-                rules: lengthRules(zUserInfo.shape.email),
+                rules: [
+                    ...lengthRules(zUserInfo.shape.email),
+                    ...formatRules(zUserInfo.shape.email),
+                ],
             },
             {
                 type: "select" as const,
@@ -186,6 +192,7 @@ export const useUserAccountFormFields = (mode: UserAccountFormMode) => {
                     model: confirmPassword,
                     label: t("fields.confirmPassword.label"),
                     required: isRequired(zUserMod.shape.confirmNewPassword),
+                    rules: [confirmPasswordRule],
                     validationDependsOn: ["password"],
                 },
             );
