@@ -1,4 +1,4 @@
-import { isAxiosError } from "axios";
+import axios, { isAxiosError } from "axios";
 import { z } from "zod";
 import { zApiMessage } from "@/api/seb-server/generated/hey-api/zod.gen.ts";
 import type {
@@ -18,7 +18,10 @@ export function isAppError(error: unknown): error is AppError {
     if (typeof error !== "object" || error === null) {
         return false;
     }
-    const kind = (error as { kind?: unknown }).kind;
+    if (!("kind" in error)) {
+        return false;
+    }
+    const { kind } = error;
     return (
         kind === "backend" ||
         kind === "rate-limit" ||
@@ -146,6 +149,13 @@ export function toAppError(error: unknown): AppError {
         message: "Unknown error",
         raw: error,
     };
+}
+
+export function toAppErrorOrUndefined(error: unknown): AppError | undefined {
+    if (!error || axios.isCancel(error)) {
+        return undefined;
+    }
+    return toAppError(error);
 }
 
 export function errorMessageOf(error: unknown): string {

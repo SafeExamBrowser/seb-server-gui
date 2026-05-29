@@ -92,7 +92,7 @@ const {
     error: saveError,
 } = useMutation(editInstitution);
 
-const { user } = useCurrentUser();
+const { data: user } = useCurrentUser();
 const { refetch: refetchInstitutionBranding } = useInstitutionBranding();
 
 const { isDirty, snapshot } = useDirtyTracking(

@@ -3,7 +3,7 @@ import { useMutation, useQueryClient } from "@tanstack/vue-query";
 import { getUserAccountsQueryKey } from "@/api/seb-server/generated/hey-api/@tanstack/vue-query.gen.ts";
 import { heySebServerClient } from "@/api/seb-server/http/heySebServerClient.ts";
 import { deleteUserAccount } from "@/services/seb-server/userAccountService.ts";
-import { toAppError } from "@/services/errors/toAppError.ts";
+import { toAppErrorOrUndefined } from "@/services/errors/toAppError.ts";
 import type { PageUserInfo } from "@/api/seb-server/generated/hey-api/types.gen.ts";
 
 const listKey = () => getUserAccountsQueryKey({ client: heySebServerClient });
@@ -32,8 +32,6 @@ export const useDeleteUserAccount = () => {
     return {
         removeUserAccount: (uuid: string) => mutation.mutateAsync(uuid),
         isPending: mutation.isPending,
-        error: computed(() =>
-            mutation.error.value ? toAppError(mutation.error.value) : undefined,
-        ),
+        error: computed(() => toAppErrorOrUndefined(mutation.error.value)),
     };
 };

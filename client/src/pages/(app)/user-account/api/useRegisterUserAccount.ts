@@ -1,7 +1,7 @@
 import { computed } from "vue";
 import { useMutation } from "@tanstack/vue-query";
 import { registerUserAccount } from "@/services/seb-server/userAccountService.ts";
-import { toAppError } from "@/services/errors/toAppError.ts";
+import { toAppErrorOrUndefined } from "@/services/errors/toAppError.ts";
 import type { UserAccountCreateRequest } from "@/models/userAccount.ts";
 
 export const useRegisterUserAccount = () => {
@@ -15,8 +15,6 @@ export const useRegisterUserAccount = () => {
             mutation.mutateAsync(body),
         data: mutation.data,
         isPending: mutation.isPending,
-        error: computed(() =>
-            mutation.error.value ? toAppError(mutation.error.value) : undefined,
-        ),
+        error: computed(() => toAppErrorOrUndefined(mutation.error.value)),
     };
 };

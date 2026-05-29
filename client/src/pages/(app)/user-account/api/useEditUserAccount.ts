@@ -7,7 +7,7 @@ import {
 import { heySebServerClient } from "@/api/seb-server/http/heySebServerClient.ts";
 import { editUserAccount } from "@/services/seb-server/userAccountService.ts";
 import { currentUserQueryKey } from "@/composables/useCurrentUser.ts";
-import { toAppError } from "@/services/errors/toAppError.ts";
+import { toAppErrorOrUndefined } from "@/services/errors/toAppError.ts";
 import type { UserAccount } from "@/models/userAccount.ts";
 
 export const useEditUserAccount = () => {
@@ -42,8 +42,6 @@ export const useEditUserAccount = () => {
         save: (body: UserAccount) => mutation.mutateAsync(body),
         data: mutation.data,
         isPending: mutation.isPending,
-        error: computed(() =>
-            mutation.error.value ? toAppError(mutation.error.value) : undefined,
-        ),
+        error: computed(() => toAppErrorOrUndefined(mutation.error.value)),
     };
 };

@@ -39,7 +39,7 @@ definePage({
 
 const router = useRouter();
 const formRef = ref<InstanceType<typeof UserAccountForm>>();
-const { user, isPending: loading, error } = useCurrentUser();
+const { data: user, isPending: loading, error } = useCurrentUser();
 
 const { save, error: saveError } = useEditUserAccount();
 const {

@@ -6,7 +6,7 @@ import {
     activateUserAccount,
     deactivateUserAccount,
 } from "@/services/seb-server/userAccountService.ts";
-import { toAppError } from "@/services/errors/toAppError.ts";
+import { toAppErrorOrUndefined } from "@/services/errors/toAppError.ts";
 import type { PageUserInfo } from "@/api/seb-server/generated/hey-api/types.gen.ts";
 
 const listKey = () => getUserAccountsQueryKey({ client: heySebServerClient });
@@ -68,7 +68,7 @@ export const useToggleUserAccountStatus = () => {
         ),
         error: computed(() => {
             const err = activate.error.value ?? deactivate.error.value;
-            return err ? toAppError(err) : undefined;
+            return toAppErrorOrUndefined(err);
         }),
     };
 };

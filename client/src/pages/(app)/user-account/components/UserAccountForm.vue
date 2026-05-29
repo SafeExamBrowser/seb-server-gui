@@ -255,6 +255,13 @@ const buildUserRoles = (
     return [selectedRole];
 };
 
+const requireValidatedField = <T,>(value: T | undefined): T => {
+    if (value === undefined || value === "") {
+        throw new Error("validated user account form field is missing");
+    }
+    return value;
+};
+
 const submit = async () => {
     const [leftResult, rightResult] = await Promise.all([
         leftFormRef.value?.validate(),
@@ -262,39 +269,24 @@ const submit = async () => {
     ]);
     if (!leftResult?.valid || !rightResult?.valid) return;
 
-    if (
-        !institutionId.value ||
-        !username.value ||
-        !name.value ||
-        !surname.value ||
-        !timezone.value ||
-        !role.value
-    ) {
-        return;
-    }
-
-    const selectedUserRoles = buildUserRoles(role.value);
+    const selectedUserRoles = buildUserRoles(requireValidatedField(role.value));
 
     const baseUserAccount = {
-        institutionId: Number(institutionId.value),
-        username: username.value,
-        name: name.value,
-        surname: surname.value,
+        institutionId: Number(requireValidatedField(institutionId.value)),
+        username: requireValidatedField(username.value),
+        name: requireValidatedField(name.value),
+        surname: requireValidatedField(surname.value),
         email: email.value || undefined,
         language: "en",
-        timezone: timezone.value,
+        timezone: requireValidatedField(timezone.value),
     };
 
     if (props.mode === "create") {
-        if (!password.value || !confirmPassword.value) {
-            return;
-        }
-
         emit("createSubmit", {
             ...baseUserAccount,
             userRoles: selectedUserRoles,
-            newPassword: password.value,
-            confirmNewPassword: confirmPassword.value,
+            newPassword: requireValidatedField(password.value),
+            confirmNewPassword: requireValidatedField(confirmPassword.value),
         });
         return;
     }

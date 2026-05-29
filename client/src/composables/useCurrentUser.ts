@@ -4,7 +4,7 @@ import { getCurrentUserAccountQueryKey } from "@/api/seb-server/generated/hey-ap
 import { heySebServerClient } from "@/api/seb-server/http/heySebServerClient";
 import { getCurrentUserAccount } from "@/services/seb-server/userAccountService";
 import { queryClient } from "@/services/http/queryClient";
-import { toAppError } from "@/services/errors/toAppError";
+import { toAppErrorOrUndefined } from "@/services/errors/toAppError";
 
 export const currentUserQueryKey = () =>
     getCurrentUserAccountQueryKey({ client: heySebServerClient });
@@ -21,12 +21,10 @@ export function useCurrentUser() {
     });
 
     return {
-        user: query.data,
+        data: query.data,
         isPending: query.isPending,
         isFetching: query.isFetching,
-        error: computed(() =>
-            query.error.value ? toAppError(query.error.value) : undefined,
-        ),
+        error: computed(() => toAppErrorOrUndefined(query.error.value)),
         refetch: () => query.refetch(),
     };
 }

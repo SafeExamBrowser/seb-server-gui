@@ -55,7 +55,7 @@ import { useAbilities } from "@/services/ability";
 const route = useRoute();
 const { t } = useI18n();
 const { logout } = useLogout();
-const { user } = useCurrentUser();
+const { data: user } = useCurrentUser();
 const { institutionName, institutionLogo } = useInstitutionBranding();
 const ability = useAbilities();
 

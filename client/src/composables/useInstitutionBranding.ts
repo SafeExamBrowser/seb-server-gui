@@ -7,7 +7,7 @@ const BRANDING_KEY_ROOT = "institutionBranding";
 
 export function useInstitutionBranding() {
     const queryClient = useQueryClient();
-    const { user } = useCurrentUser();
+    const { data: user } = useCurrentUser();
 
     const query = useQuery({
         queryKey: computed(() => [

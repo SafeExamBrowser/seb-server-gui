@@ -6,12 +6,15 @@ type VInputProps = InstanceType<typeof VInput>["$props"];
 type ValidationRules = NonNullable<VInputProps["rules"]>;
 type ValidationRule = ValidationRules[number];
 
-const unwrap = (schema: z.ZodType): z.ZodType =>
+type UnwrappableSchema = z.ZodType & { unwrap: () => z.ZodType };
+
+const isUnwrappableSchema = (schema: z.ZodType): schema is UnwrappableSchema =>
     schema instanceof Object &&
     "unwrap" in schema &&
-    typeof schema.unwrap === "function"
-        ? (schema.unwrap() as z.ZodType)
-        : schema;
+    typeof schema.unwrap === "function";
+
+const unwrap = (schema: z.ZodType): z.ZodType =>
+    isUnwrappableSchema(schema) ? schema.unwrap() : schema;
 
 export const useZodFormRules = () => {
     const rules = useRules();
@@ -21,25 +24,27 @@ export const useZodFormRules = () => {
     const lengthRules = (schema: z.ZodType): ValidationRules => {
         const inner = unwrap(schema);
         const out: ValidationRule[] = [];
-        if (!(inner instanceof Object && "minLength" in inner)) {
+        if (!(inner instanceof Object)) {
             return out;
         }
-        const stringSchema = inner as z.ZodString;
-        if (
-            typeof stringSchema.minLength === "number" &&
-            stringSchema.minLength > 0
-        ) {
-            out.push(rules.minLength(stringSchema.minLength));
+        const minLength = "minLength" in inner ? inner.minLength : undefined;
+        const maxLength = "maxLength" in inner ? inner.maxLength : undefined;
+        if (typeof minLength === "number" && minLength > 0) {
+            out.push(rules.minLength(minLength));
         }
-        if (typeof stringSchema.maxLength === "number") {
-            out.push(rules.maxLength(stringSchema.maxLength));
+        if (typeof maxLength === "number") {
+            out.push(rules.maxLength(maxLength));
         }
         return out;
     };
 
     const formatRules = (schema: z.ZodType): ValidationRules => {
-        const inner = unwrap(schema) as z.ZodType & { format?: unknown };
-        if (inner.format === "email") {
+        const inner = unwrap(schema);
+        if (
+            inner instanceof Object &&
+            "format" in inner &&
+            inner.format === "email"
+        ) {
             return [rules.email()];
         }
         return [];
