@@ -279,8 +279,8 @@ export type Exam = {
     additionalAttributes?: {
         [key: string]: string;
     };
-    startURL?: string;
     description?: string;
+    startURL?: string;
 };
 
 export type ClientGroupTemplate = {
@@ -669,10 +669,10 @@ export type UserMod = {
      */
     directLogin?: boolean;
     userRoles: Array<'SEB_SERVER_ADMIN' | 'INSTITUTIONAL_ADMIN' | 'EXAM_ADMIN' | 'EXAM_SUPPORTER' | 'TEACHER'>;
-    creationDate?: string;
     retypedNewPassword?: {
         empty?: boolean;
     };
+    creationDate?: string;
 };
 
 export type ClientStaticData = {
@@ -1203,17 +1203,17 @@ export type ClientNotification = {
 };
 
 export type ClientMonitoringDataView = {
+    pendingNotification?: boolean;
     missingPing?: boolean;
     grantChecked?: boolean;
     grantDenied?: boolean;
     sebversionDenied?: boolean;
-    pendingNotification?: boolean;
-    nf?: number;
+    lat?: number;
     iv?: {
         [key: string]: string;
     };
     st?: 'UNDEFINED' | 'CONNECTION_REQUESTED' | 'READY' | 'ACTIVE' | 'CLOSED' | 'DISABLED';
-    lat?: number;
+    nf?: number;
     id?: number;
 };
 
@@ -2168,6 +2168,34 @@ export type GetUserAccountsData = {
          * Default is the institution identifier of the institution of the current user
          */
         institutionId?: number;
+        /**
+         * Filters user accounts by first or full name.
+         */
+        name?: unknown;
+        /**
+         * Filters user accounts by surname.
+         */
+        surname?: unknown;
+        /**
+         * Filters user accounts by login username.
+         */
+        username?: unknown;
+        /**
+         * Filters user accounts by email address.
+         */
+        email?: unknown;
+        /**
+         * Filters user accounts by language.
+         */
+        language?: unknown;
+        /**
+         * Filters user accounts by role.
+         */
+        role?: unknown;
+        /**
+         * Filters user accounts by active state.
+         */
+        active?: unknown;
     };
     url: '/admin-api/v1/useraccount';
 };

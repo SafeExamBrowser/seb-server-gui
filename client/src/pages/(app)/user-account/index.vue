@@ -145,9 +145,9 @@ const accountsQuery = computed<GetUserAccountsData["query"]>(() => {
         surname: searchField.value || undefined,
         active:
             status === "Active"
-                ? "true"
+                ? true
                 : status === "Inactive"
-                  ? "false"
+                  ? false
                   : undefined,
         institutionId: institutionId ? Number(institutionId) : undefined,
     };

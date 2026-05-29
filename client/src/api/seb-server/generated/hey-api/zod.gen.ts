@@ -363,8 +363,8 @@ export const zExam = z.object({
     followupId: z.int().optional(),
     excludeFromDeletion: z.boolean().optional(),
     additionalAttributes: z.record(z.string(), z.string()).optional(),
-    startURL: z.string().optional(),
-    description: z.string().optional()
+    description: z.string().optional(),
+    startURL: z.string().optional()
 });
 
 export const zClientGroupTemplate = z.object({
@@ -823,10 +823,10 @@ export const zUserMod = z.object({
         'EXAM_SUPPORTER',
         'TEACHER'
     ])).min(1),
-    creationDate: z.iso.datetime().optional(),
     retypedNewPassword: z.object({
         empty: z.boolean().optional()
-    }).optional()
+    }).optional(),
+    creationDate: z.iso.datetime().optional()
 });
 
 export const zClientStaticData = z.object({
@@ -1270,12 +1270,12 @@ export const zClientNotification = z.object({
 });
 
 export const zClientMonitoringDataView = z.object({
+    pendingNotification: z.boolean().optional(),
     missingPing: z.boolean().optional(),
     grantChecked: z.boolean().optional(),
     grantDenied: z.boolean().optional(),
     sebversionDenied: z.boolean().optional(),
-    pendingNotification: z.boolean().optional(),
-    nf: z.int().min(-2147483648, { error: 'Invalid value: Expected int32 to be >= -2147483648' }).max(2147483647, { error: 'Invalid value: Expected int32 to be <= 2147483647' }).optional(),
+    lat: z.int().optional(),
     iv: z.record(z.string(), z.string()).optional(),
     st: z.enum([
         'UNDEFINED',
@@ -1285,7 +1285,7 @@ export const zClientMonitoringDataView = z.object({
         'CLOSED',
         'DISABLED'
     ]).optional(),
-    lat: z.int().optional(),
+    nf: z.int().min(-2147483648, { error: 'Invalid value: Expected int32 to be >= -2147483648' }).max(2147483647, { error: 'Invalid value: Expected int32 to be <= 2147483647' }).optional(),
     id: z.int().optional()
 });
 
@@ -1903,7 +1903,14 @@ export const zGetUserAccountsQuery = z.object({
     page_number: z.int().min(-2147483648, { error: 'Invalid value: Expected int32 to be >= -2147483648' }).max(2147483647, { error: 'Invalid value: Expected int32 to be <= 2147483647' }).optional(),
     page_size: z.int().min(-2147483648, { error: 'Invalid value: Expected int32 to be >= -2147483648' }).max(2147483647, { error: 'Invalid value: Expected int32 to be <= 2147483647' }).optional(),
     sort: z.string().optional(),
-    institutionId: z.int().optional()
+    institutionId: z.int().optional(),
+    name: z.unknown().optional(),
+    surname: z.unknown().optional(),
+    username: z.unknown().optional(),
+    email: z.unknown().optional(),
+    language: z.unknown().optional(),
+    role: z.unknown().optional(),
+    active: z.unknown().optional()
 });
 
 /**

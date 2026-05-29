@@ -353,6 +353,55 @@
                         "description": "The institution identifier of the request.\nDefault is the institution identifier of the institution of the current user",
                         "required": false,
                         "schema": { "type": "integer" }
+                    },
+                    {
+                        "name": "name",
+                        "in": "query",
+                        "description": "Filters user accounts by first or full name.",
+                        "required": false,
+                        "schema": {}
+                    },
+                    {
+                        "name": "surname",
+                        "in": "query",
+                        "description": "Filters user accounts by surname.",
+                        "required": false,
+                        "schema": {}
+                    },
+                    {
+                        "name": "username",
+                        "in": "query",
+                        "description": "Filters user accounts by login username.",
+                        "required": false,
+                        "schema": {}
+                    },
+                    {
+                        "name": "email",
+                        "in": "query",
+                        "description": "Filters user accounts by email address.",
+                        "required": false,
+                        "schema": {}
+                    },
+                    {
+                        "name": "language",
+                        "in": "query",
+                        "description": "Filters user accounts by language.",
+                        "required": false,
+                        "schema": {}
+                    },
+                    {
+                        "name": "role",
+                        "in": "query",
+                        "description": "Filters user accounts by role.",
+                        "required": false,
+                        "schema": {}
+                    },
+                    {
+                        "name": "active",
+                        "in": "query",
+                        "description": "Filters user accounts by active state.",
+                        "required": false,
+                        "schema": {}
                     }
                 ],
                 "responses": {
@@ -14585,8 +14634,8 @@
                         "type": "object",
                         "additionalProperties": { "type": "string" }
                     },
-                    "startURL": { "type": "string" },
-                    "description": { "type": "string" }
+                    "description": { "type": "string" },
+                    "startURL": { "type": "string" }
                 },
                 "required": ["externalId", "institutionId", "type"]
             },
@@ -15400,11 +15449,11 @@
                         "minItems": 1,
                         "uniqueItems": true
                     },
-                    "creationDate": { "type": "string", "format": "date-time" },
                     "retypedNewPassword": {
                         "type": "object",
                         "properties": { "empty": { "type": "boolean" } }
-                    }
+                    },
+                    "creationDate": { "type": "string", "format": "date-time" }
                 },
                 "required": [
                     "confirmNewPassword",
@@ -16338,12 +16387,12 @@
             "ClientMonitoringDataView": {
                 "type": "object",
                 "properties": {
+                    "pendingNotification": { "type": "boolean" },
                     "missingPing": { "type": "boolean" },
                     "grantChecked": { "type": "boolean" },
                     "grantDenied": { "type": "boolean" },
                     "sebversionDenied": { "type": "boolean" },
-                    "pendingNotification": { "type": "boolean" },
-                    "nf": { "type": "integer", "format": "int32" },
+                    "lat": { "type": "integer" },
                     "iv": {
                         "type": "object",
                         "additionalProperties": { "type": "string" }
@@ -16359,7 +16408,7 @@
                             "DISABLED"
                         ]
                     },
-                    "lat": { "type": "integer" },
+                    "nf": { "type": "integer", "format": "int32" },
                     "id": { "type": "integer" }
                 }
             },
