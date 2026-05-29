@@ -25,15 +25,23 @@
             />
 
             <v-card
+                v-if="isPageBlue"
                 class="flex-1-1-0 rounded-lg overflow-y-auto"
-                :class="isPageBlue ? '' : 'pt-3 pl-4 pr-3 pb-3'"
-                :color="isPageBlue ? 'primary' : undefined"
+                color="primary"
                 :data-testid="`${pageTestId}-page-container`"
                 elevation="1"
                 :style="{ minHeight: 0, minWidth: 0 }"
             >
                 <RouterView />
             </v-card>
+            <div
+                v-else
+                class="flex-1-1-0 overflow-y-auto"
+                :data-testid="`${pageTestId}-page-container`"
+                :style="{ minHeight: 0, minWidth: 0 }"
+            >
+                <RouterView />
+            </div>
         </div>
     </div>
 </template>
