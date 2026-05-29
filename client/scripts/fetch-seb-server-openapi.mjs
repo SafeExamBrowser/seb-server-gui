@@ -4,9 +4,14 @@ import { mkdir, writeFile } from "node:fs/promises";
 import { dirname, resolve } from "node:path";
 import { format } from "prettier";
 
-const DEFAULT_OPENAPI_URL = "http://localhost:8080/v3/api-docs/user-account";
+import { transformSebServerSpec } from "./openapi/transformSebServerSpec.mjs";
+
+const DEFAULT_OPENAPI_URL = "http://localhost:8080/v3/api-docs";
 const OPENAPI_URL = process.env.SEB_SERVER_OPENAPI_URL ?? DEFAULT_OPENAPI_URL;
 
+const RAW_OUTPUT = resolve(
+    "src/api/seb-server/openapi/seb-server.openapi.json",
+);
 const USER_ACCOUNT_OUTPUT = resolve(
     "src/api/seb-server/openapi/seb-server.user-account.openapi.json",
 );
@@ -21,9 +26,7 @@ const writeJson = async (path, value) => {
 };
 
 const response = await fetch(OPENAPI_URL, {
-    headers: {
-        Accept: "application/json",
-    },
+    headers: { Accept: "application/json" },
 });
 
 if (!response.ok) {
@@ -32,8 +35,10 @@ if (!response.ok) {
     );
 }
 
-const userAccountSpec = await response.json();
+const rawSpec = await response.json();
+const userAccountSpec = transformSebServerSpec(rawSpec);
 
+await writeJson(RAW_OUTPUT, rawSpec);
 await writeJson(USER_ACCOUNT_OUTPUT, userAccountSpec);
 
 const operationCount = Object.values(userAccountSpec.paths).reduce(
@@ -46,6 +51,7 @@ const operationCount = Object.values(userAccountSpec.paths).reduce(
 );
 
 console.log(`Fetched ${OPENAPI_URL}`);
+console.log(`Wrote ${RAW_OUTPUT}`);
 console.log(
     `Wrote ${USER_ACCOUNT_OUTPUT} with ${operationCount} User Account operations`,
 );

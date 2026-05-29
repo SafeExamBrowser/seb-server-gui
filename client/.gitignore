@@ -30,3 +30,6 @@ pnpm-debug.log*
 /blob-report/
 /playwright/.cache/
 /playwright/.auth/
+
+# Raw full SEB Server OpenAPI dump (kept local for debugging; slice JSON is committed)
+src/api/seb-server/openapi/seb-server.openapi.json
