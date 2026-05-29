@@ -20,6 +20,9 @@
                 @clear-filters="clearAll"
             />
         </template>
+        <template #PanelLeft>
+            <v-card elevation="2" rounded="lg" class="h-100 bg-red" />
+        </template>
         <template #PanelMain>
             <LoadingFallbackComponent
                 :loading="false"

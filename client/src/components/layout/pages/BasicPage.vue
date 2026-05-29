@@ -13,7 +13,10 @@
             </div>
         </v-expand-transition>
         <v-row class="flex-grow-1 flex-shrink-1" :style="{ minHeight: 0 }">
-            <v-col :cols="$slots.PanelAside ? 9 : 12" class="h-100 pa-2">
+            <v-col v-if="$slots.PanelLeft" cols="2" class="h-100 pa-2">
+                <slot name="PanelLeft"></slot>
+            </v-col>
+            <v-col :cols="mainCols" class="h-100 pa-2">
                 <v-card
                     elevation="2"
                     rounded="lg"
@@ -36,6 +39,7 @@
 </template>
 
 <script setup lang="ts">
+import { computed, useSlots } from "vue";
 import PageHeader from "@/components/layout/pages/components/PageHeader.vue";
 import { BreadCrumbItem } from "@/components/widgets/breadCrumb/types";
 
@@ -47,4 +51,17 @@ withDefaults(
     }>(),
     { breadCrumb: undefined, dataTestId: undefined },
 );
+
+const slots = useSlots();
+
+const mainCols = computed(() => {
+    let cols = 12;
+    if (slots.PanelLeft) {
+        cols -= 2;
+    }
+    if (slots.PanelAside) {
+        cols -= 3;
+    }
+    return cols;
+});
 </script>
