@@ -1,10 +1,10 @@
 import { computed, ref, watch } from "vue";
 import moment from "moment-timezone";
-import { useRules } from "vuetify/labs/rules";
 import i18n from "@/i18n";
 import { FormField } from "@/components/widgets/formBuilder/types.ts";
 import { useInstitutions } from "@/composables/useInstitutions.ts";
 import { useUserAccountStore } from "@/stores/authentication/userAccountStore.ts";
+import { useZodFormRules } from "@/composables/useZodFormRules.ts";
 import {
     USER_ROLES,
     UserRole,
@@ -14,12 +14,6 @@ import {
     zUserInfo,
     zUserMod,
 } from "@/api/seb-server/generated/hey-api/zod.gen.ts";
-
-const USERNAME_MIN_LENGTH = zUserInfo.shape.username.minLength ?? 3;
-const USERNAME_MAX_LENGTH = zUserInfo.shape.username.maxLength ?? 255;
-const NAME_MAX_LENGTH = zUserInfo.shape.name.maxLength ?? 255;
-const SURNAME_MAX_LENGTH = zUserInfo.shape.surname.maxLength ?? 255;
-const PASSWORD_MIN_LENGTH = zUserMod.shape.newPassword.minLength ?? 8;
 
 const ADMIN_VISIBLE_ROLES: ReadonlySet<UserAccountRole> = new Set([
     UserRole.SEB_SERVER_ADMIN,
@@ -55,7 +49,7 @@ export const useUserAccountFormFields = (mode: UserAccountFormMode) => {
     const confirmPassword = ref<string | undefined>(undefined);
     const role = ref<UserAccountRole | undefined>(undefined);
 
-    const rules = useRules();
+    const { isRequired, lengthRules } = useZodFormRules();
 
     const {
         data: institutions,
@@ -131,7 +125,7 @@ export const useUserAccountFormFields = (mode: UserAccountFormMode) => {
                 model: institutionId,
                 label: t("fields.institution.label"),
                 options: institutionOptions.value,
-                required: true,
+                required: isRequired(zUserInfo.shape.institutionId),
                 disabled: institutionSelectDisabled.value,
             },
             {
@@ -139,41 +133,32 @@ export const useUserAccountFormFields = (mode: UserAccountFormMode) => {
                 name: "username",
                 model: username,
                 label: t("fields.username.label"),
-                required: true,
-                rules: [
-                    rules.minLength(USERNAME_MIN_LENGTH),
-                    rules.maxLength(USERNAME_MAX_LENGTH),
-                ],
+                required: isRequired(zUserInfo.shape.username),
+                rules: lengthRules(zUserInfo.shape.username),
             },
             {
                 type: "text" as const,
                 name: "name",
                 model: name,
                 label: t("fields.name.label"),
-                required: true,
-                rules: [rules.maxLength(NAME_MAX_LENGTH)],
+                required: isRequired(zUserInfo.shape.name),
+                rules: lengthRules(zUserInfo.shape.name),
             },
             {
                 type: "text" as const,
                 name: "surname",
                 model: surname,
                 label: t("fields.surname.label"),
-                required: true,
-                rules: [rules.maxLength(SURNAME_MAX_LENGTH)],
+                required: isRequired(zUserInfo.shape.surname),
+                rules: lengthRules(zUserInfo.shape.surname),
             },
             {
                 type: "text" as const,
                 name: "email",
                 model: email,
                 label: t("fields.email.label"),
-                rules: [
-                    (v: string | undefined) =>
-                        !v ||
-                        /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(v) ||
-                        i18n.global.t(
-                            "userAccount.general.validation.invalidEmail",
-                        ),
-                ],
+                required: isRequired(zUserInfo.shape.email),
+                rules: lengthRules(zUserInfo.shape.email),
             },
             {
                 type: "select" as const,
@@ -181,7 +166,7 @@ export const useUserAccountFormFields = (mode: UserAccountFormMode) => {
                 model: timezone,
                 label: t("fields.timezone.label"),
                 options: timezoneOptions,
-                required: true,
+                required: isRequired(zUserInfo.shape.timezone),
             },
         ];
 
@@ -192,23 +177,16 @@ export const useUserAccountFormFields = (mode: UserAccountFormMode) => {
                     name: "password",
                     model: password,
                     label: t("fields.password.label"),
-                    required: true,
-                    rules: [rules.minLength(PASSWORD_MIN_LENGTH)],
+                    required: isRequired(zUserMod.shape.newPassword),
+                    rules: lengthRules(zUserMod.shape.newPassword),
                 },
                 {
                     type: "password" as const,
                     name: "confirmPassword",
                     model: confirmPassword,
                     label: t("fields.confirmPassword.label"),
-                    required: true,
+                    required: isRequired(zUserMod.shape.confirmNewPassword),
                     validationDependsOn: ["password"],
-                    rules: [
-                        (v: string | undefined) =>
-                            v === password.value ||
-                            i18n.global.t(
-                                "userAccount.general.validation.passwordsDontMatch",
-                            ),
-                    ],
                 },
             );
         }
@@ -223,7 +201,7 @@ export const useUserAccountFormFields = (mode: UserAccountFormMode) => {
             model: role,
             label: t("fields.role.label"),
             options: availableRoles.value,
-            required: true,
+            required: isRequired(zUserMod.shape.userRoles),
             disabled: mode === "profile",
         },
     ]);

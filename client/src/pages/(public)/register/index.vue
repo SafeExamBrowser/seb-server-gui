@@ -82,8 +82,8 @@
                                                 )
                                             "
                                             prepend-inner-icon="mdi-domain"
-                                            required
-                                            :rules="[requiredRule]"
+                                            :required="institutionRequired"
+                                            :rules="institutionRules"
                                             variant="outlined"
                                         />
                                     </v-col>
@@ -99,8 +99,8 @@
                                                 )
                                             "
                                             prepend-inner-icon="mdi-account-outline"
-                                            required
-                                            :rules="[requiredRule]"
+                                            :required="usernameRequired"
+                                            :rules="usernameRules"
                                             variant="outlined"
                                         />
                                     </v-col>
@@ -116,8 +116,8 @@
                                                 )
                                             "
                                             prepend-inner-icon="mdi-account-outline"
-                                            required
-                                            :rules="[requiredRule]"
+                                            :required="nameRequired"
+                                            :rules="nameRules"
                                             variant="outlined"
                                         />
                                     </v-col>
@@ -133,8 +133,8 @@
                                                 )
                                             "
                                             prepend-inner-icon="mdi-account-outline"
-                                            required
-                                            :rules="[requiredRule]"
+                                            :required="surnameRequired"
+                                            :rules="surnameRules"
                                             variant="outlined"
                                         />
                                     </v-col>
@@ -150,7 +150,8 @@
                                                 )
                                             "
                                             prepend-inner-icon="mdi-email-outline"
-                                            :rules="[emailRule]"
+                                            :required="emailRequired"
+                                            :rules="emailRules"
                                             validate-on="blur"
                                             variant="outlined"
                                         />
@@ -168,9 +169,9 @@
                                                 )
                                             "
                                             prepend-inner-icon="mdi-map-clock-outline"
-                                            required
+                                            :required="timezoneRequired"
                                             :return-object="false"
-                                            :rules="[requiredRule]"
+                                            :rules="timezoneRules"
                                             variant="outlined"
                                         />
                                     </v-col>
@@ -186,11 +187,8 @@
                                                 )
                                             "
                                             prepend-inner-icon="mdi-lock-outline"
-                                            required
-                                            :rules="[
-                                                requiredRule,
-                                                passwordRule,
-                                            ]"
+                                            :required="passwordRequired"
+                                            :rules="passwordRules"
                                             :type="
                                                 passwordVisible
                                                     ? 'text'
@@ -230,11 +228,8 @@
                                                 )
                                             "
                                             prepend-inner-icon="mdi-lock-outline"
-                                            required
-                                            :rules="[
-                                                requiredRule,
-                                                confirmPasswordRule,
-                                            ]"
+                                            :required="confirmPasswordRequired"
+                                            :rules="confirmPasswordRules"
                                             :type="
                                                 confirmPasswordVisible
                                                     ? 'text'
@@ -318,10 +313,14 @@
 <script setup lang="ts">
 import { computed, ref, watch } from "vue";
 import moment from "moment-timezone";
+import type { z } from "zod";
+import { useRules } from "vuetify/labs/rules";
 import { translate } from "@/utils/generalUtils";
-import { useI18n } from "vue-i18n";
 import { useInstitutions } from "@/composables/useInstitutions";
 import { useRegisterUserAccount } from "@/pages/(app)/user-account/api/useRegisterUserAccount.ts";
+import { useZodFormRules } from "@/composables/useZodFormRules.ts";
+import { zUserMod } from "@/api/seb-server/generated/hey-api/zod.gen.ts";
+import { UserRole } from "@/models/userAccount.ts";
 import { RouterLink, useRouter } from "vue-router";
 import AlertMsg from "@/components/widgets/AlertMsg.vue";
 
@@ -331,7 +330,6 @@ definePage({
     },
 });
 
-const i18n = useI18n();
 const router = useRouter();
 
 const selectedInstitution = ref<string>("");
@@ -372,19 +370,58 @@ const {
 const registerError = computed(() => !!registerSubmitError.value);
 const registerSuccess = computed(() => !!registered.value);
 
-const requiredRule = (v: string) =>
-    !!v || translate("userAccount.general.validation.required", i18n);
-const passwordRule = (v: string) =>
-    (v && v.length >= 8) ||
-    translate("userAccount.general.validation.passwordTooShort", i18n);
 const formRef = ref();
-const confirmPasswordRule = (v: string) =>
-    v === password.value ||
-    translate("userAccount.general.validation.passwordsDontMatch", i18n);
-const emailRule = (v: string) =>
-    !v ||
-    /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(v) ||
-    translate("userAccount.general.validation.invalidEmail", i18n);
+
+const rules = useRules();
+const { isRequired, lengthRules } = useZodFormRules();
+
+const withRequiredRule = (schema: z.ZodType) =>
+    isRequired(schema) ? [rules.required()] : [];
+
+const institutionRequired = isRequired(zUserMod.shape.institutionId);
+const institutionRules = withRequiredRule(zUserMod.shape.institutionId);
+
+const usernameRequired = isRequired(zUserMod.shape.username);
+const usernameRules = [
+    ...withRequiredRule(zUserMod.shape.username),
+    ...lengthRules(zUserMod.shape.username),
+];
+
+const nameRequired = isRequired(zUserMod.shape.name);
+const nameRules = [
+    ...withRequiredRule(zUserMod.shape.name),
+    ...lengthRules(zUserMod.shape.name),
+];
+
+const surnameRequired = isRequired(zUserMod.shape.surname);
+const surnameRules = [
+    ...withRequiredRule(zUserMod.shape.surname),
+    ...lengthRules(zUserMod.shape.surname),
+];
+
+const emailRequired = isRequired(zUserMod.shape.email);
+const emailRules = [
+    ...withRequiredRule(zUserMod.shape.email),
+    ...lengthRules(zUserMod.shape.email),
+];
+
+const timezoneRequired = isRequired(zUserMod.shape.timezone);
+const timezoneRules = [
+    ...withRequiredRule(zUserMod.shape.timezone),
+    ...lengthRules(zUserMod.shape.timezone),
+];
+
+const passwordRequired = isRequired(zUserMod.shape.newPassword);
+const passwordRules = [
+    ...withRequiredRule(zUserMod.shape.newPassword),
+    ...lengthRules(zUserMod.shape.newPassword),
+];
+
+const confirmPasswordRequired = isRequired(zUserMod.shape.confirmNewPassword);
+const confirmPasswordRules = [
+    ...withRequiredRule(zUserMod.shape.confirmNewPassword),
+    ...lengthRules(zUserMod.shape.confirmNewPassword),
+];
 
 async function register() {
     const { valid } = await formRef.value.validate();
@@ -404,8 +441,8 @@ async function register() {
             confirmNewPassword: confirmPassword.value,
             timezone: timezone.value,
             language,
-            email: email.value,
-            userRoles: ["EXAM_SUPPORTER"],
+            email: email.value || undefined,
+            userRoles: [UserRole.EXAM_SUPPORTER],
         });
         setTimeout(() => {
             router.push({ name: "/(public)/login/" });

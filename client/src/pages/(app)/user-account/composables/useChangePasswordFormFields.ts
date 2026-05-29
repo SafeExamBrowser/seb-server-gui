@@ -1,7 +1,11 @@
 import { computed, ref } from "vue";
-import { useRules } from "vuetify/labs/rules";
 import i18n from "@/i18n";
 import { FormField } from "@/components/widgets/formBuilder/types.ts";
+import { useZodFormRules } from "@/composables/useZodFormRules.ts";
+import {
+    zPasswordChange,
+    zUserMod,
+} from "@/api/seb-server/generated/hey-api/zod.gen.ts";
 
 const t = (key: string) => i18n.global.t(`userAccount.changePassword.${key}`);
 
@@ -10,7 +14,7 @@ export const useChangePasswordFormFields = () => {
     const newPassword = ref<string | undefined>(undefined);
     const confirmNewPassword = ref<string | undefined>(undefined);
 
-    const rules = useRules();
+    const { isRequired, lengthRules } = useZodFormRules();
 
     const formFields = computed<FormField[]>(() => [
         {
@@ -18,31 +22,24 @@ export const useChangePasswordFormFields = () => {
             name: "adminPassword",
             model: adminPassword,
             label: t("fields.adminPassword.label"),
-            required: true,
-            rules: [rules.required()],
+            required: isRequired(zPasswordChange.shape.password),
+            rules: lengthRules(zPasswordChange.shape.password),
         },
         {
             type: "password" as const,
             name: "newPassword",
             model: newPassword,
             label: t("fields.newPassword.label"),
-            required: true,
-            rules: [rules.required(), rules.minLength(8)],
+            required: isRequired(zUserMod.shape.newPassword),
+            rules: lengthRules(zUserMod.shape.newPassword),
         },
         {
             type: "password" as const,
             name: "confirmNewPassword",
             model: confirmNewPassword,
             label: t("fields.confirmNewPassword.label"),
-            required: true,
+            required: isRequired(zUserMod.shape.confirmNewPassword),
             validationDependsOn: ["newPassword"],
-            rules: [
-                (v: string | undefined) =>
-                    v === newPassword.value ||
-                    i18n.global.t(
-                        "userAccount.general.validation.passwordsDontMatch",
-                    ),
-            ],
         },
     ]);
 
