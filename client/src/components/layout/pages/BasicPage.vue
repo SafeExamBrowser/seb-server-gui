@@ -23,11 +23,16 @@
                     rounded="lg"
                     class="h-100 d-flex flex-column overflow-hidden"
                 >
-                    <PageHeader
-                        :title="title"
-                        :bread-crumb="breadCrumb"
-                        :data-test-id="dataTestId"
-                    />
+                    <v-row>
+                        <PageHeader
+                            :title="title"
+                            :bread-crumb="breadCrumb"
+                            :data-test-id="dataTestId"
+                        />
+                        <v-spacer />
+                        <slot name="ActionButton"></slot>
+                    </v-row>
+
                     <div
                         class="flex-grow-1 overflow-y-auto"
                         :style="{ minHeight: 0 }"
