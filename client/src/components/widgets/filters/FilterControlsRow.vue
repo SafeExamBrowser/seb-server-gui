@@ -37,7 +37,6 @@
             <v-chip
                 v-for="pill in pills"
                 :key="`${pill.sectionKey}-${pill.option.value}`"
-                size="small"
                 :color="pill.option.color ?? 'primary'"
                 variant="tonal"
                 closable
@@ -58,7 +57,7 @@
                 {{ $t("general.clearAll") }}
             </v-btn>
         </template>
-        <span v-else class="text-body-2 text-medium-emphasis font-italic">
+        <span v-else class="text-body-small text-medium-emphasis font-italic">
             {{ $t("general.noFiltersApplied") }}
         </span>
     </div>
