@@ -22,14 +22,6 @@
                 <v-icon start size="small" icon="mdi-refresh" />
                 {{ $t("general.reset") }}
             </v-btn>
-            <v-btn
-                icon="mdi-chevron-left"
-                variant="text"
-                size="small"
-                density="comfortable"
-                :data-testid="`${dataTestId}-collapse-filters-button`"
-                @click="emit('collapse')"
-            />
         </div>
 
         <v-divider />
