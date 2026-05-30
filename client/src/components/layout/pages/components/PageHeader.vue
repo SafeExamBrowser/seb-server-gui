@@ -1,12 +1,14 @@
 <template>
-    <div class="flex-grow-0 flex-shrink-0 pa-2">
+    <div class="flex-shrink-0 pt-6 pb-3">
         <BreadCrumb :items="breadCrumb" />
-    </div>
-    <div class="flex-grow-0 flex-shrink-0 pa-2">
-        <PageTitle
-            :name="title"
-            :data-test-id="dataTestId ? `${dataTestId}-page-title` : undefined"
-        />
+        <div class="px-6 mt-1">
+            <PageTitle
+                :name="title"
+                :data-test-id="
+                    dataTestId ? `${dataTestId}-page-title` : undefined
+                "
+            />
+        </div>
     </div>
 </template>
 

@@ -1,42 +1,40 @@
 <template>
-    <div v-if="options.length > 0" :data-testid="`${dataTestId}-section`">
-        <div class="d-flex align-center ga-2 mb-2">
+    <div :data-testid="`${dataTestId}-section`">
+        <div
+            class="d-flex align-center justify-space-between py-2 px-1"
+            style="cursor: pointer"
+            :data-testid="`${dataTestId}-section-toggle`"
+            @click="open = !open"
+        >
             <span
                 class="text-body-small text-medium-emphasis text-uppercase font-weight-medium"
             >
                 {{ title }}
             </span>
-        </div>
-        <div class="d-flex flex-wrap ga-2">
-            <FilterChip
-                v-for="option in options"
-                :key="option.value"
-                :label="option.label"
-                :active="modelValue === option.value"
-                :color="option.color"
-                :data-test-id="`${dataTestId}-chip-${option.value}`"
-                @toggle="toggle(option.value)"
+            <v-icon
+                size="small"
+                class="text-medium-emphasis"
+                :icon="open ? 'mdi-chevron-up' : 'mdi-chevron-down'"
             />
         </div>
+        <v-expand-transition>
+            <div v-show="open" class="pb-2">
+                <slot></slot>
+            </div>
+        </v-expand-transition>
     </div>
 </template>
 
 <script setup lang="ts">
-import FilterChip from "./FilterChip.vue";
-import type { FilterOption } from "./filterTypes.ts";
+import { ref } from "vue";
 
-const props = defineProps<{
-    title: string;
-    options: FilterOption[];
-    modelValue: string | null;
-    dataTestId: string;
-}>();
+withDefaults(
+    defineProps<{
+        title: string;
+        dataTestId?: string;
+    }>(),
+    { dataTestId: undefined },
+);
 
-const emit = defineEmits<{
-    "update:modelValue": [value: string | null];
-}>();
-
-function toggle(value: string) {
-    emit("update:modelValue", props.modelValue === value ? null : value);
-}
+const open = ref(true);
 </script>

@@ -3,8 +3,9 @@
         :title="$t('titles.exams')"
         :bread-crumb="[{ label: $t('titles.exams') }]"
         :data-test-id="dataTestId"
+        :panel-left-collapsed="!filtersOpen"
     >
-        <template #PanelTop>
+        <template #PanelLeft>
             <SearchBar
                 v-model="searchInputValue"
                 search-text="examList.info.examNameSearchPlaceholder"
@@ -18,18 +19,24 @@
                 @update:date-value="setDate"
                 @update:filter-values="setFilters"
                 @clear-filters="clearAll"
+                @collapse="filtersOpen = false"
             />
         </template>
-        <template #PanelLeft>
-            <v-card elevation="2" rounded="lg" class="h-100 bg-red" />
-        </template>
         <template #PanelMain>
+            <FilterControlsRow
+                :open="filtersOpen"
+                :pills="activePills"
+                :data-test-id="dataTestId"
+                @toggle="filtersOpen = !filtersOpen"
+                @remove="onRemovePill"
+                @clear-all="clearAll"
+            />
             <LoadingFallbackComponent
                 :loading="false"
                 :errors="error ? [error] : []"
             >
                 <EntityTable
-                    class="pl-6 pr-6 pt-3"
+                    class="px-2 pt-2"
                     :headers="examTableHeaders"
                     :items="tableData?.content ?? []"
                     :page-count="pageCount"
@@ -66,6 +73,8 @@ import SearchBar from "@/components/widgets/searches/SearchBar.vue";
 import EntityTable from "@/components/widgets/entity-table/EntityTable.vue";
 import EnumChip from "@/components/widgets/EnumChip.vue";
 import LoadingFallbackComponent from "@/components/widgets/loadingFallbackComponent/LoadingFallbackComponent.vue";
+import FilterControlsRow from "@/components/widgets/filters/FilterControlsRow.vue";
+import { useActiveFilterPills } from "@/components/widgets/filters/useActiveFilterPills.ts";
 import { useUrlTableState } from "@/components/widgets/entity-table/composables/useUrlTableState.ts";
 import { useExamTableHeaders } from "@/pages/(app)/exam/composables/useExamTableHeaders.ts";
 import { useExamTableActions } from "@/pages/(app)/exam/composables/useExamTableActions.ts";
@@ -127,6 +136,14 @@ const {
     [TYPE_FILTER_KEY, EXAM_STATUS_FILTER_KEY],
     "startDate",
 );
+
+const filtersOpen = ref(true);
+
+const activePills = useActiveFilterPills(filterSections, selectedFilters);
+
+function onRemovePill(sectionKey: string) {
+    void setFilters({ ...selectedFilters.value, [sectionKey]: null });
+}
 
 const selectedType = computed(() => selectedFilters.value[TYPE_FILTER_KEY]);
 const selectedStatus = computed(

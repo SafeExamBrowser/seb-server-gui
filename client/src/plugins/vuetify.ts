@@ -23,8 +23,8 @@ export const vuetify = createVuetify({
             light: {
                 dark: false,
                 colors: {
-                    background: "#ededf4",
-                    surface: "#f9f9ff",
+                    background: "#F5F6F9",
+                    surface: "#FFFFFF",
                     "surface-dim": "#d9dae0",
                     "surface-bright": "#f9f9ff",
                     "surface-container-lowest": "#ffffff",
