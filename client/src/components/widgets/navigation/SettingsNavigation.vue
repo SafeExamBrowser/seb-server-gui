@@ -2,8 +2,8 @@
     <nav
         class="d-inline-flex flex-wrap align-center ga-1 pa-1 rounded-pill"
         :style="{
-            border: '1px solid rgba(255, 255, 255, 0.18)',
-            backgroundColor: 'rgba(255, 255, 255, 0.1)',
+            border: '1px solid rgba(var(--v-theme-on-primary), 0.18)',
+            backgroundColor: 'rgba(var(--v-theme-on-primary), 0.1)',
         }"
         aria-label="Settings sections"
         data-testid="settings-navigation"

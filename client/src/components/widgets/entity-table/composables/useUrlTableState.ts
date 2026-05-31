@@ -25,14 +25,14 @@ export function useUrlTableState(
 
     let isInternalNavigation = false;
 
-    const getQueryValue = (key: string): string | null => {
+    const getQueryValue = (key: string): string | undefined => {
         const value = route.query[key];
 
         if (Array.isArray(value)) {
-            return value[0] ?? null;
+            return value[0] ?? undefined;
         }
 
-        return value ?? null;
+        return value ?? undefined;
     };
 
     const managedQueryKeys = ["search", ...filterKeys];
@@ -41,7 +41,7 @@ export function useUrlTableState(
         managedQueryKeys.push(dateKey);
     }
 
-    const searchInputValue = ref<string | null>(getQueryValue("search"));
+    const searchInputValue = ref<string | undefined>(getQueryValue("search"));
     const options = ref<ServerTablePaging>(getDefaultOptions());
 
     const searchField = computed(() => getQueryValue("search"));
@@ -129,7 +129,7 @@ export function useUrlTableState(
     };
 
     const onSearch = async () => {
-        searchInputValue.value = searchInputValue.value || null;
+        searchInputValue.value = searchInputValue.value || undefined;
 
         await updateQuery((query) => {
             if (searchInputValue.value) {
@@ -142,7 +142,7 @@ export function useUrlTableState(
     };
 
     const onClearSearch = async () => {
-        searchInputValue.value = null;
+        searchInputValue.value = undefined;
 
         await updateQuery((query) => {
             delete query.search;
@@ -158,7 +158,7 @@ export function useUrlTableState(
     };
 
     const clearAll = async () => {
-        searchInputValue.value = null;
+        searchInputValue.value = undefined;
 
         await updateQuery((query) => {
             query.search = undefined;

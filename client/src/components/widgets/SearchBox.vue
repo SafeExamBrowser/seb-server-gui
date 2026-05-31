@@ -28,7 +28,7 @@ import { translate } from "@/utils/generalUtils.ts";
 
 withDefaults(
     defineProps<{
-        modelValue: string | null;
+        modelValue: string | undefined;
         searchText: string;
         dataTestId?: string;
     }>(),
@@ -36,7 +36,7 @@ withDefaults(
 );
 
 const emit = defineEmits<{
-    "update:modelValue": [value: string | null];
+    "update:modelValue": [value: string | undefined];
     search: [];
     clear: [];
 }>();

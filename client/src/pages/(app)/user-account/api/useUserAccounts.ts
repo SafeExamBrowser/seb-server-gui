@@ -7,9 +7,9 @@ import type { ServerTablePaging } from "@/models/types.ts";
 
 export const useUserAccounts = (
     paging: Readonly<Ref<ServerTablePaging>>,
-    searchField: Readonly<Ref<string | null>>,
-    selectedStatus: Readonly<Ref<string | null>>,
-    selectedInstitutionId: Readonly<Ref<string | null>>,
+    searchField: Readonly<Ref<string | undefined>>,
+    selectedStatus: Readonly<Ref<string | undefined>>,
+    selectedInstitutionId: Readonly<Ref<string | undefined>>,
 ) => {
     return useFetch<UserAccountResponse>(() =>
         getUserAccounts(

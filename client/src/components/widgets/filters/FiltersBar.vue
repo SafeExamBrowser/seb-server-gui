@@ -7,13 +7,11 @@
             >
                 <FilterRadioOption
                     v-for="option in section.options"
-                    class="mb-1"
                     :key="option.value"
+                    class="mb-1"
                     :label="option.label"
                     :color="option.color"
-                    :selected="
-                        (modelValue[section.key] ?? null) === option.value
-                    "
+                    :selected="modelValue[section.key] === option.value"
                     :data-test-id="`${dataTestId}-${section.testIdSuffix ?? section.key}-option-${option.value}`"
                     @toggle="onToggle(section.key, option.value)"
                 />
@@ -32,14 +30,14 @@ import type { FilterSectionDef } from "./filterTypes.ts";
 const props = withDefaults(
     defineProps<{
         sections: FilterSectionDef[];
-        modelValue: Record<string, string | null>;
+        modelValue: Record<string, string | undefined>;
         dataTestId?: string;
     }>(),
     { dataTestId: undefined },
 );
 
 const emit = defineEmits<{
-    "update:modelValue": [value: Record<string, string | null>];
+    "update:modelValue": [value: Record<string, string | undefined>];
 }>();
 
 const nonEmptySections = computed(() =>
@@ -47,10 +45,10 @@ const nonEmptySections = computed(() =>
 );
 
 function onToggle(key: string, value: string) {
-    const current = props.modelValue[key] ?? null;
+    const current = props.modelValue[key] ?? undefined;
     emit("update:modelValue", {
         ...props.modelValue,
-        [key]: current === value ? null : value,
+        [key]: current === value ? undefined : value,
     });
 }
 </script>

@@ -7,7 +7,7 @@ import type { ServerTablePaging } from "@/models/types.ts";
 
 export const useCertificates = (
     paging: Readonly<Ref<ServerTablePaging>>,
-    searchField: Readonly<Ref<string | null>>,
+    searchField: Readonly<Ref<string | undefined>>,
 ) => {
     return useFetch<CertificatesResponse>(() =>
         getCertificates(

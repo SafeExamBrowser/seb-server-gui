@@ -29,6 +29,7 @@
                     class="h-100 d-flex flex-column overflow-hidden"
                 >
                     <PageHeader
+                        class="bg-surface-tint pb-4"
                         :title="title"
                         :bread-crumb="breadCrumb"
                         :data-test-id="dataTestId"
@@ -37,6 +38,7 @@
                             <slot name="ActionButton"></slot>
                         </template>
                     </PageHeader>
+                    <v-divider :thickness="2" />
 
                     <div
                         class="flex-grow-1 overflow-y-auto"

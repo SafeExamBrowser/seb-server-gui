@@ -3,10 +3,6 @@ import { notify } from "@/services/notifications/notify.ts";
 import type { AppError } from "@/services/errors/types.ts";
 import type { TableItem } from "@/components/widgets/entity-table/types.ts";
 
-// Generic "delete a row" dialog flow shared by every list page: holds the
-// confirm-dialog state, runs the injected delete mutation, surfaces server
-// errors and notifies success. Entities differ only in the mutation, the
-// notify context label and which field labels the row.
 export const useEntityDeleteFlow = (config: {
     remove: (item: TableItem) => Promise<void>;
     error: Ref<AppError | undefined>;

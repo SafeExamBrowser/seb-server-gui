@@ -7,10 +7,6 @@ type PagedResponse<T> = {
     number_of_pages?: number;
 };
 
-// Derives the table rows, page count and error list from a paged fetch result,
-// plus a `reloadList` that refetches and clamps the page (e.g. after deleting
-// the last row on the last page). Shared by every list page so this boilerplate
-// lives in one place.
 export const usePagedListData = <T>(config: {
     data: Ref<PagedResponse<T> | undefined>;
     error: Ref<AppError | undefined>;

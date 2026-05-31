@@ -105,14 +105,12 @@ import type { SearchBarAction } from "./types.ts";
 
 const props = withDefaults(
     defineProps<{
-        modelValue: string | null;
+        modelValue: string | undefined;
         searchText: string;
         filterSections: FilterSectionDef[];
         filterValues: TableFilters;
         dataTestId?: string;
-        // The search term currently applied to the table (set on Enter / icon /
-        // button). Drives the search button's disabled state and the count.
-        appliedSearch?: string | null;
+        appliedSearch?: string | undefined;
         dateTitle?: string;
         dateValue?: Date | null;
         actions?: SearchBarAction[];
@@ -127,7 +125,7 @@ const props = withDefaults(
 );
 
 const emit = defineEmits<{
-    "update:modelValue": [value: string | null];
+    "update:modelValue": [value: string | undefined];
     search: [];
     clear: [];
     "update:filterValues": [value: TableFilters];
@@ -139,9 +137,6 @@ const emit = defineEmits<{
 // The date picker is shown iff a dateTitle is provided.
 const hasDate = computed(() => !!props.dateTitle);
 
-// Filters and the date apply instantly, so they count as soon as they're set.
-// The search box applies explicitly, so it counts only once the parent reflects
-// it back via appliedSearch — keeping this in sync with external clears.
 const clearAllCount = computed(() => {
     let count = 0;
     if (props.appliedSearch) count++;
@@ -161,7 +156,7 @@ function onSearch() {
 }
 
 function clearFilters() {
-    emit("update:modelValue", null);
+    emit("update:modelValue", undefined);
     emit("clearFilters");
 }
 </script>

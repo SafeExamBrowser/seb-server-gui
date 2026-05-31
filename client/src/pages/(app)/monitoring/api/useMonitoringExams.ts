@@ -14,10 +14,10 @@ const DEFAULT_STATUS = createStringCommaList([
 
 export const useMonitoringExams = (
     paging: Readonly<Ref<ServerTablePaging>>,
-    searchField: Readonly<Ref<string | null>>,
+    searchField: Readonly<Ref<string | undefined>>,
     startTimestamp: Readonly<Ref<number | null>>,
-    selectedType: Readonly<Ref<string | null>>,
-    selectedStatus: Readonly<Ref<string | null>>,
+    selectedType: Readonly<Ref<string | undefined>>,
+    selectedStatus: Readonly<Ref<string | undefined>>,
 ) => {
     return useFetch<Exams>(() => {
         const params = tableUtils.assignExamSelectPagingOptions(

@@ -52,6 +52,7 @@ export const vuetify = createVuetify({
                     "error-container": "#ffdad6",
                     "on-error-container": "#410002",
                     "surface-light": "#e7e8ef",
+                    "surface-tint": "#E6EEF8",
                 },
                 variables: {
                     "overlay-background": "#171c25",

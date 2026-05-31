@@ -8,16 +8,11 @@ export type ActiveFilterPill = {
     option: FilterOption;
 };
 
-// Sentinel section keys so the search term and the date can travel through the
-// same "active filter pill" pipeline as the real filter sections and be routed
-// back to the right clear action when their pill is removed.
 export const SEARCH_PILL_KEY = "__search__";
 export const DATE_PILL_KEY = "__date__";
 
 type SearchConfig = {
-    // The *applied* search term (what the table is currently filtered by), not
-    // the in-progress text in the box.
-    applied: MaybeRefOrGetter<string | null | undefined>;
+    applied: MaybeRefOrGetter<string | undefined>;
     clear: () => unknown;
 };
 
@@ -40,11 +35,6 @@ function defaultDateFormat(value: Date) {
     return value.toLocaleDateString();
 }
 
-// Owns the shared "filter panel" state for list pages: whether the filter
-// sidebar is open and the active filters as removable pills. The agreed model
-// treats the search term and the date as filters too, so they render as pills
-// alongside the filter sections and feed the same count. Removing a pill routes
-// to the matching clear action (search / date / a single filter section).
 export function useListFilterPanel(options: ListFilterPanelOptions) {
     const filtersOpen = ref(options.initiallyOpen ?? true);
 
