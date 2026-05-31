@@ -13,6 +13,13 @@
             { label: store.currentStep.title },
         ]"
     >
+        <template #PanelLeft>
+            <StepperSidebar
+                :title="$t('titles.createTemplateExam')"
+                :current-step="store.currentStepIndex"
+                :steps="store.stepperModel"
+            />
+        </template>
         <template #PanelMain>
             <LoadingFallbackComponent
                 :loading="createExamTemplateLoading"
@@ -27,10 +34,10 @@
                 />
             </LoadingFallbackComponent>
         </template>
-        <template #PanelAside>
-            <StepperVertical
-                :steps="store.stepperModel"
+        <template #PanelFooter>
+            <StepperFooterActions
                 :current-step="store.currentStepIndex"
+                :steps="store.stepperModel"
                 @next="handleStepperNext"
                 @prev="handleStepperPrev"
                 @finish="handleStepperFinish"
@@ -41,7 +48,8 @@
 
 <script setup lang="ts">
 import BasicPage from "@/components/layout/pages/BasicPage.vue";
-import StepperVertical from "@/components/widgets/stepperVertical/StepperVertical.vue";
+import StepperSidebar from "@/components/widgets/stepperVertical/StepperSidebar.vue";
+import StepperFooterActions from "@/components/widgets/stepperVertical/StepperFooterActions.vue";
 import { stepComponents } from "@/pages/(app)/exam-template/create/types/types.ts";
 import { useCreateExamTemplateStore } from "./composables/store/useCreateExamTemplateStore.ts";
 import { useCreateExamTemplate } from "./composables/api/useCreateExamTemplate.ts";

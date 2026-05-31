@@ -46,6 +46,13 @@
                     >
                         <slot name="PanelMain"></slot>
                     </div>
+
+                    <template v-if="$slots.PanelFooter">
+                        <v-divider :thickness="2" />
+                        <div class="flex-shrink-0 bg-surface-tint">
+                            <slot name="PanelFooter"></slot>
+                        </div>
+                    </template>
                 </v-card>
             </div>
 
