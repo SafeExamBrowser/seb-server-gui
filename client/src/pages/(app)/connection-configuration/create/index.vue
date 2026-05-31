@@ -1,5 +1,5 @@
 <template>
-    <BasicSettingsPage
+    <BasicPage
         :title="$t('titles.createConnectionConfiguration')"
         data-testid="createConnectionConfiguration-page"
     >
@@ -145,12 +145,12 @@
                 />
             </div>
         </template>
-    </BasicSettingsPage>
+    </BasicPage>
 </template>
 
 <script setup lang="ts">
 import { ref } from "vue";
-import BasicSettingsPage from "@/components/layout/pages/BasicSettingsPage.vue";
+import BasicPage from "@/components/layout/pages/BasicPage.vue";
 import FormBuilder from "@/components/widgets/formBuilder/FormBuilder.vue";
 import { useConnectionConfigurationFormFields } from "@/pages/(app)/connection-configuration/composables/useConnectionConfigurationFormFields.ts";
 import { useMutation } from "@/composables/useMutation.ts";

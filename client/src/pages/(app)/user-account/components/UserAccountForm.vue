@@ -1,5 +1,5 @@
 <template>
-    <BasicSettingsPage :title="title" :data-testid="`${dataTestPrefix}-page`">
+    <BasicPage :title="title" :data-testid="`${dataTestPrefix}-page`">
         <template #PanelMain>
             <HintText
                 :text-identifier="`userAccount.hints.${mode}`"
@@ -92,14 +92,14 @@
                 @submit="emitChangePassword"
             />
         </template>
-    </BasicSettingsPage>
+    </BasicPage>
 </template>
 
 <script setup lang="ts">
 import { computed, onMounted, ref, watch } from "vue";
 import moment from "moment-timezone";
 import i18n from "@/i18n";
-import BasicSettingsPage from "@/components/layout/pages/BasicSettingsPage.vue";
+import BasicPage from "@/components/layout/pages/BasicPage.vue";
 import FormBuilder from "@/components/widgets/formBuilder/FormBuilder.vue";
 import LoadingFallbackComponent from "@/components/widgets/loadingFallbackComponent/LoadingFallbackComponent.vue";
 import CancelButton from "@/components/widgets/CancelButton.vue";

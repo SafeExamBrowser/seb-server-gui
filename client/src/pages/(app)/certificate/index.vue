@@ -1,7 +1,8 @@
 <template>
-    <BasicSettingsPage
+    <BasicPage
         :title="$t('titles.certificates')"
         :data-test-id="dataTestId"
+        :panel-left-collapsed="!filtersOpen"
     >
         <template #ActionButton>
             <div class="d-flex justify-end align-center fill-height">
@@ -25,26 +26,35 @@
             </div>
         </template>
 
-        <template #PanelMain>
+        <template #PanelLeft>
             <SearchBar
                 v-model="searchInputValue"
-                class="mt-2"
                 search-text="certificates.filters.searchField"
                 :filter-sections="[]"
                 :filter-values="{}"
                 :data-test-id="dataTestId"
-                dense
                 @search="onSearch"
                 @clear="onClearSearch"
                 @clear-filters="onClearSearch"
+                @collapse="filtersOpen = false"
             />
+        </template>
 
+        <template #PanelMain>
+            <FilterControlsRow
+                :open="filtersOpen"
+                :pills="activePills"
+                :data-test-id="dataTestId"
+                @toggle="filtersOpen = !filtersOpen"
+                @remove="onRemovePill"
+                @clear-all="onClearSearch"
+            />
             <LoadingFallbackComponent
                 :loading="false"
                 :errors="error ? [error] : []"
             >
                 <EntityTable
-                    class="px-3"
+                    class="px-2 pt-2"
                     :headers="certificatesTableHeaders"
                     :items="tableData?.content ?? []"
                     :page-count="pageCount"
@@ -59,7 +69,7 @@
                 />
             </LoadingFallbackComponent>
         </template>
-    </BasicSettingsPage>
+    </BasicPage>
 
     <DeleteConfirmDialog
         v-model="deleteDialogOpen"
@@ -71,9 +81,11 @@
 
 <script setup lang="ts">
 import { computed, ref, watch } from "vue";
-import BasicSettingsPage from "@/components/layout/pages/BasicSettingsPage.vue";
+import BasicPage from "@/components/layout/pages/BasicPage.vue";
 import SearchBar from "@/components/widgets/searches/SearchBar.vue";
 import EntityTable from "@/components/widgets/entity-table/EntityTable.vue";
+import FilterControlsRow from "@/components/widgets/filters/FilterControlsRow.vue";
+import { useActiveFilterPills } from "@/components/widgets/filters/useActiveFilterPills.ts";
 import LoadingFallbackComponent from "@/components/widgets/loadingFallbackComponent/LoadingFallbackComponent.vue";
 import DeleteConfirmDialog from "@/components/widgets/confirmDialog/DeleteConfirmDialog.vue";
 import FormDialog from "@/components/widgets/formDialog/FormDialog.vue";
@@ -112,6 +124,12 @@ const {
 } = useUrlTableState(async () => {
     await fetchCertificates();
 });
+
+const filtersOpen = ref(true);
+
+const activePills = useActiveFilterPills([], {});
+
+function onRemovePill() {}
 
 const {
     data: fetchedData,

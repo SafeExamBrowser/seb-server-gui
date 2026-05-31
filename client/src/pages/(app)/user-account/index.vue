@@ -1,7 +1,8 @@
 <template>
-    <BasicSettingsPage
+    <BasicPage
         :title="$t('titles.userAccounts')"
         :data-test-id="dataTestId"
+        :panel-left-collapsed="!filtersOpen"
     >
         <template #ActionButton>
             <AddButton
@@ -10,27 +11,36 @@
             />
         </template>
 
-        <template #PanelMain>
+        <template #PanelLeft>
             <SearchBar
                 v-model="searchInputValue"
-                class="mt-2"
                 search-text="userAccount.list.filters.searchField"
                 :filter-sections="filterSections"
                 :filter-values="selectedFilters"
                 :data-test-id="dataTestId"
-                dense
                 @search="onSearch"
                 @clear="onClearSearch"
                 @update:filter-values="setFilters"
                 @clear-filters="clearAll"
+                @collapse="filtersOpen = false"
             />
+        </template>
 
+        <template #PanelMain>
+            <FilterControlsRow
+                :open="filtersOpen"
+                :pills="activePills"
+                :data-test-id="dataTestId"
+                @toggle="filtersOpen = !filtersOpen"
+                @remove="onRemovePill"
+                @clear-all="clearAll"
+            />
             <LoadingFallbackComponent
                 :loading="false"
                 :errors="error ? [error] : []"
             >
                 <EntityTable
-                    class="px-3"
+                    class="px-2 pt-2"
                     :headers="userAccountsTableHeaders"
                     :items="tableData?.content ?? []"
                     :page-count="pageCount"
@@ -54,7 +64,7 @@
                 </EntityTable>
             </LoadingFallbackComponent>
         </template>
-    </BasicSettingsPage>
+    </BasicPage>
 
     <DeleteConfirmDialog
         v-model="deleteDialogOpen"
@@ -73,9 +83,11 @@
 
 <script setup lang="ts">
 import { computed, ref, watch } from "vue";
-import BasicSettingsPage from "@/components/layout/pages/BasicSettingsPage.vue";
+import BasicPage from "@/components/layout/pages/BasicPage.vue";
 import SearchBar from "@/components/widgets/searches/SearchBar.vue";
 import EntityTable from "@/components/widgets/entity-table/EntityTable.vue";
+import FilterControlsRow from "@/components/widgets/filters/FilterControlsRow.vue";
+import { useActiveFilterPills } from "@/components/widgets/filters/useActiveFilterPills.ts";
 import ActiveStatusChip from "@/components/widgets/ActiveStatusChip.vue";
 import DeleteConfirmDialog from "@/components/widgets/confirmDialog/DeleteConfirmDialog.vue";
 import StatusConfirmDialog from "@/components/widgets/confirmDialog/StatusConfirmDialog.vue";
@@ -136,6 +148,14 @@ const {
 } = useUrlTableState(async () => {
     await fetchUserAccounts();
 }, [STATUS_FILTER_KEY, INSTITUTION_FILTER_KEY]);
+
+const filtersOpen = ref(true);
+
+const activePills = useActiveFilterPills(filterSections, selectedFilters);
+
+function onRemovePill(sectionKey: string) {
+    void setFilters({ ...selectedFilters.value, [sectionKey]: null });
+}
 
 const selectedStatus = computed(() => selectedFilters.value.status);
 const selectedInstitutionId = computed(

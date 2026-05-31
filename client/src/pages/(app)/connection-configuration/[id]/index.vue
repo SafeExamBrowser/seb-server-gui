@@ -1,5 +1,5 @@
 <template>
-    <BasicSettingsPage
+    <BasicPage
         :title="$t('titles.connectionConfigurationViewAndEdit')"
         data-testid="editConnectionConfiguration-page"
     >
@@ -159,7 +159,7 @@
                 </div>
             </LoadingFallbackComponent>
         </template>
-    </BasicSettingsPage>
+    </BasicPage>
 </template>
 
 <script setup lang="ts">
@@ -167,7 +167,7 @@ import { errorMessageOf } from "@/services/errors/toAppError.ts";
 import { computed, onMounted, ref } from "vue";
 import { useRoute, useRouter } from "vue-router";
 import moment from "moment-timezone";
-import BasicSettingsPage from "@/components/layout/pages/BasicSettingsPage.vue";
+import BasicPage from "@/components/layout/pages/BasicPage.vue";
 import FormBuilder from "@/components/widgets/formBuilder/FormBuilder.vue";
 import LoadingFallbackComponent from "@/components/widgets/loadingFallbackComponent/LoadingFallbackComponent.vue";
 import CancelButton from "@/components/widgets/CancelButton.vue";

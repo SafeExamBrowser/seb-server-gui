@@ -1,5 +1,5 @@
 <template>
-    <BasicSettingsPage
+    <BasicPage
         :title="$t('titles.createAssessmentTool')"
         data-testid="createAssessmentTool-page"
     >
@@ -130,12 +130,12 @@
                 />
             </div>
         </template>
-    </BasicSettingsPage>
+    </BasicPage>
 </template>
 
 <script setup lang="ts">
 import { ref } from "vue";
-import BasicSettingsPage from "@/components/layout/pages/BasicSettingsPage.vue";
+import BasicPage from "@/components/layout/pages/BasicPage.vue";
 import FormBuilder from "@/components/widgets/formBuilder/FormBuilder.vue";
 import LoadingFallbackComponent from "@/components/widgets/loadingFallbackComponent/LoadingFallbackComponent.vue";
 import { useAssessmentToolFormFields } from "@/pages/(app)/assessment-tool/composables/useAssessmentToolFormFields.ts";

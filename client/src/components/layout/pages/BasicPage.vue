@@ -23,15 +23,15 @@
                     rounded="lg"
                     class="h-100 d-flex flex-column overflow-hidden"
                 >
-                    <v-row>
-                        <PageHeader
-                            :title="title"
-                            :bread-crumb="breadCrumb"
-                            :data-test-id="dataTestId"
-                        />
-                        <v-spacer />
-                        <slot name="ActionButton"></slot>
-                    </v-row>
+                    <PageHeader
+                        :title="title"
+                        :bread-crumb="breadCrumb"
+                        :data-test-id="dataTestId"
+                    >
+                        <template v-if="$slots.ActionButton" #actions>
+                            <slot name="ActionButton"></slot>
+                        </template>
+                    </PageHeader>
 
                     <div
                         class="flex-grow-1 overflow-y-auto"
