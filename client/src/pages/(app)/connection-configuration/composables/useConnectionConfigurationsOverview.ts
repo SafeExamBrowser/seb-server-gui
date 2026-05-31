@@ -4,8 +4,10 @@ import type { TableItem } from "@/components/widgets/entity-table/types.ts";
 import { useConnectionConfigurationsTableHeaders } from "./useConnectionConfigurationsTableHeaders.ts";
 import { useConnectionConfigurationsTableActions } from "./useConnectionConfigurationsTableActions.ts";
 import { useConnectionConfigurationsList } from "./useConnectionConfigurationsList.ts";
-import { useConnectionConfigurationsDeleteFlow } from "./useConnectionConfigurationsDeleteFlow.ts";
-import { useConnectionConfigurationsStatusFlow } from "./useConnectionConfigurationsStatusFlow.ts";
+import { useDeleteConnectionConfiguration } from "@/pages/(app)/connection-configuration/api/useDeleteConnectionConfiguration.ts";
+import { useToggleConnectionConfigurationStatus } from "@/pages/(app)/connection-configuration/api/useToggleConnectionConfigurationStatus.ts";
+import { useEntityDeleteFlow } from "@/components/widgets/entity-table/composables/useEntityDeleteFlow.ts";
+import { useEntityStatusFlow } from "@/components/widgets/entity-table/composables/useEntityStatusFlow.ts";
 
 export const useConnectionConfigurationsOverview = () => {
     const router = useRouter();
@@ -25,11 +27,32 @@ export const useConnectionConfigurationsOverview = () => {
 
     const list = useConnectionConfigurationsList();
 
-    const deleteFlow = useConnectionConfigurationsDeleteFlow({
+    const {
+        removeConnectionConfigurationFromItem,
+        error: deleteError,
+        loading: deleteLoading,
+    } = useDeleteConnectionConfiguration();
+
+    const deleteFlow = useEntityDeleteFlow({
+        remove: removeConnectionConfigurationFromItem,
+        error: deleteError,
+        loading: deleteLoading,
+        contextLabel: "connectionconfiguration",
+        detailTextOf: (item) => String(item.name ?? ""),
         onDeleteSuccess: list.reloadList,
     });
 
-    const statusFlow = useConnectionConfigurationsStatusFlow({
+    const {
+        toggleConnectionConfigurationStatusFromItem,
+        error: statusError,
+        loading: statusLoading,
+    } = useToggleConnectionConfigurationStatus();
+
+    const statusFlow = useEntityStatusFlow({
+        toggle: toggleConnectionConfigurationStatusFromItem,
+        error: statusError,
+        loading: statusLoading,
+        contextLabel: "connectionconfiguration.status",
         onStatusChangeSuccess: list.reloadList,
     });
 

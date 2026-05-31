@@ -1,6 +1,7 @@
 import { computed } from "vue";
 import { useUrlTableState } from "@/components/widgets/entity-table/composables/useUrlTableState.ts";
 import { STATUS_FILTER_KEY } from "@/components/widgets/filters/statusFilterSection.ts";
+import { usePagedListData } from "@/components/widgets/entity-table/composables/usePagedListData.ts";
 import { useInstitutionsFilters } from "./useInstitutionsFilters.ts";
 import { useInstitutions } from "@/pages/(app)/institution/api/useInstitutions.ts";
 
@@ -30,23 +31,12 @@ export const useInstitutionsList = () => {
         fetchData: fetchInstitutions,
     } = useInstitutions(options, searchField, selectedStatus);
 
-    const items = computed(() => data.value?.content ?? []);
-    const pageCount = computed(() => data.value?.number_of_pages ?? 0);
-    const errors = computed(() => (error.value ? [error.value] : []));
-
-    const reloadList = async () => {
-        await fetchInstitutions();
-
-        const maxPage = Math.max(1, pageCount.value);
-
-        if (options.value.page <= maxPage) {
-            return;
-        }
-
-        options.value.page = maxPage;
-
-        await fetchInstitutions();
-    };
+    const { items, pageCount, errors, reloadList } = usePagedListData({
+        data,
+        error,
+        options,
+        fetchData: fetchInstitutions,
+    });
 
     return {
         items,

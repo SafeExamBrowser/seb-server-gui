@@ -1,5 +1,6 @@
 import { computed } from "vue";
 import { useUrlTableState } from "@/components/widgets/entity-table/composables/useUrlTableState.ts";
+import { usePagedListData } from "@/components/widgets/entity-table/composables/usePagedListData.ts";
 import { STATUS_FILTER_KEY } from "@/components/widgets/filters/statusFilterSection.ts";
 import { INSTITUTION_FILTER_KEY } from "@/components/widgets/filters/useInstitutionFilterSection.ts";
 import {
@@ -47,23 +48,12 @@ export const useAssessmentToolsList = () => {
         selectedInstitutionId,
     );
 
-    const items = computed(() => data.value?.content ?? []);
-    const pageCount = computed(() => data.value?.number_of_pages ?? 0);
-    const errors = computed(() => (error.value ? [error.value] : []));
-
-    const reloadList = async () => {
-        await fetchAssessmentTools();
-
-        const maxPage = Math.max(1, pageCount.value);
-
-        if (options.value.page <= maxPage) {
-            return;
-        }
-
-        options.value.page = maxPage;
-
-        await fetchAssessmentTools();
-    };
+    const { items, pageCount, errors, reloadList } = usePagedListData({
+        data,
+        error,
+        options,
+        fetchData: fetchAssessmentTools,
+    });
 
     return {
         items,

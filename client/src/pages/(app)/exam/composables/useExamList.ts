@@ -1,5 +1,6 @@
 import { computed } from "vue";
 import { useUrlTableState } from "@/components/widgets/entity-table/composables/useUrlTableState.ts";
+import { usePagedListData } from "@/components/widgets/entity-table/composables/usePagedListData.ts";
 import {
     useExamFilters,
     TYPE_FILTER_KEY,
@@ -49,9 +50,12 @@ export const useExamList = () => {
         selectedStatus,
     );
 
-    const items = computed(() => data.value?.content ?? []);
-    const pageCount = computed(() => data.value?.number_of_pages ?? 0);
-    const errors = computed(() => (error.value ? [error.value] : []));
+    const { items, pageCount, errors } = usePagedListData({
+        data,
+        error,
+        options,
+        fetchData: fetchExams,
+    });
 
     return {
         items,

@@ -4,8 +4,10 @@ import type { TableItem } from "@/components/widgets/entity-table/types.ts";
 import { useAssessmentToolsTableHeaders } from "./useAssessmentToolsTableHeaders.ts";
 import { useAssessmentToolsTableActions } from "./useAssessmentToolsTableActions.ts";
 import { useAssessmentToolsList } from "./useAssessmentToolsList.ts";
-import { useAssessmentToolsDeleteFlow } from "./useAssessmentToolsDeleteFlow.ts";
-import { useAssessmentToolsStatusFlow } from "./useAssessmentToolsStatusFlow.ts";
+import { useDeleteAssessmentTool } from "@/pages/(app)/assessment-tool/api/useDeleteAssessmentTool.ts";
+import { useToggleAssessmentToolStatus } from "@/pages/(app)/assessment-tool/api/useToggleAssessmentTool.ts";
+import { useEntityDeleteFlow } from "@/components/widgets/entity-table/composables/useEntityDeleteFlow.ts";
+import { useEntityStatusFlow } from "@/components/widgets/entity-table/composables/useEntityStatusFlow.ts";
 
 export const useAssessmentToolsOverview = () => {
     const router = useRouter();
@@ -24,11 +26,32 @@ export const useAssessmentToolsOverview = () => {
 
     const list = useAssessmentToolsList();
 
-    const deleteFlow = useAssessmentToolsDeleteFlow({
+    const {
+        removeAssessmentToolFromItem,
+        error: deleteError,
+        loading: deleteLoading,
+    } = useDeleteAssessmentTool();
+
+    const deleteFlow = useEntityDeleteFlow({
+        remove: removeAssessmentToolFromItem,
+        error: deleteError,
+        loading: deleteLoading,
+        contextLabel: "assessmenttool",
+        detailTextOf: (item) => String(item.name ?? ""),
         onDeleteSuccess: list.reloadList,
     });
 
-    const statusFlow = useAssessmentToolsStatusFlow({
+    const {
+        toggleAssessmentToolStatusFromItem,
+        error: statusError,
+        loading: statusLoading,
+    } = useToggleAssessmentToolStatus();
+
+    const statusFlow = useEntityStatusFlow({
+        toggle: toggleAssessmentToolStatusFromItem,
+        error: statusError,
+        loading: statusLoading,
+        contextLabel: "assessmenttool.status",
         onStatusChangeSuccess: list.reloadList,
     });
 

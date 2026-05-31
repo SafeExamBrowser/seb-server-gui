@@ -4,8 +4,10 @@ import type { TableItem } from "@/components/widgets/entity-table/types.ts";
 import { useUserAccountsTableHeaders } from "./useUserAccountsTableHeaders.ts";
 import { useUserAccountsTableActions } from "./useUserAccountsTableActions.ts";
 import { useUserAccountsList } from "./useUserAccountsList.ts";
-import { useUserAccountsDeleteFlow } from "./useUserAccountsDeleteFlow.ts";
-import { useUserAccountsStatusFlow } from "./useUserAccountsStatusFlow.ts";
+import { useDeleteUserAccount } from "@/pages/(app)/user-account/api/useDeleteUserAccount.ts";
+import { useToggleUserAccountStatus } from "@/pages/(app)/user-account/api/useToggleUserAccountStatus.ts";
+import { useEntityDeleteFlow } from "@/components/widgets/entity-table/composables/useEntityDeleteFlow.ts";
+import { useEntityStatusFlow } from "@/components/widgets/entity-table/composables/useEntityStatusFlow.ts";
 
 export const useUserAccountsOverview = () => {
     const router = useRouter();
@@ -24,11 +26,32 @@ export const useUserAccountsOverview = () => {
 
     const list = useUserAccountsList();
 
-    const deleteFlow = useUserAccountsDeleteFlow({
+    const {
+        removeUserAccountFromItem,
+        error: deleteError,
+        loading: deleteLoading,
+    } = useDeleteUserAccount();
+
+    const deleteFlow = useEntityDeleteFlow({
+        remove: removeUserAccountFromItem,
+        error: deleteError,
+        loading: deleteLoading,
+        contextLabel: "useraccount",
+        detailTextOf: (item) => String(item.name ?? ""),
         onDeleteSuccess: list.reloadList,
     });
 
-    const statusFlow = useUserAccountsStatusFlow({
+    const {
+        toggleUserAccountStatusFromItem,
+        error: statusError,
+        loading: statusLoading,
+    } = useToggleUserAccountStatus();
+
+    const statusFlow = useEntityStatusFlow({
+        toggle: toggleUserAccountStatusFromItem,
+        error: statusError,
+        loading: statusLoading,
+        contextLabel: "useraccount.status",
         onStatusChangeSuccess: list.reloadList,
     });
 

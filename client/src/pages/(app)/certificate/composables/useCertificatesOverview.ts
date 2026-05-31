@@ -3,14 +3,26 @@ import { useCertificatesTableHeaders } from "./useCertificateTableHeaders.ts";
 import { useCertificatesTableActions } from "./useCertificatesTableActions.ts";
 import { useCertificateCreateForm } from "./useCertificateCreateForm.ts";
 import { useCertificatesList } from "./useCertificatesList.ts";
-import { useCertificatesDeleteFlow } from "./useCertificatesDeleteFlow.ts";
+import { useDeleteCertificate } from "./api/useDeleteCertificate.ts";
+import { useEntityDeleteFlow } from "@/components/widgets/entity-table/composables/useEntityDeleteFlow.ts";
 
 export const useCertificatesOverview = () => {
     const { headers, cellFormatters } = useCertificatesTableHeaders();
 
     const list = useCertificatesList();
 
-    const deleteFlow = useCertificatesDeleteFlow({
+    const {
+        removeCertificateFromItem,
+        error: deleteError,
+        loading: deleteLoading,
+    } = useDeleteCertificate();
+
+    const deleteFlow = useEntityDeleteFlow({
+        remove: removeCertificateFromItem,
+        error: deleteError,
+        loading: deleteLoading,
+        contextLabel: "certificate",
+        detailTextOf: (item) => String(item.alias ?? ""),
         onDeleteSuccess: list.reloadList,
     });
 

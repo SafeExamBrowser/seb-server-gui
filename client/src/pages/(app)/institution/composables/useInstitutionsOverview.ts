@@ -4,8 +4,10 @@ import type { TableItem } from "@/components/widgets/entity-table/types.ts";
 import { useInstitutionsTableHeaders } from "./useInstitutionsTableHeaders.ts";
 import { useInstitutionsTableActions } from "./useInstitutionsTableActions.ts";
 import { useInstitutionsList } from "./useInstitutionsList.ts";
-import { useInstitutionsDeleteFlow } from "./useInstitutionsDeleteFlow.ts";
-import { useInstitutionsStatusFlow } from "./useInstitutionsStatusFlow.ts";
+import { useDeleteInstitution } from "@/pages/(app)/institution/api/useDeleteInstitution.ts";
+import { useToggleInstitutionStatus } from "@/pages/(app)/institution/api/useToggleInstitutionStatus.ts";
+import { useEntityDeleteFlow } from "@/components/widgets/entity-table/composables/useEntityDeleteFlow.ts";
+import { useEntityStatusFlow } from "@/components/widgets/entity-table/composables/useEntityStatusFlow.ts";
 
 export const useInstitutionsOverview = () => {
     const router = useRouter();
@@ -24,11 +26,32 @@ export const useInstitutionsOverview = () => {
 
     const list = useInstitutionsList();
 
-    const deleteFlow = useInstitutionsDeleteFlow({
+    const {
+        removeInstitutionFromItem,
+        error: deleteError,
+        loading: deleteLoading,
+    } = useDeleteInstitution();
+
+    const deleteFlow = useEntityDeleteFlow({
+        remove: removeInstitutionFromItem,
+        error: deleteError,
+        loading: deleteLoading,
+        contextLabel: "institution",
+        detailTextOf: (item) => String(item.name ?? ""),
         onDeleteSuccess: list.reloadList,
     });
 
-    const statusFlow = useInstitutionsStatusFlow({
+    const {
+        toggleInstitutionStatusFromItem,
+        error: statusError,
+        loading: statusLoading,
+    } = useToggleInstitutionStatus();
+
+    const statusFlow = useEntityStatusFlow({
+        toggle: toggleInstitutionStatusFromItem,
+        error: statusError,
+        loading: statusLoading,
+        contextLabel: "institution.status",
         onStatusChangeSuccess: list.reloadList,
     });
 
