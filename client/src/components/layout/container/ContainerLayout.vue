@@ -34,9 +34,6 @@
             >
                 <RouterView />
             </v-card>
-            <!-- pa-3 + ma-n3 keeps the routed content in the exact same place
-                 while giving the scroll container 12px of breathing room so the
-                 inner v-cards' shadows aren't clipped by overflow. -->
             <div
                 v-else
                 class="flex-1-1-0 overflow-y-auto pa-3 ma-n3"
