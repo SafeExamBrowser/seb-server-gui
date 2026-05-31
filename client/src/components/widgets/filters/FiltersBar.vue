@@ -7,6 +7,7 @@
             >
                 <FilterRadioOption
                     v-for="option in section.options"
+                    class="mb-1"
                     :key="option.value"
                     :label="option.label"
                     :color="option.color"
