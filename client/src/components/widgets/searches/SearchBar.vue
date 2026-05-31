@@ -1,11 +1,12 @@
 <template>
-    <v-card
+    <div
         class="d-flex flex-column h-100"
-        elevation="2"
-        rounded="lg"
         :data-testid="`${dataTestId}-filters-container`"
     >
-        <div class="d-flex align-center ga-2 px-4 pt-6 pb-1">
+        <div
+            class="d-flex align-center ga-2 px-4 pt-6 pb-1"
+            :style="{ minHeight: '56px' }"
+        >
             <v-icon icon="mdi-filter-variant" color="primary" />
             <span class="text-subtitle-1 font-weight-bold flex-grow-1">
                 {{ $t("general.filters") }}
@@ -88,7 +89,7 @@
                 {{ $t(action.text) }}
             </v-btn>
         </div>
-    </v-card>
+    </div>
 </template>
 
 <script setup lang="ts">

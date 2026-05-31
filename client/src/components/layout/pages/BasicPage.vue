@@ -7,15 +7,17 @@
         </div>
 
         <div class="flex-grow-1 d-flex" :style="{ minHeight: 0 }">
-            <div
+            <v-card
                 v-if="$slots.PanelLeft"
+                elevation="2"
+                rounded="lg"
                 class="flex-shrink-0 h-100 overflow-hidden"
                 :style="panelLeftStyle"
             >
                 <div class="h-100" :style="{ width: PANEL_LEFT_WIDTH }">
                     <slot name="PanelLeft"></slot>
                 </div>
-            </div>
+            </v-card>
 
             <div class="flex-grow-1 h-100" :style="{ minWidth: 0 }">
                 <v-card

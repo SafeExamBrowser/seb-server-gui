@@ -13,7 +13,7 @@
         </ContainerHeader>
 
         <div
-            class="d-flex flex-1-1-0 ga-6 px-6 pb-6 pt-4"
+            class="d-flex flex-1-1-0 ga-4 px-6 pb-6 pt-2"
             :style="{ minHeight: 0 }"
         >
             <ContainerSidePanel
@@ -26,7 +26,7 @@
 
             <v-card
                 v-if="isPageBlue"
-                class="flex-1-1-0 rounded-lg overflow-y-auto pa-5"
+                class="flex-1-1-0 rounded-lg overflow-y-auto pa-4"
                 color="primary"
                 :data-testid="`${pageTestId}-page-container`"
                 elevation="1"
@@ -34,9 +34,12 @@
             >
                 <RouterView />
             </v-card>
+            <!-- pa-3 + ma-n3 keeps the routed content in the exact same place
+                 while giving the scroll container 12px of breathing room so the
+                 inner v-cards' shadows aren't clipped by overflow. -->
             <div
                 v-else
-                class="flex-1-1-0 overflow-y-auto"
+                class="flex-1-1-0 overflow-y-auto pa-3 ma-n3"
                 :data-testid="`${pageTestId}-page-container`"
                 :style="{ minHeight: 0, minWidth: 0 }"
             >
