@@ -1,7 +1,13 @@
 <template>
     <BasicPage
         :title="$t('titles.createConnectionConfiguration')"
-        :bread-crumb="[{ label: $t('titles.createConnectionConfiguration') }]"
+        :bread-crumb="[
+            {
+                label: $t('titles.connectionConfigurations'),
+                link: { name: '/(app)/connection-configuration/' },
+            },
+            { label: $t('titles.createConnectionConfiguration') },
+        ]"
         data-testid="createConnectionConfiguration-page"
     >
         <template #SubNav>

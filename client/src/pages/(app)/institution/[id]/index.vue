@@ -1,7 +1,13 @@
 <template>
     <BasicPage
         :title="$t('titles.editInstitution')"
-        :bread-crumb="[{ label: $t('titles.editInstitution') }]"
+        :bread-crumb="[
+            {
+                label: $t('titles.institutions'),
+                link: { name: '/(app)/institution/' },
+            },
+            { label: institution?.name ?? $t('titles.editInstitution') },
+        ]"
         data-testid="editInstitution-page"
     >
         <template #SubNav>

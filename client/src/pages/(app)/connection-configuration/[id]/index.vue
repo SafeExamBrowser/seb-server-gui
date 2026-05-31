@@ -2,7 +2,15 @@
     <BasicPage
         :title="$t('titles.connectionConfigurationViewAndEdit')"
         :bread-crumb="[
-            { label: $t('titles.connectionConfigurationViewAndEdit') },
+            {
+                label: $t('titles.connectionConfigurations'),
+                link: { name: '/(app)/connection-configuration/' },
+            },
+            {
+                label:
+                    config?.name ??
+                    $t('titles.connectionConfigurationViewAndEdit'),
+            },
         ]"
         data-testid="editConnectionConfiguration-page"
     >

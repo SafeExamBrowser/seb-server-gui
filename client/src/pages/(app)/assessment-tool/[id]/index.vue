@@ -1,7 +1,13 @@
 <template>
     <BasicPage
         :title="$t('titles.assessmentToolEdit')"
-        :bread-crumb="[{ label: $t('titles.assessmentToolEdit') }]"
+        :bread-crumb="[
+            {
+                label: $t('titles.assessmentToolConnections'),
+                link: { name: '/(app)/assessment-tool/' },
+            },
+            { label: tool?.name ?? $t('titles.assessmentToolEdit') },
+        ]"
         data-testid="editAssessmentTool-page"
     >
         <template #SubNav>

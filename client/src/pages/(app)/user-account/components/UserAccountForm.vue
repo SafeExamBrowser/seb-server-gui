@@ -1,7 +1,7 @@
 <template>
     <BasicPage
         :title="title"
-        :bread-crumb="[{ label: title }]"
+        :bread-crumb="breadCrumb"
         :data-testid="`${dataTestPrefix}-page`"
     >
         <template #SubNav>
@@ -124,6 +124,7 @@ import {
 import { UserRoleEnum } from "@/models/userRoleEnum.ts";
 import type { UserAccount } from "@/models/userAccount.ts";
 import type { BackendFieldAliasMap } from "@/services/errors/types.ts";
+import type { BreadCrumbItem } from "@/components/widgets/breadCrumb/types";
 import {
     applyBackendFieldErrors,
     type ApplyBackendErrorsResult,
@@ -195,6 +196,19 @@ const roleDescription = computed(() => {
     }
     return i18n.global.t(`userAccount.general.role.info.${role.value}`);
 });
+
+const breadCrumb = computed<BreadCrumbItem[]>(() => [
+    {
+        label: i18n.global.t("titles.userAccounts"),
+        link: { name: "/(app)/user-account/" },
+    },
+    {
+        label:
+            props.mode === "create"
+                ? props.title
+                : (props.initialUser?.username ?? props.title),
+    },
+]);
 
 const getHighestRole = (roles: string[]): string | undefined => {
     if (roles.includes(UserRoleEnum.SEB_SERVER_ADMIN)) {
