@@ -64,7 +64,7 @@
 </template>
 
 <script setup lang="ts">
-import type { ActiveFilterPill } from "./useActiveFilterPills.ts";
+import type { ActiveFilterPill } from "./useListFilterPanel.ts";
 
 withDefaults(
     defineProps<{

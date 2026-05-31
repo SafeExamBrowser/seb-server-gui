@@ -12,6 +12,7 @@
         <template #PanelLeft>
             <SearchBar
                 v-model="list.searchInputValue"
+                :applied-search="list.searchField"
                 search-text="examTemplateList.info.nameSearchPlaceholder"
                 :filter-sections="list.filterSections"
                 :filter-values="list.selectedFilters"
@@ -20,7 +21,6 @@
                 @clear="list.onClearSearch"
                 @update:filter-values="list.setFilters"
                 @clear-filters="list.clearAll"
-                @collapse="filtersOpen = false"
             />
         </template>
         <template #PanelMain>
@@ -72,12 +72,11 @@
 </template>
 
 <script setup lang="ts">
-import { ref } from "vue";
 import BasicPage from "@/components/layout/pages/BasicPage.vue";
 import SearchBar from "@/components/widgets/searches/SearchBar.vue";
 import EntityTable from "@/components/widgets/entity-table/EntityTable.vue";
 import FilterControlsRow from "@/components/widgets/filters/FilterControlsRow.vue";
-import { useActiveFilterPills } from "@/components/widgets/filters/useActiveFilterPills.ts";
+import { useListFilterPanel } from "@/components/widgets/filters/useListFilterPanel.ts";
 import DeleteConfirmDialog from "@/components/widgets/confirmDialog/DeleteConfirmDialog.vue";
 import LoadingFallbackComponent from "@/components/widgets/loadingFallbackComponent/LoadingFallbackComponent.vue";
 import { useExamTemplateOverview } from "./composables/useExamTemplateOverview.ts";
@@ -86,14 +85,10 @@ const dataTestId = "examTemplates";
 
 const { list, deleteFlow, copyFlow } = useExamTemplateOverview();
 
-const filtersOpen = ref(true);
-
-const activePills = useActiveFilterPills(
-    () => list.filterSections,
-    () => list.selectedFilters,
-);
-
-function onRemovePill(sectionKey: string) {
-    void list.setFilters({ ...list.selectedFilters, [sectionKey]: null });
-}
+const { filtersOpen, activePills, onRemovePill } = useListFilterPanel({
+    search: { applied: () => list.searchField, clear: list.onClearSearch },
+    filterSections: () => list.filterSections,
+    selectedFilters: () => list.selectedFilters,
+    setFilters: list.setFilters,
+});
 </script>

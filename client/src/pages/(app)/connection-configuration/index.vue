@@ -19,6 +19,7 @@
         <template #PanelLeft>
             <SearchBar
                 v-model="searchInputValue"
+                :applied-search="searchField"
                 search-text="connectionConfigurations.list.filters.searchField"
                 :filter-sections="filterSections"
                 :filter-values="selectedFilters"
@@ -27,7 +28,6 @@
                 @clear="onClearSearch"
                 @update:filter-values="setFilters"
                 @clear-filters="clearAll"
-                @collapse="filtersOpen = false"
             />
         </template>
 
@@ -93,7 +93,7 @@ import SettingsNavigation from "@/components/widgets/navigation/SettingsNavigati
 import SearchBar from "@/components/widgets/searches/SearchBar.vue";
 import EntityTable from "@/components/widgets/entity-table/EntityTable.vue";
 import FilterControlsRow from "@/components/widgets/filters/FilterControlsRow.vue";
-import { useActiveFilterPills } from "@/components/widgets/filters/useActiveFilterPills.ts";
+import { useListFilterPanel } from "@/components/widgets/filters/useListFilterPanel.ts";
 import ActiveStatusChip from "@/components/widgets/ActiveStatusChip.vue";
 import DeleteConfirmDialog from "@/components/widgets/confirmDialog/DeleteConfirmDialog.vue";
 import StatusConfirmDialog from "@/components/widgets/confirmDialog/StatusConfirmDialog.vue";
@@ -156,13 +156,12 @@ const {
     await fetchConnectionConfigurations();
 }, [STATUS_FILTER_KEY, INSTITUTION_FILTER_KEY]);
 
-const filtersOpen = ref(true);
-
-const activePills = useActiveFilterPills(filterSections, selectedFilters);
-
-function onRemovePill(sectionKey: string) {
-    void setFilters({ ...selectedFilters.value, [sectionKey]: null });
-}
+const { filtersOpen, activePills, onRemovePill } = useListFilterPanel({
+    search: { applied: searchField, clear: onClearSearch },
+    filterSections,
+    selectedFilters,
+    setFilters,
+});
 
 const selectedStatus = computed(() => selectedFilters.value.status);
 const selectedInstitutionId = computed(

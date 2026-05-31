@@ -34,6 +34,7 @@
         <template #PanelLeft>
             <SearchBar
                 v-model="searchInputValue"
+                :applied-search="searchField"
                 search-text="certificates.filters.searchField"
                 :filter-sections="[]"
                 :filter-values="{}"
@@ -41,7 +42,6 @@
                 @search="onSearch"
                 @clear="onClearSearch"
                 @clear-filters="onClearSearch"
-                @collapse="filtersOpen = false"
             />
         </template>
 
@@ -91,7 +91,7 @@ import SettingsNavigation from "@/components/widgets/navigation/SettingsNavigati
 import SearchBar from "@/components/widgets/searches/SearchBar.vue";
 import EntityTable from "@/components/widgets/entity-table/EntityTable.vue";
 import FilterControlsRow from "@/components/widgets/filters/FilterControlsRow.vue";
-import { useActiveFilterPills } from "@/components/widgets/filters/useActiveFilterPills.ts";
+import { useListFilterPanel } from "@/components/widgets/filters/useListFilterPanel.ts";
 import LoadingFallbackComponent from "@/components/widgets/loadingFallbackComponent/LoadingFallbackComponent.vue";
 import DeleteConfirmDialog from "@/components/widgets/confirmDialog/DeleteConfirmDialog.vue";
 import FormDialog from "@/components/widgets/formDialog/FormDialog.vue";
@@ -131,11 +131,9 @@ const {
     await fetchCertificates();
 });
 
-const filtersOpen = ref(true);
-
-const activePills = useActiveFilterPills([], {});
-
-function onRemovePill() {}
+const { filtersOpen, activePills, onRemovePill } = useListFilterPanel({
+    search: { applied: searchField, clear: onClearSearch },
+});
 
 const {
     data: fetchedData,

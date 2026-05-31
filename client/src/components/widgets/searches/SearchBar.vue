@@ -93,7 +93,7 @@
 </template>
 
 <script setup lang="ts">
-import { computed, ref } from "vue";
+import { computed } from "vue";
 import SearchBox from "@/components/widgets/SearchBox.vue";
 import DatePicker from "@/components/widgets/DatePicker.vue";
 import ConfirmButton from "@/components/widgets/ConfirmButton.vue";
@@ -110,19 +110,19 @@ const props = withDefaults(
         filterSections: FilterSectionDef[];
         filterValues: TableFilters;
         dataTestId?: string;
-        searchTitle?: string;
+        // The search term currently applied to the table (set on Enter / icon /
+        // button). Drives the search button's disabled state and the count.
+        appliedSearch?: string | null;
         dateTitle?: string;
         dateValue?: Date | null;
         actions?: SearchBarAction[];
-        dense?: boolean;
     }>(),
     {
         actions: () => [],
-        searchTitle: "general.searchTitle",
         dataTestId: undefined,
+        appliedSearch: undefined,
         dateTitle: undefined,
-        dateValue: null,
-        dense: false,
+        dateValue: undefined,
     },
 );
 
@@ -134,18 +134,18 @@ const emit = defineEmits<{
     clearFilters: [];
     "update:dateValue": [value: Date | null];
     action: [key: string];
-    collapse: [];
 }>();
 
 // The date picker is shown iff a dateTitle is provided.
 const hasDate = computed(() => !!props.dateTitle);
 
-const lastSearchedValue = ref<string | null>(props.modelValue);
-
+// Filters and the date apply instantly, so they count as soon as they're set.
+// The search box applies explicitly, so it counts only once the parent reflects
+// it back via appliedSearch — keeping this in sync with external clears.
 const clearAllCount = computed(() => {
     let count = 0;
-    if (lastSearchedValue.value) count++;
-    if (props.dateValue != null) count++;
+    if (props.appliedSearch) count++;
+    if (props.dateValue) count++;
     for (const section of props.filterSections) {
         if (props.filterValues[section.key]) count++;
     }
@@ -153,16 +153,14 @@ const clearAllCount = computed(() => {
 });
 
 const searchDisabled = computed(
-    () => props.modelValue === lastSearchedValue.value,
+    () => (props.modelValue ?? "") === (props.appliedSearch ?? ""),
 );
 
 function onSearch() {
-    lastSearchedValue.value = props.modelValue;
     emit("search");
 }
 
 function clearFilters() {
-    lastSearchedValue.value = null;
     emit("update:modelValue", null);
     emit("clearFilters");
 }

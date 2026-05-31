@@ -8,6 +8,7 @@
         <template #PanelLeft>
             <SearchBar
                 v-model="searchInputValue"
+                :applied-search="searchField"
                 search-text="monitoringExams.info.examNameSearchPlaceholder"
                 date-title="monitoringExams.info.examStartSearchPlaceholder"
                 :date-value="dateValue"
@@ -19,7 +20,6 @@
                 @update:date-value="setDate"
                 @update:filter-values="setFilters"
                 @clear-filters="clearAll"
-                @collapse="filtersOpen = false"
             />
         </template>
         <template #PanelMain>
@@ -74,7 +74,7 @@ import EntityTable from "@/components/widgets/entity-table/EntityTable.vue";
 import EnumChip from "@/components/widgets/EnumChip.vue";
 import LoadingFallbackComponent from "@/components/widgets/loadingFallbackComponent/LoadingFallbackComponent.vue";
 import FilterControlsRow from "@/components/widgets/filters/FilterControlsRow.vue";
-import { useActiveFilterPills } from "@/components/widgets/filters/useActiveFilterPills.ts";
+import { useListFilterPanel } from "@/components/widgets/filters/useListFilterPanel.ts";
 import { useUrlTableState } from "@/components/widgets/entity-table/composables/useUrlTableState.ts";
 import { useMonitoringTableHeaders } from "@/pages/(app)/monitoring/composables/useMonitoringTableHeaders.ts";
 import { useMonitoringTableActions } from "@/pages/(app)/monitoring/composables/useMonitoringTableActions.ts";
@@ -139,13 +139,13 @@ const {
     "startDate",
 );
 
-const filtersOpen = ref(true);
-
-const activePills = useActiveFilterPills(filterSections, selectedFilters);
-
-function onRemovePill(sectionKey: string) {
-    void setFilters({ ...selectedFilters.value, [sectionKey]: null });
-}
+const { filtersOpen, activePills, onRemovePill } = useListFilterPanel({
+    search: { applied: searchField, clear: onClearSearch },
+    filterSections,
+    selectedFilters,
+    setFilters,
+    date: { value: dateValue, clear: () => setDate(null) },
+});
 
 const selectedType = computed(() => selectedFilters.value[TYPE_FILTER_KEY]);
 const selectedStatus = computed(

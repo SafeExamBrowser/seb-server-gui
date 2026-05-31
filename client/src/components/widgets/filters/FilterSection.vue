@@ -1,9 +1,10 @@
 <template>
     <div :data-testid="`${dataTestId}-section`">
-        <div
-            class="d-flex align-center justify-space-between py-2 px-1"
-            style="cursor: pointer"
+        <v-list-item
+            class="px-1"
+            density="compact"
             :data-testid="`${dataTestId}-section-toggle`"
+            :aria-expanded="open ? 'true' : 'false'"
             @click="open = !open"
         >
             <span
@@ -11,12 +12,14 @@
             >
                 {{ title }}
             </span>
-            <v-icon
-                size="small"
-                class="text-medium-emphasis"
-                :icon="open ? 'mdi-chevron-up' : 'mdi-chevron-down'"
-            />
-        </div>
+            <template #append>
+                <v-icon
+                    size="small"
+                    class="text-medium-emphasis"
+                    :icon="open ? 'mdi-chevron-up' : 'mdi-chevron-down'"
+                />
+            </template>
+        </v-list-item>
         <v-expand-transition>
             <div v-show="open" class="pb-2">
                 <slot></slot>

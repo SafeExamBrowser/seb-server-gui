@@ -9,7 +9,7 @@
             @click="handleClick"
         >
             <div class="d-flex align-center ga-2 pr-4 pl-2">
-                <v-icon class="" size="25">mdi-plus</v-icon>
+                <v-icon size="25">mdi-plus</v-icon>
 
                 <span class="text-title-medium" style="letter-spacing: normal">
                     {{ $t("general.addButton") }}
