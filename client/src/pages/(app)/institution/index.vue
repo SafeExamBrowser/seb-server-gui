@@ -1,8 +1,14 @@
 <template>
-    <BasicSettingsPage
+    <BasicPage
         :title="$t('titles.institutions')"
+        :bread-crumb="[{ label: $t('titles.institutions') }]"
         :data-test-id="dataTestId"
+        :panel-left-collapsed="!filtersOpen"
     >
+        <template #SubNav>
+            <SettingsNavigation />
+        </template>
+
         <template #ActionButton>
             <AddButton
                 :route="{ name: '/(app)/institution/create/' }"
@@ -10,38 +16,44 @@
             />
         </template>
 
-        <template #PanelMain>
+        <template #PanelLeft>
             <SearchBar
-                v-model="searchInputValue"
-                class="mt-2"
+                v-model="list.searchInputValue"
+                :applied-search="list.searchField"
                 search-text="institutions.list.filters.searchField"
-                :filter-sections="filterSections"
-                :filter-values="selectedFilters"
+                :filter-sections="list.filterSections"
+                :filter-values="list.selectedFilters"
                 :data-test-id="dataTestId"
-                dense
-                @search="onSearch"
-                @clear="onClearSearch"
-                @update:filter-values="setFilters"
-                @clear-filters="clearAll"
+                @search="list.onSearch"
+                @clear="list.onClearSearch"
+                @update:filter-values="list.setFilters"
+                @clear-filters="list.clearAll"
             />
+        </template>
 
-            <LoadingFallbackComponent
-                :loading="false"
-                :errors="error ? [error] : []"
-            >
+        <template #PanelMain>
+            <FilterControlsRow
+                :open="filtersOpen"
+                :pills="activePills"
+                :data-test-id="dataTestId"
+                @toggle="filtersOpen = !filtersOpen"
+                @remove="onRemovePill"
+                @clear-all="list.clearAll"
+            />
+            <LoadingFallbackComponent :loading="false" :errors="list.errors">
                 <EntityTable
-                    class="px-3"
-                    :headers="institutionsTableHeaders"
-                    :items="tableData?.content ?? []"
-                    :page-count="pageCount"
-                    :items-per-page="options.itemsPerPage"
-                    :options="options"
-                    :loading="loading || deleteLoading || statusLoading"
-                    :detail-route="institutionDetailRoute"
-                    :actions="tableActions"
+                    class="px-2 pt-2"
+                    :headers="list.headers"
+                    :items="list.items"
+                    :page-count="list.pageCount"
+                    :items-per-page="list.options.itemsPerPage"
+                    :options="list.options"
+                    :loading="list.loading"
+                    :detail-route="list.detailRoute"
+                    :actions="list.actions"
                     :data-test-id="dataTestId"
                     item-key="id"
-                    @update:options="loadItems"
+                    @update:options="list.loadItems"
                 >
                     <template #cell-logoImage="{ item, rowTestId }">
                         <v-img
@@ -56,51 +68,43 @@
                         <ActiveStatusChip
                             :active="!!item.active"
                             :data-test-id="`${rowTestId}-status-chip`"
-                            @click="openStatusDialog(item)"
+                            @click="statusFlow.openDialog(item)"
                         />
                     </template>
                 </EntityTable>
             </LoadingFallbackComponent>
         </template>
-    </BasicSettingsPage>
+    </BasicPage>
 
     <DeleteConfirmDialog
-        v-model="deleteDialogOpen"
-        :detail-text="deleteDetailText"
+        v-model="deleteFlow.dialogOpen"
+        :detail-text="deleteFlow.detailText"
         translation-key-prefix="institutions.list"
-        @confirm="confirmDelete"
+        @confirm="deleteFlow.confirm"
     />
 
     <StatusConfirmDialog
-        v-model="statusDialogOpen"
-        :active="!!statusTarget?.active"
+        v-model="statusFlow.dialogOpen"
+        :active="!!statusFlow.target?.active"
         translation-key-prefix="institutions.list"
-        @confirm="confirmStatusChange"
+        @confirm="statusFlow.confirm"
     />
 </template>
 
 <script setup lang="ts">
-import { computed, ref, watch } from "vue";
-import BasicSettingsPage from "@/components/layout/pages/BasicSettingsPage.vue";
+import BasicPage from "@/components/layout/pages/BasicPage.vue";
+import SettingsNavigation from "@/components/widgets/navigation/SettingsNavigation.vue";
 import SearchBar from "@/components/widgets/searches/SearchBar.vue";
 import EntityTable from "@/components/widgets/entity-table/EntityTable.vue";
+import FilterControlsRow from "@/components/widgets/filters/FilterControlsRow.vue";
+import { useListFilterPanel } from "@/components/widgets/filters/useListFilterPanel.ts";
 import ActiveStatusChip from "@/components/widgets/ActiveStatusChip.vue";
 import DeleteConfirmDialog from "@/components/widgets/confirmDialog/DeleteConfirmDialog.vue";
 import StatusConfirmDialog from "@/components/widgets/confirmDialog/StatusConfirmDialog.vue";
 import LoadingFallbackComponent from "@/components/widgets/loadingFallbackComponent/LoadingFallbackComponent.vue";
 import AddButton from "@/components/widgets/AddButton.vue";
-import { useUrlTableState } from "@/components/widgets/entity-table/composables/useUrlTableState.ts";
-import { STATUS_FILTER_KEY } from "@/components/widgets/filters/statusFilterSection.ts";
-import { useInstitutionsTableHeaders } from "@/pages/(app)/institution/composables/useInstitutionsTableHeaders.ts";
-import { useInstitutionsTableActions } from "@/pages/(app)/institution/composables/useInstitutionsTableActions.ts";
-import { useInstitutionsFilters } from "@/pages/(app)/institution/composables/useInstitutionsFilters.ts";
-import { useInstitutions } from "@/pages/(app)/institution/api/useInstitutions.ts";
-import { useDeleteInstitution } from "@/pages/(app)/institution/api/useDeleteInstitution.ts";
-import { useToggleInstitutionStatus } from "@/pages/(app)/institution/api/useToggleInstitutionStatus.ts";
-import { notify } from "@/services/notifications/notify.ts";
-import type { InstitutionResponse } from "@/models/seb-server/institution.ts";
 import type { TableItem } from "@/components/widgets/entity-table/types.ts";
-import { useRouter, type RouteLocationAsRelative } from "vue-router";
+import { useInstitutionsOverview } from "./composables/useInstitutionsOverview.ts";
 
 definePage({
     meta: {
@@ -110,134 +114,19 @@ definePage({
     },
 });
 
-const router = useRouter();
-
 const dataTestId = "institutions";
 
-const institutionDetailRoute = (
-    item: TableItem,
-): RouteLocationAsRelative | null =>
-    typeof item.id === "number"
-        ? {
-              name: "/(app)/institution/[id]/",
-              params: { id: String(item.id) },
-          }
-        : null;
+const { list, deleteFlow, statusFlow } = useInstitutionsOverview();
 
-const { headers: institutionsTableHeaders } = useInstitutionsTableHeaders();
-const filterSections = useInstitutionsFilters();
-
-const tableData = ref<InstitutionResponse>();
-
-const {
-    searchInputValue,
-    searchField,
-    selectedFilters,
-    options,
-    loadItems,
-    onSearch,
-    onClearSearch,
-    setFilters,
-    clearAll,
-} = useUrlTableState(async () => {
-    await fetchInstitutions();
-}, [STATUS_FILTER_KEY]);
-
-const selectedStatus = computed(() => selectedFilters.value.status);
-
-const {
-    data: fetchedData,
-    loading,
-    error,
-    fetchData: fetchInstitutions,
-} = useInstitutions(options, searchField, selectedStatus);
-
-watch(
-    fetchedData,
-    (v) => {
-        tableData.value = v;
-    },
-    { immediate: true },
-);
-
-const pageCount = computed(() => tableData.value?.number_of_pages ?? 0);
-
-const {
-    removeInstitutionFromItem,
-    error: deleteError,
-    loading: deleteLoading,
-} = useDeleteInstitution();
-
-const {
-    toggleInstitutionStatusFromItem,
-    error: statusError,
-    loading: statusLoading,
-} = useToggleInstitutionStatus();
-
-const deleteTarget = ref<TableItem | null>(null);
-const statusTarget = ref<TableItem | null>(null);
-const deleteDialogOpen = ref(false);
-const statusDialogOpen = ref(false);
-
-const deleteDetailText = computed(() => {
-    if (!deleteTarget.value) return "";
-    return String(deleteTarget.value.name ?? "");
+const { filtersOpen, activePills, onRemovePill } = useListFilterPanel({
+    search: { applied: () => list.searchField, clear: list.onClearSearch },
+    filterSections: () => list.filterSections,
+    selectedFilters: () => list.selectedFilters,
+    setFilters: list.setFilters,
 });
-
-function openDeleteDialog(item: TableItem) {
-    deleteTarget.value = item;
-    deleteDialogOpen.value = true;
-}
-
-function openStatusDialog(item: TableItem) {
-    statusTarget.value = item;
-    statusDialogOpen.value = true;
-}
-
-async function reloadAndClampPage() {
-    await fetchInstitutions();
-    const total = tableData.value?.number_of_pages ?? 1;
-    if (options.value.page > total) {
-        options.value.page = Math.max(1, total);
-        await fetchInstitutions();
-    }
-}
-
-async function confirmDelete() {
-    if (!deleteTarget.value) return;
-    await removeInstitutionFromItem(deleteTarget.value);
-    deleteDialogOpen.value = false;
-    if (deleteError.value) {
-        notify.serverError(deleteError.value, { contextLabel: "institution" });
-        return;
-    }
-    await reloadAndClampPage();
-}
-
-async function confirmStatusChange() {
-    if (!statusTarget.value) return;
-    await toggleInstitutionStatusFromItem(statusTarget.value);
-    statusDialogOpen.value = false;
-    if (statusError.value) {
-        notify.serverError(statusError.value, {
-            contextLabel: "institution.status",
-        });
-        return;
-    }
-    await reloadAndClampPage();
-}
 
 function logoSrcOf(item: TableItem): string | undefined {
     const logo = item.logoImage;
     return typeof logo === "string" && logo !== "" ? logo : undefined;
 }
-
-const tableActions = useInstitutionsTableActions({
-    onEdit: (item) => {
-        const target = institutionDetailRoute(item);
-        if (!target) return;
-        void router.push(target);
-    },
-    onDelete: (item) => openDeleteDialog(item),
-});
 </script>

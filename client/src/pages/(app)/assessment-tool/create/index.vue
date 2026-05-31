@@ -1,8 +1,19 @@
 <template>
-    <BasicSettingsPage
+    <BasicPage
         :title="$t('titles.createAssessmentTool')"
+        :bread-crumb="[
+            {
+                label: $t('titles.assessmentToolConnections'),
+                link: { name: '/(app)/assessment-tool/' },
+            },
+            { label: $t('titles.createAssessmentTool') },
+        ]"
         data-testid="createAssessmentTool-page"
     >
+        <template #SubNav>
+            <SettingsNavigation />
+        </template>
+
         <template #PanelMain>
             <HintText
                 text-identifier="assessmentToolConnections.hints.create"
@@ -130,12 +141,13 @@
                 />
             </div>
         </template>
-    </BasicSettingsPage>
+    </BasicPage>
 </template>
 
 <script setup lang="ts">
 import { ref } from "vue";
-import BasicSettingsPage from "@/components/layout/pages/BasicSettingsPage.vue";
+import BasicPage from "@/components/layout/pages/BasicPage.vue";
+import SettingsNavigation from "@/components/widgets/navigation/SettingsNavigation.vue";
 import FormBuilder from "@/components/widgets/formBuilder/FormBuilder.vue";
 import LoadingFallbackComponent from "@/components/widgets/loadingFallbackComponent/LoadingFallbackComponent.vue";
 import { useAssessmentToolFormFields } from "@/pages/(app)/assessment-tool/composables/useAssessmentToolFormFields.ts";

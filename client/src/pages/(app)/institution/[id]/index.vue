@@ -1,8 +1,19 @@
 <template>
-    <BasicSettingsPage
+    <BasicPage
         :title="$t('titles.editInstitution')"
+        :bread-crumb="[
+            {
+                label: $t('titles.institutions'),
+                link: { name: '/(app)/institution/' },
+            },
+            { label: institution?.name ?? $t('titles.editInstitution') },
+        ]"
         data-testid="editInstitution-page"
     >
+        <template #SubNav>
+            <SettingsNavigation />
+        </template>
+
         <template #PanelMain>
             <LoadingFallbackComponent
                 :loading="loading"
@@ -42,14 +53,15 @@
                 </div>
             </LoadingFallbackComponent>
         </template>
-    </BasicSettingsPage>
+    </BasicPage>
 </template>
 
 <script setup lang="ts">
 import { errorMessageOf } from "@/services/errors/toAppError.ts";
 import { onMounted, ref } from "vue";
 import { useRoute, useRouter } from "vue-router";
-import BasicSettingsPage from "@/components/layout/pages/BasicSettingsPage.vue";
+import BasicPage from "@/components/layout/pages/BasicPage.vue";
+import SettingsNavigation from "@/components/widgets/navigation/SettingsNavigation.vue";
 import FormBuilder from "@/components/widgets/formBuilder/FormBuilder.vue";
 import LoadingFallbackComponent from "@/components/widgets/loadingFallbackComponent/LoadingFallbackComponent.vue";
 import CancelButton from "@/components/widgets/CancelButton.vue";

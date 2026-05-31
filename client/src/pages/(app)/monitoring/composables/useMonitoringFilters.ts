@@ -15,6 +15,22 @@ const TRANSLATION_PREFIX = "monitoringExams.info";
 export function useMonitoringFilters() {
     return computed<FilterSectionDef[]>(() => [
         {
+            key: MONITORING_STATUS_FILTER_KEY,
+            title: translate(`${TRANSLATION_PREFIX}.examState`),
+            options: [
+                {
+                    value: ExamStatusEnum.RUNNING,
+                    label: translate(ExamStatusEnum.RUNNING),
+                    color: getExamStatusFilterColor(ExamStatusEnum.RUNNING),
+                },
+                {
+                    value: ExamStatusEnum.TEST_RUN,
+                    label: translate(ExamStatusEnum.TEST_RUN),
+                    color: getExamStatusFilterColor(ExamStatusEnum.TEST_RUN),
+                },
+            ],
+        },
+        {
             key: TYPE_FILTER_KEY,
             title: translate(`${TRANSLATION_PREFIX}.examType`),
             options: [
@@ -33,22 +49,6 @@ export function useMonitoringFilters() {
                 {
                     value: ExamTypeEnum.UNDEFINED,
                     label: translate(ExamTypeEnum.UNDEFINED),
-                },
-            ],
-        },
-        {
-            key: MONITORING_STATUS_FILTER_KEY,
-            title: translate(`${TRANSLATION_PREFIX}.examState`),
-            options: [
-                {
-                    value: ExamStatusEnum.RUNNING,
-                    label: translate(ExamStatusEnum.RUNNING),
-                    color: getExamStatusFilterColor(ExamStatusEnum.RUNNING),
-                },
-                {
-                    value: ExamStatusEnum.TEST_RUN,
-                    label: translate(ExamStatusEnum.TEST_RUN),
-                    color: getExamStatusFilterColor(ExamStatusEnum.TEST_RUN),
                 },
             ],
         },

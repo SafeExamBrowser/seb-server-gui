@@ -5,7 +5,9 @@ import { getInstitutionsAdmin } from "@/services/seb-server/institutionService.t
 import type { ServerTablePaging } from "@/models/types.ts";
 import type { SortOrder } from "@/services/types.ts";
 
-const statusToActiveParam = (status: string | null): string | undefined => {
+const statusToActiveParam = (
+    status: string | undefined,
+): string | undefined => {
     if (status === "Active") return "true";
     if (status === "Inactive") return "false";
     return undefined;
@@ -20,8 +22,8 @@ const toSortOrder = (
 
 export const useInstitutions = (
     paging: Readonly<Ref<ServerTablePaging>>,
-    searchField: Readonly<Ref<string | null>>,
-    selectedStatus: Readonly<Ref<string | null>>,
+    searchField: Readonly<Ref<string | undefined>>,
+    selectedStatus: Readonly<Ref<string | undefined>>,
 ) => {
     return useFetch<InstitutionResponse>(() =>
         getInstitutionsAdmin({

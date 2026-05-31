@@ -1,12 +1,16 @@
 <template>
-    <div class="flex-grow-0 flex-shrink-0 pa-2">
+    <div class="flex-shrink-0 pt-5 pb-3">
         <BreadCrumb :items="breadCrumb" />
-    </div>
-    <div class="flex-grow-0 flex-shrink-0 pa-2">
-        <PageTitle
-            :name="title"
-            :data-test-id="dataTestId ? `${dataTestId}-page-title` : undefined"
-        />
+        <div class="d-flex align-center ga-3 px-6 mt-1">
+            <PageTitle
+                :name="title"
+                :data-test-id="
+                    dataTestId ? `${dataTestId}-page-title` : undefined
+                "
+            />
+            <v-spacer />
+            <slot name="actions"></slot>
+        </div>
     </div>
 </template>
 

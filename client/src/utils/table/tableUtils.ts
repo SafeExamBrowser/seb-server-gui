@@ -67,9 +67,9 @@ export function sortTable(key: number, headerRefs: HeaderRefs) {
 
 export function assignQuizSelectPagingOptions(
     serverTablePaging: ServerTablePaging,
-    name: string | null,
+    name: string | undefined,
     startTimestamp: number | null,
-    assessmentToolId: string | null,
+    assessmentToolId: string | undefined,
     forceNewSearch: boolean,
 ): OptionalParGetQuizzes {
     const optionalParGetQuizzes: OptionalParGetQuizzes = {
@@ -105,10 +105,10 @@ export function assignQuizSelectPagingOptions(
 
 export function assignExamSelectPagingOptions(
     serverTablePaging: ServerTablePaging,
-    name: string | null,
+    name: string | undefined,
     startTimestamp: number | null,
-    activeTypeFilter: ExamTypeEnum | null | string,
-    activeStatusFilter: ExamStatusEnum | null | string,
+    activeTypeFilter: ExamTypeEnum | string | undefined,
+    activeStatusFilter: ExamStatusEnum | string | undefined,
 ): OptionalParGetExams {
     const optionalParGetExams: OptionalParGetExams = {};
 
@@ -169,9 +169,9 @@ export function assignPagingOptions(
 
 export function assignUserAccountSelectPagingOptions(
     serverTablePaging: ServerTablePaging,
-    surnameQuery: string | null,
-    selectedStatus: string | null,
-    selectedInstitutionId: string | null,
+    surnameQuery: string | undefined,
+    selectedStatus: string | undefined,
+    selectedInstitutionId: string | undefined,
 ): OptionalParGetUserAccounts {
     const opt: OptionalParGetUserAccounts = {};
 
@@ -202,8 +202,8 @@ export function assignUserAccountSelectPagingOptions(
 
 export function assignClientLogDetailsPagingOptions(
     serverTablePaging: ServerTablePaging,
-    name: string | null,
-    type: string | null,
+    name: string | undefined,
+    type: string | undefined,
 ): OptionalParGetMonitoringClientLogs {
     const optionalParGetMonitoringClientLogs: OptionalParGetMonitoringClientLogs =
         {};
@@ -232,10 +232,10 @@ export function assignClientLogDetailsPagingOptions(
 
 export function assignAssessmentToolSelectPagingOptions(
     serverTablePaging: ServerTablePaging,
-    selectedStatus: string | null,
+    selectedStatus: string | undefined,
     selectedType: LMSTypeEnum | null,
-    selectedInstitutionId: string | null,
-    name: string | null,
+    selectedInstitutionId: string | undefined,
+    name: string | undefined,
 ): OptionalParGetAssessmentTool {
     const opt: OptionalParGetAssessmentTool = {};
 
@@ -267,9 +267,9 @@ export function assignAssessmentToolSelectPagingOptions(
 
 export function assignConnectionConfigurationSelectPagingOptions(
     serverTablePaging: ServerTablePaging,
-    name: string | null,
-    selectedStatus: string | null,
-    selectedInstitutionId: string | null,
+    name: string | undefined,
+    selectedStatus: string | undefined,
+    selectedInstitutionId: string | undefined,
 ): OptionalParGetConnectionConfiguration {
     const opt: OptionalParGetConnectionConfiguration = {};
 
@@ -304,7 +304,7 @@ export function assignConnectionConfigurationSelectPagingOptions(
 export function assignCertificateSelectPagingOptions(
     serverTablePaging: ServerTablePaging,
 
-    alias: string | null,
+    alias: string | undefined,
 ): OptionalParGetCertificates {
     const opt: OptionalParGetCertificates = {};
 

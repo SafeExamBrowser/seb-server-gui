@@ -1,8 +1,19 @@
 <template>
-    <BasicSettingsPage
+    <BasicPage
         :title="$t('titles.createConnectionConfiguration')"
+        :bread-crumb="[
+            {
+                label: $t('titles.connectionConfigurations'),
+                link: { name: '/(app)/connection-configuration/' },
+            },
+            { label: $t('titles.createConnectionConfiguration') },
+        ]"
         data-testid="createConnectionConfiguration-page"
     >
+        <template #SubNav>
+            <SettingsNavigation />
+        </template>
+
         <template #PanelMain>
             <HintText
                 text-identifier="connectionConfigurations.hints.create"
@@ -145,12 +156,13 @@
                 />
             </div>
         </template>
-    </BasicSettingsPage>
+    </BasicPage>
 </template>
 
 <script setup lang="ts">
 import { ref } from "vue";
-import BasicSettingsPage from "@/components/layout/pages/BasicSettingsPage.vue";
+import BasicPage from "@/components/layout/pages/BasicPage.vue";
+import SettingsNavigation from "@/components/widgets/navigation/SettingsNavigation.vue";
 import FormBuilder from "@/components/widgets/formBuilder/FormBuilder.vue";
 import { useConnectionConfigurationFormFields } from "@/pages/(app)/connection-configuration/composables/useConnectionConfigurationFormFields.ts";
 import { useMutation } from "@/composables/useMutation.ts";

@@ -1,16 +1,17 @@
 <template>
     <nav
         aria-label="Breadcrumb"
-        class="d-flex align-center flex-wrap pl-5 text-body-large"
+        class="d-flex align-center flex-wrap ga-2 pl-5 text-body-medium"
     >
         <v-hover v-slot="{ isHovering, props: hoverProps }">
             <RouterLink
                 v-bind="hoverProps"
                 :to="{ name: '/(app)/' }"
-                class="px-1 py-1 text-decoration-none font-weight-medium"
+                :aria-label="$t('titles.home')"
+                class="d-inline-flex align-center text-decoration-none"
                 :class="isHovering ? 'text-primary' : 'text-medium-emphasis'"
             >
-                {{ $t("titles.home") }}
+                <v-icon icon="mdi-home-outline" size="20" />
             </RouterLink>
         </v-hover>
 
@@ -18,12 +19,7 @@
             v-for="(item, index) in items"
             :key="`${item.label}-${index}`"
         >
-            <span
-                aria-hidden="true"
-                class="mx-1 text-headline-small text-medium-emphasis"
-            >
-                ›
-            </span>
+            <span aria-hidden="true" class="text-disabled">›</span>
 
             <v-hover
                 v-if="item.link"
@@ -32,7 +28,7 @@
                 <RouterLink
                     v-bind="hoverProps"
                     :to="item.link"
-                    class="px-1 py-1 text-decoration-none font-weight-medium"
+                    class="text-decoration-none font-weight-medium"
                     :class="
                         isHovering ? 'text-primary' : 'text-medium-emphasis'
                     "
@@ -41,7 +37,7 @@
                 </RouterLink>
             </v-hover>
 
-            <span v-else class="px-1 py-1 text-primary font-weight-medium">
+            <span v-else class="text-primary font-weight-medium">
                 {{ item.label }}
             </span>
         </template>

@@ -1,8 +1,5 @@
 <template>
-    <div
-        class="text-primary text-headline-large font-weight-bold"
-        :data-testid="dataTestId"
-    >
+    <div class="text-headline-large font-weight-bold" :data-testid="dataTestId">
         {{ name }}
     </div>
 </template>
