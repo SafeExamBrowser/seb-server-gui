@@ -26,7 +26,7 @@
 
             <v-card
                 v-if="isPageBlue"
-                class="flex-1-1-0 rounded-lg overflow-y-auto pa-12"
+                class="flex-1-1-0 rounded-lg overflow-y-auto pa-5"
                 color="primary"
                 :data-testid="`${pageTestId}-page-container`"
                 elevation="1"
