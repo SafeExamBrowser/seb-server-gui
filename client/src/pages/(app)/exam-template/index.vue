@@ -7,8 +7,9 @@
             },
         ]"
         :data-test-id="dataTestId"
+        :panel-left-collapsed="!filtersOpen"
     >
-        <template #PanelTop>
+        <template #PanelLeft>
             <SearchBar
                 v-model="list.searchInputValue"
                 search-text="examTemplateList.info.nameSearchPlaceholder"
@@ -19,9 +20,18 @@
                 @clear="list.onClearSearch"
                 @update:filter-values="list.setFilters"
                 @clear-filters="list.clearAll"
+                @collapse="filtersOpen = false"
             />
         </template>
         <template #PanelMain>
+            <FilterControlsRow
+                :open="filtersOpen"
+                :pills="activePills"
+                :data-test-id="dataTestId"
+                @toggle="filtersOpen = !filtersOpen"
+                @remove="onRemovePill"
+                @clear-all="list.clearAll"
+            />
             <!-- TODO @andrei: properly display errors, once we have a proper generic error component -->
             <div v-if="deleteFlow.error">
                 {{ deleteFlow.error }}
@@ -31,6 +41,7 @@
             </div>
             <LoadingFallbackComponent :loading="false" :errors="list.errors">
                 <EntityTable
+                    class="px-2 pt-2"
                     :headers="list.headers"
                     :items="list.items"
                     :page-count="list.pageCount"
@@ -61,9 +72,12 @@
 </template>
 
 <script setup lang="ts">
+import { ref } from "vue";
 import BasicPage from "@/components/layout/pages/BasicPage.vue";
 import SearchBar from "@/components/widgets/searches/SearchBar.vue";
 import EntityTable from "@/components/widgets/entity-table/EntityTable.vue";
+import FilterControlsRow from "@/components/widgets/filters/FilterControlsRow.vue";
+import { useActiveFilterPills } from "@/components/widgets/filters/useActiveFilterPills.ts";
 import DeleteConfirmDialog from "@/components/widgets/confirmDialog/DeleteConfirmDialog.vue";
 import LoadingFallbackComponent from "@/components/widgets/loadingFallbackComponent/LoadingFallbackComponent.vue";
 import { useExamTemplateOverview } from "./composables/useExamTemplateOverview.ts";
@@ -71,4 +85,15 @@ import { useExamTemplateOverview } from "./composables/useExamTemplateOverview.t
 const dataTestId = "examTemplates";
 
 const { list, deleteFlow, copyFlow } = useExamTemplateOverview();
+
+const filtersOpen = ref(true);
+
+const activePills = useActiveFilterPills(
+    () => list.filterSections,
+    () => list.selectedFilters,
+);
+
+function onRemovePill(sectionKey: string) {
+    void list.setFilters({ ...list.selectedFilters, [sectionKey]: null });
+}
 </script>
