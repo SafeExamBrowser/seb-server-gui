@@ -7,7 +7,7 @@
             @click="open = !open"
         >
             <span
-                class="text-body-small text-medium-emphasis text-uppercase font-weight-medium"
+                class="text-body-small text-medium-emphasis text-uppercase font-weight-bold"
             >
                 {{ title }}
             </span>

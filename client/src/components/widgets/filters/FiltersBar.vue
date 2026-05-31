@@ -1,10 +1,6 @@
 <template>
     <div class="d-flex flex-column">
-        <template
-            v-for="(section, index) in nonEmptySections"
-            :key="section.key"
-        >
-            <v-divider v-if="index > 0" class="my-1" />
+        <template v-for="section in nonEmptySections" :key="section.key">
             <FilterSection
                 :title="section.title"
                 :data-test-id="`${dataTestId}-${section.testIdSuffix ?? section.key}`"
@@ -21,6 +17,7 @@
                     @toggle="onToggle(section.key, option.value)"
                 />
             </FilterSection>
+            <v-divider class="my-1" />
         </template>
     </div>
 </template>

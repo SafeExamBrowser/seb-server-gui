@@ -5,7 +5,7 @@
         rounded="lg"
         :data-testid="`${dataTestId}-filters-container`"
     >
-        <div class="d-flex align-center ga-2 px-4 pt-4 pb-3">
+        <div class="d-flex align-center ga-2 px-4 pt-6 pb-1">
             <v-icon icon="mdi-filter-variant" color="primary" />
             <span class="text-subtitle-1 font-weight-bold flex-grow-1">
                 {{ $t("general.filters") }}
@@ -15,7 +15,7 @@
                 variant="text"
                 color="primary"
                 size="small"
-                class="text-none px-2"
+                class="text-none"
                 :data-testid="`${dataTestId}-search-cancel-button`"
                 @click="clearFilters"
             >
@@ -23,8 +23,6 @@
                 {{ $t("general.reset") }}
             </v-btn>
         </div>
-
-        <v-divider />
 
         <div
             class="flex-grow-1 overflow-y-auto px-4 py-3"
@@ -48,7 +46,6 @@
             />
 
             <template v-if="hasDate">
-                <v-divider class="my-1" />
                 <FilterSection
                     :title="$t(dateTitle!)"
                     :data-test-id="`${dataTestId}-date`"
