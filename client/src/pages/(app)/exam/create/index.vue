@@ -13,16 +13,25 @@
             { label: store.currentStep.title },
         ]"
     >
-        <template v-if="quizStore.selectedQuiz" #PanelTop>
-            <SelectedQuizPreview :quiz="quizStore.selectedQuiz" />
+        <template #PanelLeft>
+            <StepperSidebar
+                :title="$t('titles.createExam')"
+                :current-step="store.currentStepIndex"
+                :steps="store.stepperModel"
+            />
         </template>
         <template #PanelMain>
+            <div v-if="quizStore.selectedQuiz" class="pa-4 pb-0">
+                <v-card class="bg-surface-tint" rounded="lg" border>
+                    <SelectedQuizPreview :quiz="quizStore.selectedQuiz" />
+                </v-card>
+            </div>
             <component :is="stepComponents[store.currentStep.componentName]" />
         </template>
-        <template #PanelAside>
-            <StepperVertical
-                :steps="store.stepperModel"
+        <template #PanelFooter>
+            <StepperFooterActions
                 :current-step="store.currentStepIndex"
+                :steps="store.stepperModel"
                 @next="handleStepperNext"
                 @prev="handleStepperPrev"
                 @finish="handleStepperFinish"
@@ -33,7 +42,8 @@
 
 <script setup lang="ts">
 import BasicPage from "@/components/layout/pages/BasicPage.vue";
-import StepperVertical from "@/components/widgets/stepperVertical/StepperVertical.vue";
+import StepperSidebar from "@/components/widgets/stepperVertical/StepperSidebar.vue";
+import StepperFooterActions from "@/components/widgets/stepperVertical/StepperFooterActions.vue";
 import { stepComponents } from "@/pages/(app)/exam/create/types/types.ts";
 import { useCreateExamStore } from "./composables/store/useCreateExamStore.ts";
 import { useCreateExam } from "./composables/api/useCreateExam.ts";

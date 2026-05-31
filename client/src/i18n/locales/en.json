@@ -45,6 +45,7 @@
         "cancelButton": "Cancel",
         "backButton": "Back",
         "nextButton": "Next",
+        "stepProgress": "Step {current} of {total}",
         "searchButton": "Search",
         "cancelSearch": "Cancel Search",
         "clearAll": "Clear all",
@@ -185,6 +186,7 @@
                     "end": "End"
                 },
                 "preview": {
+                    "selectedExam": "Selected exam",
                     "start": "Start",
                     "end": "End",
                     "startUrl": "Start URL"
