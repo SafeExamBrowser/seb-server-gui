@@ -1,8 +1,15 @@
 <template>
     <BasicPage
         :title="$t('titles.connectionConfigurationViewAndEdit')"
+        :bread-crumb="[
+            { label: $t('titles.connectionConfigurationViewAndEdit') },
+        ]"
         data-testid="editConnectionConfiguration-page"
     >
+        <template #SubNav>
+            <SettingsNavigation />
+        </template>
+
         <template #PanelMain>
             <LoadingFallbackComponent :loading="loading" :errors="errors">
                 <HintText
@@ -168,6 +175,7 @@ import { computed, onMounted, ref } from "vue";
 import { useRoute, useRouter } from "vue-router";
 import moment from "moment-timezone";
 import BasicPage from "@/components/layout/pages/BasicPage.vue";
+import SettingsNavigation from "@/components/widgets/navigation/SettingsNavigation.vue";
 import FormBuilder from "@/components/widgets/formBuilder/FormBuilder.vue";
 import LoadingFallbackComponent from "@/components/widgets/loadingFallbackComponent/LoadingFallbackComponent.vue";
 import CancelButton from "@/components/widgets/CancelButton.vue";

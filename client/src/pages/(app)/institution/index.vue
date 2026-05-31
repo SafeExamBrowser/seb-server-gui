@@ -1,9 +1,14 @@
 <template>
     <BasicPage
         :title="$t('titles.institutions')"
+        :bread-crumb="[{ label: $t('titles.institutions') }]"
         :data-test-id="dataTestId"
         :panel-left-collapsed="!filtersOpen"
     >
+        <template #SubNav>
+            <SettingsNavigation />
+        </template>
+
         <template #ActionButton>
             <AddButton
                 :route="{ name: '/(app)/institution/create/' }"
@@ -92,6 +97,7 @@
 <script setup lang="ts">
 import { computed, ref, watch } from "vue";
 import BasicPage from "@/components/layout/pages/BasicPage.vue";
+import SettingsNavigation from "@/components/widgets/navigation/SettingsNavigation.vue";
 import SearchBar from "@/components/widgets/searches/SearchBar.vue";
 import EntityTable from "@/components/widgets/entity-table/EntityTable.vue";
 import FilterControlsRow from "@/components/widgets/filters/FilterControlsRow.vue";

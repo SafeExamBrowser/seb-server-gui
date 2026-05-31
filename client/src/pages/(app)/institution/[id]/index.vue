@@ -1,8 +1,13 @@
 <template>
     <BasicPage
         :title="$t('titles.editInstitution')"
+        :bread-crumb="[{ label: $t('titles.editInstitution') }]"
         data-testid="editInstitution-page"
     >
+        <template #SubNav>
+            <SettingsNavigation />
+        </template>
+
         <template #PanelMain>
             <LoadingFallbackComponent
                 :loading="loading"
@@ -50,6 +55,7 @@ import { errorMessageOf } from "@/services/errors/toAppError.ts";
 import { onMounted, ref } from "vue";
 import { useRoute, useRouter } from "vue-router";
 import BasicPage from "@/components/layout/pages/BasicPage.vue";
+import SettingsNavigation from "@/components/widgets/navigation/SettingsNavigation.vue";
 import FormBuilder from "@/components/widgets/formBuilder/FormBuilder.vue";
 import LoadingFallbackComponent from "@/components/widgets/loadingFallbackComponent/LoadingFallbackComponent.vue";
 import CancelButton from "@/components/widgets/CancelButton.vue";

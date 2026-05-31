@@ -1,5 +1,13 @@
 <template>
-    <BasicPage :title="title" :data-testid="`${dataTestPrefix}-page`">
+    <BasicPage
+        :title="title"
+        :bread-crumb="[{ label: title }]"
+        :data-testid="`${dataTestPrefix}-page`"
+    >
+        <template #SubNav>
+            <SettingsNavigation />
+        </template>
+
         <template #PanelMain>
             <HintText
                 :text-identifier="`userAccount.hints.${mode}`"
@@ -100,6 +108,7 @@ import { computed, onMounted, ref, watch } from "vue";
 import moment from "moment-timezone";
 import i18n from "@/i18n";
 import BasicPage from "@/components/layout/pages/BasicPage.vue";
+import SettingsNavigation from "@/components/widgets/navigation/SettingsNavigation.vue";
 import FormBuilder from "@/components/widgets/formBuilder/FormBuilder.vue";
 import LoadingFallbackComponent from "@/components/widgets/loadingFallbackComponent/LoadingFallbackComponent.vue";
 import CancelButton from "@/components/widgets/CancelButton.vue";

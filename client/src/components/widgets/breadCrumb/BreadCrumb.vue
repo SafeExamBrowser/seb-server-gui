@@ -11,7 +11,7 @@
                 class="d-inline-flex align-center text-decoration-none"
                 :class="isHovering ? 'text-primary' : 'text-medium-emphasis'"
             >
-                <v-icon icon="mdi-home" size="18" />
+                <v-icon icon="mdi-home-outline" size="20" />
             </RouterLink>
         </v-hover>
 
@@ -37,7 +37,7 @@
                 </RouterLink>
             </v-hover>
 
-            <span v-else class="text-primary font-weight-bold">
+            <span v-else class="text-primary font-weight-medium">
                 {{ item.label }}
             </span>
         </template>

@@ -1,9 +1,14 @@
 <template>
     <BasicPage
         :title="$t('titles.certificates')"
+        :bread-crumb="[{ label: $t('titles.certificates') }]"
         :data-test-id="dataTestId"
         :panel-left-collapsed="!filtersOpen"
     >
+        <template #SubNav>
+            <SettingsNavigation />
+        </template>
+
         <template #ActionButton>
             <div class="d-flex justify-end align-center fill-height">
                 <FormDialog
@@ -82,6 +87,7 @@
 <script setup lang="ts">
 import { computed, ref, watch } from "vue";
 import BasicPage from "@/components/layout/pages/BasicPage.vue";
+import SettingsNavigation from "@/components/widgets/navigation/SettingsNavigation.vue";
 import SearchBar from "@/components/widgets/searches/SearchBar.vue";
 import EntityTable from "@/components/widgets/entity-table/EntityTable.vue";
 import FilterControlsRow from "@/components/widgets/filters/FilterControlsRow.vue";

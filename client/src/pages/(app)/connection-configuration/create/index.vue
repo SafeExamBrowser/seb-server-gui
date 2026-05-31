@@ -1,8 +1,13 @@
 <template>
     <BasicPage
         :title="$t('titles.createConnectionConfiguration')"
+        :bread-crumb="[{ label: $t('titles.createConnectionConfiguration') }]"
         data-testid="createConnectionConfiguration-page"
     >
+        <template #SubNav>
+            <SettingsNavigation />
+        </template>
+
         <template #PanelMain>
             <HintText
                 text-identifier="connectionConfigurations.hints.create"
@@ -151,6 +156,7 @@
 <script setup lang="ts">
 import { ref } from "vue";
 import BasicPage from "@/components/layout/pages/BasicPage.vue";
+import SettingsNavigation from "@/components/widgets/navigation/SettingsNavigation.vue";
 import FormBuilder from "@/components/widgets/formBuilder/FormBuilder.vue";
 import { useConnectionConfigurationFormFields } from "@/pages/(app)/connection-configuration/composables/useConnectionConfigurationFormFields.ts";
 import { useMutation } from "@/composables/useMutation.ts";

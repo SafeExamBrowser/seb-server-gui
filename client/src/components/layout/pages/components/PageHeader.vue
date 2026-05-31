@@ -1,5 +1,5 @@
 <template>
-    <div class="flex-shrink-0 pt-3 pb-3">
+    <div class="flex-shrink-0 pt-5 pb-3">
         <BreadCrumb :items="breadCrumb" />
         <div class="d-flex align-center ga-3 px-6 mt-1">
             <PageTitle

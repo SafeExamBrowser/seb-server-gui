@@ -1,5 +1,8 @@
 <template>
     <div class="fill-height d-flex flex-column">
+        <div v-if="$slots.SubNav" class="flex-shrink-0 mb-4">
+            <slot name="SubNav"></slot>
+        </div>
         <div v-if="$slots.PanelTop" class="flex-shrink-0 mb-4">
             <v-card elevation="2" rounded="lg">
                 <slot name="PanelTop"></slot>
