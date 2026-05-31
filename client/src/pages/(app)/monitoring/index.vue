@@ -7,19 +7,19 @@
     >
         <template #PanelLeft>
             <SearchBar
-                v-model="searchInputValue"
-                :applied-search="searchField"
+                v-model="list.searchInputValue"
+                :applied-search="list.searchField"
                 search-text="monitoringExams.info.examNameSearchPlaceholder"
                 date-title="monitoringExams.info.examStartSearchPlaceholder"
-                :date-value="dateValue"
-                :filter-sections="filterSections"
-                :filter-values="selectedFilters"
+                :date-value="list.dateValue"
+                :filter-sections="list.filterSections"
+                :filter-values="list.selectedFilters"
                 :data-test-id="dataTestId"
-                @search="onSearch"
-                @clear="onClearSearch"
-                @update:date-value="setDate"
-                @update:filter-values="setFilters"
-                @clear-filters="clearAll"
+                @search="list.onSearch"
+                @clear="list.onClearSearch"
+                @update:date-value="list.setDate"
+                @update:filter-values="list.setFilters"
+                @clear-filters="list.clearAll"
             />
         </template>
         <template #PanelMain>
@@ -29,26 +29,23 @@
                 :data-test-id="dataTestId"
                 @toggle="filtersOpen = !filtersOpen"
                 @remove="onRemovePill"
-                @clear-all="clearAll"
+                @clear-all="list.clearAll"
             />
-            <LoadingFallbackComponent
-                :loading="false"
-                :errors="error ? [error] : []"
-            >
+            <LoadingFallbackComponent :loading="false" :errors="list.errors">
                 <EntityTable
                     class="px-2 pt-2"
-                    :headers="tableHeaders"
-                    :items="tableData?.content ?? []"
-                    :page-count="pageCount"
-                    :items-per-page="options.itemsPerPage"
-                    :options="options"
-                    :loading="loading"
-                    :detail-route="monitoringDetailRoute"
-                    :cell-formatters="cellFormatters"
-                    :actions="tableActions"
+                    :headers="list.headers"
+                    :items="list.items"
+                    :page-count="list.pageCount"
+                    :items-per-page="list.options.itemsPerPage"
+                    :options="list.options"
+                    :loading="list.loading"
+                    :detail-route="list.detailRoute"
+                    :cell-formatters="list.cellFormatters"
+                    :actions="list.actions"
                     :data-test-id="dataTestId"
                     item-key="id"
-                    @update:options="loadItems"
+                    @update:options="list.loadItems"
                 >
                     <template #cell-type="{ formattedValue }">
                         <EnumChip :label="formattedValue" />
@@ -67,7 +64,6 @@
 </template>
 
 <script setup lang="ts">
-import { computed, ref, watch } from "vue";
 import BasicPage from "@/components/layout/pages/BasicPage.vue";
 import SearchBar from "@/components/widgets/searches/SearchBar.vue";
 import EntityTable from "@/components/widgets/entity-table/EntityTable.vue";
@@ -75,22 +71,11 @@ import EnumChip from "@/components/widgets/EnumChip.vue";
 import LoadingFallbackComponent from "@/components/widgets/loadingFallbackComponent/LoadingFallbackComponent.vue";
 import FilterControlsRow from "@/components/widgets/filters/FilterControlsRow.vue";
 import { useListFilterPanel } from "@/components/widgets/filters/useListFilterPanel.ts";
-import { useUrlTableState } from "@/components/widgets/entity-table/composables/useUrlTableState.ts";
-import { useMonitoringTableHeaders } from "@/pages/(app)/monitoring/composables/useMonitoringTableHeaders.ts";
-import { useMonitoringTableActions } from "@/pages/(app)/monitoring/composables/useMonitoringTableActions.ts";
-import {
-    useMonitoringFilters,
-    TYPE_FILTER_KEY,
-    MONITORING_STATUS_FILTER_KEY,
-} from "@/pages/(app)/monitoring/composables/useMonitoringFilters.ts";
-import { useMonitoringExams } from "@/pages/(app)/monitoring/api/useMonitoringExams.ts";
-import type { Exams } from "@/models/seb-server/exam.ts";
 import {
     ExamStatusEnum,
     examStatusColor,
 } from "@/models/seb-server/examFiltersEnum.ts";
-import { useRouter, type RouteLocationAsRelative } from "vue-router";
-import type { TableItem } from "@/components/widgets/entity-table/types.ts";
+import { useMonitoringOverview } from "./composables/useMonitoringOverview.ts";
 
 definePage({
     meta: {
@@ -99,90 +84,15 @@ definePage({
     },
 });
 
-const router = useRouter();
-
 const dataTestId = "monitoring";
 
-const monitoringDetailRoute = (
-    item: TableItem,
-): RouteLocationAsRelative | null =>
-    item.id != null
-        ? {
-              name: "/(app)/monitoring/[examId]/",
-              params: { examId: String(item.id) },
-          }
-        : null;
-
-const { headers: tableHeaders, cellFormatters } = useMonitoringTableHeaders();
-const filterSections = useMonitoringFilters();
-
-const tableData = ref<Exams>();
-
-const {
-    searchInputValue,
-    searchField,
-    selectedFilters,
-    dateValue,
-    dateTimestamp,
-    options,
-    loadItems,
-    onSearch,
-    onClearSearch,
-    setFilters,
-    clearAll,
-    setDate,
-} = useUrlTableState(
-    async () => {
-        await fetchExams();
-    },
-    [TYPE_FILTER_KEY, MONITORING_STATUS_FILTER_KEY],
-    "startDate",
-);
+const { list } = useMonitoringOverview();
 
 const { filtersOpen, activePills, onRemovePill } = useListFilterPanel({
-    search: { applied: searchField, clear: onClearSearch },
-    filterSections,
-    selectedFilters,
-    setFilters,
-    date: { value: dateValue, clear: () => setDate(null) },
-});
-
-const selectedType = computed(() => selectedFilters.value[TYPE_FILTER_KEY]);
-const selectedStatus = computed(
-    () => selectedFilters.value[MONITORING_STATUS_FILTER_KEY],
-);
-
-const {
-    data: fetchedData,
-    loading,
-    error,
-    fetchData: fetchExams,
-} = useMonitoringExams(
-    options,
-    searchField,
-    dateTimestamp,
-    selectedType,
-    selectedStatus,
-);
-
-watch(
-    fetchedData,
-    (v) => {
-        tableData.value = v;
-    },
-    { immediate: true },
-);
-
-const pageCount = computed(() => tableData.value?.number_of_pages ?? 0);
-
-const tableActions = useMonitoringTableActions({
-    onNavigate: (item) => {
-        const target = monitoringDetailRoute(item);
-        if (!target) {
-            // TODO @andrei implement error handling
-            return;
-        }
-        void router.push(target);
-    },
+    search: { applied: () => list.searchField, clear: list.onClearSearch },
+    filterSections: () => list.filterSections,
+    selectedFilters: () => list.selectedFilters,
+    setFilters: list.setFilters,
+    date: { value: () => list.dateValue, clear: () => list.setDate(null) },
 });
 </script>
