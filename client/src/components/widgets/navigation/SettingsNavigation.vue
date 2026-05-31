@@ -15,7 +15,7 @@
             :active="false"
             :variant="isActive(item) ? 'flat' : 'text'"
             :class="isActive(item) ? 'bg-white text-primary' : 'text-white'"
-            class="text-none px-4 py-4"
+            class="text-none px-4 py-4 text-body-medium"
             rounded="pill"
             size="small"
             density="comfortable"
