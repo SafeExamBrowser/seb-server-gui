@@ -1,5 +1,4 @@
 import * as apiService from "@/services/apiService";
-import { getExamTemplate } from "@/services/seb-server/examTemplateService";
 import {
     indicatorSchema,
     type Indicator,
@@ -14,23 +13,13 @@ const addHash = (color: string) =>
 const stripHash = (color: string) =>
     color.startsWith("#") ? color.slice(1) : color;
 
-const apiIndicatorSchema = indicatorSchema.transform((api) => ({
+export const apiIndicatorSchema = indicatorSchema.transform((api) => ({
     ...api,
     thresholds: api.thresholds.map((threshold) => ({
         value: threshold.value,
         color: addHash(threshold.color),
     })),
 }));
-
-export const getIndicators = async (
-    examTemplateId: number,
-): Promise<Indicator[]> => {
-    const template = await getExamTemplate(String(examTemplateId));
-
-    return template.indicatorTemplates.map((api) =>
-        apiIndicatorSchema.parse(api),
-    );
-};
 
 export const createIndicator = async (
     examTemplateId: number,

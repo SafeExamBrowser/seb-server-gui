@@ -1,22 +1,25 @@
 <template>
     <ExamTemplateBox :title="$t('examTemplateDetail.boxes.indicators.title')">
-        <LoadingFallbackComponent :loading="loading" :errors="errors">
-            <IndicatorsTable :deps="tableDeps" />
-        </LoadingFallbackComponent>
+        <IndicatorsTable :deps="tableDeps" />
     </ExamTemplateBox>
 </template>
 
 <script setup lang="ts">
 import ExamTemplateBox from "./ExamTemplateBox.vue";
 import IndicatorsTable from "@/components/widgets/indicatorsTable/IndicatorsTable.vue";
-import LoadingFallbackComponent from "@/components/widgets/loadingFallbackComponent/LoadingFallbackComponent.vue";
-import { IndicatorsTableDeps } from "@/components/widgets/indicatorsTable/types.ts";
+import {
+    Indicator,
+    IndicatorsTableDeps,
+} from "@/components/widgets/indicatorsTable/types.ts";
 import { useIndicatorTemplates } from "@/pages/(app)/exam-template/[id]/composables/api/useIndicatorTemplates.ts";
 
-const { examTemplateId } = defineProps<{ examTemplateId: number }>();
+const { examTemplateId, indicators: initialIndicators } = defineProps<{
+    examTemplateId: number;
+    indicators: Indicator[];
+}>();
 
-const { indicators, loading, errors, createItem, updateItem, deleteItem } =
-    useIndicatorTemplates(examTemplateId);
+const { indicators, createItem, updateItem, deleteItem } =
+    useIndicatorTemplates(examTemplateId, initialIndicators);
 
 const tableDeps: IndicatorsTableDeps = {
     indicators,

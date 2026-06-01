@@ -8,7 +8,10 @@
             <template #basicSettings><BoxBasicSettings /></template>
             <template #sebSettings><BoxSebSettings /></template>
             <template #indicators>
-                <BoxIndicators :exam-template-id="examTemplateId" />
+                <BoxIndicators
+                    :exam-template-id="examTemplateId"
+                    :indicators="indicators"
+                />
             </template>
             <template #supervisors><BoxSupervisors /></template>
             <template #screenProctoringSettings>
@@ -30,6 +33,6 @@ import BoxSupervisors from "./components/BoxSupervisors.vue";
 import BoxScreenProctoringSettings from "./components/BoxScreenProctoringSettings.vue";
 import BoxGroups from "./components/BoxGroups.vue";
 
-const { examTemplateId, title, breadCrumb, errors, loading } =
+const { examTemplateId, title, breadCrumb, errors, loading, indicators } =
     useExamTemplateDetailPage();
 </script>
