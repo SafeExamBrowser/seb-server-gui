@@ -1,5 +1,13 @@
 <template>
-    <BasicSettingsPage :title="title" :data-testid="`${dataTestPrefix}-page`">
+    <BasicPage
+        :title="title"
+        :bread-crumb="breadCrumb"
+        :data-testid="`${dataTestPrefix}-page`"
+    >
+        <template #SubNav>
+            <SettingsNavigation />
+        </template>
+
         <template #PanelMain>
             <HintText
                 :text-identifier="`userAccount.hints.${mode}`"
@@ -92,14 +100,15 @@
                 @submit="emitChangePassword"
             />
         </template>
-    </BasicSettingsPage>
+    </BasicPage>
 </template>
 
 <script setup lang="ts">
 import { computed, onMounted, ref, watch } from "vue";
 import moment from "moment-timezone";
 import i18n from "@/i18n";
-import BasicSettingsPage from "@/components/layout/pages/BasicSettingsPage.vue";
+import BasicPage from "@/components/layout/pages/BasicPage.vue";
+import SettingsNavigation from "@/components/widgets/navigation/SettingsNavigation.vue";
 import FormBuilder from "@/components/widgets/formBuilder/FormBuilder.vue";
 import LoadingFallbackComponent from "@/components/widgets/loadingFallbackComponent/LoadingFallbackComponent.vue";
 import CancelButton from "@/components/widgets/CancelButton.vue";
@@ -113,6 +122,7 @@ import {
     type UserAccountFormMode,
 } from "@/pages/(app)/user-account/composables/useUserAccountFormFields.ts";
 import type { BackendFieldAliasMap } from "@/services/errors/types.ts";
+import type { BreadCrumbItem } from "@/components/widgets/breadCrumb/types";
 import {
     applyBackendFieldErrors,
     type ApplyBackendErrorsResult,
@@ -179,6 +189,19 @@ const roleDescription = computed(() => {
     }
     return i18n.global.t(`userAccount.general.role.info.${role.value}`);
 });
+
+const breadCrumb = computed<BreadCrumbItem[]>(() => [
+    {
+        label: i18n.global.t("titles.userAccounts"),
+        link: { name: "/(app)/user-account/" },
+    },
+    {
+        label:
+            props.mode === "create"
+                ? props.title
+                : (props.initialUser?.username ?? props.title),
+    },
+]);
 
 const getHighestRole = (
     roles: ReadonlyArray<UserAccountRole>,

@@ -1,8 +1,19 @@
 <template>
-    <BasicSettingsPage
+    <BasicPage
         :title="$t('titles.createInstitution')"
+        :bread-crumb="[
+            {
+                label: $t('titles.institutions'),
+                link: { name: '/(app)/institution/' },
+            },
+            { label: $t('titles.createInstitution') },
+        ]"
         data-testid="createInstitution-page"
     >
+        <template #SubNav>
+            <SettingsNavigation />
+        </template>
+
         <template #PanelMain>
             <HintText
                 text-identifier="institutions.hints.create"
@@ -33,13 +44,14 @@
                 />
             </div>
         </template>
-    </BasicSettingsPage>
+    </BasicPage>
 </template>
 
 <script setup lang="ts">
 import { ref } from "vue";
 import { useRouter } from "vue-router";
-import BasicSettingsPage from "@/components/layout/pages/BasicSettingsPage.vue";
+import BasicPage from "@/components/layout/pages/BasicPage.vue";
+import SettingsNavigation from "@/components/widgets/navigation/SettingsNavigation.vue";
 import FormBuilder from "@/components/widgets/formBuilder/FormBuilder.vue";
 import CancelButton from "@/components/widgets/CancelButton.vue";
 import ConfirmButton from "@/components/widgets/ConfirmButton.vue";

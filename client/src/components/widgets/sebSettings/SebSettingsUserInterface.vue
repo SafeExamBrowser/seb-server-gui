@@ -145,6 +145,25 @@
                     />
                 </v-row>
 
+                <v-row>
+                    <CheckboxSetting
+                        v-model="singleValues"
+                        name="defaultPageZoomLevel"
+                        label="sebSettings.userView.zoom.defaultPageZoomLevel"
+                        :tooltip="true"
+                        :disabled="context.readonly"
+                    />
+                </v-row>
+                <v-row>
+                    <CheckboxSetting
+                        v-model="singleValues"
+                        name="defaultTextZoomLevel"
+                        label="sebSettings.userView.zoom.defaultTextZoomLevel"
+                        :tooltip="true"
+                        :disabled="context.readonly"
+                    />
+                </v-row>
+
                 <SettingsTitle label="sebSettings.userView.status_bar.title" />
                 <v-row>
                     <SelectionSetting
@@ -161,6 +180,17 @@
                         name="mobileStatusBarAppearanceExtended"
                         label="sebSettings.userView.status_bar.mobileStatusBarAppearanceExtended"
                         :labels="true"
+                        :disabled="context.readonly"
+                    />
+                </v-row>
+
+                <SettingsTitle label="sebSettings.userView.screenLock.title" />
+                <v-row>
+                    <ColorSetting
+                        v-model="singleValues"
+                        name="lockScreenBackgroundColor"
+                        label="sebSettings.userView.screenLock.color"
+                        :tooltip="false"
                         :disabled="context.readonly"
                     />
                 </v-row>
@@ -330,6 +360,51 @@
                         :disabled="context.readonly"
                     />
                 </v-row>
+                <v-row>
+                    <CheckboxSetting
+                        v-model="singleValues"
+                        name="enableScrollLock"
+                        label="sebSettings.userView.task_bar.enableScrollLock"
+                        :tooltip="true"
+                        :disabled="context.readonly"
+                    />
+                </v-row>
+                <v-row>
+                    <CheckboxSetting
+                        v-model="singleValues"
+                        name="showScrollLockButton"
+                        label="sebSettings.userView.task_bar.showScrollLockButton"
+                        :tooltip="true"
+                        :disabled="context.readonly"
+                    />
+                </v-row>
+                <v-row>
+                    <CheckboxSetting
+                        v-model="singleValues"
+                        name="showQuitButton"
+                        label="sebSettings.userView.task_bar.showQuitButton"
+                        :tooltip="true"
+                        :disabled="context.readonly"
+                    />
+                </v-row>
+                <v-row>
+                    <CheckboxSetting
+                        v-model="singleValues"
+                        name="showScanQRCodeButton"
+                        label="sebSettings.userView.task_bar.showScanQRCodeButton"
+                        :tooltip="true"
+                        :disabled="context.readonly"
+                    />
+                </v-row>
+                <v-row>
+                    <CheckboxSetting
+                        v-model="singleValues"
+                        name="showNavigationButtons"
+                        label="sebSettings.userView.task_bar.showNavigationButtons"
+                        :tooltip="true"
+                        :disabled="context.readonly"
+                    />
+                </v-row>
 
                 <SettingsTitle
                     label="sebSettings.userView.accessibility.title"
@@ -382,17 +457,6 @@
                         :labels="true"
                         :disabled="context.readonly"
                         :tooltip="false"
-                    />
-                </v-row>
-
-                <SettingsTitle label="sebSettings.userView.screenLock.title" />
-                <v-row>
-                    <ColorSetting
-                        v-model="singleValues"
-                        name="lockScreenBackgroundColor"
-                        label="sebSettings.userView.screenLock.color"
-                        :tooltip="false"
-                        :disabled="context.readonly"
                     />
                 </v-row>
             </v-col>

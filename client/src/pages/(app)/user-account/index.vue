@@ -1,8 +1,14 @@
 <template>
-    <BasicSettingsPage
+    <BasicPage
         :title="$t('titles.userAccounts')"
+        :bread-crumb="[{ label: $t('titles.userAccounts') }]"
         :data-test-id="dataTestId"
+        :panel-left-collapsed="!filtersOpen"
     >
+        <template #SubNav>
+            <SettingsNavigation />
+        </template>
+
         <template #ActionButton>
             <AddButton
                 :route="{ name: '/(app)/user-account/create/' }"
@@ -10,91 +16,86 @@
             />
         </template>
 
-        <template #PanelMain>
+        <template #PanelLeft>
             <SearchBar
-                v-model="searchInputValue"
-                class="mt-2"
+                v-model="list.searchInputValue"
+                :applied-search="list.searchField"
                 search-text="userAccount.list.filters.searchField"
-                :filter-sections="filterSections"
-                :filter-values="selectedFilters"
+                :filter-sections="list.filterSections"
+                :filter-values="list.selectedFilters"
                 :data-test-id="dataTestId"
-                dense
-                @search="onSearch"
-                @clear="onClearSearch"
-                @update:filter-values="setFilters"
-                @clear-filters="clearAll"
+                @search="list.onSearch"
+                @clear="list.onClearSearch"
+                @update:filter-values="list.setFilters"
+                @clear-filters="list.clearAll"
             />
+        </template>
 
-            <LoadingFallbackComponent
-                :loading="false"
-                :errors="error ? [error] : []"
-            >
+        <template #PanelMain>
+            <FilterControlsRow
+                :open="filtersOpen"
+                :pills="activePills"
+                :data-test-id="dataTestId"
+                @toggle="filtersOpen = !filtersOpen"
+                @remove="onRemovePill"
+                @clear-all="list.clearAll"
+            />
+            <LoadingFallbackComponent :loading="false" :errors="list.errors">
                 <EntityTable
-                    class="px-3"
-                    :headers="userAccountsTableHeaders"
-                    :items="fetchedData?.content ?? []"
-                    :page-count="pageCount"
-                    :items-per-page="options.itemsPerPage"
-                    :options="options"
-                    :loading="isFetching || deletePending || statusPending"
-                    :detail-route="userAccountDetailRoute"
-                    :cell-formatters="cellFormatters"
-                    :actions="tableActions"
+                    class="px-2 pt-2"
+                    :headers="list.headers"
+                    :items="list.items"
+                    :page-count="list.pageCount"
+                    :items-per-page="list.options.itemsPerPage"
+                    :options="list.options"
+                    :loading="list.loading"
+                    :detail-route="list.detailRoute"
+                    :cell-formatters="list.cellFormatters"
+                    :actions="list.actions"
                     :data-test-id="dataTestId"
                     item-key="uuid"
-                    @update:options="loadItems"
+                    @update:options="list.loadItems"
                 >
                     <template #cell-active="{ item, rowTestId }">
                         <ActiveStatusChip
                             :active="!!item.active"
                             :data-test-id="`${rowTestId}-status-chip`"
-                            @click="openStatusDialog(item)"
+                            @click="statusFlow.openDialog(item)"
                         />
                     </template>
                 </EntityTable>
             </LoadingFallbackComponent>
         </template>
-    </BasicSettingsPage>
+    </BasicPage>
 
     <DeleteConfirmDialog
-        v-model="deleteDialogOpen"
-        :detail-text="deleteDetailText"
+        v-model="deleteFlow.dialogOpen"
+        :detail-text="deleteFlow.detailText"
         translation-key-prefix="userAccount.list"
-        @confirm="confirmDelete"
+        @confirm="deleteFlow.confirm"
     />
 
     <StatusConfirmDialog
-        v-model="statusDialogOpen"
-        :active="!!statusTarget?.active"
+        v-model="statusFlow.dialogOpen"
+        :active="!!statusFlow.target?.active"
         translation-key-prefix="userAccount.list"
-        @confirm="confirmStatusChange"
+        @confirm="statusFlow.confirm"
     />
 </template>
 
 <script setup lang="ts">
-import { computed, ref } from "vue";
-import BasicSettingsPage from "@/components/layout/pages/BasicSettingsPage.vue";
+import BasicPage from "@/components/layout/pages/BasicPage.vue";
+import SettingsNavigation from "@/components/widgets/navigation/SettingsNavigation.vue";
 import SearchBar from "@/components/widgets/searches/SearchBar.vue";
 import EntityTable from "@/components/widgets/entity-table/EntityTable.vue";
+import FilterControlsRow from "@/components/widgets/filters/FilterControlsRow.vue";
+import { useListFilterPanel } from "@/components/widgets/filters/useListFilterPanel.ts";
 import ActiveStatusChip from "@/components/widgets/ActiveStatusChip.vue";
 import DeleteConfirmDialog from "@/components/widgets/confirmDialog/DeleteConfirmDialog.vue";
 import StatusConfirmDialog from "@/components/widgets/confirmDialog/StatusConfirmDialog.vue";
 import LoadingFallbackComponent from "@/components/widgets/loadingFallbackComponent/LoadingFallbackComponent.vue";
-import { useUrlTableState } from "@/components/widgets/entity-table/composables/useUrlTableState.ts";
-import { useUserAccountsTableHeaders } from "@/pages/(app)/user-account/composables/useUserAccountsTableHeaders.ts";
-import { useUserAccountsTableActions } from "@/pages/(app)/user-account/composables/useUserAccountsTableActions.ts";
-import { useUserAccountsFilters } from "@/pages/(app)/user-account/composables/useUserAccountsFilters.ts";
-import { STATUS_FILTER_KEY } from "@/components/widgets/filters/statusFilterSection.ts";
-import { INSTITUTION_FILTER_KEY } from "@/components/widgets/filters/useInstitutionFilterSection.ts";
-import { useUserAccounts } from "@/pages/(app)/user-account/api/useUserAccounts.ts";
-import { useDeleteUserAccount } from "@/pages/(app)/user-account/api/useDeleteUserAccount.ts";
-import { useToggleUserAccountStatus } from "@/pages/(app)/user-account/api/useToggleUserAccountStatus.ts";
-import { notify } from "@/services/notifications/notify.ts";
-import { toServerPageQuery } from "@/utils/table/tableUtils.ts";
-import type { GetUserAccountsData } from "@/api/seb-server/generated/hey-api/types.gen.ts";
-import type { TableItem } from "@/components/widgets/entity-table/types.ts";
 import AddButton from "@/components/widgets/AddButton.vue";
-import { useRouter, type RouteLocationAsRelative } from "vue-router";
+import { useUserAccountsOverview } from "./composables/useUserAccountsOverview.ts";
 
 definePage({
     meta: {
@@ -104,124 +105,14 @@ definePage({
     },
 });
 
-const router = useRouter();
-
 const dataTestId = "userAccounts";
 
-const userAccountDetailRoute = (
-    item: TableItem,
-): RouteLocationAsRelative | null =>
-    item.uuid != null
-        ? {
-              name: "/(app)/user-account/[userUuid]/",
-              params: { userUuid: String(item.uuid) },
-          }
-        : null;
+const { list, deleteFlow, statusFlow } = useUserAccountsOverview();
 
-const { headers: userAccountsTableHeaders, cellFormatters } =
-    useUserAccountsTableHeaders();
-const filterSections = useUserAccountsFilters();
-
-const {
-    searchInputValue,
-    searchField,
-    selectedFilters,
-    options,
-    loadItems,
-    onSearch,
-    onClearSearch,
-    setFilters,
-    clearAll,
-} = useUrlTableState(async () => {}, [
-    STATUS_FILTER_KEY,
-    INSTITUTION_FILTER_KEY,
-]);
-
-const accountsQuery = computed<GetUserAccountsData["query"]>(() => {
-    const status = selectedFilters.value.status;
-    const institutionId = selectedFilters.value.institutionId;
-    return {
-        ...toServerPageQuery(options.value),
-        surname: searchField.value || undefined,
-        active:
-            status === "Active"
-                ? true
-                : status === "Inactive"
-                  ? false
-                  : undefined,
-        institutionId: institutionId ? Number(institutionId) : undefined,
-    };
-});
-
-const { data: fetchedData, isFetching, error } = useUserAccounts(accountsQuery);
-
-const pageCount = computed(() => fetchedData.value?.number_of_pages ?? 0);
-
-const {
-    removeUserAccount,
-    error: deleteError,
-    isPending: deletePending,
-} = useDeleteUserAccount();
-
-const {
-    changeUserAccountStatus,
-    error: statusError,
-    isPending: statusPending,
-} = useToggleUserAccountStatus();
-
-const deleteTarget = ref<TableItem>();
-const statusTarget = ref<TableItem>();
-const deleteDialogOpen = ref(false);
-const statusDialogOpen = ref(false);
-
-const deleteDetailText = computed(() => String(deleteTarget.value?.name ?? ""));
-
-function openDeleteDialog(item: TableItem) {
-    deleteTarget.value = item;
-    deleteDialogOpen.value = true;
-}
-
-function openStatusDialog(item: TableItem) {
-    statusTarget.value = item;
-    statusDialogOpen.value = true;
-}
-
-async function confirmDelete() {
-    const item = deleteTarget.value;
-    if (typeof item?.uuid !== "string") return;
-    try {
-        await removeUserAccount(item.uuid);
-    } catch {
-        notify.serverError(deleteError.value, { contextLabel: "useraccount" });
-    } finally {
-        deleteDialogOpen.value = false;
-    }
-}
-
-async function confirmStatusChange() {
-    const item = statusTarget.value;
-    if (typeof item?.uuid !== "string" || typeof item.active !== "boolean") {
-        return;
-    }
-    try {
-        await changeUserAccountStatus(item.uuid, item.active);
-    } catch {
-        notify.serverError(statusError.value, {
-            contextLabel: "useraccount.status",
-        });
-    } finally {
-        statusDialogOpen.value = false;
-    }
-}
-
-const tableActions = useUserAccountsTableActions({
-    onEdit: (item) => {
-        const target = userAccountDetailRoute(item);
-        if (!target) {
-            return;
-        }
-        void router.push(target);
-    },
-    onDelete: (item) => openDeleteDialog(item),
+const { filtersOpen, activePills, onRemovePill } = useListFilterPanel({
+    search: { applied: () => list.searchField, clear: list.onClearSearch },
+    filterSections: () => list.filterSections,
+    selectedFilters: () => list.selectedFilters,
+    setFilters: list.setFilters,
 });
 </script>

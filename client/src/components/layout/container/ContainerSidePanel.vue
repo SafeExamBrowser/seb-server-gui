@@ -7,7 +7,7 @@
         <v-btn
             v-if="ability.canView(GUIComponent.NavigationOverview)"
             :active="false"
-            class="mb-2 rounded-lg overflow-hidden"
+            class="rounded-lg overflow-hidden"
             :class="
                 isNavigationOverviewRoute ? undefined : 'text-medium-emphasis'
             "
@@ -21,7 +21,7 @@
             :variant="isNavigationOverviewRoute ? 'flat' : 'text'"
         />
 
-        <v-divider class="align-self-stretch mb-4 mx-2" :opacity="0.2" />
+        <v-divider class="align-self-stretch mb-2 mx-2" :opacity="0.2" />
 
         <v-btn
             v-for="link in links"

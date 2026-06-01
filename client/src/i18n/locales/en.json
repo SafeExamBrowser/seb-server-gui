@@ -45,13 +45,15 @@
         "cancelButton": "Cancel",
         "backButton": "Back",
         "nextButton": "Next",
+        "stepProgress": "Step {current} of {total}",
         "searchButton": "Search",
-        "searchTitle": "Search",
         "cancelSearch": "Cancel Search",
         "clearAll": "Clear all",
-        "showAdvancedFilters": "Show advanced filters",
-        "hideAdvancedFilters": "Hide advanced filters",
-        "activeFilters": "Active filters",
+        "activeFilters": "Active",
+        "filters": "Filters",
+        "reset": "Reset",
+        "hideFilters": "Hide filters",
+        "noFiltersApplied": "No filters applied",
         "saveButton": "Save",
         "startButton": "Start",
         "downloadButton": "Download",
@@ -184,6 +186,7 @@
                     "end": "End"
                 },
                 "preview": {
+                    "selectedExam": "Selected exam",
                     "start": "Start",
                     "end": "End",
                     "startUrl": "Start URL"
@@ -625,31 +628,31 @@
         },
         "fields": {
             "institution": {
-                "label": "Institution *"
+                "label": "Institution"
             },
             "username": {
-                "label": "Username *"
+                "label": "Username"
             },
             "name": {
-                "label": "Name *"
+                "label": "Name"
             },
             "surname": {
-                "label": "Last Name *"
+                "label": "Last Name"
             },
             "email": {
                 "label": "Email"
             },
             "timezone": {
-                "label": "Time Zone *"
+                "label": "Time Zone"
             },
             "password": {
-                "label": "Password *"
+                "label": "Password"
             },
             "confirmPassword": {
-                "label": "Confirm Password *"
+                "label": "Confirm Password"
             },
             "role": {
-                "label": "User Role *"
+                "label": "User Role"
             },
             "passwordPlaceholder": {
                 "label": "Password"
@@ -714,46 +717,46 @@
         },
         "fields": {
             "institution": {
-                "label": "Institution *"
+                "label": "Institution"
             },
             "name": {
-                "label": "Name *"
+                "label": "Name"
             },
             "type": {
-                "label": "Type *"
+                "label": "Type"
             },
             "serverAddress": {
-                "label": "Assessment Tool Server Address *",
+                "label": "Assessment Tool Server Address",
                 "validation": "Must start with http:// or https://"
             },
             "clientUsername": {
-                "label": "Assessment Tool Server Username *"
+                "label": "Assessment Tool Server Username"
             },
             "clientPassword": {
-                "label": "Assessment Tool Server Password *"
+                "label": "Assessment Tool Server Password"
             },
             "accessToken": {
-                "label": "Access Token *"
+                "label": "Access Token"
             },
             "withProxy": {
                 "label": "With Proxy",
                 "ariaLabel": "Toggle proxy settings"
             },
             "proxyHost": {
-                "label": "Proxy Host *",
+                "label": "Proxy Host",
                 "placeholder": "Enter proxy host"
             },
             "proxyPort": {
-                "label": "Proxy Port *",
+                "label": "Proxy Port",
                 "placeholder": "Enter proxy port",
                 "validation": "Invalid port, ex. 8080"
             },
             "proxyUsername": {
-                "label": "Proxy Username *",
+                "label": "Proxy Username",
                 "placeholder": "Enter proxy username"
             },
             "proxyPassword": {
-                "label": "Proxy Password *",
+                "label": "Proxy Password",
                 "placeholder": "Enter proxy password"
             }
         },
@@ -814,10 +817,10 @@
         },
         "fields": {
             "name": {
-                "label": "Name *"
+                "label": "Name"
             },
             "configurationPurpose": {
-                "label": "Configuration Purpose *"
+                "label": "Configuration Purpose"
             },
             "configurationPassword": {
                 "label": "Configuration Password"
@@ -832,23 +835,23 @@
                 "label": "Use asymmetric-only encryption"
             },
             "pingInterval": {
-                "label": "Ping Interval in seconds *"
+                "label": "Ping Interval in seconds"
             },
             "withFallback": {
                 "label": "With Fallback",
                 "ariaLabel": "Toggle Fallback settings"
             },
             "fallbackStartUrl": {
-                "label": "Fallback Start URL *"
+                "label": "Fallback Start URL"
             },
             "connectionAttempts": {
-                "label": "Connection Attempts *"
+                "label": "Connection Attempts"
             },
             "interval": {
-                "label": "Interval in seconds *"
+                "label": "Interval in seconds"
             },
             "connectionTimeout": {
-                "label": "Connection Timeout in seconds *"
+                "label": "Connection Timeout in seconds"
             },
             "fallbackPassword": {
                 "label": "Fallback Password"
@@ -953,7 +956,7 @@
         },
         "fields": {
             "name": {
-                "label": "Name *"
+                "label": "Name"
             },
             "urlSuffix": {
                 "label": "URL Suffix",
@@ -1019,7 +1022,9 @@
                 "mobileAllowQRCodeConfig": "Allow QR code config",
                 "mobileAllowQRCodeConfig_tooltip": "Allows to start an exam or to reconfigure SEB by scanning a QR code with a link to an SEB Config File. Use slider menu, dock button (if enabled in the User Interface Dock sub-pane) or Home screen quick action",
                 "mobileShowSettings": "Show settings in app",
-                "mobileShowSettings_tooltip": "Shows the ​Edit ​Settings command in the left slider menu. ​If this option is enabled in the client configuration, in​-app settings will also be available after opening an exam config"
+                "mobileShowSettings_tooltip": "Shows the ​Edit ​Settings command in the left slider menu. ​If this option is enabled in the client configuration, in​-app settings will also be available after opening an exam config",
+                "mobileShowEditConfigShortcutItem": "Show 'Edit Config File' Quick Action (iOS only)",
+                "mobileShowEditConfigShortcutItem_tooltip": "Shows a quick action for editing config files on the Home Screen (touch and hold the app icon). You can open a config file in the file picker or if you dismiss the picker, create a new config with default settings."
             }
         },
         "userView": {
@@ -1086,14 +1091,28 @@
                 "showBackToStartButton": "Show back to start button",
                 "showInputLanguage": "Show keyboard layout",
                 "showInputLanguage_tooltip": "Shows current keyboard layout and allows to switch between other active keyboard layouts",
-                "showQRVerifyButton": "Show QR code button for SEB Verificator"
+                "showQRVerifyButton": "Show QR code button for SEB Verificator",
+                "enableScrollLock": "Enable scroll lock (iOS)",
+                "enableScrollLock_tooltip": "With the scroll lock button and/or side menu item, web page scrolling, selecting text and the text magnifier can be disabled. This can facilitate using drag-and-drop and drawing question types. (iOS only)",
+                "showScrollLockButton": "Show scroll lock button (iOS)",
+                "showScrollLockButto_tooltip": "Shows the scroll lock button in the Dock if the scroll lock feature is enabled (iOS only)",
+                "showQuitButton": "Show quit button",
+                "showQuitButton_tooltip": "Shows the Quit SEB/Session Dock button",
+                "showScanQRCodeButton": "Show scan QR code button (iOS)",
+                "showScanQRCodeButton_tooltip": "Shows Dock button which allows to start an exam or to reconfigure SEB by scanning a QR code with a SEB link. The button is only displayed if QR Code Config is enabled in Config File pane and if not running in secure exam mode",
+                "showNavigationButtons": "Show navigation buttons (iOS)",
+                "showNavigationButtons_tooltip": "Shows navigation buttons (back/forward) in the SEB for iOS Dock. Otherwise these buttons are displayed in the browser toolbar (if enabled), or in the side menu."
             },
             "zoom": {
                 "title": "Enable Zoom (Win/Mac)",
                 "enableZoomPage": "Enable page zoom",
                 "enableZoomPage_tooltip": "Pages can be zoomed with ctrl - cmd +/- or the commands in the view menu and browser window toolbar (Mac)",
                 "enableZoomText": "Enable text zoom",
-                "enableZoomText_tooltip": "Text in browser windows can be zoomed with cmd +/- or the commands in the view menu and browser window toolbar (Mac)"
+                "enableZoomText_tooltip": "Text in browser windows can be zoomed with cmd +/- or the commands in the view menu and browser window toolbar (Mac)",
+                "defaultPageZoomLevel": "Default page zoom level",
+                "defaultPageZoomLevel_tooltip": "Text zoom only works on some (simple) webpages. It is only enabled when the page zoom level is 1.0.",
+                "defaultTextZoomLevel": "Default text zoom level",
+                "defaultTextZoomLevel_tooltip": "Text zoom only works on some (simple) webpages. It is only enabled when the page zoom level is 1.0."
             },
             "audio": {
                 "title": "Audio Control",
@@ -1214,6 +1233,11 @@
             "browserUserAgent_tooltip": "This string is appended to any user agent in addition to the user agent generated with the other setting options",
             "windowTitleSuffix": "Suffix to be added to every browser window",
             "windowTitleSuffix_tooltip": "This string is appended to every browser window",
+            "features": {
+                "title": "Browser Features",
+                "tabFocusesLinks": "Tab focuses links",
+                "tabFocusesLinks_tooltip": "Pressing the tab key moves focus to the next link and form control. Shift-tab moves focus to the previous control"
+            },
             "uaDesktop": {
                 "title": "User agent for desktop mode",
                 "0": "Desktop default",
@@ -1229,6 +1253,15 @@
                 "1": "iPad",
                 "2": "Custom",
                 "2_tooltip": "Zoom only text on web pages using Ctrl-Mousewheel (Win)",
+                "custom_tooltip": "This text is displayed as the title of the confirmation alert and as tooltip on the icon"
+            },
+            "uaiOS": {
+                "title": "User agent for iOS",
+                "title_tooltip": "SEB always appends its version number. Default string depends on the iOS version and therefore can differ on exam clients.",
+                "0": "iOS default",
+                "1": "Mac Desktop",
+                "2": "Custom",
+                "3": "iPad",
                 "custom_tooltip": "This text is displayed as the title of the confirmation alert and as tooltip on the icon"
             },
             "uaMac": {
@@ -1341,6 +1374,11 @@
                 "examSessionReconfigureAllow_tooltip": "Allow reconfiguring by loading an SEB exam config file (while using the client config or during an exam session). If the running session has a quit password set, indicate the allows URL of the new exam config in Reconfiguring URL (wildcard character '*' can be used).",
                 "examSessionReconfigureConfigURL": "Reconfiguring URL"
             },
+            "deepLinking": {
+                "title": "Exam Deep Linking",
+                "startURLAllowDeepLink": "Allow Deep Linking for Exams",
+                "startURLAllowDeepLink_tooltip": "Deep linking allows to directly open various exams using just one exam config file placed somewhere in the path hierarchy of a sebs:// or Universal Link (which needs to start with the Start URL string)."
+            },
             "query": {
                 "title": "Query String Parameter",
                 "startURLAppendQueryParameter": "Allow Query Parameter",
@@ -1350,7 +1388,9 @@
         "applicationView": {
             "allowSwitchToApplications": "Allow switching to third party application (Mac)",
             "allowSwitchToApplications_tooltip": "Decreases security of the kiosk mode by allowing process switcher (Cmd+Tab).\nThe blacked out background of SEB also doesn't cover some alerts and modal windows in this mode.",
-            "allowFlashFullscreen": "Allow Flash to switch to fullscreen mode (Mac)",
+            "autoQuitApplications": "Automatically quit prohibited applications",
+            "autoQuitApplications_tooltip": "Decreases security of the kiosk mode by allowing process switcher (Cmd+Tab).\nThe blacked out background of SEB also doesn't cover some alerts and modal windows in this mode.",
+            "allowFlashFullscreen": "SEB will attempt to quit prohibited applications automatically but nicely, allowing them to save edited documents",
             "permittedProcess": {
                 "settingName": "Permitted Processes",
                 "editDialogTitle": "Permitted Process",
@@ -1593,7 +1633,13 @@
                 "allowWindowCapture": "Allow window capture (screen shots)",
                 "screenSharingMacEnforceBlocked": "Enforce blocking screen sharing on Mac",
                 "enableMacOSAAC": "Prefer Assessment Mode (AAC)",
-                "enableMacOSAAC_tooltip": "Automatic Assessment Configuration (AAC) Assessment Mode is available from macOS Monterey 12.1 (and Catalina 10.15.4 and >= 10.15.6). It blocks various macOS  (which cannot be allowed optionally, like screen capture/sharing, Siri, Dictation)"
+                "enableMacOSAAC_tooltip": "Automatic Assessment Configuration (AAC) Assessment Mode is available from macOS Monterey 12.1 (and Catalina 10.15.4 and >= 10.15.6). It blocks various macOS  (which cannot be allowed optionally, like screen capture/sharing, Siri, Dictation)",
+                "allowMacOSVersionNumberCheckFull": "Check full macOS version number",
+                "allowMacOSVersionNumberCheckFull_tooltip": "In addition to major version, check also for allowed minor and patch version number",
+                "allowMacOSVersionNumberMajor": "Allow major version number",
+                "allowMacOSVersionNumberMajor_tooltip": "(No tooltips; combo boxes are enabled only when allow​Mac​OSVersion​Number​Check​Full is ON)",
+                "allowMacOSVersionNumberMinor": "Allow minor version number",
+                "allowMacOSVersionNumberPatch": "Allow patch version number"
             },
             "ios": {
                 "title": "iOS specific settings",
@@ -1602,7 +1648,20 @@
                 "mobileEnableGuidedAccessLinkTransform": "Guided ​Access ​Compatibility",
                 "mobileEnableGuidedAccessLinkTransform_tooltip": "Transforms specific ​HTTP requests for clicked links to prevent the '​Guided ​Access is enabled' message being displayed when clicking all links",
                 "mobilePreventAutoLock": "Prevent auto​-lock",
-                "mobilePreventAutoLock_tooltip": "While ​SEB is running, the display isn​'t switched off and the device isn​'t locked"
+                "mobilePreventAutoLock_tooltip": "While ​SEB is running, the display isn​'t switched off and the device isn​'t locked",
+                "mobileSleepModeLockScreen": "Lock screen after sleep mode",
+                "mobileSleepModeLockScreen_tooltip": "On devices with iOS <= 12, sleep mode can be activated while in AAC by for example closing an iPad case. Use this option to display a lock screen when the device is woken up",
+                "allowiOSBetaVersionNumber": "Allow running on iOS beta",
+                "allowiOSBetaVersionNumber_tooltip": "SEB refuses to run on a major iOS beta version, unless it is allowed here",
+                "allowiOSBetaVersionNumber_0": "No Beta Version",
+                "allowiOSBetaVersionNumber_12": "Beta Version 12",
+                "allowiOSVersionNumberMajor": "Major version number",
+                "allowiOSVersionNumberMajor_9": "iOS Version 9",
+                "allowiOSVersionNumberMajor_10": "iOS Version 10",
+                "allowiOSVersionNumberMajor_11": "iOS Version 11",
+                "allowiOSVersionNumberMajor_12": "iOS Version 12",
+                "allowiOSVersionNumberMinor": "Minor version number",
+                "allowiOSVersionNumberPatch": "Patch version number"
             },
             "clipboard": {
                 "title": "Clipboard Policy",
@@ -1825,7 +1884,10 @@
         "infos": {
             "start": "Start Date",
             "end": "End Date",
-            "status": "Status"
+            "status": "Status",
+            "live": "Live · refreshing every {seconds}s",
+            "security": "Security",
+            "connections": "connections"
         },
         "clients": {
             "total": "Total:"

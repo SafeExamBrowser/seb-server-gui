@@ -6,7 +6,7 @@ export type TableHeader = {
     align?: "start" | "center" | "end";
 };
 
-export type TableFilters = Record<string, string | null>;
+export type TableFilters = Record<string, string | undefined>;
 
 export type LoadItemsFn = () => Promise<void>;
 

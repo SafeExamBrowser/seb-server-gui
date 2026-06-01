@@ -1,0 +1,122 @@
+import { computed, reactive } from "vue";
+import { useRouter, type RouteLocationAsRelative } from "vue-router";
+import type { TableItem } from "@/components/widgets/entity-table/types.ts";
+import { useUserAccountsTableHeaders } from "./useUserAccountsTableHeaders.ts";
+import { useUserAccountsTableActions } from "./useUserAccountsTableActions.ts";
+import { useUserAccountsList } from "./useUserAccountsList.ts";
+import { useDeleteUserAccount } from "@/pages/(app)/user-account/api/useDeleteUserAccount.ts";
+import { useToggleUserAccountStatus } from "@/pages/(app)/user-account/api/useToggleUserAccountStatus.ts";
+import { useEntityDeleteFlow } from "@/components/widgets/entity-table/composables/useEntityDeleteFlow.ts";
+import { useEntityStatusFlow } from "@/components/widgets/entity-table/composables/useEntityStatusFlow.ts";
+
+export const useUserAccountsOverview = () => {
+    const router = useRouter();
+
+    const userAccountDetailRoute = (
+        item: TableItem,
+    ): RouteLocationAsRelative | null =>
+        item.uuid != null
+            ? {
+                  name: "/(app)/user-account/[userUuid]/",
+                  params: { userUuid: String(item.uuid) },
+              }
+            : null;
+
+    const { headers, cellFormatters } = useUserAccountsTableHeaders();
+
+    const list = useUserAccountsList();
+
+    const {
+        removeUserAccount,
+        error: deleteError,
+        isPending: deleteLoading,
+    } = useDeleteUserAccount();
+
+    const deleteFlow = useEntityDeleteFlow({
+        remove: async (item) => {
+            try {
+                await removeUserAccount(String(item.uuid));
+            } catch {
+                // error is captured in deleteError; the flow notifies the user
+            }
+        },
+        error: deleteError,
+        loading: deleteLoading,
+        contextLabel: "useraccount",
+        detailTextOf: (item) => String(item.name ?? ""),
+        onDeleteSuccess: list.reloadList,
+    });
+
+    const {
+        changeUserAccountStatus,
+        error: statusError,
+        isPending: statusLoading,
+    } = useToggleUserAccountStatus();
+
+    const statusFlow = useEntityStatusFlow({
+        toggle: async (item) => {
+            try {
+                await changeUserAccountStatus(String(item.uuid), !!item.active);
+            } catch {
+                // error is captured in statusError; the flow notifies the user
+            }
+        },
+        error: statusError,
+        loading: statusLoading,
+        contextLabel: "useraccount.status",
+        onStatusChangeSuccess: list.reloadList,
+    });
+
+    const tableLoading = computed(
+        () =>
+            list.loading.value ||
+            deleteFlow.deleteLoading.value ||
+            statusFlow.statusLoading.value,
+    );
+
+    const actions = useUserAccountsTableActions({
+        onEdit: (item) => {
+            const target = userAccountDetailRoute(item);
+            if (!target) {
+                // TODO @andrei implement error handling
+                return;
+            }
+            void router.push(target);
+        },
+        onDelete: deleteFlow.openDeleteDialog,
+    });
+
+    return {
+        list: reactive({
+            items: list.items,
+            pageCount: list.pageCount,
+            errors: list.errors,
+            options: list.options,
+            headers,
+            cellFormatters,
+            loading: tableLoading,
+            detailRoute: userAccountDetailRoute,
+            actions,
+            searchInputValue: list.searchInputValue,
+            searchField: list.searchField,
+            selectedFilters: list.selectedFilters,
+            filterSections: list.filterSections,
+            onSearch: list.onSearch,
+            onClearSearch: list.onClearSearch,
+            setFilters: list.setFilters,
+            clearAll: list.clearAll,
+            loadItems: list.loadItems,
+        }),
+        deleteFlow: reactive({
+            dialogOpen: deleteFlow.deleteDialogOpen,
+            detailText: deleteFlow.deleteDetailText,
+            confirm: deleteFlow.confirmDelete,
+        }),
+        statusFlow: reactive({
+            dialogOpen: statusFlow.statusDialogOpen,
+            target: statusFlow.statusTarget,
+            openDialog: statusFlow.openStatusDialog,
+            confirm: statusFlow.confirmStatusChange,
+        }),
+    };
+};

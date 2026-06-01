@@ -29,7 +29,7 @@
                 :src="institutionLogo"
                 :style="{
                     maxHeight: '44px',
-                    maxWidth: '220px',
+                    maxWidth: '120px',
                     objectFit: 'contain',
                 }"
             />

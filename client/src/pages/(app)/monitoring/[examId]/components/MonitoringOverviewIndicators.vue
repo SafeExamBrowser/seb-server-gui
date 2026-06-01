@@ -1,149 +1,59 @@
 <template>
-    <v-row>
-        <v-col cols="12">
-            <template v-if="monitoringStore.monitoringOverviewData?.indicators">
-                <div class="text-title-large font-weight-bold mb-4">
-                    {{ translate("monitoringOverview.indicators.indicators") }}
-                </div>
+    <v-card border elevation="1" rounded="lg" class="h-100 d-flex flex-column">
+        <div class="d-flex align-center px-5 py-4">
+            <span class="text-body-medium font-weight-bold">
+                {{ $t("monitoringOverview.indicators.indicators") }}
+            </span>
+        </div>
+        <v-divider />
 
-                <!-- Battery Status -->
-                <v-card
-                    v-if="hasBatteryIndicator()"
-                    class="rounded-lg mb-3 px-4 py-3 d-flex align-center justify-space-between"
-                    :color="
-                        getBatteryStatusColor(
-                            monitoringStore.monitoringOverviewData.indicators
-                                .BATTERY_STATUS?.color,
-                        )
-                    "
-                    :hover="true"
-                    :ripple="false"
-                    variant="flat"
-                    @click="
-                        goToMonitoring(
-                            MonitoringHeaderEnum.SHOW_INDICATORS,
-                            IndicatorEnum.BATTERY_STATUS,
-                            examId,
-                        )
-                    "
-                >
-                    <div class="d-flex align-center">
-                        <!-- Icon Box -->
-                        <div
-                            class="mr-3 d-flex align-center justify-center"
-                            style="
-                                width: 52px;
-                                height: 52px;
-                                border-radius: 10px;
-                                padding: 8px;
-                                background-color: #f0f0f0;
-                            "
-                        >
-                            <v-icon color="#000000" size="28">
-                                mdi-battery-alert-variant-outline
+        <div class="flex-grow-1 pa-5">
+            <template
+                v-for="(indicator, index) in indicators"
+                :key="indicator.type"
+            >
+                <v-divider v-if="index > 0" />
+                <v-hover v-slot="{ isHovering, props: hoverProps }">
+                    <div
+                        v-bind="hoverProps"
+                        class="d-flex align-center ga-3 px-2 py-3 rounded-lg"
+                        :class="isHovering ? 'bg-background' : ''"
+                        :style="{ cursor: 'pointer' }"
+                        @click="
+                            goToMonitoring(
+                                MonitoringHeaderEnum.SHOW_INDICATORS,
+                                indicator.type,
+                                examId,
+                            )
+                        "
+                    >
+                        <v-avatar color="#f0f0f0" size="42" rounded="lg">
+                            <v-icon color="#000000" size="22">
+                                {{ indicator.icon }}
                             </v-icon>
-                        </div>
+                        </v-avatar>
 
-                        <div>
+                        <div class="flex-grow-1">
                             <div class="text-body-medium font-weight-bold">
-                                {{ translate("BATTERY_STATUS") }}
+                                {{ translate(indicator.type) }}
                             </div>
-                            <div class="font-weight-bold text-body-large">
-                                {{
-                                    translate(
-                                        "monitoringOverview.indicators.batteryStatusInfo",
-                                    )
-                                }}
+                            <div class="text-body-small text-medium-emphasis">
+                                {{ translate(indicator.info) }}
                             </div>
                         </div>
+
+                        <v-avatar color="#BDBDBD" size="36">
+                            <span
+                                class="text-body-medium font-weight-bold text-white"
+                            >
+                                {{ indicator.count }}
+                            </span>
+                        </v-avatar>
                     </div>
-
-                    <v-avatar color="#BDBDBD" size="45">
-                        <span
-                            class="text-white text-body-large font-weight-bold"
-                        >
-                            {{
-                                getIndicatorNumber(
-                                    monitoringStore.monitoringOverviewData
-                                        .indicators.BATTERY_STATUS?.incident,
-                                    monitoringStore.monitoringOverviewData
-                                        .indicators.BATTERY_STATUS?.warning,
-                                )
-                            }}
-                        </span>
-                    </v-avatar>
-                </v-card>
-
-                <!-- WLAN Status -->
-                <v-card
-                    v-if="hasWLANIndicator()"
-                    class="rounded-lg mb-3 px-4 py-3 d-flex align-center justify-space-between"
-                    :color="
-                        getWLANStatusColor(
-                            monitoringStore.monitoringOverviewData.indicators
-                                .WLAN_STATUS?.color,
-                        )
-                    "
-                    :hover="true"
-                    :ripple="false"
-                    variant="flat"
-                    @click="
-                        goToMonitoring(
-                            MonitoringHeaderEnum.SHOW_INDICATORS,
-                            IndicatorEnum.WLAN_STATUS,
-                            examId,
-                        )
-                    "
-                >
-                    <div class="d-flex align-center">
-                        <!-- Icon Box -->
-                        <div
-                            class="mr-3 d-flex align-center justify-center"
-                            style="
-                                width: 52px;
-                                height: 52px;
-                                border-radius: 10px;
-                                padding: 8px;
-                                background-color: #f0f0f0;
-                            "
-                        >
-                            <v-icon color="#000000" size="28">
-                                mdi-wifi-alert
-                            </v-icon>
-                        </div>
-
-                        <div>
-                            <div class="text-body-medium font-weight-bold">
-                                {{ translate("WLAN_STATUS") }}
-                            </div>
-                            <div class="font-weight-bold text-body-large">
-                                {{
-                                    translate(
-                                        "monitoringOverview.indicators.wlanStatusInfo",
-                                    )
-                                }}
-                            </div>
-                        </div>
-                    </div>
-
-                    <v-avatar color="#BDBDBD" size="45">
-                        <span
-                            class="text-white text-body-large font-weight-bold"
-                        >
-                            {{
-                                getIndicatorNumber(
-                                    monitoringStore.monitoringOverviewData
-                                        .indicators.WLAN_STATUS?.incident,
-                                    monitoringStore.monitoringOverviewData
-                                        .indicators.WLAN_STATUS?.warning,
-                                )
-                            }}
-                        </span>
-                    </v-avatar>
-                </v-card>
+                </v-hover>
             </template>
-        </v-col>
-    </v-row>
+        </div>
+    </v-card>
 </template>
 
 <script setup lang="ts">
@@ -154,6 +64,7 @@ import {
 import { useMonitoringStore } from "@/stores/seb-server/monitoringStore.ts";
 import { translate } from "@/utils/generalUtils.ts";
 import { goToMonitoring } from "../composables/useMonitoringNavigation.ts";
+import { computed } from "vue";
 
 const props = defineProps<{
     examId: string;
@@ -162,21 +73,45 @@ const props = defineProps<{
 const examId = props.examId;
 const monitoringStore = useMonitoringStore();
 
-function getBatteryStatusColor(color: string | undefined): string {
-    if (color == null) {
-        return monitoringStore.batteryStatusDefaultColor ?? "#f0f0f0";
+const indicators = computed(() => {
+    const data = monitoringStore.monitoringOverviewData?.indicators;
+    if (data == null) {
+        return [];
     }
 
-    return "#" + color;
-}
+    const result: {
+        type: IndicatorEnum;
+        icon: string;
+        info: string;
+        count: number;
+    }[] = [];
 
-function getWLANStatusColor(color: string | undefined): string {
-    if (color == null) {
-        return monitoringStore.wlanStatusDefaultColor ?? "#f0f0f0";
+    if (data.BATTERY_STATUS != null) {
+        result.push({
+            type: IndicatorEnum.BATTERY_STATUS,
+            icon: "mdi-battery-alert-variant-outline",
+            info: "monitoringOverview.indicators.batteryStatusInfo",
+            count: getIndicatorNumber(
+                data.BATTERY_STATUS.incident,
+                data.BATTERY_STATUS.warning,
+            ),
+        });
     }
 
-    return "#" + color;
-}
+    if (data.WLAN_STATUS != null) {
+        result.push({
+            type: IndicatorEnum.WLAN_STATUS,
+            icon: "mdi-wifi-alert",
+            info: "monitoringOverview.indicators.wlanStatusInfo",
+            count: getIndicatorNumber(
+                data.WLAN_STATUS.incident,
+                data.WLAN_STATUS.warning,
+            ),
+        });
+    }
+
+    return result;
+});
 
 function getIndicatorNumber(
     incident: number | undefined,
@@ -192,18 +127,5 @@ function getIndicatorNumber(
     }
 
     return num;
-}
-
-function hasBatteryIndicator(): boolean {
-    return (
-        monitoringStore.monitoringOverviewData?.indicators.BATTERY_STATUS !=
-        null
-    );
-}
-
-function hasWLANIndicator(): boolean {
-    return (
-        monitoringStore.monitoringOverviewData?.indicators.WLAN_STATUS != null
-    );
 }
 </script>

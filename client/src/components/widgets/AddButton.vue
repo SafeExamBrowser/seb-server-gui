@@ -1,25 +1,19 @@
 <template>
-    <div class="d-flex justify-end mx-6">
+    <div class="d-flex justify-end">
         <v-btn
             :active="false"
-            class="text-none"
-            color="primary"
+            class="text-none bg-primary pa-1 rounded-lg"
             variant="text"
             height="auto"
             :data-testid="`${dataTestId}-add-button`"
             @click="handleClick"
         >
-            <div class="d-flex align-center ga-2">
-                <span
-                    class="text-title-large font-weight-medium"
-                    style="letter-spacing: normal"
-                >
+            <div class="d-flex align-center ga-2 pr-4 pl-2">
+                <v-icon size="25">mdi-plus</v-icon>
+
+                <span class="text-title-medium" style="letter-spacing: normal">
                     {{ $t("general.addButton") }}
                 </span>
-
-                <v-icon color="primary" size="38"
-                    >mdi-plus-circle-outline</v-icon
-                >
             </div>
         </v-btn>
     </div>
@@ -36,14 +30,14 @@ const props = defineProps<{
 }>();
 
 const emit = defineEmits<{
-    (e: "click"): void;
+    (e: "click", event: MouseEvent): void;
 }>();
 
-function handleClick() {
+function handleClick(event: MouseEvent) {
     if (props.route) {
         router.push(props.route);
     } else {
-        emit("click");
+        emit("click", event);
     }
 }
 </script>

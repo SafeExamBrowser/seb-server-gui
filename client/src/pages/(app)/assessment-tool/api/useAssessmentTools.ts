@@ -8,10 +8,10 @@ import { LMSTypeEnum } from "@/models/seb-server/assessmentToolEnums.ts";
 
 export const useAssessmentTools = (
     paging: Readonly<Ref<ServerTablePaging>>,
-    searchField: Readonly<Ref<string | null>>,
-    selectedStatus: Readonly<Ref<string | null>>,
+    searchField: Readonly<Ref<string | undefined>>,
+    selectedStatus: Readonly<Ref<string | undefined>>,
     selectedType: Readonly<Ref<LMSTypeEnum | null>>,
-    selectedInstitutionId: Readonly<Ref<string | null>>,
+    selectedInstitutionId: Readonly<Ref<string | undefined>>,
 ) => {
     return useFetch<AssessmentToolsResponse>(() =>
         getAssessmentTools(

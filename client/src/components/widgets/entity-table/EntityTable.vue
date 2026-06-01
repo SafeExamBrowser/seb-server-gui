@@ -4,7 +4,7 @@
         :items="items"
         :items-length="internalItemsLength"
         :page="currentPage"
-        :items-per-page="currentItemsPerPage"
+        :items-per-page="requestedItemsPerPage"
         :items-per-page-options="itemsPerPageOptions"
         :sort-by="sortByForTable"
         :loading="loading"
@@ -110,9 +110,6 @@ const props = withDefaults(
         detailRoute?: (item: TableItem) => RouteLocationAsRelative | null;
         actions?: TableAction[];
         cellFormatters?: Record<string, CellFormatter>;
-        // Field on each item used to identify a row for data-testids.
-        // E.g. "uuid" for user accounts, "id" for connections, "alias" for certificates.
-        // When the field is missing the row falls back to the page index.
         itemKey?: string;
     }>(),
     {
@@ -143,6 +140,7 @@ const { getRawItem, formatCell } = useTableItems(() => props.cellFormatters);
 const {
     currentPage,
     currentItemsPerPage,
+    requestedItemsPerPage,
     resolvedPageCount,
     itemsPerPageOptions,
     internalItemsLength,

@@ -72,6 +72,15 @@
                         :disabled="context.readonly"
                     />
                 </v-row>
+                <v-row>
+                    <CheckboxSetting
+                        v-model="singleValues"
+                        name="mobileShowEditConfigShortcutItem"
+                        label="sebSettings.generalView.configuration.mobileShowEditConfigShortcutItem"
+                        :tooltip="true"
+                        :disabled="context.readonly"
+                    />
+                </v-row>
             </v-col>
         </v-row>
     </LoadingFallbackComponent>

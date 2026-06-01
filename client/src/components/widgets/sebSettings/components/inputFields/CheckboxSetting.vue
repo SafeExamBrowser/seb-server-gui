@@ -5,6 +5,7 @@
             max-width="600"
             :disabled="disabled"
             :label="translate(label)"
+            density="compact"
             @update:model-value="save"
         ></v-checkbox-btn>
         <v-tooltip

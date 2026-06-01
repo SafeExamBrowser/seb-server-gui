@@ -1,23 +1,24 @@
 <template>
-    <v-btn
-        ref="activatorRef"
-        class="text-none"
-        :disabled="disabled"
-        :append-icon="iconActivator"
-        :color="colorActivator"
-        variant="text"
-        density="compact"
-        :size="sizeActivator"
-        :title="labelActivator"
-        :aria-label="labelActivator"
-    >
-        <span v-if="labelActivatorVisible">
-            {{ labelActivator }}
-        </span>
-    </v-btn>
+    <slot name="activator" :props="{ onClick: openDialog }">
+        <v-btn
+            class="text-none"
+            :disabled="disabled"
+            :append-icon="iconActivator"
+            :color="colorActivator"
+            variant="text"
+            density="compact"
+            :size="sizeActivator"
+            :title="labelActivator"
+            :aria-label="labelActivator"
+            @click="openDialog"
+        >
+            <span v-if="labelActivatorVisible">
+                {{ labelActivator }}
+            </span>
+        </v-btn>
+    </slot>
     <v-dialog
         v-model="isDialogOpen"
-        :activator="activatorRef"
         :max-width="useDisplay().thresholds.value.sm"
         :persistent="submitting"
     >
@@ -95,7 +96,6 @@ const props = withDefaults(
     },
 );
 
-const activatorRef = ref<HTMLElement>();
 const isDialogOpen = ref(false);
 const item = ref<TTransient>(props.getItem());
 const isValid = ref<boolean>(false);
@@ -111,6 +111,10 @@ watch(isDialogOpen, (newValue) => {
         errorMessage.value = "";
     }
 });
+
+const openDialog = () => {
+    isDialogOpen.value = true;
+};
 
 const handleCancelClick = () => {
     isDialogOpen.value = false;

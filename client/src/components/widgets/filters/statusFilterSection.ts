@@ -14,12 +14,14 @@ export function getStatusFilterSection(
             {
                 value: "Active",
                 label: translate(`${translationPrefix}.filters.activeSelector`),
+                color: "success",
             },
             {
                 value: "Inactive",
                 label: translate(
                     `${translationPrefix}.filters.inactiveSelector`,
                 ),
+                color: "error",
             },
         ],
     };

@@ -245,8 +245,8 @@ async function getClientEvents(serverTablePaging: ServerTablePaging) {
     const parameters: OptionalParGetMonitoringClientLogs =
         tableUtils.assignClientLogDetailsPagingOptions(
             serverTablePaging,
-            monitoringStore.logSearchField,
-            mapStatusFilter(statusFilter.value),
+            monitoringStore.logSearchField ?? undefined,
+            mapStatusFilter(statusFilter.value) ?? undefined,
         );
 
     try {

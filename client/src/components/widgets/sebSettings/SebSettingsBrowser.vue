@@ -217,6 +217,17 @@
                         :disabled="context.readonly"
                     />
                 </v-row>
+
+                <SettingsTitle label="sebSettings.browser.features.title" />
+                <v-row>
+                    <CheckboxSetting
+                        v-model="singleValues"
+                        name="tabFocusesLinks"
+                        label="sebSettings.browser.features.tabFocusesLinks"
+                        :tooltip="true"
+                        :disabled="context.readonly"
+                    />
+                </v-row>
             </v-col>
 
             <v-col class="text-body-large">
@@ -316,6 +327,29 @@
                         v-model="singleValues"
                         name="browserUserAgentWinTouchModeCustom"
                         label="sebSettings.browser.uaTouch.custom"
+                        :show-label="false"
+                        :tooltip="true"
+                        :disabled="context.readonly"
+                    />
+                </v-row>
+
+                <SettingsTitle
+                    label="sebSettings.browser.uaiOS.title"
+                    :tooltip="true"
+                />
+                <v-row>
+                    <RadioSetting
+                        v-model="singleValues"
+                        name="browserUserAgentiOS"
+                        label="sebSettings.browser.uaiOS"
+                        :disabled="context.readonly"
+                    />
+                </v-row>
+                <v-row>
+                    <TextSetting
+                        v-model="singleValues"
+                        name="browserUserAgentiOSCustom"
+                        label="sebSettings.browser.uaiOS.custom"
                         :show-label="false"
                         :tooltip="true"
                         :disabled="context.readonly"
