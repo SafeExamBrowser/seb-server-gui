@@ -1,29 +1,27 @@
 <template>
+    <slot name="activator" :props="{ onClick: openDialog }">
+        <v-btn
+            class="text-none"
+            :disabled="disabled"
+            :append-icon="iconActivator"
+            :color="colorActivator"
+            variant="text"
+            density="compact"
+            :size="sizeActivator"
+            :title="labelActivator"
+            :aria-label="labelActivator"
+            @click="openDialog"
+        >
+            <span v-if="labelActivatorVisible">
+                {{ labelActivator }}
+            </span>
+        </v-btn>
+    </slot>
     <v-dialog
         v-model="isDialogOpen"
         :max-width="useDisplay().thresholds.value.sm"
         :persistent="submitting"
     >
-        <template #activator="{ props: activatorProps }">
-            <slot name="activator" :props="activatorProps">
-                <v-btn
-                    v-bind="activatorProps"
-                    class="text-none"
-                    :disabled="disabled"
-                    :append-icon="iconActivator"
-                    :color="colorActivator"
-                    variant="text"
-                    density="compact"
-                    :size="sizeActivator"
-                    :title="labelActivator"
-                    :aria-label="labelActivator"
-                >
-                    <span v-if="labelActivatorVisible">
-                        {{ labelActivator }}
-                    </span>
-                </v-btn>
-            </slot>
-        </template>
         <v-card :title="labelActivator">
             <template #text>
                 <FormBuilder
@@ -113,6 +111,10 @@ watch(isDialogOpen, (newValue) => {
         errorMessage.value = "";
     }
 });
+
+const openDialog = () => {
+    isDialogOpen.value = true;
+};
 
 const handleCancelClick = () => {
     isDialogOpen.value = false;
