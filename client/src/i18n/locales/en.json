@@ -132,7 +132,40 @@
     "indicators": {
         "entityNamePlural": "Indicators",
         "addDialogTitle": "Add Indicator",
-        "editDialogTitle": "Edit Indicator"
+        "editDialogTitle": "Edit Indicator",
+        "fields": {
+            "actions": {
+                "label": "Actions"
+            },
+            "name": {
+                "label": "Name",
+                "placeholder": "Enter the desired indicator name",
+                "validationErrorUniqueName": "An indicator with this name already exists on this exam template"
+            },
+            "type": {
+                "label": "Type",
+                "placeholder": "Select the indicator type",
+                "types": {
+                    "BATTERY_STATUS": "Battery Status",
+                    "WLAN_STATUS": "Wifi Status"
+                }
+            },
+            "thresholds": {
+                "label": "Thresholds",
+                "labelRow": "Threshold #",
+                "labelAdd": "Add Threshold",
+                "fields": {
+                    "value": {
+                        "label": "Value",
+                        "placeholder": "Enter 0% – 100%"
+                    },
+                    "color": {
+                        "label": "Color",
+                        "placeholder": "Enter hex color value"
+                    }
+                }
+            }
+        }
     },
     "loginPage": {
         "title": "SEB Server",
@@ -341,40 +374,7 @@
             },
             "indicators": {
                 "title": "Add Indicators",
-                "subtitle": "TODO: translate (Kristina)",
-                "fields": {
-                    "actions": {
-                        "label": "Actions"
-                    },
-                    "name": {
-                        "label": "Name",
-                        "placeholder": "Enter the desired indicator name",
-                        "validationErrorUniqueName": "An indicator with this name already exists on this exam template"
-                    },
-                    "type": {
-                        "label": "Type",
-                        "placeholder": "Select the indicator type",
-                        "types": {
-                            "BATTERY_STATUS": "Battery Status",
-                            "WLAN_STATUS": "Wifi Status"
-                        }
-                    },
-                    "thresholds": {
-                        "label": "Thresholds",
-                        "labelRow": "Threshold #",
-                        "labelAdd": "Add Threshold",
-                        "fields": {
-                            "value": {
-                                "label": "Value",
-                                "placeholder": "Enter 0% – 100%"
-                            },
-                            "color": {
-                                "label": "Color",
-                                "placeholder": "Enter hex color value"
-                            }
-                        }
-                    }
-                }
+                "subtitle": "TODO: translate (Kristina)"
             },
             "clientGroup": {
                 "title": "Add Groups",

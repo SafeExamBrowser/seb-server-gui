@@ -41,5 +41,5 @@ const { t } = useI18n();
 const tableConfig = computed(() => useTable(deps));
 
 const getTranslatedType = (item: Indicator) =>
-    t(`createTemplateExam.steps.indicators.fields.type.types.${item.type}`);
+    t(`indicators.fields.type.types.${item.type}`);
 </script>

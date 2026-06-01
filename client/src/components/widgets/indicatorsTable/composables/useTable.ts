@@ -20,30 +20,22 @@ export const useTable = (
 
     const headers = [
         {
-            title: i18n.global.t(
-                "createTemplateExam.steps.indicators.fields.name.label",
-            ),
+            title: i18n.global.t("indicators.fields.name.label"),
             value: "name",
             width: "30%",
         },
         {
-            title: i18n.global.t(
-                "createTemplateExam.steps.indicators.fields.type.label",
-            ),
+            title: i18n.global.t("indicators.fields.type.label"),
             value: "type",
             width: "30%",
         },
         {
-            title: i18n.global.t(
-                "createTemplateExam.steps.indicators.fields.thresholds.label",
-            ),
+            title: i18n.global.t("indicators.fields.thresholds.label"),
             value: "thresholds",
             width: "30%",
         },
         {
-            title: i18n.global.t(
-                "createTemplateExam.steps.indicators.fields.actions.label",
-            ),
+            title: i18n.global.t("indicators.fields.actions.label"),
             value: "actions",
             align: "end" as const,
             width: "10%",

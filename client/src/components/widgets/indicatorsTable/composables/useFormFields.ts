@@ -82,11 +82,9 @@ export const useFormFields = (indicators: Ref<Indicator[]>) => {
                 type: "text" as const,
                 name: "name",
                 model: name,
-                label: i18n.global.t(
-                    "createTemplateExam.steps.indicators.fields.name.label",
-                ),
+                label: i18n.global.t("indicators.fields.name.label"),
                 placeholder: i18n.global.t(
-                    "createTemplateExam.steps.indicators.fields.name.placeholder",
+                    "indicators.fields.name.placeholder",
                 ),
                 required: true,
                 rules: [
@@ -105,7 +103,7 @@ export const useFormFields = (indicators: Ref<Indicator[]>) => {
                                 .map((indicator: Indicator) => indicator.name),
                         ),
                         i18n.global.t(
-                            "createTemplateExam.steps.indicators.fields.name.validationErrorUniqueName",
+                            "indicators.fields.name.validationErrorUniqueName",
                         ),
                     ),
                 ],
@@ -120,32 +118,28 @@ export const useFormFields = (indicators: Ref<Indicator[]>) => {
                 ].map((value) => ({
                     value,
                     text: i18n.global.t(
-                        `createTemplateExam.steps.indicators.fields.type.types.${value}`,
+                        `indicators.fields.type.types.${value}`,
                     ),
                 })),
-                label: i18n.global.t(
-                    "createTemplateExam.steps.indicators.fields.type.label",
-                ),
+                label: i18n.global.t("indicators.fields.type.label"),
                 placeholder: i18n.global.t(
-                    "createTemplateExam.steps.indicators.fields.type.placeholder",
+                    "indicators.fields.type.placeholder",
                 ),
                 required: true,
             },
             {
                 type: "collection" as const,
                 name: "thresholds",
-                label: i18n.global.t(
-                    "createTemplateExam.steps.indicators.fields.thresholds.label",
-                ),
+                label: i18n.global.t("indicators.fields.thresholds.label"),
                 required: true,
                 fieldGroups: thresholds.value.map((_, index) =>
                     useFormFieldsThreshold(thresholds, index),
                 ),
                 labelAdd: i18n.global.t(
-                    "createTemplateExam.steps.indicators.fields.thresholds.labelAdd",
+                    "indicators.fields.thresholds.labelAdd",
                 ),
                 labelRow: i18n.global.t(
-                    "createTemplateExam.steps.indicators.fields.thresholds.labelRow",
+                    "indicators.fields.thresholds.labelRow",
                 ),
                 onAddItem: () => {
                     thresholds.value.push({
