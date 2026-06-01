@@ -3,7 +3,7 @@ import { z } from "zod";
 import { useRoute } from "vue-router";
 import i18n from "@/i18n";
 import type { BreadCrumbItem } from "@/components/widgets/breadCrumb/types.ts";
-import { Indicator } from "@/components/widgets/indicatorsTable/types.ts";
+import { IndicatorExisting } from "@/models/seb-server/examTemplate.ts";
 import { useExamTemplate } from "./api/useExamTemplate.ts";
 
 const idSchema = z.coerce.number().int().positive();
@@ -56,7 +56,7 @@ export const useExamTemplateDetailPage = () => {
         ...(examTemplate.value ? [{ label: title.value }] : []),
     ]);
 
-    const indicators = computed<Indicator[]>(
+    const indicators = computed<IndicatorExisting[]>(
         () => examTemplate.value?.indicators ?? [],
     );
 

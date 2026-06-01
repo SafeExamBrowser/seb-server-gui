@@ -7,26 +7,26 @@ import {
     deleteIndicator,
     updateIndicator,
 } from "@/services/seb-server/examTemplateIndicatorService.ts";
-import { Indicator } from "@/components/widgets/indicatorsTable/types.ts";
+import { IndicatorExisting } from "@/models/seb-server/examTemplate.ts";
 
 export const useIndicatorTemplates = (
     examTemplateId: number,
-    initialIndicators: Indicator[],
+    initialIndicators: IndicatorExisting[],
 ) => {
-    const data = ref<Indicator[]>([...initialIndicators]);
+    const data = ref<IndicatorExisting[]>([...initialIndicators]);
 
     const deleteMutation = useMutation((indicatorId: number) =>
         deleteIndicator(examTemplateId, indicatorId),
     );
 
-    const indicators = computed<Indicator[]>(() => data.value);
+    const indicators = computed<IndicatorExisting[]>(() => data.value);
 
-    const createItem = async (indicator: Indicator) => {
+    const createItem = async (indicator: IndicatorExisting) => {
         const created = await createIndicator(examTemplateId, indicator);
         data.value = [...data.value, created];
     };
 
-    const updateItem = async (indicator: Indicator) => {
+    const updateItem = async (indicator: IndicatorExisting) => {
         const updated = await updateIndicator(examTemplateId, indicator);
 
         data.value = data.value.map((existing) =>
@@ -34,7 +34,7 @@ export const useIndicatorTemplates = (
         );
     };
 
-    const deleteItem = async (indicator: Indicator) => {
+    const deleteItem = async (indicator: IndicatorExisting) => {
         await deleteMutation.mutateData(indicator.id);
 
         if (deleteMutation.error.value) {

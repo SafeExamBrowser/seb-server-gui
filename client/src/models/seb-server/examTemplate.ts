@@ -1,15 +1,26 @@
-export type Threshold = {
-    value: number; // mandatory, the value of the threshold, range from 0 to 100 (%) for Battery and WiFi
-    color: string; // mandatory, hex color value without the "#"
-};
+import { z } from "zod";
+import { IndicatorEnum } from "@/models/seb-server/monitoringEnums.ts";
 
-export type IndicatorTemplate = {
-    id?: number; // PK of the IndicatorTemplate only available when the IndicatorTemplate exists
-    examTemplateId?: number; // PK reference to the ExamTemplate, only available when the IndicatorTemplate exists
-    name: string; // mandatory, min 3 - max 255 chars, name is unique within indicatorTemplates of ExamTemplate
-    type: string; // mandatory, type of indicator, enum selection values BATTERY_STATUS | WLAN_STATUS
-    thresholds: Threshold[]; // mandatory, list of thresholds, must not be empty
-};
+export const thresholdSchema = z.object({
+    value: z.number(), // mandatory, the value of the threshold, range from 0 to 100 (%) for Battery and WiFi
+    color: z.string(), // mandatory, hex color value without the "#"
+});
+
+export type Threshold = z.infer<typeof thresholdSchema>;
+
+export const indicatorSchema = z.object({
+    name: z.string(),
+    type: z.enum([IndicatorEnum.BATTERY_STATUS, IndicatorEnum.WLAN_STATUS]),
+    thresholds: z.array(thresholdSchema),
+});
+
+export type Indicator = z.infer<typeof indicatorSchema>;
+
+export const indicatorExistingSchema = indicatorSchema.extend({
+    id: z.number(),
+});
+
+export type IndicatorExisting = z.infer<typeof indicatorExistingSchema>;
 
 export type ClientGroupTemplate = {
     id?: number; // PK of the ClientGroupTemplate only available when the ClientGroupTemplate exists
@@ -42,7 +53,7 @@ export type ExamTemplate = {
     institutionalDefault: boolean; // mandatory, institutional default flag
     lmsIntegration: boolean; // mandatory, Assessment Tool Integration flag
     clientConfigurationId?: number; // (optional or mandatory?) identifier of the the selected connection configuration. (4)
-    indicatorTemplates: IndicatorTemplate[]; // optional list of created IndicatorTemplates
+    indicatorTemplates: IndicatorExisting[];
     CLIENT_GROUP_TEMPLATES: ClientGroupTemplate[]; //optional list of created ClientGroupTemplates
     EXAM_ATTRIBUTES: ExamAttribute; // additional exam attributes see ExamAttribute
 };

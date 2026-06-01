@@ -1,8 +1,9 @@
 import * as apiService from "@/services/apiService";
 import {
-    indicatorSchema,
+    indicatorExistingSchema,
     type Indicator,
-} from "@/components/widgets/indicatorsTable/types";
+    type IndicatorExisting,
+} from "@/models/seb-server/examTemplate.ts";
 
 const baseUrl = "/exam-template" as const;
 
@@ -13,7 +14,7 @@ const addHash = (color: string) =>
 const stripHash = (color: string) =>
     color.startsWith("#") ? color.slice(1) : color;
 
-export const apiIndicatorSchema = indicatorSchema.transform((api) => ({
+export const apiIndicatorSchema = indicatorExistingSchema.transform((api) => ({
     ...api,
     thresholds: api.thresholds.map((threshold) => ({
         value: threshold.value,
@@ -24,7 +25,7 @@ export const apiIndicatorSchema = indicatorSchema.transform((api) => ({
 export const createIndicator = async (
     examTemplateId: number,
     indicator: Indicator,
-): Promise<Indicator> => {
+): Promise<IndicatorExisting> => {
     const response = await apiService.postRequest({
         url: `${baseUrl}/indicator`,
         data: {
@@ -46,8 +47,8 @@ export const createIndicator = async (
 
 export const updateIndicator = async (
     examTemplateId: number,
-    indicator: Indicator,
-): Promise<Indicator> => {
+    indicator: IndicatorExisting,
+): Promise<IndicatorExisting> => {
     const response = await apiService.putRequest({
         url: `${baseUrl}/indicator`,
         data: {

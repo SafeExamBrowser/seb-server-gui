@@ -4,15 +4,13 @@ import {
     FormFieldCollection,
 } from "@/components/widgets/formBuilder/types.ts";
 import { useRules } from "vuetify/labs/rules";
-import {
-    Indicator,
-    IndicatorTransient,
-} from "@/components/widgets/indicatorsTable/types.ts";
+import { IndicatorExisting } from "@/models/seb-server/examTemplate.ts";
+import { IndicatorTransient } from "@/components/widgets/indicatorsTable/types.ts";
 import i18n from "@/i18n";
 import { IndicatorEnum } from "@/models/seb-server/monitoringEnums.ts";
 import { useFormFieldsThreshold } from "./useFormFieldsThreshold.ts";
 
-export const useFormFields = (indicators: Ref<Indicator[]>) => {
+export const useFormFields = (indicators: Ref<IndicatorExisting[]>) => {
     const rules = useRules();
 
     const getFormFields = (indicator: Ref<IndicatorTransient>) => {
@@ -100,7 +98,10 @@ export const useFormFields = (indicators: Ref<Indicator[]>) => {
                                         existingIndicator.id !==
                                         indicator.value.id,
                                 )
-                                .map((indicator: Indicator) => indicator.name),
+                                .map(
+                                    (indicator: IndicatorExisting) =>
+                                        indicator.name,
+                                ),
                         ),
                         i18n.global.t(
                             "indicators.fields.name.validationErrorUniqueName",

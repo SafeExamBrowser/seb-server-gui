@@ -1,6 +1,6 @@
 import i18n from "@/i18n";
+import { IndicatorExisting } from "@/models/seb-server/examTemplate.ts";
 import {
-    Indicator,
     IndicatorsTableDeps,
     IndicatorTransient,
     indicatorTransientToIndicator,
@@ -15,7 +15,7 @@ export const getEmptyIndicator = (): IndicatorTransient => ({
 
 export const useTable = (
     deps: IndicatorsTableDeps,
-): CrudTableConfig<Indicator, IndicatorTransient> => {
+): CrudTableConfig<IndicatorExisting, IndicatorTransient> => {
     const { getFormFields } = useFormFields(deps.indicators);
 
     const headers = [
@@ -48,7 +48,7 @@ export const useTable = (
     const updateItem = (item: IndicatorTransient) =>
         deps.updateItem(indicatorTransientToIndicator(item));
 
-    const getExistingItem = (item: Indicator): IndicatorTransient => ({
+    const getExistingItem = (item: IndicatorExisting): IndicatorTransient => ({
         ...item,
     });
 

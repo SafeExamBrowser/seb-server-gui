@@ -26,10 +26,8 @@ import { useI18n } from "vue-i18n";
 import CrudTable from "@/components/widgets/crudTable/CrudTable.vue";
 import ChipThreshold from "@/components/widgets/chipThreshold/ChipThreshold.vue";
 import { useTable } from "@/components/widgets/indicatorsTable/composables/useTable.ts";
-import {
-    Indicator,
-    IndicatorsTableDeps,
-} from "@/components/widgets/indicatorsTable/types.ts";
+import { IndicatorExisting } from "@/models/seb-server/examTemplate.ts";
+import { IndicatorsTableDeps } from "@/components/widgets/indicatorsTable/types.ts";
 import { computed } from "vue";
 
 const { deps } = defineProps<{
@@ -40,6 +38,6 @@ const { t } = useI18n();
 
 const tableConfig = computed(() => useTable(deps));
 
-const getTranslatedType = (item: Indicator) =>
+const getTranslatedType = (item: IndicatorExisting) =>
     t(`indicators.fields.type.types.${item.type}`);
 </script>
