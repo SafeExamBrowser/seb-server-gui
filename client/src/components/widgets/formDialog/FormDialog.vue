@@ -1,26 +1,29 @@
 <template>
-    <v-btn
-        ref="activatorRef"
-        class="text-none"
-        :disabled="disabled"
-        :append-icon="iconActivator"
-        :color="colorActivator"
-        variant="text"
-        density="compact"
-        :size="sizeActivator"
-        :title="labelActivator"
-        :aria-label="labelActivator"
-    >
-        <span v-if="labelActivatorVisible">
-            {{ labelActivator }}
-        </span>
-    </v-btn>
     <v-dialog
         v-model="isDialogOpen"
-        :activator="activatorRef"
         :max-width="useDisplay().thresholds.value.sm"
         :persistent="submitting"
     >
+        <template #activator="{ props: activatorProps }">
+            <slot name="activator" :props="activatorProps">
+                <v-btn
+                    v-bind="activatorProps"
+                    class="text-none"
+                    :disabled="disabled"
+                    :append-icon="iconActivator"
+                    :color="colorActivator"
+                    variant="text"
+                    density="compact"
+                    :size="sizeActivator"
+                    :title="labelActivator"
+                    :aria-label="labelActivator"
+                >
+                    <span v-if="labelActivatorVisible">
+                        {{ labelActivator }}
+                    </span>
+                </v-btn>
+            </slot>
+        </template>
         <v-card :title="labelActivator">
             <template #text>
                 <FormBuilder
@@ -95,7 +98,6 @@ const props = withDefaults(
     },
 );
 
-const activatorRef = ref<HTMLElement>();
 const isDialogOpen = ref(false);
 const item = ref<TTransient>(props.getItem());
 const isValid = ref<boolean>(false);
