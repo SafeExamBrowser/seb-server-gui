@@ -628,31 +628,31 @@
         },
         "fields": {
             "institution": {
-                "label": "Institution *"
+                "label": "Institution"
             },
             "username": {
-                "label": "Username *"
+                "label": "Username"
             },
             "name": {
-                "label": "Name *"
+                "label": "Name"
             },
             "surname": {
-                "label": "Last Name *"
+                "label": "Last Name"
             },
             "email": {
                 "label": "Email"
             },
             "timezone": {
-                "label": "Time Zone *"
+                "label": "Time Zone"
             },
             "password": {
-                "label": "Password *"
+                "label": "Password"
             },
             "confirmPassword": {
-                "label": "Confirm Password *"
+                "label": "Confirm Password"
             },
             "role": {
-                "label": "User Role *"
+                "label": "User Role"
             },
             "passwordPlaceholder": {
                 "label": "Password"
@@ -717,46 +717,46 @@
         },
         "fields": {
             "institution": {
-                "label": "Institution *"
+                "label": "Institution"
             },
             "name": {
-                "label": "Name *"
+                "label": "Name"
             },
             "type": {
-                "label": "Type *"
+                "label": "Type"
             },
             "serverAddress": {
-                "label": "Assessment Tool Server Address *",
+                "label": "Assessment Tool Server Address",
                 "validation": "Must start with http:// or https://"
             },
             "clientUsername": {
-                "label": "Assessment Tool Server Username *"
+                "label": "Assessment Tool Server Username"
             },
             "clientPassword": {
-                "label": "Assessment Tool Server Password *"
+                "label": "Assessment Tool Server Password"
             },
             "accessToken": {
-                "label": "Access Token *"
+                "label": "Access Token"
             },
             "withProxy": {
                 "label": "With Proxy",
                 "ariaLabel": "Toggle proxy settings"
             },
             "proxyHost": {
-                "label": "Proxy Host *",
+                "label": "Proxy Host",
                 "placeholder": "Enter proxy host"
             },
             "proxyPort": {
-                "label": "Proxy Port *",
+                "label": "Proxy Port",
                 "placeholder": "Enter proxy port",
                 "validation": "Invalid port, ex. 8080"
             },
             "proxyUsername": {
-                "label": "Proxy Username *",
+                "label": "Proxy Username",
                 "placeholder": "Enter proxy username"
             },
             "proxyPassword": {
-                "label": "Proxy Password *",
+                "label": "Proxy Password",
                 "placeholder": "Enter proxy password"
             }
         },
@@ -817,10 +817,10 @@
         },
         "fields": {
             "name": {
-                "label": "Name *"
+                "label": "Name"
             },
             "configurationPurpose": {
-                "label": "Configuration Purpose *"
+                "label": "Configuration Purpose"
             },
             "configurationPassword": {
                 "label": "Configuration Password"
@@ -835,23 +835,23 @@
                 "label": "Use asymmetric-only encryption"
             },
             "pingInterval": {
-                "label": "Ping Interval in seconds *"
+                "label": "Ping Interval in seconds"
             },
             "withFallback": {
                 "label": "With Fallback",
                 "ariaLabel": "Toggle Fallback settings"
             },
             "fallbackStartUrl": {
-                "label": "Fallback Start URL *"
+                "label": "Fallback Start URL"
             },
             "connectionAttempts": {
-                "label": "Connection Attempts *"
+                "label": "Connection Attempts"
             },
             "interval": {
-                "label": "Interval in seconds *"
+                "label": "Interval in seconds"
             },
             "connectionTimeout": {
-                "label": "Connection Timeout in seconds *"
+                "label": "Connection Timeout in seconds"
             },
             "fallbackPassword": {
                 "label": "Fallback Password"
@@ -956,7 +956,7 @@
         },
         "fields": {
             "name": {
-                "label": "Name *"
+                "label": "Name"
             },
             "urlSuffix": {
                 "label": "URL Suffix",
