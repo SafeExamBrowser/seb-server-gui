@@ -106,7 +106,8 @@ const props = withDefaults(
         itemsPerPage?: number;
         pageCount?: number;
         itemsLength?: number;
-        detailRoute?: (item: TableItem) => RouteLocationAsRelative | undefined;
+        // TODO @andrei: prefer undefined over null here
+        detailRoute?: (item: TableItem) => RouteLocationAsRelative | null;
         actions?: TableAction[];
         cellFormatters?: Record<string, CellFormatter>;
         itemKey?: string;
