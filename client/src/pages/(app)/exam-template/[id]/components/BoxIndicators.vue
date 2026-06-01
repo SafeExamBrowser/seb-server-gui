@@ -1,5 +1,5 @@
 <template>
-    <ExamTemplateBox :title="$t('examTemplateDetail.boxes.indicators.title')">
+    <ExamTemplateBox>
         <IndicatorsTable :deps="tableDeps" />
     </ExamTemplateBox>
 </template>
