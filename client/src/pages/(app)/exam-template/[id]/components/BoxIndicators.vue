@@ -24,5 +24,6 @@ const tableDeps: IndicatorsTableDeps = {
     createItem,
     updateItem,
     deleteItem,
+    confirmDelete: true,
 };
 </script>

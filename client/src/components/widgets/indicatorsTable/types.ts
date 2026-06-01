@@ -24,4 +24,5 @@ export type IndicatorsTableDeps = {
     createItem: (item: IndicatorExisting) => Promise<void>;
     updateItem: (item: IndicatorExisting) => Promise<void>;
     deleteItem: (item: IndicatorExisting) => Promise<void>;
+    confirmDelete?: boolean;
 };

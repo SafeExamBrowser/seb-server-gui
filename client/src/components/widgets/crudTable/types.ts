@@ -24,5 +24,9 @@ export type CrudTableConfig<TItem, TTransient> = {
     };
     deleteConfig: {
         deleteItem: (item: TItem) => Promise<void>;
+        confirm?: {
+            translationKeyPrefix: string;
+            getDetailText?: (item: TItem) => string | undefined;
+        };
     };
 };

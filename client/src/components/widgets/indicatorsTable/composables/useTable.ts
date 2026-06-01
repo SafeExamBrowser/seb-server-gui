@@ -71,6 +71,12 @@ export const useTable = (
         },
         deleteConfig: {
             deleteItem: deps.deleteItem,
+            confirm: deps.confirmDelete
+                ? {
+                      translationKeyPrefix: "indicators",
+                      getDetailText: (item: IndicatorExisting) => item.name,
+                  }
+                : undefined,
         },
     };
 };

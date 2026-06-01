@@ -133,6 +133,11 @@
         "entityNamePlural": "Indicators",
         "addDialogTitle": "Add Indicator",
         "editDialogTitle": "Edit Indicator",
+        "deleteDialog": {
+            "title": "Delete Indicator",
+            "text": "Are you sure you want to delete this indicator?",
+            "action": "Delete"
+        },
         "fields": {
             "actions": {
                 "label": "Actions"
