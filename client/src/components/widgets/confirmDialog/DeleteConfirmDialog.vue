@@ -35,6 +35,10 @@ const model = defineModel<boolean>({ required: true });
 
 defineProps<{
     detailText?: string;
+    // TODO @andrei: avoid programmatic translation key generation:
+    // - this is inflexible (translations need to have a certain shape)
+    // - this mmakes it very hard to refactor translation keys (search and replace is impossible)
+    // => accept fully translated strings instead
     translationKeyPrefix: string;
 }>();
 
