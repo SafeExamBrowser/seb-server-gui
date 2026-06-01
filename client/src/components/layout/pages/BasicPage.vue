@@ -80,20 +80,6 @@
                     </template>
                 </v-card>
             </div>
-
-            <div
-                v-if="$slots.PanelAside"
-                class="flex-shrink-0 h-100 ms-4"
-                :style="{ width: PANEL_ASIDE_WIDTH }"
-            >
-                <v-card
-                    elevation="2"
-                    rounded="lg"
-                    class="h-100 overflow-y-auto"
-                >
-                    <slot name="PanelAside"></slot>
-                </v-card>
-            </div>
         </div>
     </div>
 </template>
@@ -120,11 +106,7 @@ const props = withDefaults(
 );
 
 const PANEL_LEFT_WIDTH = "300px";
-const PANEL_ASIDE_WIDTH = "340px";
 
-// Collapses the left panel by animating its width (and the gap) to zero, the
-// way the design's filter column slides away. A fixed-width inner wrapper keeps
-// the content from reflowing while the outer element shrinks.
 const panelLeftStyle = computed<CSSProperties>(() => ({
     width: props.panelLeftCollapsed ? "0px" : PANEL_LEFT_WIDTH,
     marginRight: props.panelLeftCollapsed ? "0px" : "16px",
