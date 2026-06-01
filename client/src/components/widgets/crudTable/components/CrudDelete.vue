@@ -24,13 +24,9 @@
 <script setup lang="ts" generic="T">
 import { ref } from "vue";
 import DeleteConfirmDialog from "@/components/widgets/confirmDialog/DeleteConfirmDialog.vue";
-import { CrudDeleteConfirm } from "@/components/widgets/crudTable/types";
+import { CrudDeleteConfig } from "@/components/widgets/crudTable/types";
 
-const props = defineProps<{
-    item: T;
-    deleteItem: (item: T) => Promise<void>;
-    confirm?: CrudDeleteConfirm<T>;
-}>();
+const props = defineProps<{ item: T } & CrudDeleteConfig<T>>();
 
 const submitting = ref(false);
 const dialogOpen = ref(false);
