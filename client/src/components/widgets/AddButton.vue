@@ -30,14 +30,14 @@ const props = defineProps<{
 }>();
 
 const emit = defineEmits<{
-    (e: "click"): void;
+    (e: "click", event: MouseEvent): void;
 }>();
 
-function handleClick() {
+function handleClick(event: MouseEvent) {
     if (props.route) {
         router.push(props.route);
     } else {
-        emit("click");
+        emit("click", event);
     }
 }
 </script>

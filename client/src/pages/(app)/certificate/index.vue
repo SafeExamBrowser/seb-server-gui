@@ -10,25 +10,30 @@
         </template>
 
         <template #ActionButton>
-            <div class="d-flex justify-end align-center fill-height">
-                <FormDialog
-                    icon-activator="mdi-plus-circle-outline"
-                    color-activator="primary"
-                    :label-activator="
-                        $t('certificates.createDialog.addButtonTitle')
-                    "
-                    size-activator="large"
-                    label-activator-visible
-                    :label-cancel="$t('general.cancelButton')"
-                    :label-submit="
-                        $t('certificates.createDialog.confirmButtonTitle')
-                    "
-                    form-id="form-certificate-upload"
-                    :get-form-fields="uploadForm.getFormFields"
-                    :get-item="uploadForm.getEmptyItem"
-                    :on-submit="uploadForm.handleUpload"
-                />
-            </div>
+            <FormDialog
+                icon-activator="mdi-plus-circle-outline"
+                color-activator="primary"
+                :label-activator="
+                    $t('certificates.createDialog.addButtonTitle')
+                "
+                size-activator="large"
+                label-activator-visible
+                :label-cancel="$t('general.cancelButton')"
+                :label-submit="
+                    $t('certificates.createDialog.confirmButtonTitle')
+                "
+                form-id="form-certificate-upload"
+                :get-form-fields="uploadForm.getFormFields"
+                :get-item="uploadForm.getEmptyItem"
+                :on-submit="uploadForm.handleUpload"
+            >
+                <template #activator="{ props: activatorProps }">
+                    <AddButton
+                        v-bind="activatorProps"
+                        :data-test-id="dataTestId"
+                    />
+                </template>
+            </FormDialog>
         </template>
 
         <template #PanelLeft>
@@ -91,6 +96,7 @@ import { useListFilterPanel } from "@/components/widgets/filters/useListFilterPa
 import LoadingFallbackComponent from "@/components/widgets/loadingFallbackComponent/LoadingFallbackComponent.vue";
 import DeleteConfirmDialog from "@/components/widgets/confirmDialog/DeleteConfirmDialog.vue";
 import FormDialog from "@/components/widgets/formDialog/FormDialog.vue";
+import AddButton from "@/components/widgets/AddButton.vue";
 import { useCertificatesOverview } from "./composables/useCertificatesOverview.ts";
 
 definePage({
