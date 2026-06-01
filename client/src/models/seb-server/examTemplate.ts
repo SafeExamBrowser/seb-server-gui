@@ -1,9 +1,17 @@
 import { z } from "zod";
 import { IndicatorEnum } from "@/models/seb-server/monitoringEnums.ts";
 
+// RGB hash translation:
+// - the API delivers/expects colors without a "#", the app works with a "#"
+// - decode adds the hash (API -> app), encode strips it (app -> API)
+export const colorCodec = z.codec(z.string(), z.string(), {
+    decode: (api) => (api.startsWith("#") ? api : `#${api}`),
+    encode: (app) => (app.startsWith("#") ? app.slice(1) : app),
+});
+
 export const thresholdSchema = z.object({
-    value: z.number(), // mandatory, the value of the threshold, range from 0 to 100 (%) for Battery and WiFi
-    color: z.string(), // mandatory, hex color value without the "#"
+    value: z.number(), // the value of the threshold, range from 0 to 100 (%) for Battery and WiFi
+    color: colorCodec, // the hex color value with the "#"
 });
 
 export type Threshold = z.infer<typeof thresholdSchema>;
@@ -21,6 +29,8 @@ export const indicatorExistingSchema = indicatorSchema.extend({
 });
 
 export type IndicatorExisting = z.infer<typeof indicatorExistingSchema>;
+
+export const indicatorTemplatesSchema = z.array(indicatorExistingSchema);
 
 export type ClientGroupTemplate = {
     id?: number; // PK of the ClientGroupTemplate only available when the ClientGroupTemplate exists

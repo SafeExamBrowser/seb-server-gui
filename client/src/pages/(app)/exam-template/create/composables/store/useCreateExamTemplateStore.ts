@@ -120,17 +120,7 @@ export const useCreateExamTemplateStore = defineStore(
                 : undefined,
             institutionalDefault: stepNamingStore.institutionalDefault,
             lmsIntegration: stepNamingStore.lmsIntegration,
-            indicatorTemplates: stepIndicatorsStore.indicators.map(
-                (indicator) => ({
-                    id: indicator.id,
-                    name: indicator.name,
-                    type: indicator.type,
-                    thresholds: indicator.thresholds.map((threshold) => ({
-                        value: threshold.value,
-                        color: threshold.color.slice(1), // strip the '#' from the hex color string
-                    })),
-                }),
-            ),
+            indicatorTemplates: stepIndicatorsStore.indicators,
             CLIENT_GROUP_TEMPLATES: stepClientGroupStore.groups.map(
                 (group) => ({
                     name: group.name,

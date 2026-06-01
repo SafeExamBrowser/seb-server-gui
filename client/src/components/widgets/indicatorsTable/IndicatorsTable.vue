@@ -9,12 +9,7 @@
                     v-for="threshold in item.thresholds"
                     :key="threshold.value"
                 >
-                    <ChipThreshold
-                        :threshold="{
-                            value: threshold.value,
-                            color: threshold.color.slice(1), // strip the '#' from the hex color string
-                        }"
-                    />
+                    <ChipThreshold :threshold="threshold" />
                 </template>
             </div>
         </template>
