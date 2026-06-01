@@ -35,11 +35,14 @@ Do not edit files under `generated/hey-api/` manually. Change the backend OpenAP
 
 ## Adding a new domain
 
-There is no per-domain filter on the frontend — the generated client covers the whole backend. To migrate the next domain (institutions, exams, etc.):
+**Full guide:** [`docs/migrating-a-domain.md`](../../../../docs/migrating-a-domain.md) (repo root) — covers the backend OpenAPI annotations, regeneration, the frontend service/composables/forms, and a verification checklist. The steps below are the frontend summary; copy the **User Account** files as the canonical template.
 
-1. Add a `<domain>Service.ts` next to `userAccountService.ts` that imports the relevant generated SDK functions and zod schemas.
-2. Add composables under `pages/(app)/<domain>/api/` that wrap them in TanStack Vue Query.
-3. Migrate the pages to the new composables.
+There is no per-domain filter on the frontend — the generated client covers the whole backend.
+
+1. Add a `<domain>Service.ts` next to `userAccountService.ts` that imports the generated SDK functions, zod schemas, and types. Each function must: bind the shared `heySebServerClient`, parse **both** the request (body/path/query) **and** the response with the generated `z*` schemas, thread the optional `signal`, and type params with the generated `GetXxxData["query"]` (not hand-written models).
+2. Add one composable per operation under `pages/(app)/<domain>/api/`: `useQuery` for reads, `useMutation` for writes, query keys from the generated `getXxxQueryKey({ client: heySebServerClient })` helpers (also used for invalidation / `setQueryData`), and `toAppErrorOrUndefined(...)` to expose a normalised error.
+3. Keep models as thin aliases of the generated types and derive enums from the generated zod (`models/userAccount.ts`). Derive form `required`/length/format rules from the generated zod via `useZodFormRules`. Submit through `submitWithFormErrors` and map backend field errors with `applyBackendFieldErrors` + a `BackendFieldAliasMap`.
+4. Migrate the pages to the new composables. For public endpoints, add the generated SDK URL to `PUBLIC_PATHS` in `http/heySebServerClient.ts`.
 
 The generated source grows with each backend operation, but tree-shaking removes anything you don't import from the final bundle. The repo carries the larger generated file in exchange for not maintaining a per-domain transformer.
 

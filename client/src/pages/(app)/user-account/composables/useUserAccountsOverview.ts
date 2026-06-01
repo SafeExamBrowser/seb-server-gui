@@ -14,13 +14,13 @@ export const useUserAccountsOverview = () => {
 
     const userAccountDetailRoute = (
         item: TableItem,
-    ): RouteLocationAsRelative | null =>
+    ): RouteLocationAsRelative | undefined =>
         item.uuid != null
             ? {
                   name: "/(app)/user-account/[userUuid]/",
                   params: { userUuid: String(item.uuid) },
               }
-            : null;
+            : undefined;
 
     const { headers, cellFormatters } = useUserAccountsTableHeaders();
 

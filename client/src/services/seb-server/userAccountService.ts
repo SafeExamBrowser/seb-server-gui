@@ -40,8 +40,10 @@ import type {
     UserAccountCreateRequest,
     UserAccountPasswordChange,
 } from "@/models/userAccount.ts";
-import type { GetUserAccountsData } from "@/api/seb-server/generated/hey-api/types.gen.ts";
-import type { OptionalParInstitutionId } from "@/models/seb-server/optionalParamters";
+import type {
+    GetUserAccountsData,
+    GetUserAccountSupervisorsData,
+} from "@/api/seb-server/generated/hey-api/types.gen.ts";
 
 type RequestOptions = { signal?: AbortSignal };
 
@@ -74,7 +76,7 @@ export const getCurrentUserAccount = (opts?: RequestOptions) =>
     );
 
 export const getUserAccountSupervisors = (
-    query?: OptionalParInstitutionId,
+    query?: GetUserAccountSupervisorsData["query"],
     opts?: RequestOptions,
 ) =>
     getUserAccountSupervisorsSdk({
