@@ -15,7 +15,7 @@ export function useTablePagination(deps: {
 }) {
     const currentPage = computed(() => toValue(deps.options)?.page ?? 1);
 
-    const currentItemsPerPage = computed(
+    const requestedItemsPerPage = computed(
         () =>
             toValue(deps.options)?.itemsPerPage ??
             toValue(deps.itemsPerPage) ??
@@ -24,23 +24,12 @@ export function useTablePagination(deps: {
 
     const resolvedPageCount = computed(() => toValue(deps.pageCount) ?? 0);
 
-    const itemsPerPageOptions = computed(() => {
-        const pc = resolvedPageCount.value;
-        const ic = toValue(deps.items).length;
-        const opts = [5];
-
-        if (pc > 1 || ic > 5) opts.push(10);
-        if (pc > 2 || ic > 10) opts.push(15);
-
-        return opts;
-    });
-
     const internalItemsLength = computed(() => {
         const override = toValue(deps.itemsLength);
         if (override !== undefined) return override;
 
         const page = currentPage.value;
-        const perPage = currentItemsPerPage.value;
+        const perPage = requestedItemsPerPage.value;
         const pc = resolvedPageCount.value;
         const ic = toValue(deps.items).length;
 
@@ -49,6 +38,33 @@ export function useTablePagination(deps: {
             return (pc - 1) * perPage + ic;
         }
         return pc * perPage;
+    });
+
+    const itemsPerPageOptions = computed(() => {
+        const total = internalItemsLength.value;
+        const opts = [5];
+
+        if (total > 5) {
+            opts.push(10);
+        }
+        if (total > 10) {
+            opts.push(15);
+        }
+
+        return opts;
+    });
+
+    const currentItemsPerPage = computed(() => {
+        const requested = requestedItemsPerPage.value;
+
+        if (toValue(deps.items).length === 0) {
+            return requested;
+        }
+
+        const options = itemsPerPageOptions.value;
+        const maxOption = options[options.length - 1];
+
+        return Math.min(requested, maxOption);
     });
 
     const sortByForTable = computed<SortItemForTable[]>(() =>
@@ -61,7 +77,7 @@ export function useTablePagination(deps: {
     function emitOptionsUpdate(partial: Partial<ServerTablePaging>) {
         deps.emit({
             page: currentPage.value,
-            itemsPerPage: currentItemsPerPage.value,
+            itemsPerPage: requestedItemsPerPage.value,
             sortBy: toValue(deps.options)?.sortBy ?? [],
             ...partial,
         });
@@ -78,6 +94,7 @@ export function useTablePagination(deps: {
     return {
         currentPage,
         currentItemsPerPage,
+        requestedItemsPerPage,
         resolvedPageCount,
         itemsPerPageOptions,
         internalItemsLength,
