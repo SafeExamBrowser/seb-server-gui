@@ -22,7 +22,32 @@
                 </div>
             </v-card>
 
-            <div class="flex-grow-1 h-100" :style="{ minWidth: 0 }">
+            <div
+                v-if="floating"
+                class="flex-grow-1 h-100 overflow-y-auto overflow-x-hidden"
+                :style="{ minWidth: 0, minHeight: 0 }"
+            >
+                <v-card
+                    border
+                    elevation="1"
+                    rounded="lg"
+                    class="bg-surface-tint mb-6 pb-4"
+                >
+                    <PageHeader
+                        :title="title"
+                        :bread-crumb="breadCrumb"
+                        :data-test-id="dataTestId"
+                    >
+                        <template v-if="$slots.ActionButton" #actions>
+                            <slot name="ActionButton"></slot>
+                        </template>
+                    </PageHeader>
+                </v-card>
+
+                <slot name="PanelMain"></slot>
+            </div>
+
+            <div v-else class="flex-grow-1 h-100" :style="{ minWidth: 0 }">
                 <v-card
                     elevation="2"
                     rounded="lg"
@@ -84,11 +109,13 @@ const props = withDefaults(
         breadCrumb?: BreadCrumbItem[];
         dataTestId?: string;
         panelLeftCollapsed?: boolean;
+        floating?: boolean;
     }>(),
     {
         breadCrumb: undefined,
         dataTestId: undefined,
         panelLeftCollapsed: false,
+        floating: false,
     },
 );
 
