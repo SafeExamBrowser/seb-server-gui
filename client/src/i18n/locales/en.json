@@ -1884,7 +1884,10 @@
         "infos": {
             "start": "Start Date",
             "end": "End Date",
-            "status": "Status"
+            "status": "Status",
+            "live": "Live · refreshing every {seconds}s",
+            "security": "Security",
+            "connections": "connections"
         },
         "clients": {
             "total": "Total:"

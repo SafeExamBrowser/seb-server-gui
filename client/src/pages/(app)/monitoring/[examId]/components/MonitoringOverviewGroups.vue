@@ -1,329 +1,205 @@
 <template>
-    <!-- Title Row with Add Group Button -->
-    <v-row class="mb-4 align-center">
-        <v-col cols="6">
-            <div class="text-title-large font-weight-bold">
-                {{ translate("monitoringOverview.groups.groups") }}
-            </div>
-        </v-col>
-        <v-col class="text-right" cols="6"> </v-col>
-    </v-row>
+    <v-card border="thin" flat rounded="lg">
+        <div class="px-5 py-3 d-flex align-center ga-2">
+            <span class="text-subtitle-1 font-weight-bold">
+                {{ $t("monitoringOverview.groups.groups") }}
+            </span>
+            <v-spacer />
+            <span
+                v-if="groupCount > 0"
+                class="text-caption font-weight-medium text-medium-emphasis"
+            >
+                {{ groupCount }} {{ $t("monitoringOverview.groups.groups") }}
+            </span>
+        </div>
+        <v-divider />
 
-    <!-- Redesigned Group Cards -->
-    <v-row>
-        <template
-            v-for="clientGroupItem in overViewClientGroups"
-            :key="clientGroupItem.id"
-        >
-            <v-col cols="12" md="4">
-                <v-card
-                    class="rounded-lg d-flex flex-column group-card"
-                    elevation="1"
+        <div class="pa-5">
+            <v-row>
+                <v-col
+                    v-for="clientGroupItem in overViewClientGroups"
+                    :key="clientGroupItem.id"
+                    cols="12"
+                    sm="6"
+                    md="4"
+                    lg="3"
                 >
-                    <!-- Colored Section -->
-                    <div
-                        class="group-card-header px-4 py-3"
-                        :style="{
-                            backgroundColor: '#f5f5f5',
-                            borderLeft: `6px solid #000}`,
-                        }"
+                    <v-card
+                        border="thin"
+                        flat
+                        rounded="lg"
+                        class="h-100 d-flex flex-column pa-4 ga-3"
                     >
                         <div
-                            class="d-flex justify-space-between align-start align-center"
+                            class="d-flex align-start justify-space-between ga-2"
                         >
-                            <div>
-                                <div class="font-weight-bold text-body-large">
-                                    <template
-                                        v-if="
-                                            clientGroupItem.type ===
-                                                ClientGroupEnum.SP_FALLBACK_GROUP &&
-                                            isSPGroupAvailable
-                                        "
-                                    >
-                                        {{
-                                            translate(
-                                                "monitoringOverview.groups.fallbackGroup",
-                                            )
-                                        }}
-                                    </template>
-                                    <template v-else>
-                                        {{
-                                            translate(
-                                                "monitoringOverview.groups.group",
-                                            )
-                                        }}
-                                        {{ clientGroupItem.name }}
-                                    </template>
+                            <div :style="{ minWidth: 0 }">
+                                <div class="text-body-1 font-weight-bold">
+                                    {{ getGroupName(clientGroupItem) }}
                                 </div>
-                                <div class="text-body-small">
+                                <div
+                                    class="text-caption font-weight-bold text-uppercase text-medium-emphasis"
+                                >
                                     {{ translate(clientGroupItem.type) }}
                                 </div>
                             </div>
-                            <div
-                                class="custom-chip"
-                                :style="{
-                                    color: '#000',
-                                }"
+                            <v-chip
+                                color="primary"
+                                variant="tonal"
+                                size="small"
                             >
-                                {{ clientGroupItem.clientAmount }}
+                                {{ clientGroupItem.clientAmount
+                                }}{{ $t("monitoringOverview.groups.clients") }}
+                            </v-chip>
+                        </div>
+
+                        <div
+                            class="d-flex align-center ga-2 text-body-2 text-medium-emphasis"
+                        >
+                            <v-icon size="18">
+                                {{ getGroupIcon(clientGroupItem) }}
+                            </v-icon>
+                            <span>{{
+                                getGroupValueText(clientGroupItem)
+                            }}</span>
+                        </div>
+
+                        <div class="d-flex flex-wrap ga-2 mt-auto">
+                            <v-btn
+                                v-if="clientGroupItem.spsGroupUUID"
+                                color="primary"
+                                variant="flat"
+                                size="small"
+                                prepend-icon="mdi-monitor-eye"
+                                @click="
+                                    openGalleryView(
+                                        clientGroupItem.spsGroupUUID,
+                                    )
+                                "
+                            >
                                 {{
-                                    translate(
-                                        "monitoringOverview.groups.clients",
+                                    $t(
+                                        "monitoringOverview.groups.buttons.proctor",
                                     )
                                 }}
-                            </div>
+                            </v-btn>
+                            <v-btn
+                                color="primary"
+                                variant="outlined"
+                                size="small"
+                                prepend-icon="mdi-format-list-bulleted"
+                                @click="
+                                    goToMonitoring(
+                                        MonitoringHeaderEnum.SHOW_CLIENT_GROUPS,
+                                        generalUtils.createStringCommaList([
+                                            clientGroupItem.id,
+                                        ]),
+                                        examId,
+                                    )
+                                "
+                            >
+                                {{
+                                    $t(
+                                        "monitoringOverview.groups.buttons.viewList",
+                                    )
+                                }}
+                            </v-btn>
                         </div>
-                    </div>
+                    </v-card>
+                </v-col>
 
-                    <!-- Group Value Info -->
-                    <div class="px-4 pt-3 group-value-info">
-                        <!-- Icon -->
-                        <v-icon
-                            v-if="
-                                clientGroupItem.type ===
-                                ClientGroupEnum.NAME_ALPHABETICAL_RANGE
-                            "
-                            size="20"
-                        >
-                            mdi-sort-alphabetical-variant
-                        </v-icon>
-                        <v-icon
-                            v-else-if="
-                                clientGroupItem.type ===
-                                ClientGroupEnum.IP_V4_RANGE
-                            "
-                            size="20"
-                        >
-                            mdi-lan
-                        </v-icon>
-                        <v-icon
-                            v-else-if="
-                                clientGroupItem.type ===
-                                ClientGroupEnum.CLIENT_OS
-                            "
-                            size="20"
-                        >
-                            {{
-                                clientGroupItem.typeValue ===
-                                ClientOSEnum.WINDOWS
-                                    ? "mdi-microsoft-windows"
-                                    : clientGroupItem.typeValue ===
-                                        ClientOSEnum.MAC_OS
-                                      ? "mdi-apple"
-                                      : [
-                                              "I_OS",
-                                              "IPAD_OS",
-                                              "I_OS_OR_IPAD_OS",
-                                          ].includes(clientGroupItem.typeValue)
-                                        ? "mdi-cellphone"
-                                        : "mdi-help-circle-outline"
-                            }}
-                        </v-icon>
-                        <v-icon
-                            v-else-if="
-                                clientGroupItem.type === ClientGroupEnum.NONE ||
-                                clientGroupItem.type ===
-                                    ClientGroupEnum.SP_FALLBACK_GROUP
-                            "
-                            size="20"
-                        >
-                            mdi-account-multiple-remove
-                        </v-icon>
-
-                        <!-- Text -->
-                        <span
-                            v-if="
-                                clientGroupItem.type ===
-                                ClientGroupEnum.NAME_ALPHABETICAL_RANGE
-                            "
-                            class="ml-1"
-                        >
-                            Range: {{ clientGroupItem.typeValue }}
-                        </span>
-                        <span
-                            v-else-if="
-                                clientGroupItem.type === ClientGroupEnum.NONE ||
-                                clientGroupItem.type ===
-                                    ClientGroupEnum.SP_FALLBACK_GROUP
-                            "
-                            class="ml-1"
-                        >
-                            {{
-                                translate(
-                                    "monitoringOverview.groups.spsFallback",
-                                )
-                            }}
-                        </span>
-                        <span v-else class="ml-1">
-                            {{
-                                translate(clientGroupItem.typeValue || "&nbsp;")
-                            }}
-                        </span>
-                    </div>
-                    <!-- Action Buttons -->
-                    <div class="d-flex align-center gap-3 px-4 py-3">
-                        <v-btn
-                            v-if="clientGroupItem.spsGroupUUID"
-                            color="primary"
-                            prepend-icon="mdi-monitor-eye"
-                            variant="flat"
-                            @click="
-                                openGalleryView(clientGroupItem.spsGroupUUID)
-                            "
-                        >
-                            {{
-                                translate(
-                                    "monitoringOverview.groups.buttons.proctor",
-                                )
-                            }}
-                        </v-btn>
-
-                        <v-btn
-                            class="ml-4"
-                            color="primary"
-                            prepend-icon="mdi-format-list-bulleted"
-                            variant="outlined"
-                            @click="
-                                goToMonitoring(
-                                    MonitoringHeaderEnum.SHOW_CLIENT_GROUPS,
-                                    generalUtils.createStringCommaList([
-                                        clientGroupItem.id,
-                                    ]),
-                                    examId,
-                                )
-                            "
-                        >
-                            {{
-                                translate(
-                                    "monitoringOverview.groups.buttons.viewList",
-                                )
-                            }}
-                        </v-btn>
-                    </div>
-                </v-card>
-            </v-col>
-        </template>
-    </v-row>
-
-    <!--------special card if no sp group is available but screen proctoring is activated on the exam-------->
-    <v-row
-        v-if="!isSPGroupAvailable && isScreenProctoringAvailable"
-        class="mt-4"
-    >
-        <v-col cols="12" md="4">
-            <v-card
-                class="rounded-lg d-flex flex-column group-card"
-                elevation="1"
-            >
-                <!-- Colored Section -->
-                <div
-                    class="group-card-header px-4 py-3"
-                    style="
-                        background-color: #f5f5f5;
-                        border-left: 6px solid #000;
-                    "
+                <!-- Fallback tile when SP is enabled but no SP group is available -->
+                <v-col
+                    v-if="!isSPGroupAvailable && isScreenProctoringAvailable"
+                    cols="12"
+                    sm="6"
+                    md="4"
+                    lg="3"
                 >
-                    <div
-                        class="d-flex justify-space-between align-start align-center"
+                    <v-card
+                        border="thin"
+                        flat
+                        rounded="lg"
+                        class="h-100 d-flex flex-column pa-4 ga-3"
                     >
-                        <div>
-                            <div class="font-weight-bold text-body-large">
+                        <div
+                            class="d-flex align-start justify-space-between ga-2"
+                        >
+                            <div :style="{ minWidth: 0 }">
+                                <div class="text-body-1 font-weight-bold">
+                                    {{
+                                        $t("monitoringOverview.groups.spsGroup")
+                                    }}
+                                </div>
+                            </div>
+                            <v-chip
+                                color="primary"
+                                variant="tonal"
+                                size="small"
+                            >
                                 {{
-                                    translate(
-                                        "monitoringOverview.groups.spsGroup",
+                                    screenProctoringFallbackGroup?.clientAmount ??
+                                    0
+                                }}{{ $t("monitoringOverview.groups.clients") }}
+                            </v-chip>
+                        </div>
+
+                        <div
+                            class="d-flex align-center ga-2 text-body-2 text-medium-emphasis"
+                        >
+                            <v-icon size="18">mdi-account-multiple</v-icon>
+                            <span>
+                                {{
+                                    $t("monitoringOverview.groups.spsFallback")
+                                }}
+                            </span>
+                        </div>
+
+                        <div class="d-flex flex-wrap ga-2 mt-auto">
+                            <v-btn
+                                v-if="screenProctoringFallbackGroup !== null"
+                                color="primary"
+                                variant="flat"
+                                size="small"
+                                prepend-icon="mdi-monitor-eye"
+                                @click="
+                                    openGalleryView(
+                                        screenProctoringFallbackGroup.spsGroupUUID ??
+                                            '',
+                                    )
+                                "
+                            >
+                                {{
+                                    $t(
+                                        "monitoringOverview.groups.buttons.proctor",
                                     )
                                 }}
-                            </div>
+                            </v-btn>
+                            <v-btn
+                                color="primary"
+                                variant="outlined"
+                                size="small"
+                                prepend-icon="mdi-format-list-bulleted"
+                                @click="
+                                    goToMonitoring(
+                                        MonitoringHeaderEnum.SHOW_STATES,
+                                        getScreenProctoringState(),
+                                        examId,
+                                    )
+                                "
+                            >
+                                {{
+                                    $t(
+                                        "monitoringOverview.groups.buttons.viewList",
+                                    )
+                                }}
+                            </v-btn>
                         </div>
-                        <div class="custom-chip">
-                            {{
-                                screenProctoringFallbackGroup?.clientAmount ?? 0
-                            }}
-                            {{ translate("monitoringOverview.groups.clients") }}
-                        </div>
-                    </div>
-                </div>
-
-                <!-- Group Value Info -->
-                <div class="px-4 pt-3 group-value-info">
-                    <v-icon size="20">mdi-account-multiple</v-icon>
-                    <span>{{
-                        translate("monitoringOverview.groups.spsFallback")
-                    }}</span>
-                </div>
-
-                <!-- Action Buttons -->
-                <div class="d-flex align-center gap-3 px-4 py-3">
-                    <!-- SP Gallery Button -->
-                    <v-btn
-                        v-if="screenProctoringFallbackGroup !== null"
-                        color="primary"
-                        prepend-icon="mdi-monitor-eye"
-                        variant="flat"
-                        @click="
-                            openGalleryView(
-                                screenProctoringFallbackGroup.spsGroupUUID ??
-                                    '',
-                            )
-                        "
-                    >
-                        {{
-                            translate(
-                                "monitoringOverview.groups.buttons.proctor",
-                            )
-                        }}
-                    </v-btn>
-
-                    <!-- View List Button -->
-                    <v-btn
-                        class="ml-4"
-                        color="primary"
-                        prepend-icon="mdi-format-list-bulleted"
-                        variant="outlined"
-                        @click="
-                            goToMonitoring(
-                                MonitoringHeaderEnum.SHOW_STATES,
-                                getScreenProctoringState(),
-                                examId,
-                            )
-                        "
-                    >
-                        {{
-                            translate(
-                                "monitoringOverview.groups.buttons.viewList",
-                            )
-                        }}
-                    </v-btn>
-                </div>
-            </v-card>
-        </v-col>
-    </v-row>
-
-    <!---------------------------->
-
-    <!--------show all button-------->
-    <!-- <v-row
-        v-if="
-            isSPGroupAvailable ||
-            monitoringStore.monitoringOverviewData?.clientGroups.length == 0
-        "
-        class="mb-3"
-    >
-        <v-col align="right">
-            <v-btn
-                color="primary"
-                @click="
-                    monitoringViewService.goToMonitoring(
-                        MonitoringHeaderEnum.SHOW_ALL,
-                        true,
-                        examId,
-                    )
-                "
-            >
-                {{ translate("monitoringOverview.groups.showAll") }}
-            </v-btn>
-        </v-col>
-    </v-row> -->
+                    </v-card>
+                </v-col>
+            </v-row>
+        </div>
+    </v-card>
 </template>
 
 <script setup lang="ts">
@@ -346,11 +222,8 @@ const props = defineProps<{
     examId: string;
 }>();
 
-// stores
 const monitoringStore = useMonitoringStore();
 const router = useRouter();
-
-// exam
 const examId = props.examId;
 
 const overViewClientGroups: ComputedRef<OverviewClientGroup[] | null> =
@@ -374,6 +247,8 @@ const overViewClientGroups: ComputedRef<OverviewClientGroup[] | null> =
 
         return normalGroups;
     });
+
+const groupCount = computed(() => overViewClientGroups.value?.length ?? 0);
 
 const isSPGroupAvailable: ComputedRef<boolean> = computed(() => {
     const normalGroups =
@@ -424,6 +299,59 @@ const screenProctoringFallbackGroup: ComputedRef<OverviewClientGroup | null> =
         return null;
     });
 
+function getGroupName(group: OverviewClientGroup): string {
+    if (
+        group.type === ClientGroupEnum.SP_FALLBACK_GROUP &&
+        isSPGroupAvailable.value
+    ) {
+        return translate("monitoringOverview.groups.fallbackGroup");
+    }
+
+    return `${translate("monitoringOverview.groups.group")} ${group.name}`;
+}
+
+function getGroupIcon(group: OverviewClientGroup): string {
+    switch (group.type) {
+        case ClientGroupEnum.NAME_ALPHABETICAL_RANGE:
+            return "mdi-sort-alphabetical-variant";
+        case ClientGroupEnum.IP_V4_RANGE:
+            return "mdi-lan";
+        case ClientGroupEnum.CLIENT_OS:
+            return getClientOsIcon(group.typeValue);
+        case ClientGroupEnum.NONE:
+        case ClientGroupEnum.SP_FALLBACK_GROUP:
+            return "mdi-account-multiple-remove";
+        default:
+            return "mdi-help-circle-outline";
+    }
+}
+
+function getClientOsIcon(typeValue: string): string {
+    if (typeValue === ClientOSEnum.WINDOWS) {
+        return "mdi-microsoft-windows";
+    }
+    if (typeValue === ClientOSEnum.MAC_OS) {
+        return "mdi-apple";
+    }
+    if (["I_OS", "IPAD_OS", "I_OS_OR_IPAD_OS"].includes(typeValue)) {
+        return "mdi-cellphone";
+    }
+    return "mdi-help-circle-outline";
+}
+
+function getGroupValueText(group: OverviewClientGroup): string {
+    if (group.type === ClientGroupEnum.NAME_ALPHABETICAL_RANGE) {
+        return `${translate("monitoringOverview.groups.range")} ${group.typeValue}`;
+    }
+    if (
+        group.type === ClientGroupEnum.NONE ||
+        group.type === ClientGroupEnum.SP_FALLBACK_GROUP
+    ) {
+        return translate("monitoringOverview.groups.spsFallback");
+    }
+    return translate(group.typeValue);
+}
+
 function getScreenProctoringState(): string {
     if (monitoringStore.selectedExam == null) {
         return ConnectionStatusEnum.ACTIVE;
@@ -443,58 +371,3 @@ function openGalleryView(groupUuid: string) {
     });
 }
 </script>
-
-<style scoped>
-.add-group-btn {
-    color: rgb(var(--v-theme-primary)) !important;
-    font-weight: bold;
-}
-
-.group-card {
-    overflow: hidden;
-    min-height: 170px;
-}
-
-.group-card-header {
-    position: relative;
-    background-color: #f5f5f5;
-    padding-left: 16px;
-}
-
-.group-card-header::before {
-    content: "";
-    position: absolute;
-    left: 0;
-    top: 0;
-    height: 100%;
-    background-color: #f5f5f5;
-    border-top-left-radius: 0;
-    border-bottom-left-radius: 0;
-}
-.custom-chip {
-    background-color: white;
-    border-radius: 999px;
-    font-weight: 500;
-    font-size: 14px;
-    padding: 4px 12px;
-    height: 28px;
-    display: inline-flex;
-    align-items: center;
-    justify-content: center;
-    white-space: nowrap;
-    border: none;
-}
-
-.group-value-info {
-    font-size: 14px;
-    font-weight: 500;
-    color: rgba(0, 0, 0, 0.6);
-    display: flex;
-    align-items: center;
-    gap: 8px;
-}
-
-.min-height-sheet {
-    min-height: 354px;
-}
-</style>

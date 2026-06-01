@@ -1,125 +1,87 @@
 <template>
-    <v-row>
-        <v-col cols="12">
-            <!------title------->
-            <div class="text-title-large font-weight-bold mb-4">
-                {{ translate("monitoringOverview.clientStates.clientStates") }}
-            </div>
-            <!------doughnut chart------->
-            <v-row>
-                <v-col cols="6">
-                    <section class="chart-container">
-                        <Doughnut
-                            v-if="chartData != null"
-                            :data="chartData"
-                            :options="chartOptions"
-                        />
-                        <div class="chart-label font-weight-bold">
-                            {{ translate("monitoringOverview.clients.total") }}
-                            {{
-                                monitoringStore.monitoringOverviewData
-                                    ?.clientStates.total
-                            }}
-                        </div>
-                    </section>
-                </v-col>
-                <v-col cols="6">
-                    <v-row>
-                        <v-col>
-                            <template
-                                v-for="(state, index) in clientStates"
-                                :key="index"
-                            >
-                                <v-card
-                                    v-if="state != ConnectionStatusEnum.MISSING"
-                                    class="rounded-lg mb-3 pa-2"
-                                    :color="getConnectionStatusColor(state)"
-                                    :hover="true"
-                                    :ripple="false"
-                                    variant="flat"
-                                    @click="
-                                        goToMonitoring(
-                                            MonitoringHeaderEnum.SHOW_STATES,
-                                            state!,
-                                            examId,
-                                        )
-                                    "
-                                >
-                                    <v-row>
-                                        <v-col align="left"
-                                            >{{ clientData[index] }}
-                                            {{ translate(state) }}
-                                        </v-col>
-                                        <v-col align="right">
-                                            <v-icon
-                                                :icon="
-                                                    getConnectionStatusIcon(
-                                                        state,
-                                                    )
-                                                "
-                                            ></v-icon>
-                                        </v-col>
-                                    </v-row>
-                                </v-card>
-                            </template>
-                        </v-col>
-                    </v-row>
+    <v-card border="thin" flat rounded="lg" class="h-100 d-flex flex-column">
+        <div class="px-5 py-3 d-flex align-center">
+            <span class="text-subtitle-1 font-weight-bold">
+                {{ $t("monitoringOverview.clientStates.clientStates") }}
+            </span>
+        </div>
+        <v-divider />
 
-                    <!------missing state------->
-
-                    <v-row
-                        v-if="
-                            clientStates.includes(ConnectionStatusEnum.MISSING)
-                        "
-                        class="mt-6"
+        <div class="pa-5 flex-grow-1 d-flex flex-wrap align-center ga-5">
+            <!-- Doughnut -->
+            <div
+                class="position-relative mx-auto flex-shrink-0"
+                :style="{ width: '150px', maxWidth: '150px' }"
+            >
+                <Doughnut
+                    v-if="chartData != null"
+                    :data="chartData"
+                    :options="chartOptions"
+                />
+                <div
+                    class="position-absolute text-center"
+                    :style="{
+                        top: '50%',
+                        left: '50%',
+                        transform: 'translate(-50%, -50%)',
+                    }"
+                >
+                    <div class="text-h6 font-weight-bold">
+                        {{
+                            monitoringStore.monitoringOverviewData?.clientStates
+                                .total
+                        }}
+                    </div>
+                    <div
+                        class="text-caption font-weight-bold text-uppercase text-medium-emphasis"
                     >
-                        <v-col>
-                            <v-card
-                                class="rounded-lg mb-3 pa-2"
-                                :color="
-                                    getConnectionStatusColor(
-                                        clientStates[clientStates.length - 1],
-                                    )
-                                "
-                                :hover="true"
-                                :ripple="false"
-                                variant="flat"
-                                @click="
-                                    goToMonitoring(
-                                        MonitoringHeaderEnum.SHOW_STATES,
-                                        ConnectionStatusEnum.MISSING,
-                                        examId,
-                                    )
-                                "
-                            >
-                                <v-row>
-                                    <v-col align="left"
-                                        >{{ clientData[clientData.length - 1] }}
-                                        {{
-                                            translate(
-                                                clientStates[
-                                                    clientStates.length - 1
-                                                ],
-                                            )
-                                        }}
-                                    </v-col>
-                                    <v-col align="right">
-                                        <v-icon
-                                            :icon="
-                                                getConnectionStatusIcon(
-                                                    ConnectionStatusEnum.MISSING,
-                                                )
-                                            "
-                                        ></v-icon>
-                                    </v-col>
-                                </v-row>
-                            </v-card>
-                        </v-col>
-                    </v-row>
-                </v-col>
-            </v-row>
-        </v-col>
-    </v-row>
+                        {{ $t("monitoringOverview.clients.total") }}
+                    </div>
+                </div>
+            </div>
+
+            <!-- State list -->
+            <div
+                class="flex-grow-1 d-flex flex-column ga-1"
+                :style="{ minWidth: '160px' }"
+            >
+                <v-hover
+                    v-for="(state, index) in clientStates"
+                    :key="index"
+                    v-slot="{ isHovering, props: hoverProps }"
+                >
+                    <div
+                        v-bind="hoverProps"
+                        class="d-flex align-center ga-3 px-3 py-2 rounded-lg"
+                        :class="isHovering ? 'bg-surface-light' : ''"
+                        :style="{ cursor: 'pointer' }"
+                        @click="
+                            goToMonitoring(
+                                MonitoringHeaderEnum.SHOW_STATES,
+                                state!,
+                                examId,
+                            )
+                        "
+                    >
+                        <span
+                            class="d-inline-block rounded-circle flex-shrink-0"
+                            :style="{
+                                width: '11px',
+                                height: '11px',
+                                backgroundColor: clientColors[index],
+                            }"
+                        ></span>
+                        <span class="flex-grow-1 text-body-2">
+                            {{ translate(state) }}
+                        </span>
+                        <span class="text-body-2 font-weight-bold">
+                            {{ clientData[index] }}
+                        </span>
+                    </div>
+                </v-hover>
+            </div>
+        </div>
+    </v-card>
 </template>
 
 <script setup lang="ts">
@@ -138,21 +100,15 @@ const props = defineProps<{
     examId: string;
 }>();
 
-// i18n
 const i18n = useI18n();
-
-// stores
 const monitoringStore = useMonitoringStore();
-
-// exam
 const examId = props.examId;
 
-// chart
 ChartJS.register(ArcElement, Tooltip, Legend);
 
 const chartOptions = ref({
     responsive: true,
-    maintainAspectRatio: false,
+    maintainAspectRatio: true,
     plugins: {
         legend: {
             display: false,
@@ -180,7 +136,6 @@ const clientStatesListSortOrder: Record<ConnectionStatusEnum, number> = {
     [ConnectionStatusEnum.UNDEFINED]: 6,
 };
 
-// chart data
 const clientStates = ref<(ConnectionStatusEnum | null)[]>([]);
 const clientLabels = ref<string[]>([]);
 const clientData = ref<number[]>([]);
@@ -270,53 +225,4 @@ function getConnectionStatusColor(
             return "#000000";
     }
 }
-
-function getConnectionStatusIcon(
-    connectionStatus: ConnectionStatusEnum | null,
-): string {
-    if (connectionStatus == null) return "mdi-chevron-right";
-
-    switch (connectionStatus) {
-        case ConnectionStatusEnum.CONNECTION_REQUESTED:
-            return "mdi-signal-distance-variant";
-        case ConnectionStatusEnum.READY:
-            return "mdi-check";
-        case ConnectionStatusEnum.ACTIVE:
-            return "mdi-check-underline";
-        case ConnectionStatusEnum.CLOSED:
-            return "mdi-close";
-        case ConnectionStatusEnum.DISABLED:
-            return "mdi-send-lock";
-        case ConnectionStatusEnum.MISSING:
-            return "mdi-signal-off";
-        default:
-            return "mdi-chevron-right";
-    }
-}
 </script>
-
-<style scoped>
-.chart-container {
-    position: relative;
-    width: 100%;
-    aspect-ratio: 1 / 1;
-    margin: 0 auto;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    max-width: 230px;
-}
-
-.chart-container canvas {
-    width: 100% !important;
-    height: auto !important;
-}
-
-.chart-label {
-    position: absolute;
-    text-align: center;
-    font-size: clamp(0.9rem, 2vw, 1.2rem);
-    line-height: 1.2;
-}
-</style>
