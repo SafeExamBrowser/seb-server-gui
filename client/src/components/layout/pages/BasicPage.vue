@@ -22,7 +22,32 @@
                 </div>
             </v-card>
 
-            <div class="flex-grow-1 h-100" :style="{ minWidth: 0 }">
+            <div
+                v-if="floating"
+                class="flex-grow-1 h-100 overflow-y-auto overflow-x-hidden"
+                :style="{ minWidth: 0, minHeight: 0 }"
+            >
+                <v-card
+                    border
+                    elevation="1"
+                    rounded="lg"
+                    class="bg-surface-tint mb-6 pb-4"
+                >
+                    <PageHeader
+                        :title="title"
+                        :bread-crumb="breadCrumb"
+                        :data-test-id="dataTestId"
+                    >
+                        <template v-if="$slots.ActionButton" #actions>
+                            <slot name="ActionButton"></slot>
+                        </template>
+                    </PageHeader>
+                </v-card>
+
+                <slot name="PanelMain"></slot>
+            </div>
+
+            <div v-else class="flex-grow-1 h-100" :style="{ minWidth: 0 }">
                 <v-card
                     elevation="2"
                     rounded="lg"
@@ -55,20 +80,6 @@
                     </template>
                 </v-card>
             </div>
-
-            <div
-                v-if="$slots.PanelAside"
-                class="flex-shrink-0 h-100 ms-4"
-                :style="{ width: PANEL_ASIDE_WIDTH }"
-            >
-                <v-card
-                    elevation="2"
-                    rounded="lg"
-                    class="h-100 overflow-y-auto"
-                >
-                    <slot name="PanelAside"></slot>
-                </v-card>
-            </div>
         </div>
     </div>
 </template>
@@ -84,20 +95,18 @@ const props = withDefaults(
         breadCrumb?: BreadCrumbItem[];
         dataTestId?: string;
         panelLeftCollapsed?: boolean;
+        floating?: boolean;
     }>(),
     {
         breadCrumb: undefined,
         dataTestId: undefined,
         panelLeftCollapsed: false,
+        floating: false,
     },
 );
 
 const PANEL_LEFT_WIDTH = "300px";
-const PANEL_ASIDE_WIDTH = "340px";
 
-// Collapses the left panel by animating its width (and the gap) to zero, the
-// way the design's filter column slides away. A fixed-width inner wrapper keeps
-// the content from reflowing while the outer element shrinks.
 const panelLeftStyle = computed<CSSProperties>(() => ({
     width: props.panelLeftCollapsed ? "0px" : PANEL_LEFT_WIDTH,
     marginRight: props.panelLeftCollapsed ? "0px" : "16px",
