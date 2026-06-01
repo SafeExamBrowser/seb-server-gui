@@ -7,8 +7,10 @@ import {
 
 const baseUrl = "/exam-template" as const;
 
-// TODO @alain: drop the hash prefix entirely so we don't have to translate color (API uses no hash prefix), then these two helpers can be removed.
-const addHash = (color: string) => `#${color}`;
+// TODO @alain: drop the hash prefix entirely so we don't have to translate color, then these two helpers can be removed.
+// Both helpers are idempotent because the API is inconsistent: some colors come back with a "#" prefix, some without.
+const addHash = (color: string) =>
+    color.startsWith("#") ? color : `#${color}`;
 const stripHash = (color: string) =>
     color.startsWith("#") ? color.slice(1) : color;
 
