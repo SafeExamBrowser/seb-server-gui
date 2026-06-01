@@ -70,9 +70,10 @@ export const updateIndicator = async (
 export const deleteIndicator = async (
     examTemplateId: number,
     indicatorId: number,
-): Promise<void> => {
-    await apiService.deleteRequest({
-        url: `${baseUrl}/${examTemplateId}/indicator/${indicatorId}`,
-        options: { _authType: "seb" },
-    });
-};
+): Promise<void> =>
+    (
+        await apiService.deleteRequest({
+            url: `${baseUrl}/${examTemplateId}/indicator/${indicatorId}`,
+            options: { _authType: "seb" },
+        })
+    ).data;
