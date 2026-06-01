@@ -17,6 +17,7 @@
         v-model="dialogOpen"
         :translation-key-prefix="confirm.translationKeyPrefix"
         :detail-text="confirm.getDetailText?.(item)"
+        :loading="submitting"
         @confirm="confirmDelete"
     />
 </template>
@@ -53,7 +54,7 @@ const handleClick = async () => {
 };
 
 const confirmDelete = async () => {
-    dialogOpen.value = false;
     await runDelete();
+    dialogOpen.value = false;
 };
 </script>
