@@ -1,17 +1,18 @@
 <template>
-    <v-card border="thin" flat rounded="lg" class="h-100 d-flex flex-column">
-        <div class="px-5 py-3 d-flex align-center">
-            <span class="text-subtitle-1 font-weight-bold">
+    <v-card border elevation="1" rounded="lg" class="h-100 d-flex flex-column">
+        <div class="d-flex align-center px-5 py-4">
+            <span class="text-body-medium font-weight-bold">
                 {{ $t("monitoringOverview.clientStates.clientStates") }}
             </span>
         </div>
         <v-divider />
 
-        <div class="pa-5 flex-grow-1 d-flex flex-wrap align-center ga-5">
-            <!-- Doughnut -->
-            <div
-                class="position-relative mx-auto flex-shrink-0"
-                :style="{ width: '150px', maxWidth: '150px' }"
+        <div class="flex-grow-1 d-flex flex-wrap align-center ga-4 pa-5">
+            <v-sheet
+                color="transparent"
+                width="132"
+                height="132"
+                class="position-relative flex-shrink-0"
             >
                 <Doughnut
                     v-if="chartData != null"
@@ -26,24 +27,23 @@
                         transform: 'translate(-50%, -50%)',
                     }"
                 >
-                    <div class="text-h6 font-weight-bold">
+                    <div class="text-headline-small font-weight-bold">
                         {{
                             monitoringStore.monitoringOverviewData?.clientStates
                                 .total
                         }}
                     </div>
                     <div
-                        class="text-caption font-weight-bold text-uppercase text-medium-emphasis"
+                        class="text-body-small font-weight-bold text-uppercase text-medium-emphasis"
                     >
                         {{ $t("monitoringOverview.clients.total") }}
                     </div>
                 </div>
-            </div>
+            </v-sheet>
 
-            <!-- State list -->
             <div
                 class="flex-grow-1 d-flex flex-column ga-1"
-                :style="{ minWidth: '160px' }"
+                :style="{ minWidth: '150px' }"
             >
                 <v-hover
                     v-for="(state, index) in clientStates"
@@ -52,8 +52,8 @@
                 >
                     <div
                         v-bind="hoverProps"
-                        class="d-flex align-center ga-3 px-3 py-2 rounded-lg"
-                        :class="isHovering ? 'bg-surface-light' : ''"
+                        class="d-flex align-center ga-2 pa-2 rounded-lg"
+                        :class="isHovering ? 'bg-background' : ''"
                         :style="{ cursor: 'pointer' }"
                         @click="
                             goToMonitoring(
@@ -63,18 +63,13 @@
                             )
                         "
                     >
+                        <v-avatar :color="clientColors[index]" size="11" />
                         <span
-                            class="d-inline-block rounded-circle flex-shrink-0"
-                            :style="{
-                                width: '11px',
-                                height: '11px',
-                                backgroundColor: clientColors[index],
-                            }"
-                        ></span>
-                        <span class="flex-grow-1 text-body-2">
+                            class="flex-grow-1 text-body-medium font-weight-medium"
+                        >
                             {{ translate(state) }}
                         </span>
-                        <span class="text-body-2 font-weight-bold">
+                        <span class="text-body-medium font-weight-bold">
                             {{ clientData[index] }}
                         </span>
                     </div>
@@ -89,7 +84,6 @@ import { Doughnut } from "vue-chartjs";
 import { ArcElement, Chart as ChartJS, Legend, Tooltip } from "chart.js";
 import { useMonitoringStore } from "@/stores/seb-server/monitoringStore.ts";
 import { translate } from "@/utils/generalUtils.ts";
-import * as generalUtils from "@/utils/generalUtils.ts";
 import { ConnectionStatusEnum } from "@/models/seb-server/connectionStatusEnum.ts";
 import { MonitoringHeaderEnum } from "@/models/seb-server/monitoringEnums.ts";
 import { useI18n } from "vue-i18n";
@@ -109,6 +103,7 @@ ChartJS.register(ArcElement, Tooltip, Legend);
 const chartOptions = ref({
     responsive: true,
     maintainAspectRatio: true,
+    cutout: "66%",
     plugins: {
         legend: {
             display: false,
@@ -141,61 +136,55 @@ const clientLabels = ref<string[]>([]);
 const clientData = ref<number[]>([]);
 const clientColors = ref<string[]>([]);
 
+const orderedStates = (
+    Object.keys(clientStatesListSortOrder) as ConnectionStatusEnum[]
+)
+    .filter((state) => state !== ConnectionStatusEnum.UNDEFINED)
+    .sort(
+        (a, b) => clientStatesListSortOrder[a] - clientStatesListSortOrder[b],
+    );
+
 watch(
     () => monitoringStore.monitoringOverviewData?.clientStates,
     () => {
-        if (monitoringStore.monitoringOverviewData == null) {
+        const states = monitoringStore.monitoringOverviewData?.clientStates;
+        if (states == null) {
             return;
         }
 
-        clientStates.value = [];
-        clientLabels.value = [];
-        clientData.value = [];
-        clientColors.value = [];
+        const counts = new Map<string, number>();
+        Object.entries(states).forEach(([key, value]) => {
+            if (key !== "total") {
+                counts.set(key, Number(value));
+            }
+        });
 
-        type StateCount = {
-            clientStates: ConnectionStatusEnum;
-            clientAmount: number;
-        };
+        clientStates.value = orderedStates;
+        clientLabels.value = orderedStates.map((state) =>
+            translate(state, i18n),
+        );
+        clientData.value = orderedStates.map((state) => counts.get(state) ?? 0);
+        clientColors.value = orderedStates.map((state) =>
+            getConnectionStatusColor(state),
+        );
 
-        const clientStatesList: StateCount[] = Object.entries(
-            monitoringStore.monitoringOverviewData.clientStates,
-        )
-            .filter(([key]) => key !== "total")
-            .map(([key, value]) => {
-                const parsed = generalUtils.findEnumValue(
-                    ConnectionStatusEnum,
-                    key,
-                );
-                return parsed
-                    ? { clientStates: parsed, clientAmount: Number(value) }
-                    : null;
-            })
-            .filter((x): x is StateCount => x !== null)
-            .sort((a, b) => {
-                return (
-                    clientStatesListSortOrder[a.clientStates] -
-                    clientStatesListSortOrder[b.clientStates]
-                );
-            });
-
-        clientStatesList.forEach((item) => {
-            if (item.clientAmount !== 0) {
-                clientLabels.value.push(translate(item.clientStates, i18n));
-                clientStates.value.push(item.clientStates);
-                clientData.value.push(item.clientAmount);
-                clientColors.value.push(
-                    getConnectionStatusColor(item.clientStates),
-                );
+        const chartLabels: string[] = [];
+        const chartColors: string[] = [];
+        const chartCounts: number[] = [];
+        clientData.value.forEach((amount, index) => {
+            if (amount > 0) {
+                chartLabels.push(clientLabels.value[index]);
+                chartColors.push(clientColors.value[index]);
+                chartCounts.push(amount);
             }
         });
 
         chartData.value = {
-            labels: clientLabels.value,
+            labels: chartLabels,
             datasets: [
                 {
-                    backgroundColor: clientColors.value,
-                    data: clientData.value,
+                    backgroundColor: chartColors,
+                    data: chartCounts,
                 },
             ],
         };

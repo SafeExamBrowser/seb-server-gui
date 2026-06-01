@@ -1,22 +1,17 @@
 <template>
     <div class="d-flex flex-column h-100">
-        <div
-            class="flex-grow-1 overflow-y-auto pa-5 d-flex flex-column ga-5"
-            :style="{ minHeight: 0 }"
-        >
-            <!-- Live refresh indicator -->
+        <div class="flex-grow-1 overflow-y-auto pa-5 d-flex flex-column ga-4">
             <div
-                class="d-flex align-center ga-2 text-success text-overline font-weight-bold"
+                class="d-flex align-center ga-2 text-success text-body-small font-weight-bold text-uppercase"
             >
-                <span
-                    class="d-inline-block rounded-circle bg-success flex-shrink-0"
+                <v-avatar
+                    color="success"
+                    size="8"
                     :style="{
-                        width: '8px',
-                        height: '8px',
                         opacity: blinkOn ? 1 : 0.2,
                         transition: 'opacity 0.7s ease-in-out',
                     }"
-                ></span>
+                />
                 {{
                     $t("monitoringOverview.infos.live", {
                         seconds: refreshSeconds,
@@ -24,50 +19,41 @@
                 }}
             </div>
 
-            <!-- Status -->
             <div class="d-flex flex-column ga-1">
                 <span
-                    class="text-caption font-weight-bold text-uppercase text-medium-emphasis"
+                    class="text-body-small font-weight-bold text-uppercase text-medium-emphasis"
                 >
                     {{ $t("monitoringOverview.infos.status") }}
                 </span>
                 <span
-                    class="d-inline-flex align-center ga-2 text-body-1 font-weight-bold"
+                    class="d-inline-flex align-center ga-2 text-body-large font-weight-bold"
                     :style="{ color: statusColor }"
                 >
-                    <span
-                        class="d-inline-block rounded-circle flex-shrink-0"
-                        :style="{
-                            width: '9px',
-                            height: '9px',
-                            backgroundColor: statusColor,
-                        }"
-                    ></span>
+                    <v-avatar :color="statusColor" size="9" />
                     {{ statusLabel }}
                 </span>
             </div>
 
             <v-divider />
 
-            <!-- Start / End -->
-            <div class="d-flex ga-6">
-                <div class="d-flex flex-column ga-1">
+            <div class="d-flex ga-4">
+                <div class="flex-grow-1 d-flex flex-column ga-1">
                     <span
-                        class="text-caption font-weight-bold text-uppercase text-medium-emphasis"
+                        class="text-body-small font-weight-bold text-uppercase text-medium-emphasis"
                     >
                         {{ $t("monitoringOverview.infos.start") }}
                     </span>
-                    <span class="text-body-2 font-weight-bold">
+                    <span class="text-body-large font-weight-bold">
                         {{ startDate }}
                     </span>
                 </div>
-                <div class="d-flex flex-column ga-1">
+                <div class="flex-grow-1 d-flex flex-column ga-1">
                     <span
-                        class="text-caption font-weight-bold text-uppercase text-medium-emphasis"
+                        class="text-body-small font-weight-bold text-uppercase text-medium-emphasis"
                     >
                         {{ $t("monitoringOverview.infos.end") }}
                     </span>
-                    <span class="text-body-2 font-weight-bold">
+                    <span class="text-body-large font-weight-bold">
                         {{ endDate }}
                     </span>
                 </div>
@@ -75,10 +61,9 @@
 
             <v-divider />
 
-            <!-- Security / ASK keys -->
             <div class="d-flex flex-column ga-2">
                 <span
-                    class="text-caption font-weight-bold text-uppercase text-medium-emphasis"
+                    class="text-body-small font-weight-bold text-uppercase text-medium-emphasis"
                 >
                     {{ $t("monitoringOverview.infos.security") }}
                 </span>
@@ -86,14 +71,14 @@
             </div>
         </div>
 
-        <!-- Quit all -->
         <div class="flex-shrink-0">
             <v-divider />
-            <div class="pa-5">
+            <div class="px-5 py-4">
                 <v-btn
                     block
                     color="error"
                     variant="flat"
+                    height="44"
                     prepend-icon="mdi-power"
                     @click="openQuitAllDialog()"
                 >

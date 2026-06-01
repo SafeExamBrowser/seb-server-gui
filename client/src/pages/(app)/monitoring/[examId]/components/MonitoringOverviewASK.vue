@@ -1,30 +1,27 @@
 <template>
     <v-card
-        variant="outlined"
+        link
+        border
+        color="background"
         rounded="lg"
-        hover
-        :ripple="false"
         class="pa-3 d-flex align-center ga-3"
         @click="openAskDialog()"
     >
-        <div
-            class="d-flex align-center justify-center rounded-lg flex-shrink-0 border-thin bg-surface"
-            :style="{ width: '42px', height: '42px' }"
-        >
+        <v-avatar color="surface" size="42" rounded="lg" border>
             <v-icon size="22">mdi-shield-key-outline</v-icon>
-        </div>
+        </v-avatar>
 
-        <div class="flex-grow-1" :style="{ minWidth: 0 }">
-            <div class="text-body-2 font-weight-bold">
+        <div class="flex-grow-1">
+            <div class="text-body-medium font-weight-bold">
                 {{ $t("monitoringOverview.ask.askKey") }}
             </div>
-            <div class="text-caption text-medium-emphasis">
+            <div class="text-body-small text-medium-emphasis">
                 {{ $t("monitoringOverview.ask.askKeyInfo") }}
             </div>
         </div>
 
         <v-avatar color="grey" size="34">
-            <span class="text-white text-body-2 font-weight-bold">
+            <span class="text-body-medium font-weight-bold text-white">
                 {{ askKeyCount }}
             </span>
         </v-avatar>

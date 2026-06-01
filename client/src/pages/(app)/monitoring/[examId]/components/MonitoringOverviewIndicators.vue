@@ -1,23 +1,23 @@
 <template>
-    <v-card border="thin" flat rounded="lg" class="h-100 d-flex flex-column">
-        <div class="px-5 py-3 d-flex align-center">
-            <span class="text-subtitle-1 font-weight-bold">
+    <v-card border elevation="1" rounded="lg" class="h-100 d-flex flex-column">
+        <div class="d-flex align-center px-5 py-4">
+            <span class="text-body-medium font-weight-bold">
                 {{ $t("monitoringOverview.indicators.indicators") }}
             </span>
         </div>
         <v-divider />
 
-        <div class="pa-5 flex-grow-1 d-flex flex-column">
+        <div class="flex-grow-1 pa-5">
             <template
                 v-for="(indicator, index) in indicators"
                 :key="indicator.type"
             >
-                <v-divider v-if="index > 0" class="my-1" />
+                <v-divider v-if="index > 0" />
                 <v-hover v-slot="{ isHovering, props: hoverProps }">
                     <div
                         v-bind="hoverProps"
                         class="d-flex align-center ga-3 px-2 py-3 rounded-lg"
-                        :class="isHovering ? 'bg-surface-light' : ''"
+                        :class="isHovering ? 'bg-background' : ''"
                         :style="{ cursor: 'pointer' }"
                         @click="
                             goToMonitoring(
@@ -27,31 +27,24 @@
                             )
                         "
                     >
-                        <div
-                            class="d-flex align-center justify-center rounded-lg flex-shrink-0"
-                            :style="{
-                                width: '46px',
-                                height: '46px',
-                                backgroundColor: '#f0f0f0',
-                            }"
-                        >
-                            <v-icon color="#000000" size="24">
+                        <v-avatar color="#f0f0f0" size="42" rounded="lg">
+                            <v-icon color="#000000" size="22">
                                 {{ indicator.icon }}
                             </v-icon>
-                        </div>
+                        </v-avatar>
 
-                        <div class="flex-grow-1" :style="{ minWidth: 0 }">
-                            <div class="text-body-2 font-weight-bold">
+                        <div class="flex-grow-1">
+                            <div class="text-body-medium font-weight-bold">
                                 {{ translate(indicator.type) }}
                             </div>
-                            <div class="text-caption text-medium-emphasis">
+                            <div class="text-body-small text-medium-emphasis">
                                 {{ translate(indicator.info) }}
                             </div>
                         </div>
 
-                        <v-avatar color="#BDBDBD" size="38">
+                        <v-avatar color="#BDBDBD" size="36">
                             <span
-                                class="text-white text-body-2 font-weight-bold"
+                                class="text-body-medium font-weight-bold text-white"
                             >
                                 {{ indicator.count }}
                             </span>

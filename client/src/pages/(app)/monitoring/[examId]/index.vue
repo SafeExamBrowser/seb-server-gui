@@ -12,6 +12,7 @@
 
     <BasicPage
         v-else
+        floating
         :title="monitoringStore.selectedExam?.quizName ?? ''"
         :bread-crumb="breadCrumb"
         data-test-id="monitoring-detail-page"
@@ -23,47 +24,39 @@
         </template>
 
         <template v-if="connectionsTotal != null" #ActionButton>
-            <div
-                class="d-inline-flex align-center ga-2 bg-surface border-thin rounded-lg px-4 py-2"
+            <v-sheet
+                border
+                color="surface"
+                rounded="lg"
+                class="d-inline-flex align-center ga-2 px-4 py-2"
             >
                 <v-icon color="primary" size="18">
                     mdi-account-multiple-outline
                 </v-icon>
-                <span class="text-primary text-subtitle-1 font-weight-bold">
+                <span class="text-title-medium font-weight-bold text-primary">
                     {{ connectionsTotal }}
                 </span>
-                <span class="text-body-2 font-weight-medium">
+                <span class="text-body-medium font-weight-bold">
                     {{ $t("monitoringOverview.infos.connections") }}
                 </span>
-            </div>
+            </v-sheet>
         </template>
 
         <template #PanelMain>
-            <div class="pa-6">
-                <v-row class="align-stretch">
-                    <v-col cols="12" :md="hasIndicators ? 4 : 6">
-                        <MonitoringOverviewClients :exam-id="examId" />
-                    </v-col>
-
-                    <v-col
-                        v-if="hasNotifications"
-                        cols="12"
-                        :md="hasIndicators ? 4 : 6"
-                    >
-                        <MonitoringOverviewNotifications :exam-id="examId" />
-                    </v-col>
-
-                    <v-col v-if="hasIndicators" cols="12" md="4">
-                        <MonitoringOverviewIndicators :exam-id="examId" />
-                    </v-col>
-                </v-row>
-
-                <v-row v-if="hasGroups" class="mt-2">
-                    <v-col cols="12">
-                        <MonitoringOverviewGroups :exam-id="examId" />
-                    </v-col>
-                </v-row>
-            </div>
+            <v-row class="align-stretch">
+                <v-col cols="12" :md="dashColMd">
+                    <MonitoringOverviewClients :exam-id="examId" />
+                </v-col>
+                <v-col v-if="hasNotifications" cols="12" :md="dashColMd">
+                    <MonitoringOverviewNotifications :exam-id="examId" />
+                </v-col>
+                <v-col v-if="hasIndicators" cols="12" :md="dashColMd">
+                    <MonitoringOverviewIndicators :exam-id="examId" />
+                </v-col>
+                <v-col v-if="hasGroups" cols="12">
+                    <MonitoringOverviewGroups :exam-id="examId" />
+                </v-col>
+            </v-row>
         </template>
     </BasicPage>
 </template>
@@ -149,6 +142,12 @@ const hasGroups = computed(
     () =>
         (monitoringStore.monitoringOverviewData?.clientGroups.length ?? 0) > 0,
 );
+
+const dashColMd = computed(() => {
+    const count =
+        1 + (hasNotifications.value ? 1 : 0) + (hasIndicators.value ? 1 : 0);
+    return Math.floor(12 / count);
+});
 
 // NOTE: This is the backend data fetch that gets called in an update interval.
 //       To prevent subsequent calls when the backend is not responding, what would lead to

@@ -1,13 +1,13 @@
 <template>
-    <v-card border="thin" flat rounded="lg">
-        <div class="px-5 py-3 d-flex align-center ga-2">
-            <span class="text-subtitle-1 font-weight-bold">
+    <v-card border elevation="1" rounded="lg">
+        <div class="d-flex align-center ga-2 px-5 py-4">
+            <span class="text-body-medium font-weight-bold">
                 {{ $t("monitoringOverview.groups.groups") }}
             </span>
             <v-spacer />
             <span
                 v-if="groupCount > 0"
-                class="text-caption font-weight-medium text-medium-emphasis"
+                class="text-body-small font-weight-medium text-medium-emphasis"
             >
                 {{ groupCount }} {{ $t("monitoringOverview.groups.groups") }}
             </span>
@@ -21,24 +21,24 @@
                     :key="clientGroupItem.id"
                     cols="12"
                     sm="6"
-                    md="4"
                     lg="3"
                 >
-                    <v-card
-                        border="thin"
-                        flat
+                    <v-sheet
+                        border
                         rounded="lg"
-                        class="h-100 d-flex flex-column pa-4 ga-3"
+                        class="pa-5 d-flex flex-column ga-4 h-100"
                     >
                         <div
                             class="d-flex align-start justify-space-between ga-2"
                         >
-                            <div :style="{ minWidth: 0 }">
-                                <div class="text-body-1 font-weight-bold">
+                            <div>
+                                <div
+                                    class="text-body-large pb-1 font-weight-bold"
+                                >
                                     {{ getGroupName(clientGroupItem) }}
                                 </div>
                                 <div
-                                    class="text-caption font-weight-bold text-uppercase text-medium-emphasis"
+                                    class="text-body-small font-weight-bold text-uppercase text-medium-emphasis"
                                 >
                                     {{ translate(clientGroupItem.type) }}
                                 </div>
@@ -47,6 +47,7 @@
                                 color="primary"
                                 variant="tonal"
                                 size="small"
+                                class="font-weight-semibold"
                             >
                                 {{ clientGroupItem.clientAmount
                                 }}{{ $t("monitoringOverview.groups.clients") }}
@@ -54,12 +55,12 @@
                         </div>
 
                         <div
-                            class="d-flex align-center ga-2 text-body-2 text-medium-emphasis"
+                            class="d-flex align-center ga-2 text-body-medium font-weight-medium text-medium-emphasis"
                         >
                             <v-icon size="18">
                                 {{ getGroupIcon(clientGroupItem) }}
                             </v-icon>
-                            <span>{{
+                            <span class="font-weight-semibold">{{
                                 getGroupValueText(clientGroupItem)
                             }}</span>
                         </div>
@@ -68,6 +69,7 @@
                             <v-btn
                                 v-if="clientGroupItem.spsGroupUUID"
                                 color="primary"
+                                class="text-body-small"
                                 variant="flat"
                                 size="small"
                                 prepend-icon="mdi-monitor-eye"
@@ -86,6 +88,7 @@
                             <v-btn
                                 color="primary"
                                 variant="outlined"
+                                class="text-body-small"
                                 size="small"
                                 prepend-icon="mdi-format-list-bulleted"
                                 @click="
@@ -105,28 +108,25 @@
                                 }}
                             </v-btn>
                         </div>
-                    </v-card>
+                    </v-sheet>
                 </v-col>
 
-                <!-- Fallback tile when SP is enabled but no SP group is available -->
                 <v-col
                     v-if="!isSPGroupAvailable && isScreenProctoringAvailable"
                     cols="12"
                     sm="6"
-                    md="4"
                     lg="3"
                 >
-                    <v-card
-                        border="thin"
-                        flat
+                    <v-sheet
+                        border
                         rounded="lg"
-                        class="h-100 d-flex flex-column pa-4 ga-3"
+                        class="pa-5 d-flex flex-column ga-4 h-100"
                     >
                         <div
                             class="d-flex align-start justify-space-between ga-2"
                         >
-                            <div :style="{ minWidth: 0 }">
-                                <div class="text-body-1 font-weight-bold">
+                            <div>
+                                <div class="text-body-medium font-weight-bold">
                                     {{
                                         $t("monitoringOverview.groups.spsGroup")
                                     }}
@@ -145,7 +145,7 @@
                         </div>
 
                         <div
-                            class="d-flex align-center ga-2 text-body-2 text-medium-emphasis"
+                            class="d-flex align-center ga-2 text-body-medium font-weight-medium text-medium-emphasis"
                         >
                             <v-icon size="18">mdi-account-multiple</v-icon>
                             <span>
@@ -159,6 +159,7 @@
                             <v-btn
                                 v-if="screenProctoringFallbackGroup !== null"
                                 color="primary"
+                                class="text-body-small"
                                 variant="flat"
                                 size="small"
                                 prepend-icon="mdi-monitor-eye"
@@ -180,6 +181,7 @@
                                 variant="outlined"
                                 size="small"
                                 prepend-icon="mdi-format-list-bulleted"
+                                class="text-body-small"
                                 @click="
                                     goToMonitoring(
                                         MonitoringHeaderEnum.SHOW_STATES,
@@ -195,7 +197,7 @@
                                 }}
                             </v-btn>
                         </div>
-                    </v-card>
+                    </v-sheet>
                 </v-col>
             </v-row>
         </div>
