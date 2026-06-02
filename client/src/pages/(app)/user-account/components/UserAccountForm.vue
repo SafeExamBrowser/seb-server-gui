@@ -4,7 +4,7 @@
         :bread-crumb="breadCrumb"
         :data-testid="`${dataTestPrefix}-page`"
     >
-        <template #SubNav>
+        <template v-if="showSettingsNavigation" #SubNav>
             <SettingsNavigation />
         </template>
 
@@ -190,6 +190,8 @@ const {
     role,
 } = useUserAccountFormFields(props.mode);
 
+const showSettingsNavigation = computed(() => props.mode !== "profile");
+
 const roleDescription = computed(() => {
     if (!role.value) {
         return i18n.global.t("userAccount.general.role.pleaseselect");
@@ -197,18 +199,23 @@ const roleDescription = computed(() => {
     return i18n.global.t(`userAccount.general.role.info.${role.value}`);
 });
 
-const breadCrumb = computed<BreadCrumbItem[]>(() => [
-    {
-        label: i18n.global.t("titles.userAccounts"),
-        link: { name: "/(app)/user-account/" },
-    },
-    {
-        label:
-            props.mode === "create"
-                ? props.title
-                : (props.initialUser?.username ?? props.title),
-    },
-]);
+const breadCrumb = computed<BreadCrumbItem[]>(() => {
+    if (props.mode === "profile") {
+        return [{ label: i18n.global.t("titles.profileSettings") }];
+    }
+    return [
+        {
+            label: i18n.global.t("titles.userAccounts"),
+            link: { name: "/(app)/user-account/" },
+        },
+        {
+            label:
+                props.mode === "create"
+                    ? props.title
+                    : (props.initialUser?.username ?? props.title),
+        },
+    ];
+});
 
 const getHighestRole = (roles: string[]): string | undefined => {
     if (roles.includes(UserRoleEnum.SEB_SERVER_ADMIN)) {
