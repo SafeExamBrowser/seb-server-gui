@@ -546,7 +546,15 @@
         },
         "actions": {
             "downloadSEBLogs": "Download SEB Logs",
-            "showSPS": "Show Screen Proctoring"
+            "showSPS": "Show Screen Proctoring",
+            "archive": "Archive this Exam"
+        },
+        "archive": {
+            "confirm": {
+                "title": "Archive this exam?",
+                "text": "The exam will be moved to the archive. You can still find it by filtering for the \"Archived\" state.",
+                "action": "Archive"
+            }
         }
     },
     "userAccount": {
@@ -2063,7 +2071,8 @@
         "editInstitution": "Edit Institution",
         "editExamTemplate": "Edit Exam Template",
         "galleryView": "Gallery View",
-        "analyze": "Analyze"
+        "analyze": "Analyze",
+        "archive": "Archive"
     },
     "warnings": {
         "no-data": "No data available",
@@ -2096,6 +2105,7 @@
         "routeNames": {
             "runningExams": "Running Exams",
             "analyzeExams": "Analyze Exams",
+            "archiveExams": "Archive Exams",
             "search": "Search",
             "assessmentToolConnections": "Assessment Tool Connections",
             "connectionConfiguration": "Connection Configuration",
@@ -2192,6 +2202,11 @@
                     "post": "Error uploading certificate",
                     "put": "Error updating certificate",
                     "delete": "Error deleting certificate"
+                },
+                "exam": {
+                    "archive": {
+                        "patch": "Error archiving exam"
+                    }
                 }
             },
             "http": {

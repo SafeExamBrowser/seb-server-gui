@@ -102,7 +102,8 @@ export function buildFollowUpNavigationItems(
             testId: `${testIdPrefix}-analyzeExams-text`,
         },
         {
-            label: translate("titles.archiveExams"),
+            label: translate("navigation.routeNames.archiveExams"),
+            to: typedTo({ name: "/(app)/archive/" }),
             visible: ability.canView(GUIComponent.ArchiveExams),
             testId: `${testIdPrefix}-archiveExams-text`,
         },

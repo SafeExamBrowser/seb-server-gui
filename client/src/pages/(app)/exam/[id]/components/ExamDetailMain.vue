@@ -688,79 +688,6 @@
                                                     :thickness="2"
                                                 ></v-divider>
 
-                                                <!----------Archive Exam--------->
-                                                <v-list-item
-                                                    v-if="
-                                                        ability.canDo(
-                                                            GUIAction.ArchiveExam,
-                                                        )
-                                                    "
-                                                >
-                                                    <v-list-item-title
-                                                        :class="[
-                                                            !ability.canDoExamAction(
-                                                                GUIAction.ArchiveExam,
-                                                                examStore.selectedExam,
-                                                            )
-                                                                ? 'text-disabled'
-                                                                : '',
-                                                        ]"
-                                                    >
-                                                        {{
-                                                            translate(
-                                                                "examDetail.main.archiveExam",
-                                                            )
-                                                        }}
-                                                    </v-list-item-title>
-                                                    <template #append>
-                                                        <v-list-item-action
-                                                            class="flex-column align-right"
-                                                        >
-                                                            <v-icon
-                                                                :disabled="
-                                                                    !ability.canDoExamAction(
-                                                                        GUIAction.ArchiveExam,
-                                                                        examStore.selectedExam,
-                                                                    )
-                                                                "
-                                                                icon="mdi-archive-outline"
-                                                                style="
-                                                                    font-size: 30px;
-                                                                "
-                                                                @click="
-                                                                    openArchiveDialog()
-                                                                "
-                                                            >
-                                                            </v-icon>
-                                                        </v-list-item-action>
-                                                    </template>
-
-                                                    <v-tooltip
-                                                        v-if="
-                                                            !ability.canDoExamAction(
-                                                                GUIAction.ApplySEBRestriction,
-                                                                examStore.selectedExam,
-                                                            )
-                                                        "
-                                                        activator="parent"
-                                                    >
-                                                        {{
-                                                            translate(
-                                                                "examDetail.main.archiveTooltip",
-                                                            )
-                                                        }}
-                                                    </v-tooltip>
-                                                </v-list-item>
-                                                <v-divider
-                                                    v-if="
-                                                        ability.canDo(
-                                                            GUIAction.ArchiveExam,
-                                                        )
-                                                    "
-                                                    class="border-opacity-25"
-                                                    :thickness="2"
-                                                ></v-divider>
-
                                                 <!----------Delete Exam--------->
                                                 <v-list-item>
                                                     <v-list-item-title>
@@ -825,15 +752,6 @@
             @download-exam-config="downloadExamConfig"
         >
         </ExamDetailConfigDialog>
-    </v-dialog>
-
-    <!-----------archive dialog---------->
-    <v-dialog v-model="archiveDialog" max-width="800">
-        <ExamDetailArchiveDialog
-            @archive-exam="archiveExam"
-            @close-archive-dialog="closeArchiveDialog"
-        >
-        </ExamDetailArchiveDialog>
     </v-dialog>
 
     <!-----------delete exam dialog---------->
@@ -936,7 +854,6 @@ import { AssessmentTool } from "@/models/seb-server/assessmentTool.ts";
 import { ExamTemplate } from "@/models/seb-server/examTemplate.ts";
 import ExamDetailSupervisorsDialog from "@/pages/(app)/exam/[id]/components/dialogs/ExamDetailSupervisorsDialog.vue";
 import ExamDetailConfigDialog from "@/pages/(app)/exam/[id]/components/dialogs/ExamDetailConfigDialog.vue";
-import ExamDetailArchiveDialog from "@/pages/(app)/exam/[id]/components/dialogs/ExamDetailArchiveDialog.vue";
 import ClientGroupListDialog from "@/pages/(app)/exam/[id]/components/dialogs/client-group/ClientGroupListDialog.vue";
 import AddClientGroupDialog from "@/pages/(app)/exam/[id]/components/dialogs/client-group/AddClientGroupDialog.vue";
 import ExamTemplateDialog from "@/components/widgets/ExamTemplateDialog.vue";
@@ -989,9 +906,6 @@ let initialSupervisorsIds: string[] = [];
 // exam config dialog
 const configDialog = ref<boolean>(false);
 const connectionConfigurationsPar = ref<ConnectionConfigurations | null>(null);
-
-// archive dialog
-const archiveDialog = ref<boolean>(false);
 
 // exam template dialog
 const examTemplateDialog = ref<boolean>(false);
@@ -1310,33 +1224,6 @@ async function downloadExamConfig(connectionId: string) {
     }
 
     createDownloadLink(examStore.selectedExam.quizName, blobResponse);
-}
-
-//= ==============monitor & archive exam logic====================
-function openArchiveDialog() {
-    archiveDialog.value = true;
-}
-
-function closeArchiveDialog() {
-    archiveDialog.value = false;
-}
-
-async function archiveExam() {
-    closeArchiveDialog();
-
-    if (examStore.selectedExam == null) {
-        return;
-    }
-
-    const archiveExamResponse: Exam | null = await examService.archiveExam(
-        examStore.selectedExam.id.toString(),
-    );
-
-    if (archiveExamResponse == null) {
-        return;
-    }
-
-    updateExam();
 }
 
 //= ==============screen proctoring logic====================
