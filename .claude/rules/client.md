@@ -36,6 +36,10 @@ on the filesystem if they clash:
 - Use `client/src/composables/useFetch.ts` and `client/src/composables/useMutation.ts` and the abstracted API services stored in
   `client/src/services` for data fetching.
 - Avoid writing custom CSS. Use Vuetify utility classes whenever possible.
+- Comments:
+  - Make sure, existing comments are updated when the underlying code is updated
+  - Only delete existing comments if they became irrelevant by a code change
+  - Only add new comments if absolutely needed. The code must be easy to read and self documenting.
 - When writing Pinia Stores, prefer "Setup Stores" over "Option Stores".
   `client/src/components/views/seb-server/exam-template/wizard/composables/store/useScreenProctoringStore.ts` is a good example.
 - i18n:
