@@ -279,8 +279,8 @@ export type Exam = {
     additionalAttributes?: {
         [key: string]: string;
     };
-    description?: string;
     startURL?: string;
+    description?: string;
 };
 
 export type ClientGroupTemplate = {
@@ -1204,12 +1204,12 @@ export type ClientMonitoringDataView = {
     grantChecked?: boolean;
     grantDenied?: boolean;
     sebversionDenied?: boolean;
+    nf?: number;
     st?: 'UNDEFINED' | 'CONNECTION_REQUESTED' | 'READY' | 'ACTIVE' | 'CLOSED' | 'DISABLED';
     lat?: number;
     iv?: {
         [key: string]: string;
     };
-    nf?: number;
     id?: number;
 };
 

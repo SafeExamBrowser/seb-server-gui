@@ -25,7 +25,7 @@ import UserAccountForm, {
     type ChangePasswordPayload,
 } from "@/pages/(app)/user-account/components/UserAccountForm.vue";
 import LoadingFallbackComponent from "@/components/widgets/loadingFallbackComponent/LoadingFallbackComponent.vue";
-import { useUserAccountStore as useAuthenticatedUserAccountStore } from "@/stores/authentication/userAccountStore.ts";
+import { getCurrentUser } from "@/composables/useCurrentUser.ts";
 import { useLogout } from "@/composables/useLogout.ts";
 import { useUserAccount } from "@/pages/(app)/user-account/api/useUserAccount.ts";
 import { useEditUserAccount } from "@/pages/(app)/user-account/api/useEditUserAccount.ts";
@@ -43,7 +43,6 @@ definePage({
 
 const route = useRoute("/(app)/user-account/[userUuid]/");
 const router = useRouter();
-const authStore = useAuthenticatedUserAccountStore();
 
 const formRef = ref<InstanceType<typeof UserAccountForm>>();
 const userUuid = computed(() => {
@@ -94,7 +93,7 @@ const handleChangePassword = async (payload: ChangePasswordPayload) => {
         contextLabel: "useraccount.password",
     });
     if (!changed) return;
-    if (currentUser.uuid === authStore.userAccount?.uuid) {
+    if (currentUser.uuid === getCurrentUser()?.uuid) {
         await useLogout().logout();
     }
 };

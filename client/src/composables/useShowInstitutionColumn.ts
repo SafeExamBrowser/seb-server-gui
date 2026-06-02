@@ -1,13 +1,12 @@
 import { computed } from "vue";
-import { useUserAccountStore as useAuthenticatedUserAccountStore } from "@/stores/authentication/userAccountStore.ts";
+import { useCurrentUser } from "@/composables/useCurrentUser.ts";
 import { UserRole } from "@/models/userAccount.ts";
 
 export const useShowInstitutionColumn = () => {
-    const authenticatedUserAccountStore = useAuthenticatedUserAccountStore();
+    const { data: currentUser } = useCurrentUser();
 
     return computed(() => {
-        const roles =
-            authenticatedUserAccountStore.userAccount?.userRoles ?? [];
+        const roles = currentUser.value?.userRoles ?? [];
         return roles.includes(UserRole.SEB_SERVER_ADMIN);
     });
 };

@@ -2,7 +2,7 @@ import { computed, ref, watch } from "vue";
 import i18n from "@/i18n";
 import type { FormField } from "@/components/widgets/formBuilder/types.ts";
 import { useInstitutions } from "@/composables/useInstitutions.ts";
-import { useUserAccountStore } from "@/stores/authentication/userAccountStore.ts";
+import { getCurrentUser } from "@/composables/useCurrentUser.ts";
 import { LMSTypeEnum } from "@/models/seb-server/assessmentToolEnums.ts";
 
 export type AuthMode = "client" | "token";
@@ -41,7 +41,7 @@ export const useAssessmentToolFormFields = (
         error: errorInstitutions,
     } = useInstitutions();
 
-    const authenticatedUser = useUserAccountStore().userAccount;
+    const authenticatedUser = getCurrentUser();
 
     watch(
         institutions,

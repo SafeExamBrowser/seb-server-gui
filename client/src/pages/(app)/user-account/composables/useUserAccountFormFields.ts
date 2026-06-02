@@ -3,7 +3,7 @@ import moment from "moment-timezone";
 import i18n from "@/i18n";
 import { FormField } from "@/components/widgets/formBuilder/types.ts";
 import { useInstitutions } from "@/composables/useInstitutions.ts";
-import { useUserAccountStore } from "@/stores/authentication/userAccountStore.ts";
+import { getCurrentUser } from "@/composables/useCurrentUser.ts";
 import { useZodFormRules } from "@/composables/useZodFormRules.ts";
 import {
     USER_ROLES,
@@ -59,7 +59,7 @@ export const useUserAccountFormFields = (mode: UserAccountFormMode) => {
         error: errorInstitutions,
     } = useInstitutions();
 
-    const authenticatedUser = useUserAccountStore().userAccount;
+    const authenticatedUser = getCurrentUser();
     const userRoles = authenticatedUser?.userRoles ?? [];
     const hasSebServerAdmin = userRoles.includes(UserRole.SEB_SERVER_ADMIN);
     const hasInstitutionalAdmin = userRoles.includes(

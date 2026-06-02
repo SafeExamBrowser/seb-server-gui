@@ -1,7 +1,7 @@
 import { defineStore } from "pinia";
 import { UserRole, type UserAccountRole } from "@/models/userAccount";
 import { ExamStatusEnum } from "@/models/seb-server/examFiltersEnum";
-import { useUserAccountStore } from "@/stores/authentication/userAccountStore";
+import { getCurrentUser } from "@/composables/useCurrentUser";
 import * as generalUtils from "@/utils/generalUtils";
 import { ref } from "vue";
 import { Exam } from "@/models/seb-server/exam";
@@ -307,7 +307,7 @@ export const useAbilities = defineStore("ability", () => {
     );
 
     function canView(view: GUIComponent): boolean {
-        const user = useUserAccountStore().userAccount;
+        const user = getCurrentUser();
         if (user == null) return false;
 
         for (const role of user.userRoles) {
@@ -324,7 +324,7 @@ export const useAbilities = defineStore("ability", () => {
     }
 
     function canDo(action: GUIAction): boolean {
-        const user = useUserAccountStore().userAccount;
+        const user = getCurrentUser();
         if (user == null) return false;
 
         for (const role of user.userRoles) {
@@ -341,7 +341,7 @@ export const useAbilities = defineStore("ability", () => {
 
     // This would be for special case, when we need to know if a user has Exam access on Exam supporter mapping
     function isExamSupporter(exam: Exam): boolean {
-        const user = useUserAccountStore().userAccount;
+        const user = getCurrentUser();
         if (user == null) return false;
 
         // check if the user is assigned as supporter
@@ -355,7 +355,7 @@ export const useAbilities = defineStore("ability", () => {
             return false;
         }
 
-        const user = useUserAccountStore().userAccount;
+        const user = getCurrentUser();
         if (user == null) return false;
         if (user.institutionId != exam.institutionId) {
             return false;

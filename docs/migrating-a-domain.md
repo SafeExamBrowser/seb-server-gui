@@ -396,12 +396,13 @@ Run from `client/`:
 
 ## §6. Pitfalls learned from the User Account PoC
 
-- **Do not introduce a second source of truth for shared identity.** The current user lived in
-  both the TanStack cache (`useCurrentUser` / `currentUserQueryKey`) and the Pinia
-  `userAccountStore`, and a self-edit only updated the cache — leaving store readers stale.
-  Project convention: **only auth uses a Pinia store**; everything else is a composable. Have
-  the router guard `prefetch`/`ensureQueryData` the same query key instead of writing a parallel
-  store ref.
+- **One source of truth for the current user.** The authenticated user lives only in the TanStack
+  cache under `currentUserQueryKey`. Read it with `useCurrentUser()` in components/composables
+  (reactive) and with the synchronous `getCurrentUser()` accessor in imperative/non-setup code
+  (route guards, `ability`, utils). The router guard `fetchQuery`s the key before protected routes
+  resolve, so synchronous readers always see a populated value; logout clears it via
+  `clearCurrentUser()`. Do **not** add a parallel Pinia store for identity — only auth/token state
+  belongs in a store (the earlier `userAccountStore` was removed for exactly this reason).
 - **Public-path matching is exact.** The interceptor compares the generated SDK URL; a public
   endpoint must be added to `PUBLIC_PATHS` with its full generated path (§D6).
 - **`.parse` throws.** Response parsing turns a backend contract drift into a thrown error. That

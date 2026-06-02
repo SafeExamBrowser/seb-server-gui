@@ -1,5 +1,5 @@
 import { toZonedTime } from "date-fns-tz";
-import { useUserAccountStore } from "@/stores/authentication/userAccountStore";
+import { getCurrentUser } from "@/composables/useCurrentUser";
 
 export function getCurrentDateString(): string {
     const date = new Date();
@@ -143,10 +143,8 @@ export function getStartAndEndTimestampOfDay(sqlDate: string): {
 }
 
 function convertUTCToTimeZone(utcDate: number): Date {
-    const userAccountStore = useUserAccountStore();
-
     const utcDateObject = new Date(utcDate);
-    const timezone: string | undefined = userAccountStore.userAccount?.timezone;
+    const timezone: string | undefined = getCurrentUser()?.timezone;
     if (timezone === null || timezone === undefined) {
         return utcDateObject;
     }
