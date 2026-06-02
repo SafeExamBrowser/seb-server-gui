@@ -9,7 +9,7 @@ import {
 } from "@/services/seb-server/examTemplateIndicatorService.ts";
 import { IndicatorExisting } from "@/models/seb-server/examTemplate.ts";
 
-export const useIndicatorTemplates = (
+export const useIndicators = (
     examTemplateId: number,
     initialIndicators: IndicatorExisting[],
 ) => {

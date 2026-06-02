@@ -9,15 +9,17 @@ import ExamTemplateBox from "./ExamTemplateBox.vue";
 import IndicatorsTable from "@/components/widgets/indicatorsTable/IndicatorsTable.vue";
 import { IndicatorExisting } from "@/models/seb-server/examTemplate.ts";
 import { IndicatorsTableDeps } from "@/components/widgets/indicatorsTable/types.ts";
-import { useIndicatorTemplates } from "@/pages/(app)/exam-template/[id]/composables/api/useIndicatorTemplates.ts";
+import { useIndicators } from "@/pages/(app)/exam-template/[id]/composables/api/useIndicators.ts";
 
 const { examTemplateId, indicators: initialIndicators } = defineProps<{
     examTemplateId: number;
     indicators: IndicatorExisting[];
 }>();
 
-const { indicators, createItem, updateItem, deleteItem } =
-    useIndicatorTemplates(examTemplateId, initialIndicators);
+const { indicators, createItem, updateItem, deleteItem } = useIndicators(
+    examTemplateId,
+    initialIndicators,
+);
 
 const tableDeps: IndicatorsTableDeps = {
     indicators,
