@@ -28,6 +28,8 @@ on the filesystem if they clash:
   - Relative imports into the same folder (`./sibling.ts`) or a subfolder (`./subfolder/foo.ts`) are fine.
 - Don't start component names with `V`. This is reserved for Vuetify by convention.
 - Prefer the "Vue composition API" over the "Vue options API".
+- Avoid inline event handlers like `@change="(iidds) => fooBar(id)" in the template`. Prefer a named event handler like `const handleChange = ...`
+  in the component setup.
 - Avoid one lined if conditions. If conditions should always be multi line and use brackets.
 - Routing: when generating urls for Vuetify components with a `to` property (e.g. `v-list-item`, `v-btn`, ...), you
   must always use the `typedTo` helper function so type safety is ensured.
