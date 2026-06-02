@@ -39,10 +39,10 @@ export const useFormFieldsThreshold = (
                 model: value,
                 required: true,
                 label: i18n.global.t(
-                    "createTemplateExam.steps.indicators.fields.thresholds.fields.value.label",
+                    "indicators.fields.thresholds.fields.value.label",
                 ),
                 placeholder: i18n.global.t(
-                    "createTemplateExam.steps.indicators.fields.thresholds.fields.value.placeholder",
+                    "indicators.fields.thresholds.fields.value.placeholder",
                 ),
                 min: 0,
                 max: 100,
@@ -54,10 +54,10 @@ export const useFormFieldsThreshold = (
                 model: color,
                 required: true,
                 label: i18n.global.t(
-                    "createTemplateExam.steps.indicators.fields.thresholds.fields.color.label",
+                    "indicators.fields.thresholds.fields.color.label",
                 ),
                 placeholder: i18n.global.t(
-                    "createTemplateExam.steps.indicators.fields.thresholds.fields.color.placeholder",
+                    "indicators.fields.thresholds.fields.color.placeholder",
                 ),
             },
         ],

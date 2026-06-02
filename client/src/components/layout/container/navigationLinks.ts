@@ -53,5 +53,15 @@ export function buildBaseNavigationLinks(
         });
     }
 
+    if (ability.canView(GUIComponent.ArchiveExams)) {
+        result.push({
+            title: i18n.t("titles.archive"),
+            route: typedTo({ name: "/(app)/archive/" }),
+            icon: "mdi-archive",
+            testId: "layout-archive-button",
+            disabled: true,
+        });
+    }
+
     return result;
 }

@@ -132,7 +132,45 @@
     "indicators": {
         "entityNamePlural": "Indicators",
         "addDialogTitle": "Add Indicator",
-        "editDialogTitle": "Edit Indicator"
+        "editDialogTitle": "Edit Indicator",
+        "deleteDialog": {
+            "title": "Delete Indicator",
+            "text": "Are you sure you want to delete this indicator?",
+            "action": "Delete"
+        },
+        "fields": {
+            "actions": {
+                "label": "Actions"
+            },
+            "name": {
+                "label": "Name",
+                "placeholder": "Enter the desired indicator name",
+                "validationErrorUniqueName": "An indicator with this name already exists on this exam template"
+            },
+            "type": {
+                "label": "Type",
+                "placeholder": "Select the indicator type",
+                "types": {
+                    "BATTERY_STATUS": "Battery Status",
+                    "WLAN_STATUS": "Wifi Status"
+                }
+            },
+            "thresholds": {
+                "label": "Thresholds",
+                "labelRow": "Threshold #",
+                "labelAdd": "Add Threshold",
+                "fields": {
+                    "value": {
+                        "label": "Value",
+                        "placeholder": "Enter 0% – 100%"
+                    },
+                    "color": {
+                        "label": "Color",
+                        "placeholder": "Enter hex color value"
+                    }
+                }
+            }
+        }
     },
     "loginPage": {
         "title": "SEB Server",
@@ -341,40 +379,7 @@
             },
             "indicators": {
                 "title": "Add Indicators",
-                "subtitle": "TODO: translate (Kristina)",
-                "fields": {
-                    "actions": {
-                        "label": "Actions"
-                    },
-                    "name": {
-                        "label": "Name",
-                        "placeholder": "Enter the desired indicator name",
-                        "validationErrorUniqueName": "An indicator with this name already exists on this exam template"
-                    },
-                    "type": {
-                        "label": "Type",
-                        "placeholder": "Select the indicator type",
-                        "types": {
-                            "BATTERY_STATUS": "Battery Status",
-                            "WLAN_STATUS": "Wifi Status"
-                        }
-                    },
-                    "thresholds": {
-                        "label": "Thresholds",
-                        "labelRow": "Threshold #",
-                        "labelAdd": "Add Threshold",
-                        "fields": {
-                            "value": {
-                                "label": "Value",
-                                "placeholder": "Enter 0% – 100%"
-                            },
-                            "color": {
-                                "label": "Color",
-                                "placeholder": "Enter hex color value"
-                            }
-                        }
-                    }
-                }
+                "subtitle": "TODO: translate (Kristina)"
             },
             "clientGroup": {
                 "title": "Add Groups",
@@ -476,7 +481,12 @@
                 }
             },
             "supervisors": {
-                "title": "Exam Supervisors"
+                "title": "Exam Supervisors",
+                "dialogTitle": "Edit Exam Supervisors",
+                "headers": {
+                    "username": "Username",
+                    "name": "Name"
+                }
             },
             "screenProctoringSettings": {
                 "title": "Screen Proctoring"
@@ -546,7 +556,15 @@
         },
         "actions": {
             "downloadSEBLogs": "Download SEB Logs",
-            "showSPS": "Show Screen Proctoring"
+            "showSPS": "Show Screen Proctoring",
+            "archive": "Archive this Exam"
+        },
+        "archive": {
+            "confirm": {
+                "title": "Archive this exam?",
+                "text": "The exam will be moved to the archive. You can still find it by filtering for the \"Archived\" state.",
+                "action": "Archive"
+            }
         }
     },
     "userAccount": {
@@ -2063,7 +2081,8 @@
         "editInstitution": "Edit Institution",
         "editExamTemplate": "Edit Exam Template",
         "galleryView": "Gallery View",
-        "analyze": "Analyze"
+        "analyze": "Analyze",
+        "archive": "Archive"
     },
     "warnings": {
         "no-data": "No data available",
@@ -2096,6 +2115,7 @@
         "routeNames": {
             "runningExams": "Running Exams",
             "analyzeExams": "Analyze Exams",
+            "archiveExams": "Archive Exams",
             "search": "Search",
             "assessmentToolConnections": "Assessment Tool Connections",
             "connectionConfiguration": "Connection Configuration",
@@ -2192,6 +2212,11 @@
                     "post": "Error uploading certificate",
                     "put": "Error updating certificate",
                     "delete": "Error deleting certificate"
+                },
+                "exam": {
+                    "archive": {
+                        "patch": "Error archiving exam"
+                    }
                 }
             },
             "http": {

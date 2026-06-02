@@ -2,6 +2,14 @@ import { MaybeRef, Ref, UnwrapRef } from "vue";
 import { FormField } from "@/components/widgets/formBuilder/types";
 import { DataTableHeader } from "vuetify";
 
+export type CrudDeleteConfig<TItem> = {
+    deleteItem: (item: TItem) => Promise<void>;
+    confirm?: {
+        translationKeyPrefix: string;
+        getDetailText?: (item: TItem) => string | undefined;
+    };
+};
+
 export type CrudTableConfig<TItem, TTransient> = {
     name: string;
     title: string;
@@ -22,7 +30,5 @@ export type CrudTableConfig<TItem, TTransient> = {
         getItem: (item: TItem) => TTransient;
         updateItem: (item: TTransient) => Promise<void>;
     };
-    deleteConfig: {
-        deleteItem: (item: TItem) => Promise<void>;
-    };
+    deleteConfig: CrudDeleteConfig<TItem>;
 };

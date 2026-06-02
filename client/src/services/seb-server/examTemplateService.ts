@@ -1,6 +1,11 @@
+import { z } from "zod";
 import * as apiService from "@/services/apiService";
 import { ScreenProctoringSettings } from "@/models/seb-server/screenProctoring";
-import { ExamTemplate, ExamTemplates } from "@/models/seb-server/examTemplate";
+import {
+    ExamTemplate,
+    ExamTemplates,
+    indicatorTemplatesSchema,
+} from "@/models/seb-server/examTemplate";
 import { ConfigurationTemplateKey } from "@/models/seb-server/configurationNode";
 import { BasicListParams } from "@/services/types";
 import { normaliseBasicListParams } from "@/utils/table/tableUtils";
@@ -30,13 +35,22 @@ export const getExamTemplates = async ({
         })
     ).data;
 
-export const getExamTemplate = async (id: string): Promise<ExamTemplate> =>
-    (
+export const getExamTemplate = async (id: string): Promise<ExamTemplate> => {
+    const template: ExamTemplate = (
         await apiService.getRequest({
             url: `${baseUrl}/${id}`,
             options: { _authType: "seb" },
         })
     ).data;
+
+    return {
+        ...template,
+        indicatorTemplates: z.decode(
+            indicatorTemplatesSchema,
+            template.indicatorTemplates,
+        ),
+    };
+};
 
 export const deleteExamTemplate = async (id: number): Promise<void> =>
     (
@@ -84,7 +98,13 @@ export const createExamTemplate = async (
     (
         await apiService.postRequest({
             url: `${baseUrl}/create`,
-            data: examTemplate,
+            data: {
+                ...examTemplate,
+                indicatorTemplates: z.encode(
+                    indicatorTemplatesSchema,
+                    examTemplate.indicatorTemplates,
+                ),
+            },
             options: {
                 _authType: "seb",
                 headers: {
@@ -93,6 +113,37 @@ export const createExamTemplate = async (
             },
         })
     ).data;
+
+export const updateExamTemplate = async (
+    examTemplate: ExamTemplate,
+): Promise<ExamTemplate> => {
+    const updated: ExamTemplate = (
+        await apiService.putRequest({
+            url: baseUrl,
+            data: {
+                ...examTemplate,
+                indicatorTemplates: z.encode(
+                    indicatorTemplatesSchema,
+                    examTemplate.indicatorTemplates,
+                ),
+            },
+            options: {
+                _authType: "seb",
+                headers: {
+                    "Content-Type": "application/json",
+                },
+            },
+        })
+    ).data;
+
+    return {
+        ...updated,
+        indicatorTemplates: z.decode(
+            indicatorTemplatesSchema,
+            updated.indicatorTemplates,
+        ),
+    };
+};
 
 export const createTemporaryConfigurationTemplate =
     async (): Promise<ConfigurationTemplateKey> =>

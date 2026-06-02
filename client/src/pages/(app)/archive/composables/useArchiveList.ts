@@ -5,11 +5,11 @@ import {
     TYPE_FILTER_KEY,
     EXAM_STATUS_FILTER_KEY,
 } from "@/pages/(app)/exam/composables/useExamFilters.ts";
-import { useAnalyzeTableFilters } from "@/pages/(app)/analyze/composables/useAnalyzeTableFilters.ts";
-import { useAnalyzeExams } from "@/pages/(app)/analyze/api/useAnalyzeExams.ts";
+import { useArchiveTableFilters } from "@/pages/(app)/archive/composables/useArchiveTableFilters.ts";
+import { useArchiveExams } from "@/pages/(app)/archive/api/useArchiveExams.ts";
 
-export const useAnalyzeList = () => {
-    const filterSections = useAnalyzeTableFilters();
+export const useArchiveList = () => {
+    const filterSections = useArchiveTableFilters();
 
     const {
         searchInputValue,
@@ -42,7 +42,7 @@ export const useAnalyzeList = () => {
         loading,
         error,
         fetchData: fetchExams,
-    } = useAnalyzeExams(
+    } = useArchiveExams(
         options,
         searchField,
         dateTimestamp,
@@ -50,7 +50,7 @@ export const useAnalyzeList = () => {
         selectedStatus,
     );
 
-    const { items, pageCount, errors } = usePagedListData({
+    const { items, pageCount, errors, reloadList } = usePagedListData({
         data,
         error,
         options,
@@ -74,5 +74,6 @@ export const useAnalyzeList = () => {
         clearAll,
         setDate,
         loadItems,
+        reloadList,
     };
 };

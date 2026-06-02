@@ -39,6 +39,7 @@ declare module 'vue-router/auto-routes' {
       | '/(app)/'
       | '/(app)/analyze/'
       | '/(app)/applications-search/'
+      | '/(app)/archive/'
       | '/(app)/assessment-tool/'
       | '/(app)/assessment-tool/[id]/'
       | '/(app)/assessment-tool/create/'
@@ -86,6 +87,13 @@ declare module 'vue-router/auto-routes' {
     '/(app)/applications-search/': RouteRecordInfo<
       '/(app)/applications-search/',
       '/applications-search',
+      Record<never, never>,
+      Record<never, never>,
+      | never
+    >,
+    '/(app)/archive/': RouteRecordInfo<
+      '/(app)/archive/',
+      '/archive',
       Record<never, never>,
       Record<never, never>,
       | never
@@ -334,6 +342,7 @@ declare module 'vue-router/auto-routes' {
         | '/(app)/'
         | '/(app)/analyze/'
         | '/(app)/applications-search/'
+        | '/(app)/archive/'
         | '/(app)/assessment-tool/'
         | '/(app)/assessment-tool/[id]/'
         | '/(app)/assessment-tool/create/'
@@ -381,6 +390,12 @@ declare module 'vue-router/auto-routes' {
     'src/pages/(app)/applications-search/index.vue': {
       routes:
         | '/(app)/applications-search/'
+      views:
+        | never
+    }
+    'src/pages/(app)/archive/index.vue': {
+      routes:
+        | '/(app)/archive/'
       views:
         | never
     }

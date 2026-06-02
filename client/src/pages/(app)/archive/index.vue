@@ -1,7 +1,7 @@
 <template>
     <BasicPage
-        :title="$t('titles.analyze')"
-        :bread-crumb="[{ label: $t('titles.analyze') }]"
+        :title="$t('titles.archive')"
+        :bread-crumb="[{ label: $t('titles.archive') }]"
         :data-test-id="dataTestId"
         :panel-left-collapsed="!filtersOpen"
     >
@@ -60,6 +60,15 @@
             </LoadingFallbackComponent>
         </template>
     </BasicPage>
+
+    <GenericConfirmDialog
+        v-model="archiveFlow.dialogOpen"
+        :active="!!archiveFlow.target?.active"
+        translation-key-prefix="examList.archive"
+        :sub-title="getExamName(archiveFlow.target)"
+        icon="mdi-archive"
+        @confirm="archiveFlow.confirm"
+    />
 </template>
 
 <script setup lang="ts">
@@ -74,11 +83,13 @@ import {
     examStatusColor,
     ExamStatusEnum,
 } from "@/models/seb-server/examFiltersEnum.ts";
-import { useAnalyzeOverview } from "@/pages/(app)/analyze/composables/useAnalyzeOverview.ts";
+import { useArchiveOverview } from "@/pages/(app)/archive/composables/useArchiveOverview.ts";
+import GenericConfirmDialog from "@/components/widgets/confirmDialog/GenericConfirmDialog.vue";
+import { TableItem } from "@/components/widgets/entity-table/types";
 
-const dataTestId = "analyze";
+const dataTestId = "archive";
 
-const { list } = useAnalyzeOverview();
+const { list, archiveFlow } = useArchiveOverview();
 
 const { filtersOpen, activePills, onRemovePill } = useListFilterPanel({
     search: { applied: () => list.searchField, clear: list.onClearSearch },
@@ -87,4 +98,11 @@ const { filtersOpen, activePills, onRemovePill } = useListFilterPanel({
     setFilters: list.setFilters,
     date: { value: () => list.dateValue, clear: () => list.setDate(null) },
 });
+
+function getExamName(item: TableItem | undefined): string | undefined {
+    if (item) {
+        return item.quizName as string;
+    }
+    return undefined;
+}
 </script>
