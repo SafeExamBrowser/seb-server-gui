@@ -3,6 +3,13 @@ import { z } from "zod";
 import { useRoute } from "vue-router";
 import i18n from "@/i18n";
 import type { BreadCrumbItem } from "@/components/widgets/breadCrumb/types.ts";
+import {
+    ExamTemplate,
+    IndicatorExisting,
+} from "@/models/seb-server/examTemplate.ts";
+import { updateExamTemplate } from "@/services/seb-server/examTemplateService.ts";
+import { useSupervisors } from "@/composables/useSupervisors.ts";
+import { useMutation } from "@/composables/useMutation.ts";
 import { useExamTemplate } from "./api/useExamTemplate.ts";
 
 const idSchema = z.coerce.number().int().positive();
@@ -14,12 +21,23 @@ export const useExamTemplateDetailPage = () => {
 
     const {
         data: examTemplate,
-        loading,
-        error: fetchError,
+        loading: examTemplateLoading,
+        error: examTemplateError,
     } = useExamTemplate(examTemplateId);
+
+    const {
+        data: availableSupervisors,
+        loading: availableSupervisorsLoading,
+        error: availableSupervisorsError,
+    } = useSupervisors();
+
+    const loading = computed(
+        () => examTemplateLoading.value || availableSupervisorsLoading.value,
+    );
 
     const errors = computed(() => {
         const messages = [];
+
         if (!parseResult.success) {
             messages.push(
                 i18n.global.t("examTemplateDetail.errors.invalidId", {
@@ -28,8 +46,12 @@ export const useExamTemplateDetailPage = () => {
             );
         }
 
-        if (fetchError.value) {
-            messages.push(fetchError.value);
+        if (examTemplateError.value) {
+            messages.push(examTemplateError.value);
+        }
+
+        if (availableSupervisorsError.value) {
+            messages.push(availableSupervisorsError.value);
         }
 
         return messages;
@@ -55,12 +77,47 @@ export const useExamTemplateDetailPage = () => {
         ...(examTemplate.value ? [{ label: title.value }] : []),
     ]);
 
+    const indicators = computed<IndicatorExisting[]>(
+        () => examTemplate.value?.indicatorTemplates ?? [],
+    );
+
+    const selectedSupervisorIds = computed<string[]>(
+        () => examTemplate.value?.supporter ?? [],
+    );
+
+    const updateMutation = useMutation((template: ExamTemplate) =>
+        updateExamTemplate(template),
+    );
+
+    const updateTemplate = async (patch: Partial<ExamTemplate>) => {
+        if (!examTemplate.value) {
+            return;
+        }
+
+        const examTemplateUpdated = await updateMutation.mutateData({
+            ...examTemplate.value,
+            ...patch,
+        });
+
+        if (!examTemplateUpdated) {
+            // TODO andrei: proper error handling
+            // eslint-disable-next-line no-console
+            console.error(updateMutation.error.value);
+            return;
+        }
+
+        examTemplate.value = examTemplateUpdated;
+    };
+
     return {
         examTemplateId,
-        examTemplate,
         loading,
         errors,
         title,
         breadCrumb,
+        indicators,
+        availableSupervisors,
+        selectedSupervisorIds,
+        updateTemplate,
     };
 };

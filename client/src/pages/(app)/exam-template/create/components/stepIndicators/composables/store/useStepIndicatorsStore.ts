@@ -1,23 +1,23 @@
 import { defineStore } from "pinia";
 import { computed, ref } from "vue";
-import { Indicator } from "@/components/widgets/indicatorsTable/types.ts";
+import { IndicatorExisting } from "@/models/seb-server/examTemplate.ts";
 
 const getInitialState = () => ({
     indicators: [],
 });
 
 export const useStepIndicatorsStore = defineStore("stepIndicators", () => {
-    const indicators = ref<Indicator[]>(getInitialState().indicators);
+    const indicators = ref<IndicatorExisting[]>(getInitialState().indicators);
 
     const $reset = () => {
         indicators.value = getInitialState().indicators;
     };
 
-    const createIndicator = (indicator: Indicator) => {
+    const createIndicator = (indicator: IndicatorExisting) => {
         indicators.value.push(indicator);
     };
 
-    const updateIndicator = (updatedIndicator: Indicator) => {
+    const updateIndicator = (updatedIndicator: IndicatorExisting) => {
         indicators.value = indicators.value.map((existingIndicator) =>
             existingIndicator.id === updatedIndicator.id
                 ? updatedIndicator
@@ -25,7 +25,7 @@ export const useStepIndicatorsStore = defineStore("stepIndicators", () => {
         );
     };
 
-    const deleteIndicator = (indicator: Indicator) => {
+    const deleteIndicator = (indicator: IndicatorExisting) => {
         indicators.value = indicators.value.filter(
             (i) => i.id !== indicator.id,
         );

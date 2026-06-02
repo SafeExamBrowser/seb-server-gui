@@ -1,6 +1,6 @@
 import i18n from "@/i18n";
+import { IndicatorExisting } from "@/models/seb-server/examTemplate.ts";
 import {
-    Indicator,
     IndicatorsTableDeps,
     IndicatorTransient,
     indicatorTransientToIndicator,
@@ -15,35 +15,27 @@ export const getEmptyIndicator = (): IndicatorTransient => ({
 
 export const useTable = (
     deps: IndicatorsTableDeps,
-): CrudTableConfig<Indicator, IndicatorTransient> => {
+): CrudTableConfig<IndicatorExisting, IndicatorTransient> => {
     const { getFormFields } = useFormFields(deps.indicators);
 
     const headers = [
         {
-            title: i18n.global.t(
-                "createTemplateExam.steps.indicators.fields.name.label",
-            ),
+            title: i18n.global.t("indicators.fields.name.label"),
             value: "name",
             width: "30%",
         },
         {
-            title: i18n.global.t(
-                "createTemplateExam.steps.indicators.fields.type.label",
-            ),
+            title: i18n.global.t("indicators.fields.type.label"),
             value: "type",
             width: "30%",
         },
         {
-            title: i18n.global.t(
-                "createTemplateExam.steps.indicators.fields.thresholds.label",
-            ),
+            title: i18n.global.t("indicators.fields.thresholds.label"),
             value: "thresholds",
             width: "30%",
         },
         {
-            title: i18n.global.t(
-                "createTemplateExam.steps.indicators.fields.actions.label",
-            ),
+            title: i18n.global.t("indicators.fields.actions.label"),
             value: "actions",
             align: "end" as const,
             width: "10%",
@@ -56,7 +48,7 @@ export const useTable = (
     const updateItem = (item: IndicatorTransient) =>
         deps.updateItem(indicatorTransientToIndicator(item));
 
-    const getExistingItem = (item: Indicator): IndicatorTransient => ({
+    const getExistingItem = (item: IndicatorExisting): IndicatorTransient => ({
         ...item,
     });
 
@@ -79,6 +71,12 @@ export const useTable = (
         },
         deleteConfig: {
             deleteItem: deps.deleteItem,
+            confirm: deps.confirmDelete
+                ? {
+                      translationKeyPrefix: "indicators",
+                      getDetailText: (item: IndicatorExisting) => item.name,
+                  }
+                : undefined,
         },
     };
 };
