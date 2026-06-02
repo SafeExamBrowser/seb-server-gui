@@ -1,9 +1,11 @@
 <template>
     <v-card elevation="2" rounded="lg">
-        <v-card-title v-if="title" class="d-flex align-center">
-            <SectionSubtitle :name="title" />
-            <v-spacer />
-            <slot name="action" />
+        <v-card-title v-if="title" class="pb-0">
+            <div class="d-flex align-center pt-2 pb-3 border-b-md">
+                <SectionSubtitle :name="title" />
+                <v-spacer />
+                <slot name="action" />
+            </div>
         </v-card-title>
         <v-card-text>
             <slot />
