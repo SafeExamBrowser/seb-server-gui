@@ -8,13 +8,39 @@ type ValidationRule = ValidationRules[number];
 
 type UnwrappableSchema = z.ZodType & { unwrap: () => z.ZodType };
 
-const isUnwrappableSchema = (schema: z.ZodType): schema is UnwrappableSchema =>
-    schema instanceof Object &&
-    "unwrap" in schema &&
-    typeof schema.unwrap === "function";
+const WRAPPER_TYPES = new Set([
+    "optional",
+    "nullable",
+    "nonoptional",
+    "default",
+    "readonly",
+    "catch",
+]);
 
-const unwrap = (schema: z.ZodType): z.ZodType =>
-    isUnwrappableSchema(schema) ? schema.unwrap() : schema;
+const typeTag = (schema: z.ZodType): string | undefined => {
+    if (!("def" in schema)) {
+        return undefined;
+    }
+    const def = schema.def;
+    if (typeof def !== "object" || def === null || !("type" in def)) {
+        return undefined;
+    }
+    return typeof def.type === "string" ? def.type : undefined;
+};
+
+const isUnwrappableSchema = (schema: z.ZodType): schema is UnwrappableSchema =>
+    "unwrap" in schema && typeof schema.unwrap === "function";
+
+const unwrap = (schema: z.ZodType): z.ZodType => {
+    let current = schema;
+    while (
+        WRAPPER_TYPES.has(typeTag(current) ?? "") &&
+        isUnwrappableSchema(current)
+    ) {
+        current = current.unwrap();
+    }
+    return current;
+};
 
 export const useZodFormRules = () => {
     const rules = useRules();
@@ -24,7 +50,7 @@ export const useZodFormRules = () => {
     const lengthRules = (schema: z.ZodType): ValidationRules => {
         const inner = unwrap(schema);
         const out: ValidationRule[] = [];
-        if (!(inner instanceof Object)) {
+        if (typeTag(inner) !== "string") {
             return out;
         }
         const minLength = "minLength" in inner ? inner.minLength : undefined;
@@ -40,11 +66,11 @@ export const useZodFormRules = () => {
 
     const formatRules = (schema: z.ZodType): ValidationRules => {
         const inner = unwrap(schema);
-        if (
-            inner instanceof Object &&
-            "format" in inner &&
-            inner.format === "email"
-        ) {
+        if (typeTag(inner) !== "string") {
+            return [];
+        }
+        const format = "format" in inner ? inner.format : undefined;
+        if (format === "email") {
             return [rules.email()];
         }
         return [];

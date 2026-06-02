@@ -219,7 +219,8 @@
                     {
                         "name": "institutionId",
                         "in": "query",
-                        "description": "The institution identifier of the request.\nDefault is the institution identifier of the institution of the current user"
+                        "description": "The institution identifier of the request.\nDefault is the institution identifier of the institution of the current user",
+                        "schema": { "type": "integer" }
                     }
                 ],
                 "requestBody": {
@@ -445,7 +446,8 @@
                     {
                         "name": "institutionId",
                         "in": "query",
-                        "description": "The institution identifier of the request.\nDefault is the institution identifier of the institution of the current user"
+                        "description": "The institution identifier of the request.\nDefault is the institution identifier of the institution of the current user",
+                        "schema": { "type": "integer" }
                     }
                 ],
                 "requestBody": {
@@ -650,7 +652,8 @@
                     {
                         "name": "institutionId",
                         "in": "query",
-                        "description": "The institution identifier of the request.\nDefault is the institution identifier of the institution of the current user"
+                        "description": "The institution identifier of the request.\nDefault is the institution identifier of the institution of the current user",
+                        "schema": { "type": "integer" }
                     }
                 ],
                 "requestBody": {
@@ -827,7 +830,8 @@
                     {
                         "name": "institutionId",
                         "in": "query",
-                        "description": "The institution identifier of the request.\nDefault is the institution identifier of the institution of the current user"
+                        "description": "The institution identifier of the request.\nDefault is the institution identifier of the institution of the current user",
+                        "schema": { "type": "integer" }
                     }
                 ],
                 "requestBody": {
@@ -1004,7 +1008,8 @@
                     {
                         "name": "institutionId",
                         "in": "query",
-                        "description": "The institution identifier of the request.\nDefault is the institution identifier of the institution of the current user"
+                        "description": "The institution identifier of the request.\nDefault is the institution identifier of the institution of the current user",
+                        "schema": { "type": "integer" }
                     }
                 ],
                 "requestBody": {
@@ -1179,7 +1184,8 @@
                     {
                         "name": "institutionId",
                         "in": "query",
-                        "description": "The institution identifier of the request.\nDefault is the institution identifier of the institution of the current user"
+                        "description": "The institution identifier of the request.\nDefault is the institution identifier of the institution of the current user",
+                        "schema": { "type": "integer" }
                     }
                 ],
                 "requestBody": {
@@ -1354,7 +1360,8 @@
                     {
                         "name": "institutionId",
                         "in": "query",
-                        "description": "The institution identifier of the request.\nDefault is the institution identifier of the institution of the current user"
+                        "description": "The institution identifier of the request.\nDefault is the institution identifier of the institution of the current user",
+                        "schema": { "type": "integer" }
                     }
                 ],
                 "requestBody": {
@@ -1560,7 +1567,8 @@
                     {
                         "name": "institutionId",
                         "in": "query",
-                        "description": "The institution identifier of the request.\nDefault is the institution identifier of the institution of the current user"
+                        "description": "The institution identifier of the request.\nDefault is the institution identifier of the institution of the current user",
+                        "schema": { "type": "integer" }
                     }
                 ],
                 "requestBody": {
@@ -1737,7 +1745,8 @@
                     {
                         "name": "institutionId",
                         "in": "query",
-                        "description": "The institution identifier of the request.\nDefault is the institution identifier of the institution of the current user"
+                        "description": "The institution identifier of the request.\nDefault is the institution identifier of the institution of the current user",
+                        "schema": { "type": "integer" }
                     }
                 ],
                 "requestBody": {
@@ -1912,7 +1921,8 @@
                     {
                         "name": "institutionId",
                         "in": "query",
-                        "description": "The institution identifier of the request.\nDefault is the institution identifier of the institution of the current user"
+                        "description": "The institution identifier of the request.\nDefault is the institution identifier of the institution of the current user",
+                        "schema": { "type": "integer" }
                     }
                 ],
                 "requestBody": {
@@ -2223,7 +2233,8 @@
                     {
                         "name": "institutionId",
                         "in": "query",
-                        "description": "The institution identifier of the request.\nDefault is the institution identifier of the institution of the current user"
+                        "description": "The institution identifier of the request.\nDefault is the institution identifier of the institution of the current user",
+                        "schema": { "type": "integer" }
                     }
                 ],
                 "requestBody": {
@@ -2545,7 +2556,8 @@
                     {
                         "name": "institutionId",
                         "in": "query",
-                        "description": "The institution identifier of the request.\nDefault is the institution identifier of the institution of the current user"
+                        "description": "The institution identifier of the request.\nDefault is the institution identifier of the institution of the current user",
+                        "schema": { "type": "integer" }
                     }
                 ],
                 "requestBody": {
@@ -2728,7 +2740,8 @@
                     {
                         "name": "institutionId",
                         "in": "query",
-                        "description": "The institution identifier of the request.\nDefault is the institution identifier of the institution of the current user"
+                        "description": "The institution identifier of the request.\nDefault is the institution identifier of the institution of the current user",
+                        "schema": { "type": "integer" }
                     }
                 ],
                 "requestBody": {
@@ -2965,7 +2978,8 @@
                     {
                         "name": "institutionId",
                         "in": "query",
-                        "description": "The institution identifier of the request.\nDefault is the institution identifier of the institution of the current user"
+                        "description": "The institution identifier of the request.\nDefault is the institution identifier of the institution of the current user",
+                        "schema": { "type": "integer" }
                     }
                 ],
                 "requestBody": {
@@ -3142,7 +3156,8 @@
                     {
                         "name": "institutionId",
                         "in": "query",
-                        "description": "The institution identifier of the request.\nDefault is the institution identifier of the institution of the current user"
+                        "description": "The institution identifier of the request.\nDefault is the institution identifier of the institution of the current user",
+                        "schema": { "type": "integer" }
                     }
                 ],
                 "requestBody": {
@@ -3319,7 +3334,8 @@
                     {
                         "name": "institutionId",
                         "in": "query",
-                        "description": "The institution identifier of the request.\nDefault is the institution identifier of the institution of the current user"
+                        "description": "The institution identifier of the request.\nDefault is the institution identifier of the institution of the current user",
+                        "schema": { "type": "integer" }
                     }
                 ],
                 "requestBody": {
@@ -3533,7 +3549,8 @@
                     {
                         "name": "institutionId",
                         "in": "query",
-                        "description": "The institution identifier of the request.\nDefault is the institution identifier of the institution of the current user"
+                        "description": "The institution identifier of the request.\nDefault is the institution identifier of the institution of the current user",
+                        "schema": { "type": "integer" }
                     }
                 ],
                 "requestBody": {
@@ -3710,7 +3727,8 @@
                     {
                         "name": "institutionId",
                         "in": "query",
-                        "description": "The institution identifier of the request.\nDefault is the institution identifier of the institution of the current user"
+                        "description": "The institution identifier of the request.\nDefault is the institution identifier of the institution of the current user",
+                        "schema": { "type": "integer" }
                     }
                 ],
                 "requestBody": {
@@ -3887,7 +3905,8 @@
                     {
                         "name": "institutionId",
                         "in": "query",
-                        "description": "The institution identifier of the request.\nDefault is the institution identifier of the institution of the current user"
+                        "description": "The institution identifier of the request.\nDefault is the institution identifier of the institution of the current user",
+                        "schema": { "type": "integer" }
                     }
                 ],
                 "requestBody": {
@@ -14272,7 +14291,12 @@
                         "minLength": 1
                     }
                 },
-                "required": ["uuid"]
+                "required": [
+                    "confirmNewPassword",
+                    "newPassword",
+                    "password",
+                    "uuid"
+                ]
             },
             "ClientEvent": {
                 "type": "object",
@@ -14573,8 +14597,8 @@
                         "type": "object",
                         "additionalProperties": { "type": "string" }
                     },
-                    "startURL": { "type": "string" },
-                    "description": { "type": "string" }
+                    "description": { "type": "string" },
+                    "startURL": { "type": "string" }
                 },
                 "required": ["externalId", "institutionId", "type"]
             },
@@ -16322,12 +16346,11 @@
             "ClientMonitoringDataView": {
                 "type": "object",
                 "properties": {
+                    "pendingNotification": { "type": "boolean" },
                     "missingPing": { "type": "boolean" },
                     "grantChecked": { "type": "boolean" },
                     "grantDenied": { "type": "boolean" },
                     "sebversionDenied": { "type": "boolean" },
-                    "pendingNotification": { "type": "boolean" },
-                    "nf": { "type": "integer", "format": "int32" },
                     "st": {
                         "type": "string",
                         "enum": [
@@ -16339,11 +16362,12 @@
                             "DISABLED"
                         ]
                     },
+                    "lat": { "type": "integer" },
                     "iv": {
                         "type": "object",
                         "additionalProperties": { "type": "string" }
                     },
-                    "lat": { "type": "integer" },
+                    "nf": { "type": "integer", "format": "int32" },
                     "id": { "type": "integer" }
                 }
             },

@@ -51,6 +51,8 @@ export const useUserAccountFormFields = (mode: UserAccountFormMode) => {
 
     const { isRequired, lengthRules, formatRules } = useZodFormRules();
 
+    const sharedSchema = mode === "create" ? zUserMod : zUserInfo;
+
     const {
         data: institutions,
         loading: loadingInstitutions,
@@ -128,7 +130,7 @@ export const useUserAccountFormFields = (mode: UserAccountFormMode) => {
                 model: institutionId,
                 label: t("fields.institution.label"),
                 options: institutionOptions.value,
-                required: isRequired(zUserInfo.shape.institutionId),
+                required: isRequired(sharedSchema.shape.institutionId),
                 disabled: institutionSelectDisabled.value,
             },
             {
@@ -136,34 +138,34 @@ export const useUserAccountFormFields = (mode: UserAccountFormMode) => {
                 name: "username",
                 model: username,
                 label: t("fields.username.label"),
-                required: isRequired(zUserInfo.shape.username),
-                rules: lengthRules(zUserInfo.shape.username),
+                required: isRequired(sharedSchema.shape.username),
+                rules: lengthRules(sharedSchema.shape.username),
             },
             {
                 type: "text" as const,
                 name: "name",
                 model: name,
                 label: t("fields.name.label"),
-                required: isRequired(zUserInfo.shape.name),
-                rules: lengthRules(zUserInfo.shape.name),
+                required: isRequired(sharedSchema.shape.name),
+                rules: lengthRules(sharedSchema.shape.name),
             },
             {
                 type: "text" as const,
                 name: "surname",
                 model: surname,
                 label: t("fields.surname.label"),
-                required: isRequired(zUserInfo.shape.surname),
-                rules: lengthRules(zUserInfo.shape.surname),
+                required: isRequired(sharedSchema.shape.surname),
+                rules: lengthRules(sharedSchema.shape.surname),
             },
             {
                 type: "text" as const,
                 name: "email",
                 model: email,
                 label: t("fields.email.label"),
-                required: isRequired(zUserInfo.shape.email),
+                required: isRequired(sharedSchema.shape.email),
                 rules: [
-                    ...lengthRules(zUserInfo.shape.email),
-                    ...formatRules(zUserInfo.shape.email),
+                    ...lengthRules(sharedSchema.shape.email),
+                    ...formatRules(sharedSchema.shape.email),
                 ],
             },
             {
@@ -172,7 +174,7 @@ export const useUserAccountFormFields = (mode: UserAccountFormMode) => {
                 model: timezone,
                 label: t("fields.timezone.label"),
                 options: timezoneOptions,
-                required: isRequired(zUserInfo.shape.timezone),
+                required: isRequired(sharedSchema.shape.timezone),
             },
         ];
 
@@ -208,7 +210,7 @@ export const useUserAccountFormFields = (mode: UserAccountFormMode) => {
             model: role,
             label: t("fields.role.label"),
             options: availableRoles.value,
-            required: isRequired(zUserMod.shape.userRoles),
+            required: isRequired(sharedSchema.shape.userRoles),
             disabled: mode === "profile",
         },
     ]);

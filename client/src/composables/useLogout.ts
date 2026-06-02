@@ -14,7 +14,7 @@ export const useLogout = () => {
         }
 
         authStore.$reset();
-        userAccountStore.userAccount = null;
+        userAccountStore.userAccount = undefined;
         clearCurrentUser();
 
         await router.push({ name: "/(public)/login/" });

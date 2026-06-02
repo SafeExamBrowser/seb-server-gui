@@ -118,15 +118,15 @@ export type PasswordChange = {
     /**
      * Current password.
      */
-    password?: string;
+    password: string;
     /**
      * New password.
      */
-    newPassword?: string;
+    newPassword: string;
     /**
      * Repeated new password.
      */
-    confirmNewPassword?: string;
+    confirmNewPassword: string;
 };
 
 export type ClientEvent = {
@@ -279,8 +279,8 @@ export type Exam = {
     additionalAttributes?: {
         [key: string]: string;
     };
-    startURL?: string;
     description?: string;
+    startURL?: string;
 };
 
 export type ClientGroupTemplate = {
@@ -1199,17 +1199,17 @@ export type ClientNotification = {
 };
 
 export type ClientMonitoringDataView = {
+    pendingNotification?: boolean;
     missingPing?: boolean;
     grantChecked?: boolean;
     grantDenied?: boolean;
     sebversionDenied?: boolean;
-    pendingNotification?: boolean;
-    nf?: number;
     st?: 'UNDEFINED' | 'CONNECTION_REQUESTED' | 'READY' | 'ACTIVE' | 'CLOSED' | 'DISABLED';
+    lat?: number;
     iv?: {
         [key: string]: string;
     };
-    lat?: number;
+    nf?: number;
     id?: number;
 };
 
@@ -2071,7 +2071,7 @@ export type CreateUserActivityLogData = {
          * The institution identifier of the request.
          * Default is the institution identifier of the institution of the current user
          */
-        institutionId?: unknown;
+        institutionId?: number;
     };
     url: '/admin-api/v1/useractivity';
 };
@@ -2206,7 +2206,7 @@ export type CreateUserAccountData = {
          * The institution identifier of the request.
          * Default is the institution identifier of the institution of the current user
          */
-        institutionId?: unknown;
+        institutionId?: number;
     };
     url: '/admin-api/v1/useraccount';
 };
@@ -2329,7 +2329,7 @@ export type CreateClientEventData = {
          * The institution identifier of the request.
          * Default is the institution identifier of the institution of the current user
          */
-        institutionId?: unknown;
+        institutionId?: number;
     };
     url: '/admin-api/v1/seb-client-event';
 };
@@ -2436,7 +2436,7 @@ export type CreateClientConnectionData = {
          * The institution identifier of the request.
          * Default is the institution identifier of the institution of the current user
          */
-        institutionId?: unknown;
+        institutionId?: number;
     };
     url: '/admin-api/v1/seb-client-connection';
 };
@@ -2543,7 +2543,7 @@ export type CreateOrientationData = {
          * The institution identifier of the request.
          * Default is the institution identifier of the institution of the current user
          */
-        institutionId?: unknown;
+        institutionId?: number;
     };
     url: '/admin-api/v1/orientation';
 };
@@ -2650,7 +2650,7 @@ export type CreateViewData = {
          * The institution identifier of the request.
          * Default is the institution identifier of the institution of the current user
          */
-        institutionId?: unknown;
+        institutionId?: number;
     };
     url: '/admin-api/v1/orientation/view';
 };
@@ -2757,7 +2757,7 @@ export type CreateLmsSetupData = {
          * The institution identifier of the request.
          * Default is the institution identifier of the institution of the current user
          */
-        institutionId?: unknown;
+        institutionId?: number;
     };
     url: '/admin-api/v1/lms-setup';
 };
@@ -2880,7 +2880,7 @@ export type CreateInstitutionData = {
          * The institution identifier of the request.
          * Default is the institution identifier of the institution of the current user
          */
-        institutionId?: unknown;
+        institutionId?: number;
     };
     url: '/admin-api/v1/institution';
 };
@@ -2987,7 +2987,7 @@ export type CreateIndicatorData = {
          * The institution identifier of the request.
          * Default is the institution identifier of the institution of the current user
          */
-        institutionId?: unknown;
+        institutionId?: number;
     };
     url: '/admin-api/v1/indicator';
 };
@@ -3094,7 +3094,7 @@ export type CreateExamAdministrationData = {
          * The institution identifier of the request.
          * Default is the institution identifier of the institution of the current user
          */
-        institutionId?: unknown;
+        institutionId?: number;
     };
     url: '/admin-api/v1/exam';
 };
@@ -3281,7 +3281,7 @@ export type CreateExamTemplateData = {
          * The institution identifier of the request.
          * Default is the institution identifier of the institution of the current user
          */
-        institutionId?: unknown;
+        institutionId?: number;
     };
     url: '/admin-api/v1/exam-template';
 };
@@ -3469,7 +3469,7 @@ export type CreateExamConfigurationMappingData = {
          * The institution identifier of the request.
          * Default is the institution identifier of the institution of the current user
          */
-        institutionId?: unknown;
+        institutionId?: number;
     };
     url: '/admin-api/v1/exam-configuration-map';
 };
@@ -3576,7 +3576,7 @@ export type CreateConfigurationValueData = {
          * The institution identifier of the request.
          * Default is the institution identifier of the institution of the current user
          */
-        institutionId?: unknown;
+        institutionId?: number;
     };
     url: '/admin-api/v1/configuration_value';
 };
@@ -3718,7 +3718,7 @@ export type CreateConfigurationAttributeData = {
          * The institution identifier of the request.
          * Default is the institution identifier of the institution of the current user
          */
-        institutionId?: unknown;
+        institutionId?: number;
     };
     url: '/admin-api/v1/configuration_attribute';
 };
@@ -3825,7 +3825,7 @@ export type CreateConfigurationData = {
          * The institution identifier of the request.
          * Default is the institution identifier of the institution of the current user
          */
-        institutionId?: unknown;
+        institutionId?: number;
     };
     url: '/admin-api/v1/configuration';
 };
@@ -3932,7 +3932,7 @@ export type CreateConfigurationNodeData = {
          * The institution identifier of the request.
          * Default is the institution identifier of the institution of the current user
          */
-        institutionId?: unknown;
+        institutionId?: number;
     };
     url: '/admin-api/v1/configuration-node';
 };
@@ -4057,7 +4057,7 @@ export type CreateSebClientConfigData = {
          * The institution identifier of the request.
          * Default is the institution identifier of the institution of the current user
          */
-        institutionId?: unknown;
+        institutionId?: number;
     };
     url: '/admin-api/v1/client_configuration';
 };
@@ -4164,7 +4164,7 @@ export type CreateClientGroupData = {
          * The institution identifier of the request.
          * Default is the institution identifier of the institution of the current user
          */
-        institutionId?: unknown;
+        institutionId?: number;
     };
     url: '/admin-api/v1/client-group';
 };
@@ -4271,7 +4271,7 @@ export type CreateBatchActionData = {
          * The institution identifier of the request.
          * Default is the institution identifier of the institution of the current user
          */
-        institutionId?: unknown;
+        institutionId?: number;
     };
     url: '/admin-api/v1/batch-action';
 };

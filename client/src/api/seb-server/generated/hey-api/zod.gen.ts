@@ -159,9 +159,9 @@ export const zUserInfo = z.object({
  */
 export const zPasswordChange = z.object({
     uuid: z.string(),
-    password: z.string().min(1).optional(),
-    newPassword: z.string().min(8).max(255).optional(),
-    confirmNewPassword: z.string().min(1).optional()
+    password: z.string().min(1),
+    newPassword: z.string().min(8).max(255),
+    confirmNewPassword: z.string().min(1)
 });
 
 export const zClientEvent = z.object({
@@ -363,8 +363,8 @@ export const zExam = z.object({
     followupId: z.int().optional(),
     excludeFromDeletion: z.boolean().optional(),
     additionalAttributes: z.record(z.string(), z.string()).optional(),
-    startURL: z.string().optional(),
-    description: z.string().optional()
+    description: z.string().optional(),
+    startURL: z.string().optional()
 });
 
 export const zClientGroupTemplate = z.object({
@@ -1266,12 +1266,11 @@ export const zClientNotification = z.object({
 });
 
 export const zClientMonitoringDataView = z.object({
+    pendingNotification: z.boolean().optional(),
     missingPing: z.boolean().optional(),
     grantChecked: z.boolean().optional(),
     grantDenied: z.boolean().optional(),
     sebversionDenied: z.boolean().optional(),
-    pendingNotification: z.boolean().optional(),
-    nf: z.int().min(-2147483648, { error: 'Invalid value: Expected int32 to be >= -2147483648' }).max(2147483647, { error: 'Invalid value: Expected int32 to be <= 2147483647' }).optional(),
     st: z.enum([
         'UNDEFINED',
         'CONNECTION_REQUESTED',
@@ -1280,8 +1279,9 @@ export const zClientMonitoringDataView = z.object({
         'CLOSED',
         'DISABLED'
     ]).optional(),
-    iv: z.record(z.string(), z.string()).optional(),
     lat: z.int().optional(),
+    iv: z.record(z.string(), z.string()).optional(),
+    nf: z.int().min(-2147483648, { error: 'Invalid value: Expected int32 to be >= -2147483648' }).max(2147483647, { error: 'Invalid value: Expected int32 to be <= 2147483647' }).optional(),
     id: z.int().optional()
 });
 
@@ -1858,7 +1858,7 @@ export const zGetUserActivityLogsResponse = zPageUserActivityLog;
 export const zCreateUserActivityLogBody = zUserActivityLog;
 
 export const zCreateUserActivityLogQuery = z.object({
-    institutionId: z.unknown().optional()
+    institutionId: z.int().optional()
 });
 
 /**
@@ -1913,7 +1913,7 @@ export const zGetUserAccountsResponse = zPageUserInfo;
 export const zCreateUserAccountBody = zUserMod;
 
 export const zCreateUserAccountQuery = z.object({
-    institutionId: z.unknown().optional()
+    institutionId: z.int().optional()
 });
 
 /**
@@ -1968,7 +1968,7 @@ export const zGetClientEventsResponse = zPageClientEvent;
 export const zCreateClientEventBody = zClientEvent;
 
 export const zCreateClientEventQuery = z.object({
-    institutionId: z.unknown().optional()
+    institutionId: z.int().optional()
 });
 
 /**
@@ -2016,7 +2016,7 @@ export const zGetClientConnectionsResponse = zPageClientConnection;
 export const zCreateClientConnectionBody = zClientConnection;
 
 export const zCreateClientConnectionQuery = z.object({
-    institutionId: z.unknown().optional()
+    institutionId: z.int().optional()
 });
 
 /**
@@ -2064,7 +2064,7 @@ export const zGetOrientationsResponse = zPageOrientation;
 export const zCreateOrientationBody = zOrientation;
 
 export const zCreateOrientationQuery = z.object({
-    institutionId: z.unknown().optional()
+    institutionId: z.int().optional()
 });
 
 /**
@@ -2112,7 +2112,7 @@ export const zGetViewsResponse = zPageView;
 export const zCreateViewBody = zView;
 
 export const zCreateViewQuery = z.object({
-    institutionId: z.unknown().optional()
+    institutionId: z.int().optional()
 });
 
 /**
@@ -2160,7 +2160,7 @@ export const zGetLmsSetupsResponse = zPageLmsSetup;
 export const zCreateLmsSetupBody = zLmsSetup;
 
 export const zCreateLmsSetupQuery = z.object({
-    institutionId: z.unknown().optional()
+    institutionId: z.int().optional()
 });
 
 /**
@@ -2215,7 +2215,7 @@ export const zGetInstitutionsResponse = zPageInstitution;
 export const zCreateInstitutionBody = zInstitution;
 
 export const zCreateInstitutionQuery = z.object({
-    institutionId: z.unknown().optional()
+    institutionId: z.int().optional()
 });
 
 /**
@@ -2263,7 +2263,7 @@ export const zGetIndicatorsResponse = zPageIndicator;
 export const zCreateIndicatorBody = zIndicator;
 
 export const zCreateIndicatorQuery = z.object({
-    institutionId: z.unknown().optional()
+    institutionId: z.int().optional()
 });
 
 /**
@@ -2311,7 +2311,7 @@ export const zGetExamAdministrationsResponse = zPageExam;
 export const zCreateExamAdministrationBody = zExam;
 
 export const zCreateExamAdministrationQuery = z.object({
-    institutionId: z.unknown().optional()
+    institutionId: z.int().optional()
 });
 
 /**
@@ -2413,7 +2413,7 @@ export const zGetExamTemplatesResponse = zPageExamTemplate;
 export const zCreateExamTemplateBody = zExamTemplateWritable;
 
 export const zCreateExamTemplateQuery = z.object({
-    institutionId: z.unknown().optional()
+    institutionId: z.int().optional()
 });
 
 /**
@@ -2507,7 +2507,7 @@ export const zCreateExamConfigurationMappingBody = z.object({
 
 export const zCreateExamConfigurationMappingQuery = z.object({
     formParams: z.unknown().optional(),
-    institutionId: z.unknown().optional()
+    institutionId: z.int().optional()
 });
 
 /**
@@ -2555,7 +2555,7 @@ export const zGetConfigurationValuesResponse = zPageConfigurationValue;
 export const zCreateConfigurationValueBody = zConfigurationValue;
 
 export const zCreateConfigurationValueQuery = z.object({
-    institutionId: z.unknown().optional()
+    institutionId: z.int().optional()
 });
 
 /**
@@ -2620,7 +2620,7 @@ export const zGetConfigurationAttributesResponse = zPageConfigurationAttribute;
 export const zCreateConfigurationAttributeBody = zConfigurationAttribute;
 
 export const zCreateConfigurationAttributeQuery = z.object({
-    institutionId: z.unknown().optional()
+    institutionId: z.int().optional()
 });
 
 /**
@@ -2668,7 +2668,7 @@ export const zGetConfigurationsResponse = zPageConfiguration;
 export const zCreateConfigurationBody = zConfiguration;
 
 export const zCreateConfigurationQuery = z.object({
-    institutionId: z.unknown().optional()
+    institutionId: z.int().optional()
 });
 
 /**
@@ -2716,7 +2716,7 @@ export const zGetConfigurationNodesResponse = zPageConfigurationNode;
 export const zCreateConfigurationNodeBody = zConfigurationNode;
 
 export const zCreateConfigurationNodeQuery = z.object({
-    institutionId: z.unknown().optional()
+    institutionId: z.int().optional()
 });
 
 /**
@@ -2775,7 +2775,7 @@ export const zGetSebClientConfigsResponse = zPageSebClientConfig;
 export const zCreateSebClientConfigBody = zSebClientConfig;
 
 export const zCreateSebClientConfigQuery = z.object({
-    institutionId: z.unknown().optional()
+    institutionId: z.int().optional()
 });
 
 /**
@@ -2823,7 +2823,7 @@ export const zGetClientGroupsResponse = zPageClientGroup;
 export const zCreateClientGroupBody = zClientGroup;
 
 export const zCreateClientGroupQuery = z.object({
-    institutionId: z.unknown().optional()
+    institutionId: z.int().optional()
 });
 
 /**
@@ -2871,7 +2871,7 @@ export const zGetBatchActionsResponse = zPageBatchAction;
 export const zCreateBatchActionBody = zBatchAction;
 
 export const zCreateBatchActionQuery = z.object({
-    institutionId: z.unknown().optional()
+    institutionId: z.int().optional()
 });
 
 /**
