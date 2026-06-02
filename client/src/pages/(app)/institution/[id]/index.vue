@@ -128,7 +128,7 @@ onMounted(async () => {
         institution.value = fetched;
         name.value = fetched.name;
         urlSuffix.value = fetched.urlSuffix;
-        logoImage.value = null;
+        logoImage.value = fetched.logoImage;
         snapshot();
     } catch (err) {
         error.value = errorMessageOf(err);
@@ -136,6 +136,17 @@ onMounted(async () => {
         loading.value = false;
     }
 });
+
+function resolveLogoImage(): File | string | undefined {
+    const current = logoImage.value;
+    if (current instanceof File) {
+        return current;
+    }
+    if (current === undefined && institution.value?.logoImage) {
+        return "";
+    }
+    return undefined;
+}
 
 async function submit() {
     const result = await formRef.value?.validate();
@@ -148,7 +159,7 @@ async function submit() {
         id: institution.value.id,
         name: selectedName,
         urlSuffix: urlSuffix.value || undefined,
-        logoImage: logoImage.value ?? undefined,
+        logoImage: resolveLogoImage(),
     });
 
     if (savedInstitution.value) {
