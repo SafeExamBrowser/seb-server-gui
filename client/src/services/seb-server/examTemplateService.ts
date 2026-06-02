@@ -114,6 +114,37 @@ export const createExamTemplate = async (
         })
     ).data;
 
+export const updateExamTemplate = async (
+    examTemplate: ExamTemplate,
+): Promise<ExamTemplate> => {
+    const updated: ExamTemplate = (
+        await apiService.putRequest({
+            url: baseUrl,
+            data: {
+                ...examTemplate,
+                indicatorTemplates: z.encode(
+                    indicatorTemplatesSchema,
+                    examTemplate.indicatorTemplates,
+                ),
+            },
+            options: {
+                _authType: "seb",
+                headers: {
+                    "Content-Type": "application/json",
+                },
+            },
+        })
+    ).data;
+
+    return {
+        ...updated,
+        indicatorTemplates: z.decode(
+            indicatorTemplatesSchema,
+            updated.indicatorTemplates,
+        ),
+    };
+};
+
 export const createTemporaryConfigurationTemplate =
     async (): Promise<ConfigurationTemplateKey> =>
         (

@@ -481,7 +481,12 @@
                 }
             },
             "supervisors": {
-                "title": "Exam Supervisors"
+                "title": "Exam Supervisors",
+                "dialogTitle": "Edit Exam Supervisors",
+                "headers": {
+                    "username": "Username",
+                    "name": "Name"
+                }
             },
             "screenProctoringSettings": {
                 "title": "Screen Proctoring"
