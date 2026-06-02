@@ -54,6 +54,7 @@
                 ></v-btn>
                 <v-btn
                     type="submit"
+                    color="primary"
                     :form="formId"
                     :text="labelSubmit"
                     :disabled="!isValid || submitting"
