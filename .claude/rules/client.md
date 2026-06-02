@@ -22,15 +22,17 @@ on the filesystem if they clash:
   - Use `undefined`. Do not use `null`.
   - Avoid explicitly stating types (e.g. when defining a variable, as return values of functions or when using generics),
     if they can be automatically derived.
-- Prefer early returns over nested `if` conditions.
+- Coding Style:
+  - Prefer early returns over nested `if` conditions.
+  - Avoid one lined if conditions. If conditions should always be multi line and use brackets.
+  - Avoid inline event handlers like `@change="(id) => fooBar(id)" in the template`. Prefer a named event handler like `const handleChange = ...`
+    in the component setup.
+  - Event handlers should always be prefixed with `handle`, e.g. `handleChange`
 - Imports:
   - Never use `../`. If you'd reach into a parent directory, use `@/...` instead.
   - Relative imports into the same folder (`./sibling.ts`) or a subfolder (`./subfolder/foo.ts`) are fine.
 - Don't start component names with `V`. This is reserved for Vuetify by convention.
 - Prefer the "Vue composition API" over the "Vue options API".
-- Avoid inline event handlers like `@change="(id) => fooBar(id)" in the template`. Prefer a named event handler like `const handleChange = ...`
-  in the component setup.
-- Avoid one lined if conditions. If conditions should always be multi line and use brackets.
 - Routing: when generating urls for Vuetify components with a `to` property (e.g. `v-list-item`, `v-btn`, ...), you
   must always use the `typedTo` helper function so type safety is ensured.
 - Use `client/src/composables/useFetch.ts` and `client/src/composables/useMutation.ts` and the abstracted API services stored in
