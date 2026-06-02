@@ -28,7 +28,7 @@ on the filesystem if they clash:
   - Relative imports into the same folder (`./sibling.ts`) or a subfolder (`./subfolder/foo.ts`) are fine.
 - Don't start component names with `V`. This is reserved for Vuetify by convention.
 - Prefer the "Vue composition API" over the "Vue options API".
-- Avoid inline event handlers like `@change="(iidds) => fooBar(id)" in the template`. Prefer a named event handler like `const handleChange = ...`
+- Avoid inline event handlers like `@change="(id) => fooBar(id)" in the template`. Prefer a named event handler like `const handleChange = ...`
   in the component setup.
 - Avoid one lined if conditions. If conditions should always be multi line and use brackets.
 - Routing: when generating urls for Vuetify components with a `to` property (e.g. `v-list-item`, `v-btn`, ...), you
@@ -38,4 +38,7 @@ on the filesystem if they clash:
 - Avoid writing custom CSS. Use Vuetify utility classes whenever possible.
 - When writing Pinia Stores, prefer "Setup Stores" over "Option Stores".
   `client/src/components/views/seb-server/exam-template/wizard/composables/store/useScreenProctoringStore.ts` is a good example.
-- When dealing with i18n translation keys use `i18n.global.t`, unless you are in a setup function. In templates, always use `$t`
+- i18n:
+  - When dealing with i18n translation keys use `i18n.global.t`, unless you are in a setup function. In templates, always use `$t`
+  - Avoid generating i18n keys programmatically (i.e. `$t(${translationKeyPrefix}.title))`. Instead, pass static strings to the translation function:
+    `$t(supervisors.title)`
