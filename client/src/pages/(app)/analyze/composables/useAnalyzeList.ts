@@ -5,7 +5,7 @@ import {
     TYPE_FILTER_KEY,
     EXAM_STATUS_FILTER_KEY,
 } from "@/pages/(app)/exam/composables/useExamFilters.ts";
-import { useAnalyzeTableFilters } from "./useAnalyzeTableFilters.ts";
+import { useAnalyzeTableFilters } from "@/pages/(app)/analyze/composables/useAnalyzeTableFilters.ts";
 import { useAnalyzeExams } from "@/pages/(app)/analyze/api/useAnalyzeExams.ts";
 
 export const useAnalyzeList = () => {

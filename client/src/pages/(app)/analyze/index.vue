@@ -74,7 +74,7 @@ import {
     examStatusColor,
     ExamStatusEnum,
 } from "@/models/seb-server/examFiltersEnum.ts";
-import { useAnalyzeOverview } from "./composables/useAnalyzeOverview.ts";
+import { useAnalyzeOverview } from "@/pages/(app)/analyze/composables/useAnalyzeOverview.ts";
 
 const dataTestId = "analyze";
 
