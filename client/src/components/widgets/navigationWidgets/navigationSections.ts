@@ -50,7 +50,7 @@ export function buildPreparationNavigationItems(
             testId: `${testIdPrefix}-createTemplate-link`,
         },
         {
-            label: translate("titles.examTemplateDetail"),
+            label: translate("titles.examTemplateList"),
             to: typedTo({ name: "/(app)/exam-template/" }),
             testId: `${testIdPrefix}-examTemplateList-link`,
         },
