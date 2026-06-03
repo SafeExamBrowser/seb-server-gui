@@ -3,6 +3,7 @@ import { useI18n } from "vue-i18n";
 import type {
     TableAction,
     TableItem,
+    TableRowSelect,
 } from "@/components/widgets/entity-table/types.ts";
 import { Exam } from "@/models/seb-server/exam";
 import { ExamStatusEnum } from "@/models/seb-server/examFiltersEnum";
@@ -22,6 +23,22 @@ export function useArchiveTableActions(deps: {
             visible: canArchive,
         },
     ]);
+}
+
+export function useArchiveTableSelection(deps: {
+    onSelect: (item: TableItem, selected: boolean) => void;
+}) {
+    return computed<TableRowSelect>(() => {
+        return {
+            key: "selectExam",
+            disabled: selectionDisabled,
+            onSelect: deps.onSelect,
+        };
+    });
+}
+
+function selectionDisabled(item: TableItem): boolean {
+    return !canArchive(item);
 }
 
 function canArchive(item: TableItem): boolean {

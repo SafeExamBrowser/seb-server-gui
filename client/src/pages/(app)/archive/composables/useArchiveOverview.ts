@@ -1,9 +1,13 @@
 import { reactive } from "vue";
 import { useExamTableHeaders } from "@/pages/(app)/exam/composables/useExamTableHeaders.ts";
-import { useArchiveTableActions } from "@/pages/(app)/archive/composables/useArchiveTableActions.ts";
+import {
+    useArchiveTableActions,
+    useArchiveTableSelection,
+} from "@/pages/(app)/archive/composables/useArchiveTableActions.ts";
 import { useEntityStatusFlow } from "@/components/widgets/entity-table/composables/useEntityStatusFlow.ts";
 import { useArchiveList } from "@/pages/(app)/archive/composables/useArchiveList.ts";
 import { useDoArchiveExams } from "@/pages/(app)/archive/api/useDoArchiveExams";
+import { TableItem } from "@/components/widgets/entity-table/types";
 
 export const useArchiveOverview = () => {
     const { headers, cellFormatters } = useExamTableHeaders();
@@ -28,6 +32,10 @@ export const useArchiveOverview = () => {
         onArchiveExam: archiveFlow.openStatusDialog,
     });
 
+    const selection = useArchiveTableSelection({
+        onSelect: notifySelect,
+    });
+
     return {
         list: reactive({
             items: list.items,
@@ -38,6 +46,7 @@ export const useArchiveOverview = () => {
             cellFormatters,
             loading: list.loading,
             actions,
+            selection,
             searchInputValue: list.searchInputValue,
             searchField: list.searchField,
             selectedFilters: list.selectedFilters,
@@ -58,3 +67,10 @@ export const useArchiveOverview = () => {
         }),
     };
 };
+
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
+function notifySelect(item: TableItem, selected: boolean) {
+    // TODO
+    // console.info(item);
+    // console.info("select: " + selected);
+}

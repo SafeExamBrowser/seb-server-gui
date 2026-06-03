@@ -42,6 +42,7 @@
                     :loading="list.loading"
                     :cell-formatters="list.cellFormatters"
                     :actions="list.actions"
+                    :selection="list.selection"
                     :data-test-id="dataTestId"
                     item-key="id"
                     @update:options="list.loadItems"

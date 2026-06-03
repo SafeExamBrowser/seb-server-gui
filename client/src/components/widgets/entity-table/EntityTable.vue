@@ -30,6 +30,13 @@
                         `v-data-table-column--align-${header.align}`
                     "
                 >
+                    <template v-if="header.key === '_selection'">
+                        <TableRowSelection
+                            :item="getRawItem(item)"
+                            :selection="props.selection"
+                        />
+                    </template>
+
                     <template v-if="header.key === '_actions'">
                         <TableRowActions
                             :item="getRawItem(item)"
@@ -87,6 +94,7 @@ import type {
     TableItem,
     TableAction,
     CellFormatter,
+    TableRowSelect,
 } from "@/components/widgets/entity-table/types.ts";
 import { useTableHeaders } from "@/components/widgets/entity-table/composables/useTableHeaders.ts";
 import { useTableItems } from "@/components/widgets/entity-table/composables/useTableItems.ts";
@@ -95,6 +103,7 @@ import TableRowActions from "@/components/widgets/entity-table/components/TableR
 import TableFooter from "@/components/widgets/entity-table/components/TableFooter.vue";
 import type { ServerTablePaging } from "@/models/types.ts";
 import { useRouter, type RouteLocationAsRelative } from "vue-router";
+import TableRowSelection from "@/components/widgets/entity-table/components/TableRowSelection.vue";
 
 const props = withDefaults(
     defineProps<{
@@ -109,6 +118,7 @@ const props = withDefaults(
         // TODO @andrei: prefer undefined over null here
         detailRoute?: (item: TableItem) => RouteLocationAsRelative | null;
         actions?: TableAction[];
+        selection?: TableRowSelect;
         cellFormatters?: Record<string, CellFormatter>;
         itemKey?: string;
     }>(),
@@ -133,6 +143,7 @@ const router = useRouter();
 const { computedHeaders } = useTableHeaders(
     () => props.headers,
     () => !!props.actions?.length,
+    () => props.selection !== null,
 );
 
 const { getRawItem, formatCell } = useTableItems(() => props.cellFormatters);

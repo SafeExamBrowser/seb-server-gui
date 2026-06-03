@@ -25,3 +25,9 @@ export interface TableAction<T extends TableItem = TableItem> {
     visible?: (item: T) => boolean;
     disabled?: (item: T) => boolean;
 }
+
+export interface TableRowSelect<T extends TableItem = TableItem> {
+    key: string;
+    disabled?: (item: T) => boolean;
+    onSelect: (item: T, selected: boolean) => void;
+}
