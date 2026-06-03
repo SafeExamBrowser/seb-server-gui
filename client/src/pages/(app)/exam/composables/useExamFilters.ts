@@ -37,6 +37,7 @@ export function useExamFilters() {
         {
             key: EXAM_STATUS_FILTER_KEY,
             title: translate(`${TRANSLATION_PREFIX}.examState`),
+            multiple: true,
             options: [
                 {
                     value: ExamStatusEnum.UP_COMING,

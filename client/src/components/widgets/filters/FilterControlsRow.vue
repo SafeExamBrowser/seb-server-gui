@@ -42,7 +42,9 @@
                 closable
                 class="font-weight-medium"
                 :data-testid="`${dataTestId}-${pill.testIdSuffix}-active-pill`"
-                @click:close="emit('remove', pill.sectionKey)"
+                @click:close="
+                    emit('remove', pill.sectionKey, pill.option.value)
+                "
             >
                 {{ pill.option.label }}
             </v-chip>
@@ -77,7 +79,7 @@ withDefaults(
 
 const emit = defineEmits<{
     toggle: [];
-    remove: [sectionKey: string];
+    remove: [sectionKey: string, optionValue?: string];
     clearAll: [];
 }>();
 </script>
