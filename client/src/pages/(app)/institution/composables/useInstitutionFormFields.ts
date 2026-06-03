@@ -9,7 +9,7 @@ const LOGO_ACCEPT_EXTENSIONS = [".png", ".jpg", ".jpeg", ".svg"];
 export const useInstitutionFormFields = () => {
     const name = ref<string | undefined>(undefined);
     const urlSuffix = ref<string | undefined>(undefined);
-    const logoImage = ref<File | null>(null);
+    const logoImage = ref<File | string | undefined>(undefined);
 
     const t = (key: string) => i18n.global.t(`institutions.${key}`);
 

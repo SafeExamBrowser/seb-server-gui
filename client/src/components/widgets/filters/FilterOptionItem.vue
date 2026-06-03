@@ -12,7 +12,7 @@
             <v-icon
                 :color="selected ? 'primary' : undefined"
                 :class="{ 'text-medium-emphasis': !selected }"
-                :icon="selected ? 'mdi-radiobox-marked' : 'mdi-radiobox-blank'"
+                :icon="controlIcon"
             />
             <v-icon v-if="color" :color="color" icon="mdi-circle" :size="8" />
             <span class="text-body-medium font-weight-medium">{{ label }}</span>
@@ -21,15 +21,27 @@
 </template>
 
 <script setup lang="ts">
-withDefaults(
+import { computed } from "vue";
+
+const props = withDefaults(
     defineProps<{
         label: string;
         selected: boolean;
+        multiple?: boolean;
         color?: string;
         dataTestId?: string;
     }>(),
-    { color: undefined, dataTestId: undefined },
+    { multiple: false, color: undefined, dataTestId: undefined },
 );
+
+const controlIcon = computed(() => {
+    if (props.multiple) {
+        return props.selected
+            ? "mdi-checkbox-marked"
+            : "mdi-checkbox-blank-outline";
+    }
+    return props.selected ? "mdi-radiobox-marked" : "mdi-radiobox-blank";
+});
 
 const emit = defineEmits<{
     toggle: [];

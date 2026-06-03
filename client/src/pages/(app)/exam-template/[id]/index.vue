@@ -8,9 +8,18 @@
             <template #basicSettings><BoxBasicSettings /></template>
             <template #sebSettings><BoxSebSettings /></template>
             <template #indicators>
-                <BoxIndicators :exam-template-id="examTemplateId" />
+                <BoxIndicators
+                    :exam-template-id="examTemplateId"
+                    :indicators="indicators"
+                />
             </template>
-            <template #supervisors><BoxSupervisors /></template>
+            <template #supervisors>
+                <BoxSupervisors
+                    :available-supervisors="availableSupervisors ?? []"
+                    :selected-supervisor-ids="selectedSupervisorIds"
+                    @change="handleSupervisorsChange"
+                />
+            </template>
             <template #screenProctoringSettings>
                 <BoxScreenProctoringSettings />
             </template>
@@ -30,6 +39,18 @@ import BoxSupervisors from "./components/BoxSupervisors.vue";
 import BoxScreenProctoringSettings from "./components/BoxScreenProctoringSettings.vue";
 import BoxGroups from "./components/BoxGroups.vue";
 
-const { examTemplateId, title, breadCrumb, errors, loading } =
-    useExamTemplateDetailPage();
+const {
+    examTemplateId,
+    title,
+    breadCrumb,
+    errors,
+    loading,
+    indicators,
+    availableSupervisors,
+    selectedSupervisorIds,
+    updateTemplate,
+} = useExamTemplateDetailPage();
+
+const handleSupervisorsChange = (ids: string[]) =>
+    updateTemplate({ supporter: ids });
 </script>

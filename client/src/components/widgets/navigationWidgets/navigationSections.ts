@@ -50,7 +50,7 @@ export function buildPreparationNavigationItems(
             testId: `${testIdPrefix}-createTemplate-link`,
         },
         {
-            label: translate("titles.editExamTemplates"),
+            label: translate("titles.examTemplateList"),
             to: typedTo({ name: "/(app)/exam-template/" }),
             testId: `${testIdPrefix}-examTemplateList-link`,
         },
@@ -102,7 +102,8 @@ export function buildFollowUpNavigationItems(
             testId: `${testIdPrefix}-analyzeExams-text`,
         },
         {
-            label: translate("titles.archiveExams"),
+            label: translate("navigation.routeNames.archiveExams"),
+            to: typedTo({ name: "/(app)/archive/" }),
             visible: ability.canView(GUIComponent.ArchiveExams),
             testId: `${testIdPrefix}-archiveExams-text`,
         },

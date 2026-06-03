@@ -15,30 +15,24 @@ export const getSummaryIndicators = (
             {
                 type: "basic" as const,
                 key: "name",
-                label: i18n.global.t(
-                    "createTemplateExam.steps.indicators.fields.name.label",
-                ),
+                label: i18n.global.t("indicators.fields.name.label"),
                 value: { type: "string", value: indicator.name },
             },
             {
                 type: "basic" as const,
                 key: "typeDetails",
-                label: i18n.global.t(
-                    "createTemplateExam.steps.indicators.fields.type.label",
-                ),
+                label: i18n.global.t("indicators.fields.type.label"),
                 value: {
                     type: "string",
                     value: i18n.global.t(
-                        `createTemplateExam.steps.indicators.fields.type.types.${indicator.type}`,
+                        `indicators.fields.type.types.${indicator.type}`,
                     ),
                 },
             },
             {
                 type: "basic" as const,
                 key: "thresholds",
-                label: i18n.global.t(
-                    "createTemplateExam.steps.indicators.fields.thresholds.label",
-                ),
+                label: i18n.global.t("indicators.fields.thresholds.label"),
                 value: {
                     type: "thresholds",
                     value: indicator.thresholds,

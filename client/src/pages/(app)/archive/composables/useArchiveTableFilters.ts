@@ -10,12 +10,17 @@ import {
     TRANSLATION_PREFIX,
 } from "@/pages/(app)/exam/composables/useExamFilters";
 
-export function useAnalyzeTableFilters() {
+export function useArchiveTableFilters() {
     return computed<FilterSectionDef[]>(() => [
         {
             key: EXAM_STATUS_FILTER_KEY,
             title: translate(`${TRANSLATION_PREFIX}.examState`),
             options: [
+                {
+                    value: ExamStatusEnum.RUNNING,
+                    label: translate(ExamStatusEnum.RUNNING),
+                    color: getExamStatusFilterColor(ExamStatusEnum.RUNNING),
+                },
                 {
                     value: ExamStatusEnum.FINISHED,
                     label: translate(ExamStatusEnum.FINISHED),

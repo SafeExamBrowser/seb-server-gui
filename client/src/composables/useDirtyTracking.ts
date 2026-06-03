@@ -2,10 +2,10 @@ import { computed, ref, type Ref } from "vue";
 
 export const useDirtyTracking = <T extends Record<string, unknown>>(
     getCurrent: () => T,
-    fileRefs: Ref<File | null | undefined>[] = [],
+    fileRefs: Ref<File | string | null | undefined>[] = [],
 ) => {
     const baseline = ref<string>();
-    const fileBaseline = ref<(File | null | undefined)[]>([]);
+    const fileBaseline = ref<(File | string | null | undefined)[]>([]);
 
     const snapshot = () => {
         baseline.value = JSON.stringify(getCurrent());

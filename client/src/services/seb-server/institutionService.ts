@@ -39,11 +39,27 @@ export const getInstitutionLogo = async (
 
 const RAW_LOGO_MIME = "image/png";
 
+const detectLogoMime = (base64: string): string => {
+    if (base64.startsWith("/9j/")) {
+        return "image/jpeg";
+    }
+    if (base64.startsWith("R0lGOD")) {
+        return "image/gif";
+    }
+    if (base64.startsWith("UklGR")) {
+        return "image/webp";
+    }
+    if (base64.startsWith("PHN2") || base64.startsWith("PD94")) {
+        return "image/svg+xml";
+    }
+    return RAW_LOGO_MIME;
+};
+
 const decodeLogo = (raw: string | undefined): string | undefined => {
     if (!raw) return undefined;
     return raw.startsWith("data:")
         ? raw
-        : `data:${RAW_LOGO_MIME};base64,${raw}`;
+        : `data:${detectLogoMime(raw)};base64,${raw}`;
 };
 
 const encodeLogo = (url: string | undefined): string | undefined => {
@@ -68,8 +84,15 @@ const fileToBase64 = (file: File): Promise<string> =>
 const serializeLogo = async (
     logo: File | string | undefined,
 ): Promise<string | undefined> => {
-    if (!logo) return undefined;
-    if (logo instanceof File) return fileToBase64(logo);
+    if (logo === undefined) {
+        return undefined;
+    }
+    if (logo instanceof File) {
+        return fileToBase64(logo);
+    }
+    if (logo === "") {
+        return "";
+    }
     return encodeLogo(logo);
 };
 

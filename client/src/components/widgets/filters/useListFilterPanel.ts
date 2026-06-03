@@ -1,5 +1,6 @@
 import { computed, ref, toValue, type MaybeRefOrGetter } from "vue";
 import type { FilterOption, FilterSectionDef } from "./filterTypes.ts";
+import { parseFilterValues, removeFilterValue } from "./filterValues.ts";
 import type { TableFilters } from "@/components/widgets/entity-table/types.ts";
 
 export type ActiveFilterPill = {
@@ -52,17 +53,18 @@ export function useListFilterPanel(options: ListFilterPanelOptions) {
 
         const filterValues = toValue(options.selectedFilters) ?? {};
         for (const section of toValue(options.filterSections) ?? []) {
-            const value = filterValues[section.key];
-            if (!value) {
-                continue;
-            }
-            const option = section.options.find((o) => o.value === value);
-            if (option) {
-                pills.push({
-                    sectionKey: section.key,
-                    testIdSuffix: section.testIdSuffix ?? section.key,
-                    option,
-                });
+            const selectedValues = parseFilterValues(filterValues[section.key]);
+            for (const selectedValue of selectedValues) {
+                const option = section.options.find(
+                    (o) => o.value === selectedValue,
+                );
+                if (option) {
+                    pills.push({
+                        sectionKey: section.key,
+                        testIdSuffix: section.testIdSuffix ?? section.key,
+                        option,
+                    });
+                }
             }
         }
 
@@ -83,7 +85,7 @@ export function useListFilterPanel(options: ListFilterPanelOptions) {
         return pills;
     });
 
-    function onRemovePill(sectionKey: string) {
+    function onRemovePill(sectionKey: string, optionValue?: string) {
         if (sectionKey === SEARCH_PILL_KEY) {
             void options.search.clear();
             return;
@@ -93,9 +95,13 @@ export function useListFilterPanel(options: ListFilterPanelOptions) {
             return;
         }
         const current = toValue(options.selectedFilters) ?? {};
-        const next: TableFilters = Object.fromEntries(
-            Object.entries(current).filter(([key]) => key !== sectionKey),
-        );
+        const next: TableFilters = {
+            ...current,
+            [sectionKey]:
+                optionValue !== undefined
+                    ? removeFilterValue(current[sectionKey], optionValue)
+                    : undefined,
+        };
         void options.setFilters?.(next);
     }
 

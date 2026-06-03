@@ -11,7 +11,7 @@ export const examStatusColor: Record<ExamStatusEnum, string> = {
     [ExamStatusEnum.FINISHED]: "red",
     [ExamStatusEnum.UP_COMING]: "orange",
     [ExamStatusEnum.TEST_RUN]: "blue",
-    [ExamStatusEnum.ARCHIVED]: "",
+    [ExamStatusEnum.ARCHIVED]: "grey-darken-2",
 };
 
 export enum ExamTypeEnum {
