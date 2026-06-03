@@ -319,7 +319,7 @@ import { translate } from "@/utils/generalUtils";
 import { useInstitutions } from "@/composables/useInstitutions";
 import { useRegisterUserAccount } from "@/pages/(app)/user-account/api/useRegisterUserAccount.ts";
 import { useZodFormRules } from "@/composables/useZodFormRules.ts";
-import { UserRole, userAccountCreateSchema } from "@/models/userAccount.ts";
+import { userAccountCreateSchema } from "@/models/userAccount.ts";
 import { RouterLink, useRouter } from "vue-router";
 import AlertMsg from "@/components/widgets/AlertMsg.vue";
 
@@ -451,7 +451,7 @@ async function register() {
             timezone: timezone.value,
             language,
             email: email.value || undefined,
-            userRoles: [UserRole.EXAM_SUPPORTER],
+            userRoles: ["EXAM_SUPPORTER"],
         });
         setTimeout(() => {
             router.push({ name: "/(public)/login/" });

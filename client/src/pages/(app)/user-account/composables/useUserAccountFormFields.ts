@@ -7,23 +7,22 @@ import { getCurrentUser } from "@/composables/useCurrentUser.ts";
 import { useZodFormRules } from "@/composables/useZodFormRules.ts";
 import {
     USER_ROLES,
-    UserRole,
     userAccountCreateSchema,
     userAccountSchema,
-    type UserAccountRole,
+    type UserRole,
 } from "@/models/userAccount.ts";
 
-const ADMIN_VISIBLE_ROLES: ReadonlySet<UserAccountRole> = new Set([
-    UserRole.SEB_SERVER_ADMIN,
-    UserRole.INSTITUTIONAL_ADMIN,
-    UserRole.EXAM_ADMIN,
-    UserRole.EXAM_SUPPORTER,
+const ADMIN_VISIBLE_ROLES: ReadonlySet<UserRole> = new Set<UserRole>([
+    "SEB_SERVER_ADMIN",
+    "INSTITUTIONAL_ADMIN",
+    "EXAM_ADMIN",
+    "EXAM_SUPPORTER",
 ]);
 
-const INSTITUTIONAL_VISIBLE_ROLES: ReadonlySet<UserAccountRole> = new Set([
-    UserRole.INSTITUTIONAL_ADMIN,
-    UserRole.EXAM_ADMIN,
-    UserRole.EXAM_SUPPORTER,
+const INSTITUTIONAL_VISIBLE_ROLES: ReadonlySet<UserRole> = new Set<UserRole>([
+    "INSTITUTIONAL_ADMIN",
+    "EXAM_ADMIN",
+    "EXAM_SUPPORTER",
 ]);
 
 const timezoneOptions = moment.tz
@@ -45,7 +44,7 @@ export const useUserAccountFormFields = (mode: UserAccountFormMode) => {
     );
     const password = ref<string | undefined>(undefined);
     const confirmPassword = ref<string | undefined>(undefined);
-    const role = ref<UserAccountRole | undefined>(undefined);
+    const role = ref<UserRole | undefined>(undefined);
 
     const { isRequired, lengthRules, formatRules } = useZodFormRules();
 
@@ -60,10 +59,8 @@ export const useUserAccountFormFields = (mode: UserAccountFormMode) => {
 
     const authenticatedUser = getCurrentUser();
     const userRoles = authenticatedUser?.userRoles ?? [];
-    const hasSebServerAdmin = userRoles.includes(UserRole.SEB_SERVER_ADMIN);
-    const hasInstitutionalAdmin = userRoles.includes(
-        UserRole.INSTITUTIONAL_ADMIN,
-    );
+    const hasSebServerAdmin = userRoles.includes("SEB_SERVER_ADMIN");
+    const hasInstitutionalAdmin = userRoles.includes("INSTITUTIONAL_ADMIN");
 
     const institutionSelectDisabled = ref(
         !hasSebServerAdmin || mode !== "create",

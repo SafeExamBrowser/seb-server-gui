@@ -128,10 +128,9 @@ import {
     type ApplyBackendErrorsResult,
 } from "@/services/errors/formErrorMapping.ts";
 import {
-    UserRole,
     type UserAccount,
     type UserAccountCreateRequest,
-    type UserAccountRole,
+    type UserRole,
 } from "@/models/userAccount.ts";
 
 const USER_ACCOUNT_FIELD_ALIASES = {
@@ -211,21 +210,21 @@ const breadCrumb = computed<BreadCrumbItem[]>(() => {
 });
 
 const getHighestRole = (
-    roles: ReadonlyArray<UserAccountRole>,
-): UserAccountRole | undefined => {
-    if (roles.includes(UserRole.SEB_SERVER_ADMIN)) {
-        return UserRole.SEB_SERVER_ADMIN;
+    roles: ReadonlyArray<UserRole>,
+): UserRole | undefined => {
+    if (roles.includes("SEB_SERVER_ADMIN")) {
+        return "SEB_SERVER_ADMIN";
     }
-    if (roles.includes(UserRole.INSTITUTIONAL_ADMIN)) {
-        return UserRole.INSTITUTIONAL_ADMIN;
+    if (roles.includes("INSTITUTIONAL_ADMIN")) {
+        return "INSTITUTIONAL_ADMIN";
     }
-    if (roles.includes(UserRole.EXAM_ADMIN)) {
-        return UserRole.EXAM_ADMIN;
+    if (roles.includes("EXAM_ADMIN")) {
+        return "EXAM_ADMIN";
     }
-    if (roles.includes(UserRole.TEACHER)) {
-        return UserRole.TEACHER;
+    if (roles.includes("TEACHER")) {
+        return "TEACHER";
     }
-    return roles.length > 0 ? UserRole.EXAM_SUPPORTER : undefined;
+    return roles.length > 0 ? "EXAM_SUPPORTER" : undefined;
 };
 
 const { isDirty, snapshot } = useDirtyTracking(() => ({
@@ -269,18 +268,12 @@ const formatDate = (iso?: string): string => {
     return moment(iso).format("MMM D, YYYY");
 };
 
-const buildUserRoles = (
-    selectedRole: UserAccountRole,
-): UserAccount["userRoles"] => {
-    if (selectedRole === UserRole.INSTITUTIONAL_ADMIN) {
-        return [
-            UserRole.INSTITUTIONAL_ADMIN,
-            UserRole.EXAM_ADMIN,
-            UserRole.EXAM_SUPPORTER,
-        ];
+const buildUserRoles = (selectedRole: UserRole): UserAccount["userRoles"] => {
+    if (selectedRole === "INSTITUTIONAL_ADMIN") {
+        return ["INSTITUTIONAL_ADMIN", "EXAM_ADMIN", "EXAM_SUPPORTER"];
     }
-    if (selectedRole === UserRole.EXAM_ADMIN) {
-        return [UserRole.EXAM_ADMIN, UserRole.EXAM_SUPPORTER];
+    if (selectedRole === "EXAM_ADMIN") {
+        return ["EXAM_ADMIN", "EXAM_SUPPORTER"];
     }
     return [selectedRole];
 };

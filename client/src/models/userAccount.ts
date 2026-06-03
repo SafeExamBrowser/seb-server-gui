@@ -63,12 +63,4 @@ export const userAccountNameSchema = zEntityName.pick({
 export type UserAccountName = z.infer<typeof userAccountNameSchema>;
 
 export const USER_ROLES = userAccountSchema.shape.userRoles.element.options;
-export type UserAccountRole = (typeof USER_ROLES)[number];
-
-export const UserRole = {
-    SEB_SERVER_ADMIN: "SEB_SERVER_ADMIN",
-    INSTITUTIONAL_ADMIN: "INSTITUTIONAL_ADMIN",
-    EXAM_ADMIN: "EXAM_ADMIN",
-    EXAM_SUPPORTER: "EXAM_SUPPORTER",
-    TEACHER: "TEACHER",
-} as const satisfies Record<UserAccountRole, UserAccountRole>;
+export type UserRole = (typeof USER_ROLES)[number];
