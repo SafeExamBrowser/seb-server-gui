@@ -1,56 +1,77 @@
 # Migrating a domain to the OpenAPI / HeyAPI stack
 
-This guide describes how to migrate one backend domain (e.g. _Institution_, _Exam_) from
-the legacy `apiService` + `useFetch` setup to the generated **HeyAPI** stack, where the
-backend OpenAPI document is the single source of truth for TypeScript models,
-request/response types, SDK methods, Zod schemas, and TanStack Query keys.
+This is the step-by-step recipe for migrating one backend domain (e.g. _Institution_,
+_Exam_) onto the generated **HeyAPI** stack. For the *why* behind the architecture — the
+deadline constraints, the "imperfect backend", and the frontend DTO boundary — read the
+decision record first: [`client/directive/heyapi-migration-strategy.md`](../client/directive/heyapi-migration-strategy.md).
+
+The short version: the backend OpenAPI document is the source of the **generated** client
+(types, SDK, Zod, TanStack keys), but the generated models are **fat and backend-shaped**.
+We don't let them leak into the app. Per domain we build a **two-file anti-corruption
+boundary** — `src/models/<domain>.ts` (narrow Zod schemas cherry-picked from the generated
+Zod, app types inferred from them) and `src/services/seb-server/<domain>Service.ts` (the
+bridge) — and everything above it imports only from the model file.
 
 The migration touches **two repositories**:
 
 | Repo                         | What changes                                                                                                            |
 | ---------------------------- | ----------------------------------------------------------------------------------------------------------------------- |
 | `seb-server` (backend)       | OpenAPI annotations + one central customizer entry so the spec describes the domain cleanly. No business-logic changes. |
-| `seb-server-gui` (this repo) | Regenerated client, a thin service, TanStack composables, thin model aliases, zod-derived form rules, page wiring.      |
+| `seb-server-gui` (this repo) | Regenerated client, a thin service (decode/encode bridge), TanStack composables, narrow model schemas, zod-derived form rules, page wiring. |
 
-**User Account** is the reference implementation. Every step below links to a concrete UA
-file you can copy. Migrate **one domain at a time** — the legacy `apiService`/`useFetch`
-flow keeps serving every non-migrated domain in parallel.
+**User Account** is the reference domain. Migrate **one domain at a time** — the legacy
+`apiService`/`useFetch` flow keeps serving every non-migrated domain in parallel.
+
+> **Reference status.** User Account is the worked reference end-to-end: its model
+> ([`client/src/models/userAccount.ts`](../client/src/models/userAccount.ts)) cherry-picks
+> narrow schemas from the generated zod and its service
+> ([`userAccountService.ts`](../client/src/services/seb-server/userAccountService.ts))
+> `z.decode`s/`z.encode`s across the SDK, on top of the shared plumbing (clients, TanStack
+> Query, error/form-error layer, current-user-via-cache, zod form rules). User Account needs
+> no codecs (its fields round-trip as wire types); for the **codec** style specifically
+> (bidirectional wire⇄app conversion), see
+> [`client/src/models/seb-server/examTemplate.ts`](../client/src/models/seb-server/examTemplate.ts)
+> and [`examTemplateService.ts`](../client/src/services/seb-server/examTemplateService.ts).
 
 ---
 
 ## 0. Mental model
 
-- There are **two HTTP clients**, and they share the same Axios behaviour on purpose:
+- There are **two HTTP clients**, sharing the same Axios behaviour on purpose:
   - Legacy: `client/src/services/apiService.ts` (used by non-migrated domains).
-  - HeyAPI: `client/src/api/seb-server/http/heySebServerClient.ts` (used by migrated domains).
+  - HeyAPI: `client/src/api/seb-server/http/heySebServerClient.ts` (migrated domains).
   - Both are built by `client/src/services/http/configureApiAxios.ts`, so they share base
     URL, token attach/refresh, `401 → logout`, `toAppError` normalisation, transport-error
     toast de-duplication, and the `_authType` / `_skipErrorToast` request flags.
 - The HeyAPI client additionally threads TanStack's `AbortSignal` into the SDK, so
-  in-flight requests are really cancelled (the legacy `useFetch` could not do this).
-- **Generated code is never hand-edited.** It lives only under
-  `client/src/api/seb-server/generated/hey-api/` and is reproducible from the committed
-  spec (see §5). Handwritten code is small glue around it.
+  in-flight requests are really cancelled.
+- **Generated code is never hand-edited and never imported above the model/service
+  boundary.** It lives only under `client/src/api/seb-server/generated/hey-api/` and is
+  reproducible from the committed spec (see §5).
 
 ```
 backend @Schema/@Operation annotations
         │  (npm run openapi:refresh)
         ▼
-generated/hey-api/{types,sdk,zod,@tanstack/vue-query}.gen.ts   ← never edit
+generated/hey-api/{types,sdk,zod,@tanstack/vue-query}.gen.ts   ← fat, never edited
         │
-services/seb-server/<domain>Service.ts        ← thin: SDK call + zod parse + signal
+src/models/<domain>.ts          ← narrow Zod cherry-picked from generated zod (+ codecs);
+        │                          app types INFERRED. The would-be DTO.
+        ▼
+services/seb-server/<domain>Service.ts   ← SDK call + z.decode() responses / z.encode()
+        │                                    inputs + AbortSignal. The fat↔narrow bridge.
+        ▼
+pages/(app)/<domain>/api/use*.ts          ← TanStack useQuery/useMutation + generated keys
         │
-pages/(app)/<domain>/api/use*.ts              ← TanStack useQuery/useMutation + generated keys
-        │
-pages/(app)/<domain>/composables + components ← form rules from zod, page wiring
+pages/(app)/<domain>/composables + components ← form rules from the narrow schema, wiring
 ```
 
 ---
 
 ## Part A — Backend (`seb-server`, branch `OpenAPI-HeyAPI-CodeGen`)
 
-Goal: make the generated identifiers and types **useful** without a frontend spec
-transformer. All paths below are in the `seb-server` repo.
+Goal: make the generated identifiers and types **useful**, and make the generated Zod carry
+as many constraints as possible (so the frontend has to adjust as little as possible).
 
 Most CRUD endpoints are **inherited** from the generic base controllers
 (`EntityController<T,M>`, `ActivatableEntityController`, `ReadonlyEntityController`).
@@ -86,7 +107,8 @@ In `gbl/model/...`, mirror what `UserInfo` / `UserMod` / `PasswordChange` do:
   (this becomes the generated TS type name).
 - Each field: `@Schema(description, example, requiredMode, nullable, format, minLength, maxLength)`.
   These constraints are what the frontend form rules read back (§D3), so fill in
-  `min/maxLength`, `format = "email"`, and `requiredMode = REQUIRED` where they matter.
+  `min/maxLength`, `format = "email"`, and `requiredMode = REQUIRED` where they matter. **The
+  richer this is, the less the frontend has to adjust.**
 - Identifiers / required fields: `@Schema(requiredMode = Schema.RequiredMode.REQUIRED)` + `@NotNull`.
 - Enum collections → `@ArraySchema(schema = @Schema(type = "string", allowableValues = {...}))`
   so they generate a TS string-union, not an opaque object.
@@ -179,35 +201,82 @@ npm run openapi:refresh          # fetch spec → strip int64 → regenerate gen
 `openapi:generate` (runs `@hey-api/openapi-ts` per `openapi-ts.config.ts`). Point at a
 non-default backend with `SEB_SERVER_OPENAPI_URL`.
 
-**Commit the spec and the regenerated output together** so the client stays reproducible from
-history (see §5). Do not hand-edit anything under `generated/hey-api/`.
+We regenerate the **whole** spec (every domain). That's expected — we only *consume* the
+domains we've migrated. **Commit the spec and the regenerated output together** so the
+client stays reproducible from history (see §5). Do not hand-edit anything under
+`generated/hey-api/`.
 
 ---
 
-## Part C — Frontend service (thin glue)
+## Part C — Model boundary + service (the two hand-written files)
 
-Create `client/src/services/seb-server/<domain>Service.ts`. Reference:
-`client/src/services/seb-server/userAccountService.ts`. Rules:
+This is where the migration earns its keep. See
+[`heyapi-migration-strategy.md`](../client/directive/heyapi-migration-strategy.md) §4 for the
+rationale.
 
-- Import the **generated** SDK functions, zod schemas, and types — never hand-roll URLs or
-  models.
-- Bind the shared client once: `import { heySebServerClient as client } from ".../heySebServerClient.ts"`.
-- Parse **both** the request (body/path/query) **and** the response with the generated `z*`
-  schemas. This is the runtime safety net that makes the generated types trustworthy.
-- Thread the optional `signal` so TanStack can cancel.
+### C1. The narrow model (`client/src/models/<domain>.ts`)
+
+Cherry-pick narrow schemas **from the generated Zod**, infer the app types, and use **codecs**
+for any wire⇄app type mismatch.
 
 ```ts
+import { z } from "zod";
+import {
+  zInstitution,        // fat read schema, generated
+  zInstitutionMod,     // fat create/mod body schema, generated
+} from "@/api/seb-server/generated/hey-api/zod.gen.ts";
+
+// read model: select the fields the app actually uses (drop audit/privilege noise).
+export const institutionSchema = zInstitution.pick({
+  id: true, name: true, urlSuffix: true, active: true,
+});
+export type Institution = z.infer<typeof institutionSchema>;
+
+// create/mod model: a pick of the generated body schema that KEEPS every backend-required
+// field (so the encoded value stays assignable to the SDK body — no cast). Drop only the
+// optional/irrelevant ones.
+export const institutionCreateSchema = zInstitutionMod.pick({
+  name: true, urlSuffix: true,
+});
+export type InstitutionCreateRequest = z.infer<typeof institutionCreateSchema>;
+
+// enums stay DERIVED from the schema so they cannot drift:
+// export const SOME_ENUM = institutionSchema.shape.someField.options;     // z.enum
+// export const SOME_ENUM = institutionSchema.shape.list.element.options;  // z.array(z.enum)
+```
+
+Rules:
+
+- **Pick, don't re-declare.** Field rules (`min`/`max`, `email`, enums) must come from the
+  generated schema, so backend annotation improvements flow through for free.
+- **Narrow the field set**, and narrow enums to the values actually used (as
+  `examTemplate.ts` narrows the indicator enum).
+- **Codecs for type adjustment**, modelled on `examTemplate.ts`'s `colorCodec`. Use a
+  `z.codec(apiSchema, appSchema, { decode, encode })` when the wire form is awkward (e.g. a
+  `date-time` string you want as a `Date`, a colour without `#`). The codec owns *both*
+  directions; `z.infer` is the app (decoded) type. Overlay it with `.extend({ field: codec })`
+  on the picked schema.
+- **Compose variants with `.extend()`** (e.g. a base schema → an `…Existing` schema that adds
+  the persisted `id`), as `examTemplate.ts` does (`indicatorSchema → indicatorExistingSchema`).
+- Prefer fixing a mismatch with **backend annotations** before reaching for a codec.
+
+### C2. The service (`client/src/services/seb-server/<domain>Service.ts`)
+
+The service binds the shared client, calls the generated SDK, and bridges fat↔narrow with
+`z.decode` (read) / `z.encode` (write).
+
+```ts
+import { z } from "zod";
 import { heySebServerClient as client } from "@/api/seb-server/http/heySebServerClient.ts";
 import {
   getInstitutions as getInstitutionsSdk,
   createInstitution as createInstitutionSdk,
 } from "@/api/seb-server/generated/hey-api/sdk.gen.ts";
 import {
-  zGetInstitutionsQuery,
-  zGetInstitutionsResponse,
-  zCreateInstitutionBody,
-  zCreateInstitutionResponse,
-} from "@/api/seb-server/generated/hey-api/zod.gen.ts";
+  institutionSchema,
+  institutionCreateSchema,
+  type InstitutionCreateRequest,
+} from "@/models/institution.ts";
 import type { GetInstitutionsData } from "@/api/seb-server/generated/hey-api/types.gen.ts";
 
 type RequestOptions = { signal?: AbortSignal };
@@ -216,54 +285,48 @@ export const getInstitutions = (
   query?: GetInstitutionsData["query"],
   opts?: RequestOptions,
 ) =>
-  getInstitutionsSdk({
-    client,
-    query: query ? zGetInstitutionsQuery.parse(query) : undefined,
-    signal: opts?.signal,
-  }).then(({ data }) => zGetInstitutionsResponse.parse(data));
+  getInstitutionsSdk({ client, query, signal: opts?.signal }).then(({ data }) =>
+    // decode each row into the narrow model: validates used fields, strips the fat extras.
+    (data?.content ?? []).map((row) => z.decode(institutionSchema, row)),
+  );
 
 export const createInstitution = (body: InstitutionCreateRequest) =>
   createInstitutionSdk({
     client,
-    body: zCreateInstitutionBody.parse(body),
-  }).then(({ data }) => zCreateInstitutionResponse.parse(data));
+    // encode the narrow input back to the wire shape; assignable to the SDK body (no cast).
+    body: z.encode(institutionCreateSchema, body),
+  }).then(({ data }) => z.decode(institutionSchema, data));
 ```
 
-- Type query/path params with the **generated** `GetXxxData["query"]` / `["path"]`, not
-  hand-written models.
-- `.then(({ data }) => z*.parse(data))` is the canonical idiom. Note `.parse` **throws** on
-  contract drift; that surfaces as an error in the composable's `error` ref (acceptable, but
-  see §6 "known trade-offs").
+- **Reads → `z.decode(<schema>, data)`.** Because `z.object` strips unknown keys, decoding a
+  picked subset both validates and narrows. For a page response, map `z.decode` over
+  `content` (and return whatever paging shape the composable needs).
+- **Writes → `z.encode(<createSchema>, input)`.** Produces the wire shape (runs codec
+  `encode` directions). The result is assignable to the SDK's fat body because the create
+  schema keeps all required fields.
+- **Type query/path params with the generated `GetXxxData["query"]` / `["path"]`** — those
+  are request-side and stay generated (they're not domain models).
+- Decode/encode **throw** on contract drift in fields you use — fail-fast, intentional. If a
+  domain must tolerate partial drift, `safeParse`/`safeDecode` at the boundary and normalise.
+- Thread the optional `signal` so TanStack can cancel.
 
 ---
 
-## Part D — Frontend composables, models, forms
+## Part D — Frontend composables, forms
 
-### D1. Thin model aliases (`client/src/models/<domain>.ts`)
+### D1. (See Part C.) Models live in `client/src/models/<domain>.ts`.
 
-Re-export generated types; derive enums from the generated zod so they can't drift. Reference:
-`client/src/models/userAccount.ts`.
-
-```ts
-import { zInstitution } from "@/api/seb-server/generated/hey-api/zod.gen.ts";
-import type {
-  Institution as GenInstitution,
-  InstitutionMod,
-} from "@/api/seb-server/generated/hey-api/types.gen.ts";
-
-export type Institution = GenInstitution;
-export type InstitutionCreateRequest = InstitutionMod;
-// derive option lists / unions from the schema, never hand-copy them:
-// export const SOME_ENUM = zInstitution.shape.someField.options;
-```
+Above the service, **import only from the model file** — never from `generated/hey-api/`.
 
 ### D2. TanStack query/mutation composables (`pages/(app)/<domain>/api/use*.ts`)
 
 One file per operation. Reference: `client/src/pages/(app)/user-account/api/*`. Always:
 
 - reads → `useQuery`; writes → `useMutation`;
-- keys come from the **generated** helper, bound to the client:
+- keys come from the **generated** helper, bound to the client (keys are request-side, so
+  they're unaffected by model narrowing):
   `getInstitutionsQueryKey({ client: heySebServerClient, query: ... })`;
+- the `queryFn`/`mutationFn` calls the **service** (which returns the narrow model);
 - expose a normalised error: `computed(() => toAppErrorOrUndefined(result.error.value))`;
 - invalidate / `setQueryData` with the **same** generated key after mutations.
 
@@ -282,10 +345,7 @@ export const useInstitutions = (
 ) => {
   const result = useQuery({
     queryKey: computed(() =>
-      getInstitutionsQueryKey({
-        client: heySebServerClient,
-        query: query.value,
-      }),
+      getInstitutionsQueryKey({ client: heySebServerClient, query: query.value }),
     ),
     queryFn: ({ signal }) => getInstitutions(query.value, { signal }),
     placeholderData: keepPreviousData,
@@ -302,30 +362,31 @@ export const useInstitutions = (
 For mutations, invalidate the list key in `onSuccess` and optionally optimistically patch the
 cached page (see `useToggleUserAccountStatus.ts` / `useDeleteUserAccount.ts`).
 
-### D3. Form rules from generated zod (`useZodFormRules`)
+### D3. Form rules from the narrow schema (`useZodFormRules`)
 
-Drive `required` / length / format from the generated schema instead of hard-coding. Reference:
+Drive `required` / length / format from the **narrow model schema's `.shape`**, not from
+hard-coded rules and not from the fat generated schema. Reference:
 `client/src/pages/(app)/user-account/composables/useUserAccountFormFields.ts` +
 `client/src/composables/useZodFormRules.ts`.
 
 ```ts
 const { isRequired, lengthRules, formatRules } = useZodFormRules();
-// ...
+// derive from the schema that is actually SUBMITTED:
+//   create form → the narrow create schema (institutionCreateSchema)
+//   edit/profile → the narrow entity schema (institutionSchema)
 {
     name: "name",
-    required: isRequired(zInstitution.shape.name),
-    rules: lengthRules(zInstitution.shape.name),
+    required: isRequired(institutionCreateSchema.shape.name),
+    rules: lengthRules(institutionCreateSchema.shape.name),
 }
 ```
 
-- **Derive from the schema that is actually submitted.** For a create form, derive from the
-  create body schema (`zCreateXxxBody`); for edit/profile, from the entity schema. (UA currently
-  reads `zUserInfo` for create fields — they happen to match `zUserMod`, but prefer the body
-  schema to avoid latent drift.)
-- Cross-field rules (e.g. "passwords match") are necessarily hand-written — that's fine.
+- Because the narrow schema is a `pick` of the generated one, the constraints are intact.
+- Cross-field rules (e.g. "passwords match") are hand-written — that's fine.
 - `useZodFormRules` currently unwraps a single optional/default wrapper and reads string
-  `min/maxLength` + `email` format. If your domain has array-min or deeper-wrapped constraints,
-  extend the helper (loop the unwrap; bail out for arrays) rather than hard-coding.
+  `min/maxLength` + `email` format. For a **codec**-wrapped field, read rules off the codec's
+  inner (encoded) schema or hand-write them; extend the helper rather than hard-coding if a
+  domain needs deeper unwrapping or array-min.
 
 ### D4. Backend field-error mapping + canonical submit path
 
@@ -333,9 +394,10 @@ Wire backend validation errors into form fields with the shared infra. Reference
 `client/src/pages/(app)/user-account/components/UserAccountForm.vue` (the `applyBackendErrors`
 function + `USER_ACCOUNT_FIELD_ALIASES`) and the pages that call `submitWithFormErrors`.
 
-- Map backend field names → form field names with a `BackendFieldAliasMap`.
+- Map backend field names → form field names with a `BackendFieldAliasMap` (e.g.
+  `timeZone → timezone`, `userRoles → role`).
 - Apply them with `applyBackendFieldErrors(error, { aliases, forms })`.
-- **Submit through `submitWithFormErrors`** — this is the canonical submit path (it runs the
+- **Submit through `submitWithFormErrors`** — the canonical submit path (it runs the
   mutation, applies field errors, and only toasts the genuinely-unhandled messages). Do **not**
   re-inline the old try/catch/notify block that legacy pages still use.
 
@@ -349,10 +411,15 @@ const saved = await submitWithFormErrors({
 if (!saved) return;
 ```
 
-### D5. Avoid casts after validation
+### D5. No casts — codecs and validated narrowing instead
 
-To turn a validated optional ref into a required value without an `as` cast, throw on the
-unreachable case (see `requireValidatedField` in `UserAccountForm.vue`). Banned: `as Foo`.
+Banned: `as Foo`, `any`. The boundary is designed to make casts unnecessary:
+
+- wire⇄app type differences → **codecs** (§C1);
+- "validated optional → required value" → throw on the unreachable case (see
+  `requireValidatedField` in `UserAccountForm.vue`);
+- a narrow create schema that keeps all required fields stays **assignable** to the SDK body,
+  so the encoded value needs no cast.
 
 ### D6. Public endpoints on the client
 
@@ -380,14 +447,16 @@ Run from `client/`:
 - [ ] **Reproducibility / no hand-edits**: regenerate from the committed spec
       (`npx openapi-ts --file openapi-ts.config.ts`), then confirm
       `git diff --stat src/api/seb-server/generated` is empty.
+- [ ] **Boundary respected**: nothing outside `src/models/<domain>.ts` and
+      `<domain>Service.ts` imports from `generated/hey-api/` (grep the diff).
+- [ ] Model schemas are **picked from the generated zod** (not re-declared by hand); enums
+      are **derived** from the schema; type adjustments use **codecs**, not casts.
+- [ ] Service **`z.decode`s** responses into the narrow model and **`z.encode`s** inputs back;
+      `z.encode(createSchema, …)` is assignable to the SDK body with no cast.
 - [ ] `npx vue-tsc --noEmit` is clean.
 - [ ] `npm run lint:check:all` and `npm run prettier:check:all` are clean.
 - [ ] Generated identifiers for the domain are **domain-named** (`getInstitutions`, not
       `getPage_1`) and the list query params are **typed** (no `unknown`, no `filterCriteria`).
-- [ ] The domain's generated types are real fields, not `unknown` (a few HeyAPI idioms like
-      `body?: unknown` are normal).
-- [ ] Service parses request **and** response with generated `z*`.
-- [ ] Composables use generated query-key helpers and `toAppErrorOrUndefined`.
 - [ ] No `as Foo` casts, no `any`, `undefined` not `null` in new code.
 - [ ] Manually exercise the flows (list/filter, create, edit, delete, activate, and any public
       endpoint) against a running backend.
@@ -396,21 +465,30 @@ Run from `client/`:
 
 ## §6. Pitfalls learned from the User Account PoC
 
-- **One source of truth for the current user.** The authenticated user lives only in the TanStack
-  cache under `currentUserQueryKey`. Read it with `useCurrentUser()` in components/composables
-  (reactive) and with the synchronous `getCurrentUser()` accessor in imperative/non-setup code
-  (route guards, `ability`, utils). The router guard `fetchQuery`s the key before protected routes
-  resolve, so synchronous readers always see a populated value; logout clears it via
-  `clearCurrentUser()`. Do **not** add a parallel Pinia store for identity — only auth/token state
-  belongs in a store (the earlier `userAccountStore` was removed for exactly this reason).
+- **Don't let the fat model leak.** The whole point of the boundary is that composables,
+  components and pages see only the narrow model. If you find yourself importing `UserInfo`
+  from `generated/` in a page, the model file is missing a field.
+- **Keep all backend-required fields in the create/mod pick**, or the encoded body stops
+  being assignable to the SDK and you'll be tempted to cast. Drop only optional/irrelevant
+  fields.
+- **One source of truth for the current user.** The authenticated user lives only in the
+  TanStack cache under `currentUserQueryKey`. Read it with `useCurrentUser()` (reactive) and
+  with `getCurrentUser()` in imperative/non-setup code (route guards, `ability`, utils). The
+  router guard `fetchQuery`s the key before protected routes resolve; logout clears it via
+  `clearCurrentUser()`. Do **not** add a parallel Pinia store for identity — only auth/token
+  state belongs in a store (the earlier `userAccountStore` was removed for exactly this reason).
 - **Public-path matching is exact.** The interceptor compares the generated SDK URL; a public
   endpoint must be added to `PUBLIC_PATHS` with its full generated path (§D6).
-- **`.parse` throws.** Response parsing turns a backend contract drift into a thrown error. That
-  is intentional (fail fast), but if a domain needs to tolerate partial drift, parse with
-  `safeParse` at the boundary and normalise instead.
-- **Don't over-abstract for one domain, but do reuse what exists.** The error layer
-  (`applyBackendFieldErrors`, `submitWithFormErrors`, `useZodFormRules`) is already multi-domain
-  — reuse it. Only introduce new shared helpers when a second domain demonstrably repeats code.
+- **`z.decode`/`z.encode` throw on drift** in fields you use (fail-fast, intentional). Drift in
+  fields you *didn't* pick is silently stripped — a feature, given the imperfect backend. If a
+  domain must tolerate drift in a used field, switch that boundary to the safe variant and
+  normalise.
+- **Annotate the backend first.** Reach for a frontend codec only when you can't fix the
+  representation at the source. Every constraint you add to a backend `@Schema` is one the
+  frontend gets for free.
+- **Don't over-abstract for one domain, but reuse what exists.** The error layer
+  (`applyBackendFieldErrors`, `submitWithFormErrors`, `useZodFormRules`) is multi-domain —
+  reuse it. Only introduce new shared helpers when a second domain demonstrably repeats code.
 - **Don't migrate unrelated domains** to make yours compile. Widen shared infra
   conservatively (e.g. accept `| undefined` additively) rather than flipping every legacy
   consumer.
@@ -431,10 +509,12 @@ Run from `client/`:
 
 **Frontend (`seb-server-gui`)**
 
-- `client/src/api/seb-server/http/heySebServerClient.ts`, `openapi-ts.config.ts`,
-  `scripts/fetch-seb-server-openapi.mjs`, `client/src/api/seb-server/README.md`.
-- `client/src/services/seb-server/userAccountService.ts`.
-- `client/src/pages/(app)/user-account/` (api, composables, components, pages).
-- `client/src/composables/useZodFormRules.ts`, `useCurrentUser.ts`.
-- `client/src/services/errors/{toAppError,formErrorMapping,submitWithFormErrors}.ts`,
+- Strategy / why: `client/directive/heyapi-migration-strategy.md`.
+- Schema + codec style: `client/src/models/seb-server/examTemplate.ts`,
+  `client/src/services/seb-server/examTemplateService.ts` (`z.codec` / `z.decode` / `z.encode`).
+- Pipeline: `client/openapi-ts.config.ts`, `client/scripts/fetch-seb-server-openapi.mjs`,
+  `client/src/api/seb-server/http/heySebServerClient.ts`, `client/src/api/seb-server/README.md`.
+- Plumbing reference: `client/src/pages/(app)/user-account/` (api, composables, components,
+  pages), `client/src/composables/{useZodFormRules,useCurrentUser}.ts`,
+  `client/src/services/errors/{toAppError,formErrorMapping,submitWithFormErrors}.ts`,
   `client/src/services/http/configureApiAxios.ts`.

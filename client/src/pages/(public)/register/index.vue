@@ -319,8 +319,7 @@ import { translate } from "@/utils/generalUtils";
 import { useInstitutions } from "@/composables/useInstitutions";
 import { useRegisterUserAccount } from "@/pages/(app)/user-account/api/useRegisterUserAccount.ts";
 import { useZodFormRules } from "@/composables/useZodFormRules.ts";
-import { zUserMod } from "@/api/seb-server/generated/hey-api/zod.gen.ts";
-import { UserRole } from "@/models/userAccount.ts";
+import { UserRole, userAccountCreateSchema } from "@/models/userAccount.ts";
 import { RouterLink, useRouter } from "vue-router";
 import AlertMsg from "@/components/widgets/AlertMsg.vue";
 
@@ -378,50 +377,56 @@ const { isRequired, lengthRules, formatRules } = useZodFormRules();
 const withRequiredRule = (schema: z.ZodType) =>
     isRequired(schema) ? [rules.required()] : [];
 
-const institutionRequired = isRequired(zUserMod.shape.institutionId);
-const institutionRules = withRequiredRule(zUserMod.shape.institutionId);
+const institutionRequired = isRequired(
+    userAccountCreateSchema.shape.institutionId,
+);
+const institutionRules = withRequiredRule(
+    userAccountCreateSchema.shape.institutionId,
+);
 
-const usernameRequired = isRequired(zUserMod.shape.username);
+const usernameRequired = isRequired(userAccountCreateSchema.shape.username);
 const usernameRules = [
-    ...withRequiredRule(zUserMod.shape.username),
-    ...lengthRules(zUserMod.shape.username),
+    ...withRequiredRule(userAccountCreateSchema.shape.username),
+    ...lengthRules(userAccountCreateSchema.shape.username),
 ];
 
-const nameRequired = isRequired(zUserMod.shape.name);
+const nameRequired = isRequired(userAccountCreateSchema.shape.name);
 const nameRules = [
-    ...withRequiredRule(zUserMod.shape.name),
-    ...lengthRules(zUserMod.shape.name),
+    ...withRequiredRule(userAccountCreateSchema.shape.name),
+    ...lengthRules(userAccountCreateSchema.shape.name),
 ];
 
-const surnameRequired = isRequired(zUserMod.shape.surname);
+const surnameRequired = isRequired(userAccountCreateSchema.shape.surname);
 const surnameRules = [
-    ...withRequiredRule(zUserMod.shape.surname),
-    ...lengthRules(zUserMod.shape.surname),
+    ...withRequiredRule(userAccountCreateSchema.shape.surname),
+    ...lengthRules(userAccountCreateSchema.shape.surname),
 ];
 
-const emailRequired = isRequired(zUserMod.shape.email);
+const emailRequired = isRequired(userAccountCreateSchema.shape.email);
 const emailRules = [
-    ...withRequiredRule(zUserMod.shape.email),
-    ...lengthRules(zUserMod.shape.email),
-    ...formatRules(zUserMod.shape.email),
+    ...withRequiredRule(userAccountCreateSchema.shape.email),
+    ...lengthRules(userAccountCreateSchema.shape.email),
+    ...formatRules(userAccountCreateSchema.shape.email),
 ];
 
-const timezoneRequired = isRequired(zUserMod.shape.timezone);
+const timezoneRequired = isRequired(userAccountCreateSchema.shape.timezone);
 const timezoneRules = [
-    ...withRequiredRule(zUserMod.shape.timezone),
-    ...lengthRules(zUserMod.shape.timezone),
+    ...withRequiredRule(userAccountCreateSchema.shape.timezone),
+    ...lengthRules(userAccountCreateSchema.shape.timezone),
 ];
 
-const passwordRequired = isRequired(zUserMod.shape.newPassword);
+const passwordRequired = isRequired(userAccountCreateSchema.shape.newPassword);
 const passwordRules = [
-    ...withRequiredRule(zUserMod.shape.newPassword),
-    ...lengthRules(zUserMod.shape.newPassword),
+    ...withRequiredRule(userAccountCreateSchema.shape.newPassword),
+    ...lengthRules(userAccountCreateSchema.shape.newPassword),
 ];
 
-const confirmPasswordRequired = isRequired(zUserMod.shape.confirmNewPassword);
+const confirmPasswordRequired = isRequired(
+    userAccountCreateSchema.shape.confirmNewPassword,
+);
 const confirmPasswordRules = [
-    ...withRequiredRule(zUserMod.shape.confirmNewPassword),
-    ...lengthRules(zUserMod.shape.confirmNewPassword),
+    ...withRequiredRule(userAccountCreateSchema.shape.confirmNewPassword),
+    ...lengthRules(userAccountCreateSchema.shape.confirmNewPassword),
     (value: string | undefined) =>
         value === password.value ||
         translate("userAccount.general.validation.passwordsDontMatch"),

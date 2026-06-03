@@ -8,12 +8,10 @@ import { useZodFormRules } from "@/composables/useZodFormRules.ts";
 import {
     USER_ROLES,
     UserRole,
+    userAccountCreateSchema,
+    userAccountSchema,
     type UserAccountRole,
 } from "@/models/userAccount.ts";
-import {
-    zUserInfo,
-    zUserMod,
-} from "@/api/seb-server/generated/hey-api/zod.gen.ts";
 
 const ADMIN_VISIBLE_ROLES: ReadonlySet<UserAccountRole> = new Set([
     UserRole.SEB_SERVER_ADMIN,
@@ -51,7 +49,8 @@ export const useUserAccountFormFields = (mode: UserAccountFormMode) => {
 
     const { isRequired, lengthRules, formatRules } = useZodFormRules();
 
-    const sharedSchema = mode === "create" ? zUserMod : zUserInfo;
+    const sharedSchema =
+        mode === "create" ? userAccountCreateSchema : userAccountSchema;
 
     const {
         data: institutions,
@@ -185,15 +184,21 @@ export const useUserAccountFormFields = (mode: UserAccountFormMode) => {
                     name: "password",
                     model: password,
                     label: t("fields.password.label"),
-                    required: isRequired(zUserMod.shape.newPassword),
-                    rules: lengthRules(zUserMod.shape.newPassword),
+                    required: isRequired(
+                        userAccountCreateSchema.shape.newPassword,
+                    ),
+                    rules: lengthRules(
+                        userAccountCreateSchema.shape.newPassword,
+                    ),
                 },
                 {
                     type: "password" as const,
                     name: "confirmPassword",
                     model: confirmPassword,
                     label: t("fields.confirmPassword.label"),
-                    required: isRequired(zUserMod.shape.confirmNewPassword),
+                    required: isRequired(
+                        userAccountCreateSchema.shape.confirmNewPassword,
+                    ),
                     rules: [confirmPasswordRule],
                     validationDependsOn: ["password"],
                 },

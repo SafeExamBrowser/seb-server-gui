@@ -1,3 +1,4 @@
+import { z } from "zod";
 import { heySebServerClient as client } from "@/api/seb-server/http/heySebServerClient.ts";
 import {
     activateUserAccount as activateUserAccountSdk,
@@ -13,110 +14,98 @@ import {
     registerUserAccount as registerUserAccountSdk,
 } from "@/api/seb-server/generated/hey-api/sdk.gen.ts";
 import {
-    zActivateUserAccountPath,
-    zActivateUserAccountResponse,
-    zChangeUserAccountPasswordBody,
-    zChangeUserAccountPasswordResponse,
-    zCreateUserAccountBody,
-    zCreateUserAccountResponse,
-    zDeactivateUserAccountPath,
-    zDeactivateUserAccountResponse,
-    zDeleteUserAccountPath,
-    zDeleteUserAccountResponse,
-    zEditUserAccountBody,
-    zEditUserAccountResponse,
-    zGetCurrentUserAccountResponse,
-    zGetUserAccountByIdPath,
-    zGetUserAccountSupervisorsQuery,
-    zGetUserAccountSupervisorsResponse,
-    zGetUserAccountByIdResponse,
-    zGetUserAccountsQuery,
-    zGetUserAccountsResponse,
-    zRegisterUserAccountBody,
-    zRegisterUserAccountResponse,
-} from "@/api/seb-server/generated/hey-api/zod.gen.ts";
-import type {
-    UserAccount,
-    UserAccountCreateRequest,
-    UserAccountPasswordChange,
+    userAccountCreateSchema,
+    userAccountNameSchema,
+    userAccountPageSchema,
+    userAccountPasswordChangeSchema,
+    userAccountSchema,
+    type UserAccount,
+    type UserAccountCreateRequest,
+    type UserAccountName,
+    type UserAccountPage,
+    type UserAccountPasswordChange,
 } from "@/models/userAccount.ts";
 import type {
-    GetUserAccountsData,
     GetUserAccountSupervisorsData,
+    GetUserAccountsData,
 } from "@/api/seb-server/generated/hey-api/types.gen.ts";
 
 type RequestOptions = { signal?: AbortSignal };
 
-export const registerUserAccount = (body: UserAccountCreateRequest) =>
+export const registerUserAccount = (
+    body: UserAccountCreateRequest,
+): Promise<UserAccount> =>
     registerUserAccountSdk({
         client,
-        body: zRegisterUserAccountBody.parse(body),
-    }).then(({ data }) => zRegisterUserAccountResponse.parse(data));
+        body: z.encode(userAccountCreateSchema, body),
+    }).then(({ data }) => z.decode(userAccountSchema, data));
 
 export const getUserAccounts = (
     query?: GetUserAccountsData["query"],
     opts?: RequestOptions,
-) =>
-    getUserAccountsSdk({
-        client,
-        query: query ? zGetUserAccountsQuery.parse(query) : undefined,
-        signal: opts?.signal,
-    }).then(({ data }) => zGetUserAccountsResponse.parse(data));
+): Promise<UserAccountPage> =>
+    getUserAccountsSdk({ client, query, signal: opts?.signal }).then(
+        ({ data }) => z.decode(userAccountPageSchema, data),
+    );
 
-export const getUserAccountById = (modelId: string, opts?: RequestOptions) =>
+export const getUserAccountById = (
+    modelId: string,
+    opts?: RequestOptions,
+): Promise<UserAccount> =>
     getUserAccountByIdSdk({
         client,
-        path: zGetUserAccountByIdPath.parse({ modelId }),
+        path: { modelId },
         signal: opts?.signal,
-    }).then(({ data }) => zGetUserAccountByIdResponse.parse(data));
+    }).then(({ data }) => z.decode(userAccountSchema, data));
 
-export const getCurrentUserAccount = (opts?: RequestOptions) =>
+export const getCurrentUserAccount = (
+    opts?: RequestOptions,
+): Promise<UserAccount> =>
     getCurrentUserAccountSdk({ client, signal: opts?.signal }).then(
-        ({ data }) => zGetCurrentUserAccountResponse.parse(data),
+        ({ data }) => z.decode(userAccountSchema, data),
     );
 
 export const getUserAccountSupervisors = (
     query?: GetUserAccountSupervisorsData["query"],
     opts?: RequestOptions,
-) =>
+): Promise<UserAccountName[]> =>
     getUserAccountSupervisorsSdk({
         client,
-        query: query ? zGetUserAccountSupervisorsQuery.parse(query) : undefined,
+        query,
         signal: opts?.signal,
-    }).then(({ data }) => zGetUserAccountSupervisorsResponse.parse(data));
+    }).then(({ data }) =>
+        (data ?? []).map((name) => z.decode(userAccountNameSchema, name)),
+    );
 
-export const createUserAccount = (body: UserAccountCreateRequest) =>
+export const createUserAccount = (
+    body: UserAccountCreateRequest,
+): Promise<UserAccount> =>
     createUserAccountSdk({
         client,
-        body: zCreateUserAccountBody.parse(body),
-    }).then(({ data }) => zCreateUserAccountResponse.parse(data));
+        body: z.encode(userAccountCreateSchema, body),
+    }).then(({ data }) => z.decode(userAccountSchema, data));
 
-export const editUserAccount = (body: UserAccount) =>
+export const editUserAccount = (body: UserAccount): Promise<UserAccount> =>
     editUserAccountSdk({
         client,
-        body: zEditUserAccountBody.parse(body),
-    }).then(({ data }) => zEditUserAccountResponse.parse(data));
+        body: z.encode(userAccountSchema, body),
+    }).then(({ data }) => z.decode(userAccountSchema, data));
 
-export const changeUserAccountPassword = (body: UserAccountPasswordChange) =>
+export const changeUserAccountPassword = (
+    body: UserAccountPasswordChange,
+): Promise<UserAccount> =>
     changeUserAccountPasswordSdk({
         client,
-        body: zChangeUserAccountPasswordBody.parse(body),
-    }).then(({ data }) => zChangeUserAccountPasswordResponse.parse(data));
+        body: z.encode(userAccountPasswordChangeSchema, body),
+    }).then(({ data }) => z.decode(userAccountSchema, data));
 
-export const deleteUserAccount = (modelId: string) =>
-    deleteUserAccountSdk({
-        client,
-        path: zDeleteUserAccountPath.parse({ modelId }),
-    }).then(({ data }) => zDeleteUserAccountResponse.parse(data));
+export const deleteUserAccount = (modelId: string): Promise<void> =>
+    deleteUserAccountSdk({ client, path: { modelId } }).then(() => undefined);
 
-export const activateUserAccount = (modelId: string) =>
-    activateUserAccountSdk({
-        client,
-        path: zActivateUserAccountPath.parse({ modelId }),
-    }).then(({ data }) => zActivateUserAccountResponse.parse(data));
+export const activateUserAccount = (modelId: string): Promise<void> =>
+    activateUserAccountSdk({ client, path: { modelId } }).then(() => undefined);
 
-export const deactivateUserAccount = (modelId: string) =>
-    deactivateUserAccountSdk({
-        client,
-        path: zDeactivateUserAccountPath.parse({ modelId }),
-    }).then(({ data }) => zDeactivateUserAccountResponse.parse(data));
+export const deactivateUserAccount = (modelId: string): Promise<void> =>
+    deactivateUserAccountSdk({ client, path: { modelId } }).then(
+        () => undefined,
+    );

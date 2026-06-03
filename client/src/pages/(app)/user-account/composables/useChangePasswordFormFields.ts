@@ -2,10 +2,7 @@ import { computed, ref } from "vue";
 import i18n from "@/i18n";
 import { FormField } from "@/components/widgets/formBuilder/types.ts";
 import { useZodFormRules } from "@/composables/useZodFormRules.ts";
-import {
-    zPasswordChange,
-    zUserMod,
-} from "@/api/seb-server/generated/hey-api/zod.gen.ts";
+import { userAccountPasswordChangeSchema } from "@/models/userAccount.ts";
 
 const t = (key: string) => i18n.global.t(`userAccount.changePassword.${key}`);
 
@@ -25,23 +22,31 @@ export const useChangePasswordFormFields = () => {
             name: "adminPassword",
             model: adminPassword,
             label: t("fields.adminPassword.label"),
-            required: isRequired(zPasswordChange.shape.password),
-            rules: lengthRules(zPasswordChange.shape.password),
+            required: isRequired(
+                userAccountPasswordChangeSchema.shape.password,
+            ),
+            rules: lengthRules(userAccountPasswordChangeSchema.shape.password),
         },
         {
             type: "password" as const,
             name: "newPassword",
             model: newPassword,
             label: t("fields.newPassword.label"),
-            required: isRequired(zUserMod.shape.newPassword),
-            rules: lengthRules(zUserMod.shape.newPassword),
+            required: isRequired(
+                userAccountPasswordChangeSchema.shape.newPassword,
+            ),
+            rules: lengthRules(
+                userAccountPasswordChangeSchema.shape.newPassword,
+            ),
         },
         {
             type: "password" as const,
             name: "confirmNewPassword",
             model: confirmNewPassword,
             label: t("fields.confirmNewPassword.label"),
-            required: isRequired(zUserMod.shape.confirmNewPassword),
+            required: isRequired(
+                userAccountPasswordChangeSchema.shape.confirmNewPassword,
+            ),
             rules: [confirmNewPasswordRule],
             validationDependsOn: ["newPassword"],
         },

@@ -7,13 +7,13 @@ import {
     deactivateUserAccount,
 } from "@/services/seb-server/userAccountService.ts";
 import { toAppErrorOrUndefined } from "@/services/errors/toAppError.ts";
-import type { PageUserInfo } from "@/api/seb-server/generated/hey-api/types.gen.ts";
+import type { UserAccountPage } from "@/models/userAccount.ts";
 
 const listKey = () => getUserAccountsQueryKey({ client: heySebServerClient });
 
 const flipActiveInList =
     (uuid: string, isActive: boolean) =>
-    (page: PageUserInfo | undefined): PageUserInfo | undefined =>
+    (page: UserAccountPage | undefined): UserAccountPage | undefined =>
         page
             ? {
                   ...page,
@@ -34,7 +34,7 @@ export const useToggleUserAccountStatus = () => {
     const activate = useMutation({
         mutationFn: (uuid: string) => activateUserAccount(uuid),
         onSuccess: (_data, uuid) => {
-            queryClient.setQueriesData<PageUserInfo>(
+            queryClient.setQueriesData<UserAccountPage>(
                 { queryKey: listKey() },
                 flipActiveInList(uuid, true),
             );
@@ -45,7 +45,7 @@ export const useToggleUserAccountStatus = () => {
     const deactivate = useMutation({
         mutationFn: (uuid: string) => deactivateUserAccount(uuid),
         onSuccess: (_data, uuid) => {
-            queryClient.setQueriesData<PageUserInfo>(
+            queryClient.setQueriesData<UserAccountPage>(
                 { queryKey: listKey() },
                 flipActiveInList(uuid, false),
             );
