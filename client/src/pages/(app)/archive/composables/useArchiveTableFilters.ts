@@ -37,6 +37,7 @@ export function useArchiveTableFilters() {
             key: TYPE_FILTER_KEY,
             title: translate(`${TRANSLATION_PREFIX}.examType`),
             options: EXAM_TYPE_OPTIONS,
+            multiple: true,
         },
     ]);
 }

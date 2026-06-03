@@ -32,6 +32,7 @@ export function useMonitoringFilters() {
         },
         {
             key: TYPE_FILTER_KEY,
+            multiple: true,
             title: translate(`${TRANSLATION_PREFIX}.examType`),
             options: [
                 {
