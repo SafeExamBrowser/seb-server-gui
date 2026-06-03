@@ -62,13 +62,13 @@ declare module 'vue-router/auto-routes' {
       | '/(app)/monitoring/[examId]/client/'
       | '/(app)/monitoring/[examId]/client/[connectionToken]/'
       | '/(app)/navigation-overview/'
+      | '/(app)/profile/'
       | '/(app)/sp-recording/[sessionId]/'
       | '/(app)/sp-recording/application-search/[sessionId]/'
       | '/(app)/sp-search/'
       | '/(app)/user-account/'
       | '/(app)/user-account/[userUuid]/'
       | '/(app)/user-account/create/'
-      | '/(app)/user-account/profile/'
     >,
     '/(app)/': RouteRecordInfo<
       '/(app)/',
@@ -252,6 +252,13 @@ declare module 'vue-router/auto-routes' {
       Record<never, never>,
       | never
     >,
+    '/(app)/profile/': RouteRecordInfo<
+      '/(app)/profile/',
+      '/profile',
+      Record<never, never>,
+      Record<never, never>,
+      | never
+    >,
     '/(app)/sp-recording/[sessionId]/': RouteRecordInfo<
       '/(app)/sp-recording/[sessionId]/',
       '/sp-recording/:sessionId',
@@ -290,13 +297,6 @@ declare module 'vue-router/auto-routes' {
     '/(app)/user-account/create/': RouteRecordInfo<
       '/(app)/user-account/create/',
       '/user-account/create',
-      Record<never, never>,
-      Record<never, never>,
-      | never
-    >,
-    '/(app)/user-account/profile/': RouteRecordInfo<
-      '/(app)/user-account/profile/',
-      '/user-account/profile',
       Record<never, never>,
       Record<never, never>,
       | never
@@ -365,13 +365,13 @@ declare module 'vue-router/auto-routes' {
         | '/(app)/monitoring/[examId]/client/'
         | '/(app)/monitoring/[examId]/client/[connectionToken]/'
         | '/(app)/navigation-overview/'
+        | '/(app)/profile/'
         | '/(app)/sp-recording/[sessionId]/'
         | '/(app)/sp-recording/application-search/[sessionId]/'
         | '/(app)/sp-search/'
         | '/(app)/user-account/'
         | '/(app)/user-account/[userUuid]/'
         | '/(app)/user-account/create/'
-        | '/(app)/user-account/profile/'
       views:
         | 'default'
     }
@@ -531,6 +531,12 @@ declare module 'vue-router/auto-routes' {
       views:
         | never
     }
+    'src/pages/(app)/profile/index.vue': {
+      routes:
+        | '/(app)/profile/'
+      views:
+        | never
+    }
     'src/pages/(app)/sp-recording/[sessionId]/index.vue': {
       routes:
         | '/(app)/sp-recording/[sessionId]/'
@@ -564,12 +570,6 @@ declare module 'vue-router/auto-routes' {
     'src/pages/(app)/user-account/create/index.vue': {
       routes:
         | '/(app)/user-account/create/'
-      views:
-        | never
-    }
-    'src/pages/(app)/user-account/profile/index.vue': {
-      routes:
-        | '/(app)/user-account/profile/'
       views:
         | never
     }

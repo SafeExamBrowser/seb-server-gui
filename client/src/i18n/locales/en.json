@@ -93,7 +93,10 @@
             },
             "image": {
                 "dropTitle": "Drop an image here or click to browse",
-                "hint": "Allowed types: {types}"
+                "hint": "Allowed types: {types}",
+                "replace": "Replace image",
+                "remove": "Remove image",
+                "sizeError": "Image exceeds the {size} MB limit"
             }
         },
         "closeButton": "Close"

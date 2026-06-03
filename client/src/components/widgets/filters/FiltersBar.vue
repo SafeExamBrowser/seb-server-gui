@@ -5,15 +5,22 @@
                 :title="section.title"
                 :data-test-id="`${dataTestId}-${section.testIdSuffix ?? section.key}`"
             >
-                <FilterRadioOption
+                <FilterOptionItem
                     v-for="option in section.options"
                     :key="option.value"
                     class="mb-1"
                     :label="option.label"
                     :color="option.color"
-                    :selected="modelValue[section.key] === option.value"
+                    :multiple="section.multiple"
+                    :selected="
+                        isFilterValueSelected(
+                            modelValue[section.key],
+                            option.value,
+                            section.multiple ?? false,
+                        )
+                    "
                     :data-test-id="`${dataTestId}-${section.testIdSuffix ?? section.key}-option-${option.value}`"
-                    @toggle="onToggle(section.key, option.value)"
+                    @toggle="handleToggle(section, option.value)"
                 />
             </FilterSection>
             <v-divider class="my-1" />
@@ -24,8 +31,9 @@
 <script setup lang="ts">
 import { computed } from "vue";
 import FilterSection from "./FilterSection.vue";
-import FilterRadioOption from "./FilterRadioOption.vue";
+import FilterOptionItem from "./FilterOptionItem.vue";
 import type { FilterSectionDef } from "./filterTypes.ts";
+import { isFilterValueSelected, toggleFilterValue } from "./filterValues.ts";
 
 const props = withDefaults(
     defineProps<{
@@ -44,11 +52,14 @@ const nonEmptySections = computed(() =>
     props.sections.filter((section) => section.options.length > 0),
 );
 
-function onToggle(key: string, value: string) {
-    const current = props.modelValue[key] ?? undefined;
+function handleToggle(section: FilterSectionDef, value: string) {
     emit("update:modelValue", {
         ...props.modelValue,
-        [key]: current === value ? undefined : value,
+        [section.key]: toggleFilterValue(
+            props.modelValue[section.key],
+            value,
+            section.multiple ?? false,
+        ),
     });
 }
 </script>
