@@ -32,6 +32,10 @@ The migration touches **two repositories**:
 > (bidirectional wire⇄app conversion), see
 > [`client/src/models/seb-server/examTemplate.ts`](../client/src/models/seb-server/examTemplate.ts)
 > and [`examTemplateService.ts`](../client/src/services/seb-server/examTemplateService.ts).
+> Caveat: exam-template is **not** HeyAPI-migrated — it still uses the legacy `apiService`
+> client and hand-declares its schemas. Copy only the `z.codec`/`z.decode`/`z.encode` idiom
+> from it; take the SDK + `heySebServerClient` plumbing and the pick-from-generated-zod model
+> from User Account.
 
 ---
 
@@ -45,9 +49,11 @@ The migration touches **two repositories**:
     toast de-duplication, and the `_authType` / `_skipErrorToast` request flags.
 - The HeyAPI client additionally threads TanStack's `AbortSignal` into the SDK, so
   in-flight requests are really cancelled.
-- **Generated code is never hand-edited and never imported above the model/service
-  boundary.** It lives only under `client/src/api/seb-server/generated/hey-api/` and is
-  reproducible from the committed spec (see §5).
+- **Generated code is never hand-edited; generated _models_ never leak above the
+  model/service boundary.** It lives only under `client/src/api/seb-server/generated/hey-api/`
+  and is reproducible from the committed spec (see §5). The only generated artifacts used
+  above that boundary are request-side (TanStack query keys, `GetXxxData` query/path param
+  types) and the shared `APIMessage` schema parsed in the error layer (see §D2).
 
 ```
 backend @Schema/@Operation annotations
@@ -218,6 +224,10 @@ rationale.
 
 Cherry-pick narrow schemas **from the generated Zod**, infer the app types, and use **codecs**
 for any wire⇄app type mismatch.
+
+> Migrated HeyAPI-derived models go at the root `client/src/models/<domain>.ts` (where
+> `userAccount.ts` lives). Legacy hand-written models stay under `client/src/models/seb-server/`
+> until they are migrated — don't follow that location for new work.
 
 ```ts
 import { z } from "zod";
@@ -445,7 +455,7 @@ Run from `client/`:
 
 - [ ] `npm run openapi:refresh` committed (spec + generated output together).
 - [ ] **Reproducibility / no hand-edits**: regenerate from the committed spec
-      (`npx openapi-ts --file openapi-ts.config.ts`), then confirm
+      (`npm run openapi:generate:hey-api`), then confirm
       `git diff --stat src/api/seb-server/generated` is empty.
 - [ ] **Boundary respected**: nothing outside `src/models/<domain>.ts` and
       `<domain>Service.ts` imports from `generated/hey-api/` (grep the diff).

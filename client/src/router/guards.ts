@@ -41,7 +41,7 @@ export function installGuards(router: Router): void {
 }
 
 async function hydratePersonalUserAccount(): Promise<void> {
-    if (getCurrentUser() != null) {
+    if (getCurrentUser()) {
         return;
     }
 

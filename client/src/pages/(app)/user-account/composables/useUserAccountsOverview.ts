@@ -37,7 +37,7 @@ export const useUserAccountsOverview = () => {
             try {
                 await removeUserAccount(String(item.uuid));
             } catch {
-                // error is captured in deleteError; the flow notifies the user
+                /* empty */
             }
         },
         error: deleteError,
@@ -58,7 +58,7 @@ export const useUserAccountsOverview = () => {
             try {
                 await changeUserAccountStatus(String(item.uuid), !!item.active);
             } catch {
-                // error is captured in statusError; the flow notifies the user
+                /* empty */
             }
         },
         error: statusError,
