@@ -74,6 +74,8 @@ export const useToggleUserAccountStatus = () => {
         uuid: string,
         isCurrentlyActive: boolean,
     ) => {
+        activate.reset();
+        deactivate.reset();
         const mutation = isCurrentlyActive ? deactivate : activate;
         return mutation.mutateAsync(uuid);
     };

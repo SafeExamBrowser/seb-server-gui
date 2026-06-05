@@ -2253,11 +2253,6 @@
                         "newPassword": "New password",
                         "confirmNewPassword": "Confirm password",
                         "confirmPassword": "Confirm password"
-                    },
-                    "rules": {
-                        "email": {
-                            "notunique": "A user account with this email address already exists."
-                        }
                     }
                 },
                 "institution": {

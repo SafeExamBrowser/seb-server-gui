@@ -33,6 +33,11 @@ const errorCode = spec.components?.schemas?.ErrorCode ?? {};
 const codes = errorCode.enum ?? [];
 const messages = errorCode["x-enum-descriptions"] ?? [];
 
+if (codes.length > 0 && messages.length !== codes.length) {
+    console.warn(
+        `error-catalog: ErrorCode has ${codes.length} codes but ${messages.length} x-enum-descriptions — emitting an empty errorCodeMessages map. Check the backend errorCodeSchemaOpenApiCustomizer.`,
+    );
+}
 const codeToMessage =
     messages.length === codes.length ? asRecord(codes, messages) : {};
 const ruleMessages = spec["x-field-validation-messages"] ?? {};
@@ -55,5 +60,5 @@ ${tsObject(Object.entries(ruleMessages))}
 
 await writeFile(OUTPUT, file);
 console.log(
-    `error-catalog: ${codes.length} codes, ${Object.keys(ruleMessages).length} field-validation rules -> ${OUTPUT}`,
+    `error-catalog: ${Object.keys(codeToMessage).length} code messages, ${Object.keys(ruleMessages).length} field-validation rules -> ${OUTPUT}`,
 );
