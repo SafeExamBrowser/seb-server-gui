@@ -1,4 +1,4 @@
-you # Migrating a domain to the OpenAPI / HeyAPI stack
+# Migrating a domain to the OpenAPI / HeyAPI stack
 
 This is the step-by-step recipe for migrating one backend domain (e.g. _Institution_,
 _Exam_) onto the generated **HeyAPI** stack. For the *why* behind the architecture — the
@@ -104,6 +104,13 @@ public class InstitutionController extends ActivatableEntityController<Instituti
   response (`application/json`, `$ref` to `T`) are synthesised automatically, and the `T`/`M`
   schemas are auto-registered (`entityControllerSchemaOpenApiCustomizer`). **You add nothing
   for inherited operations beyond the steps below.**
+- The same customizer (`errorCodeSchemaOpenApiCustomizer`) also publishes the **error-code
+  catalogue**: it turns the whole `APIMessage.ErrorMessage` enum into a generated `ErrorCode`
+  schema — each code **named** (`x-enum-varnames`) with its **system message** as JSDoc
+  (`x-enum-descriptions`). With `enums: "javascript"` in `openapi-ts.config.ts`, the frontend
+  then gets `ErrorCode.FIELD_VALIDATION === "1200"` (all codes, typed) instead of magic strings.
+  `messageCode` itself stays a free-form `string`, so a new/unknown backend code never breaks
+  client parsing. (One-time shared-infra setup — not per domain.)
 
 ### A2. Annotate the model classes `T` (info/response) and `M` (create/mod)
 
@@ -431,6 +438,11 @@ function + `USER_ACCOUNT_FIELD_ALIASES`) and the pages that call `submitWithForm
 - **Submit through `submitWithFormErrors`** — the canonical submit path (it runs the
   mutation, applies field errors, and only toasts the genuinely-unhandled messages). Do **not**
   re-inline the old try/catch/notify block that legacy pages still use.
+- **Reference error codes via the generated `ErrorCode` enum, never hardcode strings.** The
+  backend publishes its full code catalogue as `ErrorCode` (see Part A), so `ErrorCode.FIELD_VALIDATION`
+  replaces a magic `"1200"`. A bare code string in app code is a smell. (The field/rule
+  identifiers in an `APIMessage.attributes` array — `domain`/`field`/`rule` — are a wire
+  protocol decoded in `apiMessage.ts`, not in the spec, so those stay matched by FE i18n keys.)
 
 ```ts
 const saved = await submitWithFormErrors({

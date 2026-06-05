@@ -2235,37 +2235,6 @@
                 "503": "Service unavailable",
                 "504": "Gateway timeout"
             },
-            "code": {
-                "0": "Generic error",
-                "1": "Bad request",
-                "1000": "Unauthorized",
-                "1001": "Forbidden",
-                "1002": "Resource not found",
-                "1010": "Illegal API argument",
-                "1100": "Unexpected server error",
-                "1101": "Integrity validation failed",
-                "1200": "Field validation error",
-                "1300": "Password mismatch",
-                "1301": "Missing password",
-                "1302": "LMS warnings",
-                "1400": "Exam consistency: no supporter",
-                "1401": "Exam consistency: no SEB configuration",
-                "1402": "Exam consistency: LMS restriction missing",
-                "1403": "Exam consistency: no indicator",
-                "1404": "Exam consistency: no LMS connection",
-                "1405": "Exam consistency: invalid exam–course reference",
-                "1500": "External service binding error",
-                "1600": "Exam import: partial success (setup issues)",
-                "1601": "Exam import: failed to create indicator(s)",
-                "1602": "Exam import: failed to create attributes",
-                "1603": "Exam import: failed to apply SEB restriction",
-                "1604": "Exam import: partial success",
-                "1605": "Exam import: partial success",
-                "1610": "Exam import: failed to create/link configuration",
-                "1611": "Exam import: failed to link auto configuration",
-                "1700": "Client connection integrity violation",
-                "1800": "Additional confirmation required"
-            },
             "objects": {
                 "user": {
                     "_label": "User account",
@@ -2354,32 +2323,6 @@
                 "newPassword": "New password",
                 "confirmNewPassword": "Confirm password",
                 "confirmPassword": "Confirm password"
-            },
-            "rules": {
-                "username": {
-                    "notunique": "This username is already in use. Please choose another one."
-                },
-                "email": "Please enter a valid email address.",
-                "password": {
-                    "wrong": "Your password is wrong.",
-                    "mismatch": "The repeated password does not match the new password."
-                },
-                "notNull": "{field} is required.",
-                "mandatory": "{field} is required.",
-                "notunique": "{field} is already in use. Please choose another one.",
-                "mismatch": "The values do not match.",
-                "wrong": "{field} is wrong.",
-                "name": {
-                    "notunique": "This name is already in use. Please choose another one."
-                },
-                "exists": "This name already exists. Please choose another one.",
-                "invalidURL": "The input does not match the URL pattern.",
-                "url": {
-                    "invalid": "Invalid URL. The given URL cannot be reached.",
-                    "noaccess": "Access was denied by the service. Please check the given access credentials.",
-                    "noservice": "The expected service is not available within the given URL and API access."
-                },
-                "size": "{field} must be between {0} and {1} characters."
             },
             "fieldFallback": "{field}: {rule}",
             "fallbackLine": "{systemMessage} ({details})",

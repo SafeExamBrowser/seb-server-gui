@@ -2,6 +2,8 @@
 
 import * as z from 'zod';
 
+import { ErrorCode } from './types.gen';
+
 export const zUserActivityLog = z.object({
     id: z.int().optional(),
     userUuid: z.string().optional(),
@@ -1271,6 +1273,7 @@ export const zClientMonitoringDataView = z.object({
     grantChecked: z.boolean().optional(),
     grantDenied: z.boolean().optional(),
     sebversionDenied: z.boolean().optional(),
+    nf: z.int().min(-2147483648, { error: 'Invalid value: Expected int32 to be >= -2147483648' }).max(2147483647, { error: 'Invalid value: Expected int32 to be <= 2147483647' }).optional(),
     st: z.enum([
         'UNDEFINED',
         'CONNECTION_REQUESTED',
@@ -1281,7 +1284,6 @@ export const zClientMonitoringDataView = z.object({
     ]).optional(),
     lat: z.int().optional(),
     iv: z.record(z.string(), z.string()).optional(),
-    nf: z.int().min(-2147483648, { error: 'Invalid value: Expected int32 to be >= -2147483648' }).max(2147483647, { error: 'Invalid value: Expected int32 to be <= 2147483647' }).optional(),
     id: z.int().optional()
 });
 
@@ -1643,39 +1645,9 @@ export const zPageBatchAction = z.object({
 });
 
 /**
- * Catalogue of stable SEB Server APIMessage codes (possible APIMessage.messageCode values).
+ * Catalogue of stable SEB Server APIMessage codes (the possible APIMessage.messageCode values).
  */
-export const zErrorCode = z.enum([
-    '0',
-    '1',
-    '1000',
-    '1001',
-    '1002',
-    '1010',
-    '1100',
-    '1101',
-    '1200',
-    '1300',
-    '1301',
-    '1302',
-    '1400',
-    '1401',
-    '1402',
-    '1403',
-    '1404',
-    '1405',
-    '1500',
-    '1600',
-    '1601',
-    '1602',
-    '1603',
-    '1604',
-    '1605',
-    '1610',
-    '1611',
-    '1700',
-    '1800'
-]);
+export const zErrorCode = z.enum(ErrorCode);
 
 export const zClientGroupTemplateWritable = z.object({
     id: z.int().optional(),

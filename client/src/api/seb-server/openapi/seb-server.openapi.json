@@ -16352,6 +16352,7 @@
                     "grantChecked": { "type": "boolean" },
                     "grantDenied": { "type": "boolean" },
                     "sebversionDenied": { "type": "boolean" },
+                    "nf": { "type": "integer", "format": "int32" },
                     "st": {
                         "type": "string",
                         "enum": [
@@ -16368,7 +16369,6 @@
                         "type": "object",
                         "additionalProperties": { "type": "string" }
                     },
-                    "nf": { "type": "integer", "format": "int32" },
                     "id": { "type": "integer" }
                 }
             },
@@ -17261,7 +17261,7 @@
             },
             "ErrorCode": {
                 "type": "string",
-                "description": "Catalogue of stable SEB Server APIMessage codes (possible APIMessage.messageCode values).",
+                "description": "Catalogue of stable SEB Server APIMessage codes (the possible APIMessage.messageCode values).",
                 "enum": [
                     "0",
                     "1",
@@ -17292,6 +17292,68 @@
                     "1611",
                     "1700",
                     "1800"
+                ],
+                "x-enum-varnames": [
+                    "GENERIC",
+                    "BAD_REQUEST",
+                    "UNAUTHORIZED",
+                    "FORBIDDEN",
+                    "RESOURCE_NOT_FOUND",
+                    "ILLEGAL_API_ARGUMENT",
+                    "UNEXPECTED",
+                    "INTEGRITY_VALIDATION",
+                    "FIELD_VALIDATION",
+                    "PASSWORD_MISMATCH",
+                    "MISSING_PASSWORD",
+                    "LMS_WARNINGS",
+                    "EXAM_CONSISTENCY_VALIDATION_SUPPORTER",
+                    "EXAM_CONSISTENCY_VALIDATION_CONFIG",
+                    "EXAM_CONSISTENCY_VALIDATION_SEB_RESTRICTION",
+                    "EXAM_CONSISTENCY_VALIDATION_INDICATOR",
+                    "EXAM_CONSISTENCY_VALIDATION_LMS_CONNECTION",
+                    "EXAM_CONSISTENCY_VALIDATION_INVALID_ID_REFERENCE",
+                    "EXTERNAL_SERVICE_BINDING_ERROR",
+                    "EXAM_IMPORT_ERROR_AUTO_SETUP",
+                    "EXAM_IMPORT_ERROR_AUTO_INDICATOR",
+                    "EXAM_IMPORT_ERROR_AUTO_ATTRIBUTES",
+                    "EXAM_IMPORT_ERROR_AUTO_RESTRICTION",
+                    "EXAM_IMPORT_ERROR_AUTO_CLIENT_GROUPS",
+                    "EXAM_IMPORT_ERROR_SPS_ENABLED",
+                    "EXAM_IMPORT_ERROR_AUTO_CONFIG",
+                    "EXAM_IMPORT_ERROR_AUTO_CONFIG_LINKING",
+                    "CLIENT_CONNECTION_INTEGRITY_VIOLATION",
+                    "NEED_CONFIRMATION"
+                ],
+                "x-enum-descriptions": [
+                    "Generic error message",
+                    "Bad Request",
+                    "UNAUTHORIZED",
+                    "FORBIDDEN",
+                    "resource not found",
+                    "Illegal API request argument",
+                    "Unexpected internal server-side error",
+                    "Action would lied to an integrity violation",
+                    "Field validation error",
+                    "new password do not match confirmed password",
+                    "Missing Password",
+                    "Warnings from LMS",
+                    "No Exam Supporter defined for the Exam",
+                    "No SEB Exam Configuration defined for the Exam",
+                    "SEB restriction API available but Exam not restricted on LMS side yet",
+                    "No Indicator defined for the Exam",
+                    "No Connection To LMS",
+                    "There seems to be an invalid exam - course identifier reference. The course cannot be found",
+                    "External binding error",
+                    "Exam successfully imported but some additional initialization failed",
+                    "Failed to automatically create pre-defined indicator(s) for the exam",
+                    "Failed to automatically create pre-defined attributes for the exam",
+                    "Failed to automatically apply SEB restriction for the exam to the involved LMS",
+                    "Failed to automatically create pre-defined client group(s) for the exam",
+                    "Failed to automatically apply SPS enabled setting to Exam Configuration",
+                    "Failed to automatically create and link exam configuration from the exam template to the exam",
+                    "Failed to automatically link auto-generated exam configuration to the exam",
+                    "SEB client connection is not in valid state to apply requested operation",
+                    "Some additional user confirmation needed"
                 ]
             }
         },
@@ -17315,5 +17377,38 @@
                 }
             }
         }
+    },
+    "x-field-validation-messages": {
+        "changeDeniedActiveClients": "Cannot be changed while there are active SEB client connection",
+        "collecting-strategy-not-changeable": "Not changeable once created",
+        "email": "Invalid mail address",
+        "email.notunique": "A user account with this e-mail address already exists.",
+        "endBeforeStart": "Invalid Date Range, End before Start",
+        "exists": "This name already exists. Please choose another one",
+        "group-not-deletable": "Existing groups with data are not deletable",
+        "hasInvalidTrailing": "The value must not start or end with a space.",
+        "invalidAlphaRange": "Invalid Alphabetical Range",
+        "invalidDateRange": "Invalid Date Range",
+        "invalidIP": "Invalid IP v4. Please enter a valid IP-address (v4)",
+        "invalidIPRange": "Invalid IP-address Range",
+        "invalidURL": "The input does not match the URL pattern",
+        "mandatory": "This field is mandatory",
+        "name": "The Name is mandatory and must have a size between {3} and {4} character",
+        "name.notunique": "This name is already in use. Please choose another one.",
+        "notNull": "This field is mandatory",
+        "password.mismatch": "The retyped password doesn't match the new password",
+        "password.wrong": "Your password is wrong",
+        "serverNotAvailable": "No service seems to be available within the given URL",
+        "size": "The size must be between {3} and {4}",
+        "size.max": "The size must be less than {0} character",
+        "thresholdDuplicate": "There are duplicate threshold values.",
+        "thresholdEmpty": "There are missing values or colors for the threshold declaration",
+        "typeInvalid": "This type is not implemented yet and cannot be used.",
+        "url.invalid": "Invalid URL. The given URL cannot be reached.",
+        "url.noAccess": "Access was denied",
+        "url.noaccess": "There has no access been granted by the service. Please check the given access credentials.",
+        "url.noservice": "The expected service is not available within the given URL and API access.",
+        "urlSuffix": "The URL Suffix must have a size between {3} and {4} character",
+        "username.notunique": "This Username is already in use. Please choose another one."
     }
 }

@@ -1,4 +1,8 @@
 import i18n from "@/i18n";
+import {
+    errorCodeMessages,
+    fieldValidationMessages,
+} from "@/api/seb-server/generated/error-catalog.ts";
 import { parseBackendFieldError } from "@/services/errors/toAppError.ts";
 import type {
     APIMessage,
@@ -36,16 +40,6 @@ function humanize(value: string): string {
     return spaced.charAt(0).toUpperCase() + spaced.slice(1);
 }
 
-function getObjectLabel(domain?: string): string | undefined {
-    if (!domain) {
-        return undefined;
-    }
-    return (
-        translateFirst([`errors.backend.objects.${domain}._label`]) ??
-        humanize(domain)
-    );
-}
-
 function getFieldLabel(domain: string | undefined, field: string): string {
     const keys: (string | undefined)[] = [
         domain ? `errors.backend.objects.${domain}.fields.${field}` : undefined,
@@ -54,44 +48,34 @@ function getFieldLabel(domain: string | undefined, field: string): string {
     return translateFirst(keys) ?? humanize(field);
 }
 
+function substituteAttributes(template: string, attributes: string[]): string {
+    return template.replace(
+        /\{(\d+)\}/g,
+        (_match, index) => attributes[Number(index)] ?? "",
+    );
+}
+
 export function getBackendFieldErrorText(error: BackendFieldError): string {
     const { domain, backendField, rule, ruleParams } = error;
     const field = backendField ?? "";
-    const fieldLabel = getFieldLabel(domain, field);
 
-    const params: Record<string, unknown> = {
-        field: fieldLabel,
-        object: getObjectLabel(domain) ?? "",
-        rule: rule ?? "",
-    };
-    ruleParams.forEach((value, index) => {
-        params[index] = value;
-        params[`param${index}`] = value;
-    });
-
-    if (rule) {
-        const ruleLeaf = rule.includes(".")
-            ? (rule.split(".").pop() ?? rule)
-            : rule;
-        const ruleText = translateFirst(
-            [
-                domain
-                    ? `errors.backend.objects.${domain}.fields.${field}.rules.${rule}`
-                    : undefined,
-                domain
-                    ? `errors.backend.objects.${domain}.rules.${rule}`
-                    : undefined,
-                `errors.backend.rules.${rule}`,
-                `errors.backend.rules.${ruleLeaf}`,
-            ],
-            params,
-        );
-        if (ruleText) {
-            return ruleText;
+    const candidates = rule
+        ? [`${field}.${rule}`, `${rule}.${ruleParams[0] ?? ""}`, rule]
+        : [];
+    for (const candidate of candidates) {
+        const template = fieldValidationMessages[candidate];
+        if (template !== undefined) {
+            return substituteAttributes(
+                template,
+                error.apiMessage.attributes ?? [],
+            );
         }
     }
 
-    return translate("errors.backend.fieldFallback", params);
+    return translate("errors.backend.fieldFallback", {
+        field: getFieldLabel(domain, field),
+        rule: rule ?? "",
+    });
 }
 
 function getApiMessageLine(message: APIMessage): string {
@@ -100,9 +84,8 @@ function getApiMessageLine(message: APIMessage): string {
         return getBackendFieldErrorText(fieldError);
     }
 
-    const codeText = translateFirst([
-        `errors.backend.code.${message.messageCode}`,
-    ]);
+    const codeText =
+        errorCodeMessages[message.messageCode] ?? message.systemMessage;
     if (codeText) {
         return message.details ? `${codeText} (${message.details})` : codeText;
     }

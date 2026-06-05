@@ -1204,12 +1204,12 @@ export type ClientMonitoringDataView = {
     grantChecked?: boolean;
     grantDenied?: boolean;
     sebversionDenied?: boolean;
+    nf?: number;
     st?: 'UNDEFINED' | 'CONNECTION_REQUESTED' | 'READY' | 'ACTIVE' | 'CLOSED' | 'DISABLED';
     lat?: number;
     iv?: {
         [key: string]: string;
     };
-    nf?: number;
     id?: number;
 };
 
@@ -1746,9 +1746,189 @@ export type PageBatchAction = {
 };
 
 /**
- * Catalogue of stable SEB Server APIMessage codes (possible APIMessage.messageCode values).
+ * Catalogue of stable SEB Server APIMessage codes (the possible APIMessage.messageCode values).
  */
-export type ErrorCode = '0' | '1' | '1000' | '1001' | '1002' | '1010' | '1100' | '1101' | '1200' | '1300' | '1301' | '1302' | '1400' | '1401' | '1402' | '1403' | '1404' | '1405' | '1500' | '1600' | '1601' | '1602' | '1603' | '1604' | '1605' | '1610' | '1611' | '1700' | '1800';
+export const ErrorCode = {
+    /**
+     * GENERIC
+     *
+     * Generic error message
+     */
+    GENERIC: '0',
+    /**
+     * BAD_REQUEST
+     *
+     * Bad Request
+     */
+    BAD_REQUEST: '1',
+    /**
+     * UNAUTHORIZED
+     *
+     * UNAUTHORIZED
+     */
+    UNAUTHORIZED: '1000',
+    /**
+     * FORBIDDEN
+     *
+     * FORBIDDEN
+     */
+    FORBIDDEN: '1001',
+    /**
+     * RESOURCE_NOT_FOUND
+     *
+     * resource not found
+     */
+    RESOURCE_NOT_FOUND: '1002',
+    /**
+     * ILLEGAL_API_ARGUMENT
+     *
+     * Illegal API request argument
+     */
+    ILLEGAL_API_ARGUMENT: '1010',
+    /**
+     * UNEXPECTED
+     *
+     * Unexpected internal server-side error
+     */
+    UNEXPECTED: '1100',
+    /**
+     * INTEGRITY_VALIDATION
+     *
+     * Action would lied to an integrity violation
+     */
+    INTEGRITY_VALIDATION: '1101',
+    /**
+     * FIELD_VALIDATION
+     *
+     * Field validation error
+     */
+    FIELD_VALIDATION: '1200',
+    /**
+     * PASSWORD_MISMATCH
+     *
+     * new password do not match confirmed password
+     */
+    PASSWORD_MISMATCH: '1300',
+    /**
+     * MISSING_PASSWORD
+     *
+     * Missing Password
+     */
+    MISSING_PASSWORD: '1301',
+    /**
+     * LMS_WARNINGS
+     *
+     * Warnings from LMS
+     */
+    LMS_WARNINGS: '1302',
+    /**
+     * EXAM_CONSISTENCY_VALIDATION_SUPPORTER
+     *
+     * No Exam Supporter defined for the Exam
+     */
+    EXAM_CONSISTENCY_VALIDATION_SUPPORTER: '1400',
+    /**
+     * EXAM_CONSISTENCY_VALIDATION_CONFIG
+     *
+     * No SEB Exam Configuration defined for the Exam
+     */
+    EXAM_CONSISTENCY_VALIDATION_CONFIG: '1401',
+    /**
+     * EXAM_CONSISTENCY_VALIDATION_SEB_RESTRICTION
+     *
+     * SEB restriction API available but Exam not restricted on LMS side yet
+     */
+    EXAM_CONSISTENCY_VALIDATION_SEB_RESTRICTION: '1402',
+    /**
+     * EXAM_CONSISTENCY_VALIDATION_INDICATOR
+     *
+     * No Indicator defined for the Exam
+     */
+    EXAM_CONSISTENCY_VALIDATION_INDICATOR: '1403',
+    /**
+     * EXAM_CONSISTENCY_VALIDATION_LMS_CONNECTION
+     *
+     * No Connection To LMS
+     */
+    EXAM_CONSISTENCY_VALIDATION_LMS_CONNECTION: '1404',
+    /**
+     * EXAM_CONSISTENCY_VALIDATION_INVALID_ID_REFERENCE
+     *
+     * There seems to be an invalid exam - course identifier reference. The course cannot be found
+     */
+    EXAM_CONSISTENCY_VALIDATION_INVALID_ID_REFERENCE: '1405',
+    /**
+     * EXTERNAL_SERVICE_BINDING_ERROR
+     *
+     * External binding error
+     */
+    EXTERNAL_SERVICE_BINDING_ERROR: '1500',
+    /**
+     * EXAM_IMPORT_ERROR_AUTO_SETUP
+     *
+     * Exam successfully imported but some additional initialization failed
+     */
+    EXAM_IMPORT_ERROR_AUTO_SETUP: '1600',
+    /**
+     * EXAM_IMPORT_ERROR_AUTO_INDICATOR
+     *
+     * Failed to automatically create pre-defined indicator(s) for the exam
+     */
+    EXAM_IMPORT_ERROR_AUTO_INDICATOR: '1601',
+    /**
+     * EXAM_IMPORT_ERROR_AUTO_ATTRIBUTES
+     *
+     * Failed to automatically create pre-defined attributes for the exam
+     */
+    EXAM_IMPORT_ERROR_AUTO_ATTRIBUTES: '1602',
+    /**
+     * EXAM_IMPORT_ERROR_AUTO_RESTRICTION
+     *
+     * Failed to automatically apply SEB restriction for the exam to the involved LMS
+     */
+    EXAM_IMPORT_ERROR_AUTO_RESTRICTION: '1603',
+    /**
+     * EXAM_IMPORT_ERROR_AUTO_CLIENT_GROUPS
+     *
+     * Failed to automatically create pre-defined client group(s) for the exam
+     */
+    EXAM_IMPORT_ERROR_AUTO_CLIENT_GROUPS: '1604',
+    /**
+     * EXAM_IMPORT_ERROR_SPS_ENABLED
+     *
+     * Failed to automatically apply SPS enabled setting to Exam Configuration
+     */
+    EXAM_IMPORT_ERROR_SPS_ENABLED: '1605',
+    /**
+     * EXAM_IMPORT_ERROR_AUTO_CONFIG
+     *
+     * Failed to automatically create and link exam configuration from the exam template to the exam
+     */
+    EXAM_IMPORT_ERROR_AUTO_CONFIG: '1610',
+    /**
+     * EXAM_IMPORT_ERROR_AUTO_CONFIG_LINKING
+     *
+     * Failed to automatically link auto-generated exam configuration to the exam
+     */
+    EXAM_IMPORT_ERROR_AUTO_CONFIG_LINKING: '1611',
+    /**
+     * CLIENT_CONNECTION_INTEGRITY_VIOLATION
+     *
+     * SEB client connection is not in valid state to apply requested operation
+     */
+    CLIENT_CONNECTION_INTEGRITY_VIOLATION: '1700',
+    /**
+     * NEED_CONFIRMATION
+     *
+     * Some additional user confirmation needed
+     */
+    NEED_CONFIRMATION: '1800'
+} as const;
+
+/**
+ * Catalogue of stable SEB Server APIMessage codes (the possible APIMessage.messageCode values).
+ */
+export type ErrorCode = typeof ErrorCode[keyof typeof ErrorCode];
 
 export type ClientGroupTemplateWritable = {
     id?: number;
