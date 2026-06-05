@@ -1273,7 +1273,6 @@ export const zClientMonitoringDataView = z.object({
     grantChecked: z.boolean().optional(),
     grantDenied: z.boolean().optional(),
     sebversionDenied: z.boolean().optional(),
-    nf: z.int().min(-2147483648, { error: 'Invalid value: Expected int32 to be >= -2147483648' }).max(2147483647, { error: 'Invalid value: Expected int32 to be <= 2147483647' }).optional(),
     st: z.enum([
         'UNDEFINED',
         'CONNECTION_REQUESTED',
@@ -1283,6 +1282,7 @@ export const zClientMonitoringDataView = z.object({
         'DISABLED'
     ]).optional(),
     lat: z.int().optional(),
+    nf: z.int().min(-2147483648, { error: 'Invalid value: Expected int32 to be >= -2147483648' }).max(2147483647, { error: 'Invalid value: Expected int32 to be <= 2147483647' }).optional(),
     iv: z.record(z.string(), z.string()).optional(),
     id: z.int().optional()
 });

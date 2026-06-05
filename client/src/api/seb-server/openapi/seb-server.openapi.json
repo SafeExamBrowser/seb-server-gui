@@ -16352,7 +16352,6 @@
                     "grantChecked": { "type": "boolean" },
                     "grantDenied": { "type": "boolean" },
                     "sebversionDenied": { "type": "boolean" },
-                    "nf": { "type": "integer", "format": "int32" },
                     "st": {
                         "type": "string",
                         "enum": [
@@ -16365,6 +16364,7 @@
                         ]
                     },
                     "lat": { "type": "integer" },
+                    "nf": { "type": "integer", "format": "int32" },
                     "iv": {
                         "type": "object",
                         "additionalProperties": { "type": "string" }

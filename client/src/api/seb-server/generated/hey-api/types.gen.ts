@@ -1204,9 +1204,9 @@ export type ClientMonitoringDataView = {
     grantChecked?: boolean;
     grantDenied?: boolean;
     sebversionDenied?: boolean;
-    nf?: number;
     st?: 'UNDEFINED' | 'CONNECTION_REQUESTED' | 'READY' | 'ACTIVE' | 'CLOSED' | 'DISABLED';
     lat?: number;
+    nf?: number;
     iv?: {
         [key: string]: string;
     };
