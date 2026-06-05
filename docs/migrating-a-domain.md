@@ -1,4 +1,4 @@
-# Migrating a domain to the OpenAPI / HeyAPI stack
+you # Migrating a domain to the OpenAPI / HeyAPI stack
 
 This is the step-by-step recipe for migrating one backend domain (e.g. _Institution_,
 _Exam_) onto the generated **HeyAPI** stack. For the *why* behind the architecture — the
@@ -235,11 +235,13 @@ import {
   zInstitution,        // fat read schema, generated
   zInstitutionMod,     // fat create/mod body schema, generated
 } from "@/api/seb-server/generated/hey-api/zod.gen.ts";
+import { isoDateTimeCodec } from "@/models/codecs.ts";
 
-// read model: select the fields the app actually uses (drop audit/privilege noise).
-export const institutionSchema = zInstitution.pick({
-  id: true, name: true, urlSuffix: true, active: true,
-});
+// read model: select the fields the app actually uses (drop audit/privilege noise),
+// then overlay loose wire types with EXACT app types (see Rules → exact types).
+export const institutionSchema = zInstitution
+  .pick({ id: true, name: true, urlSuffix: true, active: true })
+  .extend({ creationDate: isoDateTimeCodec.optional() }); // z.iso.datetime() string -> Date
 export type Institution = z.infer<typeof institutionSchema>;
 
 // create/mod model: a pick of the generated body schema that KEEPS every backend-required
@@ -261,14 +263,33 @@ Rules:
   generated schema, so backend annotation improvements flow through for free.
 - **Narrow the field set**, and narrow enums to the values actually used (as
   `examTemplate.ts` narrows the indicator enum).
-- **Codecs for type adjustment**, modelled on `examTemplate.ts`'s `colorCodec`. Use a
-  `z.codec(apiSchema, appSchema, { decode, encode })` when the wire form is awkward (e.g. a
-  `date-time` string you want as a `Date`, a colour without `#`). The codec owns *both*
-  directions; `z.infer` is the app (decoded) type. Overlay it with `.extend({ field: codec })`
-  on the picked schema.
+- **Use the most specific type, always.** A picked field must infer the _richest_ type the app
+  can actually use — `string` (or `number`) is the fallback, never the default. Whenever a wire
+  value really is something more precise — a date, an enum, a quantity, a structured value —
+  model it as that. The better type comes from one of two places:
+  - **Generated constraints** ride along for free when you pick: `z.enum`, `z.email`,
+    `min`/`max`. Narrow enums to the subset the app actually uses.
+  - **A codec** bridges any representation gap — when the wire _encoding_ differs from the app
+    _value_. The common case: every **`date-time`** is generated as `z.iso.datetime()` and infers
+    as `string`; overlay it with `isoDateTimeCodec` so the model infers a real `Date` (see
+    `userAccount.ts`'s `creationDate`). Same idea for a colour with/without `#`
+    (`examTemplate.ts`'s `colorCodec`), an ISO duration ⇄ a `number` of seconds, a delimited
+    string ⇄ a typed tuple, a `"true"`/`"false"` string ⇄ `boolean`, and so on. Put cross-domain
+    codecs in [`client/src/models/codecs.ts`](../client/src/models/codecs.ts); keep
+    domain-specific ones in the model.
+
+  Rule of thumb: if a consumer would otherwise `new Date(...)`, `Number(...)`, `.split(...)`,
+  parse, or `as`-cast a model value, the model is under-typed — fix it at the pick, once, so
+  every consumer gets the exact type.
+- **Codecs are the correct tool for representation gaps — not a last resort.** JSON carries only
+  string/number/boolean/array/object, so anything richer (dates, durations, encoded strings) is
+  _always_ a wire primitive — no backend annotation can change that. Use
+  `z.codec(apiSchema, appSchema, { decode, encode })`. The codec owns _both_ directions;
+  `z.infer` is the app (decoded) type. Overlay it with `.extend({ field: codec })` on the picked
+  schema. (Backend annotations are for missing _constraints_ — required/min/max/enum — not for
+  wire⇄app representation.)
 - **Compose variants with `.extend()`** (e.g. a base schema → an `…Existing` schema that adds
   the persisted `id`), as `examTemplate.ts` does (`indicatorSchema → indicatorExistingSchema`).
-- Prefer fixing a mismatch with **backend annotations** before reaching for a codec.
 
 ### C2. The service (`client/src/services/seb-server/<domain>Service.ts`)
 
@@ -461,6 +482,10 @@ Run from `client/`:
       `<domain>Service.ts` imports from `generated/hey-api/` (grep the diff).
 - [ ] Model schemas are **picked from the generated zod** (not re-declared by hand); enums
       are **derived** from the schema; type adjustments use **codecs**, not casts.
+- [ ] **Most specific types**: no picked field settles for `string`/`number` when a richer app
+      type fits — `date-time` → `Date` (`isoDateTimeCodec`), encoded strings → codecs, enums
+      narrowed. Smell test: a consumer never has to `new Date(...)`/`Number(...)`/`.split(...)`/
+      `as`-cast a model value.
 - [ ] Service **`z.decode`s** responses into the narrow model and **`z.encode`s** inputs back;
       `z.encode(createSchema, …)` is assignable to the SDK body with no cast.
 - [ ] `npx vue-tsc --noEmit` is clean.

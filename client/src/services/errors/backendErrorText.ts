@@ -1,4 +1,5 @@
 import i18n from "@/i18n";
+import { parseBackendFieldError } from "@/services/errors/toAppError.ts";
 import type {
     APIMessage,
     AppError,
@@ -94,15 +95,9 @@ export function getBackendFieldErrorText(error: BackendFieldError): string {
 }
 
 function getApiMessageLine(message: APIMessage): string {
-    const attributes = message.attributes ?? [];
-    if (message.messageCode === "1200" && attributes.length >= 3) {
-        return getBackendFieldErrorText({
-            apiMessage: message,
-            domain: attributes[0],
-            backendField: attributes[1],
-            rule: attributes[2],
-            ruleParams: attributes.slice(3),
-        });
+    const fieldError = parseBackendFieldError(message);
+    if (fieldError) {
+        return getBackendFieldErrorText(fieldError);
     }
 
     const codeText = translateFirst([

@@ -6,8 +6,12 @@ import {
     activateUserAccount,
     deactivateUserAccount,
 } from "@/services/seb-server/userAccountService.ts";
-import { toAppErrorOrUndefined } from "@/services/errors/toAppError.ts";
+import {
+    entityProcessingReportToAppError,
+    toAppErrorOrUndefined,
+} from "@/services/errors/toAppError.ts";
 import type { UserAccountPage } from "@/models/userAccount.ts";
+import type { EntityProcessingReport } from "@/api/seb-server/generated/hey-api/types.gen.ts";
 
 const listKey = () => getUserAccountsQueryKey({ client: heySebServerClient });
 
@@ -25,6 +29,17 @@ const flipActiveInList =
               }
             : page;
 
+const throwOnReportErrors = async (
+    report: Promise<EntityProcessingReport>,
+): Promise<EntityProcessingReport> => {
+    const resolved = await report;
+    const reportError = entityProcessingReportToAppError(resolved);
+    if (reportError) {
+        throw reportError;
+    }
+    return resolved;
+};
+
 export const useToggleUserAccountStatus = () => {
     const queryClient = useQueryClient();
 
@@ -32,7 +47,8 @@ export const useToggleUserAccountStatus = () => {
         queryClient.invalidateQueries({ queryKey: listKey() });
 
     const activate = useMutation({
-        mutationFn: (uuid: string) => activateUserAccount(uuid),
+        mutationFn: (uuid: string) =>
+            throwOnReportErrors(activateUserAccount(uuid)),
         onSuccess: (_data, uuid) => {
             queryClient.setQueriesData<UserAccountPage>(
                 { queryKey: listKey() },
@@ -43,7 +59,8 @@ export const useToggleUserAccountStatus = () => {
     });
 
     const deactivate = useMutation({
-        mutationFn: (uuid: string) => deactivateUserAccount(uuid),
+        mutationFn: (uuid: string) =>
+            throwOnReportErrors(deactivateUserAccount(uuid)),
         onSuccess: (_data, uuid) => {
             queryClient.setQueriesData<UserAccountPage>(
                 { queryKey: listKey() },

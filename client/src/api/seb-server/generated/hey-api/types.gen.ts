@@ -202,7 +202,7 @@ export type ApiMessage = {
     /**
      * Stable SEB Server message code.
      */
-    messageCode?: string;
+    messageCode: string;
     /**
      * Short backend-defined message for the error.
      */
@@ -279,8 +279,8 @@ export type Exam = {
     additionalAttributes?: {
         [key: string]: string;
     };
-    startURL?: string;
     description?: string;
+    startURL?: string;
 };
 
 export type ClientGroupTemplate = {
@@ -1204,12 +1204,12 @@ export type ClientMonitoringDataView = {
     grantChecked?: boolean;
     grantDenied?: boolean;
     sebversionDenied?: boolean;
-    nf?: number;
     st?: 'UNDEFINED' | 'CONNECTION_REQUESTED' | 'READY' | 'ACTIVE' | 'CLOSED' | 'DISABLED';
     lat?: number;
     iv?: {
         [key: string]: string;
     };
+    nf?: number;
     id?: number;
 };
 
@@ -1744,6 +1744,11 @@ export type PageBatchAction = {
     content?: Array<BatchAction>;
     complete?: boolean;
 };
+
+/**
+ * Catalogue of stable SEB Server APIMessage codes (possible APIMessage.messageCode values).
+ */
+export type ErrorCode = '0' | '1' | '1000' | '1001' | '1002' | '1010' | '1100' | '1101' | '1200' | '1300' | '1301' | '1302' | '1400' | '1401' | '1402' | '1403' | '1404' | '1405' | '1500' | '1600' | '1601' | '1602' | '1603' | '1604' | '1605' | '1610' | '1611' | '1700' | '1800';
 
 export type ClientGroupTemplateWritable = {
     id?: number;

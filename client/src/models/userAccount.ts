@@ -6,20 +6,24 @@ import {
     zUserInfo,
     zUserMod,
 } from "@/api/seb-server/generated/hey-api/zod.gen.ts";
+import { isoDateTimeCodec } from "@/models/codecs.ts";
 
-export const userAccountSchema = zUserInfo.pick({
-    uuid: true,
-    institutionId: true,
-    creationDate: true,
-    name: true,
-    surname: true,
-    username: true,
-    email: true,
-    active: true,
-    language: true,
-    timezone: true,
-    userRoles: true,
-});
+export const userAccountSchema = zUserInfo
+    .pick({
+        uuid: true,
+        institutionId: true,
+        name: true,
+        surname: true,
+        username: true,
+        email: true,
+        active: true,
+        language: true,
+        timezone: true,
+        userRoles: true,
+    })
+    .extend({
+        creationDate: isoDateTimeCodec.optional(),
+    });
 export type UserAccount = z.infer<typeof userAccountSchema>;
 
 export const userAccountPageSchema = zPageUserInfo

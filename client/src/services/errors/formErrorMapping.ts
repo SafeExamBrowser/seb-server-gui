@@ -4,6 +4,7 @@ import type {
     BackendFieldAliasMap,
     BackendFieldErrorMap,
 } from "@/services/errors/types.ts";
+import { FIELD_VALIDATION_CODE } from "@/services/errors/apiMessage.ts";
 import { toAppError } from "@/services/errors/toAppError.ts";
 import { getBackendFieldErrorText } from "@/services/errors/backendErrorText.ts";
 
@@ -117,7 +118,7 @@ export function hasOnlyHandledFieldErrors(
         return false;
     }
     const hasUnhandledFieldValidation = result.unhandledMessages.some(
-        (message) => message.messageCode === "1200",
+        (message) => message.messageCode === FIELD_VALIDATION_CODE,
     );
     return !hasUnhandledFieldValidation;
 }

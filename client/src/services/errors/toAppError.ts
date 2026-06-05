@@ -1,6 +1,8 @@
 import axios, { isAxiosError } from "axios";
 import { z } from "zod";
 import { zApiMessage } from "@/api/seb-server/generated/hey-api/zod.gen.ts";
+import type { EntityProcessingReport } from "@/api/seb-server/generated/hey-api/types.gen.ts";
+import { FIELD_VALIDATION_CODE } from "@/services/errors/apiMessage.ts";
 import type {
     APIMessage,
     AppError,
@@ -10,8 +12,7 @@ import type {
 const zApiMessageArray = z.array(zApiMessage);
 
 export function isAPIMessage(value: unknown): value is APIMessage {
-    const parsed = zApiMessage.safeParse(value);
-    return parsed.success && typeof parsed.data.messageCode === "string";
+    return zApiMessage.safeParse(value).success;
 }
 
 export function isAppError(error: unknown): error is AppError {
@@ -33,26 +34,13 @@ export function isAppError(error: unknown): error is AppError {
 export function normalizeAPIMessages(payload: unknown): APIMessage[] {
     const raw = Array.isArray(payload) ? payload : [payload];
     const parsed = zApiMessageArray.safeParse(raw);
-    if (!parsed.success) {
-        return [];
-    }
-    return parsed.data
-        .filter(
-            (message): message is APIMessage =>
-                typeof message.messageCode === "string",
-        )
-        .map((message) => ({
-            messageCode: message.messageCode,
-            systemMessage: message.systemMessage,
-            details: message.details,
-            attributes: message.attributes,
-        }));
+    return parsed.success ? parsed.data : [];
 }
 
-function parseBackendFieldError(
+export function parseBackendFieldError(
     message: APIMessage,
 ): BackendFieldError | undefined {
-    if (message.messageCode !== "1200") {
+    if (message.messageCode !== FIELD_VALIDATION_CODE) {
         return undefined;
     }
     const attributes = message.attributes ?? [];
@@ -66,6 +54,44 @@ function parseBackendFieldError(
         rule: attributes[2],
         ruleParams: attributes.slice(3),
     };
+}
+
+function buildBackendAppError(
+    messages: APIMessage[],
+    context: { status?: number; method?: string; url?: string; raw: unknown },
+): AppError {
+    const fieldErrors: BackendFieldError[] = [];
+    const globalMessages: APIMessage[] = [];
+    for (const message of messages) {
+        const fieldError = parseBackendFieldError(message);
+        if (fieldError) {
+            fieldErrors.push(fieldError);
+            continue;
+        }
+        globalMessages.push(message);
+    }
+    return {
+        kind: "backend",
+        status: context.status,
+        method: context.method,
+        url: context.url,
+        messages,
+        fieldErrors,
+        globalMessages,
+        raw: context.raw,
+    };
+}
+
+export function entityProcessingReportToAppError(
+    report: EntityProcessingReport,
+): AppError | undefined {
+    const messages = normalizeAPIMessages(
+        report.errors.map((entry) => entry.error_message),
+    );
+    if (messages.length === 0) {
+        return undefined;
+    }
+    return buildBackendAppError(messages, { raw: report });
 }
 
 export function toAppError(error: unknown): AppError {
@@ -104,26 +130,12 @@ export function toAppError(error: unknown): AppError {
 
         const messages = normalizeAPIMessages(data);
         if (messages.length > 0) {
-            const fieldErrors: BackendFieldError[] = [];
-            const globalMessages: APIMessage[] = [];
-            for (const message of messages) {
-                const fieldError = parseBackendFieldError(message);
-                if (fieldError) {
-                    fieldErrors.push(fieldError);
-                    continue;
-                }
-                globalMessages.push(message);
-            }
-            return {
-                kind: "backend",
+            return buildBackendAppError(messages, {
                 status,
                 method,
                 url,
-                messages,
-                fieldErrors,
-                globalMessages,
                 raw: error,
-            };
+            });
         }
 
         return {

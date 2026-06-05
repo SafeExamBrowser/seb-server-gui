@@ -25,7 +25,9 @@ import {
     type UserAccountPage,
     type UserAccountPasswordChange,
 } from "@/models/userAccount.ts";
+import { zEntityProcessingReport } from "@/api/seb-server/generated/hey-api/zod.gen.ts";
 import type {
+    EntityProcessingReport,
     GetUserAccountSupervisorsData,
     GetUserAccountsData,
 } from "@/api/seb-server/generated/hey-api/types.gen.ts";
@@ -99,13 +101,23 @@ export const changeUserAccountPassword = (
         body: z.encode(userAccountPasswordChangeSchema, body),
     }).then(({ data }) => z.decode(userAccountSchema, data));
 
-export const deleteUserAccount = (modelId: string): Promise<void> =>
-    deleteUserAccountSdk({ client, path: { modelId } }).then(() => undefined);
+export const deleteUserAccount = (
+    modelId: string,
+): Promise<EntityProcessingReport> =>
+    deleteUserAccountSdk({ client, path: { modelId } }).then(({ data }) =>
+        z.decode(zEntityProcessingReport, data),
+    );
 
-export const activateUserAccount = (modelId: string): Promise<void> =>
-    activateUserAccountSdk({ client, path: { modelId } }).then(() => undefined);
+export const activateUserAccount = (
+    modelId: string,
+): Promise<EntityProcessingReport> =>
+    activateUserAccountSdk({ client, path: { modelId } }).then(({ data }) =>
+        z.decode(zEntityProcessingReport, data),
+    );
 
-export const deactivateUserAccount = (modelId: string): Promise<void> =>
-    deactivateUserAccountSdk({ client, path: { modelId } }).then(
-        () => undefined,
+export const deactivateUserAccount = (
+    modelId: string,
+): Promise<EntityProcessingReport> =>
+    deactivateUserAccountSdk({ client, path: { modelId } }).then(({ data }) =>
+        z.decode(zEntityProcessingReport, data),
     );

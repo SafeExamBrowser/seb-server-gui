@@ -14445,7 +14445,8 @@
                         "description": "Optional message attributes, usually field names or validation context.",
                         "items": { "type": "string" }
                     }
-                }
+                },
+                "required": ["messageCode"]
             },
             "LmsSetupError": {
                 "type": "object",
@@ -14597,8 +14598,8 @@
                         "type": "object",
                         "additionalProperties": { "type": "string" }
                     },
-                    "startURL": { "type": "string" },
-                    "description": { "type": "string" }
+                    "description": { "type": "string" },
+                    "startURL": { "type": "string" }
                 },
                 "required": ["externalId", "institutionId", "type"]
             },
@@ -16351,7 +16352,6 @@
                     "grantChecked": { "type": "boolean" },
                     "grantDenied": { "type": "boolean" },
                     "sebversionDenied": { "type": "boolean" },
-                    "nf": { "type": "integer", "format": "int32" },
                     "st": {
                         "type": "string",
                         "enum": [
@@ -16368,6 +16368,7 @@
                         "type": "object",
                         "additionalProperties": { "type": "string" }
                     },
+                    "nf": { "type": "integer", "format": "int32" },
                     "id": { "type": "integer" }
                 }
             },
@@ -17257,6 +17258,41 @@
                     },
                     "complete": { "type": "boolean" }
                 }
+            },
+            "ErrorCode": {
+                "type": "string",
+                "description": "Catalogue of stable SEB Server APIMessage codes (possible APIMessage.messageCode values).",
+                "enum": [
+                    "0",
+                    "1",
+                    "1000",
+                    "1001",
+                    "1002",
+                    "1010",
+                    "1100",
+                    "1101",
+                    "1200",
+                    "1300",
+                    "1301",
+                    "1302",
+                    "1400",
+                    "1401",
+                    "1402",
+                    "1403",
+                    "1404",
+                    "1405",
+                    "1500",
+                    "1600",
+                    "1601",
+                    "1602",
+                    "1603",
+                    "1604",
+                    "1605",
+                    "1610",
+                    "1611",
+                    "1700",
+                    "1800"
+                ]
             }
         },
         "securitySchemes": {

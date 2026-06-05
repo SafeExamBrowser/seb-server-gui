@@ -3,7 +3,10 @@ import { useMutation, useQueryClient } from "@tanstack/vue-query";
 import { getUserAccountsQueryKey } from "@/api/seb-server/generated/hey-api/@tanstack/vue-query.gen.ts";
 import { heySebServerClient } from "@/api/seb-server/http/heySebServerClient.ts";
 import { deleteUserAccount } from "@/services/seb-server/userAccountService.ts";
-import { toAppErrorOrUndefined } from "@/services/errors/toAppError.ts";
+import {
+    entityProcessingReportToAppError,
+    toAppErrorOrUndefined,
+} from "@/services/errors/toAppError.ts";
 import type { UserAccountPage } from "@/models/userAccount.ts";
 
 const listKey = () => getUserAccountsQueryKey({ client: heySebServerClient });
@@ -11,7 +14,14 @@ const listKey = () => getUserAccountsQueryKey({ client: heySebServerClient });
 export const useDeleteUserAccount = () => {
     const queryClient = useQueryClient();
     const mutation = useMutation({
-        mutationFn: (uuid: string) => deleteUserAccount(uuid),
+        mutationFn: async (uuid: string) => {
+            const report = await deleteUserAccount(uuid);
+            const reportError = entityProcessingReportToAppError(report);
+            if (reportError) {
+                throw reportError;
+            }
+            return report;
+        },
         onSuccess: (_data, uuid) => {
             queryClient.setQueriesData<UserAccountPage>(
                 { queryKey: listKey() },

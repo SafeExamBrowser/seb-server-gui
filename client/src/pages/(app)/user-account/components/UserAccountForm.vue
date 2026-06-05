@@ -263,9 +263,9 @@ watch(
     },
 );
 
-const formatDate = (iso?: string): string => {
-    if (!iso) return "";
-    return moment(iso).format("MMM D, YYYY");
+const formatDate = (date?: Date): string => {
+    if (!date) return "";
+    return moment(date).format("MMM D, YYYY");
 };
 
 const buildUserRoles = (selectedRole: UserRole): UserAccount["userRoles"] => {
