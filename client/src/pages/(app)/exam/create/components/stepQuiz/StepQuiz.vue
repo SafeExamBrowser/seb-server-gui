@@ -94,7 +94,7 @@
 <script setup lang="ts">
 import { computed, ref, watch } from "vue";
 import { useI18n } from "vue-i18n";
-import { VDateInput } from "vuetify/labs/VDateInput";
+import { VDateInput } from "vuetify/components";
 import StepItem from "@/components/widgets/stepItem/StepItem.vue";
 import LoadingFallbackComponent from "@/components/widgets/loadingFallbackComponent/LoadingFallbackComponent.vue";
 import { useStepQuizStore } from "./composables/store/useStepQuizStore.ts";
