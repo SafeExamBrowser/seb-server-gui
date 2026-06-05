@@ -82,13 +82,11 @@
         "vue-router": "5.0.7",
         "vue-tsc": "3.2.9",
         "vuetify": "4.0.7",
-        "zod": "4.4.3"
+        "zod": "4.4.3",
+        "@hey-api/openapi-ts": "0.97.3"
     },
     "keywords": [],
     "author": "",
     "license": "ISC",
-    "description": "",
-    "devDependencies": {
-        "@hey-api/openapi-ts": "0.97.3"
-    }
+    "description": ""
 }
