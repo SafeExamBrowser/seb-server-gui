@@ -17,7 +17,7 @@
 </template>
 
 <script setup lang="ts">
-import { VDateInput } from "vuetify/labs/VDateInput";
+import { VDateInput } from "vuetify/components";
 
 withDefaults(
     defineProps<{

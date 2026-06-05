@@ -20,9 +20,9 @@ import type {
 
 declare module 'vue-router' {
   interface TypesConfig {
-    ParamParsers:
-      | never
+    _ParamParsers: {}
     RouteNamedMap: import('vue-router/auto-routes').RouteNamedMap
+    _RouteFileInfoMap: import('vue-router/auto-routes')._RouteFileInfoMap
   }
 }
 
@@ -374,11 +374,15 @@ declare module 'vue-router/auto-routes' {
         | '/(app)/user-account/create/'
       views:
         | 'default'
+      pathParamNames:
+        | never
     }
     'src/pages/(app)/index.vue': {
       routes:
         | '/(app)/'
       views:
+        | never
+      pathParamNames:
         | never
     }
     'src/pages/(app)/analyze/index.vue': {
@@ -386,11 +390,15 @@ declare module 'vue-router/auto-routes' {
         | '/(app)/analyze/'
       views:
         | never
+      pathParamNames:
+        | never
     }
     'src/pages/(app)/applications-search/index.vue': {
       routes:
         | '/(app)/applications-search/'
       views:
+        | never
+      pathParamNames:
         | never
     }
     'src/pages/(app)/archive/index.vue': {
@@ -398,11 +406,15 @@ declare module 'vue-router/auto-routes' {
         | '/(app)/archive/'
       views:
         | never
+      pathParamNames:
+        | never
     }
     'src/pages/(app)/assessment-tool/index.vue': {
       routes:
         | '/(app)/assessment-tool/'
       views:
+        | never
+      pathParamNames:
         | never
     }
     'src/pages/(app)/assessment-tool/[id]/index.vue': {
@@ -410,11 +422,15 @@ declare module 'vue-router/auto-routes' {
         | '/(app)/assessment-tool/[id]/'
       views:
         | never
+      pathParamNames:
+        | never
     }
     'src/pages/(app)/assessment-tool/create/index.vue': {
       routes:
         | '/(app)/assessment-tool/create/'
       views:
+        | never
+      pathParamNames:
         | never
     }
     'src/pages/(app)/certificate/index.vue': {
@@ -422,11 +438,15 @@ declare module 'vue-router/auto-routes' {
         | '/(app)/certificate/'
       views:
         | never
+      pathParamNames:
+        | never
     }
     'src/pages/(app)/connection-configuration/index.vue': {
       routes:
         | '/(app)/connection-configuration/'
       views:
+        | never
+      pathParamNames:
         | never
     }
     'src/pages/(app)/connection-configuration/[id]/index.vue': {
@@ -434,11 +454,15 @@ declare module 'vue-router/auto-routes' {
         | '/(app)/connection-configuration/[id]/'
       views:
         | never
+      pathParamNames:
+        | never
     }
     'src/pages/(app)/connection-configuration/create/index.vue': {
       routes:
         | '/(app)/connection-configuration/create/'
       views:
+        | never
+      pathParamNames:
         | never
     }
     'src/pages/(app)/exam/index.vue': {
@@ -446,11 +470,15 @@ declare module 'vue-router/auto-routes' {
         | '/(app)/exam/'
       views:
         | never
+      pathParamNames:
+        | never
     }
     'src/pages/(app)/exam/[id]/index.vue': {
       routes:
         | '/(app)/exam/[id]/'
       views:
+        | never
+      pathParamNames:
         | never
     }
     'src/pages/(app)/exam/create/index.vue': {
@@ -458,11 +486,15 @@ declare module 'vue-router/auto-routes' {
         | '/(app)/exam/create/'
       views:
         | never
+      pathParamNames:
+        | never
     }
     'src/pages/(app)/exam-template/index.vue': {
       routes:
         | '/(app)/exam-template/'
       views:
+        | never
+      pathParamNames:
         | never
     }
     'src/pages/(app)/exam-template/[id]/index.vue': {
@@ -470,11 +502,15 @@ declare module 'vue-router/auto-routes' {
         | '/(app)/exam-template/[id]/'
       views:
         | never
+      pathParamNames:
+        | never
     }
     'src/pages/(app)/exam-template/create/index.vue': {
       routes:
         | '/(app)/exam-template/create/'
       views:
+        | never
+      pathParamNames:
         | never
     }
     'src/pages/(app)/gallery_[uuid]_[examId]/index.vue': {
@@ -482,11 +518,15 @@ declare module 'vue-router/auto-routes' {
         | '/(app)/gallery_[uuid]_[examId]/'
       views:
         | never
+      pathParamNames:
+        | never
     }
     'src/pages/(app)/institution/index.vue': {
       routes:
         | '/(app)/institution/'
       views:
+        | never
+      pathParamNames:
         | never
     }
     'src/pages/(app)/institution/[id]/index.vue': {
@@ -494,11 +534,15 @@ declare module 'vue-router/auto-routes' {
         | '/(app)/institution/[id]/'
       views:
         | never
+      pathParamNames:
+        | never
     }
     'src/pages/(app)/institution/create/index.vue': {
       routes:
         | '/(app)/institution/create/'
       views:
+        | never
+      pathParamNames:
         | never
     }
     'src/pages/(app)/monitoring/index.vue': {
@@ -506,11 +550,15 @@ declare module 'vue-router/auto-routes' {
         | '/(app)/monitoring/'
       views:
         | never
+      pathParamNames:
+        | never
     }
     'src/pages/(app)/monitoring/[examId]/index.vue': {
       routes:
         | '/(app)/monitoring/[examId]/'
       views:
+        | never
+      pathParamNames:
         | never
     }
     'src/pages/(app)/monitoring/[examId]/client/index.vue': {
@@ -518,11 +566,15 @@ declare module 'vue-router/auto-routes' {
         | '/(app)/monitoring/[examId]/client/'
       views:
         | never
+      pathParamNames:
+        | never
     }
     'src/pages/(app)/monitoring/[examId]/client/[connectionToken]/index.vue': {
       routes:
         | '/(app)/monitoring/[examId]/client/[connectionToken]/'
       views:
+        | never
+      pathParamNames:
         | never
     }
     'src/pages/(app)/navigation-overview/index.vue': {
@@ -530,11 +582,15 @@ declare module 'vue-router/auto-routes' {
         | '/(app)/navigation-overview/'
       views:
         | never
+      pathParamNames:
+        | never
     }
     'src/pages/(app)/profile/index.vue': {
       routes:
         | '/(app)/profile/'
       views:
+        | never
+      pathParamNames:
         | never
     }
     'src/pages/(app)/sp-recording/[sessionId]/index.vue': {
@@ -542,11 +598,15 @@ declare module 'vue-router/auto-routes' {
         | '/(app)/sp-recording/[sessionId]/'
       views:
         | never
+      pathParamNames:
+        | never
     }
     'src/pages/(app)/sp-recording/application-search/[sessionId]/index.vue': {
       routes:
         | '/(app)/sp-recording/application-search/[sessionId]/'
       views:
+        | never
+      pathParamNames:
         | never
     }
     'src/pages/(app)/sp-search/index.vue': {
@@ -554,11 +614,15 @@ declare module 'vue-router/auto-routes' {
         | '/(app)/sp-search/'
       views:
         | never
+      pathParamNames:
+        | never
     }
     'src/pages/(app)/user-account/index.vue': {
       routes:
         | '/(app)/user-account/'
       views:
+        | never
+      pathParamNames:
         | never
     }
     'src/pages/(app)/user-account/[userUuid]/index.vue': {
@@ -566,11 +630,15 @@ declare module 'vue-router/auto-routes' {
         | '/(app)/user-account/[userUuid]/'
       views:
         | never
+      pathParamNames:
+        | never
     }
     'src/pages/(app)/user-account/create/index.vue': {
       routes:
         | '/(app)/user-account/create/'
       views:
+        | never
+      pathParamNames:
         | never
     }
     'src/pages/(public).vue': {
@@ -580,17 +648,23 @@ declare module 'vue-router/auto-routes' {
         | '/(public)/register/'
       views:
         | 'default'
+      pathParamNames:
+        | never
     }
     'src/pages/(public)/login/index.vue': {
       routes:
         | '/(public)/login/'
       views:
         | never
+      pathParamNames:
+        | never
     }
     'src/pages/(public)/register/index.vue': {
       routes:
         | '/(public)/register/'
       views:
+        | never
+      pathParamNames:
         | never
     }
   }
