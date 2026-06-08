@@ -4,9 +4,9 @@ import {
     VStepperVertical,
     VStepperVerticalActions,
     VStepperVerticalItem,
-} from "vuetify/labs/VStepperVertical";
-import { VColorInput } from "vuetify/labs/VColorInput";
-import { VFileUpload } from "vuetify/labs/VFileUpload";
+    VColorInput,
+    VFileUpload,
+} from "vuetify/components";
 import { createVuetify } from "vuetify";
 
 export const vuetify = createVuetify({
