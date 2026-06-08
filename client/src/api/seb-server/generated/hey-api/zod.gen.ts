@@ -365,8 +365,8 @@ export const zExam = z.object({
     followupId: z.int().optional(),
     excludeFromDeletion: z.boolean().optional(),
     additionalAttributes: z.record(z.string(), z.string()).optional(),
-    description: z.string().optional(),
-    startURL: z.string().optional()
+    startURL: z.string().optional(),
+    description: z.string().optional()
 });
 
 export const zClientGroupTemplate = z.object({
@@ -1282,8 +1282,8 @@ export const zClientMonitoringDataView = z.object({
         'DISABLED'
     ]).optional(),
     lat: z.int().optional(),
-    nf: z.int().min(-2147483648, { error: 'Invalid value: Expected int32 to be >= -2147483648' }).max(2147483647, { error: 'Invalid value: Expected int32 to be <= 2147483647' }).optional(),
     iv: z.record(z.string(), z.string()).optional(),
+    nf: z.int().min(-2147483648, { error: 'Invalid value: Expected int32 to be >= -2147483648' }).max(2147483647, { error: 'Invalid value: Expected int32 to be <= 2147483647' }).optional(),
     id: z.int().optional()
 });
 

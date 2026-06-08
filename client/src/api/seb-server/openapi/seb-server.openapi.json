@@ -14598,8 +14598,8 @@
                         "type": "object",
                         "additionalProperties": { "type": "string" }
                     },
-                    "description": { "type": "string" },
-                    "startURL": { "type": "string" }
+                    "startURL": { "type": "string" },
+                    "description": { "type": "string" }
                 },
                 "required": ["externalId", "institutionId", "type"]
             },
@@ -16364,11 +16364,11 @@
                         ]
                     },
                     "lat": { "type": "integer" },
-                    "nf": { "type": "integer", "format": "int32" },
                     "iv": {
                         "type": "object",
                         "additionalProperties": { "type": "string" }
                     },
+                    "nf": { "type": "integer", "format": "int32" },
                     "id": { "type": "integer" }
                 }
             },
