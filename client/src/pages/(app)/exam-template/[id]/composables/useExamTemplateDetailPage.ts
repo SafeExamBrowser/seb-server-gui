@@ -4,10 +4,12 @@ import { useRoute } from "vue-router";
 import i18n from "@/i18n";
 import type { BreadCrumbItem } from "@/components/widgets/breadCrumb/types.ts";
 import {
+    ClientGroupExisting,
     ExamTemplate,
     IndicatorExisting,
 } from "@/models/seb-server/examTemplate.ts";
 import { updateExamTemplate } from "@/services/seb-server/examTemplateService.ts";
+import { SCREEN_PROCTORING_COLLECTION_STRATEGY } from "@/models/seb-server/screenProctoring.ts";
 import { useSupervisors } from "@/composables/useSupervisors.ts";
 import { useMutation } from "@/composables/useMutation.ts";
 import { useExamTemplate } from "./api/useExamTemplate.ts";
@@ -85,6 +87,25 @@ export const useExamTemplateDetailPage = () => {
         () => examTemplate.value?.supporter ?? [],
     );
 
+    const clientGroups = computed<ClientGroupExisting[]>(
+        () => examTemplate.value?.CLIENT_GROUP_TEMPLATES ?? [],
+    );
+
+    const screenProctoring = {
+        enabled: computed(
+            () =>
+                examTemplate.value?.EXAM_ATTRIBUTES?.enableScreenProctoring ===
+                "true",
+        ),
+        collectionStrategy: computed(() =>
+            SCREEN_PROCTORING_COLLECTION_STRATEGY.find(
+                (strategy) =>
+                    strategy ===
+                    examTemplate.value?.EXAM_ATTRIBUTES?.spsCollectingStrategy,
+            ),
+        ),
+    };
+
     const updateMutation = useMutation((template: ExamTemplate) =>
         updateExamTemplate(template),
     );
@@ -118,6 +139,8 @@ export const useExamTemplateDetailPage = () => {
         indicators,
         availableSupervisors,
         selectedSupervisorIds,
+        clientGroups,
+        screenProctoring,
         updateTemplate,
     };
 };

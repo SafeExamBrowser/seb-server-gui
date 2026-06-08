@@ -4,31 +4,44 @@
         :subtitle="$t('createTemplateExam.steps.clientGroup.subtitle')"
     >
         <div class="d-flex flex-column ga-8">
-            <ScreenProctoringForm v-if="useScreenProctoringStore().enabled" />
-            <CrudTable :config="useTable()">
-                <template #item.type="{ item }">
-                    {{ getTranslatedType(item) }}
-                </template>
-                <template #item.screenProctoringEnabled="{ item }">
-                    <FieldScreenProctoringEnabled :item="item" />
-                </template>
-            </CrudTable>
+            <ScreenProctoringForm v-if="screenProctoringStore.enabled" />
+            <ClientGroupsTable :deps="tableDeps" />
         </div>
     </StepItem>
 </template>
 
 <script setup lang="ts">
-import { useScreenProctoringStore } from "@/pages/(app)/exam-template/create/composables/store/useScreenProctoringStore.ts";
-import { ClientGroupForTable } from "@/pages/(app)/exam-template/create/components/stepClientGroup/types.ts";
-import CrudTable from "@/components/widgets/crudTable/CrudTable.vue";
-import ScreenProctoringForm from "@/pages/(app)/exam-template/create/components/stepClientGroup/components/screenProctoringForm/ScreenProctoringForm.vue";
+import { storeToRefs } from "pinia";
 import StepItem from "@/components/widgets/stepItem/StepItem.vue";
-import { useI18n } from "vue-i18n";
-import { useTable } from "@/pages/(app)/exam-template/create/components/stepClientGroup/composables/useTable.ts";
-import FieldScreenProctoringEnabled from "@/pages/(app)/exam-template/create/components/stepClientGroup/components/FieldScreenProctoringEnabled.vue";
+import ScreenProctoringForm from "./components/screenProctoringForm/ScreenProctoringForm.vue";
+import ClientGroupsTable from "@/components/widgets/clientGroupsTable/ClientGroupsTable.vue";
+import { ClientGroupsTableDeps } from "@/components/widgets/clientGroupsTable/types.ts";
+import {
+    ClientGroup,
+    ClientGroupExisting,
+} from "@/models/seb-server/examTemplate.ts";
+import { useScreenProctoringStore } from "@/pages/(app)/exam-template/create/composables/store/useScreenProctoringStore.ts";
+import { useStepClientGroupStore } from "./composables/store/useStepClientGroupStore.ts";
 
-const { t } = useI18n();
+const screenProctoringStore = useScreenProctoringStore();
+const clientGroupStore = useStepClientGroupStore();
 
-const getTranslatedType = (item: ClientGroupForTable) =>
-    t(`createTemplateExam.steps.clientGroup.fields.type.types.${item.type}`);
+const {
+    enabled: screenProctoringEnabled,
+    collectionStrategy: screenProctoringCollectionStrategy,
+} = storeToRefs(screenProctoringStore);
+const { groups } = storeToRefs(clientGroupStore);
+
+const tableDeps: ClientGroupsTableDeps = {
+    clientGroups: groups,
+    screenProctoring: {
+        enabled: screenProctoringEnabled,
+        collectionStrategy: screenProctoringCollectionStrategy,
+    },
+    createItem: async (item: ClientGroup) => clientGroupStore.createGroup(item),
+    updateItem: async (item: ClientGroupExisting) =>
+        clientGroupStore.updateGroup(item),
+    deleteItem: async (item: ClientGroupExisting) =>
+        clientGroupStore.deleteGroup(item),
+};
 </script>

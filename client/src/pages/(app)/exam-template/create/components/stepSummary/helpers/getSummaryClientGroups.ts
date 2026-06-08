@@ -1,6 +1,6 @@
 import i18n from "@/i18n";
 import {
-    ClientGroupTemplate,
+    ClientGroupExisting,
     ExamTemplate,
 } from "@/models/seb-server/examTemplate.ts";
 import { ClientGroupEnum } from "@/models/seb-server/clientGroupEnum.ts";
@@ -12,9 +12,9 @@ import {
 export const getSummaryClientGroups = (
     examTemplate: ExamTemplate,
 ): SummarySectionData => {
-    const getTypeDetails = (clientGroup: ClientGroupTemplate): string => {
+    const getTypeDetails = (clientGroup: ClientGroupExisting): string => {
         let typeDetails = i18n.global.t(
-            `createTemplateExam.steps.clientGroup.fields.type.types.${clientGroup.type}`,
+            `clientGroups.fields.type.types.${clientGroup.type}`,
         );
 
         // TODO @alain: look into this again when we have stricter API types.
@@ -29,7 +29,7 @@ export const getSummaryClientGroups = (
 
         if (clientGroup.type === ClientGroupEnum.CLIENT_OS) {
             typeDetails += ` (${i18n.global.t(
-                `createTemplateExam.steps.clientGroup.fields.clientOS.types.${clientGroup.clientOS}`,
+                `clientGroups.fields.clientOS.types.${clientGroup.clientOS}`,
             )})`;
         }
 
@@ -41,24 +41,20 @@ export const getSummaryClientGroups = (
     };
 
     const getClientGroup = (
-        clientGroup: ClientGroupTemplate,
+        clientGroup: ClientGroupExisting,
         clientGroupIndex: number,
     ) => {
         const items: (SummarySectionItem & { type: "basic" })[] = [
             {
                 type: "basic" as const,
                 key: "name",
-                label: i18n.global.t(
-                    "createTemplateExam.steps.clientGroup.fields.name.label",
-                ),
+                label: i18n.global.t("clientGroups.fields.name.label"),
                 value: { type: "string", value: clientGroup.name },
             },
             {
                 type: "basic" as const,
                 key: "typeDetails",
-                label: i18n.global.t(
-                    "createTemplateExam.steps.clientGroup.fields.type.label",
-                ),
+                label: i18n.global.t("clientGroups.fields.type.label"),
                 value: {
                     type: "string",
                     value: getTypeDetails(clientGroup),
@@ -76,7 +72,7 @@ export const getSummaryClientGroups = (
                 type: "basic" as const,
                 key: "screenProctoringEnabled",
                 label: i18n.global.t(
-                    "createTemplateExam.steps.clientGroup.fields.screenProctoringEnabled.label",
+                    "clientGroups.fields.screenProctoringEnabled.label",
                 ),
                 value: {
                     type: "boolean",
@@ -97,7 +93,7 @@ export const getSummaryClientGroups = (
     const getFallbackGroupTypeValue = () => {
         if (examTemplate.EXAM_ATTRIBUTES.spsCollectingStrategy === "EXAM") {
             return i18n.global.t(
-                "createTemplateExam.steps.clientGroup.fields.type.types.SCREEN_PROCTORING_SINGLE",
+                "clientGroups.fields.type.types.SCREEN_PROCTORING_SINGLE",
             );
         }
 
@@ -106,7 +102,7 @@ export const getSummaryClientGroups = (
             "APPLY_SEB_GROUPS"
         ) {
             return i18n.global.t(
-                "createTemplateExam.steps.clientGroup.fields.type.types.SCREEN_PROCTORING_FALLBACK",
+                "clientGroups.fields.type.types.SCREEN_PROCTORING_FALLBACK",
             );
         }
 
@@ -124,9 +120,7 @@ export const getSummaryClientGroups = (
             {
                 type: "basic" as const,
                 key: "name",
-                label: i18n.global.t(
-                    "createTemplateExam.steps.clientGroup.fields.name.label",
-                ),
+                label: i18n.global.t("clientGroups.fields.name.label"),
                 value: {
                     type: "string",
                     value: examTemplate.EXAM_ATTRIBUTES.spsCollectingGroupName,
@@ -135,9 +129,7 @@ export const getSummaryClientGroups = (
             {
                 type: "basic" as const,
                 key: "typeDetails",
-                label: i18n.global.t(
-                    "createTemplateExam.steps.clientGroup.fields.type.label",
-                ),
+                label: i18n.global.t("clientGroups.fields.type.label"),
                 value: {
                     type: "string",
                     value: getFallbackGroupTypeValue(),
@@ -147,7 +139,7 @@ export const getSummaryClientGroups = (
                 type: "basic" as const,
                 key: "screenProctoringEnabled",
                 label: i18n.global.t(
-                    "createTemplateExam.steps.clientGroup.fields.screenProctoringEnabled.label",
+                    "clientGroups.fields.screenProctoringEnabled.label",
                 ),
                 value: {
                     type: "boolean",

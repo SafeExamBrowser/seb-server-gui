@@ -4,6 +4,7 @@ import { ScreenProctoringSettings } from "@/models/seb-server/screenProctoring";
 import {
     ExamTemplate,
     ExamTemplates,
+    clientGroupTemplatesSchema,
     indicatorTemplatesSchema,
 } from "@/models/seb-server/examTemplate";
 import { ConfigurationTemplateKey } from "@/models/seb-server/configurationNode";
@@ -48,6 +49,10 @@ export const getExamTemplate = async (id: string): Promise<ExamTemplate> => {
         indicatorTemplates: z.decode(
             indicatorTemplatesSchema,
             template.indicatorTemplates,
+        ),
+        CLIENT_GROUP_TEMPLATES: z.decode(
+            clientGroupTemplatesSchema,
+            template.CLIENT_GROUP_TEMPLATES,
         ),
     };
 };
@@ -141,6 +146,10 @@ export const updateExamTemplate = async (
         indicatorTemplates: z.decode(
             indicatorTemplatesSchema,
             updated.indicatorTemplates,
+        ),
+        CLIENT_GROUP_TEMPLATES: z.decode(
+            clientGroupTemplatesSchema,
+            updated.CLIENT_GROUP_TEMPLATES,
         ),
     };
 };

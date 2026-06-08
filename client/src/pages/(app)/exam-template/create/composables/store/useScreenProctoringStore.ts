@@ -1,4 +1,4 @@
-import { ScreenProctoringCollectionStrategy } from "@/pages/(app)/exam-template/create/types/types.ts";
+import { ScreenProctoringCollectionStrategy } from "@/models/seb-server/screenProctoring.ts";
 import { defineStore } from "pinia";
 import { computed, ref } from "vue";
 

@@ -1,85 +1,84 @@
 import {
     ClientGroupForTable,
+    ClientGroupsTableDeps,
     ClientGroupTransient,
     clientGroupTransientToClientGroup,
+    clientGroupTransientToClientGroupExisting,
     isFallbackGroup,
-} from "@/pages/(app)/exam-template/create/components/stepClientGroup/types.ts";
-import { computed } from "vue";
-import { useScreenProctoringStore } from "@/pages/(app)/exam-template/create/composables/store/useScreenProctoringStore.ts";
-import { useStepClientGroupStore } from "@/pages/(app)/exam-template/create/components/stepClientGroup/composables/store/useStepClientGroupStore.ts";
-import { storeToRefs } from "pinia";
+    SCREEN_PROCTORING_FALLBACK_ROW_ID,
+} from "@/components/widgets/clientGroupsTable/types.ts";
+import { computed, Ref } from "vue";
 import i18n from "@/i18n";
 import { useFormFields } from "./useFormFields.ts";
-import { getEmptyClientGroup } from "@/pages/(app)/exam-template/create/components/stepClientGroup/composables/store/useStepClientGroupStore.ts";
 import { CrudTableConfig } from "@/components/widgets/crudTable/types.ts";
 
-export const useTable = (): CrudTableConfig<
-    ClientGroupForTable,
-    ClientGroupTransient
-> => {
-    const { getFormFields } = useFormFields();
-    const screenProctoringStore = useScreenProctoringStore();
-    const { createGroup, updateGroup, deleteGroup } = useStepClientGroupStore();
+const getEmptyClientGroup = (): ClientGroupTransient => ({
+    screenProctoringEnabled: false,
+});
+
+export const useTable = (
+    deps: ClientGroupsTableDeps,
+    screenProctoringAllowedForGroups: Ref<boolean>,
+): CrudTableConfig<ClientGroupForTable, ClientGroupTransient> => {
+    const { getFormFields } = useFormFields(
+        deps.clientGroups,
+        screenProctoringAllowedForGroups,
+    );
 
     const headers = [
         {
-            title: i18n.global.t(
-                "createTemplateExam.steps.clientGroup.fields.name.label",
-            ),
+            title: i18n.global.t("clientGroups.fields.name.label"),
             value: "name",
             width: "30%",
         },
         {
-            title: i18n.global.t(
-                "createTemplateExam.steps.clientGroup.fields.type.label",
-            ),
+            title: i18n.global.t("clientGroups.fields.type.label"),
             value: "type",
             width: "30%",
         },
-        screenProctoringStore.enabled
+        deps.screenProctoring.enabled.value
             ? {
                   title: i18n.global.t(
-                      "createTemplateExam.steps.clientGroup.fields.screenProctoringEnabled.label",
+                      "clientGroups.fields.screenProctoringEnabled.label",
                   ),
                   value: "screenProctoringEnabled",
                   width: "30%",
               }
             : undefined,
         {
-            title: i18n.global.t(
-                "createTemplateExam.steps.clientGroup.fields.actions.label",
-            ),
+            title: i18n.global.t("clientGroups.fields.actions.label"),
             value: "actions",
             align: "end" as const,
             width: "10%",
         },
     ].filter((header) => header !== undefined);
 
-    const { groups: groupsFromStore } = storeToRefs(useStepClientGroupStore());
-
     const fallbackGroup = computed<ClientGroupForTable | undefined>(() => {
-        if (!screenProctoringStore.enabled) {
+        if (!deps.screenProctoring.enabled.value) {
             return undefined;
         }
 
-        if (screenProctoringStore.collectionStrategy === "EXAM") {
+        if (deps.screenProctoring.collectionStrategy.value === "EXAM") {
             return {
-                id: 0,
+                id: SCREEN_PROCTORING_FALLBACK_ROW_ID,
                 type: "SCREEN_PROCTORING_SINGLE" as const,
                 screenProctoringEnabled: true,
                 name: i18n.global.t(
-                    "createTemplateExam.steps.clientGroup.screenProctoringSingleGroupName",
+                    "clientGroups.screenProctoringSingleGroupName",
                 ),
             };
         }
 
-        if (screenProctoringStore.collectionStrategy === "APPLY_SEB_GROUPS") {
+        if (
+            deps.screenProctoring.collectionStrategy.value ===
+            "APPLY_SEB_GROUPS"
+        ) {
             return {
-                id: 0,
+                id: SCREEN_PROCTORING_FALLBACK_ROW_ID,
                 type: "SCREEN_PROCTORING_FALLBACK" as const,
                 screenProctoringEnabled: true,
                 name: i18n.global.t(
-                    "createTemplateExam.steps.clientGroup.screenProctoringFallbackGroupName",
+                    "clientGroups.screenProctoringFallbackGroupName",
                 ),
             };
         }
@@ -88,24 +87,24 @@ export const useTable = (): CrudTableConfig<
     });
 
     const items = computed<ClientGroupForTable[]>(() =>
-        [...groupsFromStore.value, fallbackGroup.value].filter(
+        [...deps.clientGroups.value, fallbackGroup.value].filter(
             (item) => item !== undefined,
         ),
     );
 
     const allowCreate = computed<boolean>(() => {
         return !(
-            screenProctoringStore.enabled &&
-            screenProctoringStore.collectionStrategy === undefined
+            deps.screenProctoring.enabled.value &&
+            deps.screenProctoring.collectionStrategy.value === undefined
         );
     });
 
     const createItem = async (item: ClientGroupTransient) => {
-        createGroup(clientGroupTransientToClientGroup(item));
+        await deps.createItem(clientGroupTransientToClientGroup(item));
     };
 
     const updateItem = async (item: ClientGroupTransient) => {
-        updateGroup(clientGroupTransientToClientGroup(item));
+        await deps.updateItem(clientGroupTransientToClientGroupExisting(item));
     };
 
     const deleteItem = async (item: ClientGroupForTable) => {
@@ -113,7 +112,7 @@ export const useTable = (): CrudTableConfig<
             throw new Error("Fallback group cannot be deleted!");
         }
 
-        deleteGroup(item);
+        await deps.deleteItem(item);
     };
 
     const getExistingItem = (

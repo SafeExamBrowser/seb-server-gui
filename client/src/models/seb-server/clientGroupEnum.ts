@@ -14,3 +14,11 @@ export enum ClientOSEnum {
     IPAD_OS = "IPAD_OS",
     I_OS_OR_IPAD_OS = "I_OS_OR_IPAD_OS",
 }
+
+export const clientOSLimitedValues = [
+    ClientOSEnum.WINDOWS,
+    ClientOSEnum.MAC_OS,
+    ClientOSEnum.I_OS,
+    ClientOSEnum.IPAD_OS,
+    ClientOSEnum.I_OS_OR_IPAD_OS,
+] as const;

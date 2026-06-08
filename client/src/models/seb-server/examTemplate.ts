@@ -1,5 +1,9 @@
 import { z } from "zod";
 import { IndicatorEnum } from "@/models/seb-server/monitoringEnums.ts";
+import {
+    ClientGroupEnum,
+    clientOSLimitedValues,
+} from "@/models/seb-server/clientGroupEnum.ts";
 
 // RGB hash translation:
 // - the API delivers/expects colors without a "#", the app works with a "#"
@@ -32,17 +36,58 @@ export type IndicatorExisting = z.infer<typeof indicatorExistingSchema>;
 
 export const indicatorTemplatesSchema = z.array(indicatorExistingSchema);
 
-export type ClientGroupTemplate = {
-    id?: number; // PK of the ClientGroupTemplate only available when the ClientGroupTemplate exists
-    name: string; // mandatory, min 3 - max 255 chars, name is unique within CLIENT_GROUP_TEMPLATES of ExamTemplate
-    type: string; // mandatory, type of client group: "ClientGroupEnum" (do not use SP_FALLBACK_GROUP in selection)
-    color?: string; // optional, hex color value without the "#"
-    ipRangeStart?: string; // optional (only when type is IP_V4_RANGE), IP address, validate correct IP address format
-    ipRangeEnd?: string; // optional (only when type is IP_V4_RANGE), IP address, validate correct IP address format
-    clientOS?: string; // optional (only when type is CLIENT_OS), ClientOSEnum value
-    nameRangeStartLetter?: string; // optional (mandatory only when type id NAME_ALPHABETICAL_RANGE), no min, max 255, first letter must be before first letter of nameRangeEndLetter
-    nameRangeEndLetter?: string; // optional (mandatory only when type id NAME_ALPHABETICAL_RANGE), no min, max 255, first letter must be after first letter of nameRangeStartLetter
+const clientGroupBaseShape = {
+    name: z.string(), // rules: min 3 - max 255 chars, unique within an exam template
+    screenProctoringEnabled: z.boolean(),
 };
+
+const ipV4RangeShape = {
+    type: z.literal(ClientGroupEnum.IP_V4_RANGE),
+    ipRangeStart: z.string(), // rules: IP address
+    ipRangeEnd: z.string(), // rules: IP address
+};
+
+const clientOSShape = {
+    type: z.literal(ClientGroupEnum.CLIENT_OS),
+    clientOS: z.enum(clientOSLimitedValues),
+};
+
+const nameRangeShape = {
+    type: z.literal(ClientGroupEnum.NAME_ALPHABETICAL_RANGE),
+    nameRangeStartLetter: z.string(), // rules: first letter must be before nameRangeEndLetter
+    nameRangeEndLetter: z.string(), // rules: first letter must be after nameRangeStartLetter
+};
+
+const ipV4RangeGroupSchema = z.object({
+    ...clientGroupBaseShape,
+    ...ipV4RangeShape,
+});
+const clientOSGroupSchema = z.object({
+    ...clientGroupBaseShape,
+    ...clientOSShape,
+});
+const nameRangeGroupSchema = z.object({
+    ...clientGroupBaseShape,
+    ...nameRangeShape,
+});
+
+export const clientGroupSchema = z.discriminatedUnion("type", [
+    ipV4RangeGroupSchema,
+    clientOSGroupSchema,
+    nameRangeGroupSchema,
+]);
+
+export type ClientGroup = z.infer<typeof clientGroupSchema>;
+
+export const clientGroupExistingSchema = z.discriminatedUnion("type", [
+    ipV4RangeGroupSchema.extend({ id: z.number() }),
+    clientOSGroupSchema.extend({ id: z.number() }),
+    nameRangeGroupSchema.extend({ id: z.number() }),
+]);
+
+export type ClientGroupExisting = z.infer<typeof clientGroupExistingSchema>;
+
+export const clientGroupTemplatesSchema = z.array(clientGroupExistingSchema);
 
 export type ExamAttribute = {
     enableScreenProctoring: string; // mandatory, screen proctoring enabled flag
@@ -64,7 +109,7 @@ export type ExamTemplate = {
     lmsIntegration: boolean; // mandatory, Assessment Tool Integration flag
     clientConfigurationId?: number; // (optional or mandatory?) identifier of the the selected connection configuration. (4)
     indicatorTemplates: IndicatorExisting[];
-    CLIENT_GROUP_TEMPLATES: ClientGroupTemplate[]; //optional list of created ClientGroupTemplates
+    CLIENT_GROUP_TEMPLATES: ClientGroupExisting[]; //optional list of created ClientGroups
     EXAM_ATTRIBUTES: ExamAttribute; // additional exam attributes see ExamAttribute
 };
 

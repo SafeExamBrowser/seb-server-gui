@@ -1,20 +1,16 @@
-import {
-    ClientGroup,
-    ClientGroupTransient,
-} from "@/pages/(app)/exam-template/create/components/stepClientGroup/types.ts";
+import { ClientGroupTransient } from "@/components/widgets/clientGroupsTable/types.ts";
 import { computed, Ref } from "vue";
 import { FormField } from "@/components/widgets/formBuilder/types.ts";
 import { ClientGroupEnum } from "@/models/seb-server/clientGroupEnum.ts";
+import { ClientGroupExisting } from "@/models/seb-server/examTemplate.ts";
 import i18n from "@/i18n";
 import { RuleAliases } from "vuetify/labs/rules";
-import { useStepClientGroupStore } from "@/pages/(app)/exam-template/create/components/stepClientGroup/composables/store/useStepClientGroupStore.ts";
 
 export const useFormFieldsBasic = (
     clientGroup: Ref<ClientGroupTransient>,
     rules: RuleAliases,
+    groups: Ref<ClientGroupExisting[]>,
 ): FormField[] => {
-    const stepClientGroupStore = useStepClientGroupStore();
-
     const name = computed<ClientGroupTransient["name"]>({
         get: (): ClientGroupTransient["name"] => clientGroup.value.name,
         set: (value: ClientGroupTransient["name"]) => {
@@ -37,28 +33,24 @@ export const useFormFieldsBasic = (
             type: "text" as const,
             name: "name",
             model: name,
-            label: i18n.global.t(
-                "createTemplateExam.steps.clientGroup.fields.name.label",
-            ),
-            placeholder: i18n.global.t(
-                "createTemplateExam.steps.clientGroup.fields.name.placeholder",
-            ),
+            label: i18n.global.t("clientGroups.fields.name.label"),
+            placeholder: i18n.global.t("clientGroups.fields.name.placeholder"),
             required: true,
             rules: [
                 rules.minLength(3),
                 rules.maxLength(255),
                 rules.blacklisted(
                     new Set(
-                        stepClientGroupStore.groups
-                            // Blacklist names of all other groups in the store.
-                            // Exclude current clientGroup, as it can already be in the store in case of editing.
+                        groups.value
+                            // Blacklist names of all other groups.
+                            // Exclude current clientGroup, as it can already be in the list in case of editing.
                             .filter(
                                 (group) => group.id !== clientGroup.value.id,
                             )
-                            .map((group: ClientGroup) => group.name),
+                            .map((group: ClientGroupExisting) => group.name),
                     ),
                     i18n.global.t(
-                        "createTemplateExam.steps.clientGroup.fields.name.validationErrorUniqueName",
+                        "clientGroups.fields.name.validationErrorUniqueName",
                     ),
                 ),
             ],
@@ -73,16 +65,10 @@ export const useFormFieldsBasic = (
                 ClientGroupEnum.NAME_ALPHABETICAL_RANGE,
             ].map((value) => ({
                 value,
-                text: i18n.global.t(
-                    `createTemplateExam.steps.clientGroup.fields.type.types.${value}`,
-                ),
+                text: i18n.global.t(`clientGroups.fields.type.types.${value}`),
             })),
-            label: i18n.global.t(
-                "createTemplateExam.steps.clientGroup.fields.type.label",
-            ),
-            placeholder: i18n.global.t(
-                "createTemplateExam.steps.clientGroup.fields.type.placeholder",
-            ),
+            label: i18n.global.t("clientGroups.fields.type.label"),
+            placeholder: i18n.global.t("clientGroups.fields.type.placeholder"),
             required: true,
         },
     ];
