@@ -1,4 +1,4 @@
-import { computed } from "vue";
+import { computed, ref } from "vue";
 import { useI18n } from "vue-i18n";
 import type {
     TableAction,
@@ -25,14 +25,14 @@ export function useArchiveTableActions(deps: {
     ]);
 }
 
-export function useArchiveTableSelection(deps: {
-    onSelect: (item: TableItem, selected: boolean) => void;
-}) {
+export function useArchiveTableSelection() {
+    const selectedIds = ref<[]>([]);
+
     return computed<TableRowSelect>(() => {
         return {
-            key: "selectExam",
+            key: "id",
             disabled: selectionDisabled,
-            onSelect: deps.onSelect,
+            selectionModel: selectedIds,
         };
     });
 }

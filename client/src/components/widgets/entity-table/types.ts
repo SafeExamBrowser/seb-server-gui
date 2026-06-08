@@ -1,3 +1,5 @@
+import { Ref } from "vue";
+
 export type TableHeader = {
     title: string;
     key: string;
@@ -28,6 +30,6 @@ export interface TableAction<T extends TableItem = TableItem> {
 
 export interface TableRowSelect<T extends TableItem = TableItem> {
     key: string;
+    selectionModel: Ref<[], []>;
     disabled?: (item: T) => boolean;
-    onSelect: (item: T, selected: boolean) => void;
 }

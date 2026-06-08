@@ -3,11 +3,10 @@ import { useExamTableHeaders } from "@/pages/(app)/exam/composables/useExamTable
 import {
     useArchiveTableActions,
     useArchiveTableSelection,
-} from "@/pages/(app)/archive/composables/useArchiveTableActions.ts";
+} from "@/pages/(app)/archive/composables/useArchiveTableAdditions";
 import { useEntityStatusFlow } from "@/components/widgets/entity-table/composables/useEntityStatusFlow.ts";
 import { useArchiveList } from "@/pages/(app)/archive/composables/useArchiveList.ts";
 import { useDoArchiveExams } from "@/pages/(app)/archive/api/useDoArchiveExams";
-import { TableItem } from "@/components/widgets/entity-table/types";
 
 export const useArchiveOverview = () => {
     const { headers, cellFormatters } = useExamTableHeaders();
@@ -32,9 +31,7 @@ export const useArchiveOverview = () => {
         onArchiveExam: archiveFlow.openStatusDialog,
     });
 
-    const selection = useArchiveTableSelection({
-        onSelect: notifySelect,
-    });
+    const selection = useArchiveTableSelection();
 
     return {
         list: reactive({
@@ -67,10 +64,3 @@ export const useArchiveOverview = () => {
         }),
     };
 };
-
-// eslint-disable-next-line @typescript-eslint/no-unused-vars
-function notifySelect(item: TableItem, selected: boolean) {
-    // TODO
-    // console.info(item);
-    // console.info("select: " + selected);
-}
