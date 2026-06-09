@@ -1,7 +1,7 @@
 import { Ref } from "vue";
 import {
     ClientGroupEnum,
-    clientOSLimitedValues,
+    ClientOSLimited,
 } from "@/models/seb-server/clientGroupEnum.ts";
 import {
     ClientGroup,
@@ -10,8 +10,6 @@ import {
     clientGroupSchema,
 } from "@/models/seb-server/examTemplate.ts";
 import { ScreenProctoringCollectionStrategy } from "@/models/seb-server/screenProctoring.ts";
-
-type ClientOSLimited = (typeof clientOSLimitedValues)[number];
 
 export type ClientGroupTransient = {
     id?: number; // absent for new groups; present (real id) only when editing
