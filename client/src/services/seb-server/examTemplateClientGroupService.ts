@@ -36,10 +36,9 @@ export const updateClientGroup = async (
 export const deleteClientGroup = async (
     examTemplateId: number,
     clientGroupId: number,
-): Promise<void> =>
-    (
-        await apiService.deleteRequest({
-            url: `${baseUrl}/${examTemplateId}/client-group/${clientGroupId}`,
-            options: { _authType: "seb" },
-        })
-    ).data;
+): Promise<void> => {
+    await apiService.deleteRequest({
+        url: `${baseUrl}/${examTemplateId}/client-group/${clientGroupId}`,
+        options: { _authType: "seb" },
+    });
+};
