@@ -4,10 +4,12 @@ import { useRoute } from "vue-router";
 import i18n from "@/i18n";
 import type { BreadCrumbItem } from "@/components/widgets/breadCrumb/types.ts";
 import {
+    ClientGroupExisting,
     ExamTemplate,
     IndicatorExisting,
 } from "@/models/seb-server/examTemplate.ts";
 import { updateExamTemplate } from "@/services/seb-server/examTemplateService.ts";
+import { SCREEN_PROCTORING_COLLECTION_STRATEGY } from "@/models/seb-server/screenProctoring.ts";
 import { useSupervisors } from "@/composables/useSupervisors.ts";
 import { useMutation } from "@/composables/useMutation.ts";
 import { useExamTemplate } from "./api/useExamTemplate.ts";
@@ -85,18 +87,45 @@ export const useExamTemplateDetailPage = () => {
         () => examTemplate.value?.supporter ?? [],
     );
 
+    const clientGroups = computed<ClientGroupExisting[]>(
+        () => examTemplate.value?.CLIENT_GROUP_TEMPLATES ?? [],
+    );
+
+    const screenProctoring = {
+        enabled: computed(
+            () =>
+                examTemplate.value?.EXAM_ATTRIBUTES?.enableScreenProctoring ===
+                "true",
+        ),
+        collectionStrategy: computed(() =>
+            SCREEN_PROCTORING_COLLECTION_STRATEGY.find(
+                (strategy) =>
+                    strategy ===
+                    examTemplate.value?.EXAM_ATTRIBUTES?.spsCollectingStrategy,
+            ),
+        ),
+    };
+
     const updateMutation = useMutation((template: ExamTemplate) =>
         updateExamTemplate(template),
     );
 
-    const updateTemplate = async (patch: Partial<ExamTemplate>) => {
+    const updateTemplate = async (
+        patch: Partial<
+            Omit<ExamTemplate, "indicatorTemplates" | "CLIENT_GROUP_TEMPLATES">
+        >,
+    ) => {
         if (!examTemplate.value) {
             return;
         }
 
+        // indicatorTemplates and CLIENT_GROUP_TEMPLATES have their own endpoints. The API
+        // ignores them on the examTemplate update endpoint, so we need to send empty arrays.
         const examTemplateUpdated = await updateMutation.mutateData({
             ...examTemplate.value,
             ...patch,
+            indicatorTemplates: [],
+            CLIENT_GROUP_TEMPLATES: [],
         });
 
         if (!examTemplateUpdated) {
@@ -118,6 +147,8 @@ export const useExamTemplateDetailPage = () => {
         indicators,
         availableSupervisors,
         selectedSupervisorIds,
+        clientGroups,
+        screenProctoring,
         updateTemplate,
     };
 };

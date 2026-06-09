@@ -1,7 +1,7 @@
 import { FormField } from "@/components/widgets/formBuilder/types.ts";
 import { storeToRefs } from "pinia";
 import { computed } from "vue";
-import { SCREEN_PROCTORING_COLLECTION_STRATEGY } from "@/pages/(app)/exam-template/create/types/types.ts";
+import { SCREEN_PROCTORING_COLLECTION_STRATEGY } from "@/models/seb-server/screenProctoring.ts";
 import { useScreenProctoringStore } from "@/pages/(app)/exam-template/create/composables/store/useScreenProctoringStore.ts";
 import i18n from "@/i18n";
 

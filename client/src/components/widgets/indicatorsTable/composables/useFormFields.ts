@@ -13,7 +13,7 @@ import { useFormFieldsThreshold } from "./useFormFieldsThreshold.ts";
 export const useFormFields = (indicators: Ref<IndicatorExisting[]>) => {
     const rules = useRules();
 
-    const getFormFields = (indicator: Ref<IndicatorTransient>) => {
+    const getFormFields = (indicator: Ref<IndicatorTransient>): FormField[] => {
         const getDefaultThresholds = (
             indicatorType: IndicatorTransient["type"],
         ): IndicatorTransient["thresholds"] => {
@@ -75,7 +75,7 @@ export const useFormFields = (indicators: Ref<IndicatorExisting[]>) => {
             },
         });
 
-        const formFields = computed<FormField[]>(() => [
+        return [
             {
                 type: "text" as const,
                 name: "name",
@@ -154,9 +154,7 @@ export const useFormFields = (indicators: Ref<IndicatorExisting[]>) => {
                     );
                 },
             } satisfies FormFieldCollection,
-        ]);
-
-        return formFields.value;
+        ];
     };
 
     return {

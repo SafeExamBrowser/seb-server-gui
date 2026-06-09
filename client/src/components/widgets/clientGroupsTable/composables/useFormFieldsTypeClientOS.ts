@@ -1,7 +1,5 @@
-import {
-    ClientGroupTransient,
-    clientOSLimitedValues,
-} from "@/pages/(app)/exam-template/create/components/stepClientGroup/types.ts";
+import { ClientGroupTransient } from "@/components/widgets/clientGroupsTable/types.ts";
+import { clientOSLimitedValues } from "@/models/seb-server/clientGroupEnum.ts";
 import { computed, Ref } from "vue";
 import i18n from "@/i18n";
 import { FormField } from "@/components/widgets/formBuilder/types.ts";
@@ -27,14 +25,12 @@ export const useFormFieldsTypeClientOS = (
             options: clientOSLimitedValues.map((value) => ({
                 value,
                 text: i18n.global.t(
-                    `createTemplateExam.steps.clientGroup.fields.clientOS.types.${value}`,
+                    `clientGroups.fields.clientOS.types.${value}`,
                 ),
             })),
-            label: i18n.global.t(
-                "createTemplateExam.steps.clientGroup.fields.clientOS.label",
-            ),
+            label: i18n.global.t("clientGroups.fields.clientOS.label"),
             placeholder: i18n.global.t(
-                "createTemplateExam.steps.clientGroup.fields.clientOS.placeholder",
+                "clientGroups.fields.clientOS.placeholder",
             ),
             required: true,
         },

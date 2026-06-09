@@ -23,7 +23,13 @@
             <template #screenProctoringSettings>
                 <BoxScreenProctoringSettings />
             </template>
-            <template #groups><BoxGroups /></template>
+            <template #groups>
+                <BoxClientGroups
+                    :exam-template-id="examTemplateId"
+                    :client-groups="clientGroups"
+                    :screen-proctoring="screenProctoring"
+                />
+            </template>
         </GridPage>
     </LoadingFallbackComponent>
 </template>
@@ -37,7 +43,7 @@ import BoxSebSettings from "./components/BoxSebSettings.vue";
 import BoxIndicators from "./components/BoxIndicators.vue";
 import BoxSupervisors from "./components/BoxSupervisors.vue";
 import BoxScreenProctoringSettings from "./components/BoxScreenProctoringSettings.vue";
-import BoxGroups from "./components/BoxGroups.vue";
+import BoxClientGroups from "./components/BoxClientGroups.vue";
 
 const {
     examTemplateId,
@@ -48,9 +54,13 @@ const {
     indicators,
     availableSupervisors,
     selectedSupervisorIds,
+    clientGroups,
+    screenProctoring,
     updateTemplate,
 } = useExamTemplateDetailPage();
 
 const handleSupervisorsChange = (ids: string[]) =>
-    updateTemplate({ supporter: ids });
+    updateTemplate({
+        supporter: ids,
+    });
 </script>

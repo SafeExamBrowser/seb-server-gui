@@ -1,6 +1,10 @@
 import { defineStore } from "pinia";
 import { computed, ref } from "vue";
-import { IndicatorExisting } from "@/models/seb-server/examTemplate.ts";
+import {
+    Indicator,
+    IndicatorExisting,
+    indicatorExistingSchema,
+} from "@/models/seb-server/examTemplate.ts";
 
 const getInitialState = () => ({
     indicators: [],
@@ -13,8 +17,14 @@ export const useStepIndicatorsStore = defineStore("stepIndicators", () => {
         indicators.value = getInitialState().indicators;
     };
 
-    const createIndicator = (indicator: IndicatorExisting) => {
-        indicators.value.push(indicator);
+    const createIndicator = (indicator: Indicator) => {
+        indicators.value.push(
+            indicatorExistingSchema.parse({
+                ...indicator,
+                // random ID, for identification in the store only (when submitting to BE, the BE will generate the real ID)
+                id: crypto.getRandomValues(new Uint32Array(1))[0],
+            }),
+        );
     };
 
     const updateIndicator = (updatedIndicator: IndicatorExisting) => {
