@@ -4,12 +4,12 @@ import {
     IndicatorsTableDeps,
     IndicatorTransient,
     indicatorTransientToIndicator,
+    indicatorTransientToIndicatorExisting,
 } from "@/components/widgets/indicatorsTable/types.ts";
 import { useFormFields } from "@/components/widgets/indicatorsTable/composables/useFormFields.ts";
 import { CrudTableConfig } from "@/components/widgets/crudTable/types.ts";
 
 export const getEmptyIndicator = (): IndicatorTransient => ({
-    id: crypto.getRandomValues(new Uint32Array(1))[0], // random ID, for FE use only (when submitting to BE, the BE will generate the real ID)
     thresholds: [],
 });
 
@@ -46,7 +46,7 @@ export const useTable = (
         deps.createItem(indicatorTransientToIndicator(item));
 
     const updateItem = (item: IndicatorTransient) =>
-        deps.updateItem(indicatorTransientToIndicator(item));
+        deps.updateItem(indicatorTransientToIndicatorExisting(item));
 
     const getExistingItem = (item: IndicatorExisting): IndicatorTransient => ({
         ...item,

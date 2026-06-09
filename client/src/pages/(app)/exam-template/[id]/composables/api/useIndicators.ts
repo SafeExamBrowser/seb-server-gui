@@ -7,7 +7,10 @@ import {
     deleteIndicator,
     updateIndicator,
 } from "@/services/seb-server/examTemplateIndicatorService.ts";
-import { IndicatorExisting } from "@/models/seb-server/examTemplate.ts";
+import {
+    Indicator,
+    IndicatorExisting,
+} from "@/models/seb-server/examTemplate.ts";
 
 export const useIndicators = (
     examTemplateId: number,
@@ -21,7 +24,7 @@ export const useIndicators = (
 
     const indicators = computed<IndicatorExisting[]>(() => data.value);
 
-    const createItem = async (indicator: IndicatorExisting) => {
+    const createItem = async (indicator: Indicator) => {
         const created = await createIndicator(examTemplateId, indicator);
         data.value = [...data.value, created];
     };
