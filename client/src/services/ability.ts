@@ -24,6 +24,7 @@ export enum GUIComponent {
 
     // Settings
     Settings = "Settings",
+    Institutions = "Institutions",
     UserAccounts = "UserAccounts",
     ConnectionConfigs = "ConnectionConfigs",
     LMSSetups = "LMSSetups",
@@ -95,9 +96,7 @@ export const useAbilities = defineStore("ability", () => {
             GUIComponent.NavigationOverview,
             GUIComponent.Settings,
             GUIComponent.UserAccounts,
-            GUIComponent.ConnectionConfigs,
-            GUIComponent.LMSSetups,
-            GUIComponent.Certificates,
+            GUIComponent.Institutions,
         ]),
     );
 
