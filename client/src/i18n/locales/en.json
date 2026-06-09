@@ -49,6 +49,7 @@
         "searchButton": "Search",
         "cancelSearch": "Cancel Search",
         "clearAll": "Clear all",
+        "clearSelection": "Clear selection",
         "activeFilters": "Active",
         "filters": "Filters",
         "reset": "Reset",
@@ -560,7 +561,8 @@
         "actions": {
             "downloadSEBLogs": "Download SEB Logs",
             "showSPS": "Show Screen Proctoring",
-            "archive": "Archive this Exam"
+            "archive": "Archive this Exam",
+            "archiveSelected": "Archive selected"
         },
         "archive": {
             "confirm": {
@@ -568,7 +570,15 @@
                 "text": "The exam will be moved to the archive. You can still find it by filtering for the \"Archived\" state.",
                 "action": "Archive"
             }
-        }
+        },
+        "archiveAll": {
+            "confirm": {
+                "title": "Archive this exams?",
+                "text": "The selected exams will be moved to the archive. You can still find it by filtering for the \"Archived\" state.",
+                "action": "Archive"
+            }
+        },
+        "selected": "exam(s) selected"
     },
     "userAccount": {
         "general": {

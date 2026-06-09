@@ -15,6 +15,7 @@
                 :filter-sections="list.filterSections"
                 :filter-values="list.selectedFilters"
                 :data-test-id="dataTestId"
+                :actions="multiSelectionActions"
                 @search="list.onSearch"
                 @clear="list.onClearSearch"
                 @update:date-value="list.setDate"
@@ -31,7 +32,17 @@
                 @remove="onRemovePill"
                 @clear-all="list.clearAll"
             />
-            <LoadingFallbackComponent :loading="false" :errors="list.errors">
+            <LoadingFallbackComponent
+                :loading="archiveMultiFlow.loading"
+                :errors="list.errors"
+            >
+                <TableMultiSelectionControl
+                    :multi-selection="list.selection"
+                    :clear-selection="clearSelection"
+                    data-test-id="archiveSelectControl"
+                    :selection-text="$t('examList.selected')"
+                />
+
                 <EntityTable
                     class="px-2 pt-2"
                     :headers="list.headers"
@@ -66,9 +77,16 @@
         v-model="archiveFlow.dialogOpen"
         :active="!!archiveFlow.target?.active"
         translation-key-prefix="examList.archive"
-        :sub-title="getExamName(archiveFlow.target)"
+        :sub-title="archiveFlow.target?.quizName as string"
         icon="mdi-archive"
         @confirm="archiveFlow.confirm"
+    />
+    <GenericConfirmDialog
+        v-model="archiveMultiFlow.dialogOpen"
+        translation-key-prefix="examList.archiveAll"
+        :sub-title="`${list.selection.selectionModel.value.length} exams selected`"
+        icon="mdi-archive"
+        @confirm="archiveMultiFlow.confirm"
     />
 </template>
 
@@ -86,11 +104,12 @@ import {
 } from "@/models/seb-server/examFiltersEnum.ts";
 import { useArchiveOverview } from "@/pages/(app)/archive/composables/useArchiveOverview.ts";
 import GenericConfirmDialog from "@/components/widgets/confirmDialog/GenericConfirmDialog.vue";
-import { TableItem } from "@/components/widgets/entity-table/types";
+import TableMultiSelectionControl from "@/components/widgets/entity-table/components/TableMultiSelectionControl.vue";
 
 const dataTestId = "archive";
 
-const { list, archiveFlow } = useArchiveOverview();
+const { list, archiveFlow, archiveMultiFlow, multiSelectionActions } =
+    useArchiveOverview();
 
 const { filtersOpen, activePills, onRemovePill } = useListFilterPanel({
     search: { applied: () => list.searchField, clear: list.onClearSearch },
@@ -100,10 +119,7 @@ const { filtersOpen, activePills, onRemovePill } = useListFilterPanel({
     date: { value: () => list.dateValue, clear: () => list.setDate(null) },
 });
 
-function getExamName(item: TableItem | undefined): string | undefined {
-    if (item) {
-        return item.quizName as string;
-    }
-    return undefined;
+function clearSelection() {
+    list.selection.selectionModel.value = [];
 }
 </script>

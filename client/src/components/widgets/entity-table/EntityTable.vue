@@ -1,7 +1,5 @@
 <template>
     <div>
-        <p>{{ selectedIds?.length }}</p>
-
         <v-data-table-server
             v-model="selectedIds"
             :headers="computedHeaders"
@@ -11,6 +9,7 @@
             :page="currentPage"
             :items-per-page="requestedItemsPerPage"
             :items-per-page-options="itemsPerPageOptions"
+            :item-selectable="isItemSelectable"
             :sort-by="sortByForTable"
             :loading="loading"
             :loading-text="$t('general.loading')"
@@ -20,7 +19,7 @@
             :data-testid="`${dataTestId}-table`"
             @update:options="emit('update:options', $event)"
             :show-select="selection !== undefined"
-            :select-strategy="selection !== null ? 'all' : undefined"
+            :select-strategy="selection !== null ? 'page' : undefined"
         >
             <template
                 #item="{ item, isSelected, toggleSelect, index, internalItem }"
@@ -32,7 +31,7 @@
                 >
                     <td v-if="props.selection">
                         <v-checkbox-btn
-                            v-if="!(props.selection?.disabled?.(item) ?? true)"
+                            v-if="!(props.selection.disabled?.(item) ?? true)"
                             :model-value="isSelected(internalItem)"
                             @update:model-value="toggleSelect(internalItem)"
                             density="compact"
@@ -188,6 +187,14 @@ function rowTestId(item: TableItem, index: number): string {
     const id = item[props.itemKey];
     const suffix = id == null || id === "" ? `index-${index}` : String(id);
     return `${props.dataTestId}-row-${suffix}`;
+}
+
+function isItemSelectable(item: TableItem): boolean {
+    if (!props.selection) {
+        return false;
+    }
+
+    return !(props.selection.disabled?.(item) ?? true);
 }
 
 async function navigateToItem(item: TableItem) {
