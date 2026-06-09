@@ -23,6 +23,7 @@ import {
     ClientGroupsTableDeps,
     isFallbackGroup,
 } from "@/components/widgets/clientGroupsTable/types.ts";
+import { isScreenProctoringAllowedForGroups } from "@/models/seb-server/screenProctoring.ts";
 
 const { deps } = defineProps<{
     deps: ClientGroupsTableDeps;
@@ -30,10 +31,11 @@ const { deps } = defineProps<{
 
 const { t } = useI18n();
 
-const screenProctoringAllowedForGroups = computed<boolean>(
-    () =>
-        deps.screenProctoring.enabled.value &&
-        deps.screenProctoring.collectionStrategy.value !== "EXAM",
+const screenProctoringAllowedForGroups = computed<boolean>(() =>
+    isScreenProctoringAllowedForGroups(
+        deps.screenProctoring.enabled.value,
+        deps.screenProctoring.collectionStrategy.value,
+    ),
 );
 
 const tableConfig = computed(() =>

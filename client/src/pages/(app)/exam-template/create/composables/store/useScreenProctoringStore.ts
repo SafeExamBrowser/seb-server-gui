@@ -1,4 +1,7 @@
-import { ScreenProctoringCollectionStrategy } from "@/models/seb-server/screenProctoring.ts";
+import {
+    ScreenProctoringCollectionStrategy,
+    isScreenProctoringAllowedForGroups,
+} from "@/models/seb-server/screenProctoring.ts";
 import { defineStore } from "pinia";
 import { computed, ref } from "vue";
 
@@ -12,8 +15,11 @@ export const useScreenProctoringStore = defineStore("screenProctoring", () => {
 
     const collectionStrategy = ref<ScreenProctoringCollectionStrategy>();
 
-    const screenProctoringAllowedForGroups = computed<boolean>(
-        () => enabled.value && collectionStrategy.value !== "EXAM",
+    const screenProctoringAllowedForGroups = computed<boolean>(() =>
+        isScreenProctoringAllowedForGroups(
+            enabled.value,
+            collectionStrategy.value,
+        ),
     );
 
     const $reset = () => {
