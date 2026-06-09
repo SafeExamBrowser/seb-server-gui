@@ -1,4 +1,4 @@
-import { computed, Ref } from "vue";
+import { Ref } from "vue";
 import { FormField } from "@/components/widgets/formBuilder/types.ts";
 import { ClientGroupTransient } from "@/components/widgets/clientGroupsTable/types.ts";
 import { ClientGroupExisting } from "@/models/seb-server/examTemplate.ts";
@@ -16,29 +16,25 @@ export const useFormFields = (
 ) => {
     const rules = useRules();
 
-    const getFormFields = (clientGroup: Ref<ClientGroupTransient>) => {
-        const formFields = computed<FormField[]>(() =>
-            [
-                useFormFieldsBasic(clientGroup, rules, groups),
-                useFormFieldsScreenProctoring(
-                    clientGroup,
-                    screenProctoringAllowedForGroups,
-                ),
-                clientGroup.value.type === ClientGroupEnum.IP_V4_RANGE
-                    ? useFormFieldsTypeIPRange(clientGroup, rules)
-                    : [],
-                clientGroup.value.type === ClientGroupEnum.CLIENT_OS
-                    ? useFormFieldsTypeClientOS(clientGroup)
-                    : [],
-                clientGroup.value.type ===
-                ClientGroupEnum.NAME_ALPHABETICAL_RANGE
-                    ? useFormFieldsTypeNameAlphabeticalRange(clientGroup, rules)
-                    : [],
-            ].flat(),
-        );
-
-        return formFields.value;
-    };
+    const getFormFields = (
+        clientGroup: Ref<ClientGroupTransient>,
+    ): FormField[] =>
+        [
+            useFormFieldsBasic(clientGroup, rules, groups),
+            useFormFieldsScreenProctoring(
+                clientGroup,
+                screenProctoringAllowedForGroups,
+            ),
+            clientGroup.value.type === ClientGroupEnum.IP_V4_RANGE
+                ? useFormFieldsTypeIPRange(clientGroup, rules)
+                : [],
+            clientGroup.value.type === ClientGroupEnum.CLIENT_OS
+                ? useFormFieldsTypeClientOS(clientGroup)
+                : [],
+            clientGroup.value.type === ClientGroupEnum.NAME_ALPHABETICAL_RANGE
+                ? useFormFieldsTypeNameAlphabeticalRange(clientGroup, rules)
+                : [],
+        ].flat();
 
     return {
         getFormFields,
