@@ -98,6 +98,10 @@ export type ExamAttribute = {
     quitPassword?: string; // optional, is not used yet, ignore it
 };
 
+// TODO @alain: we should soon differentiate between ExamTemplate and ExamTemplateExisting
+// - id undefined vs number
+// - indicatorTemplates will have a different type
+// - CLIENT_GROUP_TEMPLATES will have a different type
 export type ExamTemplate = {
     id?: number; // PK of the ExamTemplate only available when the ExamTemplate exists
     name: string; // mandatory, min 3 - max 255 chars, name is unique for all ExamTemplate (2)
