@@ -60,5 +60,7 @@ const {
 } = useExamTemplateDetailPage();
 
 const handleSupervisorsChange = (ids: string[]) =>
-    updateTemplate({ supporter: ids });
+    updateTemplate({
+        supporter: ids,
+    });
 </script>

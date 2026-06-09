@@ -110,14 +110,22 @@ export const useExamTemplateDetailPage = () => {
         updateExamTemplate(template),
     );
 
-    const updateTemplate = async (patch: Partial<ExamTemplate>) => {
+    const updateTemplate = async (
+        patch: Partial<
+            Omit<ExamTemplate, "indicatorTemplates" | "CLIENT_GROUP_TEMPLATES">
+        >,
+    ) => {
         if (!examTemplate.value) {
             return;
         }
 
+        // indicatorTemplates and CLIENT_GROUP_TEMPLATES have their own endpoints. The API
+        // ignores them on the examTemplate update endpoint, so we need to send empty arrays.
         const examTemplateUpdated = await updateMutation.mutateData({
             ...examTemplate.value,
             ...patch,
+            indicatorTemplates: [],
+            CLIENT_GROUP_TEMPLATES: [],
         });
 
         if (!examTemplateUpdated) {
