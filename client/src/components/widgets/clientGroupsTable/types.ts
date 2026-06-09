@@ -76,4 +76,5 @@ export type ClientGroupsTableDeps = {
     createItem: (item: ClientGroup) => Promise<void>;
     updateItem: (item: ClientGroupExisting) => Promise<void>;
     deleteItem: (item: ClientGroupExisting) => Promise<void>;
+    confirmDelete?: boolean;
 };

@@ -149,6 +149,12 @@ export const useTable = (
         },
         deleteConfig: {
             deleteItem,
+            confirm: deps.confirmDelete
+                ? {
+                      translationKeyPrefix: "clientGroups",
+                      getDetailText: (item: ClientGroupForTable) => item.name,
+                  }
+                : undefined,
         },
     };
 };

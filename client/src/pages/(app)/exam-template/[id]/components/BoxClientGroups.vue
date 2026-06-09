@@ -32,5 +32,6 @@ const tableDeps = {
     createItem,
     updateItem,
     deleteItem,
+    confirmDelete: true,
 };
 </script>
