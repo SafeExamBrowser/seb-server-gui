@@ -7,8 +7,8 @@ const chunkSize = 200;
 export const getClientConnectionList = async (
     modelIds: number[],
 ): Promise<SebClientConnection[]> => {
-    // Note: if we have more then 100 model ids to send, we chunk up the request into several calls
-    if (modelIds.length > 100) {
+    // Note: if we have more then 200 model ids to send, we chunk up the request into several calls
+    if (modelIds.length > chunkSize) {
         let result: SebClientConnection[] = [];
         for (let i = 0; i < modelIds.length; i += chunkSize) {
             const chunk = modelIds.slice(i, i + chunkSize);

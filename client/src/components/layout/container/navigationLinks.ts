@@ -16,14 +16,15 @@ export function buildBaseNavigationLinks(
     ability: AbilityLike,
     i18n: I18nLike,
 ): BaseNavigationLink[] {
-    const result: BaseNavigationLink[] = [
-        {
+    const result: BaseNavigationLink[] = [];
+    if (ability.canView(GUIComponent.Home)) {
+        result.push({
             title: i18n.t("titles.home"),
             route: typedTo({ name: "/(app)/" }),
             icon: "mdi-home",
             testId: "layout-home-button",
-        },
-    ];
+        });
+    }
 
     if (ability.canView(GUIComponent.Exams)) {
         result.push({
