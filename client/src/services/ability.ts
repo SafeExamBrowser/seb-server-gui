@@ -21,6 +21,7 @@ export type AbilityLike = {
 export enum GUIComponent {
     // Overall components
     NavigationOverview = "NavigationOverview",
+    Home = "Home",
 
     // Settings
     Settings = "Settings",
@@ -105,6 +106,7 @@ export const useAbilities = defineStore("ability", () => {
         UserRoleEnum.INSTITUTIONAL_ADMIN,
         new Set<GUIComponent>([
             GUIComponent.NavigationOverview,
+            GUIComponent.Home,
             GUIComponent.Settings,
             GUIComponent.UserAccounts,
             GUIComponent.ConnectionConfigs,
@@ -121,6 +123,7 @@ export const useAbilities = defineStore("ability", () => {
     guiComponents.value.set(
         UserRoleEnum.EXAM_ADMIN,
         new Set<GUIComponent>([
+            GUIComponent.Home,
             GUIComponent.PrepareExam,
             GUIComponent.AddExamWithURL,
             GUIComponent.RunningExams,
@@ -137,6 +140,7 @@ export const useAbilities = defineStore("ability", () => {
     guiComponents.value.set(
         UserRoleEnum.EXAM_SUPPORTER,
         new Set<GUIComponent>([
+            GUIComponent.Home,
             GUIComponent.Exams,
             GUIComponent.RunningExams,
             GUIComponent.ScreenProctoring,
