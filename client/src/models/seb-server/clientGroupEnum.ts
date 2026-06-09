@@ -22,3 +22,5 @@ export const clientOSLimitedValues = [
     ClientOSEnum.IPAD_OS,
     ClientOSEnum.I_OS_OR_IPAD_OS,
 ] as const;
+
+export type ClientOSLimited = (typeof clientOSLimitedValues)[number];

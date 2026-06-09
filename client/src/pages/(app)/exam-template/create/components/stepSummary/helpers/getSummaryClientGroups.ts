@@ -1,9 +1,9 @@
 import i18n from "@/i18n";
+import { ClientGroup, ExamTemplate } from "@/models/seb-server/examTemplate.ts";
 import {
-    ClientGroupExisting,
-    ExamTemplate,
-} from "@/models/seb-server/examTemplate.ts";
-import { ClientGroupEnum } from "@/models/seb-server/clientGroupEnum.ts";
+    ClientGroupEnum,
+    ClientOSLimited,
+} from "@/models/seb-server/clientGroupEnum.ts";
 import {
     SummarySectionData,
     SummarySectionItem,
@@ -12,36 +12,37 @@ import {
 export const getSummaryClientGroups = (
     examTemplate: ExamTemplate,
 ): SummarySectionData => {
-    const getTypeDetails = (clientGroup: ClientGroupExisting): string => {
-        let typeDetails = i18n.global.t(
-            `clientGroups.fields.type.types.${clientGroup.type}`,
-        );
+    const clientOSLabels: Record<ClientOSLimited, string> = {
+        WINDOWS: i18n.global.t("clientGroups.fields.clientOS.types.WINDOWS"),
+        MAC_OS: i18n.global.t("clientGroups.fields.clientOS.types.MAC_OS"),
+        I_OS: i18n.global.t("clientGroups.fields.clientOS.types.I_OS"),
+        IPAD_OS: i18n.global.t("clientGroups.fields.clientOS.types.IPAD_OS"),
+        I_OS_OR_IPAD_OS: i18n.global.t(
+            "clientGroups.fields.clientOS.types.I_OS_OR_IPAD_OS",
+        ),
+    };
 
-        // TODO @alain: look into this again when we have stricter API types.
-        // We work with the API types here. They are not very clean,
-        // i.e. there are no discriminated unions for the client group types.
-        // This is a source of potential bugs (e.g. an additional clientGroup.type or
-        // a missing clientGroup.clientOS would cause uncaught errors).
-        // Hopefully we can have stricter API types in the future so we can be more precise here.
-        if (clientGroup.type === ClientGroupEnum.IP_V4_RANGE) {
-            typeDetails += ` (${clientGroup.ipRangeStart} – ${clientGroup.ipRangeEnd})`;
+    const getTypeDetails = (clientGroup: ClientGroup): string => {
+        switch (clientGroup.type) {
+            case ClientGroupEnum.IP_V4_RANGE:
+                return `${i18n.global.t(
+                    "clientGroups.fields.type.types.IP_V4_RANGE",
+                )} (${clientGroup.ipRangeStart} – ${clientGroup.ipRangeEnd})`;
+            case ClientGroupEnum.CLIENT_OS:
+                return `${i18n.global.t(
+                    "clientGroups.fields.type.types.CLIENT_OS",
+                )} (${clientOSLabels[clientGroup.clientOS]})`;
+            case ClientGroupEnum.NAME_ALPHABETICAL_RANGE:
+                return `${i18n.global.t(
+                    "clientGroups.fields.type.types.NAME_ALPHABETICAL_RANGE",
+                )} (${clientGroup.nameRangeStartLetter} – ${clientGroup.nameRangeEndLetter})`;
+            default:
+                return clientGroup satisfies never;
         }
-
-        if (clientGroup.type === ClientGroupEnum.CLIENT_OS) {
-            typeDetails += ` (${i18n.global.t(
-                `clientGroups.fields.clientOS.types.${clientGroup.clientOS}`,
-            )})`;
-        }
-
-        if (clientGroup.type === ClientGroupEnum.NAME_ALPHABETICAL_RANGE) {
-            typeDetails += ` (${clientGroup.nameRangeStartLetter} – ${clientGroup.nameRangeEndLetter})`;
-        }
-
-        return typeDetails;
     };
 
     const getClientGroup = (
-        clientGroup: ClientGroupExisting,
+        clientGroup: ClientGroup,
         clientGroupIndex: number,
     ) => {
         const items: (SummarySectionItem & { type: "basic" })[] = [
