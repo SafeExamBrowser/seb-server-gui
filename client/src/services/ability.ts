@@ -21,9 +21,11 @@ export type AbilityLike = {
 export enum GUIComponent {
     // Overall components
     NavigationOverview = "NavigationOverview",
+    Home = "Home",
 
     // Settings
     Settings = "Settings",
+    Institutions = "Institutions",
     UserAccounts = "UserAccounts",
     ConnectionConfigs = "ConnectionConfigs",
     LMSSetups = "LMSSetups",
@@ -95,9 +97,7 @@ export const useAbilities = defineStore("ability", () => {
             GUIComponent.NavigationOverview,
             GUIComponent.Settings,
             GUIComponent.UserAccounts,
-            GUIComponent.ConnectionConfigs,
-            GUIComponent.LMSSetups,
-            GUIComponent.Certificates,
+            GUIComponent.Institutions,
         ]),
     );
 
@@ -106,6 +106,7 @@ export const useAbilities = defineStore("ability", () => {
         "INSTITUTIONAL_ADMIN",
         new Set<GUIComponent>([
             GUIComponent.NavigationOverview,
+            GUIComponent.Home,
             GUIComponent.Settings,
             GUIComponent.UserAccounts,
             GUIComponent.ConnectionConfigs,
@@ -122,6 +123,7 @@ export const useAbilities = defineStore("ability", () => {
     guiComponents.value.set(
         "EXAM_ADMIN",
         new Set<GUIComponent>([
+            GUIComponent.Home,
             GUIComponent.PrepareExam,
             GUIComponent.AddExamWithURL,
             GUIComponent.RunningExams,
@@ -138,6 +140,7 @@ export const useAbilities = defineStore("ability", () => {
     guiComponents.value.set(
         "EXAM_SUPPORTER",
         new Set<GUIComponent>([
+            GUIComponent.Home,
             GUIComponent.Exams,
             GUIComponent.RunningExams,
             GUIComponent.ScreenProctoring,

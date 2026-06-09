@@ -78,15 +78,16 @@
             <v-btn
                 v-for="action in actions"
                 :key="action.key"
-                variant="outlined"
+                variant="flat"
                 color="primary"
                 block
                 class="text-none"
                 :data-testid="`${dataTestId}-action-${action.key}-button`"
-                @click="emit('action', action.key)"
+                :disabled="action.disabled?.() ?? false"
+                @click="action.onClick()"
             >
                 <v-icon start>{{ action.icon }}</v-icon>
-                {{ $t(action.text) }}
+                {{ $t(action.label) }}
             </v-btn>
         </div>
     </div>
@@ -131,7 +132,6 @@ const emit = defineEmits<{
     "update:filterValues": [value: TableFilters];
     clearFilters: [];
     "update:dateValue": [value: Date | null];
-    action: [key: string];
 }>();
 
 // The date picker is shown iff a dateTitle is provided.

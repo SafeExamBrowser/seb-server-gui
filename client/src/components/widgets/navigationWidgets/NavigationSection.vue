@@ -1,5 +1,5 @@
 <template>
-    <div>
+    <div v-if="visibleItems.length > 0">
         <h4 v-if="showTitle" class="text-body-large font-weight-bold mb-3">
             {{ title.toUpperCase() }}
         </h4>
