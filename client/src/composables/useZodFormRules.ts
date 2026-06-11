@@ -47,6 +47,9 @@ export const useZodFormRules = () => {
 
     const isRequired = (schema: z.ZodType): boolean => !schema.isOptional();
 
+    const requiredRules = (schema: z.ZodType): ValidationRules =>
+        isRequired(schema) ? [rules.required()] : [];
+
     const lengthRules = (schema: z.ZodType): ValidationRules => {
         const inner = unwrap(schema);
         const out: ValidationRule[] = [];
@@ -76,5 +79,11 @@ export const useZodFormRules = () => {
         return [];
     };
 
-    return { isRequired, lengthRules, formatRules };
+    const fieldRules = (schema: z.ZodType): ValidationRules => [
+        ...requiredRules(schema),
+        ...lengthRules(schema),
+        ...formatRules(schema),
+    ];
+
+    return { isRequired, fieldRules };
 };

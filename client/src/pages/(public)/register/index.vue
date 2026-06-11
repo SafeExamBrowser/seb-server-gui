@@ -313,8 +313,6 @@
 <script setup lang="ts">
 import { computed, ref, watch } from "vue";
 import moment from "moment-timezone";
-import type { z } from "zod";
-import { useRules } from "vuetify/labs/rules";
 import { translate } from "@/utils/generalUtils";
 import { useInstitutions } from "@/composables/useInstitutions";
 import { useRegisterUserAccountMutation } from "@/pages/(app)/user-account/api/useRegisterUserAccountMutation.ts";
@@ -371,62 +369,38 @@ const registerSuccess = computed(() => !!registered.value);
 
 const formRef = ref();
 
-const rules = useRules();
-const { isRequired, lengthRules, formatRules } = useZodFormRules();
-
-const withRequiredRule = (schema: z.ZodType) =>
-    isRequired(schema) ? [rules.required()] : [];
+const { isRequired, fieldRules } = useZodFormRules();
 
 const institutionRequired = isRequired(
     userAccountCreateSchema.shape.institutionId,
 );
-const institutionRules = withRequiredRule(
+const institutionRules = fieldRules(
     userAccountCreateSchema.shape.institutionId,
 );
 
 const usernameRequired = isRequired(userAccountCreateSchema.shape.username);
-const usernameRules = [
-    ...withRequiredRule(userAccountCreateSchema.shape.username),
-    ...lengthRules(userAccountCreateSchema.shape.username),
-];
+const usernameRules = fieldRules(userAccountCreateSchema.shape.username);
 
 const nameRequired = isRequired(userAccountCreateSchema.shape.name);
-const nameRules = [
-    ...withRequiredRule(userAccountCreateSchema.shape.name),
-    ...lengthRules(userAccountCreateSchema.shape.name),
-];
+const nameRules = fieldRules(userAccountCreateSchema.shape.name);
 
 const surnameRequired = isRequired(userAccountCreateSchema.shape.surname);
-const surnameRules = [
-    ...withRequiredRule(userAccountCreateSchema.shape.surname),
-    ...lengthRules(userAccountCreateSchema.shape.surname),
-];
+const surnameRules = fieldRules(userAccountCreateSchema.shape.surname);
 
 const emailRequired = isRequired(userAccountCreateSchema.shape.email);
-const emailRules = [
-    ...withRequiredRule(userAccountCreateSchema.shape.email),
-    ...lengthRules(userAccountCreateSchema.shape.email),
-    ...formatRules(userAccountCreateSchema.shape.email),
-];
+const emailRules = fieldRules(userAccountCreateSchema.shape.email);
 
 const timezoneRequired = isRequired(userAccountCreateSchema.shape.timezone);
-const timezoneRules = [
-    ...withRequiredRule(userAccountCreateSchema.shape.timezone),
-    ...lengthRules(userAccountCreateSchema.shape.timezone),
-];
+const timezoneRules = fieldRules(userAccountCreateSchema.shape.timezone);
 
 const passwordRequired = isRequired(userAccountCreateSchema.shape.newPassword);
-const passwordRules = [
-    ...withRequiredRule(userAccountCreateSchema.shape.newPassword),
-    ...lengthRules(userAccountCreateSchema.shape.newPassword),
-];
+const passwordRules = fieldRules(userAccountCreateSchema.shape.newPassword);
 
 const confirmPasswordRequired = isRequired(
     userAccountCreateSchema.shape.confirmNewPassword,
 );
 const confirmPasswordRules = [
-    ...withRequiredRule(userAccountCreateSchema.shape.confirmNewPassword),
-    ...lengthRules(userAccountCreateSchema.shape.confirmNewPassword),
+    ...fieldRules(userAccountCreateSchema.shape.confirmNewPassword),
     (value: string | undefined) =>
         value === password.value ||
         translate("userAccount.general.validation.passwordsDontMatch"),

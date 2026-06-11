@@ -11,7 +11,7 @@ export const useChangePasswordFormFields = () => {
     const newPassword = ref<string | undefined>(undefined);
     const confirmNewPassword = ref<string | undefined>(undefined);
 
-    const { isRequired, lengthRules } = useZodFormRules();
+    const { isRequired, fieldRules } = useZodFormRules();
     const confirmNewPasswordRule = (value: string | undefined) =>
         value === newPassword.value ||
         i18n.global.t("userAccount.general.validation.passwordsDontMatch");
@@ -25,7 +25,7 @@ export const useChangePasswordFormFields = () => {
             required: isRequired(
                 userAccountPasswordChangeSchema.shape.password,
             ),
-            rules: lengthRules(userAccountPasswordChangeSchema.shape.password),
+            rules: fieldRules(userAccountPasswordChangeSchema.shape.password),
         },
         {
             type: "password" as const,
@@ -35,7 +35,7 @@ export const useChangePasswordFormFields = () => {
             required: isRequired(
                 userAccountPasswordChangeSchema.shape.newPassword,
             ),
-            rules: lengthRules(
+            rules: fieldRules(
                 userAccountPasswordChangeSchema.shape.newPassword,
             ),
         },
@@ -47,7 +47,12 @@ export const useChangePasswordFormFields = () => {
             required: isRequired(
                 userAccountPasswordChangeSchema.shape.confirmNewPassword,
             ),
-            rules: [confirmNewPasswordRule],
+            rules: [
+                ...fieldRules(
+                    userAccountPasswordChangeSchema.shape.confirmNewPassword,
+                ),
+                confirmNewPasswordRule,
+            ],
             validationDependsOn: ["newPassword"],
         },
     ]);

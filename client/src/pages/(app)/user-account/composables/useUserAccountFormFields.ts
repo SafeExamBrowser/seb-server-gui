@@ -46,7 +46,7 @@ export const useUserAccountFormFields = (mode: UserAccountFormMode) => {
     const confirmPassword = ref<string | undefined>(undefined);
     const role = ref<UserRole | undefined>(undefined);
 
-    const { isRequired, lengthRules, formatRules } = useZodFormRules();
+    const { isRequired, fieldRules } = useZodFormRules();
 
     const sharedSchema =
         mode === "create" ? userAccountCreateSchema : userAccountSchema;
@@ -142,7 +142,7 @@ export const useUserAccountFormFields = (mode: UserAccountFormMode) => {
                 model: username,
                 label: t("fields.username.label"),
                 required: isRequired(sharedSchema.shape.username),
-                rules: lengthRules(sharedSchema.shape.username),
+                rules: fieldRules(sharedSchema.shape.username),
             },
             {
                 type: "text" as const,
@@ -150,7 +150,7 @@ export const useUserAccountFormFields = (mode: UserAccountFormMode) => {
                 model: name,
                 label: t("fields.name.label"),
                 required: isRequired(sharedSchema.shape.name),
-                rules: lengthRules(sharedSchema.shape.name),
+                rules: fieldRules(sharedSchema.shape.name),
             },
             {
                 type: "text" as const,
@@ -158,7 +158,7 @@ export const useUserAccountFormFields = (mode: UserAccountFormMode) => {
                 model: surname,
                 label: t("fields.surname.label"),
                 required: isRequired(sharedSchema.shape.surname),
-                rules: lengthRules(sharedSchema.shape.surname),
+                rules: fieldRules(sharedSchema.shape.surname),
             },
             {
                 type: "text" as const,
@@ -166,10 +166,7 @@ export const useUserAccountFormFields = (mode: UserAccountFormMode) => {
                 model: email,
                 label: t("fields.email.label"),
                 required: isRequired(sharedSchema.shape.email),
-                rules: [
-                    ...lengthRules(sharedSchema.shape.email),
-                    ...formatRules(sharedSchema.shape.email),
-                ],
+                rules: fieldRules(sharedSchema.shape.email),
             },
             {
                 type: "select" as const,
@@ -191,7 +188,7 @@ export const useUserAccountFormFields = (mode: UserAccountFormMode) => {
                     required: isRequired(
                         userAccountCreateSchema.shape.newPassword,
                     ),
-                    rules: lengthRules(
+                    rules: fieldRules(
                         userAccountCreateSchema.shape.newPassword,
                     ),
                 },
@@ -203,7 +200,12 @@ export const useUserAccountFormFields = (mode: UserAccountFormMode) => {
                     required: isRequired(
                         userAccountCreateSchema.shape.confirmNewPassword,
                     ),
-                    rules: [confirmPasswordRule],
+                    rules: [
+                        ...fieldRules(
+                            userAccountCreateSchema.shape.confirmNewPassword,
+                        ),
+                        confirmPasswordRule,
+                    ],
                     validationDependsOn: ["password"],
                 },
             );
