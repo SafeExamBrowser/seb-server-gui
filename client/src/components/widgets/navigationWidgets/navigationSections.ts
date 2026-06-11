@@ -66,6 +66,7 @@ export function buildPreparationNavigationItems(
         },
         {
             label: translate("titles.addExamWithURL"),
+            to: typedTo({ name: "/(app)/exam/create/withURL/" }),
             testId: `${testIdPrefix}-addExamWithURL-text`,
             visible: ability.canView(GUIComponent.Exams),
         },

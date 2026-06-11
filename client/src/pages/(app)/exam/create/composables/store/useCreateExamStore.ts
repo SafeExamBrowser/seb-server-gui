@@ -10,6 +10,7 @@ import { useStepExamTemplateStore } from "@/pages/(app)/exam/create/components/s
 import { useStepClientGroupsStore } from "@/pages/(app)/exam/create/components/stepClientGroups/composables/store/useStepClientGroupsStore.ts";
 import { useStepSupervisorsStore } from "@/pages/(app)/exam/create/components/stepSupervisors/composables/store/useStepSupervisorsStore.ts";
 import { useStepQuitPasswordStore } from "@/pages/(app)/exam/create/components/stepQuitPassword/composables/store/useStepQuitPasswordStore.ts";
+import { useStepWithURLStore } from "@/pages/(app)/exam/create/components/stepWithURL/composables/store/useStepWithURLStore";
 
 const staticStepData = [
     {
@@ -19,6 +20,10 @@ const staticStepData = [
     {
         componentName: "StepQuiz" as const,
         i18nKey: "createExam.steps.quiz.title",
+    },
+    {
+        componentName: "StepWithURL" as const,
+        i18nKey: "createExam.steps.withURL.title",
     },
     {
         componentName: "StepExamTemplate" as const,
@@ -46,6 +51,7 @@ const isStepReady = (
     stepName: StepItemCreateExam["componentName"],
     stepAssessmentToolStore: ReturnType<typeof useStepAssessmentToolStore>,
     stepQuizStore: ReturnType<typeof useStepQuizStore>,
+    stepWithURL: ReturnType<typeof useStepWithURLStore>,
     stepExamTemplateStore: ReturnType<typeof useStepExamTemplateStore>,
     stepSupervisorsStore: ReturnType<typeof useStepSupervisorsStore>,
 ) => {
@@ -54,6 +60,8 @@ const isStepReady = (
             return stepAssessmentToolStore.isReady;
         case "StepQuiz":
             return stepQuizStore.isReady;
+        case "StepWithURL":
+            return stepWithURL.isReady;
         case "StepExamTemplate":
             return stepExamTemplateStore.isReady;
         case "StepClientGroups":
@@ -74,8 +82,11 @@ const getInitialState = () => ({
 });
 
 export const useCreateExamStore = defineStore("createExam", () => {
+    const createWithURL = ref<boolean>(false);
+
     const stepAssessmentToolStore = useStepAssessmentToolStore();
     const stepQuizStore = useStepQuizStore();
+    const stepWithURL = useStepWithURLStore();
     const stepExamTemplateStore = useStepExamTemplateStore();
     const stepClientGroupsStore = useStepClientGroupsStore();
     const stepSupervisorsStore = useStepSupervisorsStore();
@@ -89,10 +100,20 @@ export const useCreateExamStore = defineStore("createExam", () => {
                 .length ?? 0;
         const assessmentToolCount =
             stepAssessmentToolStore.assessmentTools?.content.length ?? 0;
+        const withURL = createWithURL.value;
 
         return staticStepData.filter((step) => {
             if (step.componentName === "StepAssessmentTool") {
+                if (withURL) {
+                    return false;
+                }
                 return assessmentToolCount !== 1;
+            }
+            if (step.componentName === "StepQuiz" && withURL) {
+                return false;
+            }
+            if (step.componentName === "StepWithURL" && !withURL) {
+                return false;
             }
             if (step.componentName === "StepClientGroups") {
                 return clientGroupCount >= 2;
@@ -108,6 +129,7 @@ export const useCreateExamStore = defineStore("createExam", () => {
                 step.componentName,
                 stepAssessmentToolStore,
                 stepQuizStore,
+                stepWithURL,
                 stepExamTemplateStore,
                 stepSupervisorsStore,
             ),
@@ -169,11 +191,25 @@ export const useCreateExamStore = defineStore("createExam", () => {
         }
     };
 
+    const initStore = (withURL: boolean): boolean => {
+        // if we use the same exam creation method, we do not reset the store
+        if (createWithURL.value == withURL) {
+            return withURL;
+        }
+
+        // otherwise we reset the store and set new exam create method
+        $reset();
+        createWithURL.value = withURL;
+        return withURL;
+    };
+
     const $reset = () => {
+        createWithURL.value = false;
         currentStepIndex.value = getInitialState().currentStepIndex;
 
         stepAssessmentToolStore.$reset();
         stepQuizStore.$reset();
+        stepWithURL.$reset();
         stepExamTemplateStore.$reset();
         stepClientGroupsStore.$reset();
         stepSupervisorsStore.$reset();
@@ -181,6 +217,7 @@ export const useCreateExamStore = defineStore("createExam", () => {
     };
 
     return {
+        createWithURL,
         currentStepIndex: computed(() => currentStepIndex.value),
         stepperModel,
         currentStep,
@@ -188,6 +225,7 @@ export const useCreateExamStore = defineStore("createExam", () => {
 
         increaseCurrentStepIndex,
         decreaseCurrentStepIndex,
+        initStore,
         $reset,
     };
 });

@@ -3,11 +3,17 @@
         <div class="flex-grow-0 flex-shrink-0 mb-1">
             <SectionTitle :name="title" />
         </div>
-        <div class="flex-grow-0 flex-shrink-0 mb-8 text-body-medium">
+        <div class="flex-grow-0 flex-shrink-0 mb-2 text-body-medium">
             {{ subtitle }}
         </div>
         <div
-            class="flex-grow-1 flex-shrink-1 fill-height"
+            v-if="text"
+            class="flex-grow-0 flex-shrink-0 mb-2 text-body-medium"
+        >
+            {{ text }}
+        </div>
+        <div
+            class="flex-grow-1 flex-shrink-1 fill-height mt-8"
             :class="{ 'overflow-y-auto': manualScrollManagement }"
         >
             <slot></slot>
@@ -22,6 +28,7 @@ withDefaults(
     defineProps<{
         title: string;
         subtitle: string;
+        text?: string;
 
         /**
          * If true:

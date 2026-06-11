@@ -1,5 +1,6 @@
 import { toZonedTime } from "date-fns-tz";
 import { useUserAccountStore } from "@/stores/authentication/userAccountStore";
+import { DateTime } from "@/components/widgets/formBuilder/types";
 
 export function getCurrentDateString(): string {
     const date = new Date();
@@ -200,3 +201,10 @@ export function getTimestampFromPeriodSelection(
 
     return now.getTime().toString();
 }
+
+export const getTimestampFromDateTime = (dateTime: DateTime) => {
+    const date = dateTime.date;
+    const time = dateTime.time.split(":");
+    date.setHours(Number(time[0]), Number(time[1]));
+    return date.getTime();
+};

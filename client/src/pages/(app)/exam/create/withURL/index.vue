@@ -1,5 +1,5 @@
 <template>
-    <CreateExamStepper :create-with-u-r-l="store.initStore(false)" />
+    <CreateExamStepper :create-with-u-r-l="store.initStore(true)" />
 </template>
 
 <script setup lang="ts">

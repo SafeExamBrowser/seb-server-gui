@@ -20,6 +20,7 @@
                     ...getBaseProperties(field),
                     ...getTextualProperties(field),
                 }"
+                :rules="field.rules"
             >
             </v-text-field>
             <FormFieldPassword
@@ -114,6 +115,12 @@
                     (itemIndex: number) => field.onRemoveItem(itemIndex)
                 "
             />
+            <FormFieldDateTime
+                v-else-if="field.type === 'date-time'"
+                v-model="field.model.value"
+                :field-name="field.name"
+                :standard-properties="getBaseProperties(field)"
+            />
         </div>
     </div>
 </template>
@@ -133,6 +140,7 @@ import FormFieldColor from "./FormFieldColor.vue";
 import FormFieldFile from "./FormFieldFile.vue";
 import FormFieldImage from "./FormFieldImage.vue";
 import FormFieldPassword from "./FormFieldPassword.vue";
+import FormFieldDateTime from "@/components/widgets/formBuilder/components/FormFieldDateTime.vue";
 
 const props = withDefaults(defineProps<FormFieldsComponentProps>(), {
     layout: "vertical" as const,

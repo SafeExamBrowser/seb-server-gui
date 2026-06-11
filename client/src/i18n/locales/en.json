@@ -292,6 +292,29 @@
                     "startUrl": "Start URL"
                 }
             },
+            "withURL": {
+                "title": "Exam with URL",
+                "subtitle": "Enter Exam Data",
+                "text": "If you want SEB Server without Assessment Tool Integration, you can add an exam with URL.",
+                "fields": {
+                    "examName": {
+                        "label": "Exam Name"
+                    },
+                    "examDescription": {
+                        "label": "Description"
+                    },
+                    "startDate": {
+                        "label": "Start date and time"
+                    },
+                    "endDate": {
+                        "label": "End date and time"
+                    },
+                    "examURL": {
+                        "label": "Exam URL",
+                        "invalid": "Invalid URL format"
+                    }
+                }
+            },
             "examTemplate": {
                 "title": "Choose Exam Template",
                 "subtitle": "Click on the Exam Template you want to use for the exam.",
