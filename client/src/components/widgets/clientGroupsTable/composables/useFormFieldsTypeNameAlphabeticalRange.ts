@@ -1,4 +1,4 @@
-import { ClientGroupTransient } from "@/pages/(app)/exam-template/create/components/stepClientGroup/types.ts";
+import { ClientGroupTransient } from "@/components/widgets/clientGroupsTable/types.ts";
 import { computed, Ref } from "vue";
 import i18n from "@/i18n";
 import { FormField } from "@/components/widgets/formBuilder/types.ts";
@@ -34,10 +34,10 @@ export const useFormFieldsTypeNameAlphabeticalRange = (
             name: "nameRangeStartLetter",
             model: nameRangeStartLetter,
             label: i18n.global.t(
-                "createTemplateExam.steps.clientGroup.fields.nameRangeStartLetter.label",
+                "clientGroups.fields.nameRangeStartLetter.label",
             ),
             placeholder: i18n.global.t(
-                "createTemplateExam.steps.clientGroup.fields.nameRangeStartLetter.placeholder",
+                "clientGroups.fields.nameRangeStartLetter.placeholder",
             ),
             required: true,
             rules: [
@@ -51,10 +51,10 @@ export const useFormFieldsTypeNameAlphabeticalRange = (
             name: "nameRangeEndLetter",
             model: nameRangeEndLetter,
             label: i18n.global.t(
-                "createTemplateExam.steps.clientGroup.fields.nameRangeEndLetter.label",
+                "clientGroups.fields.nameRangeEndLetter.label",
             ),
             placeholder: i18n.global.t(
-                "createTemplateExam.steps.clientGroup.fields.nameRangeEndLetter.placeholder",
+                "clientGroups.fields.nameRangeEndLetter.placeholder",
             ),
             required: true,
             rules: [

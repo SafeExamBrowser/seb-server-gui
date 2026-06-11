@@ -1,4 +1,4 @@
-import { ClientGroupTransient } from "@/pages/(app)/exam-template/create/components/stepClientGroup/types.ts";
+import { ClientGroupTransient } from "@/components/widgets/clientGroupsTable/types.ts";
 import { computed, Ref } from "vue";
 import { FormField } from "@/components/widgets/formBuilder/types.ts";
 import i18n from "@/i18n";
@@ -27,11 +27,9 @@ export const useFormFieldsTypeIPRange = (
             type: "text" as const,
             name: "ip4RangeStart",
             model: ipRangeStart,
-            label: i18n.global.t(
-                "createTemplateExam.steps.clientGroup.fields.ipRangeStart.label",
-            ),
+            label: i18n.global.t("clientGroups.fields.ipRangeStart.label"),
             placeholder: i18n.global.t(
-                "createTemplateExam.steps.clientGroup.fields.ipRangeStart.placeholder",
+                "clientGroups.fields.ipRangeStart.placeholder",
             ),
             required: true,
             rules: [rules.ipAddress(undefined)],
@@ -40,11 +38,9 @@ export const useFormFieldsTypeIPRange = (
             type: "text" as const,
             name: "ip4RangeEnd",
             model: ipRangeEnd,
-            label: i18n.global.t(
-                "createTemplateExam.steps.clientGroup.fields.ipRangeEnd.label",
-            ),
+            label: i18n.global.t("clientGroups.fields.ipRangeEnd.label"),
             placeholder: i18n.global.t(
-                "createTemplateExam.steps.clientGroup.fields.ipRangeEnd.placeholder",
+                "clientGroups.fields.ipRangeEnd.placeholder",
             ),
             required: true,
             rules: [rules.ipAddress(undefined)],

@@ -17,9 +17,9 @@
             hover
             hide-default-footer
             :data-testid="`${dataTestId}-table`"
-            @update:options="emit('update:options', $event)"
             :show-select="selection !== undefined"
             :select-strategy="selection !== null ? 'page' : undefined"
+            @update:options="emit('update:options', $event)"
         >
             <template
                 #item="{ item, isSelected, toggleSelect, index, internalItem }"
@@ -33,8 +33,8 @@
                         <v-checkbox-btn
                             v-if="!(props.selection.disabled?.(item) ?? true)"
                             :model-value="isSelected(internalItem)"
-                            @update:model-value="toggleSelect(internalItem)"
                             density="compact"
+                            @update:model-value="toggleSelect(internalItem)"
                         >
                         </v-checkbox-btn>
                     </td>

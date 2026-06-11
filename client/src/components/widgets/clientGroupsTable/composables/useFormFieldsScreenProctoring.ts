@@ -1,16 +1,12 @@
-import { ClientGroupTransient } from "@/pages/(app)/exam-template/create/components/stepClientGroup/types.ts";
+import { ClientGroupTransient } from "@/components/widgets/clientGroupsTable/types.ts";
 import { computed, Ref } from "vue";
 import i18n from "@/i18n";
 import { FormField } from "@/components/widgets/formBuilder/types.ts";
-import { useScreenProctoringStore } from "@/pages/(app)/exam-template/create/composables/store/useScreenProctoringStore.ts";
-import { storeToRefs } from "pinia";
+
 export const useFormFieldsScreenProctoring = (
     clientGroup: Ref<ClientGroupTransient>,
+    screenProctoringAllowedForGroups: Ref<boolean>,
 ): FormField[] => {
-    const { screenProctoringAllowedForGroups } = storeToRefs(
-        useScreenProctoringStore(),
-    );
-
     const screenProctoringEnabled = computed<
         ClientGroupTransient["screenProctoringEnabled"]
     >({
@@ -34,7 +30,7 @@ export const useFormFieldsScreenProctoring = (
             name: "screenProctoringEnabled",
             model: screenProctoringEnabled,
             label: i18n.global.t(
-                "createTemplateExam.steps.clientGroup.fields.screenProctoringEnabled.label",
+                "clientGroups.fields.screenProctoringEnabled.label",
             ),
         },
     ];
