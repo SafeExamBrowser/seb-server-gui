@@ -1,12 +1,14 @@
-/* global console, fetch, process */
+/* global console, fetch */
 
 import { mkdir, writeFile } from "node:fs/promises";
 import { dirname, resolve } from "node:path";
 import { format } from "prettier";
+import { parseEnv } from "./env.mjs";
 
-const DEFAULT_OPENAPI_URL = "http://localhost:8080/v3/api-docs";
-const OPENAPI_URL = process.env.SEB_SERVER_OPENAPI_URL ?? DEFAULT_OPENAPI_URL;
+const OPENAPI_URL = parseEnv().SEB_SERVER_OPENAPI_URL;
 
+// Must match the `input` in openapi-ts.config.ts and the SPEC constant in
+// generate-error-catalog.mjs.
 const OUTPUT = resolve("src/api/seb-server/openapi/seb-server.openapi.json");
 
 /** Strip every `format: int64` so generated TS uses `number` and Zod uses `z.number()`

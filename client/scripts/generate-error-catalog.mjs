@@ -1,4 +1,4 @@
-/* global console, process */
+/* global console */
 // Generates a typed error-message catalogue from the committed OpenAPI spec, so the
 // frontend never re-writes the backend's codes or messages. Source of truth:
 //   - components.schemas.ErrorCode  (enum + x-enum-varnames + x-enum-descriptions)
@@ -9,12 +9,9 @@
 
 import { readFile, writeFile } from "node:fs/promises";
 
-const SPEC =
-    process.env.OPENAPI_SPEC ??
-    "./src/api/seb-server/openapi/seb-server.openapi.json";
-const OUTPUT =
-    process.env.ERROR_CATALOG_OUT ??
-    "./src/api/seb-server/generated/error-catalog.ts";
+// Must match the fetch script's OUTPUT and the `input` in openapi-ts.config.ts.
+const SPEC = "./src/api/seb-server/openapi/seb-server.openapi.json";
+const OUTPUT = "./src/api/seb-server/generated/error-catalog.ts";
 
 const asRecord = (keys, values) =>
     Object.fromEntries(keys.map((key, index) => [key, values[index]]));
