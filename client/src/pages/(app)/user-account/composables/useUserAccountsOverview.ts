@@ -4,10 +4,11 @@ import type { TableItem } from "@/components/widgets/entity-table/types.ts";
 import { useUserAccountsTableHeaders } from "./useUserAccountsTableHeaders.ts";
 import { useUserAccountsTableActions } from "./useUserAccountsTableActions.ts";
 import { useUserAccountsList } from "./useUserAccountsList.ts";
-import { useDeleteUserAccount } from "@/pages/(app)/user-account/api/useDeleteUserAccount.ts";
-import { useToggleUserAccountStatus } from "@/pages/(app)/user-account/api/useToggleUserAccountStatus.ts";
+import { useDeleteUserAccountMutation } from "@/pages/(app)/user-account/api/useDeleteUserAccountMutation.ts";
+import { useToggleUserAccountStatusMutation } from "@/pages/(app)/user-account/api/useToggleUserAccountStatusMutation.ts";
 import { useEntityDeleteFlow } from "@/components/widgets/entity-table/composables/useEntityDeleteFlow.ts";
 import { useEntityStatusFlow } from "@/components/widgets/entity-table/composables/useEntityStatusFlow.ts";
+import { toAppErrorOrUndefined } from "@/services/errors/toAppError.ts";
 
 export const useUserAccountsOverview = () => {
     const router = useRouter();
@@ -27,10 +28,13 @@ export const useUserAccountsOverview = () => {
     const list = useUserAccountsList();
 
     const {
-        removeUserAccount,
-        error: deleteError,
+        mutateAsync: removeUserAccount,
+        error: deleteMutationError,
         isPending: deleteLoading,
-    } = useDeleteUserAccount();
+    } = useDeleteUserAccountMutation();
+    const deleteError = computed(() =>
+        toAppErrorOrUndefined(deleteMutationError.value),
+    );
 
     const deleteFlow = useEntityDeleteFlow({
         remove: async (item) => {
@@ -49,9 +53,12 @@ export const useUserAccountsOverview = () => {
 
     const {
         changeUserAccountStatus,
-        error: statusError,
+        error: statusMutationError,
         isPending: statusLoading,
-    } = useToggleUserAccountStatus();
+    } = useToggleUserAccountStatusMutation();
+    const statusError = computed(() =>
+        toAppErrorOrUndefined(statusMutationError.value),
+    );
 
     const statusFlow = useEntityStatusFlow({
         toggle: async (item) => {

@@ -25,8 +25,8 @@ import LoadingFallbackComponent from "@/components/widgets/loadingFallbackCompon
 import { useCurrentUserQuery } from "@/composables/useCurrentUser.ts";
 import { toAppErrorOrUndefined } from "@/services/errors/toAppError.ts";
 import { useLogout } from "@/composables/useLogout.ts";
-import { useEditUserAccount } from "@/pages/(app)/user-account/api/useEditUserAccount.ts";
-import { useChangePassword } from "@/pages/(app)/user-account/api/useChangePassword.ts";
+import { useEditUserAccountMutation } from "@/pages/(app)/user-account/api/useEditUserAccountMutation.ts";
+import { useChangePasswordMutation } from "@/pages/(app)/user-account/api/useChangePasswordMutation.ts";
 import { submitWithFormErrors } from "@/services/errors/submitWithFormErrors.ts";
 import type { UserAccount } from "@/models/userAccount.ts";
 
@@ -47,12 +47,19 @@ const {
 } = useCurrentUserQuery();
 const error = computed(() => toAppErrorOrUndefined(userError.value));
 
-const { save, error: saveError } = useEditUserAccount();
+const { mutateAsync: save, error: saveMutationError } =
+    useEditUserAccountMutation();
+const saveError = computed(() =>
+    toAppErrorOrUndefined(saveMutationError.value),
+);
 const {
-    changePassword,
-    error: changePasswordError,
+    mutateAsync: changePassword,
+    error: changePasswordMutationError,
     isPending: changePasswordLoading,
-} = useChangePassword();
+} = useChangePasswordMutation();
+const changePasswordError = computed(() =>
+    toAppErrorOrUndefined(changePasswordMutationError.value),
+);
 
 const handleSubmit = async (payload: UserAccount) => {
     if (!user.value) return;

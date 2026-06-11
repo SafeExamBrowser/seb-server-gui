@@ -1,4 +1,3 @@
-import { computed } from "vue";
 import { useMutation, useQueryClient } from "@tanstack/vue-query";
 import {
     getUserAccountByIdQueryKey,
@@ -10,13 +9,12 @@ import {
     currentUserQueryOptions,
     useCurrentUserQuery,
 } from "@/composables/useCurrentUser.ts";
-import { toAppErrorOrUndefined } from "@/services/errors/toAppError.ts";
 import type { UserAccount } from "@/models/userAccount.ts";
 
-export const useEditUserAccount = () => {
+export const useEditUserAccountMutation = () => {
     const queryClient = useQueryClient();
     const { data: currentUser } = useCurrentUserQuery();
-    const mutation = useMutation({
+    return useMutation({
         mutationFn: (body: UserAccount) => editUserAccount(body),
         onSuccess: (data) => {
             queryClient.invalidateQueries({
@@ -41,11 +39,4 @@ export const useEditUserAccount = () => {
             }
         },
     });
-
-    return {
-        save: (body: UserAccount) => mutation.mutateAsync(body),
-        data: mutation.data,
-        isPending: mutation.isPending,
-        error: computed(() => toAppErrorOrUndefined(mutation.error.value)),
-    };
 };

@@ -6,10 +6,8 @@ import {
     activateUserAccount,
     deactivateUserAccount,
 } from "@/services/seb-server/userAccountService.ts";
-import {
-    entityProcessingReportToAppError,
-    toAppErrorOrUndefined,
-} from "@/services/errors/toAppError.ts";
+import { entityProcessingReportToAppError } from "@/services/errors/toAppError.ts";
+import type { AppError } from "@/services/errors/types.ts";
 import type { UserAccountPage } from "@/models/userAccount.ts";
 import type { EntityProcessingReport } from "@/api/seb-server/generated/hey-api/types.gen.ts";
 
@@ -40,13 +38,17 @@ const throwOnReportErrors = async (
     return resolved;
 };
 
-export const useToggleUserAccountStatus = () => {
+export const useToggleUserAccountStatusMutation = () => {
     const queryClient = useQueryClient();
 
     const invalidateList = () =>
         queryClient.invalidateQueries({ queryKey: listKey() });
 
-    const activate = useMutation({
+    const activate = useMutation<
+        EntityProcessingReport,
+        AppError | Error,
+        string
+    >({
         mutationFn: (uuid: string) =>
             throwOnReportErrors(activateUserAccount(uuid)),
         onSuccess: (_data, uuid) => {
@@ -58,7 +60,11 @@ export const useToggleUserAccountStatus = () => {
         },
     });
 
-    const deactivate = useMutation({
+    const deactivate = useMutation<
+        EntityProcessingReport,
+        AppError | Error,
+        string
+    >({
         mutationFn: (uuid: string) =>
             throwOnReportErrors(deactivateUserAccount(uuid)),
         onSuccess: (_data, uuid) => {
@@ -85,9 +91,8 @@ export const useToggleUserAccountStatus = () => {
         isPending: computed(
             () => activate.isPending.value || deactivate.isPending.value,
         ),
-        error: computed(() => {
-            const err = activate.error.value ?? deactivate.error.value;
-            return toAppErrorOrUndefined(err);
-        }),
+        error: computed(
+            () => activate.error.value ?? deactivate.error.value ?? undefined,
+        ),
     };
 };

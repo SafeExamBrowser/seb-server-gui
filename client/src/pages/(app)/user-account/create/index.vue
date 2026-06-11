@@ -10,11 +10,12 @@
 </template>
 
 <script setup lang="ts">
-import { ref } from "vue";
+import { computed, ref } from "vue";
 import { useRouter } from "vue-router";
 import UserAccountForm from "@/pages/(app)/user-account/components/UserAccountForm.vue";
-import { useCreateUserAccount } from "@/pages/(app)/user-account/api/useCreateUserAccount.ts";
+import { useCreateUserAccountMutation } from "@/pages/(app)/user-account/api/useCreateUserAccountMutation.ts";
 import { submitWithFormErrors } from "@/services/errors/submitWithFormErrors.ts";
+import { toAppErrorOrUndefined } from "@/services/errors/toAppError.ts";
 import type { UserAccountCreateRequest } from "@/models/userAccount.ts";
 
 definePage({
@@ -27,7 +28,11 @@ definePage({
 
 const router = useRouter();
 const formRef = ref<InstanceType<typeof UserAccountForm>>();
-const { create, error: createError } = useCreateUserAccount();
+const { mutateAsync: create, error: createMutationError } =
+    useCreateUserAccountMutation();
+const createError = computed(() =>
+    toAppErrorOrUndefined(createMutationError.value),
+);
 
 const handleSubmit = async (payload: UserAccountCreateRequest) => {
     const created = await submitWithFormErrors({

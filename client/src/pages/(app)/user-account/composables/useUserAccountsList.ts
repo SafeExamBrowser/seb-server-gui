@@ -4,7 +4,8 @@ import { usePagedListData } from "@/components/widgets/entity-table/composables/
 import { STATUS_FILTER_KEY } from "@/components/widgets/filters/statusFilterSection.ts";
 import { INSTITUTION_FILTER_KEY } from "@/components/widgets/filters/useInstitutionFilterSection.ts";
 import { useUserAccountsFilters } from "./useUserAccountsFilters.ts";
-import { useUserAccounts } from "@/pages/(app)/user-account/api/useUserAccounts.ts";
+import { useUserAccountsQuery } from "@/pages/(app)/user-account/api/useUserAccountsQuery.ts";
+import { toAppErrorOrUndefined } from "@/services/errors/toAppError.ts";
 import { toServerPageQuery } from "@/utils/table/tableUtils.ts";
 import type { GetUserAccountsData } from "@/api/seb-server/generated/hey-api/types.gen.ts";
 
@@ -42,7 +43,13 @@ export const useUserAccountsList = () => {
         };
     });
 
-    const { data, isFetching, error, refetch } = useUserAccounts(accountsQuery);
+    const {
+        data,
+        isFetching,
+        error: queryError,
+        refetch,
+    } = useUserAccountsQuery(accountsQuery);
+    const error = computed(() => toAppErrorOrUndefined(queryError.value));
 
     const { items, pageCount, errors, reloadList } = usePagedListData({
         data,

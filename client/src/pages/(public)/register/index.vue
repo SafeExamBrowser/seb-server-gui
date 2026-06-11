@@ -317,7 +317,7 @@ import type { z } from "zod";
 import { useRules } from "vuetify/labs/rules";
 import { translate } from "@/utils/generalUtils";
 import { useInstitutions } from "@/composables/useInstitutions";
-import { useRegisterUserAccount } from "@/pages/(app)/user-account/api/useRegisterUserAccount.ts";
+import { useRegisterUserAccountMutation } from "@/pages/(app)/user-account/api/useRegisterUserAccountMutation.ts";
 import { useZodFormRules } from "@/composables/useZodFormRules.ts";
 import { userAccountCreateSchema } from "@/models/userAccount.ts";
 import { RouterLink, useRouter } from "vue-router";
@@ -360,11 +360,11 @@ watch(
 );
 
 const {
-    register: submitRegister,
+    mutateAsync: submitRegister,
     data: registered,
     isPending: registerLoading,
     error: registerSubmitError,
-} = useRegisterUserAccount();
+} = useRegisterUserAccountMutation();
 
 const registerError = computed(() => !!registerSubmitError.value);
 const registerSuccess = computed(() => !!registered.value);

@@ -3,14 +3,13 @@ import { useQuery } from "@tanstack/vue-query";
 import { getUserAccountByIdQueryKey } from "@/api/seb-server/generated/hey-api/@tanstack/vue-query.gen.ts";
 import { heySebServerClient } from "@/api/seb-server/http/heySebServerClient.ts";
 import { getUserAccountById } from "@/services/seb-server/userAccountService.ts";
-import { toAppErrorOrUndefined } from "@/services/errors/toAppError.ts";
 
 const disabledUserAccountQueryKey = ["getUserAccountById", "disabled"];
 
-export const useUserAccount = (
+export const useUserAccountQuery = (
     accountId: Readonly<Ref<string | undefined>>,
-) => {
-    const query = useQuery({
+) =>
+    useQuery({
         queryKey: computed(() =>
             accountId.value
                 ? getUserAccountByIdQueryKey({
@@ -27,14 +26,3 @@ export const useUserAccount = (
         },
         enabled: computed(() => !!accountId.value),
     });
-
-    const error = computed(() => toAppErrorOrUndefined(query.error.value));
-
-    return {
-        data: query.data,
-        isPending: query.isPending,
-        isFetching: query.isFetching,
-        error,
-        refetch: () => query.refetch(),
-    };
-};
