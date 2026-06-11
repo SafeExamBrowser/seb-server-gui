@@ -1,5 +1,6 @@
 import { toZonedTime } from "date-fns-tz";
-import { getCurrentUser } from "@/composables/useCurrentUser";
+import { currentUserQueryOptions } from "@/composables/useCurrentUser";
+import { queryClient } from "@/services/http/queryClient";
 
 export function getCurrentDateString(): string {
     const date = new Date();
@@ -144,7 +145,10 @@ export function getStartAndEndTimestampOfDay(sqlDate: string): {
 
 function convertUTCToTimeZone(utcDate: number): Date {
     const utcDateObject = new Date(utcDate);
-    const timezone: string | undefined = getCurrentUser()?.timezone;
+    // plain function without a reactive context: read the cached current user once
+    const timezone: string | undefined = queryClient.getQueryData(
+        currentUserQueryOptions().queryKey,
+    )?.timezone;
     if (timezone === null || timezone === undefined) {
         return utcDateObject;
     }

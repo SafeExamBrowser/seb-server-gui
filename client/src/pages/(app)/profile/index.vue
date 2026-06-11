@@ -16,13 +16,14 @@
 </template>
 
 <script setup lang="ts">
-import { ref } from "vue";
+import { computed, ref } from "vue";
 import { useRouter } from "vue-router";
 import UserAccountForm, {
     type ChangePasswordPayload,
 } from "@/pages/(app)/user-account/components/UserAccountForm.vue";
 import LoadingFallbackComponent from "@/components/widgets/loadingFallbackComponent/LoadingFallbackComponent.vue";
-import { useCurrentUser } from "@/composables/useCurrentUser.ts";
+import { useCurrentUserQuery } from "@/composables/useCurrentUser.ts";
+import { toAppErrorOrUndefined } from "@/services/errors/toAppError.ts";
 import { useLogout } from "@/composables/useLogout.ts";
 import { useEditUserAccount } from "@/pages/(app)/user-account/api/useEditUserAccount.ts";
 import { useChangePassword } from "@/pages/(app)/user-account/api/useChangePassword.ts";
@@ -39,7 +40,12 @@ definePage({
 
 const router = useRouter();
 const formRef = ref<InstanceType<typeof UserAccountForm>>();
-const { data: user, isPending: loading, error } = useCurrentUser();
+const {
+    data: user,
+    isPending: loading,
+    error: userError,
+} = useCurrentUserQuery();
+const error = computed(() => toAppErrorOrUndefined(userError.value));
 
 const { save, error: saveError } = useEditUserAccount();
 const {

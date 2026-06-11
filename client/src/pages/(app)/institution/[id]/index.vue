@@ -75,7 +75,7 @@ import {
     getInstitutionById,
 } from "@/services/seb-server/institutionService.ts";
 import { useInstitutionFormFields } from "@/pages/(app)/institution/composables/useInstitutionFormFields.ts";
-import { useCurrentUser } from "@/composables/useCurrentUser.ts";
+import { useCurrentUserQuery } from "@/composables/useCurrentUser.ts";
 import { useInstitutionBranding } from "@/composables/useInstitutionBranding.ts";
 import { useDirtyTracking } from "@/composables/useDirtyTracking.ts";
 import type { InstitutionAdmin } from "@/models/seb-server/institution.ts";
@@ -104,7 +104,7 @@ const {
     error: saveError,
 } = useMutation(editInstitution);
 
-const { data: user } = useCurrentUser();
+const { data: user } = useCurrentUserQuery();
 const { refetch: refetchInstitutionBranding } = useInstitutionBranding();
 
 const { isDirty, snapshot } = useDirtyTracking(

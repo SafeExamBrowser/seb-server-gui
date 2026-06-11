@@ -3,7 +3,7 @@ import moment from "moment-timezone";
 import i18n from "@/i18n";
 import { FormField } from "@/components/widgets/formBuilder/types.ts";
 import { useInstitutions } from "@/composables/useInstitutions.ts";
-import { getCurrentUser } from "@/composables/useCurrentUser.ts";
+import { useCurrentUserQuery } from "@/composables/useCurrentUser.ts";
 import { useZodFormRules } from "@/composables/useZodFormRules.ts";
 import {
     USER_ROLES,
@@ -57,21 +57,27 @@ export const useUserAccountFormFields = (mode: UserAccountFormMode) => {
         error: errorInstitutions,
     } = useInstitutions();
 
-    const authenticatedUser = getCurrentUser();
-    const userRoles = authenticatedUser?.userRoles ?? [];
-    const hasSebServerAdmin = userRoles.includes("SEB_SERVER_ADMIN");
-    const hasInstitutionalAdmin = userRoles.includes("INSTITUTIONAL_ADMIN");
+    const { data: authenticatedUser } = useCurrentUserQuery();
+    const userRoles = computed(() => authenticatedUser.value?.userRoles ?? []);
+    const hasSebServerAdmin = computed(() =>
+        userRoles.value.includes("SEB_SERVER_ADMIN"),
+    );
+    const hasInstitutionalAdmin = computed(() =>
+        userRoles.value.includes("INSTITUTIONAL_ADMIN"),
+    );
 
     const institutionSelectDisabled = ref(
-        !hasSebServerAdmin || mode !== "create",
+        !hasSebServerAdmin.value || mode !== "create",
     );
 
     watch(
         institutions,
         (data) => {
             if (!data || mode !== "create") return;
-            if (!hasInstitutionalAdmin || hasSebServerAdmin) return;
-            const userInstitutionId = String(authenticatedUser?.institutionId);
+            if (!hasInstitutionalAdmin.value || hasSebServerAdmin.value) return;
+            const userInstitutionId = String(
+                authenticatedUser.value?.institutionId,
+            );
             const matched = data.find((i) => i.modelId === userInstitutionId);
             if (matched) {
                 institutionId.value = matched.modelId;
@@ -85,8 +91,9 @@ export const useUserAccountFormFields = (mode: UserAccountFormMode) => {
         (institutions.value ?? [])
             .filter(
                 (i) =>
-                    hasSebServerAdmin ||
-                    i.modelId === String(authenticatedUser?.institutionId),
+                    hasSebServerAdmin.value ||
+                    i.modelId ===
+                        String(authenticatedUser.value?.institutionId),
             )
             .map((i) => ({ value: i.modelId, text: i.name })),
     );
@@ -97,10 +104,10 @@ export const useUserAccountFormFields = (mode: UserAccountFormMode) => {
             text: i18n.global.t(`general.userRoles.${value}`),
         }));
 
-        if (hasSebServerAdmin) {
+        if (hasSebServerAdmin.value) {
             return allRoles.filter((r) => ADMIN_VISIBLE_ROLES.has(r.value));
         }
-        if (hasInstitutionalAdmin) {
+        if (hasInstitutionalAdmin.value) {
             return allRoles.filter((r) =>
                 INSTITUTIONAL_VISIBLE_ROLES.has(r.value),
             );

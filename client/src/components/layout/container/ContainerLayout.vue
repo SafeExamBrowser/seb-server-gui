@@ -56,14 +56,14 @@ import ContainerHeader from "./ContainerHeader.vue";
 import ContainerSidePanel from "./ContainerSidePanel.vue";
 import ContainerRouteActions from "./ContainerRouteActions.vue";
 import { buildBaseNavigationLinks } from "./navigationLinks";
-import { useCurrentUser } from "@/composables/useCurrentUser";
+import { useCurrentUserQuery } from "@/composables/useCurrentUser";
 import { useInstitutionBranding } from "@/composables/useInstitutionBranding";
 import { useAbilities } from "@/services/ability";
 
 const route = useRoute();
 const { t } = useI18n();
 const { logout } = useLogout();
-const { data: user } = useCurrentUser();
+const { data: user } = useCurrentUserQuery();
 const { institutionName, institutionLogo } = useInstitutionBranding();
 const ability = useAbilities();
 

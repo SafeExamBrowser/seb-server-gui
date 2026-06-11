@@ -1,8 +1,8 @@
 import { computed } from "vue";
-import { useCurrentUser } from "@/composables/useCurrentUser.ts";
+import { useCurrentUserQuery } from "@/composables/useCurrentUser.ts";
 
 export const useShowInstitutionColumn = () => {
-    const { data: currentUser } = useCurrentUser();
+    const { data: currentUser } = useCurrentUserQuery();
 
     return computed(() => {
         const roles = currentUser.value?.userRoles ?? [];

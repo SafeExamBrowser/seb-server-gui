@@ -7,14 +7,15 @@ import {
 import { heySebServerClient } from "@/api/seb-server/http/heySebServerClient.ts";
 import { editUserAccount } from "@/services/seb-server/userAccountService.ts";
 import {
-    currentUserQueryKey,
-    getCurrentUser,
+    currentUserQueryOptions,
+    useCurrentUserQuery,
 } from "@/composables/useCurrentUser.ts";
 import { toAppErrorOrUndefined } from "@/services/errors/toAppError.ts";
 import type { UserAccount } from "@/models/userAccount.ts";
 
 export const useEditUserAccount = () => {
     const queryClient = useQueryClient();
+    const { data: currentUser } = useCurrentUserQuery();
     const mutation = useMutation({
         mutationFn: (body: UserAccount) => editUserAccount(body),
         onSuccess: (data) => {
@@ -32,8 +33,11 @@ export const useEditUserAccount = () => {
                 data,
             );
 
-            if (getCurrentUser()?.uuid === data.uuid) {
-                queryClient.setQueryData(currentUserQueryKey(), data);
+            if (currentUser.value?.uuid === data.uuid) {
+                queryClient.setQueryData(
+                    currentUserQueryOptions().queryKey,
+                    data,
+                );
             }
         },
     });

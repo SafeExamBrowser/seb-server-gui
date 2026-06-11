@@ -25,7 +25,7 @@ import UserAccountForm, {
     type ChangePasswordPayload,
 } from "@/pages/(app)/user-account/components/UserAccountForm.vue";
 import LoadingFallbackComponent from "@/components/widgets/loadingFallbackComponent/LoadingFallbackComponent.vue";
-import { getCurrentUser } from "@/composables/useCurrentUser.ts";
+import { useCurrentUserQuery } from "@/composables/useCurrentUser.ts";
 import { useLogout } from "@/composables/useLogout.ts";
 import { useUserAccount } from "@/pages/(app)/user-account/api/useUserAccount.ts";
 import { useEditUserAccount } from "@/pages/(app)/user-account/api/useEditUserAccount.ts";
@@ -55,6 +55,7 @@ const {
     error: fetchError,
 } = useUserAccount(userUuid);
 
+const { data: authenticatedUser } = useCurrentUserQuery();
 const { save, error: saveError } = useEditUserAccount();
 const {
     changePassword,
@@ -93,7 +94,7 @@ const handleChangePassword = async (payload: ChangePasswordPayload) => {
         contextLabel: "useraccount.password",
     });
     if (!changed) return;
-    if (currentUser.uuid === getCurrentUser()?.uuid) {
+    if (currentUser.uuid === authenticatedUser.value?.uuid) {
         await useLogout().logout();
     }
 };

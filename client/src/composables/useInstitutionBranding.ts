@@ -1,13 +1,13 @@
 import { computed } from "vue";
 import { useQuery, useQueryClient } from "@tanstack/vue-query";
-import { useCurrentUser } from "@/composables/useCurrentUser";
+import { useCurrentUserQuery } from "@/composables/useCurrentUser";
 import { getInstitutionById } from "@/services/seb-server/institutionService";
 
 const BRANDING_KEY_ROOT = "institutionBranding";
 
 export function useInstitutionBranding() {
     const queryClient = useQueryClient();
-    const { data: user } = useCurrentUser();
+    const { data: user } = useCurrentUserQuery();
 
     const query = useQuery({
         queryKey: computed(() => [
@@ -22,7 +22,6 @@ export function useInstitutionBranding() {
             return getInstitutionById(Number(id));
         },
         enabled: computed(() => user.value?.institutionId !== undefined),
-        staleTime: Infinity,
     });
 
     return {
