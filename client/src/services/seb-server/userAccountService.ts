@@ -1,4 +1,3 @@
-import { decodeWire, encodeWire } from "@/services/errors/wireCodec.ts";
 import { heySebServerClient as client } from "@/api/seb-server/http/heySebServerClient.ts";
 import {
     activateUserAccount as activateUserAccountSdk,
@@ -25,14 +24,13 @@ import {
     type UserAccountPage,
     type UserAccountPasswordChange,
 } from "@/models/userAccount.ts";
+import { decodeWire, encodeWire } from "@/services/errors/wireCodec.ts";
 import { zEntityProcessingReport } from "@/api/seb-server/generated/hey-api/zod.gen.ts";
 import type {
     EntityProcessingReport,
     GetUserAccountSupervisorsData,
     GetUserAccountsData,
 } from "@/api/seb-server/generated/hey-api/types.gen.ts";
-
-type RequestOptions = { signal?: AbortSignal };
 
 export const registerUserAccount = (
     body: UserAccountCreateRequest,
@@ -44,37 +42,28 @@ export const registerUserAccount = (
 
 export const getUserAccounts = (
     query?: GetUserAccountsData["query"],
-    opts?: RequestOptions,
 ): Promise<UserAccountPage> =>
-    getUserAccountsSdk({ client, query, signal: opts?.signal }).then(
-        ({ data }) => decodeWire(userAccountPageSchema, data),
+    getUserAccountsSdk({ client, query }).then(({ data }) =>
+        decodeWire(userAccountPageSchema, data),
     );
 
-export const getUserAccountById = (
-    modelId: string,
-    opts?: RequestOptions,
-): Promise<UserAccount> =>
+export const getUserAccountById = (modelId: string): Promise<UserAccount> =>
     getUserAccountByIdSdk({
         client,
         path: { modelId },
-        signal: opts?.signal,
     }).then(({ data }) => decodeWire(userAccountSchema, data));
 
-export const getCurrentUserAccount = (
-    opts?: RequestOptions,
-): Promise<UserAccount> =>
-    getCurrentUserAccountSdk({ client, signal: opts?.signal }).then(
-        ({ data }) => decodeWire(userAccountSchema, data),
+export const getCurrentUserAccount = (): Promise<UserAccount> =>
+    getCurrentUserAccountSdk({ client }).then(({ data }) =>
+        decodeWire(userAccountSchema, data),
     );
 
 export const getUserAccountSupervisors = (
     query?: GetUserAccountSupervisorsData["query"],
-    opts?: RequestOptions,
 ): Promise<UserAccountName[]> =>
     getUserAccountSupervisorsSdk({
         client,
         query,
-        signal: opts?.signal,
     }).then(({ data }) =>
         (data ?? []).map((name) => decodeWire(userAccountNameSchema, name)),
     );

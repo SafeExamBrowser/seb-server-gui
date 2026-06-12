@@ -9,7 +9,7 @@ export const currentUserQueryOptions = () =>
         queryKey: getCurrentUserAccountQueryKey({
             client: heySebServerClient,
         }),
-        queryFn: ({ signal }) => getCurrentUserAccount({ signal }),
+        queryFn: () => getCurrentUserAccount(),
     });
 
 export const useCurrentUserQuery = () => useQuery(currentUserQueryOptions());

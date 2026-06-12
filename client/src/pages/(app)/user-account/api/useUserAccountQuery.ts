@@ -18,11 +18,11 @@ export const useUserAccountQuery = (
                   })
                 : disabledUserAccountQueryKey,
         ),
-        queryFn: ({ signal }) => {
+        queryFn: () => {
             if (!accountId.value) {
                 throw new Error("unreachable: enabled guards accountId");
             }
-            return getUserAccountById(accountId.value, { signal });
+            return getUserAccountById(accountId.value);
         },
         enabled: computed(() => !!accountId.value),
     });

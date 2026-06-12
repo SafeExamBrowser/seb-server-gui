@@ -15,6 +15,6 @@ export const useUserAccountsQuery = (
                 query: query.value,
             }),
         ),
-        queryFn: ({ signal }) => getUserAccounts(query.value, { signal }),
+        queryFn: () => getUserAccounts(query.value),
         placeholderData: keepPreviousData,
     });
