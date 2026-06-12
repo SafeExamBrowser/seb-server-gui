@@ -8,6 +8,18 @@ import {
 } from "@/api/seb-server/generated/hey-api/zod.gen.ts";
 import { isoDateTimeCodec } from "@/models/codecs.ts";
 
+// Other SEB Server clients store a missing email as "" — accept that on the
+// wire, but keep the app model at "valid email or undefined" and never send
+// "" back.
+const emptyableEmailCodec = z.codec(
+    z.union([zUserInfo.shape.email.unwrap(), z.literal("")]).optional(),
+    zUserInfo.shape.email,
+    {
+        decode: (wire) => (wire === "" ? undefined : wire),
+        encode: (app) => app,
+    },
+);
+
 export const userAccountSchema = zUserInfo
     .pick({
         uuid: true,
@@ -15,13 +27,13 @@ export const userAccountSchema = zUserInfo
         name: true,
         surname: true,
         username: true,
-        email: true,
         active: true,
         language: true,
         timezone: true,
         userRoles: true,
     })
     .extend({
+        email: emptyableEmailCodec,
         creationDate: isoDateTimeCodec.optional(),
     });
 export type UserAccount = z.infer<typeof userAccountSchema>;

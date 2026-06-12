@@ -1,4 +1,4 @@
-import { z } from "zod";
+import { decodeWire, encodeWire } from "@/services/errors/wireCodec.ts";
 import { heySebServerClient as client } from "@/api/seb-server/http/heySebServerClient.ts";
 import {
     activateUserAccount as activateUserAccountSdk,
@@ -39,15 +39,15 @@ export const registerUserAccount = (
 ): Promise<UserAccount> =>
     registerUserAccountSdk({
         client,
-        body: z.encode(userAccountCreateSchema, body),
-    }).then(({ data }) => z.decode(userAccountSchema, data));
+        body: encodeWire(userAccountCreateSchema, body),
+    }).then(({ data }) => decodeWire(userAccountSchema, data));
 
 export const getUserAccounts = (
     query?: GetUserAccountsData["query"],
     opts?: RequestOptions,
 ): Promise<UserAccountPage> =>
     getUserAccountsSdk({ client, query, signal: opts?.signal }).then(
-        ({ data }) => z.decode(userAccountPageSchema, data),
+        ({ data }) => decodeWire(userAccountPageSchema, data),
     );
 
 export const getUserAccountById = (
@@ -58,13 +58,13 @@ export const getUserAccountById = (
         client,
         path: { modelId },
         signal: opts?.signal,
-    }).then(({ data }) => z.decode(userAccountSchema, data));
+    }).then(({ data }) => decodeWire(userAccountSchema, data));
 
 export const getCurrentUserAccount = (
     opts?: RequestOptions,
 ): Promise<UserAccount> =>
     getCurrentUserAccountSdk({ client, signal: opts?.signal }).then(
-        ({ data }) => z.decode(userAccountSchema, data),
+        ({ data }) => decodeWire(userAccountSchema, data),
     );
 
 export const getUserAccountSupervisors = (
@@ -76,7 +76,7 @@ export const getUserAccountSupervisors = (
         query,
         signal: opts?.signal,
     }).then(({ data }) =>
-        (data ?? []).map((name) => z.decode(userAccountNameSchema, name)),
+        (data ?? []).map((name) => decodeWire(userAccountNameSchema, name)),
     );
 
 export const createUserAccount = (
@@ -84,40 +84,40 @@ export const createUserAccount = (
 ): Promise<UserAccount> =>
     createUserAccountSdk({
         client,
-        body: z.encode(userAccountCreateSchema, body),
-    }).then(({ data }) => z.decode(userAccountSchema, data));
+        body: encodeWire(userAccountCreateSchema, body),
+    }).then(({ data }) => decodeWire(userAccountSchema, data));
 
 export const editUserAccount = (body: UserAccount): Promise<UserAccount> =>
     editUserAccountSdk({
         client,
-        body: z.encode(userAccountSchema, body),
-    }).then(({ data }) => z.decode(userAccountSchema, data));
+        body: encodeWire(userAccountSchema, body),
+    }).then(({ data }) => decodeWire(userAccountSchema, data));
 
 export const changeUserAccountPassword = (
     body: UserAccountPasswordChange,
 ): Promise<UserAccount> =>
     changeUserAccountPasswordSdk({
         client,
-        body: z.encode(userAccountPasswordChangeSchema, body),
-    }).then(({ data }) => z.decode(userAccountSchema, data));
+        body: encodeWire(userAccountPasswordChangeSchema, body),
+    }).then(({ data }) => decodeWire(userAccountSchema, data));
 
 export const deleteUserAccount = (
     modelId: string,
 ): Promise<EntityProcessingReport> =>
     deleteUserAccountSdk({ client, path: { modelId } }).then(({ data }) =>
-        z.decode(zEntityProcessingReport, data),
+        decodeWire(zEntityProcessingReport, data),
     );
 
 export const activateUserAccount = (
     modelId: string,
 ): Promise<EntityProcessingReport> =>
     activateUserAccountSdk({ client, path: { modelId } }).then(({ data }) =>
-        z.decode(zEntityProcessingReport, data),
+        decodeWire(zEntityProcessingReport, data),
     );
 
 export const deactivateUserAccount = (
     modelId: string,
 ): Promise<EntityProcessingReport> =>
     deactivateUserAccountSdk({ client, path: { modelId } }).then(({ data }) =>
-        z.decode(zEntityProcessingReport, data),
+        decodeWire(zEntityProcessingReport, data),
     );

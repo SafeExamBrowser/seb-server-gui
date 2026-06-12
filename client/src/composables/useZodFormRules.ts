@@ -1,6 +1,6 @@
 import { useRules } from "vuetify/labs/rules";
 import type { VInput } from "vuetify/components";
-import type { z } from "zod";
+import { z } from "zod";
 
 type VInputProps = InstanceType<typeof VInput>["$props"];
 type ValidationRules = NonNullable<VInputProps["rules"]>;
@@ -31,15 +31,38 @@ const typeTag = (schema: z.ZodType): string | undefined => {
 const isUnwrappableSchema = (schema: z.ZodType): schema is UnwrappableSchema =>
     "unwrap" in schema && typeof schema.unwrap === "function";
 
+type PipeSchema = z.ZodType & { def: { out: z.ZodType } };
+
+const isPipeSchema = (schema: z.ZodType): schema is PipeSchema => {
+    if (typeTag(schema) !== "pipe") {
+        return false;
+    }
+    const def = schema.def;
+    return (
+        typeof def === "object" &&
+        def !== null &&
+        "out" in def &&
+        def.out instanceof z.ZodType
+    );
+};
+
 const unwrap = (schema: z.ZodType): z.ZodType => {
     let current = schema;
-    while (
-        WRAPPER_TYPES.has(typeTag(current) ?? "") &&
-        isUnwrappableSchema(current)
-    ) {
-        current = current.unwrap();
+    for (;;) {
+        if (
+            WRAPPER_TYPES.has(typeTag(current) ?? "") &&
+            isUnwrappableSchema(current)
+        ) {
+            current = current.unwrap();
+            continue;
+        }
+        // codecs are pipes; the app-facing constraints live on the out side
+        if (isPipeSchema(current)) {
+            current = current.def.out;
+            continue;
+        }
+        return current;
     }
-    return current;
 };
 
 export const useZodFormRules = () => {
