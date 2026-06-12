@@ -7,8 +7,7 @@ import { parseEnv } from "./env.mjs";
 
 const OPENAPI_URL = parseEnv().SEB_SERVER_OPENAPI_URL;
 
-// Must match the `input` in openapi-ts.config.ts and the SPEC constant in
-// generate-error-catalog.mjs.
+// Must match the `input` in openapi-ts.config.ts.
 const OUTPUT = resolve("src/api/seb-server/openapi/seb-server.openapi.json");
 
 /** Strip every `format: int64` so generated TS uses `number` and Zod uses `z.number()`

@@ -1,8 +1,5 @@
 import i18n from "@/i18n";
-import {
-    errorCodeMessages,
-    fieldValidationMessages,
-} from "@/api/seb-server/generated/error-catalog.ts";
+import { ErrorCode } from "@/api/seb-server/generated/hey-api/types.gen.ts";
 import { parseBackendFieldError } from "@/services/errors/toAppError.ts";
 import type {
     APIMessage,
@@ -10,12 +7,21 @@ import type {
     BackendFieldError,
 } from "@/services/errors/types.ts";
 
-const translate = (key: string, params?: Record<string, unknown>): string =>
-    i18n.global.t(key, params ?? {});
+const ERROR_CODE_NAMES: Record<string, string> = Object.fromEntries(
+    Object.entries(ErrorCode).map(([name, code]) => [code, name]),
+);
+
+const translate = (
+    key: string,
+    params?: Record<string, unknown> | string[],
+): string =>
+    Array.isArray(params)
+        ? i18n.global.t(key, params)
+        : i18n.global.t(key, params ?? {});
 
 function translateFirst(
     keys: (string | undefined)[],
-    params?: Record<string, unknown>,
+    params?: Record<string, unknown> | string[],
 ): string | undefined {
     for (const key of keys) {
         if (!key) {
@@ -48,12 +54,10 @@ function getFieldLabel(domain: string | undefined, field: string): string {
     return translateFirst(keys) ?? humanize(field);
 }
 
-function substituteAttributes(template: string, attributes: string[]): string {
-    return template.replace(
-        /\{(\d+)\}/g,
-        (_match, index) => attributes[Number(index)] ?? "",
-    );
-}
+// validation rule names contain dots ("email.notunique"), which vue-i18n
+// treats as path separators — the keys are stored dash-separated instead.
+const validationMessageKey = (rule: string): string =>
+    `errors.backend.validation.${rule.replace(/\./g, "-")}`;
 
 export function getBackendFieldErrorText(error: BackendFieldError): string {
     const { domain, backendField, rule, ruleParams } = error;
@@ -62,14 +66,12 @@ export function getBackendFieldErrorText(error: BackendFieldError): string {
     const candidates = rule
         ? [`${field}.${rule}`, `${rule}.${ruleParams[0] ?? ""}`, rule]
         : [];
-    for (const candidate of candidates) {
-        const template = fieldValidationMessages[candidate];
-        if (template !== undefined) {
-            return substituteAttributes(
-                template,
-                error.apiMessage.attributes ?? [],
-            );
-        }
+    const translated = translateFirst(
+        candidates.map(validationMessageKey),
+        error.apiMessage.attributes ?? [],
+    );
+    if (translated) {
+        return translated;
     }
 
     return translate("errors.backend.fieldFallback", {
@@ -84,8 +86,11 @@ function getApiMessageLine(message: APIMessage): string {
         return getBackendFieldErrorText(fieldError);
     }
 
+    const codeName = ERROR_CODE_NAMES[message.messageCode];
     const codeText =
-        errorCodeMessages[message.messageCode] ?? message.systemMessage;
+        (codeName
+            ? translateFirst([`errors.backend.codes.${codeName}`])
+            : undefined) ?? message.systemMessage;
     if (codeText) {
         return message.details ? `${codeText} (${message.details})` : codeText;
     }
