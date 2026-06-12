@@ -1,8 +1,32 @@
 import { Exam } from "@/models/seb-server/exam.ts";
 import { ExamStatusEnum } from "@/models/seb-server/examFiltersEnum.ts";
+import { ConnectionStatusEnum } from "@/models/seb-server/connectionStatusEnum.ts";
 import { useMonitoringStore } from "@/stores/seb-server/monitoringStore.ts";
 import * as generalUtils from "@/utils/generalUtils.ts";
 import { ClientGroup } from "@/models/seb-server/clientGroup.ts";
+
+const connectionStatusColors: Record<ConnectionStatusEnum, string> = {
+    [ConnectionStatusEnum.UNDEFINED]: "#9e9e9e",
+    [ConnectionStatusEnum.CONNECTION_REQUESTED]: "#9fd8a3",
+    [ConnectionStatusEnum.READY]: "#5fce67",
+    [ConnectionStatusEnum.ACTIVE]: "#2a8f5d",
+    [ConnectionStatusEnum.CLOSED]: "#7fc6db",
+    [ConnectionStatusEnum.DISABLED]: "#9e9e9e",
+    [ConnectionStatusEnum.MISSING]: "#ef5350",
+};
+
+export function getConnectionStatusColor(status: string): string {
+    const connectionStatus = generalUtils.findEnumValue(
+        ConnectionStatusEnum,
+        status,
+    );
+
+    if (connectionStatus == null) {
+        return connectionStatusColors[ConnectionStatusEnum.UNDEFINED];
+    }
+
+    return connectionStatusColors[connectionStatus];
+}
 
 export function isMonitoringDisabled(): boolean {
     const selectedExam: Exam | null = useMonitoringStore().selectedExam;
