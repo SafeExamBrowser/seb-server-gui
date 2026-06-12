@@ -59,37 +59,27 @@ const examId = props.examId;
 const { filterValues, filterSections, applyFilterValues, clearAllFilters } =
     useMonitoringClientsFilters();
 
-// search: the store value drives the live table filtering (applied on every
-// refresh tick), appliedSearch only tracks the last submitted value for the
-// SearchBar button state
-const searchInput = computed<string | undefined>({
-    get: () => monitoringStore.searchName ?? undefined,
-    set: (value) => {
-        monitoringStore.searchName = value ?? null;
-    },
-});
+const searchInput = ref(monitoringStore.searchName ?? undefined);
 
-const appliedSearch = ref<string | undefined>(
-    monitoringStore.searchName ?? undefined,
-);
+const appliedSearch = computed(() => monitoringStore.searchName ?? undefined);
 
 watch(
     () => monitoringStore.searchName,
     (searchName) => {
         if (searchName == null) {
-            appliedSearch.value = undefined;
+            searchInput.value = undefined;
         }
     },
 );
 
 function handleSearch() {
-    appliedSearch.value = monitoringStore.searchName ?? undefined;
+    monitoringStore.searchName = searchInput.value || null;
     emit("updatePageInfo");
 }
 
 function handleClearSearch() {
+    searchInput.value = undefined;
     monitoringStore.searchName = null;
-    appliedSearch.value = undefined;
     emit("updatePageInfo");
 }
 
@@ -99,8 +89,8 @@ function handleFilterValuesUpdate(next: TableFilters) {
 }
 
 function handleClearFilters() {
+    monitoringStore.searchName = null;
     clearAllFilters();
-    appliedSearch.value = undefined;
     emit("updatePageInfo");
 }
 
