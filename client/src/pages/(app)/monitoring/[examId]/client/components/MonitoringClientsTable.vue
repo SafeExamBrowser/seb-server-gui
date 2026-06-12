@@ -326,7 +326,9 @@ function updateTableData() {
         }),
     ).filter((row) => {
         if (monitoringStore.searchName != null) {
-            return row.nameOrSession.includes(monitoringStore.searchName);
+            return row.nameOrSession
+                .toLowerCase()
+                .includes(monitoringStore.searchName.toLowerCase());
         }
         return true;
     });
