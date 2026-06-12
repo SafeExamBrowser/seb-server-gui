@@ -1,7 +1,6 @@
 <template>
     <BasicPage
         v-if="isDataLoaded"
-        floating
         :title="monitoringStore.selectedExam?.quizName ?? ''"
         :bread-crumb="breadCrumb"
         :panel-left-collapsed="!filtersOpen"
