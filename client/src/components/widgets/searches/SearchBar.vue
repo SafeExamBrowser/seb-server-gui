@@ -78,8 +78,8 @@
             <v-btn
                 v-for="action in actions"
                 :key="action.key"
-                variant="flat"
-                color="primary"
+                :variant="action.variant ?? 'flat'"
+                :color="action.color ?? 'primary'"
                 block
                 class="text-none"
                 :data-testid="`${dataTestId}-action-${action.key}-button`"
