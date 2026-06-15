@@ -1199,17 +1199,17 @@ export type ClientNotification = {
 };
 
 export type ClientMonitoringDataView = {
-    pendingNotification?: boolean;
     missingPing?: boolean;
     grantChecked?: boolean;
     grantDenied?: boolean;
     sebversionDenied?: boolean;
+    pendingNotification?: boolean;
+    nf?: number;
     st?: 'UNDEFINED' | 'CONNECTION_REQUESTED' | 'READY' | 'ACTIVE' | 'CLOSED' | 'DISABLED';
     lat?: number;
     iv?: {
         [key: string]: string;
     };
-    nf?: number;
     id?: number;
 };
 
@@ -2101,6 +2101,35 @@ export type HandshakeDeleteData = {
     url: '/exam-api/v1/handshake';
 };
 
+export type HandshakeDeleteErrors = {
+    /**
+     * Bad request, e.g. field validation or an illegal argument. The body is usually a list of APIMessage, but may be absent for some illegal-argument cases.
+     */
+    400: Array<ApiMessage>;
+    /**
+     * Unauthorized. Body is an APIMessage or a list of APIMessage.
+     */
+    401: ApiMessage | Array<ApiMessage>;
+    /**
+     * Forbidden. Body is a list of APIMessage.
+     */
+    403: Array<ApiMessage>;
+    /**
+     * Resource not found. Body is a list of APIMessage.
+     */
+    404: Array<ApiMessage>;
+    /**
+     * Too many requests (rate limit). Body is the rate-limit code as plain text.
+     */
+    429: string;
+    /**
+     * Unexpected internal server error. Body is a list of APIMessage.
+     */
+    500: Array<ApiMessage>;
+};
+
+export type HandshakeDeleteError = HandshakeDeleteErrors[keyof HandshakeDeleteErrors];
+
 export type HandshakeDeleteResponses = {
     /**
      * OK
@@ -2126,6 +2155,35 @@ export type HandshakeUpdateData = {
     url: '/exam-api/v1/handshake';
 };
 
+export type HandshakeUpdateErrors = {
+    /**
+     * Bad request, e.g. field validation or an illegal argument. The body is usually a list of APIMessage, but may be absent for some illegal-argument cases.
+     */
+    400: Array<ApiMessage>;
+    /**
+     * Unauthorized. Body is an APIMessage or a list of APIMessage.
+     */
+    401: ApiMessage | Array<ApiMessage>;
+    /**
+     * Forbidden. Body is a list of APIMessage.
+     */
+    403: Array<ApiMessage>;
+    /**
+     * Resource not found. Body is a list of APIMessage.
+     */
+    404: Array<ApiMessage>;
+    /**
+     * Too many requests (rate limit). Body is the rate-limit code as plain text.
+     */
+    429: string;
+    /**
+     * Unexpected internal server error. Body is a list of APIMessage.
+     */
+    500: Array<ApiMessage>;
+};
+
+export type HandshakeUpdateError = HandshakeUpdateErrors[keyof HandshakeUpdateErrors];
+
 export type HandshakeUpdateResponses = {
     /**
      * OK
@@ -2144,6 +2202,35 @@ export type HandshakeCreateData = {
     query?: never;
     url: '/exam-api/v1/handshake';
 };
+
+export type HandshakeCreateErrors = {
+    /**
+     * Bad request, e.g. field validation or an illegal argument. The body is usually a list of APIMessage, but may be absent for some illegal-argument cases.
+     */
+    400: Array<ApiMessage>;
+    /**
+     * Unauthorized. Body is an APIMessage or a list of APIMessage.
+     */
+    401: ApiMessage | Array<ApiMessage>;
+    /**
+     * Forbidden. Body is a list of APIMessage.
+     */
+    403: Array<ApiMessage>;
+    /**
+     * Resource not found. Body is a list of APIMessage.
+     */
+    404: Array<ApiMessage>;
+    /**
+     * Too many requests (rate limit). Body is the rate-limit code as plain text.
+     */
+    429: string;
+    /**
+     * Unexpected internal server error. Body is a list of APIMessage.
+     */
+    500: Array<ApiMessage>;
+};
+
+export type HandshakeCreateError = HandshakeCreateErrors[keyof HandshakeCreateErrors];
 
 export type HandshakeCreateResponses = {
     /**
@@ -2171,6 +2258,35 @@ export type HandshakeEstablishData = {
     query?: never;
     url: '/exam-api/v1/handshake';
 };
+
+export type HandshakeEstablishErrors = {
+    /**
+     * Bad request, e.g. field validation or an illegal argument. The body is usually a list of APIMessage, but may be absent for some illegal-argument cases.
+     */
+    400: Array<ApiMessage>;
+    /**
+     * Unauthorized. Body is an APIMessage or a list of APIMessage.
+     */
+    401: ApiMessage | Array<ApiMessage>;
+    /**
+     * Forbidden. Body is a list of APIMessage.
+     */
+    403: Array<ApiMessage>;
+    /**
+     * Resource not found. Body is a list of APIMessage.
+     */
+    404: Array<ApiMessage>;
+    /**
+     * Too many requests (rate limit). Body is the rate-limit code as plain text.
+     */
+    429: string;
+    /**
+     * Unexpected internal server error. Body is a list of APIMessage.
+     */
+    500: Array<ApiMessage>;
+};
+
+export type HandshakeEstablishError = HandshakeEstablishErrors[keyof HandshakeEstablishErrors];
 
 export type HandshakeEstablishResponses = {
     /**
@@ -2204,6 +2320,35 @@ export type DeleteAllUserActivityLogsData = {
     };
     url: '/admin-api/v1/useractivity';
 };
+
+export type DeleteAllUserActivityLogsErrors = {
+    /**
+     * Bad request, e.g. field validation or an illegal argument. The body is usually a list of APIMessage, but may be absent for some illegal-argument cases.
+     */
+    400: Array<ApiMessage>;
+    /**
+     * Unauthorized. Body is an APIMessage or a list of APIMessage.
+     */
+    401: ApiMessage | Array<ApiMessage>;
+    /**
+     * Forbidden. Body is a list of APIMessage.
+     */
+    403: Array<ApiMessage>;
+    /**
+     * Resource not found. Body is a list of APIMessage.
+     */
+    404: Array<ApiMessage>;
+    /**
+     * Too many requests (rate limit). Body is the rate-limit code as plain text.
+     */
+    429: string;
+    /**
+     * Unexpected internal server error. Body is a list of APIMessage.
+     */
+    500: Array<ApiMessage>;
+};
+
+export type DeleteAllUserActivityLogsError = DeleteAllUserActivityLogsErrors[keyof DeleteAllUserActivityLogsErrors];
 
 export type DeleteAllUserActivityLogsResponses = {
     /**
@@ -2239,6 +2384,35 @@ export type GetUserActivityLogsData = {
     url: '/admin-api/v1/useractivity';
 };
 
+export type GetUserActivityLogsErrors = {
+    /**
+     * Bad request, e.g. field validation or an illegal argument. The body is usually a list of APIMessage, but may be absent for some illegal-argument cases.
+     */
+    400: Array<ApiMessage>;
+    /**
+     * Unauthorized. Body is an APIMessage or a list of APIMessage.
+     */
+    401: ApiMessage | Array<ApiMessage>;
+    /**
+     * Forbidden. Body is a list of APIMessage.
+     */
+    403: Array<ApiMessage>;
+    /**
+     * Resource not found. Body is a list of APIMessage.
+     */
+    404: Array<ApiMessage>;
+    /**
+     * Too many requests (rate limit). Body is the rate-limit code as plain text.
+     */
+    429: string;
+    /**
+     * Unexpected internal server error. Body is a list of APIMessage.
+     */
+    500: Array<ApiMessage>;
+};
+
+export type GetUserActivityLogsError = GetUserActivityLogsErrors[keyof GetUserActivityLogsErrors];
+
 export type GetUserActivityLogsResponses = {
     /**
      * OK
@@ -2261,6 +2435,35 @@ export type CreateUserActivityLogData = {
     url: '/admin-api/v1/useractivity';
 };
 
+export type CreateUserActivityLogErrors = {
+    /**
+     * Bad request, e.g. field validation or an illegal argument. The body is usually a list of APIMessage, but may be absent for some illegal-argument cases.
+     */
+    400: Array<ApiMessage>;
+    /**
+     * Unauthorized. Body is an APIMessage or a list of APIMessage.
+     */
+    401: ApiMessage | Array<ApiMessage>;
+    /**
+     * Forbidden. Body is a list of APIMessage.
+     */
+    403: Array<ApiMessage>;
+    /**
+     * Resource not found. Body is a list of APIMessage.
+     */
+    404: Array<ApiMessage>;
+    /**
+     * Too many requests (rate limit). Body is the rate-limit code as plain text.
+     */
+    429: string;
+    /**
+     * Unexpected internal server error. Body is a list of APIMessage.
+     */
+    500: Array<ApiMessage>;
+};
+
+export type CreateUserActivityLogError = CreateUserActivityLogErrors[keyof CreateUserActivityLogErrors];
+
 export type CreateUserActivityLogResponses = {
     /**
      * Created user activity log.
@@ -2276,6 +2479,35 @@ export type EditUserActivityLogData = {
     query?: never;
     url: '/admin-api/v1/useractivity';
 };
+
+export type EditUserActivityLogErrors = {
+    /**
+     * Bad request, e.g. field validation or an illegal argument. The body is usually a list of APIMessage, but may be absent for some illegal-argument cases.
+     */
+    400: Array<ApiMessage>;
+    /**
+     * Unauthorized. Body is an APIMessage or a list of APIMessage.
+     */
+    401: ApiMessage | Array<ApiMessage>;
+    /**
+     * Forbidden. Body is a list of APIMessage.
+     */
+    403: Array<ApiMessage>;
+    /**
+     * Resource not found. Body is a list of APIMessage.
+     */
+    404: Array<ApiMessage>;
+    /**
+     * Too many requests (rate limit). Body is the rate-limit code as plain text.
+     */
+    429: string;
+    /**
+     * Unexpected internal server error. Body is a list of APIMessage.
+     */
+    500: Array<ApiMessage>;
+};
+
+export type EditUserActivityLogError = EditUserActivityLogErrors[keyof EditUserActivityLogErrors];
 
 export type EditUserActivityLogResponses = {
     /**
@@ -2311,6 +2543,35 @@ export type DeleteAllUserAccountsData = {
     };
     url: '/admin-api/v1/useraccount';
 };
+
+export type DeleteAllUserAccountsErrors = {
+    /**
+     * Bad request, e.g. field validation or an illegal argument. The body is usually a list of APIMessage, but may be absent for some illegal-argument cases.
+     */
+    400: Array<ApiMessage>;
+    /**
+     * Unauthorized. Body is an APIMessage or a list of APIMessage.
+     */
+    401: ApiMessage | Array<ApiMessage>;
+    /**
+     * Forbidden. Body is a list of APIMessage.
+     */
+    403: Array<ApiMessage>;
+    /**
+     * Resource not found. Body is a list of APIMessage.
+     */
+    404: Array<ApiMessage>;
+    /**
+     * Too many requests (rate limit). Body is the rate-limit code as plain text.
+     */
+    429: string;
+    /**
+     * Unexpected internal server error. Body is a list of APIMessage.
+     */
+    500: Array<ApiMessage>;
+};
+
+export type DeleteAllUserAccountsError = DeleteAllUserAccountsErrors[keyof DeleteAllUserAccountsErrors];
 
 export type DeleteAllUserAccountsResponses = {
     /**
@@ -2374,6 +2635,35 @@ export type GetUserAccountsData = {
     url: '/admin-api/v1/useraccount';
 };
 
+export type GetUserAccountsErrors = {
+    /**
+     * Bad request, e.g. field validation or an illegal argument. The body is usually a list of APIMessage, but may be absent for some illegal-argument cases.
+     */
+    400: Array<ApiMessage>;
+    /**
+     * Unauthorized. Body is an APIMessage or a list of APIMessage.
+     */
+    401: ApiMessage | Array<ApiMessage>;
+    /**
+     * Forbidden. Body is a list of APIMessage.
+     */
+    403: Array<ApiMessage>;
+    /**
+     * Resource not found. Body is a list of APIMessage.
+     */
+    404: Array<ApiMessage>;
+    /**
+     * Too many requests (rate limit). Body is the rate-limit code as plain text.
+     */
+    429: string;
+    /**
+     * Unexpected internal server error. Body is a list of APIMessage.
+     */
+    500: Array<ApiMessage>;
+};
+
+export type GetUserAccountsError = GetUserAccountsErrors[keyof GetUserAccountsErrors];
+
 export type GetUserAccountsResponses = {
     /**
      * OK
@@ -2396,6 +2686,35 @@ export type CreateUserAccountData = {
     url: '/admin-api/v1/useraccount';
 };
 
+export type CreateUserAccountErrors = {
+    /**
+     * Bad request, e.g. field validation or an illegal argument. The body is usually a list of APIMessage, but may be absent for some illegal-argument cases.
+     */
+    400: Array<ApiMessage>;
+    /**
+     * Unauthorized. Body is an APIMessage or a list of APIMessage.
+     */
+    401: ApiMessage | Array<ApiMessage>;
+    /**
+     * Forbidden. Body is a list of APIMessage.
+     */
+    403: Array<ApiMessage>;
+    /**
+     * Resource not found. Body is a list of APIMessage.
+     */
+    404: Array<ApiMessage>;
+    /**
+     * Too many requests (rate limit). Body is the rate-limit code as plain text.
+     */
+    429: string;
+    /**
+     * Unexpected internal server error. Body is a list of APIMessage.
+     */
+    500: Array<ApiMessage>;
+};
+
+export type CreateUserAccountError = CreateUserAccountErrors[keyof CreateUserAccountErrors];
+
 export type CreateUserAccountResponses = {
     /**
      * Created user account.
@@ -2412,6 +2731,35 @@ export type EditUserAccountData = {
     url: '/admin-api/v1/useraccount';
 };
 
+export type EditUserAccountErrors = {
+    /**
+     * Bad request, e.g. field validation or an illegal argument. The body is usually a list of APIMessage, but may be absent for some illegal-argument cases.
+     */
+    400: Array<ApiMessage>;
+    /**
+     * Unauthorized. Body is an APIMessage or a list of APIMessage.
+     */
+    401: ApiMessage | Array<ApiMessage>;
+    /**
+     * Forbidden. Body is a list of APIMessage.
+     */
+    403: Array<ApiMessage>;
+    /**
+     * Resource not found. Body is a list of APIMessage.
+     */
+    404: Array<ApiMessage>;
+    /**
+     * Too many requests (rate limit). Body is the rate-limit code as plain text.
+     */
+    429: string;
+    /**
+     * Unexpected internal server error. Body is a list of APIMessage.
+     */
+    500: Array<ApiMessage>;
+};
+
+export type EditUserAccountError = EditUserAccountErrors[keyof EditUserAccountErrors];
+
 export type EditUserAccountResponses = {
     /**
      * OK
@@ -2427,6 +2775,35 @@ export type ChangeUserAccountPasswordData = {
     query?: never;
     url: '/admin-api/v1/useraccount/password';
 };
+
+export type ChangeUserAccountPasswordErrors = {
+    /**
+     * Bad request, e.g. field validation or an illegal argument. The body is usually a list of APIMessage, but may be absent for some illegal-argument cases.
+     */
+    400: Array<ApiMessage>;
+    /**
+     * Unauthorized. Body is an APIMessage or a list of APIMessage.
+     */
+    401: ApiMessage | Array<ApiMessage>;
+    /**
+     * Forbidden. Body is a list of APIMessage.
+     */
+    403: Array<ApiMessage>;
+    /**
+     * Resource not found. Body is a list of APIMessage.
+     */
+    404: Array<ApiMessage>;
+    /**
+     * Too many requests (rate limit). Body is the rate-limit code as plain text.
+     */
+    429: string;
+    /**
+     * Unexpected internal server error. Body is a list of APIMessage.
+     */
+    500: Array<ApiMessage>;
+};
+
+export type ChangeUserAccountPasswordError = ChangeUserAccountPasswordErrors[keyof ChangeUserAccountPasswordErrors];
 
 export type ChangeUserAccountPasswordResponses = {
     /**
@@ -2463,6 +2840,35 @@ export type DeleteAllClientEventsData = {
     url: '/admin-api/v1/seb-client-event';
 };
 
+export type DeleteAllClientEventsErrors = {
+    /**
+     * Bad request, e.g. field validation or an illegal argument. The body is usually a list of APIMessage, but may be absent for some illegal-argument cases.
+     */
+    400: Array<ApiMessage>;
+    /**
+     * Unauthorized. Body is an APIMessage or a list of APIMessage.
+     */
+    401: ApiMessage | Array<ApiMessage>;
+    /**
+     * Forbidden. Body is a list of APIMessage.
+     */
+    403: Array<ApiMessage>;
+    /**
+     * Resource not found. Body is a list of APIMessage.
+     */
+    404: Array<ApiMessage>;
+    /**
+     * Too many requests (rate limit). Body is the rate-limit code as plain text.
+     */
+    429: string;
+    /**
+     * Unexpected internal server error. Body is a list of APIMessage.
+     */
+    500: Array<ApiMessage>;
+};
+
+export type DeleteAllClientEventsError = DeleteAllClientEventsErrors[keyof DeleteAllClientEventsErrors];
+
 export type DeleteAllClientEventsResponses = {
     /**
      * OK
@@ -2497,6 +2903,35 @@ export type GetClientEventsData = {
     url: '/admin-api/v1/seb-client-event';
 };
 
+export type GetClientEventsErrors = {
+    /**
+     * Bad request, e.g. field validation or an illegal argument. The body is usually a list of APIMessage, but may be absent for some illegal-argument cases.
+     */
+    400: Array<ApiMessage>;
+    /**
+     * Unauthorized. Body is an APIMessage or a list of APIMessage.
+     */
+    401: ApiMessage | Array<ApiMessage>;
+    /**
+     * Forbidden. Body is a list of APIMessage.
+     */
+    403: Array<ApiMessage>;
+    /**
+     * Resource not found. Body is a list of APIMessage.
+     */
+    404: Array<ApiMessage>;
+    /**
+     * Too many requests (rate limit). Body is the rate-limit code as plain text.
+     */
+    429: string;
+    /**
+     * Unexpected internal server error. Body is a list of APIMessage.
+     */
+    500: Array<ApiMessage>;
+};
+
+export type GetClientEventsError = GetClientEventsErrors[keyof GetClientEventsErrors];
+
 export type GetClientEventsResponses = {
     /**
      * OK
@@ -2519,6 +2954,35 @@ export type CreateClientEventData = {
     url: '/admin-api/v1/seb-client-event';
 };
 
+export type CreateClientEventErrors = {
+    /**
+     * Bad request, e.g. field validation or an illegal argument. The body is usually a list of APIMessage, but may be absent for some illegal-argument cases.
+     */
+    400: Array<ApiMessage>;
+    /**
+     * Unauthorized. Body is an APIMessage or a list of APIMessage.
+     */
+    401: ApiMessage | Array<ApiMessage>;
+    /**
+     * Forbidden. Body is a list of APIMessage.
+     */
+    403: Array<ApiMessage>;
+    /**
+     * Resource not found. Body is a list of APIMessage.
+     */
+    404: Array<ApiMessage>;
+    /**
+     * Too many requests (rate limit). Body is the rate-limit code as plain text.
+     */
+    429: string;
+    /**
+     * Unexpected internal server error. Body is a list of APIMessage.
+     */
+    500: Array<ApiMessage>;
+};
+
+export type CreateClientEventError = CreateClientEventErrors[keyof CreateClientEventErrors];
+
 export type CreateClientEventResponses = {
     /**
      * Created client event.
@@ -2534,6 +2998,35 @@ export type EditClientEventData = {
     query?: never;
     url: '/admin-api/v1/seb-client-event';
 };
+
+export type EditClientEventErrors = {
+    /**
+     * Bad request, e.g. field validation or an illegal argument. The body is usually a list of APIMessage, but may be absent for some illegal-argument cases.
+     */
+    400: Array<ApiMessage>;
+    /**
+     * Unauthorized. Body is an APIMessage or a list of APIMessage.
+     */
+    401: ApiMessage | Array<ApiMessage>;
+    /**
+     * Forbidden. Body is a list of APIMessage.
+     */
+    403: Array<ApiMessage>;
+    /**
+     * Resource not found. Body is a list of APIMessage.
+     */
+    404: Array<ApiMessage>;
+    /**
+     * Too many requests (rate limit). Body is the rate-limit code as plain text.
+     */
+    429: string;
+    /**
+     * Unexpected internal server error. Body is a list of APIMessage.
+     */
+    500: Array<ApiMessage>;
+};
+
+export type EditClientEventError = EditClientEventErrors[keyof EditClientEventErrors];
 
 export type EditClientEventResponses = {
     /**
@@ -2570,6 +3063,35 @@ export type DeleteAllClientConnectionsData = {
     url: '/admin-api/v1/seb-client-connection';
 };
 
+export type DeleteAllClientConnectionsErrors = {
+    /**
+     * Bad request, e.g. field validation or an illegal argument. The body is usually a list of APIMessage, but may be absent for some illegal-argument cases.
+     */
+    400: Array<ApiMessage>;
+    /**
+     * Unauthorized. Body is an APIMessage or a list of APIMessage.
+     */
+    401: ApiMessage | Array<ApiMessage>;
+    /**
+     * Forbidden. Body is a list of APIMessage.
+     */
+    403: Array<ApiMessage>;
+    /**
+     * Resource not found. Body is a list of APIMessage.
+     */
+    404: Array<ApiMessage>;
+    /**
+     * Too many requests (rate limit). Body is the rate-limit code as plain text.
+     */
+    429: string;
+    /**
+     * Unexpected internal server error. Body is a list of APIMessage.
+     */
+    500: Array<ApiMessage>;
+};
+
+export type DeleteAllClientConnectionsError = DeleteAllClientConnectionsErrors[keyof DeleteAllClientConnectionsErrors];
+
 export type DeleteAllClientConnectionsResponses = {
     /**
      * OK
@@ -2604,6 +3126,35 @@ export type GetClientConnectionsData = {
     url: '/admin-api/v1/seb-client-connection';
 };
 
+export type GetClientConnectionsErrors = {
+    /**
+     * Bad request, e.g. field validation or an illegal argument. The body is usually a list of APIMessage, but may be absent for some illegal-argument cases.
+     */
+    400: Array<ApiMessage>;
+    /**
+     * Unauthorized. Body is an APIMessage or a list of APIMessage.
+     */
+    401: ApiMessage | Array<ApiMessage>;
+    /**
+     * Forbidden. Body is a list of APIMessage.
+     */
+    403: Array<ApiMessage>;
+    /**
+     * Resource not found. Body is a list of APIMessage.
+     */
+    404: Array<ApiMessage>;
+    /**
+     * Too many requests (rate limit). Body is the rate-limit code as plain text.
+     */
+    429: string;
+    /**
+     * Unexpected internal server error. Body is a list of APIMessage.
+     */
+    500: Array<ApiMessage>;
+};
+
+export type GetClientConnectionsError = GetClientConnectionsErrors[keyof GetClientConnectionsErrors];
+
 export type GetClientConnectionsResponses = {
     /**
      * OK
@@ -2626,6 +3177,35 @@ export type CreateClientConnectionData = {
     url: '/admin-api/v1/seb-client-connection';
 };
 
+export type CreateClientConnectionErrors = {
+    /**
+     * Bad request, e.g. field validation or an illegal argument. The body is usually a list of APIMessage, but may be absent for some illegal-argument cases.
+     */
+    400: Array<ApiMessage>;
+    /**
+     * Unauthorized. Body is an APIMessage or a list of APIMessage.
+     */
+    401: ApiMessage | Array<ApiMessage>;
+    /**
+     * Forbidden. Body is a list of APIMessage.
+     */
+    403: Array<ApiMessage>;
+    /**
+     * Resource not found. Body is a list of APIMessage.
+     */
+    404: Array<ApiMessage>;
+    /**
+     * Too many requests (rate limit). Body is the rate-limit code as plain text.
+     */
+    429: string;
+    /**
+     * Unexpected internal server error. Body is a list of APIMessage.
+     */
+    500: Array<ApiMessage>;
+};
+
+export type CreateClientConnectionError = CreateClientConnectionErrors[keyof CreateClientConnectionErrors];
+
 export type CreateClientConnectionResponses = {
     /**
      * Created client connection.
@@ -2641,6 +3221,35 @@ export type EditClientConnectionData = {
     query?: never;
     url: '/admin-api/v1/seb-client-connection';
 };
+
+export type EditClientConnectionErrors = {
+    /**
+     * Bad request, e.g. field validation or an illegal argument. The body is usually a list of APIMessage, but may be absent for some illegal-argument cases.
+     */
+    400: Array<ApiMessage>;
+    /**
+     * Unauthorized. Body is an APIMessage or a list of APIMessage.
+     */
+    401: ApiMessage | Array<ApiMessage>;
+    /**
+     * Forbidden. Body is a list of APIMessage.
+     */
+    403: Array<ApiMessage>;
+    /**
+     * Resource not found. Body is a list of APIMessage.
+     */
+    404: Array<ApiMessage>;
+    /**
+     * Too many requests (rate limit). Body is the rate-limit code as plain text.
+     */
+    429: string;
+    /**
+     * Unexpected internal server error. Body is a list of APIMessage.
+     */
+    500: Array<ApiMessage>;
+};
+
+export type EditClientConnectionError = EditClientConnectionErrors[keyof EditClientConnectionErrors];
 
 export type EditClientConnectionResponses = {
     /**
@@ -2677,6 +3286,35 @@ export type DeleteAllOrientationsData = {
     url: '/admin-api/v1/orientation';
 };
 
+export type DeleteAllOrientationsErrors = {
+    /**
+     * Bad request, e.g. field validation or an illegal argument. The body is usually a list of APIMessage, but may be absent for some illegal-argument cases.
+     */
+    400: Array<ApiMessage>;
+    /**
+     * Unauthorized. Body is an APIMessage or a list of APIMessage.
+     */
+    401: ApiMessage | Array<ApiMessage>;
+    /**
+     * Forbidden. Body is a list of APIMessage.
+     */
+    403: Array<ApiMessage>;
+    /**
+     * Resource not found. Body is a list of APIMessage.
+     */
+    404: Array<ApiMessage>;
+    /**
+     * Too many requests (rate limit). Body is the rate-limit code as plain text.
+     */
+    429: string;
+    /**
+     * Unexpected internal server error. Body is a list of APIMessage.
+     */
+    500: Array<ApiMessage>;
+};
+
+export type DeleteAllOrientationsError = DeleteAllOrientationsErrors[keyof DeleteAllOrientationsErrors];
+
 export type DeleteAllOrientationsResponses = {
     /**
      * OK
@@ -2711,6 +3349,35 @@ export type GetOrientationsData = {
     url: '/admin-api/v1/orientation';
 };
 
+export type GetOrientationsErrors = {
+    /**
+     * Bad request, e.g. field validation or an illegal argument. The body is usually a list of APIMessage, but may be absent for some illegal-argument cases.
+     */
+    400: Array<ApiMessage>;
+    /**
+     * Unauthorized. Body is an APIMessage or a list of APIMessage.
+     */
+    401: ApiMessage | Array<ApiMessage>;
+    /**
+     * Forbidden. Body is a list of APIMessage.
+     */
+    403: Array<ApiMessage>;
+    /**
+     * Resource not found. Body is a list of APIMessage.
+     */
+    404: Array<ApiMessage>;
+    /**
+     * Too many requests (rate limit). Body is the rate-limit code as plain text.
+     */
+    429: string;
+    /**
+     * Unexpected internal server error. Body is a list of APIMessage.
+     */
+    500: Array<ApiMessage>;
+};
+
+export type GetOrientationsError = GetOrientationsErrors[keyof GetOrientationsErrors];
+
 export type GetOrientationsResponses = {
     /**
      * OK
@@ -2733,6 +3400,35 @@ export type CreateOrientationData = {
     url: '/admin-api/v1/orientation';
 };
 
+export type CreateOrientationErrors = {
+    /**
+     * Bad request, e.g. field validation or an illegal argument. The body is usually a list of APIMessage, but may be absent for some illegal-argument cases.
+     */
+    400: Array<ApiMessage>;
+    /**
+     * Unauthorized. Body is an APIMessage or a list of APIMessage.
+     */
+    401: ApiMessage | Array<ApiMessage>;
+    /**
+     * Forbidden. Body is a list of APIMessage.
+     */
+    403: Array<ApiMessage>;
+    /**
+     * Resource not found. Body is a list of APIMessage.
+     */
+    404: Array<ApiMessage>;
+    /**
+     * Too many requests (rate limit). Body is the rate-limit code as plain text.
+     */
+    429: string;
+    /**
+     * Unexpected internal server error. Body is a list of APIMessage.
+     */
+    500: Array<ApiMessage>;
+};
+
+export type CreateOrientationError = CreateOrientationErrors[keyof CreateOrientationErrors];
+
 export type CreateOrientationResponses = {
     /**
      * Created orientation.
@@ -2748,6 +3444,35 @@ export type EditOrientationData = {
     query?: never;
     url: '/admin-api/v1/orientation';
 };
+
+export type EditOrientationErrors = {
+    /**
+     * Bad request, e.g. field validation or an illegal argument. The body is usually a list of APIMessage, but may be absent for some illegal-argument cases.
+     */
+    400: Array<ApiMessage>;
+    /**
+     * Unauthorized. Body is an APIMessage or a list of APIMessage.
+     */
+    401: ApiMessage | Array<ApiMessage>;
+    /**
+     * Forbidden. Body is a list of APIMessage.
+     */
+    403: Array<ApiMessage>;
+    /**
+     * Resource not found. Body is a list of APIMessage.
+     */
+    404: Array<ApiMessage>;
+    /**
+     * Too many requests (rate limit). Body is the rate-limit code as plain text.
+     */
+    429: string;
+    /**
+     * Unexpected internal server error. Body is a list of APIMessage.
+     */
+    500: Array<ApiMessage>;
+};
+
+export type EditOrientationError = EditOrientationErrors[keyof EditOrientationErrors];
 
 export type EditOrientationResponses = {
     /**
@@ -2784,6 +3509,35 @@ export type DeleteAllViewsData = {
     url: '/admin-api/v1/orientation/view';
 };
 
+export type DeleteAllViewsErrors = {
+    /**
+     * Bad request, e.g. field validation or an illegal argument. The body is usually a list of APIMessage, but may be absent for some illegal-argument cases.
+     */
+    400: Array<ApiMessage>;
+    /**
+     * Unauthorized. Body is an APIMessage or a list of APIMessage.
+     */
+    401: ApiMessage | Array<ApiMessage>;
+    /**
+     * Forbidden. Body is a list of APIMessage.
+     */
+    403: Array<ApiMessage>;
+    /**
+     * Resource not found. Body is a list of APIMessage.
+     */
+    404: Array<ApiMessage>;
+    /**
+     * Too many requests (rate limit). Body is the rate-limit code as plain text.
+     */
+    429: string;
+    /**
+     * Unexpected internal server error. Body is a list of APIMessage.
+     */
+    500: Array<ApiMessage>;
+};
+
+export type DeleteAllViewsError = DeleteAllViewsErrors[keyof DeleteAllViewsErrors];
+
 export type DeleteAllViewsResponses = {
     /**
      * OK
@@ -2818,6 +3572,35 @@ export type GetViewsData = {
     url: '/admin-api/v1/orientation/view';
 };
 
+export type GetViewsErrors = {
+    /**
+     * Bad request, e.g. field validation or an illegal argument. The body is usually a list of APIMessage, but may be absent for some illegal-argument cases.
+     */
+    400: Array<ApiMessage>;
+    /**
+     * Unauthorized. Body is an APIMessage or a list of APIMessage.
+     */
+    401: ApiMessage | Array<ApiMessage>;
+    /**
+     * Forbidden. Body is a list of APIMessage.
+     */
+    403: Array<ApiMessage>;
+    /**
+     * Resource not found. Body is a list of APIMessage.
+     */
+    404: Array<ApiMessage>;
+    /**
+     * Too many requests (rate limit). Body is the rate-limit code as plain text.
+     */
+    429: string;
+    /**
+     * Unexpected internal server error. Body is a list of APIMessage.
+     */
+    500: Array<ApiMessage>;
+};
+
+export type GetViewsError = GetViewsErrors[keyof GetViewsErrors];
+
 export type GetViewsResponses = {
     /**
      * OK
@@ -2840,6 +3623,35 @@ export type CreateViewData = {
     url: '/admin-api/v1/orientation/view';
 };
 
+export type CreateViewErrors = {
+    /**
+     * Bad request, e.g. field validation or an illegal argument. The body is usually a list of APIMessage, but may be absent for some illegal-argument cases.
+     */
+    400: Array<ApiMessage>;
+    /**
+     * Unauthorized. Body is an APIMessage or a list of APIMessage.
+     */
+    401: ApiMessage | Array<ApiMessage>;
+    /**
+     * Forbidden. Body is a list of APIMessage.
+     */
+    403: Array<ApiMessage>;
+    /**
+     * Resource not found. Body is a list of APIMessage.
+     */
+    404: Array<ApiMessage>;
+    /**
+     * Too many requests (rate limit). Body is the rate-limit code as plain text.
+     */
+    429: string;
+    /**
+     * Unexpected internal server error. Body is a list of APIMessage.
+     */
+    500: Array<ApiMessage>;
+};
+
+export type CreateViewError = CreateViewErrors[keyof CreateViewErrors];
+
 export type CreateViewResponses = {
     /**
      * Created view.
@@ -2855,6 +3667,35 @@ export type EditViewData = {
     query?: never;
     url: '/admin-api/v1/orientation/view';
 };
+
+export type EditViewErrors = {
+    /**
+     * Bad request, e.g. field validation or an illegal argument. The body is usually a list of APIMessage, but may be absent for some illegal-argument cases.
+     */
+    400: Array<ApiMessage>;
+    /**
+     * Unauthorized. Body is an APIMessage or a list of APIMessage.
+     */
+    401: ApiMessage | Array<ApiMessage>;
+    /**
+     * Forbidden. Body is a list of APIMessage.
+     */
+    403: Array<ApiMessage>;
+    /**
+     * Resource not found. Body is a list of APIMessage.
+     */
+    404: Array<ApiMessage>;
+    /**
+     * Too many requests (rate limit). Body is the rate-limit code as plain text.
+     */
+    429: string;
+    /**
+     * Unexpected internal server error. Body is a list of APIMessage.
+     */
+    500: Array<ApiMessage>;
+};
+
+export type EditViewError = EditViewErrors[keyof EditViewErrors];
 
 export type EditViewResponses = {
     /**
@@ -2891,6 +3732,35 @@ export type DeleteAllLmsSetupsData = {
     url: '/admin-api/v1/lms-setup';
 };
 
+export type DeleteAllLmsSetupsErrors = {
+    /**
+     * Bad request, e.g. field validation or an illegal argument. The body is usually a list of APIMessage, but may be absent for some illegal-argument cases.
+     */
+    400: Array<ApiMessage>;
+    /**
+     * Unauthorized. Body is an APIMessage or a list of APIMessage.
+     */
+    401: ApiMessage | Array<ApiMessage>;
+    /**
+     * Forbidden. Body is a list of APIMessage.
+     */
+    403: Array<ApiMessage>;
+    /**
+     * Resource not found. Body is a list of APIMessage.
+     */
+    404: Array<ApiMessage>;
+    /**
+     * Too many requests (rate limit). Body is the rate-limit code as plain text.
+     */
+    429: string;
+    /**
+     * Unexpected internal server error. Body is a list of APIMessage.
+     */
+    500: Array<ApiMessage>;
+};
+
+export type DeleteAllLmsSetupsError = DeleteAllLmsSetupsErrors[keyof DeleteAllLmsSetupsErrors];
+
 export type DeleteAllLmsSetupsResponses = {
     /**
      * OK
@@ -2925,6 +3795,35 @@ export type GetLmsSetupsData = {
     url: '/admin-api/v1/lms-setup';
 };
 
+export type GetLmsSetupsErrors = {
+    /**
+     * Bad request, e.g. field validation or an illegal argument. The body is usually a list of APIMessage, but may be absent for some illegal-argument cases.
+     */
+    400: Array<ApiMessage>;
+    /**
+     * Unauthorized. Body is an APIMessage or a list of APIMessage.
+     */
+    401: ApiMessage | Array<ApiMessage>;
+    /**
+     * Forbidden. Body is a list of APIMessage.
+     */
+    403: Array<ApiMessage>;
+    /**
+     * Resource not found. Body is a list of APIMessage.
+     */
+    404: Array<ApiMessage>;
+    /**
+     * Too many requests (rate limit). Body is the rate-limit code as plain text.
+     */
+    429: string;
+    /**
+     * Unexpected internal server error. Body is a list of APIMessage.
+     */
+    500: Array<ApiMessage>;
+};
+
+export type GetLmsSetupsError = GetLmsSetupsErrors[keyof GetLmsSetupsErrors];
+
 export type GetLmsSetupsResponses = {
     /**
      * OK
@@ -2947,6 +3846,35 @@ export type CreateLmsSetupData = {
     url: '/admin-api/v1/lms-setup';
 };
 
+export type CreateLmsSetupErrors = {
+    /**
+     * Bad request, e.g. field validation or an illegal argument. The body is usually a list of APIMessage, but may be absent for some illegal-argument cases.
+     */
+    400: Array<ApiMessage>;
+    /**
+     * Unauthorized. Body is an APIMessage or a list of APIMessage.
+     */
+    401: ApiMessage | Array<ApiMessage>;
+    /**
+     * Forbidden. Body is a list of APIMessage.
+     */
+    403: Array<ApiMessage>;
+    /**
+     * Resource not found. Body is a list of APIMessage.
+     */
+    404: Array<ApiMessage>;
+    /**
+     * Too many requests (rate limit). Body is the rate-limit code as plain text.
+     */
+    429: string;
+    /**
+     * Unexpected internal server error. Body is a list of APIMessage.
+     */
+    500: Array<ApiMessage>;
+};
+
+export type CreateLmsSetupError = CreateLmsSetupErrors[keyof CreateLmsSetupErrors];
+
 export type CreateLmsSetupResponses = {
     /**
      * Created lms setup.
@@ -2963,6 +3891,35 @@ export type EditLmsSetupData = {
     url: '/admin-api/v1/lms-setup';
 };
 
+export type EditLmsSetupErrors = {
+    /**
+     * Bad request, e.g. field validation or an illegal argument. The body is usually a list of APIMessage, but may be absent for some illegal-argument cases.
+     */
+    400: Array<ApiMessage>;
+    /**
+     * Unauthorized. Body is an APIMessage or a list of APIMessage.
+     */
+    401: ApiMessage | Array<ApiMessage>;
+    /**
+     * Forbidden. Body is a list of APIMessage.
+     */
+    403: Array<ApiMessage>;
+    /**
+     * Resource not found. Body is a list of APIMessage.
+     */
+    404: Array<ApiMessage>;
+    /**
+     * Too many requests (rate limit). Body is the rate-limit code as plain text.
+     */
+    429: string;
+    /**
+     * Unexpected internal server error. Body is a list of APIMessage.
+     */
+    500: Array<ApiMessage>;
+};
+
+export type EditLmsSetupError = EditLmsSetupErrors[keyof EditLmsSetupErrors];
+
 export type EditLmsSetupResponses = {
     /**
      * OK
@@ -2978,6 +3935,35 @@ export type TestLmsAdHocData = {
     query?: never;
     url: '/admin-api/v1/lms-setup/test/adhoc';
 };
+
+export type TestLmsAdHocErrors = {
+    /**
+     * Bad request, e.g. field validation or an illegal argument. The body is usually a list of APIMessage, but may be absent for some illegal-argument cases.
+     */
+    400: Array<ApiMessage>;
+    /**
+     * Unauthorized. Body is an APIMessage or a list of APIMessage.
+     */
+    401: ApiMessage | Array<ApiMessage>;
+    /**
+     * Forbidden. Body is a list of APIMessage.
+     */
+    403: Array<ApiMessage>;
+    /**
+     * Resource not found. Body is a list of APIMessage.
+     */
+    404: Array<ApiMessage>;
+    /**
+     * Too many requests (rate limit). Body is the rate-limit code as plain text.
+     */
+    429: string;
+    /**
+     * Unexpected internal server error. Body is a list of APIMessage.
+     */
+    500: Array<ApiMessage>;
+};
+
+export type TestLmsAdHocError = TestLmsAdHocErrors[keyof TestLmsAdHocErrors];
 
 export type TestLmsAdHocResponses = {
     /**
@@ -3014,6 +4000,35 @@ export type DeleteAllInstitutionsData = {
     url: '/admin-api/v1/institution';
 };
 
+export type DeleteAllInstitutionsErrors = {
+    /**
+     * Bad request, e.g. field validation or an illegal argument. The body is usually a list of APIMessage, but may be absent for some illegal-argument cases.
+     */
+    400: Array<ApiMessage>;
+    /**
+     * Unauthorized. Body is an APIMessage or a list of APIMessage.
+     */
+    401: ApiMessage | Array<ApiMessage>;
+    /**
+     * Forbidden. Body is a list of APIMessage.
+     */
+    403: Array<ApiMessage>;
+    /**
+     * Resource not found. Body is a list of APIMessage.
+     */
+    404: Array<ApiMessage>;
+    /**
+     * Too many requests (rate limit). Body is the rate-limit code as plain text.
+     */
+    429: string;
+    /**
+     * Unexpected internal server error. Body is a list of APIMessage.
+     */
+    500: Array<ApiMessage>;
+};
+
+export type DeleteAllInstitutionsError = DeleteAllInstitutionsErrors[keyof DeleteAllInstitutionsErrors];
+
 export type DeleteAllInstitutionsResponses = {
     /**
      * OK
@@ -3048,6 +4063,35 @@ export type GetInstitutionsData = {
     url: '/admin-api/v1/institution';
 };
 
+export type GetInstitutionsErrors = {
+    /**
+     * Bad request, e.g. field validation or an illegal argument. The body is usually a list of APIMessage, but may be absent for some illegal-argument cases.
+     */
+    400: Array<ApiMessage>;
+    /**
+     * Unauthorized. Body is an APIMessage or a list of APIMessage.
+     */
+    401: ApiMessage | Array<ApiMessage>;
+    /**
+     * Forbidden. Body is a list of APIMessage.
+     */
+    403: Array<ApiMessage>;
+    /**
+     * Resource not found. Body is a list of APIMessage.
+     */
+    404: Array<ApiMessage>;
+    /**
+     * Too many requests (rate limit). Body is the rate-limit code as plain text.
+     */
+    429: string;
+    /**
+     * Unexpected internal server error. Body is a list of APIMessage.
+     */
+    500: Array<ApiMessage>;
+};
+
+export type GetInstitutionsError = GetInstitutionsErrors[keyof GetInstitutionsErrors];
+
 export type GetInstitutionsResponses = {
     /**
      * OK
@@ -3070,6 +4114,35 @@ export type CreateInstitutionData = {
     url: '/admin-api/v1/institution';
 };
 
+export type CreateInstitutionErrors = {
+    /**
+     * Bad request, e.g. field validation or an illegal argument. The body is usually a list of APIMessage, but may be absent for some illegal-argument cases.
+     */
+    400: Array<ApiMessage>;
+    /**
+     * Unauthorized. Body is an APIMessage or a list of APIMessage.
+     */
+    401: ApiMessage | Array<ApiMessage>;
+    /**
+     * Forbidden. Body is a list of APIMessage.
+     */
+    403: Array<ApiMessage>;
+    /**
+     * Resource not found. Body is a list of APIMessage.
+     */
+    404: Array<ApiMessage>;
+    /**
+     * Too many requests (rate limit). Body is the rate-limit code as plain text.
+     */
+    429: string;
+    /**
+     * Unexpected internal server error. Body is a list of APIMessage.
+     */
+    500: Array<ApiMessage>;
+};
+
+export type CreateInstitutionError = CreateInstitutionErrors[keyof CreateInstitutionErrors];
+
 export type CreateInstitutionResponses = {
     /**
      * Created institution.
@@ -3085,6 +4158,35 @@ export type EditInstitutionData = {
     query?: never;
     url: '/admin-api/v1/institution';
 };
+
+export type EditInstitutionErrors = {
+    /**
+     * Bad request, e.g. field validation or an illegal argument. The body is usually a list of APIMessage, but may be absent for some illegal-argument cases.
+     */
+    400: Array<ApiMessage>;
+    /**
+     * Unauthorized. Body is an APIMessage or a list of APIMessage.
+     */
+    401: ApiMessage | Array<ApiMessage>;
+    /**
+     * Forbidden. Body is a list of APIMessage.
+     */
+    403: Array<ApiMessage>;
+    /**
+     * Resource not found. Body is a list of APIMessage.
+     */
+    404: Array<ApiMessage>;
+    /**
+     * Too many requests (rate limit). Body is the rate-limit code as plain text.
+     */
+    429: string;
+    /**
+     * Unexpected internal server error. Body is a list of APIMessage.
+     */
+    500: Array<ApiMessage>;
+};
+
+export type EditInstitutionError = EditInstitutionErrors[keyof EditInstitutionErrors];
 
 export type EditInstitutionResponses = {
     /**
@@ -3121,6 +4223,35 @@ export type DeleteAllIndicatorsData = {
     url: '/admin-api/v1/indicator';
 };
 
+export type DeleteAllIndicatorsErrors = {
+    /**
+     * Bad request, e.g. field validation or an illegal argument. The body is usually a list of APIMessage, but may be absent for some illegal-argument cases.
+     */
+    400: Array<ApiMessage>;
+    /**
+     * Unauthorized. Body is an APIMessage or a list of APIMessage.
+     */
+    401: ApiMessage | Array<ApiMessage>;
+    /**
+     * Forbidden. Body is a list of APIMessage.
+     */
+    403: Array<ApiMessage>;
+    /**
+     * Resource not found. Body is a list of APIMessage.
+     */
+    404: Array<ApiMessage>;
+    /**
+     * Too many requests (rate limit). Body is the rate-limit code as plain text.
+     */
+    429: string;
+    /**
+     * Unexpected internal server error. Body is a list of APIMessage.
+     */
+    500: Array<ApiMessage>;
+};
+
+export type DeleteAllIndicatorsError = DeleteAllIndicatorsErrors[keyof DeleteAllIndicatorsErrors];
+
 export type DeleteAllIndicatorsResponses = {
     /**
      * OK
@@ -3155,6 +4286,35 @@ export type GetIndicatorsData = {
     url: '/admin-api/v1/indicator';
 };
 
+export type GetIndicatorsErrors = {
+    /**
+     * Bad request, e.g. field validation or an illegal argument. The body is usually a list of APIMessage, but may be absent for some illegal-argument cases.
+     */
+    400: Array<ApiMessage>;
+    /**
+     * Unauthorized. Body is an APIMessage or a list of APIMessage.
+     */
+    401: ApiMessage | Array<ApiMessage>;
+    /**
+     * Forbidden. Body is a list of APIMessage.
+     */
+    403: Array<ApiMessage>;
+    /**
+     * Resource not found. Body is a list of APIMessage.
+     */
+    404: Array<ApiMessage>;
+    /**
+     * Too many requests (rate limit). Body is the rate-limit code as plain text.
+     */
+    429: string;
+    /**
+     * Unexpected internal server error. Body is a list of APIMessage.
+     */
+    500: Array<ApiMessage>;
+};
+
+export type GetIndicatorsError = GetIndicatorsErrors[keyof GetIndicatorsErrors];
+
 export type GetIndicatorsResponses = {
     /**
      * OK
@@ -3177,6 +4337,35 @@ export type CreateIndicatorData = {
     url: '/admin-api/v1/indicator';
 };
 
+export type CreateIndicatorErrors = {
+    /**
+     * Bad request, e.g. field validation or an illegal argument. The body is usually a list of APIMessage, but may be absent for some illegal-argument cases.
+     */
+    400: Array<ApiMessage>;
+    /**
+     * Unauthorized. Body is an APIMessage or a list of APIMessage.
+     */
+    401: ApiMessage | Array<ApiMessage>;
+    /**
+     * Forbidden. Body is a list of APIMessage.
+     */
+    403: Array<ApiMessage>;
+    /**
+     * Resource not found. Body is a list of APIMessage.
+     */
+    404: Array<ApiMessage>;
+    /**
+     * Too many requests (rate limit). Body is the rate-limit code as plain text.
+     */
+    429: string;
+    /**
+     * Unexpected internal server error. Body is a list of APIMessage.
+     */
+    500: Array<ApiMessage>;
+};
+
+export type CreateIndicatorError = CreateIndicatorErrors[keyof CreateIndicatorErrors];
+
 export type CreateIndicatorResponses = {
     /**
      * Created indicator.
@@ -3192,6 +4381,35 @@ export type EditIndicatorData = {
     query?: never;
     url: '/admin-api/v1/indicator';
 };
+
+export type EditIndicatorErrors = {
+    /**
+     * Bad request, e.g. field validation or an illegal argument. The body is usually a list of APIMessage, but may be absent for some illegal-argument cases.
+     */
+    400: Array<ApiMessage>;
+    /**
+     * Unauthorized. Body is an APIMessage or a list of APIMessage.
+     */
+    401: ApiMessage | Array<ApiMessage>;
+    /**
+     * Forbidden. Body is a list of APIMessage.
+     */
+    403: Array<ApiMessage>;
+    /**
+     * Resource not found. Body is a list of APIMessage.
+     */
+    404: Array<ApiMessage>;
+    /**
+     * Too many requests (rate limit). Body is the rate-limit code as plain text.
+     */
+    429: string;
+    /**
+     * Unexpected internal server error. Body is a list of APIMessage.
+     */
+    500: Array<ApiMessage>;
+};
+
+export type EditIndicatorError = EditIndicatorErrors[keyof EditIndicatorErrors];
 
 export type EditIndicatorResponses = {
     /**
@@ -3228,6 +4446,35 @@ export type DeleteAllExamAdministrationsData = {
     url: '/admin-api/v1/exam';
 };
 
+export type DeleteAllExamAdministrationsErrors = {
+    /**
+     * Bad request, e.g. field validation or an illegal argument. The body is usually a list of APIMessage, but may be absent for some illegal-argument cases.
+     */
+    400: Array<ApiMessage>;
+    /**
+     * Unauthorized. Body is an APIMessage or a list of APIMessage.
+     */
+    401: ApiMessage | Array<ApiMessage>;
+    /**
+     * Forbidden. Body is a list of APIMessage.
+     */
+    403: Array<ApiMessage>;
+    /**
+     * Resource not found. Body is a list of APIMessage.
+     */
+    404: Array<ApiMessage>;
+    /**
+     * Too many requests (rate limit). Body is the rate-limit code as plain text.
+     */
+    429: string;
+    /**
+     * Unexpected internal server error. Body is a list of APIMessage.
+     */
+    500: Array<ApiMessage>;
+};
+
+export type DeleteAllExamAdministrationsError = DeleteAllExamAdministrationsErrors[keyof DeleteAllExamAdministrationsErrors];
+
 export type DeleteAllExamAdministrationsResponses = {
     /**
      * OK
@@ -3262,6 +4509,35 @@ export type GetExamAdministrationsData = {
     url: '/admin-api/v1/exam';
 };
 
+export type GetExamAdministrationsErrors = {
+    /**
+     * Bad request, e.g. field validation or an illegal argument. The body is usually a list of APIMessage, but may be absent for some illegal-argument cases.
+     */
+    400: Array<ApiMessage>;
+    /**
+     * Unauthorized. Body is an APIMessage or a list of APIMessage.
+     */
+    401: ApiMessage | Array<ApiMessage>;
+    /**
+     * Forbidden. Body is a list of APIMessage.
+     */
+    403: Array<ApiMessage>;
+    /**
+     * Resource not found. Body is a list of APIMessage.
+     */
+    404: Array<ApiMessage>;
+    /**
+     * Too many requests (rate limit). Body is the rate-limit code as plain text.
+     */
+    429: string;
+    /**
+     * Unexpected internal server error. Body is a list of APIMessage.
+     */
+    500: Array<ApiMessage>;
+};
+
+export type GetExamAdministrationsError = GetExamAdministrationsErrors[keyof GetExamAdministrationsErrors];
+
 export type GetExamAdministrationsResponses = {
     /**
      * OK
@@ -3284,6 +4560,35 @@ export type CreateExamAdministrationData = {
     url: '/admin-api/v1/exam';
 };
 
+export type CreateExamAdministrationErrors = {
+    /**
+     * Bad request, e.g. field validation or an illegal argument. The body is usually a list of APIMessage, but may be absent for some illegal-argument cases.
+     */
+    400: Array<ApiMessage>;
+    /**
+     * Unauthorized. Body is an APIMessage or a list of APIMessage.
+     */
+    401: ApiMessage | Array<ApiMessage>;
+    /**
+     * Forbidden. Body is a list of APIMessage.
+     */
+    403: Array<ApiMessage>;
+    /**
+     * Resource not found. Body is a list of APIMessage.
+     */
+    404: Array<ApiMessage>;
+    /**
+     * Too many requests (rate limit). Body is the rate-limit code as plain text.
+     */
+    429: string;
+    /**
+     * Unexpected internal server error. Body is a list of APIMessage.
+     */
+    500: Array<ApiMessage>;
+};
+
+export type CreateExamAdministrationError = CreateExamAdministrationErrors[keyof CreateExamAdministrationErrors];
+
 export type CreateExamAdministrationResponses = {
     /**
      * Created exam administration.
@@ -3299,6 +4604,35 @@ export type EditExamAdministrationData = {
     query?: never;
     url: '/admin-api/v1/exam';
 };
+
+export type EditExamAdministrationErrors = {
+    /**
+     * Bad request, e.g. field validation or an illegal argument. The body is usually a list of APIMessage, but may be absent for some illegal-argument cases.
+     */
+    400: Array<ApiMessage>;
+    /**
+     * Unauthorized. Body is an APIMessage or a list of APIMessage.
+     */
+    401: ApiMessage | Array<ApiMessage>;
+    /**
+     * Forbidden. Body is a list of APIMessage.
+     */
+    403: Array<ApiMessage>;
+    /**
+     * Resource not found. Body is a list of APIMessage.
+     */
+    404: Array<ApiMessage>;
+    /**
+     * Too many requests (rate limit). Body is the rate-limit code as plain text.
+     */
+    429: string;
+    /**
+     * Unexpected internal server error. Body is a list of APIMessage.
+     */
+    500: Array<ApiMessage>;
+};
+
+export type EditExamAdministrationError = EditExamAdministrationErrors[keyof EditExamAdministrationErrors];
 
 export type EditExamAdministrationResponses = {
     /**
@@ -3320,6 +4654,35 @@ export type DeleteSebRestrictionData = {
     url: '/admin-api/v1/exam/{modelId}/seb-restriction';
 };
 
+export type DeleteSebRestrictionErrors = {
+    /**
+     * Bad request, e.g. field validation or an illegal argument. The body is usually a list of APIMessage, but may be absent for some illegal-argument cases.
+     */
+    400: Array<ApiMessage>;
+    /**
+     * Unauthorized. Body is an APIMessage or a list of APIMessage.
+     */
+    401: ApiMessage | Array<ApiMessage>;
+    /**
+     * Forbidden. Body is a list of APIMessage.
+     */
+    403: Array<ApiMessage>;
+    /**
+     * Resource not found. Body is a list of APIMessage.
+     */
+    404: Array<ApiMessage>;
+    /**
+     * Too many requests (rate limit). Body is the rate-limit code as plain text.
+     */
+    429: string;
+    /**
+     * Unexpected internal server error. Body is a list of APIMessage.
+     */
+    500: Array<ApiMessage>;
+};
+
+export type DeleteSebRestrictionError = DeleteSebRestrictionErrors[keyof DeleteSebRestrictionErrors];
+
 export type DeleteSebRestrictionResponses = {
     /**
      * OK
@@ -3339,6 +4702,35 @@ export type GetSebRestrictionData = {
     };
     url: '/admin-api/v1/exam/{modelId}/seb-restriction';
 };
+
+export type GetSebRestrictionErrors = {
+    /**
+     * Bad request, e.g. field validation or an illegal argument. The body is usually a list of APIMessage, but may be absent for some illegal-argument cases.
+     */
+    400: Array<ApiMessage>;
+    /**
+     * Unauthorized. Body is an APIMessage or a list of APIMessage.
+     */
+    401: ApiMessage | Array<ApiMessage>;
+    /**
+     * Forbidden. Body is a list of APIMessage.
+     */
+    403: Array<ApiMessage>;
+    /**
+     * Resource not found. Body is a list of APIMessage.
+     */
+    404: Array<ApiMessage>;
+    /**
+     * Too many requests (rate limit). Body is the rate-limit code as plain text.
+     */
+    429: string;
+    /**
+     * Unexpected internal server error. Body is a list of APIMessage.
+     */
+    500: Array<ApiMessage>;
+};
+
+export type GetSebRestrictionError = GetSebRestrictionErrors[keyof GetSebRestrictionErrors];
 
 export type GetSebRestrictionResponses = {
     /**
@@ -3360,6 +4752,35 @@ export type SaveSebRestrictionDataData = {
     url: '/admin-api/v1/exam/{modelId}/seb-restriction';
 };
 
+export type SaveSebRestrictionDataErrors = {
+    /**
+     * Bad request, e.g. field validation or an illegal argument. The body is usually a list of APIMessage, but may be absent for some illegal-argument cases.
+     */
+    400: Array<ApiMessage>;
+    /**
+     * Unauthorized. Body is an APIMessage or a list of APIMessage.
+     */
+    401: ApiMessage | Array<ApiMessage>;
+    /**
+     * Forbidden. Body is a list of APIMessage.
+     */
+    403: Array<ApiMessage>;
+    /**
+     * Resource not found. Body is a list of APIMessage.
+     */
+    404: Array<ApiMessage>;
+    /**
+     * Too many requests (rate limit). Body is the rate-limit code as plain text.
+     */
+    429: string;
+    /**
+     * Unexpected internal server error. Body is a list of APIMessage.
+     */
+    500: Array<ApiMessage>;
+};
+
+export type SaveSebRestrictionDataError = SaveSebRestrictionDataErrors[keyof SaveSebRestrictionDataErrors];
+
 export type SaveSebRestrictionDataResponses = {
     /**
      * OK
@@ -3379,6 +4800,35 @@ export type ApplySebRestrictionData = {
     };
     url: '/admin-api/v1/exam/{modelId}/seb-restriction';
 };
+
+export type ApplySebRestrictionErrors = {
+    /**
+     * Bad request, e.g. field validation or an illegal argument. The body is usually a list of APIMessage, but may be absent for some illegal-argument cases.
+     */
+    400: Array<ApiMessage>;
+    /**
+     * Unauthorized. Body is an APIMessage or a list of APIMessage.
+     */
+    401: ApiMessage | Array<ApiMessage>;
+    /**
+     * Forbidden. Body is a list of APIMessage.
+     */
+    403: Array<ApiMessage>;
+    /**
+     * Resource not found. Body is a list of APIMessage.
+     */
+    404: Array<ApiMessage>;
+    /**
+     * Too many requests (rate limit). Body is the rate-limit code as plain text.
+     */
+    429: string;
+    /**
+     * Unexpected internal server error. Body is a list of APIMessage.
+     */
+    500: Array<ApiMessage>;
+};
+
+export type ApplySebRestrictionError = ApplySebRestrictionErrors[keyof ApplySebRestrictionErrors];
 
 export type ApplySebRestrictionResponses = {
     /**
@@ -3415,6 +4865,35 @@ export type DeleteAllExamTemplatesData = {
     url: '/admin-api/v1/exam-template';
 };
 
+export type DeleteAllExamTemplatesErrors = {
+    /**
+     * Bad request, e.g. field validation or an illegal argument. The body is usually a list of APIMessage, but may be absent for some illegal-argument cases.
+     */
+    400: Array<ApiMessage>;
+    /**
+     * Unauthorized. Body is an APIMessage or a list of APIMessage.
+     */
+    401: ApiMessage | Array<ApiMessage>;
+    /**
+     * Forbidden. Body is a list of APIMessage.
+     */
+    403: Array<ApiMessage>;
+    /**
+     * Resource not found. Body is a list of APIMessage.
+     */
+    404: Array<ApiMessage>;
+    /**
+     * Too many requests (rate limit). Body is the rate-limit code as plain text.
+     */
+    429: string;
+    /**
+     * Unexpected internal server error. Body is a list of APIMessage.
+     */
+    500: Array<ApiMessage>;
+};
+
+export type DeleteAllExamTemplatesError = DeleteAllExamTemplatesErrors[keyof DeleteAllExamTemplatesErrors];
+
 export type DeleteAllExamTemplatesResponses = {
     /**
      * OK
@@ -3449,6 +4928,35 @@ export type GetExamTemplatesData = {
     url: '/admin-api/v1/exam-template';
 };
 
+export type GetExamTemplatesErrors = {
+    /**
+     * Bad request, e.g. field validation or an illegal argument. The body is usually a list of APIMessage, but may be absent for some illegal-argument cases.
+     */
+    400: Array<ApiMessage>;
+    /**
+     * Unauthorized. Body is an APIMessage or a list of APIMessage.
+     */
+    401: ApiMessage | Array<ApiMessage>;
+    /**
+     * Forbidden. Body is a list of APIMessage.
+     */
+    403: Array<ApiMessage>;
+    /**
+     * Resource not found. Body is a list of APIMessage.
+     */
+    404: Array<ApiMessage>;
+    /**
+     * Too many requests (rate limit). Body is the rate-limit code as plain text.
+     */
+    429: string;
+    /**
+     * Unexpected internal server error. Body is a list of APIMessage.
+     */
+    500: Array<ApiMessage>;
+};
+
+export type GetExamTemplatesError = GetExamTemplatesErrors[keyof GetExamTemplatesErrors];
+
 export type GetExamTemplatesResponses = {
     /**
      * OK
@@ -3471,6 +4979,35 @@ export type CreateExamTemplateData = {
     url: '/admin-api/v1/exam-template';
 };
 
+export type CreateExamTemplateErrors = {
+    /**
+     * Bad request, e.g. field validation or an illegal argument. The body is usually a list of APIMessage, but may be absent for some illegal-argument cases.
+     */
+    400: Array<ApiMessage>;
+    /**
+     * Unauthorized. Body is an APIMessage or a list of APIMessage.
+     */
+    401: ApiMessage | Array<ApiMessage>;
+    /**
+     * Forbidden. Body is a list of APIMessage.
+     */
+    403: Array<ApiMessage>;
+    /**
+     * Resource not found. Body is a list of APIMessage.
+     */
+    404: Array<ApiMessage>;
+    /**
+     * Too many requests (rate limit). Body is the rate-limit code as plain text.
+     */
+    429: string;
+    /**
+     * Unexpected internal server error. Body is a list of APIMessage.
+     */
+    500: Array<ApiMessage>;
+};
+
+export type CreateExamTemplateError = CreateExamTemplateErrors[keyof CreateExamTemplateErrors];
+
 export type CreateExamTemplateResponses = {
     /**
      * Created exam template.
@@ -3486,6 +5023,35 @@ export type EditExamTemplateData = {
     query?: never;
     url: '/admin-api/v1/exam-template';
 };
+
+export type EditExamTemplateErrors = {
+    /**
+     * Bad request, e.g. field validation or an illegal argument. The body is usually a list of APIMessage, but may be absent for some illegal-argument cases.
+     */
+    400: Array<ApiMessage>;
+    /**
+     * Unauthorized. Body is an APIMessage or a list of APIMessage.
+     */
+    401: ApiMessage | Array<ApiMessage>;
+    /**
+     * Forbidden. Body is a list of APIMessage.
+     */
+    403: Array<ApiMessage>;
+    /**
+     * Resource not found. Body is a list of APIMessage.
+     */
+    404: Array<ApiMessage>;
+    /**
+     * Too many requests (rate limit). Body is the rate-limit code as plain text.
+     */
+    429: string;
+    /**
+     * Unexpected internal server error. Body is a list of APIMessage.
+     */
+    500: Array<ApiMessage>;
+};
+
+export type EditExamTemplateError = EditExamTemplateErrors[keyof EditExamTemplateErrors];
 
 export type EditExamTemplateResponses = {
     /**
@@ -3506,6 +5072,35 @@ export type CreateIndicatorTemplateData = {
     url: '/admin-api/v1/exam-template/indicator';
 };
 
+export type CreateIndicatorTemplateErrors = {
+    /**
+     * Bad request, e.g. field validation or an illegal argument. The body is usually a list of APIMessage, but may be absent for some illegal-argument cases.
+     */
+    400: Array<ApiMessage>;
+    /**
+     * Unauthorized. Body is an APIMessage or a list of APIMessage.
+     */
+    401: ApiMessage | Array<ApiMessage>;
+    /**
+     * Forbidden. Body is a list of APIMessage.
+     */
+    403: Array<ApiMessage>;
+    /**
+     * Resource not found. Body is a list of APIMessage.
+     */
+    404: Array<ApiMessage>;
+    /**
+     * Too many requests (rate limit). Body is the rate-limit code as plain text.
+     */
+    429: string;
+    /**
+     * Unexpected internal server error. Body is a list of APIMessage.
+     */
+    500: Array<ApiMessage>;
+};
+
+export type CreateIndicatorTemplateError = CreateIndicatorTemplateErrors[keyof CreateIndicatorTemplateErrors];
+
 export type CreateIndicatorTemplateResponses = {
     /**
      * OK
@@ -3523,6 +5118,35 @@ export type SaveIndicatorPutData = {
     };
     url: '/admin-api/v1/exam-template/indicator';
 };
+
+export type SaveIndicatorPutErrors = {
+    /**
+     * Bad request, e.g. field validation or an illegal argument. The body is usually a list of APIMessage, but may be absent for some illegal-argument cases.
+     */
+    400: Array<ApiMessage>;
+    /**
+     * Unauthorized. Body is an APIMessage or a list of APIMessage.
+     */
+    401: ApiMessage | Array<ApiMessage>;
+    /**
+     * Forbidden. Body is a list of APIMessage.
+     */
+    403: Array<ApiMessage>;
+    /**
+     * Resource not found. Body is a list of APIMessage.
+     */
+    404: Array<ApiMessage>;
+    /**
+     * Too many requests (rate limit). Body is the rate-limit code as plain text.
+     */
+    429: string;
+    /**
+     * Unexpected internal server error. Body is a list of APIMessage.
+     */
+    500: Array<ApiMessage>;
+};
+
+export type SaveIndicatorPutError = SaveIndicatorPutErrors[keyof SaveIndicatorPutErrors];
 
 export type SaveIndicatorPutResponses = {
     /**
@@ -3543,6 +5167,35 @@ export type CreateClientGroupTemplateData = {
     url: '/admin-api/v1/exam-template/client-group';
 };
 
+export type CreateClientGroupTemplateErrors = {
+    /**
+     * Bad request, e.g. field validation or an illegal argument. The body is usually a list of APIMessage, but may be absent for some illegal-argument cases.
+     */
+    400: Array<ApiMessage>;
+    /**
+     * Unauthorized. Body is an APIMessage or a list of APIMessage.
+     */
+    401: ApiMessage | Array<ApiMessage>;
+    /**
+     * Forbidden. Body is a list of APIMessage.
+     */
+    403: Array<ApiMessage>;
+    /**
+     * Resource not found. Body is a list of APIMessage.
+     */
+    404: Array<ApiMessage>;
+    /**
+     * Too many requests (rate limit). Body is the rate-limit code as plain text.
+     */
+    429: string;
+    /**
+     * Unexpected internal server error. Body is a list of APIMessage.
+     */
+    500: Array<ApiMessage>;
+};
+
+export type CreateClientGroupTemplateError = CreateClientGroupTemplateErrors[keyof CreateClientGroupTemplateErrors];
+
 export type CreateClientGroupTemplateResponses = {
     /**
      * OK
@@ -3560,6 +5213,35 @@ export type SaveClientGroupTemplateData = {
     };
     url: '/admin-api/v1/exam-template/client-group';
 };
+
+export type SaveClientGroupTemplateErrors = {
+    /**
+     * Bad request, e.g. field validation or an illegal argument. The body is usually a list of APIMessage, but may be absent for some illegal-argument cases.
+     */
+    400: Array<ApiMessage>;
+    /**
+     * Unauthorized. Body is an APIMessage or a list of APIMessage.
+     */
+    401: ApiMessage | Array<ApiMessage>;
+    /**
+     * Forbidden. Body is a list of APIMessage.
+     */
+    403: Array<ApiMessage>;
+    /**
+     * Resource not found. Body is a list of APIMessage.
+     */
+    404: Array<ApiMessage>;
+    /**
+     * Too many requests (rate limit). Body is the rate-limit code as plain text.
+     */
+    429: string;
+    /**
+     * Unexpected internal server error. Body is a list of APIMessage.
+     */
+    500: Array<ApiMessage>;
+};
+
+export type SaveClientGroupTemplateError = SaveClientGroupTemplateErrors[keyof SaveClientGroupTemplateErrors];
 
 export type SaveClientGroupTemplateResponses = {
     /**
@@ -3596,6 +5278,35 @@ export type DeleteAllExamConfigurationMappingsData = {
     url: '/admin-api/v1/exam-configuration-map';
 };
 
+export type DeleteAllExamConfigurationMappingsErrors = {
+    /**
+     * Bad request, e.g. field validation or an illegal argument. The body is usually a list of APIMessage, but may be absent for some illegal-argument cases.
+     */
+    400: Array<ApiMessage>;
+    /**
+     * Unauthorized. Body is an APIMessage or a list of APIMessage.
+     */
+    401: ApiMessage | Array<ApiMessage>;
+    /**
+     * Forbidden. Body is a list of APIMessage.
+     */
+    403: Array<ApiMessage>;
+    /**
+     * Resource not found. Body is a list of APIMessage.
+     */
+    404: Array<ApiMessage>;
+    /**
+     * Too many requests (rate limit). Body is the rate-limit code as plain text.
+     */
+    429: string;
+    /**
+     * Unexpected internal server error. Body is a list of APIMessage.
+     */
+    500: Array<ApiMessage>;
+};
+
+export type DeleteAllExamConfigurationMappingsError = DeleteAllExamConfigurationMappingsErrors[keyof DeleteAllExamConfigurationMappingsErrors];
+
 export type DeleteAllExamConfigurationMappingsResponses = {
     /**
      * OK
@@ -3630,6 +5341,35 @@ export type GetExamConfigurationMappingsData = {
     url: '/admin-api/v1/exam-configuration-map';
 };
 
+export type GetExamConfigurationMappingsErrors = {
+    /**
+     * Bad request, e.g. field validation or an illegal argument. The body is usually a list of APIMessage, but may be absent for some illegal-argument cases.
+     */
+    400: Array<ApiMessage>;
+    /**
+     * Unauthorized. Body is an APIMessage or a list of APIMessage.
+     */
+    401: ApiMessage | Array<ApiMessage>;
+    /**
+     * Forbidden. Body is a list of APIMessage.
+     */
+    403: Array<ApiMessage>;
+    /**
+     * Resource not found. Body is a list of APIMessage.
+     */
+    404: Array<ApiMessage>;
+    /**
+     * Too many requests (rate limit). Body is the rate-limit code as plain text.
+     */
+    429: string;
+    /**
+     * Unexpected internal server error. Body is a list of APIMessage.
+     */
+    500: Array<ApiMessage>;
+};
+
+export type GetExamConfigurationMappingsError = GetExamConfigurationMappingsErrors[keyof GetExamConfigurationMappingsErrors];
+
 export type GetExamConfigurationMappingsResponses = {
     /**
      * OK
@@ -3659,6 +5399,35 @@ export type CreateExamConfigurationMappingData = {
     url: '/admin-api/v1/exam-configuration-map';
 };
 
+export type CreateExamConfigurationMappingErrors = {
+    /**
+     * Bad request, e.g. field validation or an illegal argument. The body is usually a list of APIMessage, but may be absent for some illegal-argument cases.
+     */
+    400: Array<ApiMessage>;
+    /**
+     * Unauthorized. Body is an APIMessage or a list of APIMessage.
+     */
+    401: ApiMessage | Array<ApiMessage>;
+    /**
+     * Forbidden. Body is a list of APIMessage.
+     */
+    403: Array<ApiMessage>;
+    /**
+     * Resource not found. Body is a list of APIMessage.
+     */
+    404: Array<ApiMessage>;
+    /**
+     * Too many requests (rate limit). Body is the rate-limit code as plain text.
+     */
+    429: string;
+    /**
+     * Unexpected internal server error. Body is a list of APIMessage.
+     */
+    500: Array<ApiMessage>;
+};
+
+export type CreateExamConfigurationMappingError = CreateExamConfigurationMappingErrors[keyof CreateExamConfigurationMappingErrors];
+
 export type CreateExamConfigurationMappingResponses = {
     /**
      * OK
@@ -3674,6 +5443,35 @@ export type EditExamConfigurationMappingData = {
     query?: never;
     url: '/admin-api/v1/exam-configuration-map';
 };
+
+export type EditExamConfigurationMappingErrors = {
+    /**
+     * Bad request, e.g. field validation or an illegal argument. The body is usually a list of APIMessage, but may be absent for some illegal-argument cases.
+     */
+    400: Array<ApiMessage>;
+    /**
+     * Unauthorized. Body is an APIMessage or a list of APIMessage.
+     */
+    401: ApiMessage | Array<ApiMessage>;
+    /**
+     * Forbidden. Body is a list of APIMessage.
+     */
+    403: Array<ApiMessage>;
+    /**
+     * Resource not found. Body is a list of APIMessage.
+     */
+    404: Array<ApiMessage>;
+    /**
+     * Too many requests (rate limit). Body is the rate-limit code as plain text.
+     */
+    429: string;
+    /**
+     * Unexpected internal server error. Body is a list of APIMessage.
+     */
+    500: Array<ApiMessage>;
+};
+
+export type EditExamConfigurationMappingError = EditExamConfigurationMappingErrors[keyof EditExamConfigurationMappingErrors];
 
 export type EditExamConfigurationMappingResponses = {
     /**
@@ -3710,6 +5508,35 @@ export type DeleteAllConfigurationValuesData = {
     url: '/admin-api/v1/configuration_value';
 };
 
+export type DeleteAllConfigurationValuesErrors = {
+    /**
+     * Bad request, e.g. field validation or an illegal argument. The body is usually a list of APIMessage, but may be absent for some illegal-argument cases.
+     */
+    400: Array<ApiMessage>;
+    /**
+     * Unauthorized. Body is an APIMessage or a list of APIMessage.
+     */
+    401: ApiMessage | Array<ApiMessage>;
+    /**
+     * Forbidden. Body is a list of APIMessage.
+     */
+    403: Array<ApiMessage>;
+    /**
+     * Resource not found. Body is a list of APIMessage.
+     */
+    404: Array<ApiMessage>;
+    /**
+     * Too many requests (rate limit). Body is the rate-limit code as plain text.
+     */
+    429: string;
+    /**
+     * Unexpected internal server error. Body is a list of APIMessage.
+     */
+    500: Array<ApiMessage>;
+};
+
+export type DeleteAllConfigurationValuesError = DeleteAllConfigurationValuesErrors[keyof DeleteAllConfigurationValuesErrors];
+
 export type DeleteAllConfigurationValuesResponses = {
     /**
      * OK
@@ -3744,6 +5571,35 @@ export type GetConfigurationValuesData = {
     url: '/admin-api/v1/configuration_value';
 };
 
+export type GetConfigurationValuesErrors = {
+    /**
+     * Bad request, e.g. field validation or an illegal argument. The body is usually a list of APIMessage, but may be absent for some illegal-argument cases.
+     */
+    400: Array<ApiMessage>;
+    /**
+     * Unauthorized. Body is an APIMessage or a list of APIMessage.
+     */
+    401: ApiMessage | Array<ApiMessage>;
+    /**
+     * Forbidden. Body is a list of APIMessage.
+     */
+    403: Array<ApiMessage>;
+    /**
+     * Resource not found. Body is a list of APIMessage.
+     */
+    404: Array<ApiMessage>;
+    /**
+     * Too many requests (rate limit). Body is the rate-limit code as plain text.
+     */
+    429: string;
+    /**
+     * Unexpected internal server error. Body is a list of APIMessage.
+     */
+    500: Array<ApiMessage>;
+};
+
+export type GetConfigurationValuesError = GetConfigurationValuesErrors[keyof GetConfigurationValuesErrors];
+
 export type GetConfigurationValuesResponses = {
     /**
      * OK
@@ -3766,6 +5622,35 @@ export type CreateConfigurationValueData = {
     url: '/admin-api/v1/configuration_value';
 };
 
+export type CreateConfigurationValueErrors = {
+    /**
+     * Bad request, e.g. field validation or an illegal argument. The body is usually a list of APIMessage, but may be absent for some illegal-argument cases.
+     */
+    400: Array<ApiMessage>;
+    /**
+     * Unauthorized. Body is an APIMessage or a list of APIMessage.
+     */
+    401: ApiMessage | Array<ApiMessage>;
+    /**
+     * Forbidden. Body is a list of APIMessage.
+     */
+    403: Array<ApiMessage>;
+    /**
+     * Resource not found. Body is a list of APIMessage.
+     */
+    404: Array<ApiMessage>;
+    /**
+     * Too many requests (rate limit). Body is the rate-limit code as plain text.
+     */
+    429: string;
+    /**
+     * Unexpected internal server error. Body is a list of APIMessage.
+     */
+    500: Array<ApiMessage>;
+};
+
+export type CreateConfigurationValueError = CreateConfigurationValueErrors[keyof CreateConfigurationValueErrors];
+
 export type CreateConfigurationValueResponses = {
     /**
      * Created configuration value.
@@ -3781,6 +5666,35 @@ export type EditConfigurationValueData = {
     query?: never;
     url: '/admin-api/v1/configuration_value';
 };
+
+export type EditConfigurationValueErrors = {
+    /**
+     * Bad request, e.g. field validation or an illegal argument. The body is usually a list of APIMessage, but may be absent for some illegal-argument cases.
+     */
+    400: Array<ApiMessage>;
+    /**
+     * Unauthorized. Body is an APIMessage or a list of APIMessage.
+     */
+    401: ApiMessage | Array<ApiMessage>;
+    /**
+     * Forbidden. Body is a list of APIMessage.
+     */
+    403: Array<ApiMessage>;
+    /**
+     * Resource not found. Body is a list of APIMessage.
+     */
+    404: Array<ApiMessage>;
+    /**
+     * Too many requests (rate limit). Body is the rate-limit code as plain text.
+     */
+    429: string;
+    /**
+     * Unexpected internal server error. Body is a list of APIMessage.
+     */
+    500: Array<ApiMessage>;
+};
+
+export type EditConfigurationValueError = EditConfigurationValueErrors[keyof EditConfigurationValueErrors];
 
 export type EditConfigurationValueResponses = {
     /**
@@ -3801,6 +5715,35 @@ export type GetTableValueData = {
     url: '/admin-api/v1/configuration_value/table';
 };
 
+export type GetTableValueErrors = {
+    /**
+     * Bad request, e.g. field validation or an illegal argument. The body is usually a list of APIMessage, but may be absent for some illegal-argument cases.
+     */
+    400: Array<ApiMessage>;
+    /**
+     * Unauthorized. Body is an APIMessage or a list of APIMessage.
+     */
+    401: ApiMessage | Array<ApiMessage>;
+    /**
+     * Forbidden. Body is a list of APIMessage.
+     */
+    403: Array<ApiMessage>;
+    /**
+     * Resource not found. Body is a list of APIMessage.
+     */
+    404: Array<ApiMessage>;
+    /**
+     * Too many requests (rate limit). Body is the rate-limit code as plain text.
+     */
+    429: string;
+    /**
+     * Unexpected internal server error. Body is a list of APIMessage.
+     */
+    500: Array<ApiMessage>;
+};
+
+export type GetTableValueError = GetTableValueErrors[keyof GetTableValueErrors];
+
 export type GetTableValueResponses = {
     /**
      * OK
@@ -3816,6 +5759,35 @@ export type EditConfigurationValue1Data = {
     query?: never;
     url: '/admin-api/v1/configuration_value/table';
 };
+
+export type EditConfigurationValue1Errors = {
+    /**
+     * Bad request, e.g. field validation or an illegal argument. The body is usually a list of APIMessage, but may be absent for some illegal-argument cases.
+     */
+    400: Array<ApiMessage>;
+    /**
+     * Unauthorized. Body is an APIMessage or a list of APIMessage.
+     */
+    401: ApiMessage | Array<ApiMessage>;
+    /**
+     * Forbidden. Body is a list of APIMessage.
+     */
+    403: Array<ApiMessage>;
+    /**
+     * Resource not found. Body is a list of APIMessage.
+     */
+    404: Array<ApiMessage>;
+    /**
+     * Too many requests (rate limit). Body is the rate-limit code as plain text.
+     */
+    429: string;
+    /**
+     * Unexpected internal server error. Body is a list of APIMessage.
+     */
+    500: Array<ApiMessage>;
+};
+
+export type EditConfigurationValue1Error = EditConfigurationValue1Errors[keyof EditConfigurationValue1Errors];
 
 export type EditConfigurationValue1Responses = {
     /**
@@ -3852,6 +5824,35 @@ export type DeleteAllConfigurationAttributesData = {
     url: '/admin-api/v1/configuration_attribute';
 };
 
+export type DeleteAllConfigurationAttributesErrors = {
+    /**
+     * Bad request, e.g. field validation or an illegal argument. The body is usually a list of APIMessage, but may be absent for some illegal-argument cases.
+     */
+    400: Array<ApiMessage>;
+    /**
+     * Unauthorized. Body is an APIMessage or a list of APIMessage.
+     */
+    401: ApiMessage | Array<ApiMessage>;
+    /**
+     * Forbidden. Body is a list of APIMessage.
+     */
+    403: Array<ApiMessage>;
+    /**
+     * Resource not found. Body is a list of APIMessage.
+     */
+    404: Array<ApiMessage>;
+    /**
+     * Too many requests (rate limit). Body is the rate-limit code as plain text.
+     */
+    429: string;
+    /**
+     * Unexpected internal server error. Body is a list of APIMessage.
+     */
+    500: Array<ApiMessage>;
+};
+
+export type DeleteAllConfigurationAttributesError = DeleteAllConfigurationAttributesErrors[keyof DeleteAllConfigurationAttributesErrors];
+
 export type DeleteAllConfigurationAttributesResponses = {
     /**
      * OK
@@ -3886,6 +5887,35 @@ export type GetConfigurationAttributesData = {
     url: '/admin-api/v1/configuration_attribute';
 };
 
+export type GetConfigurationAttributesErrors = {
+    /**
+     * Bad request, e.g. field validation or an illegal argument. The body is usually a list of APIMessage, but may be absent for some illegal-argument cases.
+     */
+    400: Array<ApiMessage>;
+    /**
+     * Unauthorized. Body is an APIMessage or a list of APIMessage.
+     */
+    401: ApiMessage | Array<ApiMessage>;
+    /**
+     * Forbidden. Body is a list of APIMessage.
+     */
+    403: Array<ApiMessage>;
+    /**
+     * Resource not found. Body is a list of APIMessage.
+     */
+    404: Array<ApiMessage>;
+    /**
+     * Too many requests (rate limit). Body is the rate-limit code as plain text.
+     */
+    429: string;
+    /**
+     * Unexpected internal server error. Body is a list of APIMessage.
+     */
+    500: Array<ApiMessage>;
+};
+
+export type GetConfigurationAttributesError = GetConfigurationAttributesErrors[keyof GetConfigurationAttributesErrors];
+
 export type GetConfigurationAttributesResponses = {
     /**
      * OK
@@ -3908,6 +5938,35 @@ export type CreateConfigurationAttributeData = {
     url: '/admin-api/v1/configuration_attribute';
 };
 
+export type CreateConfigurationAttributeErrors = {
+    /**
+     * Bad request, e.g. field validation or an illegal argument. The body is usually a list of APIMessage, but may be absent for some illegal-argument cases.
+     */
+    400: Array<ApiMessage>;
+    /**
+     * Unauthorized. Body is an APIMessage or a list of APIMessage.
+     */
+    401: ApiMessage | Array<ApiMessage>;
+    /**
+     * Forbidden. Body is a list of APIMessage.
+     */
+    403: Array<ApiMessage>;
+    /**
+     * Resource not found. Body is a list of APIMessage.
+     */
+    404: Array<ApiMessage>;
+    /**
+     * Too many requests (rate limit). Body is the rate-limit code as plain text.
+     */
+    429: string;
+    /**
+     * Unexpected internal server error. Body is a list of APIMessage.
+     */
+    500: Array<ApiMessage>;
+};
+
+export type CreateConfigurationAttributeError = CreateConfigurationAttributeErrors[keyof CreateConfigurationAttributeErrors];
+
 export type CreateConfigurationAttributeResponses = {
     /**
      * Created configuration attribute.
@@ -3923,6 +5982,35 @@ export type EditConfigurationAttributeData = {
     query?: never;
     url: '/admin-api/v1/configuration_attribute';
 };
+
+export type EditConfigurationAttributeErrors = {
+    /**
+     * Bad request, e.g. field validation or an illegal argument. The body is usually a list of APIMessage, but may be absent for some illegal-argument cases.
+     */
+    400: Array<ApiMessage>;
+    /**
+     * Unauthorized. Body is an APIMessage or a list of APIMessage.
+     */
+    401: ApiMessage | Array<ApiMessage>;
+    /**
+     * Forbidden. Body is a list of APIMessage.
+     */
+    403: Array<ApiMessage>;
+    /**
+     * Resource not found. Body is a list of APIMessage.
+     */
+    404: Array<ApiMessage>;
+    /**
+     * Too many requests (rate limit). Body is the rate-limit code as plain text.
+     */
+    429: string;
+    /**
+     * Unexpected internal server error. Body is a list of APIMessage.
+     */
+    500: Array<ApiMessage>;
+};
+
+export type EditConfigurationAttributeError = EditConfigurationAttributeErrors[keyof EditConfigurationAttributeErrors];
 
 export type EditConfigurationAttributeResponses = {
     /**
@@ -3959,6 +6047,35 @@ export type DeleteAllConfigurationsData = {
     url: '/admin-api/v1/configuration';
 };
 
+export type DeleteAllConfigurationsErrors = {
+    /**
+     * Bad request, e.g. field validation or an illegal argument. The body is usually a list of APIMessage, but may be absent for some illegal-argument cases.
+     */
+    400: Array<ApiMessage>;
+    /**
+     * Unauthorized. Body is an APIMessage or a list of APIMessage.
+     */
+    401: ApiMessage | Array<ApiMessage>;
+    /**
+     * Forbidden. Body is a list of APIMessage.
+     */
+    403: Array<ApiMessage>;
+    /**
+     * Resource not found. Body is a list of APIMessage.
+     */
+    404: Array<ApiMessage>;
+    /**
+     * Too many requests (rate limit). Body is the rate-limit code as plain text.
+     */
+    429: string;
+    /**
+     * Unexpected internal server error. Body is a list of APIMessage.
+     */
+    500: Array<ApiMessage>;
+};
+
+export type DeleteAllConfigurationsError = DeleteAllConfigurationsErrors[keyof DeleteAllConfigurationsErrors];
+
 export type DeleteAllConfigurationsResponses = {
     /**
      * OK
@@ -3993,6 +6110,35 @@ export type GetConfigurationsData = {
     url: '/admin-api/v1/configuration';
 };
 
+export type GetConfigurationsErrors = {
+    /**
+     * Bad request, e.g. field validation or an illegal argument. The body is usually a list of APIMessage, but may be absent for some illegal-argument cases.
+     */
+    400: Array<ApiMessage>;
+    /**
+     * Unauthorized. Body is an APIMessage or a list of APIMessage.
+     */
+    401: ApiMessage | Array<ApiMessage>;
+    /**
+     * Forbidden. Body is a list of APIMessage.
+     */
+    403: Array<ApiMessage>;
+    /**
+     * Resource not found. Body is a list of APIMessage.
+     */
+    404: Array<ApiMessage>;
+    /**
+     * Too many requests (rate limit). Body is the rate-limit code as plain text.
+     */
+    429: string;
+    /**
+     * Unexpected internal server error. Body is a list of APIMessage.
+     */
+    500: Array<ApiMessage>;
+};
+
+export type GetConfigurationsError = GetConfigurationsErrors[keyof GetConfigurationsErrors];
+
 export type GetConfigurationsResponses = {
     /**
      * OK
@@ -4015,6 +6161,35 @@ export type CreateConfigurationData = {
     url: '/admin-api/v1/configuration';
 };
 
+export type CreateConfigurationErrors = {
+    /**
+     * Bad request, e.g. field validation or an illegal argument. The body is usually a list of APIMessage, but may be absent for some illegal-argument cases.
+     */
+    400: Array<ApiMessage>;
+    /**
+     * Unauthorized. Body is an APIMessage or a list of APIMessage.
+     */
+    401: ApiMessage | Array<ApiMessage>;
+    /**
+     * Forbidden. Body is a list of APIMessage.
+     */
+    403: Array<ApiMessage>;
+    /**
+     * Resource not found. Body is a list of APIMessage.
+     */
+    404: Array<ApiMessage>;
+    /**
+     * Too many requests (rate limit). Body is the rate-limit code as plain text.
+     */
+    429: string;
+    /**
+     * Unexpected internal server error. Body is a list of APIMessage.
+     */
+    500: Array<ApiMessage>;
+};
+
+export type CreateConfigurationError = CreateConfigurationErrors[keyof CreateConfigurationErrors];
+
 export type CreateConfigurationResponses = {
     /**
      * Created configuration.
@@ -4030,6 +6205,35 @@ export type EditConfigurationData = {
     query?: never;
     url: '/admin-api/v1/configuration';
 };
+
+export type EditConfigurationErrors = {
+    /**
+     * Bad request, e.g. field validation or an illegal argument. The body is usually a list of APIMessage, but may be absent for some illegal-argument cases.
+     */
+    400: Array<ApiMessage>;
+    /**
+     * Unauthorized. Body is an APIMessage or a list of APIMessage.
+     */
+    401: ApiMessage | Array<ApiMessage>;
+    /**
+     * Forbidden. Body is a list of APIMessage.
+     */
+    403: Array<ApiMessage>;
+    /**
+     * Resource not found. Body is a list of APIMessage.
+     */
+    404: Array<ApiMessage>;
+    /**
+     * Too many requests (rate limit). Body is the rate-limit code as plain text.
+     */
+    429: string;
+    /**
+     * Unexpected internal server error. Body is a list of APIMessage.
+     */
+    500: Array<ApiMessage>;
+};
+
+export type EditConfigurationError = EditConfigurationErrors[keyof EditConfigurationErrors];
 
 export type EditConfigurationResponses = {
     /**
@@ -4066,6 +6270,35 @@ export type DeleteAllConfigurationNodesData = {
     url: '/admin-api/v1/configuration-node';
 };
 
+export type DeleteAllConfigurationNodesErrors = {
+    /**
+     * Bad request, e.g. field validation or an illegal argument. The body is usually a list of APIMessage, but may be absent for some illegal-argument cases.
+     */
+    400: Array<ApiMessage>;
+    /**
+     * Unauthorized. Body is an APIMessage or a list of APIMessage.
+     */
+    401: ApiMessage | Array<ApiMessage>;
+    /**
+     * Forbidden. Body is a list of APIMessage.
+     */
+    403: Array<ApiMessage>;
+    /**
+     * Resource not found. Body is a list of APIMessage.
+     */
+    404: Array<ApiMessage>;
+    /**
+     * Too many requests (rate limit). Body is the rate-limit code as plain text.
+     */
+    429: string;
+    /**
+     * Unexpected internal server error. Body is a list of APIMessage.
+     */
+    500: Array<ApiMessage>;
+};
+
+export type DeleteAllConfigurationNodesError = DeleteAllConfigurationNodesErrors[keyof DeleteAllConfigurationNodesErrors];
+
 export type DeleteAllConfigurationNodesResponses = {
     /**
      * OK
@@ -4100,6 +6333,35 @@ export type GetConfigurationNodesData = {
     url: '/admin-api/v1/configuration-node';
 };
 
+export type GetConfigurationNodesErrors = {
+    /**
+     * Bad request, e.g. field validation or an illegal argument. The body is usually a list of APIMessage, but may be absent for some illegal-argument cases.
+     */
+    400: Array<ApiMessage>;
+    /**
+     * Unauthorized. Body is an APIMessage or a list of APIMessage.
+     */
+    401: ApiMessage | Array<ApiMessage>;
+    /**
+     * Forbidden. Body is a list of APIMessage.
+     */
+    403: Array<ApiMessage>;
+    /**
+     * Resource not found. Body is a list of APIMessage.
+     */
+    404: Array<ApiMessage>;
+    /**
+     * Too many requests (rate limit). Body is the rate-limit code as plain text.
+     */
+    429: string;
+    /**
+     * Unexpected internal server error. Body is a list of APIMessage.
+     */
+    500: Array<ApiMessage>;
+};
+
+export type GetConfigurationNodesError = GetConfigurationNodesErrors[keyof GetConfigurationNodesErrors];
+
 export type GetConfigurationNodesResponses = {
     /**
      * OK
@@ -4122,6 +6384,35 @@ export type CreateConfigurationNodeData = {
     url: '/admin-api/v1/configuration-node';
 };
 
+export type CreateConfigurationNodeErrors = {
+    /**
+     * Bad request, e.g. field validation or an illegal argument. The body is usually a list of APIMessage, but may be absent for some illegal-argument cases.
+     */
+    400: Array<ApiMessage>;
+    /**
+     * Unauthorized. Body is an APIMessage or a list of APIMessage.
+     */
+    401: ApiMessage | Array<ApiMessage>;
+    /**
+     * Forbidden. Body is a list of APIMessage.
+     */
+    403: Array<ApiMessage>;
+    /**
+     * Resource not found. Body is a list of APIMessage.
+     */
+    404: Array<ApiMessage>;
+    /**
+     * Too many requests (rate limit). Body is the rate-limit code as plain text.
+     */
+    429: string;
+    /**
+     * Unexpected internal server error. Body is a list of APIMessage.
+     */
+    500: Array<ApiMessage>;
+};
+
+export type CreateConfigurationNodeError = CreateConfigurationNodeErrors[keyof CreateConfigurationNodeErrors];
+
 export type CreateConfigurationNodeResponses = {
     /**
      * Created configuration node.
@@ -4137,6 +6428,35 @@ export type EditConfigurationNodeData = {
     query?: never;
     url: '/admin-api/v1/configuration-node';
 };
+
+export type EditConfigurationNodeErrors = {
+    /**
+     * Bad request, e.g. field validation or an illegal argument. The body is usually a list of APIMessage, but may be absent for some illegal-argument cases.
+     */
+    400: Array<ApiMessage>;
+    /**
+     * Unauthorized. Body is an APIMessage or a list of APIMessage.
+     */
+    401: ApiMessage | Array<ApiMessage>;
+    /**
+     * Forbidden. Body is a list of APIMessage.
+     */
+    403: Array<ApiMessage>;
+    /**
+     * Resource not found. Body is a list of APIMessage.
+     */
+    404: Array<ApiMessage>;
+    /**
+     * Too many requests (rate limit). Body is the rate-limit code as plain text.
+     */
+    429: string;
+    /**
+     * Unexpected internal server error. Body is a list of APIMessage.
+     */
+    500: Array<ApiMessage>;
+};
+
+export type EditConfigurationNodeError = EditConfigurationNodeErrors[keyof EditConfigurationNodeErrors];
 
 export type EditConfigurationNodeResponses = {
     /**
@@ -4155,6 +6475,35 @@ export type CopyConfigurationData = {
     };
     url: '/admin-api/v1/configuration-node/copy';
 };
+
+export type CopyConfigurationErrors = {
+    /**
+     * Bad request, e.g. field validation or an illegal argument. The body is usually a list of APIMessage, but may be absent for some illegal-argument cases.
+     */
+    400: Array<ApiMessage>;
+    /**
+     * Unauthorized. Body is an APIMessage or a list of APIMessage.
+     */
+    401: ApiMessage | Array<ApiMessage>;
+    /**
+     * Forbidden. Body is a list of APIMessage.
+     */
+    403: Array<ApiMessage>;
+    /**
+     * Resource not found. Body is a list of APIMessage.
+     */
+    404: Array<ApiMessage>;
+    /**
+     * Too many requests (rate limit). Body is the rate-limit code as plain text.
+     */
+    429: string;
+    /**
+     * Unexpected internal server error. Body is a list of APIMessage.
+     */
+    500: Array<ApiMessage>;
+};
+
+export type CopyConfigurationError = CopyConfigurationErrors[keyof CopyConfigurationErrors];
 
 export type CopyConfigurationResponses = {
     /**
@@ -4191,6 +6540,35 @@ export type DeleteAllSebClientConfigsData = {
     url: '/admin-api/v1/client_configuration';
 };
 
+export type DeleteAllSebClientConfigsErrors = {
+    /**
+     * Bad request, e.g. field validation or an illegal argument. The body is usually a list of APIMessage, but may be absent for some illegal-argument cases.
+     */
+    400: Array<ApiMessage>;
+    /**
+     * Unauthorized. Body is an APIMessage or a list of APIMessage.
+     */
+    401: ApiMessage | Array<ApiMessage>;
+    /**
+     * Forbidden. Body is a list of APIMessage.
+     */
+    403: Array<ApiMessage>;
+    /**
+     * Resource not found. Body is a list of APIMessage.
+     */
+    404: Array<ApiMessage>;
+    /**
+     * Too many requests (rate limit). Body is the rate-limit code as plain text.
+     */
+    429: string;
+    /**
+     * Unexpected internal server error. Body is a list of APIMessage.
+     */
+    500: Array<ApiMessage>;
+};
+
+export type DeleteAllSebClientConfigsError = DeleteAllSebClientConfigsErrors[keyof DeleteAllSebClientConfigsErrors];
+
 export type DeleteAllSebClientConfigsResponses = {
     /**
      * OK
@@ -4225,6 +6603,35 @@ export type GetSebClientConfigsData = {
     url: '/admin-api/v1/client_configuration';
 };
 
+export type GetSebClientConfigsErrors = {
+    /**
+     * Bad request, e.g. field validation or an illegal argument. The body is usually a list of APIMessage, but may be absent for some illegal-argument cases.
+     */
+    400: Array<ApiMessage>;
+    /**
+     * Unauthorized. Body is an APIMessage or a list of APIMessage.
+     */
+    401: ApiMessage | Array<ApiMessage>;
+    /**
+     * Forbidden. Body is a list of APIMessage.
+     */
+    403: Array<ApiMessage>;
+    /**
+     * Resource not found. Body is a list of APIMessage.
+     */
+    404: Array<ApiMessage>;
+    /**
+     * Too many requests (rate limit). Body is the rate-limit code as plain text.
+     */
+    429: string;
+    /**
+     * Unexpected internal server error. Body is a list of APIMessage.
+     */
+    500: Array<ApiMessage>;
+};
+
+export type GetSebClientConfigsError = GetSebClientConfigsErrors[keyof GetSebClientConfigsErrors];
+
 export type GetSebClientConfigsResponses = {
     /**
      * OK
@@ -4247,6 +6654,35 @@ export type CreateSebClientConfigData = {
     url: '/admin-api/v1/client_configuration';
 };
 
+export type CreateSebClientConfigErrors = {
+    /**
+     * Bad request, e.g. field validation or an illegal argument. The body is usually a list of APIMessage, but may be absent for some illegal-argument cases.
+     */
+    400: Array<ApiMessage>;
+    /**
+     * Unauthorized. Body is an APIMessage or a list of APIMessage.
+     */
+    401: ApiMessage | Array<ApiMessage>;
+    /**
+     * Forbidden. Body is a list of APIMessage.
+     */
+    403: Array<ApiMessage>;
+    /**
+     * Resource not found. Body is a list of APIMessage.
+     */
+    404: Array<ApiMessage>;
+    /**
+     * Too many requests (rate limit). Body is the rate-limit code as plain text.
+     */
+    429: string;
+    /**
+     * Unexpected internal server error. Body is a list of APIMessage.
+     */
+    500: Array<ApiMessage>;
+};
+
+export type CreateSebClientConfigError = CreateSebClientConfigErrors[keyof CreateSebClientConfigErrors];
+
 export type CreateSebClientConfigResponses = {
     /**
      * Created s e b client config.
@@ -4262,6 +6698,35 @@ export type EditSebClientConfigData = {
     query?: never;
     url: '/admin-api/v1/client_configuration';
 };
+
+export type EditSebClientConfigErrors = {
+    /**
+     * Bad request, e.g. field validation or an illegal argument. The body is usually a list of APIMessage, but may be absent for some illegal-argument cases.
+     */
+    400: Array<ApiMessage>;
+    /**
+     * Unauthorized. Body is an APIMessage or a list of APIMessage.
+     */
+    401: ApiMessage | Array<ApiMessage>;
+    /**
+     * Forbidden. Body is a list of APIMessage.
+     */
+    403: Array<ApiMessage>;
+    /**
+     * Resource not found. Body is a list of APIMessage.
+     */
+    404: Array<ApiMessage>;
+    /**
+     * Too many requests (rate limit). Body is the rate-limit code as plain text.
+     */
+    429: string;
+    /**
+     * Unexpected internal server error. Body is a list of APIMessage.
+     */
+    500: Array<ApiMessage>;
+};
+
+export type EditSebClientConfigError = EditSebClientConfigErrors[keyof EditSebClientConfigErrors];
 
 export type EditSebClientConfigResponses = {
     /**
@@ -4298,6 +6763,35 @@ export type DeleteAllClientGroupsData = {
     url: '/admin-api/v1/client-group';
 };
 
+export type DeleteAllClientGroupsErrors = {
+    /**
+     * Bad request, e.g. field validation or an illegal argument. The body is usually a list of APIMessage, but may be absent for some illegal-argument cases.
+     */
+    400: Array<ApiMessage>;
+    /**
+     * Unauthorized. Body is an APIMessage or a list of APIMessage.
+     */
+    401: ApiMessage | Array<ApiMessage>;
+    /**
+     * Forbidden. Body is a list of APIMessage.
+     */
+    403: Array<ApiMessage>;
+    /**
+     * Resource not found. Body is a list of APIMessage.
+     */
+    404: Array<ApiMessage>;
+    /**
+     * Too many requests (rate limit). Body is the rate-limit code as plain text.
+     */
+    429: string;
+    /**
+     * Unexpected internal server error. Body is a list of APIMessage.
+     */
+    500: Array<ApiMessage>;
+};
+
+export type DeleteAllClientGroupsError = DeleteAllClientGroupsErrors[keyof DeleteAllClientGroupsErrors];
+
 export type DeleteAllClientGroupsResponses = {
     /**
      * OK
@@ -4332,6 +6826,35 @@ export type GetClientGroupsData = {
     url: '/admin-api/v1/client-group';
 };
 
+export type GetClientGroupsErrors = {
+    /**
+     * Bad request, e.g. field validation or an illegal argument. The body is usually a list of APIMessage, but may be absent for some illegal-argument cases.
+     */
+    400: Array<ApiMessage>;
+    /**
+     * Unauthorized. Body is an APIMessage or a list of APIMessage.
+     */
+    401: ApiMessage | Array<ApiMessage>;
+    /**
+     * Forbidden. Body is a list of APIMessage.
+     */
+    403: Array<ApiMessage>;
+    /**
+     * Resource not found. Body is a list of APIMessage.
+     */
+    404: Array<ApiMessage>;
+    /**
+     * Too many requests (rate limit). Body is the rate-limit code as plain text.
+     */
+    429: string;
+    /**
+     * Unexpected internal server error. Body is a list of APIMessage.
+     */
+    500: Array<ApiMessage>;
+};
+
+export type GetClientGroupsError = GetClientGroupsErrors[keyof GetClientGroupsErrors];
+
 export type GetClientGroupsResponses = {
     /**
      * OK
@@ -4354,6 +6877,35 @@ export type CreateClientGroupData = {
     url: '/admin-api/v1/client-group';
 };
 
+export type CreateClientGroupErrors = {
+    /**
+     * Bad request, e.g. field validation or an illegal argument. The body is usually a list of APIMessage, but may be absent for some illegal-argument cases.
+     */
+    400: Array<ApiMessage>;
+    /**
+     * Unauthorized. Body is an APIMessage or a list of APIMessage.
+     */
+    401: ApiMessage | Array<ApiMessage>;
+    /**
+     * Forbidden. Body is a list of APIMessage.
+     */
+    403: Array<ApiMessage>;
+    /**
+     * Resource not found. Body is a list of APIMessage.
+     */
+    404: Array<ApiMessage>;
+    /**
+     * Too many requests (rate limit). Body is the rate-limit code as plain text.
+     */
+    429: string;
+    /**
+     * Unexpected internal server error. Body is a list of APIMessage.
+     */
+    500: Array<ApiMessage>;
+};
+
+export type CreateClientGroupError = CreateClientGroupErrors[keyof CreateClientGroupErrors];
+
 export type CreateClientGroupResponses = {
     /**
      * Created client group.
@@ -4369,6 +6921,35 @@ export type EditClientGroupData = {
     query?: never;
     url: '/admin-api/v1/client-group';
 };
+
+export type EditClientGroupErrors = {
+    /**
+     * Bad request, e.g. field validation or an illegal argument. The body is usually a list of APIMessage, but may be absent for some illegal-argument cases.
+     */
+    400: Array<ApiMessage>;
+    /**
+     * Unauthorized. Body is an APIMessage or a list of APIMessage.
+     */
+    401: ApiMessage | Array<ApiMessage>;
+    /**
+     * Forbidden. Body is a list of APIMessage.
+     */
+    403: Array<ApiMessage>;
+    /**
+     * Resource not found. Body is a list of APIMessage.
+     */
+    404: Array<ApiMessage>;
+    /**
+     * Too many requests (rate limit). Body is the rate-limit code as plain text.
+     */
+    429: string;
+    /**
+     * Unexpected internal server error. Body is a list of APIMessage.
+     */
+    500: Array<ApiMessage>;
+};
+
+export type EditClientGroupError = EditClientGroupErrors[keyof EditClientGroupErrors];
 
 export type EditClientGroupResponses = {
     /**
@@ -4405,6 +6986,35 @@ export type DeleteAllBatchActionsData = {
     url: '/admin-api/v1/batch-action';
 };
 
+export type DeleteAllBatchActionsErrors = {
+    /**
+     * Bad request, e.g. field validation or an illegal argument. The body is usually a list of APIMessage, but may be absent for some illegal-argument cases.
+     */
+    400: Array<ApiMessage>;
+    /**
+     * Unauthorized. Body is an APIMessage or a list of APIMessage.
+     */
+    401: ApiMessage | Array<ApiMessage>;
+    /**
+     * Forbidden. Body is a list of APIMessage.
+     */
+    403: Array<ApiMessage>;
+    /**
+     * Resource not found. Body is a list of APIMessage.
+     */
+    404: Array<ApiMessage>;
+    /**
+     * Too many requests (rate limit). Body is the rate-limit code as plain text.
+     */
+    429: string;
+    /**
+     * Unexpected internal server error. Body is a list of APIMessage.
+     */
+    500: Array<ApiMessage>;
+};
+
+export type DeleteAllBatchActionsError = DeleteAllBatchActionsErrors[keyof DeleteAllBatchActionsErrors];
+
 export type DeleteAllBatchActionsResponses = {
     /**
      * OK
@@ -4439,6 +7049,35 @@ export type GetBatchActionsData = {
     url: '/admin-api/v1/batch-action';
 };
 
+export type GetBatchActionsErrors = {
+    /**
+     * Bad request, e.g. field validation or an illegal argument. The body is usually a list of APIMessage, but may be absent for some illegal-argument cases.
+     */
+    400: Array<ApiMessage>;
+    /**
+     * Unauthorized. Body is an APIMessage or a list of APIMessage.
+     */
+    401: ApiMessage | Array<ApiMessage>;
+    /**
+     * Forbidden. Body is a list of APIMessage.
+     */
+    403: Array<ApiMessage>;
+    /**
+     * Resource not found. Body is a list of APIMessage.
+     */
+    404: Array<ApiMessage>;
+    /**
+     * Too many requests (rate limit). Body is the rate-limit code as plain text.
+     */
+    429: string;
+    /**
+     * Unexpected internal server error. Body is a list of APIMessage.
+     */
+    500: Array<ApiMessage>;
+};
+
+export type GetBatchActionsError = GetBatchActionsErrors[keyof GetBatchActionsErrors];
+
 export type GetBatchActionsResponses = {
     /**
      * OK
@@ -4461,6 +7100,35 @@ export type CreateBatchActionData = {
     url: '/admin-api/v1/batch-action';
 };
 
+export type CreateBatchActionErrors = {
+    /**
+     * Bad request, e.g. field validation or an illegal argument. The body is usually a list of APIMessage, but may be absent for some illegal-argument cases.
+     */
+    400: Array<ApiMessage>;
+    /**
+     * Unauthorized. Body is an APIMessage or a list of APIMessage.
+     */
+    401: ApiMessage | Array<ApiMessage>;
+    /**
+     * Forbidden. Body is a list of APIMessage.
+     */
+    403: Array<ApiMessage>;
+    /**
+     * Resource not found. Body is a list of APIMessage.
+     */
+    404: Array<ApiMessage>;
+    /**
+     * Too many requests (rate limit). Body is the rate-limit code as plain text.
+     */
+    429: string;
+    /**
+     * Unexpected internal server error. Body is a list of APIMessage.
+     */
+    500: Array<ApiMessage>;
+};
+
+export type CreateBatchActionError = CreateBatchActionErrors[keyof CreateBatchActionErrors];
+
 export type CreateBatchActionResponses = {
     /**
      * Created batch action.
@@ -4476,6 +7144,35 @@ export type EditBatchActionData = {
     query?: never;
     url: '/admin-api/v1/batch-action';
 };
+
+export type EditBatchActionErrors = {
+    /**
+     * Bad request, e.g. field validation or an illegal argument. The body is usually a list of APIMessage, but may be absent for some illegal-argument cases.
+     */
+    400: Array<ApiMessage>;
+    /**
+     * Unauthorized. Body is an APIMessage or a list of APIMessage.
+     */
+    401: ApiMessage | Array<ApiMessage>;
+    /**
+     * Forbidden. Body is a list of APIMessage.
+     */
+    403: Array<ApiMessage>;
+    /**
+     * Resource not found. Body is a list of APIMessage.
+     */
+    404: Array<ApiMessage>;
+    /**
+     * Too many requests (rate limit). Body is the rate-limit code as plain text.
+     */
+    429: string;
+    /**
+     * Unexpected internal server error. Body is a list of APIMessage.
+     */
+    500: Array<ApiMessage>;
+};
+
+export type EditBatchActionError = EditBatchActionErrors[keyof EditBatchActionErrors];
 
 export type EditBatchActionResponses = {
     /**
@@ -4496,6 +7193,35 @@ export type VerifyJwtTokenData = {
     url: '/oauth/jwttoken/verify';
 };
 
+export type VerifyJwtTokenErrors = {
+    /**
+     * Bad request, e.g. field validation or an illegal argument. The body is usually a list of APIMessage, but may be absent for some illegal-argument cases.
+     */
+    400: Array<ApiMessage>;
+    /**
+     * Unauthorized. Body is an APIMessage or a list of APIMessage.
+     */
+    401: ApiMessage | Array<ApiMessage>;
+    /**
+     * Forbidden. Body is a list of APIMessage.
+     */
+    403: Array<ApiMessage>;
+    /**
+     * Resource not found. Body is a list of APIMessage.
+     */
+    404: Array<ApiMessage>;
+    /**
+     * Too many requests (rate limit). Body is the rate-limit code as plain text.
+     */
+    429: string;
+    /**
+     * Unexpected internal server error. Body is a list of APIMessage.
+     */
+    500: Array<ApiMessage>;
+};
+
+export type VerifyJwtTokenError = VerifyJwtTokenErrors[keyof VerifyJwtTokenErrors];
+
 export type VerifyJwtTokenResponses = {
     /**
      * OK
@@ -4515,6 +7241,35 @@ export type GetConnectionConfigurationData = {
     query?: never;
     url: '/lms-api/v1/seb_config';
 };
+
+export type GetConnectionConfigurationErrors = {
+    /**
+     * Bad request, e.g. field validation or an illegal argument. The body is usually a list of APIMessage, but may be absent for some illegal-argument cases.
+     */
+    400: Array<ApiMessage>;
+    /**
+     * Unauthorized. Body is an APIMessage or a list of APIMessage.
+     */
+    401: ApiMessage | Array<ApiMessage>;
+    /**
+     * Forbidden. Body is a list of APIMessage.
+     */
+    403: Array<ApiMessage>;
+    /**
+     * Resource not found. Body is a list of APIMessage.
+     */
+    404: Array<ApiMessage>;
+    /**
+     * Too many requests (rate limit). Body is the rate-limit code as plain text.
+     */
+    429: string;
+    /**
+     * Unexpected internal server error. Body is a list of APIMessage.
+     */
+    500: Array<ApiMessage>;
+};
+
+export type GetConnectionConfigurationError = GetConnectionConfigurationErrors[keyof GetConnectionConfigurationErrors];
 
 export type GetConnectionConfigurationResponses = {
     /**
@@ -4540,6 +7295,35 @@ export type GetOneTimeLoginTokenData = {
     url: '/lms-api/v1/login_token';
 };
 
+export type GetOneTimeLoginTokenErrors = {
+    /**
+     * Bad request, e.g. field validation or an illegal argument. The body is usually a list of APIMessage, but may be absent for some illegal-argument cases.
+     */
+    400: Array<ApiMessage>;
+    /**
+     * Unauthorized. Body is an APIMessage or a list of APIMessage.
+     */
+    401: ApiMessage | Array<ApiMessage>;
+    /**
+     * Forbidden. Body is a list of APIMessage.
+     */
+    403: Array<ApiMessage>;
+    /**
+     * Resource not found. Body is a list of APIMessage.
+     */
+    404: Array<ApiMessage>;
+    /**
+     * Too many requests (rate limit). Body is the rate-limit code as plain text.
+     */
+    429: string;
+    /**
+     * Unexpected internal server error. Body is a list of APIMessage.
+     */
+    500: Array<ApiMessage>;
+};
+
+export type GetOneTimeLoginTokenError = GetOneTimeLoginTokenErrors[keyof GetOneTimeLoginTokenErrors];
+
 export type GetOneTimeLoginTokenResponses = {
     /**
      * OK
@@ -4559,6 +7343,35 @@ export type DeleteExamData = {
     query?: never;
     url: '/lms-api/v1/exam';
 };
+
+export type DeleteExamErrors = {
+    /**
+     * Bad request, e.g. field validation or an illegal argument. The body is usually a list of APIMessage, but may be absent for some illegal-argument cases.
+     */
+    400: Array<ApiMessage>;
+    /**
+     * Unauthorized. Body is an APIMessage or a list of APIMessage.
+     */
+    401: ApiMessage | Array<ApiMessage>;
+    /**
+     * Forbidden. Body is a list of APIMessage.
+     */
+    403: Array<ApiMessage>;
+    /**
+     * Resource not found. Body is a list of APIMessage.
+     */
+    404: Array<ApiMessage>;
+    /**
+     * Too many requests (rate limit). Body is the rate-limit code as plain text.
+     */
+    429: string;
+    /**
+     * Unexpected internal server error. Body is a list of APIMessage.
+     */
+    500: Array<ApiMessage>;
+};
+
+export type DeleteExamError = DeleteExamErrors[keyof DeleteExamErrors];
 
 export type DeleteExamResponses = {
     /**
@@ -4582,6 +7395,35 @@ export type CreateExamData = {
     url: '/lms-api/v1/exam';
 };
 
+export type CreateExamErrors = {
+    /**
+     * Bad request, e.g. field validation or an illegal argument. The body is usually a list of APIMessage, but may be absent for some illegal-argument cases.
+     */
+    400: Array<ApiMessage>;
+    /**
+     * Unauthorized. Body is an APIMessage or a list of APIMessage.
+     */
+    401: ApiMessage | Array<ApiMessage>;
+    /**
+     * Forbidden. Body is a list of APIMessage.
+     */
+    403: Array<ApiMessage>;
+    /**
+     * Resource not found. Body is a list of APIMessage.
+     */
+    404: Array<ApiMessage>;
+    /**
+     * Too many requests (rate limit). Body is the rate-limit code as plain text.
+     */
+    429: string;
+    /**
+     * Unexpected internal server error. Body is a list of APIMessage.
+     */
+    500: Array<ApiMessage>;
+};
+
+export type CreateExamError = CreateExamErrors[keyof CreateExamErrors];
+
 export type CreateExamResponses = {
     /**
      * OK
@@ -4595,6 +7437,35 @@ export type PingData = {
     query?: never;
     url: '/exam-api/v1/sebping';
 };
+
+export type PingErrors = {
+    /**
+     * Bad request, e.g. field validation or an illegal argument. The body is usually a list of APIMessage, but may be absent for some illegal-argument cases.
+     */
+    400: Array<ApiMessage>;
+    /**
+     * Unauthorized. Body is an APIMessage or a list of APIMessage.
+     */
+    401: ApiMessage | Array<ApiMessage>;
+    /**
+     * Forbidden. Body is a list of APIMessage.
+     */
+    403: Array<ApiMessage>;
+    /**
+     * Resource not found. Body is a list of APIMessage.
+     */
+    404: Array<ApiMessage>;
+    /**
+     * Too many requests (rate limit). Body is the rate-limit code as plain text.
+     */
+    429: string;
+    /**
+     * Unexpected internal server error. Body is a list of APIMessage.
+     */
+    500: Array<ApiMessage>;
+};
+
+export type PingError = PingErrors[keyof PingErrors];
 
 export type PingResponses = {
     /**
@@ -4612,6 +7483,35 @@ export type EventData = {
     query?: never;
     url: '/exam-api/v1/seblog';
 };
+
+export type EventErrors = {
+    /**
+     * Bad request, e.g. field validation or an illegal argument. The body is usually a list of APIMessage, but may be absent for some illegal-argument cases.
+     */
+    400: Array<ApiMessage>;
+    /**
+     * Unauthorized. Body is an APIMessage or a list of APIMessage.
+     */
+    401: ApiMessage | Array<ApiMessage>;
+    /**
+     * Forbidden. Body is a list of APIMessage.
+     */
+    403: Array<ApiMessage>;
+    /**
+     * Resource not found. Body is a list of APIMessage.
+     */
+    404: Array<ApiMessage>;
+    /**
+     * Too many requests (rate limit). Body is the rate-limit code as plain text.
+     */
+    429: string;
+    /**
+     * Unexpected internal server error. Body is a list of APIMessage.
+     */
+    500: Array<ApiMessage>;
+};
+
+export type EventError = EventErrors[keyof EventErrors];
 
 export type EventResponses = {
     /**
@@ -4634,6 +7534,35 @@ export type DeactivateUserAccountData = {
     url: '/admin-api/v1/useraccount/{modelId}/inactive';
 };
 
+export type DeactivateUserAccountErrors = {
+    /**
+     * Bad request, e.g. field validation or an illegal argument. The body is usually a list of APIMessage, but may be absent for some illegal-argument cases.
+     */
+    400: Array<ApiMessage>;
+    /**
+     * Unauthorized. Body is an APIMessage or a list of APIMessage.
+     */
+    401: ApiMessage | Array<ApiMessage>;
+    /**
+     * Forbidden. Body is a list of APIMessage.
+     */
+    403: Array<ApiMessage>;
+    /**
+     * Resource not found. Body is a list of APIMessage.
+     */
+    404: Array<ApiMessage>;
+    /**
+     * Too many requests (rate limit). Body is the rate-limit code as plain text.
+     */
+    429: string;
+    /**
+     * Unexpected internal server error. Body is a list of APIMessage.
+     */
+    500: Array<ApiMessage>;
+};
+
+export type DeactivateUserAccountError = DeactivateUserAccountErrors[keyof DeactivateUserAccountErrors];
+
 export type DeactivateUserAccountResponses = {
     /**
      * OK
@@ -4655,6 +7584,35 @@ export type ActivateUserAccountData = {
     url: '/admin-api/v1/useraccount/{modelId}/active';
 };
 
+export type ActivateUserAccountErrors = {
+    /**
+     * Bad request, e.g. field validation or an illegal argument. The body is usually a list of APIMessage, but may be absent for some illegal-argument cases.
+     */
+    400: Array<ApiMessage>;
+    /**
+     * Unauthorized. Body is an APIMessage or a list of APIMessage.
+     */
+    401: ApiMessage | Array<ApiMessage>;
+    /**
+     * Forbidden. Body is a list of APIMessage.
+     */
+    403: Array<ApiMessage>;
+    /**
+     * Resource not found. Body is a list of APIMessage.
+     */
+    404: Array<ApiMessage>;
+    /**
+     * Too many requests (rate limit). Body is the rate-limit code as plain text.
+     */
+    429: string;
+    /**
+     * Unexpected internal server error. Body is a list of APIMessage.
+     */
+    500: Array<ApiMessage>;
+};
+
+export type ActivateUserAccountError = ActivateUserAccountErrors[keyof ActivateUserAccountErrors];
+
 export type ActivateUserAccountResponses = {
     /**
      * OK
@@ -4670,6 +7628,35 @@ export type LogUserAccountLogoutData = {
     query?: never;
     url: '/admin-api/v1/useraccount/logout';
 };
+
+export type LogUserAccountLogoutErrors = {
+    /**
+     * Bad request, e.g. field validation or an illegal argument. The body is usually a list of APIMessage, but may be absent for some illegal-argument cases.
+     */
+    400: Array<ApiMessage>;
+    /**
+     * Unauthorized. Body is an APIMessage or a list of APIMessage.
+     */
+    401: ApiMessage | Array<ApiMessage>;
+    /**
+     * Forbidden. Body is a list of APIMessage.
+     */
+    403: Array<ApiMessage>;
+    /**
+     * Resource not found. Body is a list of APIMessage.
+     */
+    404: Array<ApiMessage>;
+    /**
+     * Too many requests (rate limit). Body is the rate-limit code as plain text.
+     */
+    429: string;
+    /**
+     * Unexpected internal server error. Body is a list of APIMessage.
+     */
+    500: Array<ApiMessage>;
+};
+
+export type LogUserAccountLogoutError = LogUserAccountLogoutErrors[keyof LogUserAccountLogoutErrors];
 
 export type LogUserAccountLogoutResponses = {
     /**
@@ -4687,6 +7674,35 @@ export type GetDeletionReportData = {
     };
     url: '/admin-api/v1/session-delete';
 };
+
+export type GetDeletionReportErrors = {
+    /**
+     * Bad request, e.g. field validation or an illegal argument. The body is usually a list of APIMessage, but may be absent for some illegal-argument cases.
+     */
+    400: Array<ApiMessage>;
+    /**
+     * Unauthorized. Body is an APIMessage or a list of APIMessage.
+     */
+    401: ApiMessage | Array<ApiMessage>;
+    /**
+     * Forbidden. Body is a list of APIMessage.
+     */
+    403: Array<ApiMessage>;
+    /**
+     * Resource not found. Body is a list of APIMessage.
+     */
+    404: Array<ApiMessage>;
+    /**
+     * Too many requests (rate limit). Body is the rate-limit code as plain text.
+     */
+    429: string;
+    /**
+     * Unexpected internal server error. Body is a list of APIMessage.
+     */
+    500: Array<ApiMessage>;
+};
+
+export type GetDeletionReportError = GetDeletionReportErrors[keyof GetDeletionReportErrors];
 
 export type GetDeletionReportResponses = {
     /**
@@ -4708,6 +7724,35 @@ export type DeleteSessionsData = {
     url: '/admin-api/v1/session-delete';
 };
 
+export type DeleteSessionsErrors = {
+    /**
+     * Bad request, e.g. field validation or an illegal argument. The body is usually a list of APIMessage, but may be absent for some illegal-argument cases.
+     */
+    400: Array<ApiMessage>;
+    /**
+     * Unauthorized. Body is an APIMessage or a list of APIMessage.
+     */
+    401: ApiMessage | Array<ApiMessage>;
+    /**
+     * Forbidden. Body is a list of APIMessage.
+     */
+    403: Array<ApiMessage>;
+    /**
+     * Resource not found. Body is a list of APIMessage.
+     */
+    404: Array<ApiMessage>;
+    /**
+     * Too many requests (rate limit). Body is the rate-limit code as plain text.
+     */
+    429: string;
+    /**
+     * Unexpected internal server error. Body is a list of APIMessage.
+     */
+    500: Array<ApiMessage>;
+};
+
+export type DeleteSessionsError = DeleteSessionsErrors[keyof DeleteSessionsErrors];
+
 export type DeleteSessionsResponses = {
     /**
      * OK
@@ -4728,6 +7773,35 @@ export type GetScheduledDeletesData = {
     url: '/admin-api/v1/scheduled-delete';
 };
 
+export type GetScheduledDeletesErrors = {
+    /**
+     * Bad request, e.g. field validation or an illegal argument. The body is usually a list of APIMessage, but may be absent for some illegal-argument cases.
+     */
+    400: Array<ApiMessage>;
+    /**
+     * Unauthorized. Body is an APIMessage or a list of APIMessage.
+     */
+    401: ApiMessage | Array<ApiMessage>;
+    /**
+     * Forbidden. Body is a list of APIMessage.
+     */
+    403: Array<ApiMessage>;
+    /**
+     * Resource not found. Body is a list of APIMessage.
+     */
+    404: Array<ApiMessage>;
+    /**
+     * Too many requests (rate limit). Body is the rate-limit code as plain text.
+     */
+    429: string;
+    /**
+     * Unexpected internal server error. Body is a list of APIMessage.
+     */
+    500: Array<ApiMessage>;
+};
+
+export type GetScheduledDeletesError = GetScheduledDeletesErrors[keyof GetScheduledDeletesErrors];
+
 export type GetScheduledDeletesResponses = {
     /**
      * OK
@@ -4743,6 +7817,35 @@ export type CreateScheduledDeleteData = {
     query?: never;
     url: '/admin-api/v1/scheduled-delete';
 };
+
+export type CreateScheduledDeleteErrors = {
+    /**
+     * Bad request, e.g. field validation or an illegal argument. The body is usually a list of APIMessage, but may be absent for some illegal-argument cases.
+     */
+    400: Array<ApiMessage>;
+    /**
+     * Unauthorized. Body is an APIMessage or a list of APIMessage.
+     */
+    401: ApiMessage | Array<ApiMessage>;
+    /**
+     * Forbidden. Body is a list of APIMessage.
+     */
+    403: Array<ApiMessage>;
+    /**
+     * Resource not found. Body is a list of APIMessage.
+     */
+    404: Array<ApiMessage>;
+    /**
+     * Too many requests (rate limit). Body is the rate-limit code as plain text.
+     */
+    429: string;
+    /**
+     * Unexpected internal server error. Body is a list of APIMessage.
+     */
+    500: Array<ApiMessage>;
+};
+
+export type CreateScheduledDeleteError = CreateScheduledDeleteErrors[keyof CreateScheduledDeleteErrors];
 
 export type CreateScheduledDeleteResponses = {
     /**
@@ -4762,6 +7865,35 @@ export type UnmarkIncludeData = {
     url: '/admin-api/v1/scheduled-delete/unmark-exclude/{modelId}';
 };
 
+export type UnmarkIncludeErrors = {
+    /**
+     * Bad request, e.g. field validation or an illegal argument. The body is usually a list of APIMessage, but may be absent for some illegal-argument cases.
+     */
+    400: Array<ApiMessage>;
+    /**
+     * Unauthorized. Body is an APIMessage or a list of APIMessage.
+     */
+    401: ApiMessage | Array<ApiMessage>;
+    /**
+     * Forbidden. Body is a list of APIMessage.
+     */
+    403: Array<ApiMessage>;
+    /**
+     * Resource not found. Body is a list of APIMessage.
+     */
+    404: Array<ApiMessage>;
+    /**
+     * Too many requests (rate limit). Body is the rate-limit code as plain text.
+     */
+    429: string;
+    /**
+     * Unexpected internal server error. Body is a list of APIMessage.
+     */
+    500: Array<ApiMessage>;
+};
+
+export type UnmarkIncludeError = UnmarkIncludeErrors[keyof UnmarkIncludeErrors];
+
 export type UnmarkIncludeResponses = {
     /**
      * OK
@@ -4780,6 +7912,35 @@ export type MarkExcludeData = {
     url: '/admin-api/v1/scheduled-delete/mark-exclude/{modelId}';
 };
 
+export type MarkExcludeErrors = {
+    /**
+     * Bad request, e.g. field validation or an illegal argument. The body is usually a list of APIMessage, but may be absent for some illegal-argument cases.
+     */
+    400: Array<ApiMessage>;
+    /**
+     * Unauthorized. Body is an APIMessage or a list of APIMessage.
+     */
+    401: ApiMessage | Array<ApiMessage>;
+    /**
+     * Forbidden. Body is a list of APIMessage.
+     */
+    403: Array<ApiMessage>;
+    /**
+     * Resource not found. Body is a list of APIMessage.
+     */
+    404: Array<ApiMessage>;
+    /**
+     * Too many requests (rate limit). Body is the rate-limit code as plain text.
+     */
+    429: string;
+    /**
+     * Unexpected internal server error. Body is a list of APIMessage.
+     */
+    500: Array<ApiMessage>;
+};
+
+export type MarkExcludeError = MarkExcludeErrors[keyof MarkExcludeErrors];
+
 export type MarkExcludeResponses = {
     /**
      * OK
@@ -4795,6 +7956,35 @@ export type RegisterUserAccountData = {
     query?: never;
     url: '/admin-api/v1/register';
 };
+
+export type RegisterUserAccountErrors = {
+    /**
+     * Bad request, e.g. field validation or an illegal argument. The body is usually a list of APIMessage, but may be absent for some illegal-argument cases.
+     */
+    400: Array<ApiMessage>;
+    /**
+     * Unauthorized. Body is an APIMessage or a list of APIMessage.
+     */
+    401: ApiMessage | Array<ApiMessage>;
+    /**
+     * Forbidden. Body is a list of APIMessage.
+     */
+    403: Array<ApiMessage>;
+    /**
+     * Resource not found. Body is a list of APIMessage.
+     */
+    404: Array<ApiMessage>;
+    /**
+     * Too many requests (rate limit). Body is the rate-limit code as plain text.
+     */
+    429: string;
+    /**
+     * Unexpected internal server error. Body is a list of APIMessage.
+     */
+    500: Array<ApiMessage>;
+};
+
+export type RegisterUserAccountError = RegisterUserAccountErrors[keyof RegisterUserAccountErrors];
 
 export type RegisterUserAccountResponses = {
     /**
@@ -4817,6 +8007,35 @@ export type GetMonitoringStaticClientDataData = {
     url: '/admin-api/v1/monitoring/{parentModelId}/static-client-data';
 };
 
+export type GetMonitoringStaticClientDataErrors = {
+    /**
+     * Bad request, e.g. field validation or an illegal argument. The body is usually a list of APIMessage, but may be absent for some illegal-argument cases.
+     */
+    400: Array<ApiMessage>;
+    /**
+     * Unauthorized. Body is an APIMessage or a list of APIMessage.
+     */
+    401: ApiMessage | Array<ApiMessage>;
+    /**
+     * Forbidden. Body is a list of APIMessage.
+     */
+    403: Array<ApiMessage>;
+    /**
+     * Resource not found. Body is a list of APIMessage.
+     */
+    404: Array<ApiMessage>;
+    /**
+     * Too many requests (rate limit). Body is the rate-limit code as plain text.
+     */
+    429: string;
+    /**
+     * Unexpected internal server error. Body is a list of APIMessage.
+     */
+    500: Array<ApiMessage>;
+};
+
+export type GetMonitoringStaticClientDataError = GetMonitoringStaticClientDataErrors[keyof GetMonitoringStaticClientDataErrors];
+
 export type GetMonitoringStaticClientDataResponses = {
     /**
      * OK
@@ -4836,6 +8055,35 @@ export type QuitAllActiveSebClientsData = {
     };
     url: '/admin-api/v1/monitoring/{parentModelId}/quitAll';
 };
+
+export type QuitAllActiveSebClientsErrors = {
+    /**
+     * Bad request, e.g. field validation or an illegal argument. The body is usually a list of APIMessage, but may be absent for some illegal-argument cases.
+     */
+    400: Array<ApiMessage>;
+    /**
+     * Unauthorized. Body is an APIMessage or a list of APIMessage.
+     */
+    401: ApiMessage | Array<ApiMessage>;
+    /**
+     * Forbidden. Body is a list of APIMessage.
+     */
+    403: Array<ApiMessage>;
+    /**
+     * Resource not found. Body is a list of APIMessage.
+     */
+    404: Array<ApiMessage>;
+    /**
+     * Too many requests (rate limit). Body is the rate-limit code as plain text.
+     */
+    429: string;
+    /**
+     * Unexpected internal server error. Body is a list of APIMessage.
+     */
+    500: Array<ApiMessage>;
+};
+
+export type QuitAllActiveSebClientsError = QuitAllActiveSebClientsErrors[keyof QuitAllActiveSebClientsErrors];
 
 export type QuitAllActiveSebClientsResponses = {
     /**
@@ -4857,6 +8105,35 @@ export type ConfirmNotificationData = {
     url: '/admin-api/v1/monitoring/{parentModelId}/notification/{modelId}/{SEBConnectionToken}';
 };
 
+export type ConfirmNotificationErrors = {
+    /**
+     * Bad request, e.g. field validation or an illegal argument. The body is usually a list of APIMessage, but may be absent for some illegal-argument cases.
+     */
+    400: Array<ApiMessage>;
+    /**
+     * Unauthorized. Body is an APIMessage or a list of APIMessage.
+     */
+    401: ApiMessage | Array<ApiMessage>;
+    /**
+     * Forbidden. Body is a list of APIMessage.
+     */
+    403: Array<ApiMessage>;
+    /**
+     * Resource not found. Body is a list of APIMessage.
+     */
+    404: Array<ApiMessage>;
+    /**
+     * Too many requests (rate limit). Body is the rate-limit code as plain text.
+     */
+    429: string;
+    /**
+     * Unexpected internal server error. Body is a list of APIMessage.
+     */
+    500: Array<ApiMessage>;
+};
+
+export type ConfirmNotificationError = ConfirmNotificationErrors[keyof ConfirmNotificationErrors];
+
 export type ConfirmNotificationResponses = {
     /**
      * OK
@@ -4874,6 +8151,35 @@ export type RegisterInstructionData = {
     };
     url: '/admin-api/v1/monitoring/{parentModelId}/instruction';
 };
+
+export type RegisterInstructionErrors = {
+    /**
+     * Bad request, e.g. field validation or an illegal argument. The body is usually a list of APIMessage, but may be absent for some illegal-argument cases.
+     */
+    400: Array<ApiMessage>;
+    /**
+     * Unauthorized. Body is an APIMessage or a list of APIMessage.
+     */
+    401: ApiMessage | Array<ApiMessage>;
+    /**
+     * Forbidden. Body is a list of APIMessage.
+     */
+    403: Array<ApiMessage>;
+    /**
+     * Resource not found. Body is a list of APIMessage.
+     */
+    404: Array<ApiMessage>;
+    /**
+     * Too many requests (rate limit). Body is the rate-limit code as plain text.
+     */
+    429: string;
+    /**
+     * Unexpected internal server error. Body is a list of APIMessage.
+     */
+    500: Array<ApiMessage>;
+};
+
+export type RegisterInstructionError = RegisterInstructionErrors[keyof RegisterInstructionErrors];
 
 export type RegisterInstructionResponses = {
     /**
@@ -4894,6 +8200,35 @@ export type DisableConnectionData = {
     url: '/admin-api/v1/monitoring/{parentModelId}/disable-connection';
 };
 
+export type DisableConnectionErrors = {
+    /**
+     * Bad request, e.g. field validation or an illegal argument. The body is usually a list of APIMessage, but may be absent for some illegal-argument cases.
+     */
+    400: Array<ApiMessage>;
+    /**
+     * Unauthorized. Body is an APIMessage or a list of APIMessage.
+     */
+    401: ApiMessage | Array<ApiMessage>;
+    /**
+     * Forbidden. Body is a list of APIMessage.
+     */
+    403: Array<ApiMessage>;
+    /**
+     * Resource not found. Body is a list of APIMessage.
+     */
+    404: Array<ApiMessage>;
+    /**
+     * Too many requests (rate limit). Body is the rate-limit code as plain text.
+     */
+    429: string;
+    /**
+     * Unexpected internal server error. Body is a list of APIMessage.
+     */
+    500: Array<ApiMessage>;
+};
+
+export type DisableConnectionError = DisableConnectionErrors[keyof DisableConnectionErrors];
+
 export type DisableConnectionResponses = {
     /**
      * OK
@@ -4911,6 +8246,35 @@ export type ToggleTestRunForExamData = {
     };
     url: '/admin-api/v1/monitoring/testrun/{modelId}';
 };
+
+export type ToggleTestRunForExamErrors = {
+    /**
+     * Bad request, e.g. field validation or an illegal argument. The body is usually a list of APIMessage, but may be absent for some illegal-argument cases.
+     */
+    400: Array<ApiMessage>;
+    /**
+     * Unauthorized. Body is an APIMessage or a list of APIMessage.
+     */
+    401: ApiMessage | Array<ApiMessage>;
+    /**
+     * Forbidden. Body is a list of APIMessage.
+     */
+    403: Array<ApiMessage>;
+    /**
+     * Resource not found. Body is a list of APIMessage.
+     */
+    404: Array<ApiMessage>;
+    /**
+     * Too many requests (rate limit). Body is the rate-limit code as plain text.
+     */
+    429: string;
+    /**
+     * Unexpected internal server error. Body is a list of APIMessage.
+     */
+    500: Array<ApiMessage>;
+};
+
+export type ToggleTestRunForExamError = ToggleTestRunForExamErrors[keyof ToggleTestRunForExamErrors];
 
 export type ToggleTestRunForExamResponses = {
     /**
@@ -4932,6 +8296,35 @@ export type ActivateTownhallData = {
     };
     url: '/admin-api/v1/monitoring/proctoring/{modelId}activate-towhall-room';
 };
+
+export type ActivateTownhallErrors = {
+    /**
+     * Bad request, e.g. field validation or an illegal argument. The body is usually a list of APIMessage, but may be absent for some illegal-argument cases.
+     */
+    400: Array<ApiMessage>;
+    /**
+     * Unauthorized. Body is an APIMessage or a list of APIMessage.
+     */
+    401: ApiMessage | Array<ApiMessage>;
+    /**
+     * Forbidden. Body is a list of APIMessage.
+     */
+    403: Array<ApiMessage>;
+    /**
+     * Resource not found. Body is a list of APIMessage.
+     */
+    404: Array<ApiMessage>;
+    /**
+     * Too many requests (rate limit). Body is the rate-limit code as plain text.
+     */
+    429: string;
+    /**
+     * Unexpected internal server error. Body is a list of APIMessage.
+     */
+    500: Array<ApiMessage>;
+};
+
+export type ActivateTownhallError = ActivateTownhallErrors[keyof ActivateTownhallErrors];
 
 export type ActivateTownhallResponses = {
     /**
@@ -4957,6 +8350,35 @@ export type SendReconfigurationAttributesData = {
     url: '/admin-api/v1/monitoring/proctoring/{modelId}/reconfiguration-attributes';
 };
 
+export type SendReconfigurationAttributesErrors = {
+    /**
+     * Bad request, e.g. field validation or an illegal argument. The body is usually a list of APIMessage, but may be absent for some illegal-argument cases.
+     */
+    400: Array<ApiMessage>;
+    /**
+     * Unauthorized. Body is an APIMessage or a list of APIMessage.
+     */
+    401: ApiMessage | Array<ApiMessage>;
+    /**
+     * Forbidden. Body is a list of APIMessage.
+     */
+    403: Array<ApiMessage>;
+    /**
+     * Resource not found. Body is a list of APIMessage.
+     */
+    404: Array<ApiMessage>;
+    /**
+     * Too many requests (rate limit). Body is the rate-limit code as plain text.
+     */
+    429: string;
+    /**
+     * Unexpected internal server error. Body is a list of APIMessage.
+     */
+    500: Array<ApiMessage>;
+};
+
+export type SendReconfigurationAttributesError = SendReconfigurationAttributesErrors[keyof SendReconfigurationAttributesErrors];
+
 export type SendReconfigurationAttributesResponses = {
     /**
      * OK
@@ -4976,6 +8398,35 @@ export type OpenBreakOutRoomData = {
     };
     url: '/admin-api/v1/monitoring/proctoring/{modelId}/open';
 };
+
+export type OpenBreakOutRoomErrors = {
+    /**
+     * Bad request, e.g. field validation or an illegal argument. The body is usually a list of APIMessage, but may be absent for some illegal-argument cases.
+     */
+    400: Array<ApiMessage>;
+    /**
+     * Unauthorized. Body is an APIMessage or a list of APIMessage.
+     */
+    401: ApiMessage | Array<ApiMessage>;
+    /**
+     * Forbidden. Body is a list of APIMessage.
+     */
+    403: Array<ApiMessage>;
+    /**
+     * Resource not found. Body is a list of APIMessage.
+     */
+    404: Array<ApiMessage>;
+    /**
+     * Too many requests (rate limit). Body is the rate-limit code as plain text.
+     */
+    429: string;
+    /**
+     * Unexpected internal server error. Body is a list of APIMessage.
+     */
+    500: Array<ApiMessage>;
+};
+
+export type OpenBreakOutRoomError = OpenBreakOutRoomErrors[keyof OpenBreakOutRoomErrors];
 
 export type OpenBreakOutRoomResponses = {
     /**
@@ -4998,6 +8449,35 @@ export type NotifyProctoringRoomOpenedData = {
     url: '/admin-api/v1/monitoring/proctoring/{modelId}/notify-open-room';
 };
 
+export type NotifyProctoringRoomOpenedErrors = {
+    /**
+     * Bad request, e.g. field validation or an illegal argument. The body is usually a list of APIMessage, but may be absent for some illegal-argument cases.
+     */
+    400: Array<ApiMessage>;
+    /**
+     * Unauthorized. Body is an APIMessage or a list of APIMessage.
+     */
+    401: ApiMessage | Array<ApiMessage>;
+    /**
+     * Forbidden. Body is a list of APIMessage.
+     */
+    403: Array<ApiMessage>;
+    /**
+     * Resource not found. Body is a list of APIMessage.
+     */
+    404: Array<ApiMessage>;
+    /**
+     * Too many requests (rate limit). Body is the rate-limit code as plain text.
+     */
+    429: string;
+    /**
+     * Unexpected internal server error. Body is a list of APIMessage.
+     */
+    500: Array<ApiMessage>;
+};
+
+export type NotifyProctoringRoomOpenedError = NotifyProctoringRoomOpenedErrors[keyof NotifyProctoringRoomOpenedErrors];
+
 export type NotifyProctoringRoomOpenedResponses = {
     /**
      * OK
@@ -5017,6 +8497,35 @@ export type CloseProctoringRoomData = {
     url: '/admin-api/v1/monitoring/proctoring/{modelId}/close';
 };
 
+export type CloseProctoringRoomErrors = {
+    /**
+     * Bad request, e.g. field validation or an illegal argument. The body is usually a list of APIMessage, but may be absent for some illegal-argument cases.
+     */
+    400: Array<ApiMessage>;
+    /**
+     * Unauthorized. Body is an APIMessage or a list of APIMessage.
+     */
+    401: ApiMessage | Array<ApiMessage>;
+    /**
+     * Forbidden. Body is a list of APIMessage.
+     */
+    403: Array<ApiMessage>;
+    /**
+     * Resource not found. Body is a list of APIMessage.
+     */
+    404: Array<ApiMessage>;
+    /**
+     * Too many requests (rate limit). Body is the rate-limit code as plain text.
+     */
+    429: string;
+    /**
+     * Unexpected internal server error. Body is a list of APIMessage.
+     */
+    500: Array<ApiMessage>;
+};
+
+export type CloseProctoringRoomError = CloseProctoringRoomErrors[keyof CloseProctoringRoomErrors];
+
 export type CloseProctoringRoomResponses = {
     /**
      * OK
@@ -5035,6 +8544,35 @@ export type DeactivateLmsSetupData = {
     query?: never;
     url: '/admin-api/v1/lms-setup/{modelId}/inactive';
 };
+
+export type DeactivateLmsSetupErrors = {
+    /**
+     * Bad request, e.g. field validation or an illegal argument. The body is usually a list of APIMessage, but may be absent for some illegal-argument cases.
+     */
+    400: Array<ApiMessage>;
+    /**
+     * Unauthorized. Body is an APIMessage or a list of APIMessage.
+     */
+    401: ApiMessage | Array<ApiMessage>;
+    /**
+     * Forbidden. Body is a list of APIMessage.
+     */
+    403: Array<ApiMessage>;
+    /**
+     * Resource not found. Body is a list of APIMessage.
+     */
+    404: Array<ApiMessage>;
+    /**
+     * Too many requests (rate limit). Body is the rate-limit code as plain text.
+     */
+    429: string;
+    /**
+     * Unexpected internal server error. Body is a list of APIMessage.
+     */
+    500: Array<ApiMessage>;
+};
+
+export type DeactivateLmsSetupError = DeactivateLmsSetupErrors[keyof DeactivateLmsSetupErrors];
 
 export type DeactivateLmsSetupResponses = {
     /**
@@ -5057,6 +8595,35 @@ export type ActivateLmsSetupData = {
     url: '/admin-api/v1/lms-setup/{modelId}/active';
 };
 
+export type ActivateLmsSetupErrors = {
+    /**
+     * Bad request, e.g. field validation or an illegal argument. The body is usually a list of APIMessage, but may be absent for some illegal-argument cases.
+     */
+    400: Array<ApiMessage>;
+    /**
+     * Unauthorized. Body is an APIMessage or a list of APIMessage.
+     */
+    401: ApiMessage | Array<ApiMessage>;
+    /**
+     * Forbidden. Body is a list of APIMessage.
+     */
+    403: Array<ApiMessage>;
+    /**
+     * Resource not found. Body is a list of APIMessage.
+     */
+    404: Array<ApiMessage>;
+    /**
+     * Too many requests (rate limit). Body is the rate-limit code as plain text.
+     */
+    429: string;
+    /**
+     * Unexpected internal server error. Body is a list of APIMessage.
+     */
+    500: Array<ApiMessage>;
+};
+
+export type ActivateLmsSetupError = ActivateLmsSetupErrors[keyof ActivateLmsSetupErrors];
+
 export type ActivateLmsSetupResponses = {
     /**
      * OK
@@ -5077,6 +8644,35 @@ export type DeactivateInstitutionData = {
     query?: never;
     url: '/admin-api/v1/institution/{modelId}/inactive';
 };
+
+export type DeactivateInstitutionErrors = {
+    /**
+     * Bad request, e.g. field validation or an illegal argument. The body is usually a list of APIMessage, but may be absent for some illegal-argument cases.
+     */
+    400: Array<ApiMessage>;
+    /**
+     * Unauthorized. Body is an APIMessage or a list of APIMessage.
+     */
+    401: ApiMessage | Array<ApiMessage>;
+    /**
+     * Forbidden. Body is a list of APIMessage.
+     */
+    403: Array<ApiMessage>;
+    /**
+     * Resource not found. Body is a list of APIMessage.
+     */
+    404: Array<ApiMessage>;
+    /**
+     * Too many requests (rate limit). Body is the rate-limit code as plain text.
+     */
+    429: string;
+    /**
+     * Unexpected internal server error. Body is a list of APIMessage.
+     */
+    500: Array<ApiMessage>;
+};
+
+export type DeactivateInstitutionError = DeactivateInstitutionErrors[keyof DeactivateInstitutionErrors];
 
 export type DeactivateInstitutionResponses = {
     /**
@@ -5099,6 +8695,35 @@ export type ActivateInstitutionData = {
     url: '/admin-api/v1/institution/{modelId}/active';
 };
 
+export type ActivateInstitutionErrors = {
+    /**
+     * Bad request, e.g. field validation or an illegal argument. The body is usually a list of APIMessage, but may be absent for some illegal-argument cases.
+     */
+    400: Array<ApiMessage>;
+    /**
+     * Unauthorized. Body is an APIMessage or a list of APIMessage.
+     */
+    401: ApiMessage | Array<ApiMessage>;
+    /**
+     * Forbidden. Body is a list of APIMessage.
+     */
+    403: Array<ApiMessage>;
+    /**
+     * Resource not found. Body is a list of APIMessage.
+     */
+    404: Array<ApiMessage>;
+    /**
+     * Too many requests (rate limit). Body is the rate-limit code as plain text.
+     */
+    429: string;
+    /**
+     * Unexpected internal server error. Body is a list of APIMessage.
+     */
+    500: Array<ApiMessage>;
+};
+
+export type ActivateInstitutionError = ActivateInstitutionErrors[keyof ActivateInstitutionErrors];
+
 export type ActivateInstitutionResponses = {
     /**
      * OK
@@ -5118,6 +8743,35 @@ export type GetAppSignatureKeyInfoData = {
     };
     url: '/admin-api/v1/exam/{parentModelId}/sebkeyinfo';
 };
+
+export type GetAppSignatureKeyInfoErrors = {
+    /**
+     * Bad request, e.g. field validation or an illegal argument. The body is usually a list of APIMessage, but may be absent for some illegal-argument cases.
+     */
+    400: Array<ApiMessage>;
+    /**
+     * Unauthorized. Body is an APIMessage or a list of APIMessage.
+     */
+    401: ApiMessage | Array<ApiMessage>;
+    /**
+     * Forbidden. Body is a list of APIMessage.
+     */
+    403: Array<ApiMessage>;
+    /**
+     * Resource not found. Body is a list of APIMessage.
+     */
+    404: Array<ApiMessage>;
+    /**
+     * Too many requests (rate limit). Body is the rate-limit code as plain text.
+     */
+    429: string;
+    /**
+     * Unexpected internal server error. Body is a list of APIMessage.
+     */
+    500: Array<ApiMessage>;
+};
+
+export type GetAppSignatureKeyInfoError = GetAppSignatureKeyInfoErrors[keyof GetAppSignatureKeyInfoErrors];
 
 export type GetAppSignatureKeyInfoResponses = {
     /**
@@ -5141,6 +8795,35 @@ export type SaveAppSignatureKeySettingsData = {
     url: '/admin-api/v1/exam/{parentModelId}/sebkeyinfo';
 };
 
+export type SaveAppSignatureKeySettingsErrors = {
+    /**
+     * Bad request, e.g. field validation or an illegal argument. The body is usually a list of APIMessage, but may be absent for some illegal-argument cases.
+     */
+    400: Array<ApiMessage>;
+    /**
+     * Unauthorized. Body is an APIMessage or a list of APIMessage.
+     */
+    401: ApiMessage | Array<ApiMessage>;
+    /**
+     * Forbidden. Body is a list of APIMessage.
+     */
+    403: Array<ApiMessage>;
+    /**
+     * Resource not found. Body is a list of APIMessage.
+     */
+    404: Array<ApiMessage>;
+    /**
+     * Too many requests (rate limit). Body is the rate-limit code as plain text.
+     */
+    429: string;
+    /**
+     * Unexpected internal server error. Body is a list of APIMessage.
+     */
+    500: Array<ApiMessage>;
+};
+
+export type SaveAppSignatureKeySettingsError = SaveAppSignatureKeySettingsErrors[keyof SaveAppSignatureKeySettingsErrors];
+
 export type SaveAppSignatureKeySettingsResponses = {
     /**
      * OK
@@ -5159,6 +8842,35 @@ export type DeleteSecurityGrantData = {
     };
     url: '/admin-api/v1/exam/{parentModelId}/grant/{modelId}';
 };
+
+export type DeleteSecurityGrantErrors = {
+    /**
+     * Bad request, e.g. field validation or an illegal argument. The body is usually a list of APIMessage, but may be absent for some illegal-argument cases.
+     */
+    400: Array<ApiMessage>;
+    /**
+     * Unauthorized. Body is an APIMessage or a list of APIMessage.
+     */
+    401: ApiMessage | Array<ApiMessage>;
+    /**
+     * Forbidden. Body is a list of APIMessage.
+     */
+    403: Array<ApiMessage>;
+    /**
+     * Resource not found. Body is a list of APIMessage.
+     */
+    404: Array<ApiMessage>;
+    /**
+     * Too many requests (rate limit). Body is the rate-limit code as plain text.
+     */
+    429: string;
+    /**
+     * Unexpected internal server error. Body is a list of APIMessage.
+     */
+    500: Array<ApiMessage>;
+};
+
+export type DeleteSecurityGrantError = DeleteSecurityGrantErrors[keyof DeleteSecurityGrantErrors];
 
 export type DeleteSecurityGrantResponses = {
     /**
@@ -5182,6 +8894,35 @@ export type GrantAppSignatureKeyData = {
     url: '/admin-api/v1/exam/{parentModelId}/grant/{modelId}';
 };
 
+export type GrantAppSignatureKeyErrors = {
+    /**
+     * Bad request, e.g. field validation or an illegal argument. The body is usually a list of APIMessage, but may be absent for some illegal-argument cases.
+     */
+    400: Array<ApiMessage>;
+    /**
+     * Unauthorized. Body is an APIMessage or a list of APIMessage.
+     */
+    401: ApiMessage | Array<ApiMessage>;
+    /**
+     * Forbidden. Body is a list of APIMessage.
+     */
+    403: Array<ApiMessage>;
+    /**
+     * Resource not found. Body is a list of APIMessage.
+     */
+    404: Array<ApiMessage>;
+    /**
+     * Too many requests (rate limit). Body is the rate-limit code as plain text.
+     */
+    429: string;
+    /**
+     * Unexpected internal server error. Body is a list of APIMessage.
+     */
+    500: Array<ApiMessage>;
+};
+
+export type GrantAppSignatureKeyError = GrantAppSignatureKeyErrors[keyof GrantAppSignatureKeyErrors];
+
 export type GrantAppSignatureKeyResponses = {
     /**
      * OK
@@ -5202,6 +8943,35 @@ export type GetScreenProctoringSettingsData = {
     url: '/admin-api/v1/exam/{modelId}/screen-proctoring';
 };
 
+export type GetScreenProctoringSettingsErrors = {
+    /**
+     * Bad request, e.g. field validation or an illegal argument. The body is usually a list of APIMessage, but may be absent for some illegal-argument cases.
+     */
+    400: Array<ApiMessage>;
+    /**
+     * Unauthorized. Body is an APIMessage or a list of APIMessage.
+     */
+    401: ApiMessage | Array<ApiMessage>;
+    /**
+     * Forbidden. Body is a list of APIMessage.
+     */
+    403: Array<ApiMessage>;
+    /**
+     * Resource not found. Body is a list of APIMessage.
+     */
+    404: Array<ApiMessage>;
+    /**
+     * Too many requests (rate limit). Body is the rate-limit code as plain text.
+     */
+    429: string;
+    /**
+     * Unexpected internal server error. Body is a list of APIMessage.
+     */
+    500: Array<ApiMessage>;
+};
+
+export type GetScreenProctoringSettingsError = GetScreenProctoringSettingsErrors[keyof GetScreenProctoringSettingsErrors];
+
 export type GetScreenProctoringSettingsResponses = {
     /**
      * OK
@@ -5221,6 +8991,35 @@ export type SaveScreenProctoringSettingsData = {
     };
     url: '/admin-api/v1/exam/{modelId}/screen-proctoring';
 };
+
+export type SaveScreenProctoringSettingsErrors = {
+    /**
+     * Bad request, e.g. field validation or an illegal argument. The body is usually a list of APIMessage, but may be absent for some illegal-argument cases.
+     */
+    400: Array<ApiMessage>;
+    /**
+     * Unauthorized. Body is an APIMessage or a list of APIMessage.
+     */
+    401: ApiMessage | Array<ApiMessage>;
+    /**
+     * Forbidden. Body is a list of APIMessage.
+     */
+    403: Array<ApiMessage>;
+    /**
+     * Resource not found. Body is a list of APIMessage.
+     */
+    404: Array<ApiMessage>;
+    /**
+     * Too many requests (rate limit). Body is the rate-limit code as plain text.
+     */
+    429: string;
+    /**
+     * Unexpected internal server error. Body is a list of APIMessage.
+     */
+    500: Array<ApiMessage>;
+};
+
+export type SaveScreenProctoringSettingsError = SaveScreenProctoringSettingsErrors[keyof SaveScreenProctoringSettingsErrors];
 
 export type SaveScreenProctoringSettingsResponses = {
     /**
@@ -5243,6 +9042,35 @@ export type ScreenProctoringGroupApplyData = {
     url: '/admin-api/v1/exam/{modelId}/screen-proctoring/apply-groups';
 };
 
+export type ScreenProctoringGroupApplyErrors = {
+    /**
+     * Bad request, e.g. field validation or an illegal argument. The body is usually a list of APIMessage, but may be absent for some illegal-argument cases.
+     */
+    400: Array<ApiMessage>;
+    /**
+     * Unauthorized. Body is an APIMessage or a list of APIMessage.
+     */
+    401: ApiMessage | Array<ApiMessage>;
+    /**
+     * Forbidden. Body is a list of APIMessage.
+     */
+    403: Array<ApiMessage>;
+    /**
+     * Resource not found. Body is a list of APIMessage.
+     */
+    404: Array<ApiMessage>;
+    /**
+     * Too many requests (rate limit). Body is the rate-limit code as plain text.
+     */
+    429: string;
+    /**
+     * Unexpected internal server error. Body is a list of APIMessage.
+     */
+    500: Array<ApiMessage>;
+};
+
+export type ScreenProctoringGroupApplyError = ScreenProctoringGroupApplyErrors[keyof ScreenProctoringGroupApplyErrors];
+
 export type ScreenProctoringGroupApplyResponses = {
     /**
      * OK
@@ -5264,6 +9092,35 @@ export type ScreenProctoringActivationData = {
     url: '/admin-api/v1/exam/{modelId}/screen-proctoring/activation';
 };
 
+export type ScreenProctoringActivationErrors = {
+    /**
+     * Bad request, e.g. field validation or an illegal argument. The body is usually a list of APIMessage, but may be absent for some illegal-argument cases.
+     */
+    400: Array<ApiMessage>;
+    /**
+     * Unauthorized. Body is an APIMessage or a list of APIMessage.
+     */
+    401: ApiMessage | Array<ApiMessage>;
+    /**
+     * Forbidden. Body is a list of APIMessage.
+     */
+    403: Array<ApiMessage>;
+    /**
+     * Resource not found. Body is a list of APIMessage.
+     */
+    404: Array<ApiMessage>;
+    /**
+     * Too many requests (rate limit). Body is the rate-limit code as plain text.
+     */
+    429: string;
+    /**
+     * Unexpected internal server error. Body is a list of APIMessage.
+     */
+    500: Array<ApiMessage>;
+};
+
+export type ScreenProctoringActivationError = ScreenProctoringActivationErrors[keyof ScreenProctoringActivationErrors];
+
 export type ScreenProctoringActivationResponses = {
     /**
      * OK
@@ -5283,6 +9140,35 @@ export type GetProctoringServiceSettingsData = {
     };
     url: '/admin-api/v1/exam/{modelId}/proctoring';
 };
+
+export type GetProctoringServiceSettingsErrors = {
+    /**
+     * Bad request, e.g. field validation or an illegal argument. The body is usually a list of APIMessage, but may be absent for some illegal-argument cases.
+     */
+    400: Array<ApiMessage>;
+    /**
+     * Unauthorized. Body is an APIMessage or a list of APIMessage.
+     */
+    401: ApiMessage | Array<ApiMessage>;
+    /**
+     * Forbidden. Body is a list of APIMessage.
+     */
+    403: Array<ApiMessage>;
+    /**
+     * Resource not found. Body is a list of APIMessage.
+     */
+    404: Array<ApiMessage>;
+    /**
+     * Too many requests (rate limit). Body is the rate-limit code as plain text.
+     */
+    429: string;
+    /**
+     * Unexpected internal server error. Body is a list of APIMessage.
+     */
+    500: Array<ApiMessage>;
+};
+
+export type GetProctoringServiceSettingsError = GetProctoringServiceSettingsErrors[keyof GetProctoringServiceSettingsErrors];
 
 export type GetProctoringServiceSettingsResponses = {
     /**
@@ -5304,6 +9190,35 @@ export type SaveProctoringServiceSettingsData = {
     url: '/admin-api/v1/exam/{modelId}/proctoring';
 };
 
+export type SaveProctoringServiceSettingsErrors = {
+    /**
+     * Bad request, e.g. field validation or an illegal argument. The body is usually a list of APIMessage, but may be absent for some illegal-argument cases.
+     */
+    400: Array<ApiMessage>;
+    /**
+     * Unauthorized. Body is an APIMessage or a list of APIMessage.
+     */
+    401: ApiMessage | Array<ApiMessage>;
+    /**
+     * Forbidden. Body is a list of APIMessage.
+     */
+    403: Array<ApiMessage>;
+    /**
+     * Resource not found. Body is a list of APIMessage.
+     */
+    404: Array<ApiMessage>;
+    /**
+     * Too many requests (rate limit). Body is the rate-limit code as plain text.
+     */
+    429: string;
+    /**
+     * Unexpected internal server error. Body is a list of APIMessage.
+     */
+    500: Array<ApiMessage>;
+};
+
+export type SaveProctoringServiceSettingsError = SaveProctoringServiceSettingsErrors[keyof SaveProctoringServiceSettingsErrors];
+
 export type SaveProctoringServiceSettingsResponses = {
     /**
      * OK
@@ -5323,6 +9238,35 @@ export type GetSebSettingsData = {
     };
     url: '/admin-api/v1/exam/seb-settings/{modelId}';
 };
+
+export type GetSebSettingsErrors = {
+    /**
+     * Bad request, e.g. field validation or an illegal argument. The body is usually a list of APIMessage, but may be absent for some illegal-argument cases.
+     */
+    400: Array<ApiMessage>;
+    /**
+     * Unauthorized. Body is an APIMessage or a list of APIMessage.
+     */
+    401: ApiMessage | Array<ApiMessage>;
+    /**
+     * Forbidden. Body is a list of APIMessage.
+     */
+    403: Array<ApiMessage>;
+    /**
+     * Resource not found. Body is a list of APIMessage.
+     */
+    404: Array<ApiMessage>;
+    /**
+     * Too many requests (rate limit). Body is the rate-limit code as plain text.
+     */
+    429: string;
+    /**
+     * Unexpected internal server error. Body is a list of APIMessage.
+     */
+    500: Array<ApiMessage>;
+};
+
+export type GetSebSettingsError = GetSebSettingsErrors[keyof GetSebSettingsErrors];
 
 export type GetSebSettingsResponses = {
     /**
@@ -5345,6 +9289,35 @@ export type SaveSingleValueData = {
     url: '/admin-api/v1/exam/seb-settings/{modelId}';
 };
 
+export type SaveSingleValueErrors = {
+    /**
+     * Bad request, e.g. field validation or an illegal argument. The body is usually a list of APIMessage, but may be absent for some illegal-argument cases.
+     */
+    400: Array<ApiMessage>;
+    /**
+     * Unauthorized. Body is an APIMessage or a list of APIMessage.
+     */
+    401: ApiMessage | Array<ApiMessage>;
+    /**
+     * Forbidden. Body is a list of APIMessage.
+     */
+    403: Array<ApiMessage>;
+    /**
+     * Resource not found. Body is a list of APIMessage.
+     */
+    404: Array<ApiMessage>;
+    /**
+     * Too many requests (rate limit). Body is the rate-limit code as plain text.
+     */
+    429: string;
+    /**
+     * Unexpected internal server error. Body is a list of APIMessage.
+     */
+    500: Array<ApiMessage>;
+};
+
+export type SaveSingleValueError = SaveSingleValueErrors[keyof SaveSingleValueErrors];
+
 export type SaveSingleValueResponses = {
     /**
      * OK
@@ -5362,6 +9335,35 @@ export type UndoChangesData = {
     query?: never;
     url: '/admin-api/v1/exam/seb-settings/{modelId}/undo-changes';
 };
+
+export type UndoChangesErrors = {
+    /**
+     * Bad request, e.g. field validation or an illegal argument. The body is usually a list of APIMessage, but may be absent for some illegal-argument cases.
+     */
+    400: Array<ApiMessage>;
+    /**
+     * Unauthorized. Body is an APIMessage or a list of APIMessage.
+     */
+    401: ApiMessage | Array<ApiMessage>;
+    /**
+     * Forbidden. Body is a list of APIMessage.
+     */
+    403: Array<ApiMessage>;
+    /**
+     * Resource not found. Body is a list of APIMessage.
+     */
+    404: Array<ApiMessage>;
+    /**
+     * Too many requests (rate limit). Body is the rate-limit code as plain text.
+     */
+    429: string;
+    /**
+     * Unexpected internal server error. Body is a list of APIMessage.
+     */
+    500: Array<ApiMessage>;
+};
+
+export type UndoChangesError = UndoChangesErrors[keyof UndoChangesErrors];
 
 export type UndoChangesResponses = {
     /**
@@ -5384,6 +9386,35 @@ export type DeleteTableRowData = {
     url: '/admin-api/v1/exam/seb-settings/{modelId}/table/row';
 };
 
+export type DeleteTableRowErrors = {
+    /**
+     * Bad request, e.g. field validation or an illegal argument. The body is usually a list of APIMessage, but may be absent for some illegal-argument cases.
+     */
+    400: Array<ApiMessage>;
+    /**
+     * Unauthorized. Body is an APIMessage or a list of APIMessage.
+     */
+    401: ApiMessage | Array<ApiMessage>;
+    /**
+     * Forbidden. Body is a list of APIMessage.
+     */
+    403: Array<ApiMessage>;
+    /**
+     * Resource not found. Body is a list of APIMessage.
+     */
+    404: Array<ApiMessage>;
+    /**
+     * Too many requests (rate limit). Body is the rate-limit code as plain text.
+     */
+    429: string;
+    /**
+     * Unexpected internal server error. Body is a list of APIMessage.
+     */
+    500: Array<ApiMessage>;
+};
+
+export type DeleteTableRowError = DeleteTableRowErrors[keyof DeleteTableRowErrors];
+
 export type DeleteTableRowResponses = {
     /**
      * OK
@@ -5402,6 +9433,35 @@ export type AddNewTableRowData = {
     url: '/admin-api/v1/exam/seb-settings/{modelId}/table/row';
 };
 
+export type AddNewTableRowErrors = {
+    /**
+     * Bad request, e.g. field validation or an illegal argument. The body is usually a list of APIMessage, but may be absent for some illegal-argument cases.
+     */
+    400: Array<ApiMessage>;
+    /**
+     * Unauthorized. Body is an APIMessage or a list of APIMessage.
+     */
+    401: ApiMessage | Array<ApiMessage>;
+    /**
+     * Forbidden. Body is a list of APIMessage.
+     */
+    403: Array<ApiMessage>;
+    /**
+     * Resource not found. Body is a list of APIMessage.
+     */
+    404: Array<ApiMessage>;
+    /**
+     * Too many requests (rate limit). Body is the rate-limit code as plain text.
+     */
+    429: string;
+    /**
+     * Unexpected internal server error. Body is a list of APIMessage.
+     */
+    500: Array<ApiMessage>;
+};
+
+export type AddNewTableRowError = AddNewTableRowErrors[keyof AddNewTableRowErrors];
+
 export type AddNewTableRowResponses = {
     /**
      * OK
@@ -5419,6 +9479,35 @@ export type PublishData = {
     query?: never;
     url: '/admin-api/v1/exam/seb-settings/{modelId}/publish';
 };
+
+export type PublishErrors = {
+    /**
+     * Bad request, e.g. field validation or an illegal argument. The body is usually a list of APIMessage, but may be absent for some illegal-argument cases.
+     */
+    400: Array<ApiMessage>;
+    /**
+     * Unauthorized. Body is an APIMessage or a list of APIMessage.
+     */
+    401: ApiMessage | Array<ApiMessage>;
+    /**
+     * Forbidden. Body is a list of APIMessage.
+     */
+    403: Array<ApiMessage>;
+    /**
+     * Resource not found. Body is a list of APIMessage.
+     */
+    404: Array<ApiMessage>;
+    /**
+     * Too many requests (rate limit). Body is the rate-limit code as plain text.
+     */
+    429: string;
+    /**
+     * Unexpected internal server error. Body is a list of APIMessage.
+     */
+    500: Array<ApiMessage>;
+};
+
+export type PublishError = PublishErrors[keyof PublishErrors];
 
 export type PublishResponses = {
     /**
@@ -5440,6 +9529,35 @@ export type GetScreenProctoringSettings1Data = {
     url: '/admin-api/v1/exam-template/{modelId}/screen-proctoring';
 };
 
+export type GetScreenProctoringSettings1Errors = {
+    /**
+     * Bad request, e.g. field validation or an illegal argument. The body is usually a list of APIMessage, but may be absent for some illegal-argument cases.
+     */
+    400: Array<ApiMessage>;
+    /**
+     * Unauthorized. Body is an APIMessage or a list of APIMessage.
+     */
+    401: ApiMessage | Array<ApiMessage>;
+    /**
+     * Forbidden. Body is a list of APIMessage.
+     */
+    403: Array<ApiMessage>;
+    /**
+     * Resource not found. Body is a list of APIMessage.
+     */
+    404: Array<ApiMessage>;
+    /**
+     * Too many requests (rate limit). Body is the rate-limit code as plain text.
+     */
+    429: string;
+    /**
+     * Unexpected internal server error. Body is a list of APIMessage.
+     */
+    500: Array<ApiMessage>;
+};
+
+export type GetScreenProctoringSettings1Error = GetScreenProctoringSettings1Errors[keyof GetScreenProctoringSettings1Errors];
+
 export type GetScreenProctoringSettings1Responses = {
     /**
      * OK
@@ -5460,6 +9578,35 @@ export type SaveScreenProctoringSettings1Data = {
     url: '/admin-api/v1/exam-template/{modelId}/screen-proctoring';
 };
 
+export type SaveScreenProctoringSettings1Errors = {
+    /**
+     * Bad request, e.g. field validation or an illegal argument. The body is usually a list of APIMessage, but may be absent for some illegal-argument cases.
+     */
+    400: Array<ApiMessage>;
+    /**
+     * Unauthorized. Body is an APIMessage or a list of APIMessage.
+     */
+    401: ApiMessage | Array<ApiMessage>;
+    /**
+     * Forbidden. Body is a list of APIMessage.
+     */
+    403: Array<ApiMessage>;
+    /**
+     * Resource not found. Body is a list of APIMessage.
+     */
+    404: Array<ApiMessage>;
+    /**
+     * Too many requests (rate limit). Body is the rate-limit code as plain text.
+     */
+    429: string;
+    /**
+     * Unexpected internal server error. Body is a list of APIMessage.
+     */
+    500: Array<ApiMessage>;
+};
+
+export type SaveScreenProctoringSettings1Error = SaveScreenProctoringSettings1Errors[keyof SaveScreenProctoringSettings1Errors];
+
 export type SaveScreenProctoringSettings1Responses = {
     /**
      * OK
@@ -5477,6 +9624,35 @@ export type CopyExamTemplateData = {
     query?: never;
     url: '/admin-api/v1/exam-template/{modelId}/copy';
 };
+
+export type CopyExamTemplateErrors = {
+    /**
+     * Bad request, e.g. field validation or an illegal argument. The body is usually a list of APIMessage, but may be absent for some illegal-argument cases.
+     */
+    400: Array<ApiMessage>;
+    /**
+     * Unauthorized. Body is an APIMessage or a list of APIMessage.
+     */
+    401: ApiMessage | Array<ApiMessage>;
+    /**
+     * Forbidden. Body is a list of APIMessage.
+     */
+    403: Array<ApiMessage>;
+    /**
+     * Resource not found. Body is a list of APIMessage.
+     */
+    404: Array<ApiMessage>;
+    /**
+     * Too many requests (rate limit). Body is the rate-limit code as plain text.
+     */
+    429: string;
+    /**
+     * Unexpected internal server error. Body is a list of APIMessage.
+     */
+    500: Array<ApiMessage>;
+};
+
+export type CopyExamTemplateError = CopyExamTemplateErrors[keyof CopyExamTemplateErrors];
 
 export type CopyExamTemplateResponses = {
     /**
@@ -5496,6 +9672,35 @@ export type CreateExamTemplate1Data = {
     url: '/admin-api/v1/exam-template/create';
 };
 
+export type CreateExamTemplate1Errors = {
+    /**
+     * Bad request, e.g. field validation or an illegal argument. The body is usually a list of APIMessage, but may be absent for some illegal-argument cases.
+     */
+    400: Array<ApiMessage>;
+    /**
+     * Unauthorized. Body is an APIMessage or a list of APIMessage.
+     */
+    401: ApiMessage | Array<ApiMessage>;
+    /**
+     * Forbidden. Body is a list of APIMessage.
+     */
+    403: Array<ApiMessage>;
+    /**
+     * Resource not found. Body is a list of APIMessage.
+     */
+    404: Array<ApiMessage>;
+    /**
+     * Too many requests (rate limit). Body is the rate-limit code as plain text.
+     */
+    429: string;
+    /**
+     * Unexpected internal server error. Body is a list of APIMessage.
+     */
+    500: Array<ApiMessage>;
+};
+
+export type CreateExamTemplate1Error = CreateExamTemplate1Errors[keyof CreateExamTemplate1Errors];
+
 export type CreateExamTemplate1Responses = {
     /**
      * OK
@@ -5511,6 +9716,35 @@ export type CreateTemporaryConfigurationTemplateData = {
     query?: never;
     url: '/admin-api/v1/exam-template/create-config-template';
 };
+
+export type CreateTemporaryConfigurationTemplateErrors = {
+    /**
+     * Bad request, e.g. field validation or an illegal argument. The body is usually a list of APIMessage, but may be absent for some illegal-argument cases.
+     */
+    400: Array<ApiMessage>;
+    /**
+     * Unauthorized. Body is an APIMessage or a list of APIMessage.
+     */
+    401: ApiMessage | Array<ApiMessage>;
+    /**
+     * Forbidden. Body is a list of APIMessage.
+     */
+    403: Array<ApiMessage>;
+    /**
+     * Resource not found. Body is a list of APIMessage.
+     */
+    404: Array<ApiMessage>;
+    /**
+     * Too many requests (rate limit). Body is the rate-limit code as plain text.
+     */
+    429: string;
+    /**
+     * Unexpected internal server error. Body is a list of APIMessage.
+     */
+    500: Array<ApiMessage>;
+};
+
+export type CreateTemporaryConfigurationTemplateError = CreateTemporaryConfigurationTemplateErrors[keyof CreateTemporaryConfigurationTemplateErrors];
 
 export type CreateTemporaryConfigurationTemplateResponses = {
     /**
@@ -5530,6 +9764,35 @@ export type UndoData = {
     url: '/admin-api/v1/configuration/undo/{modelId}';
 };
 
+export type UndoErrors = {
+    /**
+     * Bad request, e.g. field validation or an illegal argument. The body is usually a list of APIMessage, but may be absent for some illegal-argument cases.
+     */
+    400: Array<ApiMessage>;
+    /**
+     * Unauthorized. Body is an APIMessage or a list of APIMessage.
+     */
+    401: ApiMessage | Array<ApiMessage>;
+    /**
+     * Forbidden. Body is a list of APIMessage.
+     */
+    403: Array<ApiMessage>;
+    /**
+     * Resource not found. Body is a list of APIMessage.
+     */
+    404: Array<ApiMessage>;
+    /**
+     * Too many requests (rate limit). Body is the rate-limit code as plain text.
+     */
+    429: string;
+    /**
+     * Unexpected internal server error. Body is a list of APIMessage.
+     */
+    500: Array<ApiMessage>;
+};
+
+export type UndoError = UndoErrors[keyof UndoErrors];
+
 export type UndoResponses = {
     /**
      * OK
@@ -5547,6 +9810,35 @@ export type SaveToHistoryData = {
     query?: never;
     url: '/admin-api/v1/configuration/save-to-history/{modelId}';
 };
+
+export type SaveToHistoryErrors = {
+    /**
+     * Bad request, e.g. field validation or an illegal argument. The body is usually a list of APIMessage, but may be absent for some illegal-argument cases.
+     */
+    400: Array<ApiMessage>;
+    /**
+     * Unauthorized. Body is an APIMessage or a list of APIMessage.
+     */
+    401: ApiMessage | Array<ApiMessage>;
+    /**
+     * Forbidden. Body is a list of APIMessage.
+     */
+    403: Array<ApiMessage>;
+    /**
+     * Resource not found. Body is a list of APIMessage.
+     */
+    404: Array<ApiMessage>;
+    /**
+     * Too many requests (rate limit). Body is the rate-limit code as plain text.
+     */
+    429: string;
+    /**
+     * Unexpected internal server error. Body is a list of APIMessage.
+     */
+    500: Array<ApiMessage>;
+};
+
+export type SaveToHistoryError = SaveToHistoryErrors[keyof SaveToHistoryErrors];
 
 export type SaveToHistoryResponses = {
     /**
@@ -5568,6 +9860,35 @@ export type RestoreFormHistoryData = {
     url: '/admin-api/v1/configuration/restore/{modelId}';
 };
 
+export type RestoreFormHistoryErrors = {
+    /**
+     * Bad request, e.g. field validation or an illegal argument. The body is usually a list of APIMessage, but may be absent for some illegal-argument cases.
+     */
+    400: Array<ApiMessage>;
+    /**
+     * Unauthorized. Body is an APIMessage or a list of APIMessage.
+     */
+    401: ApiMessage | Array<ApiMessage>;
+    /**
+     * Forbidden. Body is a list of APIMessage.
+     */
+    403: Array<ApiMessage>;
+    /**
+     * Resource not found. Body is a list of APIMessage.
+     */
+    404: Array<ApiMessage>;
+    /**
+     * Too many requests (rate limit). Body is the rate-limit code as plain text.
+     */
+    429: string;
+    /**
+     * Unexpected internal server error. Body is a list of APIMessage.
+     */
+    500: Array<ApiMessage>;
+};
+
+export type RestoreFormHistoryError = RestoreFormHistoryErrors[keyof RestoreFormHistoryErrors];
+
 export type RestoreFormHistoryResponses = {
     /**
      * OK
@@ -5588,6 +9909,35 @@ export type SetQuitPasswordData = {
     query?: never;
     url: '/admin-api/v1/configuration-node/{modelId}/quitpwd';
 };
+
+export type SetQuitPasswordErrors = {
+    /**
+     * Bad request, e.g. field validation or an illegal argument. The body is usually a list of APIMessage, but may be absent for some illegal-argument cases.
+     */
+    400: Array<ApiMessage>;
+    /**
+     * Unauthorized. Body is an APIMessage or a list of APIMessage.
+     */
+    401: ApiMessage | Array<ApiMessage>;
+    /**
+     * Forbidden. Body is a list of APIMessage.
+     */
+    403: Array<ApiMessage>;
+    /**
+     * Resource not found. Body is a list of APIMessage.
+     */
+    404: Array<ApiMessage>;
+    /**
+     * Too many requests (rate limit). Body is the rate-limit code as plain text.
+     */
+    429: string;
+    /**
+     * Unexpected internal server error. Body is a list of APIMessage.
+     */
+    500: Array<ApiMessage>;
+};
+
+export type SetQuitPasswordError = SetQuitPasswordErrors[keyof SetQuitPasswordErrors];
 
 export type SetQuitPasswordResponses = {
     /**
@@ -5613,6 +9963,35 @@ export type ImportExamConfigOnExistingConfigData = {
     url: '/admin-api/v1/configuration-node/{modelId}/import';
 };
 
+export type ImportExamConfigOnExistingConfigErrors = {
+    /**
+     * Bad request, e.g. field validation or an illegal argument. The body is usually a list of APIMessage, but may be absent for some illegal-argument cases.
+     */
+    400: Array<ApiMessage>;
+    /**
+     * Unauthorized. Body is an APIMessage or a list of APIMessage.
+     */
+    401: ApiMessage | Array<ApiMessage>;
+    /**
+     * Forbidden. Body is a list of APIMessage.
+     */
+    403: Array<ApiMessage>;
+    /**
+     * Resource not found. Body is a list of APIMessage.
+     */
+    404: Array<ApiMessage>;
+    /**
+     * Too many requests (rate limit). Body is the rate-limit code as plain text.
+     */
+    429: string;
+    /**
+     * Unexpected internal server error. Body is a list of APIMessage.
+     */
+    500: Array<ApiMessage>;
+};
+
+export type ImportExamConfigOnExistingConfigError = ImportExamConfigOnExistingConfigErrors[keyof ImportExamConfigOnExistingConfigErrors];
+
 export type ImportExamConfigOnExistingConfigResponses = {
     /**
      * OK
@@ -5637,6 +10016,35 @@ export type ImportExamConfigData = {
     url: '/admin-api/v1/configuration-node/import';
 };
 
+export type ImportExamConfigErrors = {
+    /**
+     * Bad request, e.g. field validation or an illegal argument. The body is usually a list of APIMessage, but may be absent for some illegal-argument cases.
+     */
+    400: Array<ApiMessage>;
+    /**
+     * Unauthorized. Body is an APIMessage or a list of APIMessage.
+     */
+    401: ApiMessage | Array<ApiMessage>;
+    /**
+     * Forbidden. Body is a list of APIMessage.
+     */
+    403: Array<ApiMessage>;
+    /**
+     * Resource not found. Body is a list of APIMessage.
+     */
+    404: Array<ApiMessage>;
+    /**
+     * Too many requests (rate limit). Body is the rate-limit code as plain text.
+     */
+    429: string;
+    /**
+     * Unexpected internal server error. Body is a list of APIMessage.
+     */
+    500: Array<ApiMessage>;
+};
+
+export type ImportExamConfigError = ImportExamConfigErrors[keyof ImportExamConfigErrors];
+
 export type ImportExamConfigResponses = {
     /**
      * OK
@@ -5656,6 +10064,35 @@ export type GetSebSettings1Data = {
     };
     url: '/admin-api/v1/config-template/seb-settings/{modelId}';
 };
+
+export type GetSebSettings1Errors = {
+    /**
+     * Bad request, e.g. field validation or an illegal argument. The body is usually a list of APIMessage, but may be absent for some illegal-argument cases.
+     */
+    400: Array<ApiMessage>;
+    /**
+     * Unauthorized. Body is an APIMessage or a list of APIMessage.
+     */
+    401: ApiMessage | Array<ApiMessage>;
+    /**
+     * Forbidden. Body is a list of APIMessage.
+     */
+    403: Array<ApiMessage>;
+    /**
+     * Resource not found. Body is a list of APIMessage.
+     */
+    404: Array<ApiMessage>;
+    /**
+     * Too many requests (rate limit). Body is the rate-limit code as plain text.
+     */
+    429: string;
+    /**
+     * Unexpected internal server error. Body is a list of APIMessage.
+     */
+    500: Array<ApiMessage>;
+};
+
+export type GetSebSettings1Error = GetSebSettings1Errors[keyof GetSebSettings1Errors];
 
 export type GetSebSettings1Responses = {
     /**
@@ -5678,6 +10115,35 @@ export type SaveSingleValue1Data = {
     url: '/admin-api/v1/config-template/seb-settings/{modelId}';
 };
 
+export type SaveSingleValue1Errors = {
+    /**
+     * Bad request, e.g. field validation or an illegal argument. The body is usually a list of APIMessage, but may be absent for some illegal-argument cases.
+     */
+    400: Array<ApiMessage>;
+    /**
+     * Unauthorized. Body is an APIMessage or a list of APIMessage.
+     */
+    401: ApiMessage | Array<ApiMessage>;
+    /**
+     * Forbidden. Body is a list of APIMessage.
+     */
+    403: Array<ApiMessage>;
+    /**
+     * Resource not found. Body is a list of APIMessage.
+     */
+    404: Array<ApiMessage>;
+    /**
+     * Too many requests (rate limit). Body is the rate-limit code as plain text.
+     */
+    429: string;
+    /**
+     * Unexpected internal server error. Body is a list of APIMessage.
+     */
+    500: Array<ApiMessage>;
+};
+
+export type SaveSingleValue1Error = SaveSingleValue1Errors[keyof SaveSingleValue1Errors];
+
 export type SaveSingleValue1Responses = {
     /**
      * OK
@@ -5699,6 +10165,35 @@ export type DeleteTableRow1Data = {
     url: '/admin-api/v1/config-template/seb-settings/{modelId}/table/row';
 };
 
+export type DeleteTableRow1Errors = {
+    /**
+     * Bad request, e.g. field validation or an illegal argument. The body is usually a list of APIMessage, but may be absent for some illegal-argument cases.
+     */
+    400: Array<ApiMessage>;
+    /**
+     * Unauthorized. Body is an APIMessage or a list of APIMessage.
+     */
+    401: ApiMessage | Array<ApiMessage>;
+    /**
+     * Forbidden. Body is a list of APIMessage.
+     */
+    403: Array<ApiMessage>;
+    /**
+     * Resource not found. Body is a list of APIMessage.
+     */
+    404: Array<ApiMessage>;
+    /**
+     * Too many requests (rate limit). Body is the rate-limit code as plain text.
+     */
+    429: string;
+    /**
+     * Unexpected internal server error. Body is a list of APIMessage.
+     */
+    500: Array<ApiMessage>;
+};
+
+export type DeleteTableRow1Error = DeleteTableRow1Errors[keyof DeleteTableRow1Errors];
+
 export type DeleteTableRow1Responses = {
     /**
      * OK
@@ -5716,6 +10211,35 @@ export type AddNewTableRow1Data = {
     query?: never;
     url: '/admin-api/v1/config-template/seb-settings/{modelId}/table/row';
 };
+
+export type AddNewTableRow1Errors = {
+    /**
+     * Bad request, e.g. field validation or an illegal argument. The body is usually a list of APIMessage, but may be absent for some illegal-argument cases.
+     */
+    400: Array<ApiMessage>;
+    /**
+     * Unauthorized. Body is an APIMessage or a list of APIMessage.
+     */
+    401: ApiMessage | Array<ApiMessage>;
+    /**
+     * Forbidden. Body is a list of APIMessage.
+     */
+    403: Array<ApiMessage>;
+    /**
+     * Resource not found. Body is a list of APIMessage.
+     */
+    404: Array<ApiMessage>;
+    /**
+     * Too many requests (rate limit). Body is the rate-limit code as plain text.
+     */
+    429: string;
+    /**
+     * Unexpected internal server error. Body is a list of APIMessage.
+     */
+    500: Array<ApiMessage>;
+};
+
+export type AddNewTableRow1Error = AddNewTableRow1Errors[keyof AddNewTableRow1Errors];
 
 export type AddNewTableRow1Responses = {
     /**
@@ -5738,6 +10262,35 @@ export type DeactivateSebClientConfigData = {
     url: '/admin-api/v1/client_configuration/{modelId}/inactive';
 };
 
+export type DeactivateSebClientConfigErrors = {
+    /**
+     * Bad request, e.g. field validation or an illegal argument. The body is usually a list of APIMessage, but may be absent for some illegal-argument cases.
+     */
+    400: Array<ApiMessage>;
+    /**
+     * Unauthorized. Body is an APIMessage or a list of APIMessage.
+     */
+    401: ApiMessage | Array<ApiMessage>;
+    /**
+     * Forbidden. Body is a list of APIMessage.
+     */
+    403: Array<ApiMessage>;
+    /**
+     * Resource not found. Body is a list of APIMessage.
+     */
+    404: Array<ApiMessage>;
+    /**
+     * Too many requests (rate limit). Body is the rate-limit code as plain text.
+     */
+    429: string;
+    /**
+     * Unexpected internal server error. Body is a list of APIMessage.
+     */
+    500: Array<ApiMessage>;
+};
+
+export type DeactivateSebClientConfigError = DeactivateSebClientConfigErrors[keyof DeactivateSebClientConfigErrors];
+
 export type DeactivateSebClientConfigResponses = {
     /**
      * OK
@@ -5759,6 +10312,35 @@ export type ActivateSebClientConfigData = {
     url: '/admin-api/v1/client_configuration/{modelId}/active';
 };
 
+export type ActivateSebClientConfigErrors = {
+    /**
+     * Bad request, e.g. field validation or an illegal argument. The body is usually a list of APIMessage, but may be absent for some illegal-argument cases.
+     */
+    400: Array<ApiMessage>;
+    /**
+     * Unauthorized. Body is an APIMessage or a list of APIMessage.
+     */
+    401: ApiMessage | Array<ApiMessage>;
+    /**
+     * Forbidden. Body is a list of APIMessage.
+     */
+    403: Array<ApiMessage>;
+    /**
+     * Resource not found. Body is a list of APIMessage.
+     */
+    404: Array<ApiMessage>;
+    /**
+     * Too many requests (rate limit). Body is the rate-limit code as plain text.
+     */
+    429: string;
+    /**
+     * Unexpected internal server error. Body is a list of APIMessage.
+     */
+    500: Array<ApiMessage>;
+};
+
+export type ActivateSebClientConfigError = ActivateSebClientConfigErrors[keyof ActivateSebClientConfigErrors];
+
 export type ActivateSebClientConfigResponses = {
     /**
      * OK
@@ -5777,6 +10359,35 @@ export type DeleteCertificateData = {
     query?: never;
     url: '/admin-api/v1/certificate';
 };
+
+export type DeleteCertificateErrors = {
+    /**
+     * Bad request, e.g. field validation or an illegal argument. The body is usually a list of APIMessage, but may be absent for some illegal-argument cases.
+     */
+    400: Array<ApiMessage>;
+    /**
+     * Unauthorized. Body is an APIMessage or a list of APIMessage.
+     */
+    401: ApiMessage | Array<ApiMessage>;
+    /**
+     * Forbidden. Body is a list of APIMessage.
+     */
+    403: Array<ApiMessage>;
+    /**
+     * Resource not found. Body is a list of APIMessage.
+     */
+    404: Array<ApiMessage>;
+    /**
+     * Too many requests (rate limit). Body is the rate-limit code as plain text.
+     */
+    429: string;
+    /**
+     * Unexpected internal server error. Body is a list of APIMessage.
+     */
+    500: Array<ApiMessage>;
+};
+
+export type DeleteCertificateError = DeleteCertificateErrors[keyof DeleteCertificateErrors];
 
 export type DeleteCertificateResponses = {
     /**
@@ -5799,6 +10410,35 @@ export type GetCertificatesData = {
     };
     url: '/admin-api/v1/certificate';
 };
+
+export type GetCertificatesErrors = {
+    /**
+     * Bad request, e.g. field validation or an illegal argument. The body is usually a list of APIMessage, but may be absent for some illegal-argument cases.
+     */
+    400: Array<ApiMessage>;
+    /**
+     * Unauthorized. Body is an APIMessage or a list of APIMessage.
+     */
+    401: ApiMessage | Array<ApiMessage>;
+    /**
+     * Forbidden. Body is a list of APIMessage.
+     */
+    403: Array<ApiMessage>;
+    /**
+     * Resource not found. Body is a list of APIMessage.
+     */
+    404: Array<ApiMessage>;
+    /**
+     * Too many requests (rate limit). Body is the rate-limit code as plain text.
+     */
+    429: string;
+    /**
+     * Unexpected internal server error. Body is a list of APIMessage.
+     */
+    500: Array<ApiMessage>;
+};
+
+export type GetCertificatesError = GetCertificatesErrors[keyof GetCertificatesErrors];
 
 export type GetCertificatesResponses = {
     /**
@@ -5825,6 +10465,35 @@ export type ImportCertificateData = {
     url: '/admin-api/v1/certificate';
 };
 
+export type ImportCertificateErrors = {
+    /**
+     * Bad request, e.g. field validation or an illegal argument. The body is usually a list of APIMessage, but may be absent for some illegal-argument cases.
+     */
+    400: Array<ApiMessage>;
+    /**
+     * Unauthorized. Body is an APIMessage or a list of APIMessage.
+     */
+    401: ApiMessage | Array<ApiMessage>;
+    /**
+     * Forbidden. Body is a list of APIMessage.
+     */
+    403: Array<ApiMessage>;
+    /**
+     * Resource not found. Body is a list of APIMessage.
+     */
+    404: Array<ApiMessage>;
+    /**
+     * Too many requests (rate limit). Body is the rate-limit code as plain text.
+     */
+    429: string;
+    /**
+     * Unexpected internal server error. Body is a list of APIMessage.
+     */
+    500: Array<ApiMessage>;
+};
+
+export type ImportCertificateError = ImportCertificateErrors[keyof ImportCertificateErrors];
+
 export type ImportCertificateResponses = {
     /**
      * OK
@@ -5845,6 +10514,35 @@ export type ArchiveData = {
     url: '/admin-api/v1/exam/{modelId}/archive';
 };
 
+export type ArchiveErrors = {
+    /**
+     * Bad request, e.g. field validation or an illegal argument. The body is usually a list of APIMessage, but may be absent for some illegal-argument cases.
+     */
+    400: Array<ApiMessage>;
+    /**
+     * Unauthorized. Body is an APIMessage or a list of APIMessage.
+     */
+    401: ApiMessage | Array<ApiMessage>;
+    /**
+     * Forbidden. Body is a list of APIMessage.
+     */
+    403: Array<ApiMessage>;
+    /**
+     * Resource not found. Body is a list of APIMessage.
+     */
+    404: Array<ApiMessage>;
+    /**
+     * Too many requests (rate limit). Body is the rate-limit code as plain text.
+     */
+    429: string;
+    /**
+     * Unexpected internal server error. Body is a list of APIMessage.
+     */
+    500: Array<ApiMessage>;
+};
+
+export type ArchiveError = ArchiveErrors[keyof ArchiveErrors];
+
 export type ArchiveResponses = {
     /**
      * OK
@@ -5864,6 +10562,35 @@ export type ResetTemplateAttributeValuesData = {
     url: '/admin-api/v1/configuration-node/{parentModelId}/template-attribute/{modelId}/reset';
 };
 
+export type ResetTemplateAttributeValuesErrors = {
+    /**
+     * Bad request, e.g. field validation or an illegal argument. The body is usually a list of APIMessage, but may be absent for some illegal-argument cases.
+     */
+    400: Array<ApiMessage>;
+    /**
+     * Unauthorized. Body is an APIMessage or a list of APIMessage.
+     */
+    401: ApiMessage | Array<ApiMessage>;
+    /**
+     * Forbidden. Body is a list of APIMessage.
+     */
+    403: Array<ApiMessage>;
+    /**
+     * Resource not found. Body is a list of APIMessage.
+     */
+    404: Array<ApiMessage>;
+    /**
+     * Too many requests (rate limit). Body is the rate-limit code as plain text.
+     */
+    429: string;
+    /**
+     * Unexpected internal server error. Body is a list of APIMessage.
+     */
+    500: Array<ApiMessage>;
+};
+
+export type ResetTemplateAttributeValuesError = ResetTemplateAttributeValuesErrors[keyof ResetTemplateAttributeValuesErrors];
+
 export type ResetTemplateAttributeValuesResponses = {
     /**
      * OK
@@ -5882,6 +10609,35 @@ export type RemoveTemplateAttributeOrientationData = {
     query?: never;
     url: '/admin-api/v1/configuration-node/{parentModelId}/template-attribute/{modelId}/remove-orientation';
 };
+
+export type RemoveTemplateAttributeOrientationErrors = {
+    /**
+     * Bad request, e.g. field validation or an illegal argument. The body is usually a list of APIMessage, but may be absent for some illegal-argument cases.
+     */
+    400: Array<ApiMessage>;
+    /**
+     * Unauthorized. Body is an APIMessage or a list of APIMessage.
+     */
+    401: ApiMessage | Array<ApiMessage>;
+    /**
+     * Forbidden. Body is a list of APIMessage.
+     */
+    403: Array<ApiMessage>;
+    /**
+     * Resource not found. Body is a list of APIMessage.
+     */
+    404: Array<ApiMessage>;
+    /**
+     * Too many requests (rate limit). Body is the rate-limit code as plain text.
+     */
+    429: string;
+    /**
+     * Unexpected internal server error. Body is a list of APIMessage.
+     */
+    500: Array<ApiMessage>;
+};
+
+export type RemoveTemplateAttributeOrientationError = RemoveTemplateAttributeOrientationErrors[keyof RemoveTemplateAttributeOrientationErrors];
 
 export type RemoveTemplateAttributeOrientationResponses = {
     /**
@@ -5905,6 +10661,35 @@ export type AttachDefaultTemplateAttributeOrientationData = {
     url: '/admin-api/v1/configuration-node/{parentModelId}/template-attribute/{modelId}/attach-default-orientation';
 };
 
+export type AttachDefaultTemplateAttributeOrientationErrors = {
+    /**
+     * Bad request, e.g. field validation or an illegal argument. The body is usually a list of APIMessage, but may be absent for some illegal-argument cases.
+     */
+    400: Array<ApiMessage>;
+    /**
+     * Unauthorized. Body is an APIMessage or a list of APIMessage.
+     */
+    401: ApiMessage | Array<ApiMessage>;
+    /**
+     * Forbidden. Body is a list of APIMessage.
+     */
+    403: Array<ApiMessage>;
+    /**
+     * Resource not found. Body is a list of APIMessage.
+     */
+    404: Array<ApiMessage>;
+    /**
+     * Too many requests (rate limit). Body is the rate-limit code as plain text.
+     */
+    429: string;
+    /**
+     * Unexpected internal server error. Body is a list of APIMessage.
+     */
+    500: Array<ApiMessage>;
+};
+
+export type AttachDefaultTemplateAttributeOrientationError = AttachDefaultTemplateAttributeOrientationErrors[keyof AttachDefaultTemplateAttributeOrientationErrors];
+
 export type AttachDefaultTemplateAttributeOrientationResponses = {
     /**
      * OK
@@ -5922,6 +10707,35 @@ export type ResetToTemplateValuesData = {
     query?: never;
     url: '/admin-api/v1/configuration-node/{modelId}/reset-to-template';
 };
+
+export type ResetToTemplateValuesErrors = {
+    /**
+     * Bad request, e.g. field validation or an illegal argument. The body is usually a list of APIMessage, but may be absent for some illegal-argument cases.
+     */
+    400: Array<ApiMessage>;
+    /**
+     * Unauthorized. Body is an APIMessage or a list of APIMessage.
+     */
+    401: ApiMessage | Array<ApiMessage>;
+    /**
+     * Forbidden. Body is a list of APIMessage.
+     */
+    403: Array<ApiMessage>;
+    /**
+     * Resource not found. Body is a list of APIMessage.
+     */
+    404: Array<ApiMessage>;
+    /**
+     * Too many requests (rate limit). Body is the rate-limit code as plain text.
+     */
+    429: string;
+    /**
+     * Unexpected internal server error. Body is a list of APIMessage.
+     */
+    500: Array<ApiMessage>;
+};
+
+export type ResetToTemplateValuesError = ResetToTemplateValuesErrors[keyof ResetToTemplateValuesErrors];
 
 export type ResetToTemplateValuesResponses = {
     /**
@@ -5942,6 +10756,35 @@ export type GetConfigData = {
     url: '/exam-api/v1/examconfig';
 };
 
+export type GetConfigErrors = {
+    /**
+     * Bad request, e.g. field validation or an illegal argument. The body is usually a list of APIMessage, but may be absent for some illegal-argument cases.
+     */
+    400: Array<ApiMessage>;
+    /**
+     * Unauthorized. Body is an APIMessage or a list of APIMessage.
+     */
+    401: ApiMessage | Array<ApiMessage>;
+    /**
+     * Forbidden. Body is a list of APIMessage.
+     */
+    403: Array<ApiMessage>;
+    /**
+     * Resource not found. Body is a list of APIMessage.
+     */
+    404: Array<ApiMessage>;
+    /**
+     * Too many requests (rate limit). Body is the rate-limit code as plain text.
+     */
+    429: string;
+    /**
+     * Unexpected internal server error. Body is a list of APIMessage.
+     */
+    500: Array<ApiMessage>;
+};
+
+export type GetConfigError = GetConfigErrors[keyof GetConfigErrors];
+
 export type GetConfigResponses = {
     /**
      * OK
@@ -5955,6 +10798,35 @@ export type GetDiscoveryData = {
     query?: never;
     url: '/exam-api/discovery';
 };
+
+export type GetDiscoveryErrors = {
+    /**
+     * Bad request, e.g. field validation or an illegal argument. The body is usually a list of APIMessage, but may be absent for some illegal-argument cases.
+     */
+    400: Array<ApiMessage>;
+    /**
+     * Unauthorized. Body is an APIMessage or a list of APIMessage.
+     */
+    401: ApiMessage | Array<ApiMessage>;
+    /**
+     * Forbidden. Body is a list of APIMessage.
+     */
+    403: Array<ApiMessage>;
+    /**
+     * Resource not found. Body is a list of APIMessage.
+     */
+    404: Array<ApiMessage>;
+    /**
+     * Too many requests (rate limit). Body is the rate-limit code as plain text.
+     */
+    429: string;
+    /**
+     * Unexpected internal server error. Body is a list of APIMessage.
+     */
+    500: Array<ApiMessage>;
+};
+
+export type GetDiscoveryError = GetDiscoveryErrors[keyof GetDiscoveryErrors];
 
 export type GetDiscoveryResponses = {
     /**
@@ -5987,6 +10859,35 @@ export type DeleteUserActivityLogData = {
     url: '/admin-api/v1/useractivity/{modelId}';
 };
 
+export type DeleteUserActivityLogErrors = {
+    /**
+     * Bad request, e.g. field validation or an illegal argument. The body is usually a list of APIMessage, but may be absent for some illegal-argument cases.
+     */
+    400: Array<ApiMessage>;
+    /**
+     * Unauthorized. Body is an APIMessage or a list of APIMessage.
+     */
+    401: ApiMessage | Array<ApiMessage>;
+    /**
+     * Forbidden. Body is a list of APIMessage.
+     */
+    403: Array<ApiMessage>;
+    /**
+     * Resource not found. Body is a list of APIMessage.
+     */
+    404: Array<ApiMessage>;
+    /**
+     * Too many requests (rate limit). Body is the rate-limit code as plain text.
+     */
+    429: string;
+    /**
+     * Unexpected internal server error. Body is a list of APIMessage.
+     */
+    500: Array<ApiMessage>;
+};
+
+export type DeleteUserActivityLogError = DeleteUserActivityLogErrors[keyof DeleteUserActivityLogErrors];
+
 export type DeleteUserActivityLogResponses = {
     /**
      * OK
@@ -6007,6 +10908,35 @@ export type GetUserActivityLogByIdData = {
     query?: never;
     url: '/admin-api/v1/useractivity/{modelId}';
 };
+
+export type GetUserActivityLogByIdErrors = {
+    /**
+     * Bad request, e.g. field validation or an illegal argument. The body is usually a list of APIMessage, but may be absent for some illegal-argument cases.
+     */
+    400: Array<ApiMessage>;
+    /**
+     * Unauthorized. Body is an APIMessage or a list of APIMessage.
+     */
+    401: ApiMessage | Array<ApiMessage>;
+    /**
+     * Forbidden. Body is a list of APIMessage.
+     */
+    403: Array<ApiMessage>;
+    /**
+     * Resource not found. Body is a list of APIMessage.
+     */
+    404: Array<ApiMessage>;
+    /**
+     * Too many requests (rate limit). Body is the rate-limit code as plain text.
+     */
+    429: string;
+    /**
+     * Unexpected internal server error. Body is a list of APIMessage.
+     */
+    500: Array<ApiMessage>;
+};
+
+export type GetUserActivityLogByIdError = GetUserActivityLogByIdErrors[keyof GetUserActivityLogByIdErrors];
 
 export type GetUserActivityLogByIdResponses = {
     /**
@@ -6044,6 +10974,35 @@ export type GetUserActivityLogDependenciesData = {
     url: '/admin-api/v1/useractivity/{modelId}/dependency';
 };
 
+export type GetUserActivityLogDependenciesErrors = {
+    /**
+     * Bad request, e.g. field validation or an illegal argument. The body is usually a list of APIMessage, but may be absent for some illegal-argument cases.
+     */
+    400: Array<ApiMessage>;
+    /**
+     * Unauthorized. Body is an APIMessage or a list of APIMessage.
+     */
+    401: ApiMessage | Array<ApiMessage>;
+    /**
+     * Forbidden. Body is a list of APIMessage.
+     */
+    403: Array<ApiMessage>;
+    /**
+     * Resource not found. Body is a list of APIMessage.
+     */
+    404: Array<ApiMessage>;
+    /**
+     * Too many requests (rate limit). Body is the rate-limit code as plain text.
+     */
+    429: string;
+    /**
+     * Unexpected internal server error. Body is a list of APIMessage.
+     */
+    500: Array<ApiMessage>;
+};
+
+export type GetUserActivityLogDependenciesError = GetUserActivityLogDependenciesErrors[keyof GetUserActivityLogDependenciesErrors];
+
 export type GetUserActivityLogDependenciesResponses = {
     /**
      * OK
@@ -6066,6 +11025,35 @@ export type GetUserActivityLogNamesData = {
     url: '/admin-api/v1/useractivity/names';
 };
 
+export type GetUserActivityLogNamesErrors = {
+    /**
+     * Bad request, e.g. field validation or an illegal argument. The body is usually a list of APIMessage, but may be absent for some illegal-argument cases.
+     */
+    400: Array<ApiMessage>;
+    /**
+     * Unauthorized. Body is an APIMessage or a list of APIMessage.
+     */
+    401: ApiMessage | Array<ApiMessage>;
+    /**
+     * Forbidden. Body is a list of APIMessage.
+     */
+    403: Array<ApiMessage>;
+    /**
+     * Resource not found. Body is a list of APIMessage.
+     */
+    404: Array<ApiMessage>;
+    /**
+     * Too many requests (rate limit). Body is the rate-limit code as plain text.
+     */
+    429: string;
+    /**
+     * Unexpected internal server error. Body is a list of APIMessage.
+     */
+    500: Array<ApiMessage>;
+};
+
+export type GetUserActivityLogNamesError = GetUserActivityLogNamesErrors[keyof GetUserActivityLogNamesErrors];
+
 export type GetUserActivityLogNamesResponses = {
     /**
      * OK
@@ -6086,6 +11074,35 @@ export type GetUserActivityLogsByIdsData = {
     };
     url: '/admin-api/v1/useractivity/list';
 };
+
+export type GetUserActivityLogsByIdsErrors = {
+    /**
+     * Bad request, e.g. field validation or an illegal argument. The body is usually a list of APIMessage, but may be absent for some illegal-argument cases.
+     */
+    400: Array<ApiMessage>;
+    /**
+     * Unauthorized. Body is an APIMessage or a list of APIMessage.
+     */
+    401: ApiMessage | Array<ApiMessage>;
+    /**
+     * Forbidden. Body is a list of APIMessage.
+     */
+    403: Array<ApiMessage>;
+    /**
+     * Resource not found. Body is a list of APIMessage.
+     */
+    404: Array<ApiMessage>;
+    /**
+     * Too many requests (rate limit). Body is the rate-limit code as plain text.
+     */
+    429: string;
+    /**
+     * Unexpected internal server error. Body is a list of APIMessage.
+     */
+    500: Array<ApiMessage>;
+};
+
+export type GetUserActivityLogsByIdsError = GetUserActivityLogsByIdsErrors[keyof GetUserActivityLogsByIdsErrors];
 
 export type GetUserActivityLogsByIdsResponses = {
     /**
@@ -6118,6 +11135,35 @@ export type DeleteUserAccountData = {
     url: '/admin-api/v1/useraccount/{modelId}';
 };
 
+export type DeleteUserAccountErrors = {
+    /**
+     * Bad request, e.g. field validation or an illegal argument. The body is usually a list of APIMessage, but may be absent for some illegal-argument cases.
+     */
+    400: Array<ApiMessage>;
+    /**
+     * Unauthorized. Body is an APIMessage or a list of APIMessage.
+     */
+    401: ApiMessage | Array<ApiMessage>;
+    /**
+     * Forbidden. Body is a list of APIMessage.
+     */
+    403: Array<ApiMessage>;
+    /**
+     * Resource not found. Body is a list of APIMessage.
+     */
+    404: Array<ApiMessage>;
+    /**
+     * Too many requests (rate limit). Body is the rate-limit code as plain text.
+     */
+    429: string;
+    /**
+     * Unexpected internal server error. Body is a list of APIMessage.
+     */
+    500: Array<ApiMessage>;
+};
+
+export type DeleteUserAccountError = DeleteUserAccountErrors[keyof DeleteUserAccountErrors];
+
 export type DeleteUserAccountResponses = {
     /**
      * OK
@@ -6138,6 +11184,35 @@ export type GetUserAccountByIdData = {
     query?: never;
     url: '/admin-api/v1/useraccount/{modelId}';
 };
+
+export type GetUserAccountByIdErrors = {
+    /**
+     * Bad request, e.g. field validation or an illegal argument. The body is usually a list of APIMessage, but may be absent for some illegal-argument cases.
+     */
+    400: Array<ApiMessage>;
+    /**
+     * Unauthorized. Body is an APIMessage or a list of APIMessage.
+     */
+    401: ApiMessage | Array<ApiMessage>;
+    /**
+     * Forbidden. Body is a list of APIMessage.
+     */
+    403: Array<ApiMessage>;
+    /**
+     * Resource not found. Body is a list of APIMessage.
+     */
+    404: Array<ApiMessage>;
+    /**
+     * Too many requests (rate limit). Body is the rate-limit code as plain text.
+     */
+    429: string;
+    /**
+     * Unexpected internal server error. Body is a list of APIMessage.
+     */
+    500: Array<ApiMessage>;
+};
+
+export type GetUserAccountByIdError = GetUserAccountByIdErrors[keyof GetUserAccountByIdErrors];
 
 export type GetUserAccountByIdResponses = {
     /**
@@ -6175,6 +11250,35 @@ export type GetUserAccountDependenciesData = {
     url: '/admin-api/v1/useraccount/{modelId}/dependency';
 };
 
+export type GetUserAccountDependenciesErrors = {
+    /**
+     * Bad request, e.g. field validation or an illegal argument. The body is usually a list of APIMessage, but may be absent for some illegal-argument cases.
+     */
+    400: Array<ApiMessage>;
+    /**
+     * Unauthorized. Body is an APIMessage or a list of APIMessage.
+     */
+    401: ApiMessage | Array<ApiMessage>;
+    /**
+     * Forbidden. Body is a list of APIMessage.
+     */
+    403: Array<ApiMessage>;
+    /**
+     * Resource not found. Body is a list of APIMessage.
+     */
+    404: Array<ApiMessage>;
+    /**
+     * Too many requests (rate limit). Body is the rate-limit code as plain text.
+     */
+    429: string;
+    /**
+     * Unexpected internal server error. Body is a list of APIMessage.
+     */
+    500: Array<ApiMessage>;
+};
+
+export type GetUserAccountDependenciesError = GetUserAccountDependenciesErrors[keyof GetUserAccountDependenciesErrors];
+
 export type GetUserAccountDependenciesResponses = {
     /**
      * OK
@@ -6195,6 +11299,35 @@ export type GetUserAccountSupervisorsData = {
     };
     url: '/admin-api/v1/useraccount/supervisors';
 };
+
+export type GetUserAccountSupervisorsErrors = {
+    /**
+     * Bad request, e.g. field validation or an illegal argument. The body is usually a list of APIMessage, but may be absent for some illegal-argument cases.
+     */
+    400: Array<ApiMessage>;
+    /**
+     * Unauthorized. Body is an APIMessage or a list of APIMessage.
+     */
+    401: ApiMessage | Array<ApiMessage>;
+    /**
+     * Forbidden. Body is a list of APIMessage.
+     */
+    403: Array<ApiMessage>;
+    /**
+     * Resource not found. Body is a list of APIMessage.
+     */
+    404: Array<ApiMessage>;
+    /**
+     * Too many requests (rate limit). Body is the rate-limit code as plain text.
+     */
+    429: string;
+    /**
+     * Unexpected internal server error. Body is a list of APIMessage.
+     */
+    500: Array<ApiMessage>;
+};
+
+export type GetUserAccountSupervisorsError = GetUserAccountSupervisorsErrors[keyof GetUserAccountSupervisorsErrors];
 
 export type GetUserAccountSupervisorsResponses = {
     /**
@@ -6218,6 +11351,35 @@ export type GetUserAccountNamesData = {
     url: '/admin-api/v1/useraccount/names';
 };
 
+export type GetUserAccountNamesErrors = {
+    /**
+     * Bad request, e.g. field validation or an illegal argument. The body is usually a list of APIMessage, but may be absent for some illegal-argument cases.
+     */
+    400: Array<ApiMessage>;
+    /**
+     * Unauthorized. Body is an APIMessage or a list of APIMessage.
+     */
+    401: ApiMessage | Array<ApiMessage>;
+    /**
+     * Forbidden. Body is a list of APIMessage.
+     */
+    403: Array<ApiMessage>;
+    /**
+     * Resource not found. Body is a list of APIMessage.
+     */
+    404: Array<ApiMessage>;
+    /**
+     * Too many requests (rate limit). Body is the rate-limit code as plain text.
+     */
+    429: string;
+    /**
+     * Unexpected internal server error. Body is a list of APIMessage.
+     */
+    500: Array<ApiMessage>;
+};
+
+export type GetUserAccountNamesError = GetUserAccountNamesErrors[keyof GetUserAccountNamesErrors];
+
 export type GetUserAccountNamesResponses = {
     /**
      * OK
@@ -6233,6 +11395,35 @@ export type GetCurrentUserAccountData = {
     query?: never;
     url: '/admin-api/v1/useraccount/me';
 };
+
+export type GetCurrentUserAccountErrors = {
+    /**
+     * Bad request, e.g. field validation or an illegal argument. The body is usually a list of APIMessage, but may be absent for some illegal-argument cases.
+     */
+    400: Array<ApiMessage>;
+    /**
+     * Unauthorized. Body is an APIMessage or a list of APIMessage.
+     */
+    401: ApiMessage | Array<ApiMessage>;
+    /**
+     * Forbidden. Body is a list of APIMessage.
+     */
+    403: Array<ApiMessage>;
+    /**
+     * Resource not found. Body is a list of APIMessage.
+     */
+    404: Array<ApiMessage>;
+    /**
+     * Too many requests (rate limit). Body is the rate-limit code as plain text.
+     */
+    429: string;
+    /**
+     * Unexpected internal server error. Body is a list of APIMessage.
+     */
+    500: Array<ApiMessage>;
+};
+
+export type GetCurrentUserAccountError = GetCurrentUserAccountErrors[keyof GetCurrentUserAccountErrors];
 
 export type GetCurrentUserAccountResponses = {
     /**
@@ -6254,6 +11445,35 @@ export type GetUserAccountsByIdsData = {
     };
     url: '/admin-api/v1/useraccount/list';
 };
+
+export type GetUserAccountsByIdsErrors = {
+    /**
+     * Bad request, e.g. field validation or an illegal argument. The body is usually a list of APIMessage, but may be absent for some illegal-argument cases.
+     */
+    400: Array<ApiMessage>;
+    /**
+     * Unauthorized. Body is an APIMessage or a list of APIMessage.
+     */
+    401: ApiMessage | Array<ApiMessage>;
+    /**
+     * Forbidden. Body is a list of APIMessage.
+     */
+    403: Array<ApiMessage>;
+    /**
+     * Resource not found. Body is a list of APIMessage.
+     */
+    404: Array<ApiMessage>;
+    /**
+     * Too many requests (rate limit). Body is the rate-limit code as plain text.
+     */
+    429: string;
+    /**
+     * Unexpected internal server error. Body is a list of APIMessage.
+     */
+    500: Array<ApiMessage>;
+};
+
+export type GetUserAccountsByIdsError = GetUserAccountsByIdsErrors[keyof GetUserAccountsByIdsErrors];
 
 export type GetUserAccountsByIdsResponses = {
     /**
@@ -6289,6 +11509,35 @@ export type GetInactiveUserAccountsData = {
     url: '/admin-api/v1/useraccount/inactive';
 };
 
+export type GetInactiveUserAccountsErrors = {
+    /**
+     * Bad request, e.g. field validation or an illegal argument. The body is usually a list of APIMessage, but may be absent for some illegal-argument cases.
+     */
+    400: Array<ApiMessage>;
+    /**
+     * Unauthorized. Body is an APIMessage or a list of APIMessage.
+     */
+    401: ApiMessage | Array<ApiMessage>;
+    /**
+     * Forbidden. Body is a list of APIMessage.
+     */
+    403: Array<ApiMessage>;
+    /**
+     * Resource not found. Body is a list of APIMessage.
+     */
+    404: Array<ApiMessage>;
+    /**
+     * Too many requests (rate limit). Body is the rate-limit code as plain text.
+     */
+    429: string;
+    /**
+     * Unexpected internal server error. Body is a list of APIMessage.
+     */
+    500: Array<ApiMessage>;
+};
+
+export type GetInactiveUserAccountsError = GetInactiveUserAccountsErrors[keyof GetInactiveUserAccountsErrors];
+
 export type GetInactiveUserAccountsResponses = {
     /**
      * OK
@@ -6323,6 +11572,35 @@ export type GetActiveUserAccountsData = {
     url: '/admin-api/v1/useraccount/active';
 };
 
+export type GetActiveUserAccountsErrors = {
+    /**
+     * Bad request, e.g. field validation or an illegal argument. The body is usually a list of APIMessage, but may be absent for some illegal-argument cases.
+     */
+    400: Array<ApiMessage>;
+    /**
+     * Unauthorized. Body is an APIMessage or a list of APIMessage.
+     */
+    401: ApiMessage | Array<ApiMessage>;
+    /**
+     * Forbidden. Body is a list of APIMessage.
+     */
+    403: Array<ApiMessage>;
+    /**
+     * Resource not found. Body is a list of APIMessage.
+     */
+    404: Array<ApiMessage>;
+    /**
+     * Too many requests (rate limit). Body is the rate-limit code as plain text.
+     */
+    429: string;
+    /**
+     * Unexpected internal server error. Body is a list of APIMessage.
+     */
+    500: Array<ApiMessage>;
+};
+
+export type GetActiveUserAccountsError = GetActiveUserAccountsErrors[keyof GetActiveUserAccountsErrors];
+
 export type GetActiveUserAccountsResponses = {
     /**
      * OK
@@ -6338,6 +11616,35 @@ export type SebVersionInfoPageData = {
     query?: never;
     url: '/admin-api/v1/seb-version-info';
 };
+
+export type SebVersionInfoPageErrors = {
+    /**
+     * Bad request, e.g. field validation or an illegal argument. The body is usually a list of APIMessage, but may be absent for some illegal-argument cases.
+     */
+    400: Array<ApiMessage>;
+    /**
+     * Unauthorized. Body is an APIMessage or a list of APIMessage.
+     */
+    401: ApiMessage | Array<ApiMessage>;
+    /**
+     * Forbidden. Body is a list of APIMessage.
+     */
+    403: Array<ApiMessage>;
+    /**
+     * Resource not found. Body is a list of APIMessage.
+     */
+    404: Array<ApiMessage>;
+    /**
+     * Too many requests (rate limit). Body is the rate-limit code as plain text.
+     */
+    429: string;
+    /**
+     * Unexpected internal server error. Body is a list of APIMessage.
+     */
+    500: Array<ApiMessage>;
+};
+
+export type SebVersionInfoPageError = SebVersionInfoPageErrors[keyof SebVersionInfoPageErrors];
 
 export type SebVersionInfoPageResponses = {
     /**
@@ -6370,6 +11677,35 @@ export type DeleteClientEventData = {
     url: '/admin-api/v1/seb-client-event/{modelId}';
 };
 
+export type DeleteClientEventErrors = {
+    /**
+     * Bad request, e.g. field validation or an illegal argument. The body is usually a list of APIMessage, but may be absent for some illegal-argument cases.
+     */
+    400: Array<ApiMessage>;
+    /**
+     * Unauthorized. Body is an APIMessage or a list of APIMessage.
+     */
+    401: ApiMessage | Array<ApiMessage>;
+    /**
+     * Forbidden. Body is a list of APIMessage.
+     */
+    403: Array<ApiMessage>;
+    /**
+     * Resource not found. Body is a list of APIMessage.
+     */
+    404: Array<ApiMessage>;
+    /**
+     * Too many requests (rate limit). Body is the rate-limit code as plain text.
+     */
+    429: string;
+    /**
+     * Unexpected internal server error. Body is a list of APIMessage.
+     */
+    500: Array<ApiMessage>;
+};
+
+export type DeleteClientEventError = DeleteClientEventErrors[keyof DeleteClientEventErrors];
+
 export type DeleteClientEventResponses = {
     /**
      * OK
@@ -6390,6 +11726,35 @@ export type GetClientEventByIdData = {
     query?: never;
     url: '/admin-api/v1/seb-client-event/{modelId}';
 };
+
+export type GetClientEventByIdErrors = {
+    /**
+     * Bad request, e.g. field validation or an illegal argument. The body is usually a list of APIMessage, but may be absent for some illegal-argument cases.
+     */
+    400: Array<ApiMessage>;
+    /**
+     * Unauthorized. Body is an APIMessage or a list of APIMessage.
+     */
+    401: ApiMessage | Array<ApiMessage>;
+    /**
+     * Forbidden. Body is a list of APIMessage.
+     */
+    403: Array<ApiMessage>;
+    /**
+     * Resource not found. Body is a list of APIMessage.
+     */
+    404: Array<ApiMessage>;
+    /**
+     * Too many requests (rate limit). Body is the rate-limit code as plain text.
+     */
+    429: string;
+    /**
+     * Unexpected internal server error. Body is a list of APIMessage.
+     */
+    500: Array<ApiMessage>;
+};
+
+export type GetClientEventByIdError = GetClientEventByIdErrors[keyof GetClientEventByIdErrors];
 
 export type GetClientEventByIdResponses = {
     /**
@@ -6426,6 +11791,35 @@ export type GetClientEventDependenciesData = {
     };
     url: '/admin-api/v1/seb-client-event/{modelId}/dependency';
 };
+
+export type GetClientEventDependenciesErrors = {
+    /**
+     * Bad request, e.g. field validation or an illegal argument. The body is usually a list of APIMessage, but may be absent for some illegal-argument cases.
+     */
+    400: Array<ApiMessage>;
+    /**
+     * Unauthorized. Body is an APIMessage or a list of APIMessage.
+     */
+    401: ApiMessage | Array<ApiMessage>;
+    /**
+     * Forbidden. Body is a list of APIMessage.
+     */
+    403: Array<ApiMessage>;
+    /**
+     * Resource not found. Body is a list of APIMessage.
+     */
+    404: Array<ApiMessage>;
+    /**
+     * Too many requests (rate limit). Body is the rate-limit code as plain text.
+     */
+    429: string;
+    /**
+     * Unexpected internal server error. Body is a list of APIMessage.
+     */
+    500: Array<ApiMessage>;
+};
+
+export type GetClientEventDependenciesError = GetClientEventDependenciesErrors[keyof GetClientEventDependenciesErrors];
 
 export type GetClientEventDependenciesResponses = {
     /**
@@ -6466,6 +11860,35 @@ export type GetExtendedPageData = {
     url: '/admin-api/v1/seb-client-event/search';
 };
 
+export type GetExtendedPageErrors = {
+    /**
+     * Bad request, e.g. field validation or an illegal argument. The body is usually a list of APIMessage, but may be absent for some illegal-argument cases.
+     */
+    400: Array<ApiMessage>;
+    /**
+     * Unauthorized. Body is an APIMessage or a list of APIMessage.
+     */
+    401: ApiMessage | Array<ApiMessage>;
+    /**
+     * Forbidden. Body is a list of APIMessage.
+     */
+    403: Array<ApiMessage>;
+    /**
+     * Resource not found. Body is a list of APIMessage.
+     */
+    404: Array<ApiMessage>;
+    /**
+     * Too many requests (rate limit). Body is the rate-limit code as plain text.
+     */
+    429: string;
+    /**
+     * Unexpected internal server error. Body is a list of APIMessage.
+     */
+    500: Array<ApiMessage>;
+};
+
+export type GetExtendedPageError = GetExtendedPageErrors[keyof GetExtendedPageErrors];
+
 export type GetExtendedPageResponses = {
     /**
      * OK
@@ -6488,6 +11911,35 @@ export type GetClientEventNamesData = {
     url: '/admin-api/v1/seb-client-event/names';
 };
 
+export type GetClientEventNamesErrors = {
+    /**
+     * Bad request, e.g. field validation or an illegal argument. The body is usually a list of APIMessage, but may be absent for some illegal-argument cases.
+     */
+    400: Array<ApiMessage>;
+    /**
+     * Unauthorized. Body is an APIMessage or a list of APIMessage.
+     */
+    401: ApiMessage | Array<ApiMessage>;
+    /**
+     * Forbidden. Body is a list of APIMessage.
+     */
+    403: Array<ApiMessage>;
+    /**
+     * Resource not found. Body is a list of APIMessage.
+     */
+    404: Array<ApiMessage>;
+    /**
+     * Too many requests (rate limit). Body is the rate-limit code as plain text.
+     */
+    429: string;
+    /**
+     * Unexpected internal server error. Body is a list of APIMessage.
+     */
+    500: Array<ApiMessage>;
+};
+
+export type GetClientEventNamesError = GetClientEventNamesErrors[keyof GetClientEventNamesErrors];
+
 export type GetClientEventNamesResponses = {
     /**
      * OK
@@ -6508,6 +11960,35 @@ export type GetClientEventsByIdsData = {
     };
     url: '/admin-api/v1/seb-client-event/list';
 };
+
+export type GetClientEventsByIdsErrors = {
+    /**
+     * Bad request, e.g. field validation or an illegal argument. The body is usually a list of APIMessage, but may be absent for some illegal-argument cases.
+     */
+    400: Array<ApiMessage>;
+    /**
+     * Unauthorized. Body is an APIMessage or a list of APIMessage.
+     */
+    401: ApiMessage | Array<ApiMessage>;
+    /**
+     * Forbidden. Body is a list of APIMessage.
+     */
+    403: Array<ApiMessage>;
+    /**
+     * Resource not found. Body is a list of APIMessage.
+     */
+    404: Array<ApiMessage>;
+    /**
+     * Too many requests (rate limit). Body is the rate-limit code as plain text.
+     */
+    429: string;
+    /**
+     * Unexpected internal server error. Body is a list of APIMessage.
+     */
+    500: Array<ApiMessage>;
+};
+
+export type GetClientEventsByIdsError = GetClientEventsByIdsErrors[keyof GetClientEventsByIdsErrors];
 
 export type GetClientEventsByIdsResponses = {
     /**
@@ -6531,6 +12012,35 @@ export type ExportEventsData = {
     };
     url: '/admin-api/v1/seb-client-event/export';
 };
+
+export type ExportEventsErrors = {
+    /**
+     * Bad request, e.g. field validation or an illegal argument. The body is usually a list of APIMessage, but may be absent for some illegal-argument cases.
+     */
+    400: Array<ApiMessage>;
+    /**
+     * Unauthorized. Body is an APIMessage or a list of APIMessage.
+     */
+    401: ApiMessage | Array<ApiMessage>;
+    /**
+     * Forbidden. Body is a list of APIMessage.
+     */
+    403: Array<ApiMessage>;
+    /**
+     * Resource not found. Body is a list of APIMessage.
+     */
+    404: Array<ApiMessage>;
+    /**
+     * Too many requests (rate limit). Body is the rate-limit code as plain text.
+     */
+    429: string;
+    /**
+     * Unexpected internal server error. Body is a list of APIMessage.
+     */
+    500: Array<ApiMessage>;
+};
+
+export type ExportEventsError = ExportEventsErrors[keyof ExportEventsErrors];
 
 export type ExportEventsResponses = {
     /**
@@ -6561,6 +12071,35 @@ export type DeleteClientConnectionData = {
     url: '/admin-api/v1/seb-client-connection/{modelId}';
 };
 
+export type DeleteClientConnectionErrors = {
+    /**
+     * Bad request, e.g. field validation or an illegal argument. The body is usually a list of APIMessage, but may be absent for some illegal-argument cases.
+     */
+    400: Array<ApiMessage>;
+    /**
+     * Unauthorized. Body is an APIMessage or a list of APIMessage.
+     */
+    401: ApiMessage | Array<ApiMessage>;
+    /**
+     * Forbidden. Body is a list of APIMessage.
+     */
+    403: Array<ApiMessage>;
+    /**
+     * Resource not found. Body is a list of APIMessage.
+     */
+    404: Array<ApiMessage>;
+    /**
+     * Too many requests (rate limit). Body is the rate-limit code as plain text.
+     */
+    429: string;
+    /**
+     * Unexpected internal server error. Body is a list of APIMessage.
+     */
+    500: Array<ApiMessage>;
+};
+
+export type DeleteClientConnectionError = DeleteClientConnectionErrors[keyof DeleteClientConnectionErrors];
+
 export type DeleteClientConnectionResponses = {
     /**
      * OK
@@ -6581,6 +12120,35 @@ export type GetClientConnectionByIdData = {
     query?: never;
     url: '/admin-api/v1/seb-client-connection/{modelId}';
 };
+
+export type GetClientConnectionByIdErrors = {
+    /**
+     * Bad request, e.g. field validation or an illegal argument. The body is usually a list of APIMessage, but may be absent for some illegal-argument cases.
+     */
+    400: Array<ApiMessage>;
+    /**
+     * Unauthorized. Body is an APIMessage or a list of APIMessage.
+     */
+    401: ApiMessage | Array<ApiMessage>;
+    /**
+     * Forbidden. Body is a list of APIMessage.
+     */
+    403: Array<ApiMessage>;
+    /**
+     * Resource not found. Body is a list of APIMessage.
+     */
+    404: Array<ApiMessage>;
+    /**
+     * Too many requests (rate limit). Body is the rate-limit code as plain text.
+     */
+    429: string;
+    /**
+     * Unexpected internal server error. Body is a list of APIMessage.
+     */
+    500: Array<ApiMessage>;
+};
+
+export type GetClientConnectionByIdError = GetClientConnectionByIdErrors[keyof GetClientConnectionByIdErrors];
 
 export type GetClientConnectionByIdResponses = {
     /**
@@ -6618,6 +12186,35 @@ export type GetClientConnectionDependenciesData = {
     url: '/admin-api/v1/seb-client-connection/{modelId}/dependency';
 };
 
+export type GetClientConnectionDependenciesErrors = {
+    /**
+     * Bad request, e.g. field validation or an illegal argument. The body is usually a list of APIMessage, but may be absent for some illegal-argument cases.
+     */
+    400: Array<ApiMessage>;
+    /**
+     * Unauthorized. Body is an APIMessage or a list of APIMessage.
+     */
+    401: ApiMessage | Array<ApiMessage>;
+    /**
+     * Forbidden. Body is a list of APIMessage.
+     */
+    403: Array<ApiMessage>;
+    /**
+     * Resource not found. Body is a list of APIMessage.
+     */
+    404: Array<ApiMessage>;
+    /**
+     * Too many requests (rate limit). Body is the rate-limit code as plain text.
+     */
+    429: string;
+    /**
+     * Unexpected internal server error. Body is a list of APIMessage.
+     */
+    500: Array<ApiMessage>;
+};
+
+export type GetClientConnectionDependenciesError = GetClientConnectionDependenciesErrors[keyof GetClientConnectionDependenciesErrors];
+
 export type GetClientConnectionDependenciesResponses = {
     /**
      * OK
@@ -6640,6 +12237,35 @@ export type GetClientConnectionNamesData = {
     url: '/admin-api/v1/seb-client-connection/names';
 };
 
+export type GetClientConnectionNamesErrors = {
+    /**
+     * Bad request, e.g. field validation or an illegal argument. The body is usually a list of APIMessage, but may be absent for some illegal-argument cases.
+     */
+    400: Array<ApiMessage>;
+    /**
+     * Unauthorized. Body is an APIMessage or a list of APIMessage.
+     */
+    401: ApiMessage | Array<ApiMessage>;
+    /**
+     * Forbidden. Body is a list of APIMessage.
+     */
+    403: Array<ApiMessage>;
+    /**
+     * Resource not found. Body is a list of APIMessage.
+     */
+    404: Array<ApiMessage>;
+    /**
+     * Too many requests (rate limit). Body is the rate-limit code as plain text.
+     */
+    429: string;
+    /**
+     * Unexpected internal server error. Body is a list of APIMessage.
+     */
+    500: Array<ApiMessage>;
+};
+
+export type GetClientConnectionNamesError = GetClientConnectionNamesErrors[keyof GetClientConnectionNamesErrors];
+
 export type GetClientConnectionNamesResponses = {
     /**
      * OK
@@ -6660,6 +12286,35 @@ export type GetClientConnectionsByIdsData = {
     };
     url: '/admin-api/v1/seb-client-connection/list';
 };
+
+export type GetClientConnectionsByIdsErrors = {
+    /**
+     * Bad request, e.g. field validation or an illegal argument. The body is usually a list of APIMessage, but may be absent for some illegal-argument cases.
+     */
+    400: Array<ApiMessage>;
+    /**
+     * Unauthorized. Body is an APIMessage or a list of APIMessage.
+     */
+    401: ApiMessage | Array<ApiMessage>;
+    /**
+     * Forbidden. Body is a list of APIMessage.
+     */
+    403: Array<ApiMessage>;
+    /**
+     * Resource not found. Body is a list of APIMessage.
+     */
+    404: Array<ApiMessage>;
+    /**
+     * Too many requests (rate limit). Body is the rate-limit code as plain text.
+     */
+    429: string;
+    /**
+     * Unexpected internal server error. Body is a list of APIMessage.
+     */
+    500: Array<ApiMessage>;
+};
+
+export type GetClientConnectionsByIdsError = GetClientConnectionsByIdsErrors[keyof GetClientConnectionsByIdsErrors];
 
 export type GetClientConnectionsByIdsResponses = {
     /**
@@ -6700,6 +12355,35 @@ export type GetClientConnectionDataPageData = {
     url: '/admin-api/v1/seb-client-connection/data';
 };
 
+export type GetClientConnectionDataPageErrors = {
+    /**
+     * Bad request, e.g. field validation or an illegal argument. The body is usually a list of APIMessage, but may be absent for some illegal-argument cases.
+     */
+    400: Array<ApiMessage>;
+    /**
+     * Unauthorized. Body is an APIMessage or a list of APIMessage.
+     */
+    401: ApiMessage | Array<ApiMessage>;
+    /**
+     * Forbidden. Body is a list of APIMessage.
+     */
+    403: Array<ApiMessage>;
+    /**
+     * Resource not found. Body is a list of APIMessage.
+     */
+    404: Array<ApiMessage>;
+    /**
+     * Too many requests (rate limit). Body is the rate-limit code as plain text.
+     */
+    429: string;
+    /**
+     * Unexpected internal server error. Body is a list of APIMessage.
+     */
+    500: Array<ApiMessage>;
+};
+
+export type GetClientConnectionDataPageError = GetClientConnectionDataPageErrors[keyof GetClientConnectionDataPageErrors];
+
 export type GetClientConnectionDataPageResponses = {
     /**
      * OK
@@ -6717,6 +12401,35 @@ export type GetClientConnectionDataByData = {
     query?: never;
     url: '/admin-api/v1/seb-client-connection/data/{modelId}';
 };
+
+export type GetClientConnectionDataByErrors = {
+    /**
+     * Bad request, e.g. field validation or an illegal argument. The body is usually a list of APIMessage, but may be absent for some illegal-argument cases.
+     */
+    400: Array<ApiMessage>;
+    /**
+     * Unauthorized. Body is an APIMessage or a list of APIMessage.
+     */
+    401: ApiMessage | Array<ApiMessage>;
+    /**
+     * Forbidden. Body is a list of APIMessage.
+     */
+    403: Array<ApiMessage>;
+    /**
+     * Resource not found. Body is a list of APIMessage.
+     */
+    404: Array<ApiMessage>;
+    /**
+     * Too many requests (rate limit). Body is the rate-limit code as plain text.
+     */
+    429: string;
+    /**
+     * Unexpected internal server error. Body is a list of APIMessage.
+     */
+    500: Array<ApiMessage>;
+};
+
+export type GetClientConnectionDataByError = GetClientConnectionDataByErrors[keyof GetClientConnectionDataByErrors];
 
 export type GetClientConnectionDataByResponses = {
     /**
@@ -6736,6 +12449,35 @@ export type DeleteData = {
     url: '/admin-api/v1/scheduled-delete/{modelId}';
 };
 
+export type DeleteErrors = {
+    /**
+     * Bad request, e.g. field validation or an illegal argument. The body is usually a list of APIMessage, but may be absent for some illegal-argument cases.
+     */
+    400: Array<ApiMessage>;
+    /**
+     * Unauthorized. Body is an APIMessage or a list of APIMessage.
+     */
+    401: ApiMessage | Array<ApiMessage>;
+    /**
+     * Forbidden. Body is a list of APIMessage.
+     */
+    403: Array<ApiMessage>;
+    /**
+     * Resource not found. Body is a list of APIMessage.
+     */
+    404: Array<ApiMessage>;
+    /**
+     * Too many requests (rate limit). Body is the rate-limit code as plain text.
+     */
+    429: string;
+    /**
+     * Unexpected internal server error. Body is a list of APIMessage.
+     */
+    500: Array<ApiMessage>;
+};
+
+export type DeleteError = DeleteErrors[keyof DeleteErrors];
+
 export type DeleteResponses = {
     /**
      * OK
@@ -6753,6 +12495,35 @@ export type GetFullReportByIdData = {
     query?: never;
     url: '/admin-api/v1/scheduled-delete/{modelId}';
 };
+
+export type GetFullReportByIdErrors = {
+    /**
+     * Bad request, e.g. field validation or an illegal argument. The body is usually a list of APIMessage, but may be absent for some illegal-argument cases.
+     */
+    400: Array<ApiMessage>;
+    /**
+     * Unauthorized. Body is an APIMessage or a list of APIMessage.
+     */
+    401: ApiMessage | Array<ApiMessage>;
+    /**
+     * Forbidden. Body is a list of APIMessage.
+     */
+    403: Array<ApiMessage>;
+    /**
+     * Resource not found. Body is a list of APIMessage.
+     */
+    404: Array<ApiMessage>;
+    /**
+     * Too many requests (rate limit). Body is the rate-limit code as plain text.
+     */
+    429: string;
+    /**
+     * Unexpected internal server error. Body is a list of APIMessage.
+     */
+    500: Array<ApiMessage>;
+};
+
+export type GetFullReportByIdError = GetFullReportByIdErrors[keyof GetFullReportByIdErrors];
 
 export type GetFullReportByIdResponses = {
     /**
@@ -6776,6 +12547,35 @@ export type GetQuizPageData = {
     url: '/admin-api/v1/quiz';
 };
 
+export type GetQuizPageErrors = {
+    /**
+     * Bad request, e.g. field validation or an illegal argument. The body is usually a list of APIMessage, but may be absent for some illegal-argument cases.
+     */
+    400: Array<ApiMessage>;
+    /**
+     * Unauthorized. Body is an APIMessage or a list of APIMessage.
+     */
+    401: ApiMessage | Array<ApiMessage>;
+    /**
+     * Forbidden. Body is a list of APIMessage.
+     */
+    403: Array<ApiMessage>;
+    /**
+     * Resource not found. Body is a list of APIMessage.
+     */
+    404: Array<ApiMessage>;
+    /**
+     * Too many requests (rate limit). Body is the rate-limit code as plain text.
+     */
+    429: string;
+    /**
+     * Unexpected internal server error. Body is a list of APIMessage.
+     */
+    500: Array<ApiMessage>;
+};
+
+export type GetQuizPageError = GetQuizPageErrors[keyof GetQuizPageErrors];
+
 export type GetQuizPageResponses = {
     /**
      * OK
@@ -6795,6 +12595,35 @@ export type GetQuizData = {
     };
     url: '/admin-api/v1/quiz/{modelId}';
 };
+
+export type GetQuizErrors = {
+    /**
+     * Bad request, e.g. field validation or an illegal argument. The body is usually a list of APIMessage, but may be absent for some illegal-argument cases.
+     */
+    400: Array<ApiMessage>;
+    /**
+     * Unauthorized. Body is an APIMessage or a list of APIMessage.
+     */
+    401: ApiMessage | Array<ApiMessage>;
+    /**
+     * Forbidden. Body is a list of APIMessage.
+     */
+    403: Array<ApiMessage>;
+    /**
+     * Resource not found. Body is a list of APIMessage.
+     */
+    404: Array<ApiMessage>;
+    /**
+     * Too many requests (rate limit). Body is the rate-limit code as plain text.
+     */
+    429: string;
+    /**
+     * Unexpected internal server error. Body is a list of APIMessage.
+     */
+    500: Array<ApiMessage>;
+};
+
+export type GetQuizError = GetQuizErrors[keyof GetQuizErrors];
 
 export type GetQuizResponses = {
     /**
@@ -6827,6 +12656,35 @@ export type DeleteOrientationData = {
     url: '/admin-api/v1/orientation/{modelId}';
 };
 
+export type DeleteOrientationErrors = {
+    /**
+     * Bad request, e.g. field validation or an illegal argument. The body is usually a list of APIMessage, but may be absent for some illegal-argument cases.
+     */
+    400: Array<ApiMessage>;
+    /**
+     * Unauthorized. Body is an APIMessage or a list of APIMessage.
+     */
+    401: ApiMessage | Array<ApiMessage>;
+    /**
+     * Forbidden. Body is a list of APIMessage.
+     */
+    403: Array<ApiMessage>;
+    /**
+     * Resource not found. Body is a list of APIMessage.
+     */
+    404: Array<ApiMessage>;
+    /**
+     * Too many requests (rate limit). Body is the rate-limit code as plain text.
+     */
+    429: string;
+    /**
+     * Unexpected internal server error. Body is a list of APIMessage.
+     */
+    500: Array<ApiMessage>;
+};
+
+export type DeleteOrientationError = DeleteOrientationErrors[keyof DeleteOrientationErrors];
+
 export type DeleteOrientationResponses = {
     /**
      * OK
@@ -6847,6 +12705,35 @@ export type GetOrientationByIdData = {
     query?: never;
     url: '/admin-api/v1/orientation/{modelId}';
 };
+
+export type GetOrientationByIdErrors = {
+    /**
+     * Bad request, e.g. field validation or an illegal argument. The body is usually a list of APIMessage, but may be absent for some illegal-argument cases.
+     */
+    400: Array<ApiMessage>;
+    /**
+     * Unauthorized. Body is an APIMessage or a list of APIMessage.
+     */
+    401: ApiMessage | Array<ApiMessage>;
+    /**
+     * Forbidden. Body is a list of APIMessage.
+     */
+    403: Array<ApiMessage>;
+    /**
+     * Resource not found. Body is a list of APIMessage.
+     */
+    404: Array<ApiMessage>;
+    /**
+     * Too many requests (rate limit). Body is the rate-limit code as plain text.
+     */
+    429: string;
+    /**
+     * Unexpected internal server error. Body is a list of APIMessage.
+     */
+    500: Array<ApiMessage>;
+};
+
+export type GetOrientationByIdError = GetOrientationByIdErrors[keyof GetOrientationByIdErrors];
 
 export type GetOrientationByIdResponses = {
     /**
@@ -6884,6 +12771,35 @@ export type GetOrientationDependenciesData = {
     url: '/admin-api/v1/orientation/{modelId}/dependency';
 };
 
+export type GetOrientationDependenciesErrors = {
+    /**
+     * Bad request, e.g. field validation or an illegal argument. The body is usually a list of APIMessage, but may be absent for some illegal-argument cases.
+     */
+    400: Array<ApiMessage>;
+    /**
+     * Unauthorized. Body is an APIMessage or a list of APIMessage.
+     */
+    401: ApiMessage | Array<ApiMessage>;
+    /**
+     * Forbidden. Body is a list of APIMessage.
+     */
+    403: Array<ApiMessage>;
+    /**
+     * Resource not found. Body is a list of APIMessage.
+     */
+    404: Array<ApiMessage>;
+    /**
+     * Too many requests (rate limit). Body is the rate-limit code as plain text.
+     */
+    429: string;
+    /**
+     * Unexpected internal server error. Body is a list of APIMessage.
+     */
+    500: Array<ApiMessage>;
+};
+
+export type GetOrientationDependenciesError = GetOrientationDependenciesErrors[keyof GetOrientationDependenciesErrors];
+
 export type GetOrientationDependenciesResponses = {
     /**
      * OK
@@ -6915,6 +12831,35 @@ export type DeleteViewData = {
     url: '/admin-api/v1/orientation/view/{modelId}';
 };
 
+export type DeleteViewErrors = {
+    /**
+     * Bad request, e.g. field validation or an illegal argument. The body is usually a list of APIMessage, but may be absent for some illegal-argument cases.
+     */
+    400: Array<ApiMessage>;
+    /**
+     * Unauthorized. Body is an APIMessage or a list of APIMessage.
+     */
+    401: ApiMessage | Array<ApiMessage>;
+    /**
+     * Forbidden. Body is a list of APIMessage.
+     */
+    403: Array<ApiMessage>;
+    /**
+     * Resource not found. Body is a list of APIMessage.
+     */
+    404: Array<ApiMessage>;
+    /**
+     * Too many requests (rate limit). Body is the rate-limit code as plain text.
+     */
+    429: string;
+    /**
+     * Unexpected internal server error. Body is a list of APIMessage.
+     */
+    500: Array<ApiMessage>;
+};
+
+export type DeleteViewError = DeleteViewErrors[keyof DeleteViewErrors];
+
 export type DeleteViewResponses = {
     /**
      * OK
@@ -6935,6 +12880,35 @@ export type GetViewByIdData = {
     query?: never;
     url: '/admin-api/v1/orientation/view/{modelId}';
 };
+
+export type GetViewByIdErrors = {
+    /**
+     * Bad request, e.g. field validation or an illegal argument. The body is usually a list of APIMessage, but may be absent for some illegal-argument cases.
+     */
+    400: Array<ApiMessage>;
+    /**
+     * Unauthorized. Body is an APIMessage or a list of APIMessage.
+     */
+    401: ApiMessage | Array<ApiMessage>;
+    /**
+     * Forbidden. Body is a list of APIMessage.
+     */
+    403: Array<ApiMessage>;
+    /**
+     * Resource not found. Body is a list of APIMessage.
+     */
+    404: Array<ApiMessage>;
+    /**
+     * Too many requests (rate limit). Body is the rate-limit code as plain text.
+     */
+    429: string;
+    /**
+     * Unexpected internal server error. Body is a list of APIMessage.
+     */
+    500: Array<ApiMessage>;
+};
+
+export type GetViewByIdError = GetViewByIdErrors[keyof GetViewByIdErrors];
 
 export type GetViewByIdResponses = {
     /**
@@ -6972,6 +12946,35 @@ export type GetViewDependenciesData = {
     url: '/admin-api/v1/orientation/view/{modelId}/dependency';
 };
 
+export type GetViewDependenciesErrors = {
+    /**
+     * Bad request, e.g. field validation or an illegal argument. The body is usually a list of APIMessage, but may be absent for some illegal-argument cases.
+     */
+    400: Array<ApiMessage>;
+    /**
+     * Unauthorized. Body is an APIMessage or a list of APIMessage.
+     */
+    401: ApiMessage | Array<ApiMessage>;
+    /**
+     * Forbidden. Body is a list of APIMessage.
+     */
+    403: Array<ApiMessage>;
+    /**
+     * Resource not found. Body is a list of APIMessage.
+     */
+    404: Array<ApiMessage>;
+    /**
+     * Too many requests (rate limit). Body is the rate-limit code as plain text.
+     */
+    429: string;
+    /**
+     * Unexpected internal server error. Body is a list of APIMessage.
+     */
+    500: Array<ApiMessage>;
+};
+
+export type GetViewDependenciesError = GetViewDependenciesErrors[keyof GetViewDependenciesErrors];
+
 export type GetViewDependenciesResponses = {
     /**
      * OK
@@ -6994,6 +12997,35 @@ export type GetViewNamesData = {
     url: '/admin-api/v1/orientation/view/names';
 };
 
+export type GetViewNamesErrors = {
+    /**
+     * Bad request, e.g. field validation or an illegal argument. The body is usually a list of APIMessage, but may be absent for some illegal-argument cases.
+     */
+    400: Array<ApiMessage>;
+    /**
+     * Unauthorized. Body is an APIMessage or a list of APIMessage.
+     */
+    401: ApiMessage | Array<ApiMessage>;
+    /**
+     * Forbidden. Body is a list of APIMessage.
+     */
+    403: Array<ApiMessage>;
+    /**
+     * Resource not found. Body is a list of APIMessage.
+     */
+    404: Array<ApiMessage>;
+    /**
+     * Too many requests (rate limit). Body is the rate-limit code as plain text.
+     */
+    429: string;
+    /**
+     * Unexpected internal server error. Body is a list of APIMessage.
+     */
+    500: Array<ApiMessage>;
+};
+
+export type GetViewNamesError = GetViewNamesErrors[keyof GetViewNamesErrors];
+
 export type GetViewNamesResponses = {
     /**
      * OK
@@ -7014,6 +13046,35 @@ export type GetViewsByIdsData = {
     };
     url: '/admin-api/v1/orientation/view/list';
 };
+
+export type GetViewsByIdsErrors = {
+    /**
+     * Bad request, e.g. field validation or an illegal argument. The body is usually a list of APIMessage, but may be absent for some illegal-argument cases.
+     */
+    400: Array<ApiMessage>;
+    /**
+     * Unauthorized. Body is an APIMessage or a list of APIMessage.
+     */
+    401: ApiMessage | Array<ApiMessage>;
+    /**
+     * Forbidden. Body is a list of APIMessage.
+     */
+    403: Array<ApiMessage>;
+    /**
+     * Resource not found. Body is a list of APIMessage.
+     */
+    404: Array<ApiMessage>;
+    /**
+     * Too many requests (rate limit). Body is the rate-limit code as plain text.
+     */
+    429: string;
+    /**
+     * Unexpected internal server error. Body is a list of APIMessage.
+     */
+    500: Array<ApiMessage>;
+};
+
+export type GetViewsByIdsError = GetViewsByIdsErrors[keyof GetViewsByIdsErrors];
 
 export type GetViewsByIdsResponses = {
     /**
@@ -7037,6 +13098,35 @@ export type GetOrientationNamesData = {
     url: '/admin-api/v1/orientation/names';
 };
 
+export type GetOrientationNamesErrors = {
+    /**
+     * Bad request, e.g. field validation or an illegal argument. The body is usually a list of APIMessage, but may be absent for some illegal-argument cases.
+     */
+    400: Array<ApiMessage>;
+    /**
+     * Unauthorized. Body is an APIMessage or a list of APIMessage.
+     */
+    401: ApiMessage | Array<ApiMessage>;
+    /**
+     * Forbidden. Body is a list of APIMessage.
+     */
+    403: Array<ApiMessage>;
+    /**
+     * Resource not found. Body is a list of APIMessage.
+     */
+    404: Array<ApiMessage>;
+    /**
+     * Too many requests (rate limit). Body is the rate-limit code as plain text.
+     */
+    429: string;
+    /**
+     * Unexpected internal server error. Body is a list of APIMessage.
+     */
+    500: Array<ApiMessage>;
+};
+
+export type GetOrientationNamesError = GetOrientationNamesErrors[keyof GetOrientationNamesErrors];
+
 export type GetOrientationNamesResponses = {
     /**
      * OK
@@ -7057,6 +13147,35 @@ export type GetOrientationsByIdsData = {
     };
     url: '/admin-api/v1/orientation/list';
 };
+
+export type GetOrientationsByIdsErrors = {
+    /**
+     * Bad request, e.g. field validation or an illegal argument. The body is usually a list of APIMessage, but may be absent for some illegal-argument cases.
+     */
+    400: Array<ApiMessage>;
+    /**
+     * Unauthorized. Body is an APIMessage or a list of APIMessage.
+     */
+    401: ApiMessage | Array<ApiMessage>;
+    /**
+     * Forbidden. Body is a list of APIMessage.
+     */
+    403: Array<ApiMessage>;
+    /**
+     * Resource not found. Body is a list of APIMessage.
+     */
+    404: Array<ApiMessage>;
+    /**
+     * Too many requests (rate limit). Body is the rate-limit code as plain text.
+     */
+    429: string;
+    /**
+     * Unexpected internal server error. Body is a list of APIMessage.
+     */
+    500: Array<ApiMessage>;
+};
+
+export type GetOrientationsByIdsError = GetOrientationsByIdsErrors[keyof GetOrientationsByIdsErrors];
 
 export type GetOrientationsByIdsResponses = {
     /**
@@ -7079,6 +13198,35 @@ export type GetExamMonitoringsData = {
     };
     url: '/admin-api/v1/monitoring';
 };
+
+export type GetExamMonitoringsErrors = {
+    /**
+     * Bad request, e.g. field validation or an illegal argument. The body is usually a list of APIMessage, but may be absent for some illegal-argument cases.
+     */
+    400: Array<ApiMessage>;
+    /**
+     * Unauthorized. Body is an APIMessage or a list of APIMessage.
+     */
+    401: ApiMessage | Array<ApiMessage>;
+    /**
+     * Forbidden. Body is a list of APIMessage.
+     */
+    403: Array<ApiMessage>;
+    /**
+     * Resource not found. Body is a list of APIMessage.
+     */
+    404: Array<ApiMessage>;
+    /**
+     * Too many requests (rate limit). Body is the rate-limit code as plain text.
+     */
+    429: string;
+    /**
+     * Unexpected internal server error. Body is a list of APIMessage.
+     */
+    500: Array<ApiMessage>;
+};
+
+export type GetExamMonitoringsError = GetExamMonitoringsErrors[keyof GetExamMonitoringsErrors];
 
 export type GetExamMonitoringsResponses = {
     /**
@@ -7105,6 +13253,35 @@ export type GetConnectionDataData = {
     url: '/admin-api/v1/monitoring/{parentModelId}';
 };
 
+export type GetConnectionDataErrors = {
+    /**
+     * Bad request, e.g. field validation or an illegal argument. The body is usually a list of APIMessage, but may be absent for some illegal-argument cases.
+     */
+    400: Array<ApiMessage>;
+    /**
+     * Unauthorized. Body is an APIMessage or a list of APIMessage.
+     */
+    401: ApiMessage | Array<ApiMessage>;
+    /**
+     * Forbidden. Body is a list of APIMessage.
+     */
+    403: Array<ApiMessage>;
+    /**
+     * Resource not found. Body is a list of APIMessage.
+     */
+    404: Array<ApiMessage>;
+    /**
+     * Too many requests (rate limit). Body is the rate-limit code as plain text.
+     */
+    429: string;
+    /**
+     * Unexpected internal server error. Body is a list of APIMessage.
+     */
+    500: Array<ApiMessage>;
+};
+
+export type GetConnectionDataError = GetConnectionDataErrors[keyof GetConnectionDataErrors];
+
 export type GetConnectionDataResponses = {
     /**
      * OK
@@ -7125,6 +13302,35 @@ export type GetConnectionDataForSingleConnectionData = {
     };
     url: '/admin-api/v1/monitoring/{parentModelId}/{SEBConnectionToken}';
 };
+
+export type GetConnectionDataForSingleConnectionErrors = {
+    /**
+     * Bad request, e.g. field validation or an illegal argument. The body is usually a list of APIMessage, but may be absent for some illegal-argument cases.
+     */
+    400: Array<ApiMessage>;
+    /**
+     * Unauthorized. Body is an APIMessage or a list of APIMessage.
+     */
+    401: ApiMessage | Array<ApiMessage>;
+    /**
+     * Forbidden. Body is a list of APIMessage.
+     */
+    403: Array<ApiMessage>;
+    /**
+     * Resource not found. Body is a list of APIMessage.
+     */
+    404: Array<ApiMessage>;
+    /**
+     * Too many requests (rate limit). Body is the rate-limit code as plain text.
+     */
+    429: string;
+    /**
+     * Unexpected internal server error. Body is a list of APIMessage.
+     */
+    500: Array<ApiMessage>;
+};
+
+export type GetConnectionDataForSingleConnectionError = GetConnectionDataForSingleConnectionErrors[keyof GetConnectionDataForSingleConnectionErrors];
 
 export type GetConnectionDataForSingleConnectionResponses = {
     /**
@@ -7147,6 +13353,35 @@ export type GetAppSignatureKeyData = {
     url: '/admin-api/v1/monitoring/{parentModelId}/signature/{modelId}';
 };
 
+export type GetAppSignatureKeyErrors = {
+    /**
+     * Bad request, e.g. field validation or an illegal argument. The body is usually a list of APIMessage, but may be absent for some illegal-argument cases.
+     */
+    400: Array<ApiMessage>;
+    /**
+     * Unauthorized. Body is an APIMessage or a list of APIMessage.
+     */
+    401: ApiMessage | Array<ApiMessage>;
+    /**
+     * Forbidden. Body is a list of APIMessage.
+     */
+    403: Array<ApiMessage>;
+    /**
+     * Resource not found. Body is a list of APIMessage.
+     */
+    404: Array<ApiMessage>;
+    /**
+     * Too many requests (rate limit). Body is the rate-limit code as plain text.
+     */
+    429: string;
+    /**
+     * Unexpected internal server error. Body is a list of APIMessage.
+     */
+    500: Array<ApiMessage>;
+};
+
+export type GetAppSignatureKeyError = GetAppSignatureKeyErrors[keyof GetAppSignatureKeyErrors];
+
 export type GetAppSignatureKeyResponses = {
     /**
      * OK
@@ -7167,6 +13402,35 @@ export type PendingNotificationsData = {
     };
     url: '/admin-api/v1/monitoring/{parentModelId}/notification/{SEBConnectionToken}';
 };
+
+export type PendingNotificationsErrors = {
+    /**
+     * Bad request, e.g. field validation or an illegal argument. The body is usually a list of APIMessage, but may be absent for some illegal-argument cases.
+     */
+    400: Array<ApiMessage>;
+    /**
+     * Unauthorized. Body is an APIMessage or a list of APIMessage.
+     */
+    401: ApiMessage | Array<ApiMessage>;
+    /**
+     * Forbidden. Body is a list of APIMessage.
+     */
+    403: Array<ApiMessage>;
+    /**
+     * Resource not found. Body is a list of APIMessage.
+     */
+    404: Array<ApiMessage>;
+    /**
+     * Too many requests (rate limit). Body is the rate-limit code as plain text.
+     */
+    429: string;
+    /**
+     * Unexpected internal server error. Body is a list of APIMessage.
+     */
+    500: Array<ApiMessage>;
+};
+
+export type PendingNotificationsError = PendingNotificationsErrors[keyof PendingNotificationsErrors];
 
 export type PendingNotificationsResponses = {
     /**
@@ -7193,6 +13457,35 @@ export type GetFullMonitoringPageDataData = {
     url: '/admin-api/v1/monitoring/{parentModelId}/fullpage';
 };
 
+export type GetFullMonitoringPageDataErrors = {
+    /**
+     * Bad request, e.g. field validation or an illegal argument. The body is usually a list of APIMessage, but may be absent for some illegal-argument cases.
+     */
+    400: Array<ApiMessage>;
+    /**
+     * Unauthorized. Body is an APIMessage or a list of APIMessage.
+     */
+    401: ApiMessage | Array<ApiMessage>;
+    /**
+     * Forbidden. Body is a list of APIMessage.
+     */
+    403: Array<ApiMessage>;
+    /**
+     * Resource not found. Body is a list of APIMessage.
+     */
+    404: Array<ApiMessage>;
+    /**
+     * Too many requests (rate limit). Body is the rate-limit code as plain text.
+     */
+    429: string;
+    /**
+     * Unexpected internal server error. Body is a list of APIMessage.
+     */
+    500: Array<ApiMessage>;
+};
+
+export type GetFullMonitoringPageDataError = GetFullMonitoringPageDataErrors[keyof GetFullMonitoringPageDataErrors];
+
 export type GetFullMonitoringPageDataResponses = {
     /**
      * OK
@@ -7213,6 +13506,35 @@ export type GetTownhallRoomData = {
     url: '/admin-api/v1/monitoring/proctoring/{modelId}towhall-room-data';
 };
 
+export type GetTownhallRoomErrors = {
+    /**
+     * Bad request, e.g. field validation or an illegal argument. The body is usually a list of APIMessage, but may be absent for some illegal-argument cases.
+     */
+    400: Array<ApiMessage>;
+    /**
+     * Unauthorized. Body is an APIMessage or a list of APIMessage.
+     */
+    401: ApiMessage | Array<ApiMessage>;
+    /**
+     * Forbidden. Body is a list of APIMessage.
+     */
+    403: Array<ApiMessage>;
+    /**
+     * Resource not found. Body is a list of APIMessage.
+     */
+    404: Array<ApiMessage>;
+    /**
+     * Too many requests (rate limit). Body is the rate-limit code as plain text.
+     */
+    429: string;
+    /**
+     * Unexpected internal server error. Body is a list of APIMessage.
+     */
+    500: Array<ApiMessage>;
+};
+
+export type GetTownhallRoomError = GetTownhallRoomErrors[keyof GetTownhallRoomErrors];
+
 export type GetTownhallRoomResponses = {
     /**
      * OK
@@ -7232,6 +13554,35 @@ export type IsTownhallRoomAvialbaleData = {
     };
     url: '/admin-api/v1/monitoring/proctoring/{modelId}towhall-available';
 };
+
+export type IsTownhallRoomAvialbaleErrors = {
+    /**
+     * Bad request, e.g. field validation or an illegal argument. The body is usually a list of APIMessage, but may be absent for some illegal-argument cases.
+     */
+    400: Array<ApiMessage>;
+    /**
+     * Unauthorized. Body is an APIMessage or a list of APIMessage.
+     */
+    401: ApiMessage | Array<ApiMessage>;
+    /**
+     * Forbidden. Body is a list of APIMessage.
+     */
+    403: Array<ApiMessage>;
+    /**
+     * Resource not found. Body is a list of APIMessage.
+     */
+    404: Array<ApiMessage>;
+    /**
+     * Too many requests (rate limit). Body is the rate-limit code as plain text.
+     */
+    429: string;
+    /**
+     * Unexpected internal server error. Body is a list of APIMessage.
+     */
+    500: Array<ApiMessage>;
+};
+
+export type IsTownhallRoomAvialbaleError = IsTownhallRoomAvialbaleErrors[keyof IsTownhallRoomAvialbaleErrors];
 
 export type IsTownhallRoomAvialbaleResponses = {
     /**
@@ -7255,6 +13606,35 @@ export type GetProctorRoomConnectionData = {
     url: '/admin-api/v1/monitoring/proctoring/{modelId}';
 };
 
+export type GetProctorRoomConnectionErrors = {
+    /**
+     * Bad request, e.g. field validation or an illegal argument. The body is usually a list of APIMessage, but may be absent for some illegal-argument cases.
+     */
+    400: Array<ApiMessage>;
+    /**
+     * Unauthorized. Body is an APIMessage or a list of APIMessage.
+     */
+    401: ApiMessage | Array<ApiMessage>;
+    /**
+     * Forbidden. Body is a list of APIMessage.
+     */
+    403: Array<ApiMessage>;
+    /**
+     * Resource not found. Body is a list of APIMessage.
+     */
+    404: Array<ApiMessage>;
+    /**
+     * Too many requests (rate limit). Body is the rate-limit code as plain text.
+     */
+    429: string;
+    /**
+     * Unexpected internal server error. Body is a list of APIMessage.
+     */
+    500: Array<ApiMessage>;
+};
+
+export type GetProctorRoomConnectionError = GetProctorRoomConnectionErrors[keyof GetProctorRoomConnectionErrors];
+
 export type GetProctorRoomConnectionResponses = {
     /**
      * OK
@@ -7274,6 +13654,35 @@ export type GetScreenProctoringGroupsOfExamData = {
     };
     url: '/admin-api/v1/monitoring/proctoring/{modelId}/screenproctoring-groups';
 };
+
+export type GetScreenProctoringGroupsOfExamErrors = {
+    /**
+     * Bad request, e.g. field validation or an illegal argument. The body is usually a list of APIMessage, but may be absent for some illegal-argument cases.
+     */
+    400: Array<ApiMessage>;
+    /**
+     * Unauthorized. Body is an APIMessage or a list of APIMessage.
+     */
+    401: ApiMessage | Array<ApiMessage>;
+    /**
+     * Forbidden. Body is a list of APIMessage.
+     */
+    403: Array<ApiMessage>;
+    /**
+     * Resource not found. Body is a list of APIMessage.
+     */
+    404: Array<ApiMessage>;
+    /**
+     * Too many requests (rate limit). Body is the rate-limit code as plain text.
+     */
+    429: string;
+    /**
+     * Unexpected internal server error. Body is a list of APIMessage.
+     */
+    500: Array<ApiMessage>;
+};
+
+export type GetScreenProctoringGroupsOfExamError = GetScreenProctoringGroupsOfExamErrors[keyof GetScreenProctoringGroupsOfExamErrors];
 
 export type GetScreenProctoringGroupsOfExamResponses = {
     /**
@@ -7296,6 +13705,35 @@ export type GetAllClientConnectionsInRoomData = {
     url: '/admin-api/v1/monitoring/proctoring/{modelId}/room-connections';
 };
 
+export type GetAllClientConnectionsInRoomErrors = {
+    /**
+     * Bad request, e.g. field validation or an illegal argument. The body is usually a list of APIMessage, but may be absent for some illegal-argument cases.
+     */
+    400: Array<ApiMessage>;
+    /**
+     * Unauthorized. Body is an APIMessage or a list of APIMessage.
+     */
+    401: ApiMessage | Array<ApiMessage>;
+    /**
+     * Forbidden. Body is a list of APIMessage.
+     */
+    403: Array<ApiMessage>;
+    /**
+     * Resource not found. Body is a list of APIMessage.
+     */
+    404: Array<ApiMessage>;
+    /**
+     * Too many requests (rate limit). Body is the rate-limit code as plain text.
+     */
+    429: string;
+    /**
+     * Unexpected internal server error. Body is a list of APIMessage.
+     */
+    500: Array<ApiMessage>;
+};
+
+export type GetAllClientConnectionsInRoomError = GetAllClientConnectionsInRoomErrors[keyof GetAllClientConnectionsInRoomErrors];
+
 export type GetAllClientConnectionsInRoomResponses = {
     /**
      * OK
@@ -7316,6 +13754,35 @@ export type GetCollectingRoomsOfExamData = {
     url: '/admin-api/v1/monitoring/proctoring/{modelId}/collecting-rooms';
 };
 
+export type GetCollectingRoomsOfExamErrors = {
+    /**
+     * Bad request, e.g. field validation or an illegal argument. The body is usually a list of APIMessage, but may be absent for some illegal-argument cases.
+     */
+    400: Array<ApiMessage>;
+    /**
+     * Unauthorized. Body is an APIMessage or a list of APIMessage.
+     */
+    401: ApiMessage | Array<ApiMessage>;
+    /**
+     * Forbidden. Body is a list of APIMessage.
+     */
+    403: Array<ApiMessage>;
+    /**
+     * Resource not found. Body is a list of APIMessage.
+     */
+    404: Array<ApiMessage>;
+    /**
+     * Too many requests (rate limit). Body is the rate-limit code as plain text.
+     */
+    429: string;
+    /**
+     * Unexpected internal server error. Body is a list of APIMessage.
+     */
+    500: Array<ApiMessage>;
+};
+
+export type GetCollectingRoomsOfExamError = GetCollectingRoomsOfExamErrors[keyof GetCollectingRoomsOfExamErrors];
+
 export type GetCollectingRoomsOfExamResponses = {
     /**
      * OK
@@ -7335,6 +13802,35 @@ export type GetOverviewDataData = {
     };
     url: '/admin-api/v1/monitoring/overview/{modelId}';
 };
+
+export type GetOverviewDataErrors = {
+    /**
+     * Bad request, e.g. field validation or an illegal argument. The body is usually a list of APIMessage, but may be absent for some illegal-argument cases.
+     */
+    400: Array<ApiMessage>;
+    /**
+     * Unauthorized. Body is an APIMessage or a list of APIMessage.
+     */
+    401: ApiMessage | Array<ApiMessage>;
+    /**
+     * Forbidden. Body is a list of APIMessage.
+     */
+    403: Array<ApiMessage>;
+    /**
+     * Resource not found. Body is a list of APIMessage.
+     */
+    404: Array<ApiMessage>;
+    /**
+     * Too many requests (rate limit). Body is the rate-limit code as plain text.
+     */
+    429: string;
+    /**
+     * Unexpected internal server error. Body is a list of APIMessage.
+     */
+    500: Array<ApiMessage>;
+};
+
+export type GetOverviewDataError = GetOverviewDataErrors[keyof GetOverviewDataErrors];
 
 export type GetOverviewDataResponses = {
     /**
@@ -7357,6 +13853,35 @@ export type GetFinishedExamsPageData = {
     };
     url: '/admin-api/v1/monitoring/finishedexams';
 };
+
+export type GetFinishedExamsPageErrors = {
+    /**
+     * Bad request, e.g. field validation or an illegal argument. The body is usually a list of APIMessage, but may be absent for some illegal-argument cases.
+     */
+    400: Array<ApiMessage>;
+    /**
+     * Unauthorized. Body is an APIMessage or a list of APIMessage.
+     */
+    401: ApiMessage | Array<ApiMessage>;
+    /**
+     * Forbidden. Body is a list of APIMessage.
+     */
+    403: Array<ApiMessage>;
+    /**
+     * Resource not found. Body is a list of APIMessage.
+     */
+    404: Array<ApiMessage>;
+    /**
+     * Too many requests (rate limit). Body is the rate-limit code as plain text.
+     */
+    429: string;
+    /**
+     * Unexpected internal server error. Body is a list of APIMessage.
+     */
+    500: Array<ApiMessage>;
+};
+
+export type GetFinishedExamsPageError = GetFinishedExamsPageErrors[keyof GetFinishedExamsPageErrors];
 
 export type GetFinishedExamsPageResponses = {
     /**
@@ -7384,6 +13909,35 @@ export type GetMonitoringExamListDataData = {
     };
     url: '/admin-api/v1/monitoring/connections/{modelId}';
 };
+
+export type GetMonitoringExamListDataErrors = {
+    /**
+     * Bad request, e.g. field validation or an illegal argument. The body is usually a list of APIMessage, but may be absent for some illegal-argument cases.
+     */
+    400: Array<ApiMessage>;
+    /**
+     * Unauthorized. Body is an APIMessage or a list of APIMessage.
+     */
+    401: ApiMessage | Array<ApiMessage>;
+    /**
+     * Forbidden. Body is a list of APIMessage.
+     */
+    403: Array<ApiMessage>;
+    /**
+     * Resource not found. Body is a list of APIMessage.
+     */
+    404: Array<ApiMessage>;
+    /**
+     * Too many requests (rate limit). Body is the rate-limit code as plain text.
+     */
+    429: string;
+    /**
+     * Unexpected internal server error. Body is a list of APIMessage.
+     */
+    500: Array<ApiMessage>;
+};
+
+export type GetMonitoringExamListDataError = GetMonitoringExamListDataErrors[keyof GetMonitoringExamListDataErrors];
 
 export type GetMonitoringExamListDataResponses = {
     /**
@@ -7416,6 +13970,35 @@ export type DeleteLmsSetupData = {
     url: '/admin-api/v1/lms-setup/{modelId}';
 };
 
+export type DeleteLmsSetupErrors = {
+    /**
+     * Bad request, e.g. field validation or an illegal argument. The body is usually a list of APIMessage, but may be absent for some illegal-argument cases.
+     */
+    400: Array<ApiMessage>;
+    /**
+     * Unauthorized. Body is an APIMessage or a list of APIMessage.
+     */
+    401: ApiMessage | Array<ApiMessage>;
+    /**
+     * Forbidden. Body is a list of APIMessage.
+     */
+    403: Array<ApiMessage>;
+    /**
+     * Resource not found. Body is a list of APIMessage.
+     */
+    404: Array<ApiMessage>;
+    /**
+     * Too many requests (rate limit). Body is the rate-limit code as plain text.
+     */
+    429: string;
+    /**
+     * Unexpected internal server error. Body is a list of APIMessage.
+     */
+    500: Array<ApiMessage>;
+};
+
+export type DeleteLmsSetupError = DeleteLmsSetupErrors[keyof DeleteLmsSetupErrors];
+
 export type DeleteLmsSetupResponses = {
     /**
      * OK
@@ -7436,6 +14019,35 @@ export type GetLmsSetupByIdData = {
     query?: never;
     url: '/admin-api/v1/lms-setup/{modelId}';
 };
+
+export type GetLmsSetupByIdErrors = {
+    /**
+     * Bad request, e.g. field validation or an illegal argument. The body is usually a list of APIMessage, but may be absent for some illegal-argument cases.
+     */
+    400: Array<ApiMessage>;
+    /**
+     * Unauthorized. Body is an APIMessage or a list of APIMessage.
+     */
+    401: ApiMessage | Array<ApiMessage>;
+    /**
+     * Forbidden. Body is a list of APIMessage.
+     */
+    403: Array<ApiMessage>;
+    /**
+     * Resource not found. Body is a list of APIMessage.
+     */
+    404: Array<ApiMessage>;
+    /**
+     * Too many requests (rate limit). Body is the rate-limit code as plain text.
+     */
+    429: string;
+    /**
+     * Unexpected internal server error. Body is a list of APIMessage.
+     */
+    500: Array<ApiMessage>;
+};
+
+export type GetLmsSetupByIdError = GetLmsSetupByIdErrors[keyof GetLmsSetupByIdErrors];
 
 export type GetLmsSetupByIdResponses = {
     /**
@@ -7473,6 +14085,35 @@ export type GetLmsSetupDependenciesData = {
     url: '/admin-api/v1/lms-setup/{modelId}/dependency';
 };
 
+export type GetLmsSetupDependenciesErrors = {
+    /**
+     * Bad request, e.g. field validation or an illegal argument. The body is usually a list of APIMessage, but may be absent for some illegal-argument cases.
+     */
+    400: Array<ApiMessage>;
+    /**
+     * Unauthorized. Body is an APIMessage or a list of APIMessage.
+     */
+    401: ApiMessage | Array<ApiMessage>;
+    /**
+     * Forbidden. Body is a list of APIMessage.
+     */
+    403: Array<ApiMessage>;
+    /**
+     * Resource not found. Body is a list of APIMessage.
+     */
+    404: Array<ApiMessage>;
+    /**
+     * Too many requests (rate limit). Body is the rate-limit code as plain text.
+     */
+    429: string;
+    /**
+     * Unexpected internal server error. Body is a list of APIMessage.
+     */
+    500: Array<ApiMessage>;
+};
+
+export type GetLmsSetupDependenciesError = GetLmsSetupDependenciesErrors[keyof GetLmsSetupDependenciesErrors];
+
 export type GetLmsSetupDependenciesResponses = {
     /**
      * OK
@@ -7492,6 +14133,35 @@ export type TestLmsData = {
     };
     url: '/admin-api/v1/lms-setup/test/{modelId}';
 };
+
+export type TestLmsErrors = {
+    /**
+     * Bad request, e.g. field validation or an illegal argument. The body is usually a list of APIMessage, but may be absent for some illegal-argument cases.
+     */
+    400: Array<ApiMessage>;
+    /**
+     * Unauthorized. Body is an APIMessage or a list of APIMessage.
+     */
+    401: ApiMessage | Array<ApiMessage>;
+    /**
+     * Forbidden. Body is a list of APIMessage.
+     */
+    403: Array<ApiMessage>;
+    /**
+     * Resource not found. Body is a list of APIMessage.
+     */
+    404: Array<ApiMessage>;
+    /**
+     * Too many requests (rate limit). Body is the rate-limit code as plain text.
+     */
+    429: string;
+    /**
+     * Unexpected internal server error. Body is a list of APIMessage.
+     */
+    500: Array<ApiMessage>;
+};
+
+export type TestLmsError = TestLmsErrors[keyof TestLmsErrors];
 
 export type TestLmsResponses = {
     /**
@@ -7515,6 +14185,35 @@ export type GetLmsSetupNamesData = {
     url: '/admin-api/v1/lms-setup/names';
 };
 
+export type GetLmsSetupNamesErrors = {
+    /**
+     * Bad request, e.g. field validation or an illegal argument. The body is usually a list of APIMessage, but may be absent for some illegal-argument cases.
+     */
+    400: Array<ApiMessage>;
+    /**
+     * Unauthorized. Body is an APIMessage or a list of APIMessage.
+     */
+    401: ApiMessage | Array<ApiMessage>;
+    /**
+     * Forbidden. Body is a list of APIMessage.
+     */
+    403: Array<ApiMessage>;
+    /**
+     * Resource not found. Body is a list of APIMessage.
+     */
+    404: Array<ApiMessage>;
+    /**
+     * Too many requests (rate limit). Body is the rate-limit code as plain text.
+     */
+    429: string;
+    /**
+     * Unexpected internal server error. Body is a list of APIMessage.
+     */
+    500: Array<ApiMessage>;
+};
+
+export type GetLmsSetupNamesError = GetLmsSetupNamesErrors[keyof GetLmsSetupNamesErrors];
+
 export type GetLmsSetupNamesResponses = {
     /**
      * OK
@@ -7535,6 +14234,35 @@ export type GetLmsSetupsByIdsData = {
     };
     url: '/admin-api/v1/lms-setup/list';
 };
+
+export type GetLmsSetupsByIdsErrors = {
+    /**
+     * Bad request, e.g. field validation or an illegal argument. The body is usually a list of APIMessage, but may be absent for some illegal-argument cases.
+     */
+    400: Array<ApiMessage>;
+    /**
+     * Unauthorized. Body is an APIMessage or a list of APIMessage.
+     */
+    401: ApiMessage | Array<ApiMessage>;
+    /**
+     * Forbidden. Body is a list of APIMessage.
+     */
+    403: Array<ApiMessage>;
+    /**
+     * Resource not found. Body is a list of APIMessage.
+     */
+    404: Array<ApiMessage>;
+    /**
+     * Too many requests (rate limit). Body is the rate-limit code as plain text.
+     */
+    429: string;
+    /**
+     * Unexpected internal server error. Body is a list of APIMessage.
+     */
+    500: Array<ApiMessage>;
+};
+
+export type GetLmsSetupsByIdsError = GetLmsSetupsByIdsErrors[keyof GetLmsSetupsByIdsErrors];
 
 export type GetLmsSetupsByIdsResponses = {
     /**
@@ -7570,6 +14298,35 @@ export type GetInactiveLmsSetupsData = {
     url: '/admin-api/v1/lms-setup/inactive';
 };
 
+export type GetInactiveLmsSetupsErrors = {
+    /**
+     * Bad request, e.g. field validation or an illegal argument. The body is usually a list of APIMessage, but may be absent for some illegal-argument cases.
+     */
+    400: Array<ApiMessage>;
+    /**
+     * Unauthorized. Body is an APIMessage or a list of APIMessage.
+     */
+    401: ApiMessage | Array<ApiMessage>;
+    /**
+     * Forbidden. Body is a list of APIMessage.
+     */
+    403: Array<ApiMessage>;
+    /**
+     * Resource not found. Body is a list of APIMessage.
+     */
+    404: Array<ApiMessage>;
+    /**
+     * Too many requests (rate limit). Body is the rate-limit code as plain text.
+     */
+    429: string;
+    /**
+     * Unexpected internal server error. Body is a list of APIMessage.
+     */
+    500: Array<ApiMessage>;
+};
+
+export type GetInactiveLmsSetupsError = GetInactiveLmsSetupsErrors[keyof GetInactiveLmsSetupsErrors];
+
 export type GetInactiveLmsSetupsResponses = {
     /**
      * OK
@@ -7604,6 +14361,35 @@ export type GetActiveLmsSetupsData = {
     url: '/admin-api/v1/lms-setup/active';
 };
 
+export type GetActiveLmsSetupsErrors = {
+    /**
+     * Bad request, e.g. field validation or an illegal argument. The body is usually a list of APIMessage, but may be absent for some illegal-argument cases.
+     */
+    400: Array<ApiMessage>;
+    /**
+     * Unauthorized. Body is an APIMessage or a list of APIMessage.
+     */
+    401: ApiMessage | Array<ApiMessage>;
+    /**
+     * Forbidden. Body is a list of APIMessage.
+     */
+    403: Array<ApiMessage>;
+    /**
+     * Resource not found. Body is a list of APIMessage.
+     */
+    404: Array<ApiMessage>;
+    /**
+     * Too many requests (rate limit). Body is the rate-limit code as plain text.
+     */
+    429: string;
+    /**
+     * Unexpected internal server error. Body is a list of APIMessage.
+     */
+    500: Array<ApiMessage>;
+};
+
+export type GetActiveLmsSetupsError = GetActiveLmsSetupsErrors[keyof GetActiveLmsSetupsErrors];
+
 export type GetActiveLmsSetupsResponses = {
     /**
      * OK
@@ -7635,6 +14421,35 @@ export type DeleteInstitutionData = {
     url: '/admin-api/v1/institution/{modelId}';
 };
 
+export type DeleteInstitutionErrors = {
+    /**
+     * Bad request, e.g. field validation or an illegal argument. The body is usually a list of APIMessage, but may be absent for some illegal-argument cases.
+     */
+    400: Array<ApiMessage>;
+    /**
+     * Unauthorized. Body is an APIMessage or a list of APIMessage.
+     */
+    401: ApiMessage | Array<ApiMessage>;
+    /**
+     * Forbidden. Body is a list of APIMessage.
+     */
+    403: Array<ApiMessage>;
+    /**
+     * Resource not found. Body is a list of APIMessage.
+     */
+    404: Array<ApiMessage>;
+    /**
+     * Too many requests (rate limit). Body is the rate-limit code as plain text.
+     */
+    429: string;
+    /**
+     * Unexpected internal server error. Body is a list of APIMessage.
+     */
+    500: Array<ApiMessage>;
+};
+
+export type DeleteInstitutionError = DeleteInstitutionErrors[keyof DeleteInstitutionErrors];
+
 export type DeleteInstitutionResponses = {
     /**
      * OK
@@ -7655,6 +14470,35 @@ export type GetInstitutionByIdData = {
     query?: never;
     url: '/admin-api/v1/institution/{modelId}';
 };
+
+export type GetInstitutionByIdErrors = {
+    /**
+     * Bad request, e.g. field validation or an illegal argument. The body is usually a list of APIMessage, but may be absent for some illegal-argument cases.
+     */
+    400: Array<ApiMessage>;
+    /**
+     * Unauthorized. Body is an APIMessage or a list of APIMessage.
+     */
+    401: ApiMessage | Array<ApiMessage>;
+    /**
+     * Forbidden. Body is a list of APIMessage.
+     */
+    403: Array<ApiMessage>;
+    /**
+     * Resource not found. Body is a list of APIMessage.
+     */
+    404: Array<ApiMessage>;
+    /**
+     * Too many requests (rate limit). Body is the rate-limit code as plain text.
+     */
+    429: string;
+    /**
+     * Unexpected internal server error. Body is a list of APIMessage.
+     */
+    500: Array<ApiMessage>;
+};
+
+export type GetInstitutionByIdError = GetInstitutionByIdErrors[keyof GetInstitutionByIdErrors];
 
 export type GetInstitutionByIdResponses = {
     /**
@@ -7692,6 +14536,35 @@ export type GetInstitutionDependenciesData = {
     url: '/admin-api/v1/institution/{modelId}/dependency';
 };
 
+export type GetInstitutionDependenciesErrors = {
+    /**
+     * Bad request, e.g. field validation or an illegal argument. The body is usually a list of APIMessage, but may be absent for some illegal-argument cases.
+     */
+    400: Array<ApiMessage>;
+    /**
+     * Unauthorized. Body is an APIMessage or a list of APIMessage.
+     */
+    401: ApiMessage | Array<ApiMessage>;
+    /**
+     * Forbidden. Body is a list of APIMessage.
+     */
+    403: Array<ApiMessage>;
+    /**
+     * Resource not found. Body is a list of APIMessage.
+     */
+    404: Array<ApiMessage>;
+    /**
+     * Too many requests (rate limit). Body is the rate-limit code as plain text.
+     */
+    429: string;
+    /**
+     * Unexpected internal server error. Body is a list of APIMessage.
+     */
+    500: Array<ApiMessage>;
+};
+
+export type GetInstitutionDependenciesError = GetInstitutionDependenciesErrors[keyof GetInstitutionDependenciesErrors];
+
 export type GetInstitutionDependenciesResponses = {
     /**
      * OK
@@ -7707,6 +14580,35 @@ export type GetOwnData = {
     query?: never;
     url: '/admin-api/v1/institution/self';
 };
+
+export type GetOwnErrors = {
+    /**
+     * Bad request, e.g. field validation or an illegal argument. The body is usually a list of APIMessage, but may be absent for some illegal-argument cases.
+     */
+    400: Array<ApiMessage>;
+    /**
+     * Unauthorized. Body is an APIMessage or a list of APIMessage.
+     */
+    401: ApiMessage | Array<ApiMessage>;
+    /**
+     * Forbidden. Body is a list of APIMessage.
+     */
+    403: Array<ApiMessage>;
+    /**
+     * Resource not found. Body is a list of APIMessage.
+     */
+    404: Array<ApiMessage>;
+    /**
+     * Too many requests (rate limit). Body is the rate-limit code as plain text.
+     */
+    429: string;
+    /**
+     * Unexpected internal server error. Body is a list of APIMessage.
+     */
+    500: Array<ApiMessage>;
+};
+
+export type GetOwnError = GetOwnErrors[keyof GetOwnErrors];
 
 export type GetOwnResponses = {
     /**
@@ -7730,6 +14632,35 @@ export type GetInstitutionNamesData = {
     url: '/admin-api/v1/institution/names';
 };
 
+export type GetInstitutionNamesErrors = {
+    /**
+     * Bad request, e.g. field validation or an illegal argument. The body is usually a list of APIMessage, but may be absent for some illegal-argument cases.
+     */
+    400: Array<ApiMessage>;
+    /**
+     * Unauthorized. Body is an APIMessage or a list of APIMessage.
+     */
+    401: ApiMessage | Array<ApiMessage>;
+    /**
+     * Forbidden. Body is a list of APIMessage.
+     */
+    403: Array<ApiMessage>;
+    /**
+     * Resource not found. Body is a list of APIMessage.
+     */
+    404: Array<ApiMessage>;
+    /**
+     * Too many requests (rate limit). Body is the rate-limit code as plain text.
+     */
+    429: string;
+    /**
+     * Unexpected internal server error. Body is a list of APIMessage.
+     */
+    500: Array<ApiMessage>;
+};
+
+export type GetInstitutionNamesError = GetInstitutionNamesErrors[keyof GetInstitutionNamesErrors];
+
 export type GetInstitutionNamesResponses = {
     /**
      * OK
@@ -7750,6 +14681,35 @@ export type GetInstitutionsByIdsData = {
     };
     url: '/admin-api/v1/institution/list';
 };
+
+export type GetInstitutionsByIdsErrors = {
+    /**
+     * Bad request, e.g. field validation or an illegal argument. The body is usually a list of APIMessage, but may be absent for some illegal-argument cases.
+     */
+    400: Array<ApiMessage>;
+    /**
+     * Unauthorized. Body is an APIMessage or a list of APIMessage.
+     */
+    401: ApiMessage | Array<ApiMessage>;
+    /**
+     * Forbidden. Body is a list of APIMessage.
+     */
+    403: Array<ApiMessage>;
+    /**
+     * Resource not found. Body is a list of APIMessage.
+     */
+    404: Array<ApiMessage>;
+    /**
+     * Too many requests (rate limit). Body is the rate-limit code as plain text.
+     */
+    429: string;
+    /**
+     * Unexpected internal server error. Body is a list of APIMessage.
+     */
+    500: Array<ApiMessage>;
+};
+
+export type GetInstitutionsByIdsError = GetInstitutionsByIdsErrors[keyof GetInstitutionsByIdsErrors];
 
 export type GetInstitutionsByIdsResponses = {
     /**
@@ -7785,6 +14745,35 @@ export type GetInactiveInstitutionsData = {
     url: '/admin-api/v1/institution/inactive';
 };
 
+export type GetInactiveInstitutionsErrors = {
+    /**
+     * Bad request, e.g. field validation or an illegal argument. The body is usually a list of APIMessage, but may be absent for some illegal-argument cases.
+     */
+    400: Array<ApiMessage>;
+    /**
+     * Unauthorized. Body is an APIMessage or a list of APIMessage.
+     */
+    401: ApiMessage | Array<ApiMessage>;
+    /**
+     * Forbidden. Body is a list of APIMessage.
+     */
+    403: Array<ApiMessage>;
+    /**
+     * Resource not found. Body is a list of APIMessage.
+     */
+    404: Array<ApiMessage>;
+    /**
+     * Too many requests (rate limit). Body is the rate-limit code as plain text.
+     */
+    429: string;
+    /**
+     * Unexpected internal server error. Body is a list of APIMessage.
+     */
+    500: Array<ApiMessage>;
+};
+
+export type GetInactiveInstitutionsError = GetInactiveInstitutionsErrors[keyof GetInactiveInstitutionsErrors];
+
 export type GetInactiveInstitutionsResponses = {
     /**
      * OK
@@ -7819,6 +14808,35 @@ export type GetActiveInstitutionsData = {
     url: '/admin-api/v1/institution/active';
 };
 
+export type GetActiveInstitutionsErrors = {
+    /**
+     * Bad request, e.g. field validation or an illegal argument. The body is usually a list of APIMessage, but may be absent for some illegal-argument cases.
+     */
+    400: Array<ApiMessage>;
+    /**
+     * Unauthorized. Body is an APIMessage or a list of APIMessage.
+     */
+    401: ApiMessage | Array<ApiMessage>;
+    /**
+     * Forbidden. Body is a list of APIMessage.
+     */
+    403: Array<ApiMessage>;
+    /**
+     * Resource not found. Body is a list of APIMessage.
+     */
+    404: Array<ApiMessage>;
+    /**
+     * Too many requests (rate limit). Body is the rate-limit code as plain text.
+     */
+    429: string;
+    /**
+     * Unexpected internal server error. Body is a list of APIMessage.
+     */
+    500: Array<ApiMessage>;
+};
+
+export type GetActiveInstitutionsError = GetActiveInstitutionsErrors[keyof GetActiveInstitutionsErrors];
+
 export type GetActiveInstitutionsResponses = {
     /**
      * OK
@@ -7834,6 +14852,35 @@ export type PrivilegesData = {
     query?: never;
     url: '/admin-api/v1/info/privileges';
 };
+
+export type PrivilegesErrors = {
+    /**
+     * Bad request, e.g. field validation or an illegal argument. The body is usually a list of APIMessage, but may be absent for some illegal-argument cases.
+     */
+    400: Array<ApiMessage>;
+    /**
+     * Unauthorized. Body is an APIMessage or a list of APIMessage.
+     */
+    401: ApiMessage | Array<ApiMessage>;
+    /**
+     * Forbidden. Body is a list of APIMessage.
+     */
+    403: Array<ApiMessage>;
+    /**
+     * Resource not found. Body is a list of APIMessage.
+     */
+    404: Array<ApiMessage>;
+    /**
+     * Too many requests (rate limit). Body is the rate-limit code as plain text.
+     */
+    429: string;
+    /**
+     * Unexpected internal server error. Body is a list of APIMessage.
+     */
+    500: Array<ApiMessage>;
+};
+
+export type PrivilegesError = PrivilegesErrors[keyof PrivilegesErrors];
 
 export type PrivilegesResponses = {
     /**
@@ -7853,6 +14900,35 @@ export type LogoData = {
     url: '/admin-api/v1/info/logo/{urlSuffix}';
 };
 
+export type LogoErrors = {
+    /**
+     * Bad request, e.g. field validation or an illegal argument. The body is usually a list of APIMessage, but may be absent for some illegal-argument cases.
+     */
+    400: Array<ApiMessage>;
+    /**
+     * Unauthorized. Body is an APIMessage or a list of APIMessage.
+     */
+    401: ApiMessage | Array<ApiMessage>;
+    /**
+     * Forbidden. Body is a list of APIMessage.
+     */
+    403: Array<ApiMessage>;
+    /**
+     * Resource not found. Body is a list of APIMessage.
+     */
+    404: Array<ApiMessage>;
+    /**
+     * Too many requests (rate limit). Body is the rate-limit code as plain text.
+     */
+    429: string;
+    /**
+     * Unexpected internal server error. Body is a list of APIMessage.
+     */
+    500: Array<ApiMessage>;
+};
+
+export type LogoError = LogoErrors[keyof LogoErrors];
+
 export type LogoResponses = {
     /**
      * OK
@@ -7868,6 +14944,35 @@ export type GetInstitutionInfoData = {
     query?: never;
     url: '/admin-api/v1/info/institution';
 };
+
+export type GetInstitutionInfoErrors = {
+    /**
+     * Bad request, e.g. field validation or an illegal argument. The body is usually a list of APIMessage, but may be absent for some illegal-argument cases.
+     */
+    400: Array<ApiMessage>;
+    /**
+     * Unauthorized. Body is an APIMessage or a list of APIMessage.
+     */
+    401: ApiMessage | Array<ApiMessage>;
+    /**
+     * Forbidden. Body is a list of APIMessage.
+     */
+    403: Array<ApiMessage>;
+    /**
+     * Resource not found. Body is a list of APIMessage.
+     */
+    404: Array<ApiMessage>;
+    /**
+     * Too many requests (rate limit). Body is the rate-limit code as plain text.
+     */
+    429: string;
+    /**
+     * Unexpected internal server error. Body is a list of APIMessage.
+     */
+    500: Array<ApiMessage>;
+};
+
+export type GetInstitutionInfoError = GetInstitutionInfoErrors[keyof GetInstitutionInfoErrors];
 
 export type GetInstitutionInfoResponses = {
     /**
@@ -7887,6 +14992,35 @@ export type GetInstitutionInfo1Data = {
     url: '/admin-api/v1/info/institution/{urlSuffix}';
 };
 
+export type GetInstitutionInfo1Errors = {
+    /**
+     * Bad request, e.g. field validation or an illegal argument. The body is usually a list of APIMessage, but may be absent for some illegal-argument cases.
+     */
+    400: Array<ApiMessage>;
+    /**
+     * Unauthorized. Body is an APIMessage or a list of APIMessage.
+     */
+    401: ApiMessage | Array<ApiMessage>;
+    /**
+     * Forbidden. Body is a list of APIMessage.
+     */
+    403: Array<ApiMessage>;
+    /**
+     * Resource not found. Body is a list of APIMessage.
+     */
+    404: Array<ApiMessage>;
+    /**
+     * Too many requests (rate limit). Body is the rate-limit code as plain text.
+     */
+    429: string;
+    /**
+     * Unexpected internal server error. Body is a list of APIMessage.
+     */
+    500: Array<ApiMessage>;
+};
+
+export type GetInstitutionInfo1Error = GetInstitutionInfo1Errors[keyof GetInstitutionInfo1Errors];
+
 export type GetInstitutionInfo1Responses = {
     /**
      * OK
@@ -7902,6 +15036,35 @@ export type GetServiceFeaturesData = {
     query?: never;
     url: '/admin-api/v1/info/features';
 };
+
+export type GetServiceFeaturesErrors = {
+    /**
+     * Bad request, e.g. field validation or an illegal argument. The body is usually a list of APIMessage, but may be absent for some illegal-argument cases.
+     */
+    400: Array<ApiMessage>;
+    /**
+     * Unauthorized. Body is an APIMessage or a list of APIMessage.
+     */
+    401: ApiMessage | Array<ApiMessage>;
+    /**
+     * Forbidden. Body is a list of APIMessage.
+     */
+    403: Array<ApiMessage>;
+    /**
+     * Resource not found. Body is a list of APIMessage.
+     */
+    404: Array<ApiMessage>;
+    /**
+     * Too many requests (rate limit). Body is the rate-limit code as plain text.
+     */
+    429: string;
+    /**
+     * Unexpected internal server error. Body is a list of APIMessage.
+     */
+    500: Array<ApiMessage>;
+};
+
+export type GetServiceFeaturesError = GetServiceFeaturesErrors[keyof GetServiceFeaturesErrors];
 
 export type GetServiceFeaturesResponses = {
     /**
@@ -7936,6 +15099,35 @@ export type DeleteIndicatorData = {
     url: '/admin-api/v1/indicator/{modelId}';
 };
 
+export type DeleteIndicatorErrors = {
+    /**
+     * Bad request, e.g. field validation or an illegal argument. The body is usually a list of APIMessage, but may be absent for some illegal-argument cases.
+     */
+    400: Array<ApiMessage>;
+    /**
+     * Unauthorized. Body is an APIMessage or a list of APIMessage.
+     */
+    401: ApiMessage | Array<ApiMessage>;
+    /**
+     * Forbidden. Body is a list of APIMessage.
+     */
+    403: Array<ApiMessage>;
+    /**
+     * Resource not found. Body is a list of APIMessage.
+     */
+    404: Array<ApiMessage>;
+    /**
+     * Too many requests (rate limit). Body is the rate-limit code as plain text.
+     */
+    429: string;
+    /**
+     * Unexpected internal server error. Body is a list of APIMessage.
+     */
+    500: Array<ApiMessage>;
+};
+
+export type DeleteIndicatorError = DeleteIndicatorErrors[keyof DeleteIndicatorErrors];
+
 export type DeleteIndicatorResponses = {
     /**
      * OK
@@ -7956,6 +15148,35 @@ export type GetIndicatorByIdData = {
     query?: never;
     url: '/admin-api/v1/indicator/{modelId}';
 };
+
+export type GetIndicatorByIdErrors = {
+    /**
+     * Bad request, e.g. field validation or an illegal argument. The body is usually a list of APIMessage, but may be absent for some illegal-argument cases.
+     */
+    400: Array<ApiMessage>;
+    /**
+     * Unauthorized. Body is an APIMessage or a list of APIMessage.
+     */
+    401: ApiMessage | Array<ApiMessage>;
+    /**
+     * Forbidden. Body is a list of APIMessage.
+     */
+    403: Array<ApiMessage>;
+    /**
+     * Resource not found. Body is a list of APIMessage.
+     */
+    404: Array<ApiMessage>;
+    /**
+     * Too many requests (rate limit). Body is the rate-limit code as plain text.
+     */
+    429: string;
+    /**
+     * Unexpected internal server error. Body is a list of APIMessage.
+     */
+    500: Array<ApiMessage>;
+};
+
+export type GetIndicatorByIdError = GetIndicatorByIdErrors[keyof GetIndicatorByIdErrors];
 
 export type GetIndicatorByIdResponses = {
     /**
@@ -7993,6 +15214,35 @@ export type GetIndicatorDependenciesData = {
     url: '/admin-api/v1/indicator/{modelId}/dependency';
 };
 
+export type GetIndicatorDependenciesErrors = {
+    /**
+     * Bad request, e.g. field validation or an illegal argument. The body is usually a list of APIMessage, but may be absent for some illegal-argument cases.
+     */
+    400: Array<ApiMessage>;
+    /**
+     * Unauthorized. Body is an APIMessage or a list of APIMessage.
+     */
+    401: ApiMessage | Array<ApiMessage>;
+    /**
+     * Forbidden. Body is a list of APIMessage.
+     */
+    403: Array<ApiMessage>;
+    /**
+     * Resource not found. Body is a list of APIMessage.
+     */
+    404: Array<ApiMessage>;
+    /**
+     * Too many requests (rate limit). Body is the rate-limit code as plain text.
+     */
+    429: string;
+    /**
+     * Unexpected internal server error. Body is a list of APIMessage.
+     */
+    500: Array<ApiMessage>;
+};
+
+export type GetIndicatorDependenciesError = GetIndicatorDependenciesErrors[keyof GetIndicatorDependenciesErrors];
+
 export type GetIndicatorDependenciesResponses = {
     /**
      * OK
@@ -8015,6 +15265,35 @@ export type GetIndicatorNamesData = {
     url: '/admin-api/v1/indicator/names';
 };
 
+export type GetIndicatorNamesErrors = {
+    /**
+     * Bad request, e.g. field validation or an illegal argument. The body is usually a list of APIMessage, but may be absent for some illegal-argument cases.
+     */
+    400: Array<ApiMessage>;
+    /**
+     * Unauthorized. Body is an APIMessage or a list of APIMessage.
+     */
+    401: ApiMessage | Array<ApiMessage>;
+    /**
+     * Forbidden. Body is a list of APIMessage.
+     */
+    403: Array<ApiMessage>;
+    /**
+     * Resource not found. Body is a list of APIMessage.
+     */
+    404: Array<ApiMessage>;
+    /**
+     * Too many requests (rate limit). Body is the rate-limit code as plain text.
+     */
+    429: string;
+    /**
+     * Unexpected internal server error. Body is a list of APIMessage.
+     */
+    500: Array<ApiMessage>;
+};
+
+export type GetIndicatorNamesError = GetIndicatorNamesErrors[keyof GetIndicatorNamesErrors];
+
 export type GetIndicatorNamesResponses = {
     /**
      * OK
@@ -8036,6 +15315,35 @@ export type GetIndicatorsByIdsData = {
     url: '/admin-api/v1/indicator/list';
 };
 
+export type GetIndicatorsByIdsErrors = {
+    /**
+     * Bad request, e.g. field validation or an illegal argument. The body is usually a list of APIMessage, but may be absent for some illegal-argument cases.
+     */
+    400: Array<ApiMessage>;
+    /**
+     * Unauthorized. Body is an APIMessage or a list of APIMessage.
+     */
+    401: ApiMessage | Array<ApiMessage>;
+    /**
+     * Forbidden. Body is a list of APIMessage.
+     */
+    403: Array<ApiMessage>;
+    /**
+     * Resource not found. Body is a list of APIMessage.
+     */
+    404: Array<ApiMessage>;
+    /**
+     * Too many requests (rate limit). Body is the rate-limit code as plain text.
+     */
+    429: string;
+    /**
+     * Unexpected internal server error. Body is a list of APIMessage.
+     */
+    500: Array<ApiMessage>;
+};
+
+export type GetIndicatorsByIdsError = GetIndicatorsByIdsErrors[keyof GetIndicatorsByIdsErrors];
+
 export type GetIndicatorsByIdsResponses = {
     /**
      * OK
@@ -8055,6 +15363,35 @@ export type GetSecurityKeyEntriesData = {
     };
     url: '/admin-api/v1/exam/{parentModelId}/grant';
 };
+
+export type GetSecurityKeyEntriesErrors = {
+    /**
+     * Bad request, e.g. field validation or an illegal argument. The body is usually a list of APIMessage, but may be absent for some illegal-argument cases.
+     */
+    400: Array<ApiMessage>;
+    /**
+     * Unauthorized. Body is an APIMessage or a list of APIMessage.
+     */
+    401: ApiMessage | Array<ApiMessage>;
+    /**
+     * Forbidden. Body is a list of APIMessage.
+     */
+    403: Array<ApiMessage>;
+    /**
+     * Resource not found. Body is a list of APIMessage.
+     */
+    404: Array<ApiMessage>;
+    /**
+     * Too many requests (rate limit). Body is the rate-limit code as plain text.
+     */
+    429: string;
+    /**
+     * Unexpected internal server error. Body is a list of APIMessage.
+     */
+    500: Array<ApiMessage>;
+};
+
+export type GetSecurityKeyEntriesError = GetSecurityKeyEntriesErrors[keyof GetSecurityKeyEntriesErrors];
 
 export type GetSecurityKeyEntriesResponses = {
     /**
@@ -8087,6 +15424,35 @@ export type DeleteExamAdministrationData = {
     url: '/admin-api/v1/exam/{modelId}';
 };
 
+export type DeleteExamAdministrationErrors = {
+    /**
+     * Bad request, e.g. field validation or an illegal argument. The body is usually a list of APIMessage, but may be absent for some illegal-argument cases.
+     */
+    400: Array<ApiMessage>;
+    /**
+     * Unauthorized. Body is an APIMessage or a list of APIMessage.
+     */
+    401: ApiMessage | Array<ApiMessage>;
+    /**
+     * Forbidden. Body is a list of APIMessage.
+     */
+    403: Array<ApiMessage>;
+    /**
+     * Resource not found. Body is a list of APIMessage.
+     */
+    404: Array<ApiMessage>;
+    /**
+     * Too many requests (rate limit). Body is the rate-limit code as plain text.
+     */
+    429: string;
+    /**
+     * Unexpected internal server error. Body is a list of APIMessage.
+     */
+    500: Array<ApiMessage>;
+};
+
+export type DeleteExamAdministrationError = DeleteExamAdministrationErrors[keyof DeleteExamAdministrationErrors];
+
 export type DeleteExamAdministrationResponses = {
     /**
      * OK
@@ -8108,6 +15474,35 @@ export type GetExamAdministrationByIdData = {
     url: '/admin-api/v1/exam/{modelId}';
 };
 
+export type GetExamAdministrationByIdErrors = {
+    /**
+     * Bad request, e.g. field validation or an illegal argument. The body is usually a list of APIMessage, but may be absent for some illegal-argument cases.
+     */
+    400: Array<ApiMessage>;
+    /**
+     * Unauthorized. Body is an APIMessage or a list of APIMessage.
+     */
+    401: ApiMessage | Array<ApiMessage>;
+    /**
+     * Forbidden. Body is a list of APIMessage.
+     */
+    403: Array<ApiMessage>;
+    /**
+     * Resource not found. Body is a list of APIMessage.
+     */
+    404: Array<ApiMessage>;
+    /**
+     * Too many requests (rate limit). Body is the rate-limit code as plain text.
+     */
+    429: string;
+    /**
+     * Unexpected internal server error. Body is a list of APIMessage.
+     */
+    500: Array<ApiMessage>;
+};
+
+export type GetExamAdministrationByIdError = GetExamAdministrationByIdErrors[keyof GetExamAdministrationByIdErrors];
+
 export type GetExamAdministrationByIdResponses = {
     /**
      * OK
@@ -8127,6 +15522,35 @@ export type GetExamKeysForFollowupData = {
     };
     url: '/admin-api/v1/exam/{modelId}/followup';
 };
+
+export type GetExamKeysForFollowupErrors = {
+    /**
+     * Bad request, e.g. field validation or an illegal argument. The body is usually a list of APIMessage, but may be absent for some illegal-argument cases.
+     */
+    400: Array<ApiMessage>;
+    /**
+     * Unauthorized. Body is an APIMessage or a list of APIMessage.
+     */
+    401: ApiMessage | Array<ApiMessage>;
+    /**
+     * Forbidden. Body is a list of APIMessage.
+     */
+    403: Array<ApiMessage>;
+    /**
+     * Resource not found. Body is a list of APIMessage.
+     */
+    404: Array<ApiMessage>;
+    /**
+     * Too many requests (rate limit). Body is the rate-limit code as plain text.
+     */
+    429: string;
+    /**
+     * Unexpected internal server error. Body is a list of APIMessage.
+     */
+    500: Array<ApiMessage>;
+};
+
+export type GetExamKeysForFollowupError = GetExamKeysForFollowupErrors[keyof GetExamKeysForFollowupErrors];
 
 export type GetExamKeysForFollowupResponses = {
     /**
@@ -8164,6 +15588,35 @@ export type GetExamAdministrationDependenciesData = {
     url: '/admin-api/v1/exam/{modelId}/dependency';
 };
 
+export type GetExamAdministrationDependenciesErrors = {
+    /**
+     * Bad request, e.g. field validation or an illegal argument. The body is usually a list of APIMessage, but may be absent for some illegal-argument cases.
+     */
+    400: Array<ApiMessage>;
+    /**
+     * Unauthorized. Body is an APIMessage or a list of APIMessage.
+     */
+    401: ApiMessage | Array<ApiMessage>;
+    /**
+     * Forbidden. Body is a list of APIMessage.
+     */
+    403: Array<ApiMessage>;
+    /**
+     * Resource not found. Body is a list of APIMessage.
+     */
+    404: Array<ApiMessage>;
+    /**
+     * Too many requests (rate limit). Body is the rate-limit code as plain text.
+     */
+    429: string;
+    /**
+     * Unexpected internal server error. Body is a list of APIMessage.
+     */
+    500: Array<ApiMessage>;
+};
+
+export type GetExamAdministrationDependenciesError = GetExamAdministrationDependenciesErrors[keyof GetExamAdministrationDependenciesErrors];
+
 export type GetExamAdministrationDependenciesResponses = {
     /**
      * OK
@@ -8184,6 +15637,35 @@ export type CheckSebRestrictionData = {
     url: '/admin-api/v1/exam/{modelId}/check-seb-restriction';
 };
 
+export type CheckSebRestrictionErrors = {
+    /**
+     * Bad request, e.g. field validation or an illegal argument. The body is usually a list of APIMessage, but may be absent for some illegal-argument cases.
+     */
+    400: Array<ApiMessage>;
+    /**
+     * Unauthorized. Body is an APIMessage or a list of APIMessage.
+     */
+    401: ApiMessage | Array<ApiMessage>;
+    /**
+     * Forbidden. Body is a list of APIMessage.
+     */
+    403: Array<ApiMessage>;
+    /**
+     * Resource not found. Body is a list of APIMessage.
+     */
+    404: Array<ApiMessage>;
+    /**
+     * Too many requests (rate limit). Body is the rate-limit code as plain text.
+     */
+    429: string;
+    /**
+     * Unexpected internal server error. Body is a list of APIMessage.
+     */
+    500: Array<ApiMessage>;
+};
+
+export type CheckSebRestrictionError = CheckSebRestrictionErrors[keyof CheckSebRestrictionErrors];
+
 export type CheckSebRestrictionResponses = {
     /**
      * OK
@@ -8203,6 +15685,35 @@ export type CheckImportedData = {
     };
     url: '/admin-api/v1/exam/{modelId}/check-imported';
 };
+
+export type CheckImportedErrors = {
+    /**
+     * Bad request, e.g. field validation or an illegal argument. The body is usually a list of APIMessage, but may be absent for some illegal-argument cases.
+     */
+    400: Array<ApiMessage>;
+    /**
+     * Unauthorized. Body is an APIMessage or a list of APIMessage.
+     */
+    401: ApiMessage | Array<ApiMessage>;
+    /**
+     * Forbidden. Body is a list of APIMessage.
+     */
+    403: Array<ApiMessage>;
+    /**
+     * Resource not found. Body is a list of APIMessage.
+     */
+    404: Array<ApiMessage>;
+    /**
+     * Too many requests (rate limit). Body is the rate-limit code as plain text.
+     */
+    429: string;
+    /**
+     * Unexpected internal server error. Body is a list of APIMessage.
+     */
+    500: Array<ApiMessage>;
+};
+
+export type CheckImportedError = CheckImportedErrors[keyof CheckImportedErrors];
 
 export type CheckImportedResponses = {
     /**
@@ -8225,6 +15736,35 @@ export type CheckExamConsistencyData = {
     url: '/admin-api/v1/exam/{modelId}/check-consistency';
 };
 
+export type CheckExamConsistencyErrors = {
+    /**
+     * Bad request, e.g. field validation or an illegal argument. The body is usually a list of APIMessage, but may be absent for some illegal-argument cases.
+     */
+    400: Array<ApiMessage>;
+    /**
+     * Unauthorized. Body is an APIMessage or a list of APIMessage.
+     */
+    401: ApiMessage | Array<ApiMessage>;
+    /**
+     * Forbidden. Body is a list of APIMessage.
+     */
+    403: Array<ApiMessage>;
+    /**
+     * Resource not found. Body is a list of APIMessage.
+     */
+    404: Array<ApiMessage>;
+    /**
+     * Too many requests (rate limit). Body is the rate-limit code as plain text.
+     */
+    429: string;
+    /**
+     * Unexpected internal server error. Body is a list of APIMessage.
+     */
+    500: Array<ApiMessage>;
+};
+
+export type CheckExamConsistencyError = CheckExamConsistencyErrors[keyof CheckExamConsistencyErrors];
+
 export type CheckExamConsistencyResponses = {
     /**
      * OK
@@ -8244,6 +15784,35 @@ export type GetChaptersData = {
     };
     url: '/admin-api/v1/exam/{modelId}/chapters';
 };
+
+export type GetChaptersErrors = {
+    /**
+     * Bad request, e.g. field validation or an illegal argument. The body is usually a list of APIMessage, but may be absent for some illegal-argument cases.
+     */
+    400: Array<ApiMessage>;
+    /**
+     * Unauthorized. Body is an APIMessage or a list of APIMessage.
+     */
+    401: ApiMessage | Array<ApiMessage>;
+    /**
+     * Forbidden. Body is a list of APIMessage.
+     */
+    403: Array<ApiMessage>;
+    /**
+     * Resource not found. Body is a list of APIMessage.
+     */
+    404: Array<ApiMessage>;
+    /**
+     * Too many requests (rate limit). Body is the rate-limit code as plain text.
+     */
+    429: string;
+    /**
+     * Unexpected internal server error. Body is a list of APIMessage.
+     */
+    500: Array<ApiMessage>;
+};
+
+export type GetChaptersError = GetChaptersErrors[keyof GetChaptersErrors];
 
 export type GetChaptersResponses = {
     /**
@@ -8265,6 +15834,35 @@ export type GetTableValuesData = {
     url: '/admin-api/v1/exam/seb-settings/{modelId}/table';
 };
 
+export type GetTableValuesErrors = {
+    /**
+     * Bad request, e.g. field validation or an illegal argument. The body is usually a list of APIMessage, but may be absent for some illegal-argument cases.
+     */
+    400: Array<ApiMessage>;
+    /**
+     * Unauthorized. Body is an APIMessage or a list of APIMessage.
+     */
+    401: ApiMessage | Array<ApiMessage>;
+    /**
+     * Forbidden. Body is a list of APIMessage.
+     */
+    403: Array<ApiMessage>;
+    /**
+     * Resource not found. Body is a list of APIMessage.
+     */
+    404: Array<ApiMessage>;
+    /**
+     * Too many requests (rate limit). Body is the rate-limit code as plain text.
+     */
+    429: string;
+    /**
+     * Unexpected internal server error. Body is a list of APIMessage.
+     */
+    500: Array<ApiMessage>;
+};
+
+export type GetTableValuesError = GetTableValuesErrors[keyof GetTableValuesErrors];
+
 export type GetTableValuesResponses = {
     /**
      * OK
@@ -8283,6 +15881,35 @@ export type GetExamConfigMappingsData = {
     url: '/admin-api/v1/exam/seb-settings/{modelId}/examConfigMapping';
 };
 
+export type GetExamConfigMappingsErrors = {
+    /**
+     * Bad request, e.g. field validation or an illegal argument. The body is usually a list of APIMessage, but may be absent for some illegal-argument cases.
+     */
+    400: Array<ApiMessage>;
+    /**
+     * Unauthorized. Body is an APIMessage or a list of APIMessage.
+     */
+    401: ApiMessage | Array<ApiMessage>;
+    /**
+     * Forbidden. Body is a list of APIMessage.
+     */
+    403: Array<ApiMessage>;
+    /**
+     * Resource not found. Body is a list of APIMessage.
+     */
+    404: Array<ApiMessage>;
+    /**
+     * Too many requests (rate limit). Body is the rate-limit code as plain text.
+     */
+    429: string;
+    /**
+     * Unexpected internal server error. Body is a list of APIMessage.
+     */
+    500: Array<ApiMessage>;
+};
+
+export type GetExamConfigMappingsError = GetExamConfigMappingsErrors[keyof GetExamConfigMappingsErrors];
+
 export type GetExamConfigMappingsResponses = {
     /**
      * OK
@@ -8300,6 +15927,35 @@ export type GetActiveSebClientsData = {
     query?: never;
     url: '/admin-api/v1/exam/seb-settings/{modelId}/active-seb-clients';
 };
+
+export type GetActiveSebClientsErrors = {
+    /**
+     * Bad request, e.g. field validation or an illegal argument. The body is usually a list of APIMessage, but may be absent for some illegal-argument cases.
+     */
+    400: Array<ApiMessage>;
+    /**
+     * Unauthorized. Body is an APIMessage or a list of APIMessage.
+     */
+    401: ApiMessage | Array<ApiMessage>;
+    /**
+     * Forbidden. Body is a list of APIMessage.
+     */
+    403: Array<ApiMessage>;
+    /**
+     * Resource not found. Body is a list of APIMessage.
+     */
+    404: Array<ApiMessage>;
+    /**
+     * Too many requests (rate limit). Body is the rate-limit code as plain text.
+     */
+    429: string;
+    /**
+     * Unexpected internal server error. Body is a list of APIMessage.
+     */
+    500: Array<ApiMessage>;
+};
+
+export type GetActiveSebClientsError = GetActiveSebClientsErrors[keyof GetActiveSebClientsErrors];
 
 export type GetActiveSebClientsResponses = {
     /**
@@ -8323,6 +15979,35 @@ export type GetExamAdministrationNamesData = {
     url: '/admin-api/v1/exam/names';
 };
 
+export type GetExamAdministrationNamesErrors = {
+    /**
+     * Bad request, e.g. field validation or an illegal argument. The body is usually a list of APIMessage, but may be absent for some illegal-argument cases.
+     */
+    400: Array<ApiMessage>;
+    /**
+     * Unauthorized. Body is an APIMessage or a list of APIMessage.
+     */
+    401: ApiMessage | Array<ApiMessage>;
+    /**
+     * Forbidden. Body is a list of APIMessage.
+     */
+    403: Array<ApiMessage>;
+    /**
+     * Resource not found. Body is a list of APIMessage.
+     */
+    404: Array<ApiMessage>;
+    /**
+     * Too many requests (rate limit). Body is the rate-limit code as plain text.
+     */
+    429: string;
+    /**
+     * Unexpected internal server error. Body is a list of APIMessage.
+     */
+    500: Array<ApiMessage>;
+};
+
+export type GetExamAdministrationNamesError = GetExamAdministrationNamesErrors[keyof GetExamAdministrationNamesErrors];
+
 export type GetExamAdministrationNamesResponses = {
     /**
      * OK
@@ -8343,6 +16028,35 @@ export type GetExamAdministrationsByIdsData = {
     };
     url: '/admin-api/v1/exam/list';
 };
+
+export type GetExamAdministrationsByIdsErrors = {
+    /**
+     * Bad request, e.g. field validation or an illegal argument. The body is usually a list of APIMessage, but may be absent for some illegal-argument cases.
+     */
+    400: Array<ApiMessage>;
+    /**
+     * Unauthorized. Body is an APIMessage or a list of APIMessage.
+     */
+    401: ApiMessage | Array<ApiMessage>;
+    /**
+     * Forbidden. Body is a list of APIMessage.
+     */
+    403: Array<ApiMessage>;
+    /**
+     * Resource not found. Body is a list of APIMessage.
+     */
+    404: Array<ApiMessage>;
+    /**
+     * Too many requests (rate limit). Body is the rate-limit code as plain text.
+     */
+    429: string;
+    /**
+     * Unexpected internal server error. Body is a list of APIMessage.
+     */
+    500: Array<ApiMessage>;
+};
+
+export type GetExamAdministrationsByIdsError = GetExamAdministrationsByIdsErrors[keyof GetExamAdministrationsByIdsErrors];
 
 export type GetExamAdministrationsByIdsResponses = {
     /**
@@ -8365,6 +16079,35 @@ export type DeleteIndicatorTemplateData = {
     url: '/admin-api/v1/exam-template/{parentModelId}/indicator/{modelId}';
 };
 
+export type DeleteIndicatorTemplateErrors = {
+    /**
+     * Bad request, e.g. field validation or an illegal argument. The body is usually a list of APIMessage, but may be absent for some illegal-argument cases.
+     */
+    400: Array<ApiMessage>;
+    /**
+     * Unauthorized. Body is an APIMessage or a list of APIMessage.
+     */
+    401: ApiMessage | Array<ApiMessage>;
+    /**
+     * Forbidden. Body is a list of APIMessage.
+     */
+    403: Array<ApiMessage>;
+    /**
+     * Resource not found. Body is a list of APIMessage.
+     */
+    404: Array<ApiMessage>;
+    /**
+     * Too many requests (rate limit). Body is the rate-limit code as plain text.
+     */
+    429: string;
+    /**
+     * Unexpected internal server error. Body is a list of APIMessage.
+     */
+    500: Array<ApiMessage>;
+};
+
+export type DeleteIndicatorTemplateError = DeleteIndicatorTemplateErrors[keyof DeleteIndicatorTemplateErrors];
+
 export type DeleteIndicatorTemplateResponses = {
     /**
      * OK
@@ -8385,6 +16128,35 @@ export type GetIndicatorByData = {
     };
     url: '/admin-api/v1/exam-template/{parentModelId}/indicator/{modelId}';
 };
+
+export type GetIndicatorByErrors = {
+    /**
+     * Bad request, e.g. field validation or an illegal argument. The body is usually a list of APIMessage, but may be absent for some illegal-argument cases.
+     */
+    400: Array<ApiMessage>;
+    /**
+     * Unauthorized. Body is an APIMessage or a list of APIMessage.
+     */
+    401: ApiMessage | Array<ApiMessage>;
+    /**
+     * Forbidden. Body is a list of APIMessage.
+     */
+    403: Array<ApiMessage>;
+    /**
+     * Resource not found. Body is a list of APIMessage.
+     */
+    404: Array<ApiMessage>;
+    /**
+     * Too many requests (rate limit). Body is the rate-limit code as plain text.
+     */
+    429: string;
+    /**
+     * Unexpected internal server error. Body is a list of APIMessage.
+     */
+    500: Array<ApiMessage>;
+};
+
+export type GetIndicatorByError = GetIndicatorByErrors[keyof GetIndicatorByErrors];
 
 export type GetIndicatorByResponses = {
     /**
@@ -8407,6 +16179,35 @@ export type DeleteClientGroupTemplateData = {
     url: '/admin-api/v1/exam-template/{parentModelId}/client-group/{modelId}';
 };
 
+export type DeleteClientGroupTemplateErrors = {
+    /**
+     * Bad request, e.g. field validation or an illegal argument. The body is usually a list of APIMessage, but may be absent for some illegal-argument cases.
+     */
+    400: Array<ApiMessage>;
+    /**
+     * Unauthorized. Body is an APIMessage or a list of APIMessage.
+     */
+    401: ApiMessage | Array<ApiMessage>;
+    /**
+     * Forbidden. Body is a list of APIMessage.
+     */
+    403: Array<ApiMessage>;
+    /**
+     * Resource not found. Body is a list of APIMessage.
+     */
+    404: Array<ApiMessage>;
+    /**
+     * Too many requests (rate limit). Body is the rate-limit code as plain text.
+     */
+    429: string;
+    /**
+     * Unexpected internal server error. Body is a list of APIMessage.
+     */
+    500: Array<ApiMessage>;
+};
+
+export type DeleteClientGroupTemplateError = DeleteClientGroupTemplateErrors[keyof DeleteClientGroupTemplateErrors];
+
 export type DeleteClientGroupTemplateResponses = {
     /**
      * OK
@@ -8427,6 +16228,35 @@ export type GetClientGroupTemplateByData = {
     };
     url: '/admin-api/v1/exam-template/{parentModelId}/client-group/{modelId}';
 };
+
+export type GetClientGroupTemplateByErrors = {
+    /**
+     * Bad request, e.g. field validation or an illegal argument. The body is usually a list of APIMessage, but may be absent for some illegal-argument cases.
+     */
+    400: Array<ApiMessage>;
+    /**
+     * Unauthorized. Body is an APIMessage or a list of APIMessage.
+     */
+    401: ApiMessage | Array<ApiMessage>;
+    /**
+     * Forbidden. Body is a list of APIMessage.
+     */
+    403: Array<ApiMessage>;
+    /**
+     * Resource not found. Body is a list of APIMessage.
+     */
+    404: Array<ApiMessage>;
+    /**
+     * Too many requests (rate limit). Body is the rate-limit code as plain text.
+     */
+    429: string;
+    /**
+     * Unexpected internal server error. Body is a list of APIMessage.
+     */
+    500: Array<ApiMessage>;
+};
+
+export type GetClientGroupTemplateByError = GetClientGroupTemplateByErrors[keyof GetClientGroupTemplateByErrors];
 
 export type GetClientGroupTemplateByResponses = {
     /**
@@ -8459,6 +16289,35 @@ export type DeleteExamTemplateData = {
     url: '/admin-api/v1/exam-template/{modelId}';
 };
 
+export type DeleteExamTemplateErrors = {
+    /**
+     * Bad request, e.g. field validation or an illegal argument. The body is usually a list of APIMessage, but may be absent for some illegal-argument cases.
+     */
+    400: Array<ApiMessage>;
+    /**
+     * Unauthorized. Body is an APIMessage or a list of APIMessage.
+     */
+    401: ApiMessage | Array<ApiMessage>;
+    /**
+     * Forbidden. Body is a list of APIMessage.
+     */
+    403: Array<ApiMessage>;
+    /**
+     * Resource not found. Body is a list of APIMessage.
+     */
+    404: Array<ApiMessage>;
+    /**
+     * Too many requests (rate limit). Body is the rate-limit code as plain text.
+     */
+    429: string;
+    /**
+     * Unexpected internal server error. Body is a list of APIMessage.
+     */
+    500: Array<ApiMessage>;
+};
+
+export type DeleteExamTemplateError = DeleteExamTemplateErrors[keyof DeleteExamTemplateErrors];
+
 export type DeleteExamTemplateResponses = {
     /**
      * OK
@@ -8479,6 +16338,35 @@ export type GetExamTemplateByIdData = {
     query?: never;
     url: '/admin-api/v1/exam-template/{modelId}';
 };
+
+export type GetExamTemplateByIdErrors = {
+    /**
+     * Bad request, e.g. field validation or an illegal argument. The body is usually a list of APIMessage, but may be absent for some illegal-argument cases.
+     */
+    400: Array<ApiMessage>;
+    /**
+     * Unauthorized. Body is an APIMessage or a list of APIMessage.
+     */
+    401: ApiMessage | Array<ApiMessage>;
+    /**
+     * Forbidden. Body is a list of APIMessage.
+     */
+    403: Array<ApiMessage>;
+    /**
+     * Resource not found. Body is a list of APIMessage.
+     */
+    404: Array<ApiMessage>;
+    /**
+     * Too many requests (rate limit). Body is the rate-limit code as plain text.
+     */
+    429: string;
+    /**
+     * Unexpected internal server error. Body is a list of APIMessage.
+     */
+    500: Array<ApiMessage>;
+};
+
+export type GetExamTemplateByIdError = GetExamTemplateByIdErrors[keyof GetExamTemplateByIdErrors];
 
 export type GetExamTemplateByIdResponses = {
     /**
@@ -8503,6 +16391,35 @@ export type GetIndicatorPageData = {
     };
     url: '/admin-api/v1/exam-template/{modelId}/indicator';
 };
+
+export type GetIndicatorPageErrors = {
+    /**
+     * Bad request, e.g. field validation or an illegal argument. The body is usually a list of APIMessage, but may be absent for some illegal-argument cases.
+     */
+    400: Array<ApiMessage>;
+    /**
+     * Unauthorized. Body is an APIMessage or a list of APIMessage.
+     */
+    401: ApiMessage | Array<ApiMessage>;
+    /**
+     * Forbidden. Body is a list of APIMessage.
+     */
+    403: Array<ApiMessage>;
+    /**
+     * Resource not found. Body is a list of APIMessage.
+     */
+    404: Array<ApiMessage>;
+    /**
+     * Too many requests (rate limit). Body is the rate-limit code as plain text.
+     */
+    429: string;
+    /**
+     * Unexpected internal server error. Body is a list of APIMessage.
+     */
+    500: Array<ApiMessage>;
+};
+
+export type GetIndicatorPageError = GetIndicatorPageErrors[keyof GetIndicatorPageErrors];
 
 export type GetIndicatorPageResponses = {
     /**
@@ -8540,6 +16457,35 @@ export type GetExamTemplateDependenciesData = {
     url: '/admin-api/v1/exam-template/{modelId}/dependency';
 };
 
+export type GetExamTemplateDependenciesErrors = {
+    /**
+     * Bad request, e.g. field validation or an illegal argument. The body is usually a list of APIMessage, but may be absent for some illegal-argument cases.
+     */
+    400: Array<ApiMessage>;
+    /**
+     * Unauthorized. Body is an APIMessage or a list of APIMessage.
+     */
+    401: ApiMessage | Array<ApiMessage>;
+    /**
+     * Forbidden. Body is a list of APIMessage.
+     */
+    403: Array<ApiMessage>;
+    /**
+     * Resource not found. Body is a list of APIMessage.
+     */
+    404: Array<ApiMessage>;
+    /**
+     * Too many requests (rate limit). Body is the rate-limit code as plain text.
+     */
+    429: string;
+    /**
+     * Unexpected internal server error. Body is a list of APIMessage.
+     */
+    500: Array<ApiMessage>;
+};
+
+export type GetExamTemplateDependenciesError = GetExamTemplateDependenciesErrors[keyof GetExamTemplateDependenciesErrors];
+
 export type GetExamTemplateDependenciesResponses = {
     /**
      * OK
@@ -8563,6 +16509,35 @@ export type GetClientGroupTemplatePageData = {
     url: '/admin-api/v1/exam-template/{modelId}/client-group';
 };
 
+export type GetClientGroupTemplatePageErrors = {
+    /**
+     * Bad request, e.g. field validation or an illegal argument. The body is usually a list of APIMessage, but may be absent for some illegal-argument cases.
+     */
+    400: Array<ApiMessage>;
+    /**
+     * Unauthorized. Body is an APIMessage or a list of APIMessage.
+     */
+    401: ApiMessage | Array<ApiMessage>;
+    /**
+     * Forbidden. Body is a list of APIMessage.
+     */
+    403: Array<ApiMessage>;
+    /**
+     * Resource not found. Body is a list of APIMessage.
+     */
+    404: Array<ApiMessage>;
+    /**
+     * Too many requests (rate limit). Body is the rate-limit code as plain text.
+     */
+    429: string;
+    /**
+     * Unexpected internal server error. Body is a list of APIMessage.
+     */
+    500: Array<ApiMessage>;
+};
+
+export type GetClientGroupTemplatePageError = GetClientGroupTemplatePageErrors[keyof GetClientGroupTemplatePageErrors];
+
 export type GetClientGroupTemplatePageResponses = {
     /**
      * OK
@@ -8585,6 +16560,35 @@ export type GetExamTemplateNamesData = {
     url: '/admin-api/v1/exam-template/names';
 };
 
+export type GetExamTemplateNamesErrors = {
+    /**
+     * Bad request, e.g. field validation or an illegal argument. The body is usually a list of APIMessage, but may be absent for some illegal-argument cases.
+     */
+    400: Array<ApiMessage>;
+    /**
+     * Unauthorized. Body is an APIMessage or a list of APIMessage.
+     */
+    401: ApiMessage | Array<ApiMessage>;
+    /**
+     * Forbidden. Body is a list of APIMessage.
+     */
+    403: Array<ApiMessage>;
+    /**
+     * Resource not found. Body is a list of APIMessage.
+     */
+    404: Array<ApiMessage>;
+    /**
+     * Too many requests (rate limit). Body is the rate-limit code as plain text.
+     */
+    429: string;
+    /**
+     * Unexpected internal server error. Body is a list of APIMessage.
+     */
+    500: Array<ApiMessage>;
+};
+
+export type GetExamTemplateNamesError = GetExamTemplateNamesErrors[keyof GetExamTemplateNamesErrors];
+
 export type GetExamTemplateNamesResponses = {
     /**
      * OK
@@ -8606,6 +16610,35 @@ export type GetExamTemplatesByIdsData = {
     url: '/admin-api/v1/exam-template/list';
 };
 
+export type GetExamTemplatesByIdsErrors = {
+    /**
+     * Bad request, e.g. field validation or an illegal argument. The body is usually a list of APIMessage, but may be absent for some illegal-argument cases.
+     */
+    400: Array<ApiMessage>;
+    /**
+     * Unauthorized. Body is an APIMessage or a list of APIMessage.
+     */
+    401: ApiMessage | Array<ApiMessage>;
+    /**
+     * Forbidden. Body is a list of APIMessage.
+     */
+    403: Array<ApiMessage>;
+    /**
+     * Resource not found. Body is a list of APIMessage.
+     */
+    404: Array<ApiMessage>;
+    /**
+     * Too many requests (rate limit). Body is the rate-limit code as plain text.
+     */
+    429: string;
+    /**
+     * Unexpected internal server error. Body is a list of APIMessage.
+     */
+    500: Array<ApiMessage>;
+};
+
+export type GetExamTemplatesByIdsError = GetExamTemplatesByIdsErrors[keyof GetExamTemplatesByIdsErrors];
+
 export type GetExamTemplatesByIdsResponses = {
     /**
      * OK
@@ -8621,6 +16654,35 @@ export type GetDefaultData = {
     query?: never;
     url: '/admin-api/v1/exam-template/default';
 };
+
+export type GetDefaultErrors = {
+    /**
+     * Bad request, e.g. field validation or an illegal argument. The body is usually a list of APIMessage, but may be absent for some illegal-argument cases.
+     */
+    400: Array<ApiMessage>;
+    /**
+     * Unauthorized. Body is an APIMessage or a list of APIMessage.
+     */
+    401: ApiMessage | Array<ApiMessage>;
+    /**
+     * Forbidden. Body is a list of APIMessage.
+     */
+    403: Array<ApiMessage>;
+    /**
+     * Resource not found. Body is a list of APIMessage.
+     */
+    404: Array<ApiMessage>;
+    /**
+     * Too many requests (rate limit). Body is the rate-limit code as plain text.
+     */
+    429: string;
+    /**
+     * Unexpected internal server error. Body is a list of APIMessage.
+     */
+    500: Array<ApiMessage>;
+};
+
+export type GetDefaultError = GetDefaultErrors[keyof GetDefaultErrors];
 
 export type GetDefaultResponses = {
     /**
@@ -8653,6 +16715,35 @@ export type DeleteExamConfigurationMappingData = {
     url: '/admin-api/v1/exam-configuration-map/{modelId}';
 };
 
+export type DeleteExamConfigurationMappingErrors = {
+    /**
+     * Bad request, e.g. field validation or an illegal argument. The body is usually a list of APIMessage, but may be absent for some illegal-argument cases.
+     */
+    400: Array<ApiMessage>;
+    /**
+     * Unauthorized. Body is an APIMessage or a list of APIMessage.
+     */
+    401: ApiMessage | Array<ApiMessage>;
+    /**
+     * Forbidden. Body is a list of APIMessage.
+     */
+    403: Array<ApiMessage>;
+    /**
+     * Resource not found. Body is a list of APIMessage.
+     */
+    404: Array<ApiMessage>;
+    /**
+     * Too many requests (rate limit). Body is the rate-limit code as plain text.
+     */
+    429: string;
+    /**
+     * Unexpected internal server error. Body is a list of APIMessage.
+     */
+    500: Array<ApiMessage>;
+};
+
+export type DeleteExamConfigurationMappingError = DeleteExamConfigurationMappingErrors[keyof DeleteExamConfigurationMappingErrors];
+
 export type DeleteExamConfigurationMappingResponses = {
     /**
      * OK
@@ -8673,6 +16764,35 @@ export type GetExamConfigurationMappingByIdData = {
     query?: never;
     url: '/admin-api/v1/exam-configuration-map/{modelId}';
 };
+
+export type GetExamConfigurationMappingByIdErrors = {
+    /**
+     * Bad request, e.g. field validation or an illegal argument. The body is usually a list of APIMessage, but may be absent for some illegal-argument cases.
+     */
+    400: Array<ApiMessage>;
+    /**
+     * Unauthorized. Body is an APIMessage or a list of APIMessage.
+     */
+    401: ApiMessage | Array<ApiMessage>;
+    /**
+     * Forbidden. Body is a list of APIMessage.
+     */
+    403: Array<ApiMessage>;
+    /**
+     * Resource not found. Body is a list of APIMessage.
+     */
+    404: Array<ApiMessage>;
+    /**
+     * Too many requests (rate limit). Body is the rate-limit code as plain text.
+     */
+    429: string;
+    /**
+     * Unexpected internal server error. Body is a list of APIMessage.
+     */
+    500: Array<ApiMessage>;
+};
+
+export type GetExamConfigurationMappingByIdError = GetExamConfigurationMappingByIdErrors[keyof GetExamConfigurationMappingByIdErrors];
 
 export type GetExamConfigurationMappingByIdResponses = {
     /**
@@ -8710,6 +16830,35 @@ export type GetExamConfigurationMappingDependenciesData = {
     url: '/admin-api/v1/exam-configuration-map/{modelId}/dependency';
 };
 
+export type GetExamConfigurationMappingDependenciesErrors = {
+    /**
+     * Bad request, e.g. field validation or an illegal argument. The body is usually a list of APIMessage, but may be absent for some illegal-argument cases.
+     */
+    400: Array<ApiMessage>;
+    /**
+     * Unauthorized. Body is an APIMessage or a list of APIMessage.
+     */
+    401: ApiMessage | Array<ApiMessage>;
+    /**
+     * Forbidden. Body is a list of APIMessage.
+     */
+    403: Array<ApiMessage>;
+    /**
+     * Resource not found. Body is a list of APIMessage.
+     */
+    404: Array<ApiMessage>;
+    /**
+     * Too many requests (rate limit). Body is the rate-limit code as plain text.
+     */
+    429: string;
+    /**
+     * Unexpected internal server error. Body is a list of APIMessage.
+     */
+    500: Array<ApiMessage>;
+};
+
+export type GetExamConfigurationMappingDependenciesError = GetExamConfigurationMappingDependenciesErrors[keyof GetExamConfigurationMappingDependenciesErrors];
+
 export type GetExamConfigurationMappingDependenciesResponses = {
     /**
      * OK
@@ -8732,6 +16881,35 @@ export type GetExamConfigurationMappingNamesData = {
     url: '/admin-api/v1/exam-configuration-map/names';
 };
 
+export type GetExamConfigurationMappingNamesErrors = {
+    /**
+     * Bad request, e.g. field validation or an illegal argument. The body is usually a list of APIMessage, but may be absent for some illegal-argument cases.
+     */
+    400: Array<ApiMessage>;
+    /**
+     * Unauthorized. Body is an APIMessage or a list of APIMessage.
+     */
+    401: ApiMessage | Array<ApiMessage>;
+    /**
+     * Forbidden. Body is a list of APIMessage.
+     */
+    403: Array<ApiMessage>;
+    /**
+     * Resource not found. Body is a list of APIMessage.
+     */
+    404: Array<ApiMessage>;
+    /**
+     * Too many requests (rate limit). Body is the rate-limit code as plain text.
+     */
+    429: string;
+    /**
+     * Unexpected internal server error. Body is a list of APIMessage.
+     */
+    500: Array<ApiMessage>;
+};
+
+export type GetExamConfigurationMappingNamesError = GetExamConfigurationMappingNamesErrors[keyof GetExamConfigurationMappingNamesErrors];
+
 export type GetExamConfigurationMappingNamesResponses = {
     /**
      * OK
@@ -8752,6 +16930,35 @@ export type GetExamConfigurationMappingsByIdsData = {
     };
     url: '/admin-api/v1/exam-configuration-map/list';
 };
+
+export type GetExamConfigurationMappingsByIdsErrors = {
+    /**
+     * Bad request, e.g. field validation or an illegal argument. The body is usually a list of APIMessage, but may be absent for some illegal-argument cases.
+     */
+    400: Array<ApiMessage>;
+    /**
+     * Unauthorized. Body is an APIMessage or a list of APIMessage.
+     */
+    401: ApiMessage | Array<ApiMessage>;
+    /**
+     * Forbidden. Body is a list of APIMessage.
+     */
+    403: Array<ApiMessage>;
+    /**
+     * Resource not found. Body is a list of APIMessage.
+     */
+    404: Array<ApiMessage>;
+    /**
+     * Too many requests (rate limit). Body is the rate-limit code as plain text.
+     */
+    429: string;
+    /**
+     * Unexpected internal server error. Body is a list of APIMessage.
+     */
+    500: Array<ApiMessage>;
+};
+
+export type GetExamConfigurationMappingsByIdsError = GetExamConfigurationMappingsByIdsErrors[keyof GetExamConfigurationMappingsByIdsErrors];
 
 export type GetExamConfigurationMappingsByIdsResponses = {
     /**
@@ -8784,6 +16991,35 @@ export type DeleteConfigurationValueData = {
     url: '/admin-api/v1/configuration_value/{modelId}';
 };
 
+export type DeleteConfigurationValueErrors = {
+    /**
+     * Bad request, e.g. field validation or an illegal argument. The body is usually a list of APIMessage, but may be absent for some illegal-argument cases.
+     */
+    400: Array<ApiMessage>;
+    /**
+     * Unauthorized. Body is an APIMessage or a list of APIMessage.
+     */
+    401: ApiMessage | Array<ApiMessage>;
+    /**
+     * Forbidden. Body is a list of APIMessage.
+     */
+    403: Array<ApiMessage>;
+    /**
+     * Resource not found. Body is a list of APIMessage.
+     */
+    404: Array<ApiMessage>;
+    /**
+     * Too many requests (rate limit). Body is the rate-limit code as plain text.
+     */
+    429: string;
+    /**
+     * Unexpected internal server error. Body is a list of APIMessage.
+     */
+    500: Array<ApiMessage>;
+};
+
+export type DeleteConfigurationValueError = DeleteConfigurationValueErrors[keyof DeleteConfigurationValueErrors];
+
 export type DeleteConfigurationValueResponses = {
     /**
      * OK
@@ -8804,6 +17040,35 @@ export type GetConfigurationValueByIdData = {
     query?: never;
     url: '/admin-api/v1/configuration_value/{modelId}';
 };
+
+export type GetConfigurationValueByIdErrors = {
+    /**
+     * Bad request, e.g. field validation or an illegal argument. The body is usually a list of APIMessage, but may be absent for some illegal-argument cases.
+     */
+    400: Array<ApiMessage>;
+    /**
+     * Unauthorized. Body is an APIMessage or a list of APIMessage.
+     */
+    401: ApiMessage | Array<ApiMessage>;
+    /**
+     * Forbidden. Body is a list of APIMessage.
+     */
+    403: Array<ApiMessage>;
+    /**
+     * Resource not found. Body is a list of APIMessage.
+     */
+    404: Array<ApiMessage>;
+    /**
+     * Too many requests (rate limit). Body is the rate-limit code as plain text.
+     */
+    429: string;
+    /**
+     * Unexpected internal server error. Body is a list of APIMessage.
+     */
+    500: Array<ApiMessage>;
+};
+
+export type GetConfigurationValueByIdError = GetConfigurationValueByIdErrors[keyof GetConfigurationValueByIdErrors];
 
 export type GetConfigurationValueByIdResponses = {
     /**
@@ -8841,6 +17106,35 @@ export type GetConfigurationValueDependenciesData = {
     url: '/admin-api/v1/configuration_value/{modelId}/dependency';
 };
 
+export type GetConfigurationValueDependenciesErrors = {
+    /**
+     * Bad request, e.g. field validation or an illegal argument. The body is usually a list of APIMessage, but may be absent for some illegal-argument cases.
+     */
+    400: Array<ApiMessage>;
+    /**
+     * Unauthorized. Body is an APIMessage or a list of APIMessage.
+     */
+    401: ApiMessage | Array<ApiMessage>;
+    /**
+     * Forbidden. Body is a list of APIMessage.
+     */
+    403: Array<ApiMessage>;
+    /**
+     * Resource not found. Body is a list of APIMessage.
+     */
+    404: Array<ApiMessage>;
+    /**
+     * Too many requests (rate limit). Body is the rate-limit code as plain text.
+     */
+    429: string;
+    /**
+     * Unexpected internal server error. Body is a list of APIMessage.
+     */
+    500: Array<ApiMessage>;
+};
+
+export type GetConfigurationValueDependenciesError = GetConfigurationValueDependenciesErrors[keyof GetConfigurationValueDependenciesErrors];
+
 export type GetConfigurationValueDependenciesResponses = {
     /**
      * OK
@@ -8863,6 +17157,35 @@ export type GetConfigurationValueNamesData = {
     url: '/admin-api/v1/configuration_value/names';
 };
 
+export type GetConfigurationValueNamesErrors = {
+    /**
+     * Bad request, e.g. field validation or an illegal argument. The body is usually a list of APIMessage, but may be absent for some illegal-argument cases.
+     */
+    400: Array<ApiMessage>;
+    /**
+     * Unauthorized. Body is an APIMessage or a list of APIMessage.
+     */
+    401: ApiMessage | Array<ApiMessage>;
+    /**
+     * Forbidden. Body is a list of APIMessage.
+     */
+    403: Array<ApiMessage>;
+    /**
+     * Resource not found. Body is a list of APIMessage.
+     */
+    404: Array<ApiMessage>;
+    /**
+     * Too many requests (rate limit). Body is the rate-limit code as plain text.
+     */
+    429: string;
+    /**
+     * Unexpected internal server error. Body is a list of APIMessage.
+     */
+    500: Array<ApiMessage>;
+};
+
+export type GetConfigurationValueNamesError = GetConfigurationValueNamesErrors[keyof GetConfigurationValueNamesErrors];
+
 export type GetConfigurationValueNamesResponses = {
     /**
      * OK
@@ -8883,6 +17206,35 @@ export type GetConfigurationValuesByIdsData = {
     };
     url: '/admin-api/v1/configuration_value/list';
 };
+
+export type GetConfigurationValuesByIdsErrors = {
+    /**
+     * Bad request, e.g. field validation or an illegal argument. The body is usually a list of APIMessage, but may be absent for some illegal-argument cases.
+     */
+    400: Array<ApiMessage>;
+    /**
+     * Unauthorized. Body is an APIMessage or a list of APIMessage.
+     */
+    401: ApiMessage | Array<ApiMessage>;
+    /**
+     * Forbidden. Body is a list of APIMessage.
+     */
+    403: Array<ApiMessage>;
+    /**
+     * Resource not found. Body is a list of APIMessage.
+     */
+    404: Array<ApiMessage>;
+    /**
+     * Too many requests (rate limit). Body is the rate-limit code as plain text.
+     */
+    429: string;
+    /**
+     * Unexpected internal server error. Body is a list of APIMessage.
+     */
+    500: Array<ApiMessage>;
+};
+
+export type GetConfigurationValuesByIdsError = GetConfigurationValuesByIdsErrors[keyof GetConfigurationValuesByIdsErrors];
 
 export type GetConfigurationValuesByIdsResponses = {
     /**
@@ -8915,6 +17267,35 @@ export type DeleteConfigurationAttributeData = {
     url: '/admin-api/v1/configuration_attribute/{modelId}';
 };
 
+export type DeleteConfigurationAttributeErrors = {
+    /**
+     * Bad request, e.g. field validation or an illegal argument. The body is usually a list of APIMessage, but may be absent for some illegal-argument cases.
+     */
+    400: Array<ApiMessage>;
+    /**
+     * Unauthorized. Body is an APIMessage or a list of APIMessage.
+     */
+    401: ApiMessage | Array<ApiMessage>;
+    /**
+     * Forbidden. Body is a list of APIMessage.
+     */
+    403: Array<ApiMessage>;
+    /**
+     * Resource not found. Body is a list of APIMessage.
+     */
+    404: Array<ApiMessage>;
+    /**
+     * Too many requests (rate limit). Body is the rate-limit code as plain text.
+     */
+    429: string;
+    /**
+     * Unexpected internal server error. Body is a list of APIMessage.
+     */
+    500: Array<ApiMessage>;
+};
+
+export type DeleteConfigurationAttributeError = DeleteConfigurationAttributeErrors[keyof DeleteConfigurationAttributeErrors];
+
 export type DeleteConfigurationAttributeResponses = {
     /**
      * OK
@@ -8935,6 +17316,35 @@ export type GetConfigurationAttributeByIdData = {
     query?: never;
     url: '/admin-api/v1/configuration_attribute/{modelId}';
 };
+
+export type GetConfigurationAttributeByIdErrors = {
+    /**
+     * Bad request, e.g. field validation or an illegal argument. The body is usually a list of APIMessage, but may be absent for some illegal-argument cases.
+     */
+    400: Array<ApiMessage>;
+    /**
+     * Unauthorized. Body is an APIMessage or a list of APIMessage.
+     */
+    401: ApiMessage | Array<ApiMessage>;
+    /**
+     * Forbidden. Body is a list of APIMessage.
+     */
+    403: Array<ApiMessage>;
+    /**
+     * Resource not found. Body is a list of APIMessage.
+     */
+    404: Array<ApiMessage>;
+    /**
+     * Too many requests (rate limit). Body is the rate-limit code as plain text.
+     */
+    429: string;
+    /**
+     * Unexpected internal server error. Body is a list of APIMessage.
+     */
+    500: Array<ApiMessage>;
+};
+
+export type GetConfigurationAttributeByIdError = GetConfigurationAttributeByIdErrors[keyof GetConfigurationAttributeByIdErrors];
 
 export type GetConfigurationAttributeByIdResponses = {
     /**
@@ -8972,6 +17382,35 @@ export type GetConfigurationAttributeDependenciesData = {
     url: '/admin-api/v1/configuration_attribute/{modelId}/dependency';
 };
 
+export type GetConfigurationAttributeDependenciesErrors = {
+    /**
+     * Bad request, e.g. field validation or an illegal argument. The body is usually a list of APIMessage, but may be absent for some illegal-argument cases.
+     */
+    400: Array<ApiMessage>;
+    /**
+     * Unauthorized. Body is an APIMessage or a list of APIMessage.
+     */
+    401: ApiMessage | Array<ApiMessage>;
+    /**
+     * Forbidden. Body is a list of APIMessage.
+     */
+    403: Array<ApiMessage>;
+    /**
+     * Resource not found. Body is a list of APIMessage.
+     */
+    404: Array<ApiMessage>;
+    /**
+     * Too many requests (rate limit). Body is the rate-limit code as plain text.
+     */
+    429: string;
+    /**
+     * Unexpected internal server error. Body is a list of APIMessage.
+     */
+    500: Array<ApiMessage>;
+};
+
+export type GetConfigurationAttributeDependenciesError = GetConfigurationAttributeDependenciesErrors[keyof GetConfigurationAttributeDependenciesErrors];
+
 export type GetConfigurationAttributeDependenciesResponses = {
     /**
      * OK
@@ -8994,6 +17433,35 @@ export type GetConfigurationAttributeNamesData = {
     url: '/admin-api/v1/configuration_attribute/names';
 };
 
+export type GetConfigurationAttributeNamesErrors = {
+    /**
+     * Bad request, e.g. field validation or an illegal argument. The body is usually a list of APIMessage, but may be absent for some illegal-argument cases.
+     */
+    400: Array<ApiMessage>;
+    /**
+     * Unauthorized. Body is an APIMessage or a list of APIMessage.
+     */
+    401: ApiMessage | Array<ApiMessage>;
+    /**
+     * Forbidden. Body is a list of APIMessage.
+     */
+    403: Array<ApiMessage>;
+    /**
+     * Resource not found. Body is a list of APIMessage.
+     */
+    404: Array<ApiMessage>;
+    /**
+     * Too many requests (rate limit). Body is the rate-limit code as plain text.
+     */
+    429: string;
+    /**
+     * Unexpected internal server error. Body is a list of APIMessage.
+     */
+    500: Array<ApiMessage>;
+};
+
+export type GetConfigurationAttributeNamesError = GetConfigurationAttributeNamesErrors[keyof GetConfigurationAttributeNamesErrors];
+
 export type GetConfigurationAttributeNamesResponses = {
     /**
      * OK
@@ -9014,6 +17482,35 @@ export type GetConfigurationAttributesByIdsData = {
     };
     url: '/admin-api/v1/configuration_attribute/list';
 };
+
+export type GetConfigurationAttributesByIdsErrors = {
+    /**
+     * Bad request, e.g. field validation or an illegal argument. The body is usually a list of APIMessage, but may be absent for some illegal-argument cases.
+     */
+    400: Array<ApiMessage>;
+    /**
+     * Unauthorized. Body is an APIMessage or a list of APIMessage.
+     */
+    401: ApiMessage | Array<ApiMessage>;
+    /**
+     * Forbidden. Body is a list of APIMessage.
+     */
+    403: Array<ApiMessage>;
+    /**
+     * Resource not found. Body is a list of APIMessage.
+     */
+    404: Array<ApiMessage>;
+    /**
+     * Too many requests (rate limit). Body is the rate-limit code as plain text.
+     */
+    429: string;
+    /**
+     * Unexpected internal server error. Body is a list of APIMessage.
+     */
+    500: Array<ApiMessage>;
+};
+
+export type GetConfigurationAttributesByIdsError = GetConfigurationAttributesByIdsErrors[keyof GetConfigurationAttributesByIdsErrors];
 
 export type GetConfigurationAttributesByIdsResponses = {
     /**
@@ -9046,6 +17543,35 @@ export type DeleteConfigurationData = {
     url: '/admin-api/v1/configuration/{modelId}';
 };
 
+export type DeleteConfigurationErrors = {
+    /**
+     * Bad request, e.g. field validation or an illegal argument. The body is usually a list of APIMessage, but may be absent for some illegal-argument cases.
+     */
+    400: Array<ApiMessage>;
+    /**
+     * Unauthorized. Body is an APIMessage or a list of APIMessage.
+     */
+    401: ApiMessage | Array<ApiMessage>;
+    /**
+     * Forbidden. Body is a list of APIMessage.
+     */
+    403: Array<ApiMessage>;
+    /**
+     * Resource not found. Body is a list of APIMessage.
+     */
+    404: Array<ApiMessage>;
+    /**
+     * Too many requests (rate limit). Body is the rate-limit code as plain text.
+     */
+    429: string;
+    /**
+     * Unexpected internal server error. Body is a list of APIMessage.
+     */
+    500: Array<ApiMessage>;
+};
+
+export type DeleteConfigurationError = DeleteConfigurationErrors[keyof DeleteConfigurationErrors];
+
 export type DeleteConfigurationResponses = {
     /**
      * OK
@@ -9066,6 +17592,35 @@ export type GetConfigurationByIdData = {
     query?: never;
     url: '/admin-api/v1/configuration/{modelId}';
 };
+
+export type GetConfigurationByIdErrors = {
+    /**
+     * Bad request, e.g. field validation or an illegal argument. The body is usually a list of APIMessage, but may be absent for some illegal-argument cases.
+     */
+    400: Array<ApiMessage>;
+    /**
+     * Unauthorized. Body is an APIMessage or a list of APIMessage.
+     */
+    401: ApiMessage | Array<ApiMessage>;
+    /**
+     * Forbidden. Body is a list of APIMessage.
+     */
+    403: Array<ApiMessage>;
+    /**
+     * Resource not found. Body is a list of APIMessage.
+     */
+    404: Array<ApiMessage>;
+    /**
+     * Too many requests (rate limit). Body is the rate-limit code as plain text.
+     */
+    429: string;
+    /**
+     * Unexpected internal server error. Body is a list of APIMessage.
+     */
+    500: Array<ApiMessage>;
+};
+
+export type GetConfigurationByIdError = GetConfigurationByIdErrors[keyof GetConfigurationByIdErrors];
 
 export type GetConfigurationByIdResponses = {
     /**
@@ -9103,6 +17658,35 @@ export type GetConfigurationDependenciesData = {
     url: '/admin-api/v1/configuration/{modelId}/dependency';
 };
 
+export type GetConfigurationDependenciesErrors = {
+    /**
+     * Bad request, e.g. field validation or an illegal argument. The body is usually a list of APIMessage, but may be absent for some illegal-argument cases.
+     */
+    400: Array<ApiMessage>;
+    /**
+     * Unauthorized. Body is an APIMessage or a list of APIMessage.
+     */
+    401: ApiMessage | Array<ApiMessage>;
+    /**
+     * Forbidden. Body is a list of APIMessage.
+     */
+    403: Array<ApiMessage>;
+    /**
+     * Resource not found. Body is a list of APIMessage.
+     */
+    404: Array<ApiMessage>;
+    /**
+     * Too many requests (rate limit). Body is the rate-limit code as plain text.
+     */
+    429: string;
+    /**
+     * Unexpected internal server error. Body is a list of APIMessage.
+     */
+    500: Array<ApiMessage>;
+};
+
+export type GetConfigurationDependenciesError = GetConfigurationDependenciesErrors[keyof GetConfigurationDependenciesErrors];
+
 export type GetConfigurationDependenciesResponses = {
     /**
      * OK
@@ -9125,6 +17709,35 @@ export type GetConfigurationNamesData = {
     url: '/admin-api/v1/configuration/names';
 };
 
+export type GetConfigurationNamesErrors = {
+    /**
+     * Bad request, e.g. field validation or an illegal argument. The body is usually a list of APIMessage, but may be absent for some illegal-argument cases.
+     */
+    400: Array<ApiMessage>;
+    /**
+     * Unauthorized. Body is an APIMessage or a list of APIMessage.
+     */
+    401: ApiMessage | Array<ApiMessage>;
+    /**
+     * Forbidden. Body is a list of APIMessage.
+     */
+    403: Array<ApiMessage>;
+    /**
+     * Resource not found. Body is a list of APIMessage.
+     */
+    404: Array<ApiMessage>;
+    /**
+     * Too many requests (rate limit). Body is the rate-limit code as plain text.
+     */
+    429: string;
+    /**
+     * Unexpected internal server error. Body is a list of APIMessage.
+     */
+    500: Array<ApiMessage>;
+};
+
+export type GetConfigurationNamesError = GetConfigurationNamesErrors[keyof GetConfigurationNamesErrors];
+
 export type GetConfigurationNamesResponses = {
     /**
      * OK
@@ -9145,6 +17758,35 @@ export type GetConfigurationsByIdsData = {
     };
     url: '/admin-api/v1/configuration/list';
 };
+
+export type GetConfigurationsByIdsErrors = {
+    /**
+     * Bad request, e.g. field validation or an illegal argument. The body is usually a list of APIMessage, but may be absent for some illegal-argument cases.
+     */
+    400: Array<ApiMessage>;
+    /**
+     * Unauthorized. Body is an APIMessage or a list of APIMessage.
+     */
+    401: ApiMessage | Array<ApiMessage>;
+    /**
+     * Forbidden. Body is a list of APIMessage.
+     */
+    403: Array<ApiMessage>;
+    /**
+     * Resource not found. Body is a list of APIMessage.
+     */
+    404: Array<ApiMessage>;
+    /**
+     * Too many requests (rate limit). Body is the rate-limit code as plain text.
+     */
+    429: string;
+    /**
+     * Unexpected internal server error. Body is a list of APIMessage.
+     */
+    500: Array<ApiMessage>;
+};
+
+export type GetConfigurationsByIdsError = GetConfigurationsByIdsErrors[keyof GetConfigurationsByIdsErrors];
 
 export type GetConfigurationsByIdsResponses = {
     /**
@@ -9170,6 +17812,35 @@ export type GetTemplateAttributePageData = {
     url: '/admin-api/v1/configuration-node/{parentModelId}/template-attribute';
 };
 
+export type GetTemplateAttributePageErrors = {
+    /**
+     * Bad request, e.g. field validation or an illegal argument. The body is usually a list of APIMessage, but may be absent for some illegal-argument cases.
+     */
+    400: Array<ApiMessage>;
+    /**
+     * Unauthorized. Body is an APIMessage or a list of APIMessage.
+     */
+    401: ApiMessage | Array<ApiMessage>;
+    /**
+     * Forbidden. Body is a list of APIMessage.
+     */
+    403: Array<ApiMessage>;
+    /**
+     * Resource not found. Body is a list of APIMessage.
+     */
+    404: Array<ApiMessage>;
+    /**
+     * Too many requests (rate limit). Body is the rate-limit code as plain text.
+     */
+    429: string;
+    /**
+     * Unexpected internal server error. Body is a list of APIMessage.
+     */
+    500: Array<ApiMessage>;
+};
+
+export type GetTemplateAttributePageError = GetTemplateAttributePageErrors[keyof GetTemplateAttributePageErrors];
+
 export type GetTemplateAttributePageResponses = {
     /**
      * OK
@@ -9190,6 +17861,35 @@ export type GetTemplateAttributeData = {
     };
     url: '/admin-api/v1/configuration-node/{parentModelId}/template-attribute/{modelId}';
 };
+
+export type GetTemplateAttributeErrors = {
+    /**
+     * Bad request, e.g. field validation or an illegal argument. The body is usually a list of APIMessage, but may be absent for some illegal-argument cases.
+     */
+    400: Array<ApiMessage>;
+    /**
+     * Unauthorized. Body is an APIMessage or a list of APIMessage.
+     */
+    401: ApiMessage | Array<ApiMessage>;
+    /**
+     * Forbidden. Body is a list of APIMessage.
+     */
+    403: Array<ApiMessage>;
+    /**
+     * Resource not found. Body is a list of APIMessage.
+     */
+    404: Array<ApiMessage>;
+    /**
+     * Too many requests (rate limit). Body is the rate-limit code as plain text.
+     */
+    429: string;
+    /**
+     * Unexpected internal server error. Body is a list of APIMessage.
+     */
+    500: Array<ApiMessage>;
+};
+
+export type GetTemplateAttributeError = GetTemplateAttributeErrors[keyof GetTemplateAttributeErrors];
 
 export type GetTemplateAttributeResponses = {
     /**
@@ -9222,6 +17922,35 @@ export type DeleteConfigurationNodeData = {
     url: '/admin-api/v1/configuration-node/{modelId}';
 };
 
+export type DeleteConfigurationNodeErrors = {
+    /**
+     * Bad request, e.g. field validation or an illegal argument. The body is usually a list of APIMessage, but may be absent for some illegal-argument cases.
+     */
+    400: Array<ApiMessage>;
+    /**
+     * Unauthorized. Body is an APIMessage or a list of APIMessage.
+     */
+    401: ApiMessage | Array<ApiMessage>;
+    /**
+     * Forbidden. Body is a list of APIMessage.
+     */
+    403: Array<ApiMessage>;
+    /**
+     * Resource not found. Body is a list of APIMessage.
+     */
+    404: Array<ApiMessage>;
+    /**
+     * Too many requests (rate limit). Body is the rate-limit code as plain text.
+     */
+    429: string;
+    /**
+     * Unexpected internal server error. Body is a list of APIMessage.
+     */
+    500: Array<ApiMessage>;
+};
+
+export type DeleteConfigurationNodeError = DeleteConfigurationNodeErrors[keyof DeleteConfigurationNodeErrors];
+
 export type DeleteConfigurationNodeResponses = {
     /**
      * OK
@@ -9243,6 +17972,35 @@ export type GetConfigurationNodeByIdData = {
     url: '/admin-api/v1/configuration-node/{modelId}';
 };
 
+export type GetConfigurationNodeByIdErrors = {
+    /**
+     * Bad request, e.g. field validation or an illegal argument. The body is usually a list of APIMessage, but may be absent for some illegal-argument cases.
+     */
+    400: Array<ApiMessage>;
+    /**
+     * Unauthorized. Body is an APIMessage or a list of APIMessage.
+     */
+    401: ApiMessage | Array<ApiMessage>;
+    /**
+     * Forbidden. Body is a list of APIMessage.
+     */
+    403: Array<ApiMessage>;
+    /**
+     * Resource not found. Body is a list of APIMessage.
+     */
+    404: Array<ApiMessage>;
+    /**
+     * Too many requests (rate limit). Body is the rate-limit code as plain text.
+     */
+    429: string;
+    /**
+     * Unexpected internal server error. Body is a list of APIMessage.
+     */
+    500: Array<ApiMessage>;
+};
+
+export type GetConfigurationNodeByIdError = GetConfigurationNodeByIdErrors[keyof GetConfigurationNodeByIdErrors];
+
 export type GetConfigurationNodeByIdResponses = {
     /**
      * OK
@@ -9263,6 +18021,35 @@ export type SettingsPublishedData = {
     url: '/admin-api/v1/configuration-node/{modelId}/settings_published';
 };
 
+export type SettingsPublishedErrors = {
+    /**
+     * Bad request, e.g. field validation or an illegal argument. The body is usually a list of APIMessage, but may be absent for some illegal-argument cases.
+     */
+    400: Array<ApiMessage>;
+    /**
+     * Unauthorized. Body is an APIMessage or a list of APIMessage.
+     */
+    401: ApiMessage | Array<ApiMessage>;
+    /**
+     * Forbidden. Body is a list of APIMessage.
+     */
+    403: Array<ApiMessage>;
+    /**
+     * Resource not found. Body is a list of APIMessage.
+     */
+    404: Array<ApiMessage>;
+    /**
+     * Too many requests (rate limit). Body is the rate-limit code as plain text.
+     */
+    429: string;
+    /**
+     * Unexpected internal server error. Body is a list of APIMessage.
+     */
+    500: Array<ApiMessage>;
+};
+
+export type SettingsPublishedError = SettingsPublishedErrors[keyof SettingsPublishedErrors];
+
 export type SettingsPublishedResponses = {
     /**
      * OK
@@ -9280,6 +18067,35 @@ export type GetFollowupData = {
     query?: never;
     url: '/admin-api/v1/configuration-node/{modelId}/followup';
 };
+
+export type GetFollowupErrors = {
+    /**
+     * Bad request, e.g. field validation or an illegal argument. The body is usually a list of APIMessage, but may be absent for some illegal-argument cases.
+     */
+    400: Array<ApiMessage>;
+    /**
+     * Unauthorized. Body is an APIMessage or a list of APIMessage.
+     */
+    401: ApiMessage | Array<ApiMessage>;
+    /**
+     * Forbidden. Body is a list of APIMessage.
+     */
+    403: Array<ApiMessage>;
+    /**
+     * Resource not found. Body is a list of APIMessage.
+     */
+    404: Array<ApiMessage>;
+    /**
+     * Too many requests (rate limit). Body is the rate-limit code as plain text.
+     */
+    429: string;
+    /**
+     * Unexpected internal server error. Body is a list of APIMessage.
+     */
+    500: Array<ApiMessage>;
+};
+
+export type GetFollowupError = GetFollowupErrors[keyof GetFollowupErrors];
 
 export type GetFollowupResponses = {
     /**
@@ -9300,6 +18116,35 @@ export type DownloadPlainXmlConfigData = {
     };
     url: '/admin-api/v1/configuration-node/{modelId}/downloadSettings';
 };
+
+export type DownloadPlainXmlConfigErrors = {
+    /**
+     * Bad request, e.g. field validation or an illegal argument. The body is usually a list of APIMessage, but may be absent for some illegal-argument cases.
+     */
+    400: Array<ApiMessage>;
+    /**
+     * Unauthorized. Body is an APIMessage or a list of APIMessage.
+     */
+    401: ApiMessage | Array<ApiMessage>;
+    /**
+     * Forbidden. Body is a list of APIMessage.
+     */
+    403: Array<ApiMessage>;
+    /**
+     * Resource not found. Body is a list of APIMessage.
+     */
+    404: Array<ApiMessage>;
+    /**
+     * Too many requests (rate limit). Body is the rate-limit code as plain text.
+     */
+    429: string;
+    /**
+     * Unexpected internal server error. Body is a list of APIMessage.
+     */
+    500: Array<ApiMessage>;
+};
+
+export type DownloadPlainXmlConfigError = DownloadPlainXmlConfigErrors[keyof DownloadPlainXmlConfigErrors];
 
 export type DownloadPlainXmlConfigResponses = {
     /**
@@ -9335,6 +18180,35 @@ export type GetConfigurationNodeDependenciesData = {
     url: '/admin-api/v1/configuration-node/{modelId}/dependency';
 };
 
+export type GetConfigurationNodeDependenciesErrors = {
+    /**
+     * Bad request, e.g. field validation or an illegal argument. The body is usually a list of APIMessage, but may be absent for some illegal-argument cases.
+     */
+    400: Array<ApiMessage>;
+    /**
+     * Unauthorized. Body is an APIMessage or a list of APIMessage.
+     */
+    401: ApiMessage | Array<ApiMessage>;
+    /**
+     * Forbidden. Body is a list of APIMessage.
+     */
+    403: Array<ApiMessage>;
+    /**
+     * Resource not found. Body is a list of APIMessage.
+     */
+    404: Array<ApiMessage>;
+    /**
+     * Too many requests (rate limit). Body is the rate-limit code as plain text.
+     */
+    429: string;
+    /**
+     * Unexpected internal server error. Body is a list of APIMessage.
+     */
+    500: Array<ApiMessage>;
+};
+
+export type GetConfigurationNodeDependenciesError = GetConfigurationNodeDependenciesErrors[keyof GetConfigurationNodeDependenciesErrors];
+
 export type GetConfigurationNodeDependenciesResponses = {
     /**
      * OK
@@ -9355,6 +18229,35 @@ export type GetConfigKeyData = {
     };
     url: '/admin-api/v1/configuration-node/{modelId}/configkey';
 };
+
+export type GetConfigKeyErrors = {
+    /**
+     * Bad request, e.g. field validation or an illegal argument. The body is usually a list of APIMessage, but may be absent for some illegal-argument cases.
+     */
+    400: Array<ApiMessage>;
+    /**
+     * Unauthorized. Body is an APIMessage or a list of APIMessage.
+     */
+    401: ApiMessage | Array<ApiMessage>;
+    /**
+     * Forbidden. Body is a list of APIMessage.
+     */
+    403: Array<ApiMessage>;
+    /**
+     * Resource not found. Body is a list of APIMessage.
+     */
+    404: Array<ApiMessage>;
+    /**
+     * Too many requests (rate limit). Body is the rate-limit code as plain text.
+     */
+    429: string;
+    /**
+     * Unexpected internal server error. Body is a list of APIMessage.
+     */
+    500: Array<ApiMessage>;
+};
+
+export type GetConfigKeyError = GetConfigKeyErrors[keyof GetConfigKeyErrors];
 
 export type GetConfigKeyResponses = {
     /**
@@ -9378,6 +18281,35 @@ export type GetConfigurationNodeNamesData = {
     url: '/admin-api/v1/configuration-node/names';
 };
 
+export type GetConfigurationNodeNamesErrors = {
+    /**
+     * Bad request, e.g. field validation or an illegal argument. The body is usually a list of APIMessage, but may be absent for some illegal-argument cases.
+     */
+    400: Array<ApiMessage>;
+    /**
+     * Unauthorized. Body is an APIMessage or a list of APIMessage.
+     */
+    401: ApiMessage | Array<ApiMessage>;
+    /**
+     * Forbidden. Body is a list of APIMessage.
+     */
+    403: Array<ApiMessage>;
+    /**
+     * Resource not found. Body is a list of APIMessage.
+     */
+    404: Array<ApiMessage>;
+    /**
+     * Too many requests (rate limit). Body is the rate-limit code as plain text.
+     */
+    429: string;
+    /**
+     * Unexpected internal server error. Body is a list of APIMessage.
+     */
+    500: Array<ApiMessage>;
+};
+
+export type GetConfigurationNodeNamesError = GetConfigurationNodeNamesErrors[keyof GetConfigurationNodeNamesErrors];
+
 export type GetConfigurationNodeNamesResponses = {
     /**
      * OK
@@ -9399,6 +18331,35 @@ export type GetConfigurationNodesByIdsData = {
     url: '/admin-api/v1/configuration-node/list';
 };
 
+export type GetConfigurationNodesByIdsErrors = {
+    /**
+     * Bad request, e.g. field validation or an illegal argument. The body is usually a list of APIMessage, but may be absent for some illegal-argument cases.
+     */
+    400: Array<ApiMessage>;
+    /**
+     * Unauthorized. Body is an APIMessage or a list of APIMessage.
+     */
+    401: ApiMessage | Array<ApiMessage>;
+    /**
+     * Forbidden. Body is a list of APIMessage.
+     */
+    403: Array<ApiMessage>;
+    /**
+     * Resource not found. Body is a list of APIMessage.
+     */
+    404: Array<ApiMessage>;
+    /**
+     * Too many requests (rate limit). Body is the rate-limit code as plain text.
+     */
+    429: string;
+    /**
+     * Unexpected internal server error. Body is a list of APIMessage.
+     */
+    500: Array<ApiMessage>;
+};
+
+export type GetConfigurationNodesByIdsError = GetConfigurationNodesByIdsErrors[keyof GetConfigurationNodesByIdsErrors];
+
 export type GetConfigurationNodesByIdsResponses = {
     /**
      * OK
@@ -9418,6 +18379,35 @@ export type GetTableValues1Data = {
     };
     url: '/admin-api/v1/config-template/seb-settings/{modelId}/table';
 };
+
+export type GetTableValues1Errors = {
+    /**
+     * Bad request, e.g. field validation or an illegal argument. The body is usually a list of APIMessage, but may be absent for some illegal-argument cases.
+     */
+    400: Array<ApiMessage>;
+    /**
+     * Unauthorized. Body is an APIMessage or a list of APIMessage.
+     */
+    401: ApiMessage | Array<ApiMessage>;
+    /**
+     * Forbidden. Body is a list of APIMessage.
+     */
+    403: Array<ApiMessage>;
+    /**
+     * Resource not found. Body is a list of APIMessage.
+     */
+    404: Array<ApiMessage>;
+    /**
+     * Too many requests (rate limit). Body is the rate-limit code as plain text.
+     */
+    429: string;
+    /**
+     * Unexpected internal server error. Body is a list of APIMessage.
+     */
+    500: Array<ApiMessage>;
+};
+
+export type GetTableValues1Error = GetTableValues1Errors[keyof GetTableValues1Errors];
 
 export type GetTableValues1Responses = {
     /**
@@ -9450,6 +18440,35 @@ export type DeleteSebClientConfigData = {
     url: '/admin-api/v1/client_configuration/{modelId}';
 };
 
+export type DeleteSebClientConfigErrors = {
+    /**
+     * Bad request, e.g. field validation or an illegal argument. The body is usually a list of APIMessage, but may be absent for some illegal-argument cases.
+     */
+    400: Array<ApiMessage>;
+    /**
+     * Unauthorized. Body is an APIMessage or a list of APIMessage.
+     */
+    401: ApiMessage | Array<ApiMessage>;
+    /**
+     * Forbidden. Body is a list of APIMessage.
+     */
+    403: Array<ApiMessage>;
+    /**
+     * Resource not found. Body is a list of APIMessage.
+     */
+    404: Array<ApiMessage>;
+    /**
+     * Too many requests (rate limit). Body is the rate-limit code as plain text.
+     */
+    429: string;
+    /**
+     * Unexpected internal server error. Body is a list of APIMessage.
+     */
+    500: Array<ApiMessage>;
+};
+
+export type DeleteSebClientConfigError = DeleteSebClientConfigErrors[keyof DeleteSebClientConfigErrors];
+
 export type DeleteSebClientConfigResponses = {
     /**
      * OK
@@ -9470,6 +18489,35 @@ export type GetSebClientConfigByIdData = {
     query?: never;
     url: '/admin-api/v1/client_configuration/{modelId}';
 };
+
+export type GetSebClientConfigByIdErrors = {
+    /**
+     * Bad request, e.g. field validation or an illegal argument. The body is usually a list of APIMessage, but may be absent for some illegal-argument cases.
+     */
+    400: Array<ApiMessage>;
+    /**
+     * Unauthorized. Body is an APIMessage or a list of APIMessage.
+     */
+    401: ApiMessage | Array<ApiMessage>;
+    /**
+     * Forbidden. Body is a list of APIMessage.
+     */
+    403: Array<ApiMessage>;
+    /**
+     * Resource not found. Body is a list of APIMessage.
+     */
+    404: Array<ApiMessage>;
+    /**
+     * Too many requests (rate limit). Body is the rate-limit code as plain text.
+     */
+    429: string;
+    /**
+     * Unexpected internal server error. Body is a list of APIMessage.
+     */
+    500: Array<ApiMessage>;
+};
+
+export type GetSebClientConfigByIdError = GetSebClientConfigByIdErrors[keyof GetSebClientConfigByIdErrors];
 
 export type GetSebClientConfigByIdResponses = {
     /**
@@ -9507,6 +18555,35 @@ export type GetSebClientConfigDependenciesData = {
     url: '/admin-api/v1/client_configuration/{modelId}/dependency';
 };
 
+export type GetSebClientConfigDependenciesErrors = {
+    /**
+     * Bad request, e.g. field validation or an illegal argument. The body is usually a list of APIMessage, but may be absent for some illegal-argument cases.
+     */
+    400: Array<ApiMessage>;
+    /**
+     * Unauthorized. Body is an APIMessage or a list of APIMessage.
+     */
+    401: ApiMessage | Array<ApiMessage>;
+    /**
+     * Forbidden. Body is a list of APIMessage.
+     */
+    403: Array<ApiMessage>;
+    /**
+     * Resource not found. Body is a list of APIMessage.
+     */
+    404: Array<ApiMessage>;
+    /**
+     * Too many requests (rate limit). Body is the rate-limit code as plain text.
+     */
+    429: string;
+    /**
+     * Unexpected internal server error. Body is a list of APIMessage.
+     */
+    500: Array<ApiMessage>;
+};
+
+export type GetSebClientConfigDependenciesError = GetSebClientConfigDependenciesErrors[keyof GetSebClientConfigDependenciesErrors];
+
 export type GetSebClientConfigDependenciesResponses = {
     /**
      * OK
@@ -9529,6 +18606,35 @@ export type GetSebClientConfigNamesData = {
     url: '/admin-api/v1/client_configuration/names';
 };
 
+export type GetSebClientConfigNamesErrors = {
+    /**
+     * Bad request, e.g. field validation or an illegal argument. The body is usually a list of APIMessage, but may be absent for some illegal-argument cases.
+     */
+    400: Array<ApiMessage>;
+    /**
+     * Unauthorized. Body is an APIMessage or a list of APIMessage.
+     */
+    401: ApiMessage | Array<ApiMessage>;
+    /**
+     * Forbidden. Body is a list of APIMessage.
+     */
+    403: Array<ApiMessage>;
+    /**
+     * Resource not found. Body is a list of APIMessage.
+     */
+    404: Array<ApiMessage>;
+    /**
+     * Too many requests (rate limit). Body is the rate-limit code as plain text.
+     */
+    429: string;
+    /**
+     * Unexpected internal server error. Body is a list of APIMessage.
+     */
+    500: Array<ApiMessage>;
+};
+
+export type GetSebClientConfigNamesError = GetSebClientConfigNamesErrors[keyof GetSebClientConfigNamesErrors];
+
 export type GetSebClientConfigNamesResponses = {
     /**
      * OK
@@ -9549,6 +18655,35 @@ export type GetSebClientConfigsByIdsData = {
     };
     url: '/admin-api/v1/client_configuration/list';
 };
+
+export type GetSebClientConfigsByIdsErrors = {
+    /**
+     * Bad request, e.g. field validation or an illegal argument. The body is usually a list of APIMessage, but may be absent for some illegal-argument cases.
+     */
+    400: Array<ApiMessage>;
+    /**
+     * Unauthorized. Body is an APIMessage or a list of APIMessage.
+     */
+    401: ApiMessage | Array<ApiMessage>;
+    /**
+     * Forbidden. Body is a list of APIMessage.
+     */
+    403: Array<ApiMessage>;
+    /**
+     * Resource not found. Body is a list of APIMessage.
+     */
+    404: Array<ApiMessage>;
+    /**
+     * Too many requests (rate limit). Body is the rate-limit code as plain text.
+     */
+    429: string;
+    /**
+     * Unexpected internal server error. Body is a list of APIMessage.
+     */
+    500: Array<ApiMessage>;
+};
+
+export type GetSebClientConfigsByIdsError = GetSebClientConfigsByIdsErrors[keyof GetSebClientConfigsByIdsErrors];
 
 export type GetSebClientConfigsByIdsResponses = {
     /**
@@ -9584,6 +18719,35 @@ export type GetInactiveSebClientConfigsData = {
     url: '/admin-api/v1/client_configuration/inactive';
 };
 
+export type GetInactiveSebClientConfigsErrors = {
+    /**
+     * Bad request, e.g. field validation or an illegal argument. The body is usually a list of APIMessage, but may be absent for some illegal-argument cases.
+     */
+    400: Array<ApiMessage>;
+    /**
+     * Unauthorized. Body is an APIMessage or a list of APIMessage.
+     */
+    401: ApiMessage | Array<ApiMessage>;
+    /**
+     * Forbidden. Body is a list of APIMessage.
+     */
+    403: Array<ApiMessage>;
+    /**
+     * Resource not found. Body is a list of APIMessage.
+     */
+    404: Array<ApiMessage>;
+    /**
+     * Too many requests (rate limit). Body is the rate-limit code as plain text.
+     */
+    429: string;
+    /**
+     * Unexpected internal server error. Body is a list of APIMessage.
+     */
+    500: Array<ApiMessage>;
+};
+
+export type GetInactiveSebClientConfigsError = GetInactiveSebClientConfigsErrors[keyof GetInactiveSebClientConfigsErrors];
+
 export type GetInactiveSebClientConfigsResponses = {
     /**
      * OK
@@ -9605,6 +18769,35 @@ export type DownloadSebConfigData = {
     url: '/admin-api/v1/client_configuration/download/{modelId}';
 };
 
+export type DownloadSebConfigErrors = {
+    /**
+     * Bad request, e.g. field validation or an illegal argument. The body is usually a list of APIMessage, but may be absent for some illegal-argument cases.
+     */
+    400: Array<ApiMessage>;
+    /**
+     * Unauthorized. Body is an APIMessage or a list of APIMessage.
+     */
+    401: ApiMessage | Array<ApiMessage>;
+    /**
+     * Forbidden. Body is a list of APIMessage.
+     */
+    403: Array<ApiMessage>;
+    /**
+     * Resource not found. Body is a list of APIMessage.
+     */
+    404: Array<ApiMessage>;
+    /**
+     * Too many requests (rate limit). Body is the rate-limit code as plain text.
+     */
+    429: string;
+    /**
+     * Unexpected internal server error. Body is a list of APIMessage.
+     */
+    500: Array<ApiMessage>;
+};
+
+export type DownloadSebConfigError = DownloadSebConfigErrors[keyof DownloadSebConfigErrors];
+
 export type DownloadSebConfigResponses = {
     /**
      * OK
@@ -9622,6 +18815,35 @@ export type GetClientCredentialsData = {
     };
     url: '/admin-api/v1/client_configuration/credentials/{modelId}';
 };
+
+export type GetClientCredentialsErrors = {
+    /**
+     * Bad request, e.g. field validation or an illegal argument. The body is usually a list of APIMessage, but may be absent for some illegal-argument cases.
+     */
+    400: Array<ApiMessage>;
+    /**
+     * Unauthorized. Body is an APIMessage or a list of APIMessage.
+     */
+    401: ApiMessage | Array<ApiMessage>;
+    /**
+     * Forbidden. Body is a list of APIMessage.
+     */
+    403: Array<ApiMessage>;
+    /**
+     * Resource not found. Body is a list of APIMessage.
+     */
+    404: Array<ApiMessage>;
+    /**
+     * Too many requests (rate limit). Body is the rate-limit code as plain text.
+     */
+    429: string;
+    /**
+     * Unexpected internal server error. Body is a list of APIMessage.
+     */
+    500: Array<ApiMessage>;
+};
+
+export type GetClientCredentialsError = GetClientCredentialsErrors[keyof GetClientCredentialsErrors];
 
 export type GetClientCredentialsResponses = {
     /**
@@ -9657,6 +18879,35 @@ export type GetActiveSebClientConfigsData = {
     url: '/admin-api/v1/client_configuration/active';
 };
 
+export type GetActiveSebClientConfigsErrors = {
+    /**
+     * Bad request, e.g. field validation or an illegal argument. The body is usually a list of APIMessage, but may be absent for some illegal-argument cases.
+     */
+    400: Array<ApiMessage>;
+    /**
+     * Unauthorized. Body is an APIMessage or a list of APIMessage.
+     */
+    401: ApiMessage | Array<ApiMessage>;
+    /**
+     * Forbidden. Body is a list of APIMessage.
+     */
+    403: Array<ApiMessage>;
+    /**
+     * Resource not found. Body is a list of APIMessage.
+     */
+    404: Array<ApiMessage>;
+    /**
+     * Too many requests (rate limit). Body is the rate-limit code as plain text.
+     */
+    429: string;
+    /**
+     * Unexpected internal server error. Body is a list of APIMessage.
+     */
+    500: Array<ApiMessage>;
+};
+
+export type GetActiveSebClientConfigsError = GetActiveSebClientConfigsErrors[keyof GetActiveSebClientConfigsErrors];
+
 export type GetActiveSebClientConfigsResponses = {
     /**
      * OK
@@ -9688,6 +18939,35 @@ export type DeleteClientGroupData = {
     url: '/admin-api/v1/client-group/{modelId}';
 };
 
+export type DeleteClientGroupErrors = {
+    /**
+     * Bad request, e.g. field validation or an illegal argument. The body is usually a list of APIMessage, but may be absent for some illegal-argument cases.
+     */
+    400: Array<ApiMessage>;
+    /**
+     * Unauthorized. Body is an APIMessage or a list of APIMessage.
+     */
+    401: ApiMessage | Array<ApiMessage>;
+    /**
+     * Forbidden. Body is a list of APIMessage.
+     */
+    403: Array<ApiMessage>;
+    /**
+     * Resource not found. Body is a list of APIMessage.
+     */
+    404: Array<ApiMessage>;
+    /**
+     * Too many requests (rate limit). Body is the rate-limit code as plain text.
+     */
+    429: string;
+    /**
+     * Unexpected internal server error. Body is a list of APIMessage.
+     */
+    500: Array<ApiMessage>;
+};
+
+export type DeleteClientGroupError = DeleteClientGroupErrors[keyof DeleteClientGroupErrors];
+
 export type DeleteClientGroupResponses = {
     /**
      * OK
@@ -9708,6 +18988,35 @@ export type GetClientGroupByIdData = {
     query?: never;
     url: '/admin-api/v1/client-group/{modelId}';
 };
+
+export type GetClientGroupByIdErrors = {
+    /**
+     * Bad request, e.g. field validation or an illegal argument. The body is usually a list of APIMessage, but may be absent for some illegal-argument cases.
+     */
+    400: Array<ApiMessage>;
+    /**
+     * Unauthorized. Body is an APIMessage or a list of APIMessage.
+     */
+    401: ApiMessage | Array<ApiMessage>;
+    /**
+     * Forbidden. Body is a list of APIMessage.
+     */
+    403: Array<ApiMessage>;
+    /**
+     * Resource not found. Body is a list of APIMessage.
+     */
+    404: Array<ApiMessage>;
+    /**
+     * Too many requests (rate limit). Body is the rate-limit code as plain text.
+     */
+    429: string;
+    /**
+     * Unexpected internal server error. Body is a list of APIMessage.
+     */
+    500: Array<ApiMessage>;
+};
+
+export type GetClientGroupByIdError = GetClientGroupByIdErrors[keyof GetClientGroupByIdErrors];
 
 export type GetClientGroupByIdResponses = {
     /**
@@ -9745,6 +19054,35 @@ export type GetClientGroupDependenciesData = {
     url: '/admin-api/v1/client-group/{modelId}/dependency';
 };
 
+export type GetClientGroupDependenciesErrors = {
+    /**
+     * Bad request, e.g. field validation or an illegal argument. The body is usually a list of APIMessage, but may be absent for some illegal-argument cases.
+     */
+    400: Array<ApiMessage>;
+    /**
+     * Unauthorized. Body is an APIMessage or a list of APIMessage.
+     */
+    401: ApiMessage | Array<ApiMessage>;
+    /**
+     * Forbidden. Body is a list of APIMessage.
+     */
+    403: Array<ApiMessage>;
+    /**
+     * Resource not found. Body is a list of APIMessage.
+     */
+    404: Array<ApiMessage>;
+    /**
+     * Too many requests (rate limit). Body is the rate-limit code as plain text.
+     */
+    429: string;
+    /**
+     * Unexpected internal server error. Body is a list of APIMessage.
+     */
+    500: Array<ApiMessage>;
+};
+
+export type GetClientGroupDependenciesError = GetClientGroupDependenciesErrors[keyof GetClientGroupDependenciesErrors];
+
 export type GetClientGroupDependenciesResponses = {
     /**
      * OK
@@ -9767,6 +19105,35 @@ export type GetClientGroupNamesData = {
     url: '/admin-api/v1/client-group/names';
 };
 
+export type GetClientGroupNamesErrors = {
+    /**
+     * Bad request, e.g. field validation or an illegal argument. The body is usually a list of APIMessage, but may be absent for some illegal-argument cases.
+     */
+    400: Array<ApiMessage>;
+    /**
+     * Unauthorized. Body is an APIMessage or a list of APIMessage.
+     */
+    401: ApiMessage | Array<ApiMessage>;
+    /**
+     * Forbidden. Body is a list of APIMessage.
+     */
+    403: Array<ApiMessage>;
+    /**
+     * Resource not found. Body is a list of APIMessage.
+     */
+    404: Array<ApiMessage>;
+    /**
+     * Too many requests (rate limit). Body is the rate-limit code as plain text.
+     */
+    429: string;
+    /**
+     * Unexpected internal server error. Body is a list of APIMessage.
+     */
+    500: Array<ApiMessage>;
+};
+
+export type GetClientGroupNamesError = GetClientGroupNamesErrors[keyof GetClientGroupNamesErrors];
+
 export type GetClientGroupNamesResponses = {
     /**
      * OK
@@ -9788,6 +19155,35 @@ export type GetClientGroupsByIdsData = {
     url: '/admin-api/v1/client-group/list';
 };
 
+export type GetClientGroupsByIdsErrors = {
+    /**
+     * Bad request, e.g. field validation or an illegal argument. The body is usually a list of APIMessage, but may be absent for some illegal-argument cases.
+     */
+    400: Array<ApiMessage>;
+    /**
+     * Unauthorized. Body is an APIMessage or a list of APIMessage.
+     */
+    401: ApiMessage | Array<ApiMessage>;
+    /**
+     * Forbidden. Body is a list of APIMessage.
+     */
+    403: Array<ApiMessage>;
+    /**
+     * Resource not found. Body is a list of APIMessage.
+     */
+    404: Array<ApiMessage>;
+    /**
+     * Too many requests (rate limit). Body is the rate-limit code as plain text.
+     */
+    429: string;
+    /**
+     * Unexpected internal server error. Body is a list of APIMessage.
+     */
+    500: Array<ApiMessage>;
+};
+
+export type GetClientGroupsByIdsError = GetClientGroupsByIdsErrors[keyof GetClientGroupsByIdsErrors];
+
 export type GetClientGroupsByIdsResponses = {
     /**
      * OK
@@ -9808,6 +19204,35 @@ export type GetAliasData = {
     url: '/admin-api/v1/certificate/{alias}';
 };
 
+export type GetAliasErrors = {
+    /**
+     * Bad request, e.g. field validation or an illegal argument. The body is usually a list of APIMessage, but may be absent for some illegal-argument cases.
+     */
+    400: Array<ApiMessage>;
+    /**
+     * Unauthorized. Body is an APIMessage or a list of APIMessage.
+     */
+    401: ApiMessage | Array<ApiMessage>;
+    /**
+     * Forbidden. Body is a list of APIMessage.
+     */
+    403: Array<ApiMessage>;
+    /**
+     * Resource not found. Body is a list of APIMessage.
+     */
+    404: Array<ApiMessage>;
+    /**
+     * Too many requests (rate limit). Body is the rate-limit code as plain text.
+     */
+    429: string;
+    /**
+     * Unexpected internal server error. Body is a list of APIMessage.
+     */
+    500: Array<ApiMessage>;
+};
+
+export type GetAliasError = GetAliasErrors[keyof GetAliasErrors];
+
 export type GetAliasResponses = {
     /**
      * OK
@@ -9826,6 +19251,35 @@ export type GetCertificateNamesData = {
     };
     url: '/admin-api/v1/certificate/names';
 };
+
+export type GetCertificateNamesErrors = {
+    /**
+     * Bad request, e.g. field validation or an illegal argument. The body is usually a list of APIMessage, but may be absent for some illegal-argument cases.
+     */
+    400: Array<ApiMessage>;
+    /**
+     * Unauthorized. Body is an APIMessage or a list of APIMessage.
+     */
+    401: ApiMessage | Array<ApiMessage>;
+    /**
+     * Forbidden. Body is a list of APIMessage.
+     */
+    403: Array<ApiMessage>;
+    /**
+     * Resource not found. Body is a list of APIMessage.
+     */
+    404: Array<ApiMessage>;
+    /**
+     * Too many requests (rate limit). Body is the rate-limit code as plain text.
+     */
+    429: string;
+    /**
+     * Unexpected internal server error. Body is a list of APIMessage.
+     */
+    500: Array<ApiMessage>;
+};
+
+export type GetCertificateNamesError = GetCertificateNamesErrors[keyof GetCertificateNamesErrors];
 
 export type GetCertificateNamesResponses = {
     /**
@@ -9858,6 +19312,35 @@ export type DeleteBatchActionData = {
     url: '/admin-api/v1/batch-action/{modelId}';
 };
 
+export type DeleteBatchActionErrors = {
+    /**
+     * Bad request, e.g. field validation or an illegal argument. The body is usually a list of APIMessage, but may be absent for some illegal-argument cases.
+     */
+    400: Array<ApiMessage>;
+    /**
+     * Unauthorized. Body is an APIMessage or a list of APIMessage.
+     */
+    401: ApiMessage | Array<ApiMessage>;
+    /**
+     * Forbidden. Body is a list of APIMessage.
+     */
+    403: Array<ApiMessage>;
+    /**
+     * Resource not found. Body is a list of APIMessage.
+     */
+    404: Array<ApiMessage>;
+    /**
+     * Too many requests (rate limit). Body is the rate-limit code as plain text.
+     */
+    429: string;
+    /**
+     * Unexpected internal server error. Body is a list of APIMessage.
+     */
+    500: Array<ApiMessage>;
+};
+
+export type DeleteBatchActionError = DeleteBatchActionErrors[keyof DeleteBatchActionErrors];
+
 export type DeleteBatchActionResponses = {
     /**
      * OK
@@ -9878,6 +19361,35 @@ export type GetBatchActionByIdData = {
     query?: never;
     url: '/admin-api/v1/batch-action/{modelId}';
 };
+
+export type GetBatchActionByIdErrors = {
+    /**
+     * Bad request, e.g. field validation or an illegal argument. The body is usually a list of APIMessage, but may be absent for some illegal-argument cases.
+     */
+    400: Array<ApiMessage>;
+    /**
+     * Unauthorized. Body is an APIMessage or a list of APIMessage.
+     */
+    401: ApiMessage | Array<ApiMessage>;
+    /**
+     * Forbidden. Body is a list of APIMessage.
+     */
+    403: Array<ApiMessage>;
+    /**
+     * Resource not found. Body is a list of APIMessage.
+     */
+    404: Array<ApiMessage>;
+    /**
+     * Too many requests (rate limit). Body is the rate-limit code as plain text.
+     */
+    429: string;
+    /**
+     * Unexpected internal server error. Body is a list of APIMessage.
+     */
+    500: Array<ApiMessage>;
+};
+
+export type GetBatchActionByIdError = GetBatchActionByIdErrors[keyof GetBatchActionByIdErrors];
 
 export type GetBatchActionByIdResponses = {
     /**
@@ -9915,6 +19427,35 @@ export type GetBatchActionDependenciesData = {
     url: '/admin-api/v1/batch-action/{modelId}/dependency';
 };
 
+export type GetBatchActionDependenciesErrors = {
+    /**
+     * Bad request, e.g. field validation or an illegal argument. The body is usually a list of APIMessage, but may be absent for some illegal-argument cases.
+     */
+    400: Array<ApiMessage>;
+    /**
+     * Unauthorized. Body is an APIMessage or a list of APIMessage.
+     */
+    401: ApiMessage | Array<ApiMessage>;
+    /**
+     * Forbidden. Body is a list of APIMessage.
+     */
+    403: Array<ApiMessage>;
+    /**
+     * Resource not found. Body is a list of APIMessage.
+     */
+    404: Array<ApiMessage>;
+    /**
+     * Too many requests (rate limit). Body is the rate-limit code as plain text.
+     */
+    429: string;
+    /**
+     * Unexpected internal server error. Body is a list of APIMessage.
+     */
+    500: Array<ApiMessage>;
+};
+
+export type GetBatchActionDependenciesError = GetBatchActionDependenciesErrors[keyof GetBatchActionDependenciesErrors];
+
 export type GetBatchActionDependenciesResponses = {
     /**
      * OK
@@ -9937,6 +19478,35 @@ export type GetBatchActionNamesData = {
     url: '/admin-api/v1/batch-action/names';
 };
 
+export type GetBatchActionNamesErrors = {
+    /**
+     * Bad request, e.g. field validation or an illegal argument. The body is usually a list of APIMessage, but may be absent for some illegal-argument cases.
+     */
+    400: Array<ApiMessage>;
+    /**
+     * Unauthorized. Body is an APIMessage or a list of APIMessage.
+     */
+    401: ApiMessage | Array<ApiMessage>;
+    /**
+     * Forbidden. Body is a list of APIMessage.
+     */
+    403: Array<ApiMessage>;
+    /**
+     * Resource not found. Body is a list of APIMessage.
+     */
+    404: Array<ApiMessage>;
+    /**
+     * Too many requests (rate limit). Body is the rate-limit code as plain text.
+     */
+    429: string;
+    /**
+     * Unexpected internal server error. Body is a list of APIMessage.
+     */
+    500: Array<ApiMessage>;
+};
+
+export type GetBatchActionNamesError = GetBatchActionNamesErrors[keyof GetBatchActionNamesErrors];
+
 export type GetBatchActionNamesResponses = {
     /**
      * OK
@@ -9957,6 +19527,35 @@ export type GetBatchActionsByIdsData = {
     };
     url: '/admin-api/v1/batch-action/list';
 };
+
+export type GetBatchActionsByIdsErrors = {
+    /**
+     * Bad request, e.g. field validation or an illegal argument. The body is usually a list of APIMessage, but may be absent for some illegal-argument cases.
+     */
+    400: Array<ApiMessage>;
+    /**
+     * Unauthorized. Body is an APIMessage or a list of APIMessage.
+     */
+    401: ApiMessage | Array<ApiMessage>;
+    /**
+     * Forbidden. Body is a list of APIMessage.
+     */
+    403: Array<ApiMessage>;
+    /**
+     * Resource not found. Body is a list of APIMessage.
+     */
+    404: Array<ApiMessage>;
+    /**
+     * Too many requests (rate limit). Body is the rate-limit code as plain text.
+     */
+    429: string;
+    /**
+     * Unexpected internal server error. Body is a list of APIMessage.
+     */
+    500: Array<ApiMessage>;
+};
+
+export type GetBatchActionsByIdsError = GetBatchActionsByIdsErrors[keyof GetBatchActionsByIdsErrors];
 
 export type GetBatchActionsByIdsResponses = {
     /**
@@ -9989,6 +19588,35 @@ export type ForceDeleteUserActivityLogData = {
     url: '/admin-api/v1/useractivity/{modelId}/force';
 };
 
+export type ForceDeleteUserActivityLogErrors = {
+    /**
+     * Bad request, e.g. field validation or an illegal argument. The body is usually a list of APIMessage, but may be absent for some illegal-argument cases.
+     */
+    400: Array<ApiMessage>;
+    /**
+     * Unauthorized. Body is an APIMessage or a list of APIMessage.
+     */
+    401: ApiMessage | Array<ApiMessage>;
+    /**
+     * Forbidden. Body is a list of APIMessage.
+     */
+    403: Array<ApiMessage>;
+    /**
+     * Resource not found. Body is a list of APIMessage.
+     */
+    404: Array<ApiMessage>;
+    /**
+     * Too many requests (rate limit). Body is the rate-limit code as plain text.
+     */
+    429: string;
+    /**
+     * Unexpected internal server error. Body is a list of APIMessage.
+     */
+    500: Array<ApiMessage>;
+};
+
+export type ForceDeleteUserActivityLogError = ForceDeleteUserActivityLogErrors[keyof ForceDeleteUserActivityLogErrors];
+
 export type ForceDeleteUserActivityLogResponses = {
     /**
      * OK
@@ -10019,6 +19647,35 @@ export type ForceDeleteUserAccountData = {
     };
     url: '/admin-api/v1/useraccount/{modelId}/force';
 };
+
+export type ForceDeleteUserAccountErrors = {
+    /**
+     * Bad request, e.g. field validation or an illegal argument. The body is usually a list of APIMessage, but may be absent for some illegal-argument cases.
+     */
+    400: Array<ApiMessage>;
+    /**
+     * Unauthorized. Body is an APIMessage or a list of APIMessage.
+     */
+    401: ApiMessage | Array<ApiMessage>;
+    /**
+     * Forbidden. Body is a list of APIMessage.
+     */
+    403: Array<ApiMessage>;
+    /**
+     * Resource not found. Body is a list of APIMessage.
+     */
+    404: Array<ApiMessage>;
+    /**
+     * Too many requests (rate limit). Body is the rate-limit code as plain text.
+     */
+    429: string;
+    /**
+     * Unexpected internal server error. Body is a list of APIMessage.
+     */
+    500: Array<ApiMessage>;
+};
+
+export type ForceDeleteUserAccountError = ForceDeleteUserAccountErrors[keyof ForceDeleteUserAccountErrors];
 
 export type ForceDeleteUserAccountResponses = {
     /**
@@ -10051,6 +19708,35 @@ export type ForceDeleteClientEventData = {
     url: '/admin-api/v1/seb-client-event/{modelId}/force';
 };
 
+export type ForceDeleteClientEventErrors = {
+    /**
+     * Bad request, e.g. field validation or an illegal argument. The body is usually a list of APIMessage, but may be absent for some illegal-argument cases.
+     */
+    400: Array<ApiMessage>;
+    /**
+     * Unauthorized. Body is an APIMessage or a list of APIMessage.
+     */
+    401: ApiMessage | Array<ApiMessage>;
+    /**
+     * Forbidden. Body is a list of APIMessage.
+     */
+    403: Array<ApiMessage>;
+    /**
+     * Resource not found. Body is a list of APIMessage.
+     */
+    404: Array<ApiMessage>;
+    /**
+     * Too many requests (rate limit). Body is the rate-limit code as plain text.
+     */
+    429: string;
+    /**
+     * Unexpected internal server error. Body is a list of APIMessage.
+     */
+    500: Array<ApiMessage>;
+};
+
+export type ForceDeleteClientEventError = ForceDeleteClientEventErrors[keyof ForceDeleteClientEventErrors];
+
 export type ForceDeleteClientEventResponses = {
     /**
      * OK
@@ -10081,6 +19767,35 @@ export type ForceDeleteClientConnectionData = {
     };
     url: '/admin-api/v1/seb-client-connection/{modelId}/force';
 };
+
+export type ForceDeleteClientConnectionErrors = {
+    /**
+     * Bad request, e.g. field validation or an illegal argument. The body is usually a list of APIMessage, but may be absent for some illegal-argument cases.
+     */
+    400: Array<ApiMessage>;
+    /**
+     * Unauthorized. Body is an APIMessage or a list of APIMessage.
+     */
+    401: ApiMessage | Array<ApiMessage>;
+    /**
+     * Forbidden. Body is a list of APIMessage.
+     */
+    403: Array<ApiMessage>;
+    /**
+     * Resource not found. Body is a list of APIMessage.
+     */
+    404: Array<ApiMessage>;
+    /**
+     * Too many requests (rate limit). Body is the rate-limit code as plain text.
+     */
+    429: string;
+    /**
+     * Unexpected internal server error. Body is a list of APIMessage.
+     */
+    500: Array<ApiMessage>;
+};
+
+export type ForceDeleteClientConnectionError = ForceDeleteClientConnectionErrors[keyof ForceDeleteClientConnectionErrors];
 
 export type ForceDeleteClientConnectionResponses = {
     /**
@@ -10113,6 +19828,35 @@ export type ForceDeleteOrientationData = {
     url: '/admin-api/v1/orientation/{modelId}/force';
 };
 
+export type ForceDeleteOrientationErrors = {
+    /**
+     * Bad request, e.g. field validation or an illegal argument. The body is usually a list of APIMessage, but may be absent for some illegal-argument cases.
+     */
+    400: Array<ApiMessage>;
+    /**
+     * Unauthorized. Body is an APIMessage or a list of APIMessage.
+     */
+    401: ApiMessage | Array<ApiMessage>;
+    /**
+     * Forbidden. Body is a list of APIMessage.
+     */
+    403: Array<ApiMessage>;
+    /**
+     * Resource not found. Body is a list of APIMessage.
+     */
+    404: Array<ApiMessage>;
+    /**
+     * Too many requests (rate limit). Body is the rate-limit code as plain text.
+     */
+    429: string;
+    /**
+     * Unexpected internal server error. Body is a list of APIMessage.
+     */
+    500: Array<ApiMessage>;
+};
+
+export type ForceDeleteOrientationError = ForceDeleteOrientationErrors[keyof ForceDeleteOrientationErrors];
+
 export type ForceDeleteOrientationResponses = {
     /**
      * OK
@@ -10143,6 +19887,35 @@ export type ForceDeleteViewData = {
     };
     url: '/admin-api/v1/orientation/view/{modelId}/force';
 };
+
+export type ForceDeleteViewErrors = {
+    /**
+     * Bad request, e.g. field validation or an illegal argument. The body is usually a list of APIMessage, but may be absent for some illegal-argument cases.
+     */
+    400: Array<ApiMessage>;
+    /**
+     * Unauthorized. Body is an APIMessage or a list of APIMessage.
+     */
+    401: ApiMessage | Array<ApiMessage>;
+    /**
+     * Forbidden. Body is a list of APIMessage.
+     */
+    403: Array<ApiMessage>;
+    /**
+     * Resource not found. Body is a list of APIMessage.
+     */
+    404: Array<ApiMessage>;
+    /**
+     * Too many requests (rate limit). Body is the rate-limit code as plain text.
+     */
+    429: string;
+    /**
+     * Unexpected internal server error. Body is a list of APIMessage.
+     */
+    500: Array<ApiMessage>;
+};
+
+export type ForceDeleteViewError = ForceDeleteViewErrors[keyof ForceDeleteViewErrors];
 
 export type ForceDeleteViewResponses = {
     /**
@@ -10175,6 +19948,35 @@ export type ForceDeleteLmsSetupData = {
     url: '/admin-api/v1/lms-setup/{modelId}/force';
 };
 
+export type ForceDeleteLmsSetupErrors = {
+    /**
+     * Bad request, e.g. field validation or an illegal argument. The body is usually a list of APIMessage, but may be absent for some illegal-argument cases.
+     */
+    400: Array<ApiMessage>;
+    /**
+     * Unauthorized. Body is an APIMessage or a list of APIMessage.
+     */
+    401: ApiMessage | Array<ApiMessage>;
+    /**
+     * Forbidden. Body is a list of APIMessage.
+     */
+    403: Array<ApiMessage>;
+    /**
+     * Resource not found. Body is a list of APIMessage.
+     */
+    404: Array<ApiMessage>;
+    /**
+     * Too many requests (rate limit). Body is the rate-limit code as plain text.
+     */
+    429: string;
+    /**
+     * Unexpected internal server error. Body is a list of APIMessage.
+     */
+    500: Array<ApiMessage>;
+};
+
+export type ForceDeleteLmsSetupError = ForceDeleteLmsSetupErrors[keyof ForceDeleteLmsSetupErrors];
+
 export type ForceDeleteLmsSetupResponses = {
     /**
      * OK
@@ -10205,6 +20007,35 @@ export type ForceDeleteInstitutionData = {
     };
     url: '/admin-api/v1/institution/{modelId}/force';
 };
+
+export type ForceDeleteInstitutionErrors = {
+    /**
+     * Bad request, e.g. field validation or an illegal argument. The body is usually a list of APIMessage, but may be absent for some illegal-argument cases.
+     */
+    400: Array<ApiMessage>;
+    /**
+     * Unauthorized. Body is an APIMessage or a list of APIMessage.
+     */
+    401: ApiMessage | Array<ApiMessage>;
+    /**
+     * Forbidden. Body is a list of APIMessage.
+     */
+    403: Array<ApiMessage>;
+    /**
+     * Resource not found. Body is a list of APIMessage.
+     */
+    404: Array<ApiMessage>;
+    /**
+     * Too many requests (rate limit). Body is the rate-limit code as plain text.
+     */
+    429: string;
+    /**
+     * Unexpected internal server error. Body is a list of APIMessage.
+     */
+    500: Array<ApiMessage>;
+};
+
+export type ForceDeleteInstitutionError = ForceDeleteInstitutionErrors[keyof ForceDeleteInstitutionErrors];
 
 export type ForceDeleteInstitutionResponses = {
     /**
@@ -10237,6 +20068,35 @@ export type ForceDeleteIndicatorData = {
     url: '/admin-api/v1/indicator/{modelId}/force';
 };
 
+export type ForceDeleteIndicatorErrors = {
+    /**
+     * Bad request, e.g. field validation or an illegal argument. The body is usually a list of APIMessage, but may be absent for some illegal-argument cases.
+     */
+    400: Array<ApiMessage>;
+    /**
+     * Unauthorized. Body is an APIMessage or a list of APIMessage.
+     */
+    401: ApiMessage | Array<ApiMessage>;
+    /**
+     * Forbidden. Body is a list of APIMessage.
+     */
+    403: Array<ApiMessage>;
+    /**
+     * Resource not found. Body is a list of APIMessage.
+     */
+    404: Array<ApiMessage>;
+    /**
+     * Too many requests (rate limit). Body is the rate-limit code as plain text.
+     */
+    429: string;
+    /**
+     * Unexpected internal server error. Body is a list of APIMessage.
+     */
+    500: Array<ApiMessage>;
+};
+
+export type ForceDeleteIndicatorError = ForceDeleteIndicatorErrors[keyof ForceDeleteIndicatorErrors];
+
 export type ForceDeleteIndicatorResponses = {
     /**
      * OK
@@ -10267,6 +20127,35 @@ export type ForceDeleteExamAdministrationData = {
     };
     url: '/admin-api/v1/exam/{modelId}/force';
 };
+
+export type ForceDeleteExamAdministrationErrors = {
+    /**
+     * Bad request, e.g. field validation or an illegal argument. The body is usually a list of APIMessage, but may be absent for some illegal-argument cases.
+     */
+    400: Array<ApiMessage>;
+    /**
+     * Unauthorized. Body is an APIMessage or a list of APIMessage.
+     */
+    401: ApiMessage | Array<ApiMessage>;
+    /**
+     * Forbidden. Body is a list of APIMessage.
+     */
+    403: Array<ApiMessage>;
+    /**
+     * Resource not found. Body is a list of APIMessage.
+     */
+    404: Array<ApiMessage>;
+    /**
+     * Too many requests (rate limit). Body is the rate-limit code as plain text.
+     */
+    429: string;
+    /**
+     * Unexpected internal server error. Body is a list of APIMessage.
+     */
+    500: Array<ApiMessage>;
+};
+
+export type ForceDeleteExamAdministrationError = ForceDeleteExamAdministrationErrors[keyof ForceDeleteExamAdministrationErrors];
 
 export type ForceDeleteExamAdministrationResponses = {
     /**
@@ -10299,6 +20188,35 @@ export type ForceDeleteExamTemplateData = {
     url: '/admin-api/v1/exam-template/{modelId}/force';
 };
 
+export type ForceDeleteExamTemplateErrors = {
+    /**
+     * Bad request, e.g. field validation or an illegal argument. The body is usually a list of APIMessage, but may be absent for some illegal-argument cases.
+     */
+    400: Array<ApiMessage>;
+    /**
+     * Unauthorized. Body is an APIMessage or a list of APIMessage.
+     */
+    401: ApiMessage | Array<ApiMessage>;
+    /**
+     * Forbidden. Body is a list of APIMessage.
+     */
+    403: Array<ApiMessage>;
+    /**
+     * Resource not found. Body is a list of APIMessage.
+     */
+    404: Array<ApiMessage>;
+    /**
+     * Too many requests (rate limit). Body is the rate-limit code as plain text.
+     */
+    429: string;
+    /**
+     * Unexpected internal server error. Body is a list of APIMessage.
+     */
+    500: Array<ApiMessage>;
+};
+
+export type ForceDeleteExamTemplateError = ForceDeleteExamTemplateErrors[keyof ForceDeleteExamTemplateErrors];
+
 export type ForceDeleteExamTemplateResponses = {
     /**
      * OK
@@ -10329,6 +20247,35 @@ export type ForceDeleteExamConfigurationMappingData = {
     };
     url: '/admin-api/v1/exam-configuration-map/{modelId}/force';
 };
+
+export type ForceDeleteExamConfigurationMappingErrors = {
+    /**
+     * Bad request, e.g. field validation or an illegal argument. The body is usually a list of APIMessage, but may be absent for some illegal-argument cases.
+     */
+    400: Array<ApiMessage>;
+    /**
+     * Unauthorized. Body is an APIMessage or a list of APIMessage.
+     */
+    401: ApiMessage | Array<ApiMessage>;
+    /**
+     * Forbidden. Body is a list of APIMessage.
+     */
+    403: Array<ApiMessage>;
+    /**
+     * Resource not found. Body is a list of APIMessage.
+     */
+    404: Array<ApiMessage>;
+    /**
+     * Too many requests (rate limit). Body is the rate-limit code as plain text.
+     */
+    429: string;
+    /**
+     * Unexpected internal server error. Body is a list of APIMessage.
+     */
+    500: Array<ApiMessage>;
+};
+
+export type ForceDeleteExamConfigurationMappingError = ForceDeleteExamConfigurationMappingErrors[keyof ForceDeleteExamConfigurationMappingErrors];
 
 export type ForceDeleteExamConfigurationMappingResponses = {
     /**
@@ -10361,6 +20308,35 @@ export type ForceDeleteConfigurationValueData = {
     url: '/admin-api/v1/configuration_value/{modelId}/force';
 };
 
+export type ForceDeleteConfigurationValueErrors = {
+    /**
+     * Bad request, e.g. field validation or an illegal argument. The body is usually a list of APIMessage, but may be absent for some illegal-argument cases.
+     */
+    400: Array<ApiMessage>;
+    /**
+     * Unauthorized. Body is an APIMessage or a list of APIMessage.
+     */
+    401: ApiMessage | Array<ApiMessage>;
+    /**
+     * Forbidden. Body is a list of APIMessage.
+     */
+    403: Array<ApiMessage>;
+    /**
+     * Resource not found. Body is a list of APIMessage.
+     */
+    404: Array<ApiMessage>;
+    /**
+     * Too many requests (rate limit). Body is the rate-limit code as plain text.
+     */
+    429: string;
+    /**
+     * Unexpected internal server error. Body is a list of APIMessage.
+     */
+    500: Array<ApiMessage>;
+};
+
+export type ForceDeleteConfigurationValueError = ForceDeleteConfigurationValueErrors[keyof ForceDeleteConfigurationValueErrors];
+
 export type ForceDeleteConfigurationValueResponses = {
     /**
      * OK
@@ -10391,6 +20367,35 @@ export type ForceDeleteConfigurationAttributeData = {
     };
     url: '/admin-api/v1/configuration_attribute/{modelId}/force';
 };
+
+export type ForceDeleteConfigurationAttributeErrors = {
+    /**
+     * Bad request, e.g. field validation or an illegal argument. The body is usually a list of APIMessage, but may be absent for some illegal-argument cases.
+     */
+    400: Array<ApiMessage>;
+    /**
+     * Unauthorized. Body is an APIMessage or a list of APIMessage.
+     */
+    401: ApiMessage | Array<ApiMessage>;
+    /**
+     * Forbidden. Body is a list of APIMessage.
+     */
+    403: Array<ApiMessage>;
+    /**
+     * Resource not found. Body is a list of APIMessage.
+     */
+    404: Array<ApiMessage>;
+    /**
+     * Too many requests (rate limit). Body is the rate-limit code as plain text.
+     */
+    429: string;
+    /**
+     * Unexpected internal server error. Body is a list of APIMessage.
+     */
+    500: Array<ApiMessage>;
+};
+
+export type ForceDeleteConfigurationAttributeError = ForceDeleteConfigurationAttributeErrors[keyof ForceDeleteConfigurationAttributeErrors];
 
 export type ForceDeleteConfigurationAttributeResponses = {
     /**
@@ -10423,6 +20428,35 @@ export type ForceDeleteConfigurationData = {
     url: '/admin-api/v1/configuration/{modelId}/force';
 };
 
+export type ForceDeleteConfigurationErrors = {
+    /**
+     * Bad request, e.g. field validation or an illegal argument. The body is usually a list of APIMessage, but may be absent for some illegal-argument cases.
+     */
+    400: Array<ApiMessage>;
+    /**
+     * Unauthorized. Body is an APIMessage or a list of APIMessage.
+     */
+    401: ApiMessage | Array<ApiMessage>;
+    /**
+     * Forbidden. Body is a list of APIMessage.
+     */
+    403: Array<ApiMessage>;
+    /**
+     * Resource not found. Body is a list of APIMessage.
+     */
+    404: Array<ApiMessage>;
+    /**
+     * Too many requests (rate limit). Body is the rate-limit code as plain text.
+     */
+    429: string;
+    /**
+     * Unexpected internal server error. Body is a list of APIMessage.
+     */
+    500: Array<ApiMessage>;
+};
+
+export type ForceDeleteConfigurationError = ForceDeleteConfigurationErrors[keyof ForceDeleteConfigurationErrors];
+
 export type ForceDeleteConfigurationResponses = {
     /**
      * OK
@@ -10453,6 +20487,35 @@ export type ForceDeleteConfigurationNodeData = {
     };
     url: '/admin-api/v1/configuration-node/{modelId}/force';
 };
+
+export type ForceDeleteConfigurationNodeErrors = {
+    /**
+     * Bad request, e.g. field validation or an illegal argument. The body is usually a list of APIMessage, but may be absent for some illegal-argument cases.
+     */
+    400: Array<ApiMessage>;
+    /**
+     * Unauthorized. Body is an APIMessage or a list of APIMessage.
+     */
+    401: ApiMessage | Array<ApiMessage>;
+    /**
+     * Forbidden. Body is a list of APIMessage.
+     */
+    403: Array<ApiMessage>;
+    /**
+     * Resource not found. Body is a list of APIMessage.
+     */
+    404: Array<ApiMessage>;
+    /**
+     * Too many requests (rate limit). Body is the rate-limit code as plain text.
+     */
+    429: string;
+    /**
+     * Unexpected internal server error. Body is a list of APIMessage.
+     */
+    500: Array<ApiMessage>;
+};
+
+export type ForceDeleteConfigurationNodeError = ForceDeleteConfigurationNodeErrors[keyof ForceDeleteConfigurationNodeErrors];
 
 export type ForceDeleteConfigurationNodeResponses = {
     /**
@@ -10485,6 +20548,35 @@ export type ForceDeleteSebClientConfigData = {
     url: '/admin-api/v1/client_configuration/{modelId}/force';
 };
 
+export type ForceDeleteSebClientConfigErrors = {
+    /**
+     * Bad request, e.g. field validation or an illegal argument. The body is usually a list of APIMessage, but may be absent for some illegal-argument cases.
+     */
+    400: Array<ApiMessage>;
+    /**
+     * Unauthorized. Body is an APIMessage or a list of APIMessage.
+     */
+    401: ApiMessage | Array<ApiMessage>;
+    /**
+     * Forbidden. Body is a list of APIMessage.
+     */
+    403: Array<ApiMessage>;
+    /**
+     * Resource not found. Body is a list of APIMessage.
+     */
+    404: Array<ApiMessage>;
+    /**
+     * Too many requests (rate limit). Body is the rate-limit code as plain text.
+     */
+    429: string;
+    /**
+     * Unexpected internal server error. Body is a list of APIMessage.
+     */
+    500: Array<ApiMessage>;
+};
+
+export type ForceDeleteSebClientConfigError = ForceDeleteSebClientConfigErrors[keyof ForceDeleteSebClientConfigErrors];
+
 export type ForceDeleteSebClientConfigResponses = {
     /**
      * OK
@@ -10516,6 +20608,35 @@ export type ForceDeleteClientGroupData = {
     url: '/admin-api/v1/client-group/{modelId}/force';
 };
 
+export type ForceDeleteClientGroupErrors = {
+    /**
+     * Bad request, e.g. field validation or an illegal argument. The body is usually a list of APIMessage, but may be absent for some illegal-argument cases.
+     */
+    400: Array<ApiMessage>;
+    /**
+     * Unauthorized. Body is an APIMessage or a list of APIMessage.
+     */
+    401: ApiMessage | Array<ApiMessage>;
+    /**
+     * Forbidden. Body is a list of APIMessage.
+     */
+    403: Array<ApiMessage>;
+    /**
+     * Resource not found. Body is a list of APIMessage.
+     */
+    404: Array<ApiMessage>;
+    /**
+     * Too many requests (rate limit). Body is the rate-limit code as plain text.
+     */
+    429: string;
+    /**
+     * Unexpected internal server error. Body is a list of APIMessage.
+     */
+    500: Array<ApiMessage>;
+};
+
+export type ForceDeleteClientGroupError = ForceDeleteClientGroupErrors[keyof ForceDeleteClientGroupErrors];
+
 export type ForceDeleteClientGroupResponses = {
     /**
      * OK
@@ -10546,6 +20667,35 @@ export type ForceDeleteBatchActionData = {
     };
     url: '/admin-api/v1/batch-action/{modelId}/force';
 };
+
+export type ForceDeleteBatchActionErrors = {
+    /**
+     * Bad request, e.g. field validation or an illegal argument. The body is usually a list of APIMessage, but may be absent for some illegal-argument cases.
+     */
+    400: Array<ApiMessage>;
+    /**
+     * Unauthorized. Body is an APIMessage or a list of APIMessage.
+     */
+    401: ApiMessage | Array<ApiMessage>;
+    /**
+     * Forbidden. Body is a list of APIMessage.
+     */
+    403: Array<ApiMessage>;
+    /**
+     * Resource not found. Body is a list of APIMessage.
+     */
+    404: Array<ApiMessage>;
+    /**
+     * Too many requests (rate limit). Body is the rate-limit code as plain text.
+     */
+    429: string;
+    /**
+     * Unexpected internal server error. Body is a list of APIMessage.
+     */
+    500: Array<ApiMessage>;
+};
+
+export type ForceDeleteBatchActionError = ForceDeleteBatchActionErrors[keyof ForceDeleteBatchActionErrors];
 
 export type ForceDeleteBatchActionResponses = {
     /**
