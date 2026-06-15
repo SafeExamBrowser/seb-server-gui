@@ -3,23 +3,13 @@
         aria-label="Breadcrumb"
         class="d-flex align-center flex-wrap ga-2 pl-5 text-body-medium"
     >
-        <v-hover v-slot="{ isHovering, props: hoverProps }">
-            <RouterLink
-                v-bind="hoverProps"
-                :to="{ name: '/(app)/' }"
-                :aria-label="$t('titles.home')"
-                class="d-inline-flex align-center text-decoration-none"
-                :class="isHovering ? 'text-primary' : 'text-medium-emphasis'"
-            >
-                <v-icon icon="mdi-home-outline" size="20" />
-            </RouterLink>
-        </v-hover>
-
         <template
             v-for="(item, index) in items"
             :key="`${item.label}-${index}`"
         >
-            <span aria-hidden="true" class="text-disabled">›</span>
+            <span v-if="index > 0" aria-hidden="true" class="text-disabled">
+                ›
+            </span>
 
             <v-hover
                 v-if="item.link"

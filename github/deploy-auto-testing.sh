@@ -5,7 +5,7 @@ set -e
 # Go to repo root (parent of the github folder)
 cd "$(dirname "$0")/.."
 
-TAG_NAME="auto-testing-deploy"
+TAG_NAME="sprint-testing"
 
 echo "Deleting local tag..."
 git tag -d $TAG_NAME 2>/dev/null || true
