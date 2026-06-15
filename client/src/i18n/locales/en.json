@@ -42,6 +42,7 @@
     "general": {
         "loadingText": "Loading... Please wait",
         "addButton": "Add",
+        "prepareButton": "Prepare",
         "cancelButton": "Cancel",
         "backButton": "Back",
         "nextButton": "Next",
@@ -2029,13 +2030,18 @@
             "lock": "Lock Screen",
             "quit": "Quit Client",
             "group": "Group:",
-            "mark-cancelled": "Mark as cancelled"
+            "mark-cancelled": "Mark as cancelled",
+            "client": "Client",
+            "groups": "Groups",
+            "sebInfo": "SEB Info",
+            "indicators": "Indicators",
+            "backToClientList": "Back to Client List"
         },
         "main": {
             "notifications": "Notifications",
             "resolveRaiseHand": "Resolve Raise Hand",
-            "noNotifications": "No notifications available",
-            "messages": "Messages",
+            "raiseHand": "Raised Hand",
+            "lockScreen": "Lock Screen",
             "unlockScreen": "Unlock Screen",
             "screenProctoring": "Screen Proctoring",
             "clientLogs": "Client Logs"
@@ -2081,7 +2087,6 @@
         }
     },
     "titles": {
-        "home": "Home",
         "navigationOverview": "Navigation Overview",
         "exams": "Exams",
         "examsOverview": "Exams Overview",

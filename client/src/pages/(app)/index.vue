@@ -1,36 +1,20 @@
 <template>
-    <v-row data-testid="homepageContainer-page-container" class="w-100">
-        <v-col cols="12" data-testid="homepageContainer-root-col">
-            <!-- Infos -->
-            <v-row data-testid="homepageContainer-info-section">
-                <v-col cols="12" data-testid="homepageContainer-info-col">
-                    <HomePageInfo
-                        data-testid="homepageContainer-homePageInfo-component"
-                    />
-                </v-col>
-            </v-row>
-
-            <!-- Main -->
-            <v-row
-                class="mt-5 align-stretch"
-                data-testid="homepageContainer-main-section"
-            >
-                <HomePageMain
-                    data-testid="homepageContainer-homePageMain-component"
-                />
-            </v-row>
-        </v-col>
-    </v-row>
+    <div></div>
 </template>
 
 <script setup lang="ts">
-import HomePageInfo from "@/components/widgets/homePageWidgets/HomePageInfo.vue";
-import HomePageMain from "@/components/widgets/homePageWidgets/HomePageMain.vue";
+import { onBeforeMount } from "vue";
+import { useRouter } from "vue-router";
+import { useUserAccountStore } from "@/stores/authentication/userAccountStore.ts";
+import { getLandingRoute } from "@/router/getLandingRoute.ts";
 
-definePage({
-    meta: {
-        titleKey: "titles.home",
-        pageTestId: "home-page",
-    },
+// The former home page is now a role-based landing redirect. The auth guard
+// has already hydrated the user account (and its roles) before this mounts.
+const router = useRouter();
+const userAccountStore = useUserAccountStore();
+
+onBeforeMount(() => {
+    const userRoles = userAccountStore.userAccount?.userRoles ?? [];
+    void router.replace(getLandingRoute(userRoles));
 });
 </script>
