@@ -123,6 +123,40 @@ export const useUserAccountFormFields = (mode: UserAccountFormMode) => {
         value === password.value ||
         i18n.global.t("userAccount.general.validation.passwordsDontMatch");
 
+    const fieldValidation = {
+        institutionId: {
+            required: isRequired(sharedSchema.shape.institutionId),
+        },
+        username: {
+            required: isRequired(sharedSchema.shape.username),
+            rules: fieldRules(sharedSchema.shape.username),
+        },
+        name: {
+            required: isRequired(sharedSchema.shape.name),
+            rules: fieldRules(sharedSchema.shape.name),
+        },
+        surname: {
+            required: isRequired(sharedSchema.shape.surname),
+            rules: fieldRules(sharedSchema.shape.surname),
+        },
+        email: {
+            required: isRequired(sharedSchema.shape.email),
+            rules: fieldRules(sharedSchema.shape.email),
+        },
+        timezone: { required: isRequired(sharedSchema.shape.timezone) },
+        userRoles: { required: isRequired(sharedSchema.shape.userRoles) },
+        newPassword: {
+            required: isRequired(userAccountCreateSchema.shape.newPassword),
+            rules: fieldRules(userAccountCreateSchema.shape.newPassword),
+        },
+        confirmNewPassword: {
+            required: isRequired(
+                userAccountCreateSchema.shape.confirmNewPassword,
+            ),
+            rules: fieldRules(userAccountCreateSchema.shape.confirmNewPassword),
+        },
+    };
+
     const leftFormFields = computed<FormField[]>(() => {
         if (loading.value) return [];
 
@@ -133,7 +167,7 @@ export const useUserAccountFormFields = (mode: UserAccountFormMode) => {
                 model: institutionId,
                 label: t("fields.institution.label"),
                 options: institutionOptions.value,
-                required: isRequired(sharedSchema.shape.institutionId),
+                required: fieldValidation.institutionId.required,
                 disabled: institutionSelectDisabled.value,
             },
             {
@@ -141,32 +175,32 @@ export const useUserAccountFormFields = (mode: UserAccountFormMode) => {
                 name: "username",
                 model: username,
                 label: t("fields.username.label"),
-                required: isRequired(sharedSchema.shape.username),
-                rules: fieldRules(sharedSchema.shape.username),
+                required: fieldValidation.username.required,
+                rules: fieldValidation.username.rules,
             },
             {
                 type: "text" as const,
                 name: "name",
                 model: name,
                 label: t("fields.name.label"),
-                required: isRequired(sharedSchema.shape.name),
-                rules: fieldRules(sharedSchema.shape.name),
+                required: fieldValidation.name.required,
+                rules: fieldValidation.name.rules,
             },
             {
                 type: "text" as const,
                 name: "surname",
                 model: surname,
                 label: t("fields.surname.label"),
-                required: isRequired(sharedSchema.shape.surname),
-                rules: fieldRules(sharedSchema.shape.surname),
+                required: fieldValidation.surname.required,
+                rules: fieldValidation.surname.rules,
             },
             {
                 type: "text" as const,
                 name: "email",
                 model: email,
                 label: t("fields.email.label"),
-                required: isRequired(sharedSchema.shape.email),
-                rules: fieldRules(sharedSchema.shape.email),
+                required: fieldValidation.email.required,
+                rules: fieldValidation.email.rules,
             },
             {
                 type: "select" as const,
@@ -174,7 +208,7 @@ export const useUserAccountFormFields = (mode: UserAccountFormMode) => {
                 model: timezone,
                 label: t("fields.timezone.label"),
                 options: timezoneOptions,
-                required: isRequired(sharedSchema.shape.timezone),
+                required: fieldValidation.timezone.required,
             },
         ];
 
@@ -185,25 +219,17 @@ export const useUserAccountFormFields = (mode: UserAccountFormMode) => {
                     name: "password",
                     model: password,
                     label: t("fields.password.label"),
-                    required: isRequired(
-                        userAccountCreateSchema.shape.newPassword,
-                    ),
-                    rules: fieldRules(
-                        userAccountCreateSchema.shape.newPassword,
-                    ),
+                    required: fieldValidation.newPassword.required,
+                    rules: fieldValidation.newPassword.rules,
                 },
                 {
                     type: "password" as const,
                     name: "confirmPassword",
                     model: confirmPassword,
                     label: t("fields.confirmPassword.label"),
-                    required: isRequired(
-                        userAccountCreateSchema.shape.confirmNewPassword,
-                    ),
+                    required: fieldValidation.confirmNewPassword.required,
                     rules: [
-                        ...fieldRules(
-                            userAccountCreateSchema.shape.confirmNewPassword,
-                        ),
+                        ...fieldValidation.confirmNewPassword.rules,
                         confirmPasswordRule,
                     ],
                     validationDependsOn: ["password"],
@@ -221,7 +247,7 @@ export const useUserAccountFormFields = (mode: UserAccountFormMode) => {
             model: role,
             label: t("fields.role.label"),
             options: availableRoles.value,
-            required: isRequired(sharedSchema.shape.userRoles),
+            required: fieldValidation.userRoles.required,
             disabled: mode === "profile",
         },
     ]);
