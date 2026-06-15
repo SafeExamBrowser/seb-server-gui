@@ -300,13 +300,13 @@ const submit = async () => {
         name: requireValidatedField(name.value),
         surname: requireValidatedField(surname.value),
         email: email.value || undefined,
-        language: "en",
         timezone: requireValidatedField(timezone.value),
     };
 
     if (props.mode === "create") {
         emit("createSubmit", {
             ...baseUserAccount,
+            language: "en",
             userRoles: selectedUserRoles,
             newPassword: requireValidatedField(password.value),
             confirmNewPassword: requireValidatedField(confirmPassword.value),
