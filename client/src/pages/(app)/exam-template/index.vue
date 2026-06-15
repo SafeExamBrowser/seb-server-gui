@@ -9,6 +9,13 @@
         :data-test-id="dataTestId"
         :panel-left-collapsed="!filtersOpen"
     >
+        <template #ActionButton>
+            <AddButton
+                :route="{ name: '/(app)/exam-template/create/' }"
+                :data-test-id="dataTestId"
+            />
+        </template>
+
         <template #PanelLeft>
             <SearchBar
                 v-model="list.searchInputValue"
@@ -73,6 +80,7 @@
 
 <script setup lang="ts">
 import BasicPage from "@/components/layout/pages/BasicPage.vue";
+import AddButton from "@/components/widgets/AddButton.vue";
 import SearchBar from "@/components/widgets/searches/SearchBar.vue";
 import EntityTable from "@/components/widgets/entity-table/EntityTable.vue";
 import FilterControlsRow from "@/components/widgets/filters/FilterControlsRow.vue";
