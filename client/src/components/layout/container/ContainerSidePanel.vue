@@ -15,9 +15,7 @@
             data-testid="layout-navOverview-toggle"
             :icon="isNavigationOverviewRoute ? 'mdi-close' : 'mdi-menu'"
             size="large"
-            :to="
-                isNavigationOverviewRoute ? homeRoute : navigationOverviewRoute
-            "
+            :to="navigationOverviewRoute"
             :variant="isNavigationOverviewRoute ? 'flat' : 'text'"
         />
 
@@ -57,7 +55,6 @@ defineProps<{
     links: BaseNavigationLink[];
     isNavigationOverviewRoute: boolean;
     navigationOverviewRoute: RouteLocationAsRelative;
-    homeRoute: RouteLocationAsRelative;
     ability: AbilityLike;
 }>();
 

@@ -9,10 +9,10 @@
             @click="handleClick"
         >
             <div class="d-flex align-center ga-2 pr-4 pl-2">
-                <v-icon size="25">mdi-plus</v-icon>
+                <v-icon size="25">{{ icon }}</v-icon>
 
                 <span class="text-title-medium" style="letter-spacing: normal">
-                    {{ $t("general.addButton") }}
+                    {{ label ?? $t("general.addButton") }}
                 </span>
             </div>
         </v-btn>
@@ -24,10 +24,20 @@ import { useRouter } from "vue-router";
 import type { RouteLocationAsRelative } from "vue-router";
 
 const router = useRouter();
-const props = defineProps<{
-    route?: RouteLocationAsRelative;
-    dataTestId?: string;
-}>();
+const props = withDefaults(
+    defineProps<{
+        route?: RouteLocationAsRelative;
+        dataTestId?: string;
+        label?: string;
+        icon?: string;
+    }>(),
+    {
+        route: undefined,
+        dataTestId: undefined,
+        label: undefined,
+        icon: "mdi-plus",
+    },
+);
 
 const emit = defineEmits<{
     (e: "click", event: MouseEvent): void;

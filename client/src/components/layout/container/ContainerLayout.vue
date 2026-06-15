@@ -17,7 +17,6 @@
             :style="{ minHeight: 0 }"
         >
             <ContainerSidePanel
-                :home-route="homeRoute"
                 :is-navigation-overview-route="isNavigationOverviewRoute"
                 :links="mainNavigationLinks"
                 :navigation-overview-route="navigationOverviewRoute"

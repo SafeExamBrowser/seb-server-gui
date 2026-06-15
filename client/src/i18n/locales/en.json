@@ -42,6 +42,7 @@
     "general": {
         "loadingText": "Loading... Please wait",
         "addButton": "Add",
+        "prepareButton": "Prepare",
         "cancelButton": "Cancel",
         "backButton": "Back",
         "nextButton": "Next",
@@ -2063,7 +2064,6 @@
         }
     },
     "titles": {
-        "home": "Home",
         "navigationOverview": "Navigation Overview",
         "exams": "Exams",
         "examsOverview": "Exams Overview",
