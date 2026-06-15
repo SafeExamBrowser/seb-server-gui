@@ -37,36 +37,38 @@ export class PlaywrightRegisterPage {
         // Page identity
         this.container = page.getByTestId("register-page-container");
 
-        // Fields
-        this.institutionSelect = page.getByTestId(
-            "register-institution-select",
-        );
+        // Fields (rendered by FormBuilder, located by their label)
+        this.institutionSelect = page.getByRole("combobox", {
+            name: "Institution *",
+        });
 
-        this.username = page
-            .getByTestId("register-username-input")
-            .getByRole("textbox");
+        this.username = page.getByRole("textbox", {
+            name: "Username *",
+            exact: true,
+        });
 
-        this.name = page
-            .getByTestId("register-name-input")
-            .getByRole("textbox");
+        this.name = page.getByRole("textbox", { name: "Name *", exact: true });
 
-        this.surname = page
-            .getByTestId("register-surname-input")
-            .getByRole("textbox");
+        this.surname = page.getByRole("textbox", {
+            name: "Last Name *",
+            exact: true,
+        });
 
-        this.email = page
-            .getByTestId("register-email-input")
-            .getByRole("textbox");
+        this.email = page.getByRole("textbox", { name: "Email", exact: true });
 
-        this.timezoneSelect = page.getByTestId("register-timezone-select");
+        this.timezoneSelect = page.getByRole("combobox", {
+            name: "Time Zone *",
+        });
 
-        this.password = page
-            .getByTestId("register-password-input")
-            .getByRole("textbox");
+        this.password = page.getByRole("textbox", {
+            name: "Password *",
+            exact: true,
+        });
 
-        this.confirmPassword = page
-            .getByTestId("register-confirmPassword-input")
-            .getByRole("textbox");
+        this.confirmPassword = page.getByRole("textbox", {
+            name: "Confirm Password *",
+            exact: true,
+        });
 
         // Actions
         this.submitButton = page.getByTestId("register-submit-btn");
@@ -74,7 +76,6 @@ export class PlaywrightRegisterPage {
         // Feedback
         this.successAlert = page.getByTestId("register-success-alert");
         this.usernameBackendError = page
-            .getByTestId("register-username-input")
             .locator(".v-messages__message")
             .filter({ hasText: "already in use" });
 
@@ -157,8 +158,8 @@ export class PlaywrightRegisterPage {
         await this.surname.fill(value);
     }
 
-    async fillEmail(value: string) {
-        await this.email.fill(value);
+    async fillEmail(value?: string) {
+        await this.email.fill(value ?? "");
     }
 
     async fillPassword(value: string) {

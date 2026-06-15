@@ -17,12 +17,14 @@ import {
     userAccountNameSchema,
     userAccountPageSchema,
     userAccountPasswordChangeSchema,
+    userAccountRegisterSchema,
     userAccountSchema,
     type UserAccount,
     type UserAccountCreateRequest,
     type UserAccountName,
     type UserAccountPage,
     type UserAccountPasswordChange,
+    type UserAccountRegisterRequest,
 } from "@/models/userAccount.ts";
 import { decodeWire, encodeWire } from "@/services/errors/wireCodec.ts";
 import { zEntityProcessingReport } from "@/api/seb-server/generated/hey-api/zod.gen.ts";
@@ -30,14 +32,20 @@ import type {
     EntityProcessingReport,
     GetUserAccountSupervisorsData,
     GetUserAccountsData,
+    UserMod,
 } from "@/api/seb-server/generated/hey-api/types.gen.ts";
 
+const SELF_REGISTER_ROLES: UserMod["userRoles"] = ["EXAM_SUPPORTER"];
+
 export const registerUserAccount = (
-    body: UserAccountCreateRequest,
+    body: UserAccountRegisterRequest,
 ): Promise<UserAccount> =>
     registerUserAccountSdk({
         client,
-        body: encodeWire(userAccountCreateSchema, body),
+        body: {
+            ...encodeWire(userAccountRegisterSchema, body),
+            userRoles: SELF_REGISTER_ROLES,
+        },
     }).then(({ data }) => decodeWire(userAccountSchema, data));
 
 export const getUserAccounts = (

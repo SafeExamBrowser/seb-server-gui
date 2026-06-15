@@ -62,6 +62,13 @@ export const userAccountCreateSchema = zUserMod.pick({
 });
 export type UserAccountCreateRequest = z.infer<typeof userAccountCreateSchema>;
 
+export const userAccountRegisterSchema = userAccountCreateSchema.omit({
+    userRoles: true,
+});
+export type UserAccountRegisterRequest = z.infer<
+    typeof userAccountRegisterSchema
+>;
+
 export const userAccountPasswordChangeSchema = zPasswordChange.pick({
     uuid: true,
     password: true,
