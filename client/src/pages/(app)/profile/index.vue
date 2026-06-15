@@ -18,17 +18,12 @@
 <script setup lang="ts">
 import { computed, ref } from "vue";
 import { useRouter } from "vue-router";
-import UserAccountForm, {
-    type ChangePasswordPayload,
-} from "@/pages/(app)/user-account/components/UserAccountForm.vue";
+import UserAccountForm from "@/pages/(app)/user-account/components/UserAccountForm.vue";
 import LoadingFallbackComponent from "@/components/widgets/loadingFallbackComponent/LoadingFallbackComponent.vue";
 import { useCurrentUserQuery } from "@/composables/useCurrentUser.ts";
 import { toAppErrorOrUndefined } from "@/services/errors/toAppError.ts";
 import { useLogout } from "@/composables/useLogout.ts";
-import { useEditUserAccountMutation } from "@/pages/(app)/user-account/api/useEditUserAccountMutation.ts";
-import { useChangePasswordMutation } from "@/pages/(app)/user-account/api/useChangePasswordMutation.ts";
-import { submitWithFormErrors } from "@/services/errors/submitWithFormErrors.ts";
-import type { UserAccount } from "@/models/userAccount.ts";
+import { useUserAccountFormSubmit } from "@/pages/(app)/user-account/composables/useUserAccountFormSubmit.ts";
 
 definePage({
     meta: {
@@ -47,51 +42,13 @@ const {
 } = useCurrentUserQuery();
 const error = computed(() => toAppErrorOrUndefined(userError.value));
 
-const { mutateAsync: save, error: saveMutationError } =
-    useEditUserAccountMutation();
-const saveError = computed(() =>
-    toAppErrorOrUndefined(saveMutationError.value),
-);
-const {
-    mutateAsync: changePassword,
-    error: changePasswordMutationError,
-    isPending: changePasswordLoading,
-} = useChangePasswordMutation();
-const changePasswordError = computed(() =>
-    toAppErrorOrUndefined(changePasswordMutationError.value),
-);
-
-const handleSubmit = async (payload: UserAccount) => {
-    if (!user.value) return;
-
-    const saved = await submitWithFormErrors({
-        run: () => save(payload),
-        applyErrors: (err) => formRef.value?.applyBackendErrors(err),
-        error: saveError,
-        contextLabel: "useraccount",
-    });
-    if (!saved) return;
-    await router.push({ name: "/(app)/" });
-};
-
-const handleChangePassword = async (payload: ChangePasswordPayload) => {
-    const currentUser = user.value;
-    if (!currentUser) return;
-
-    const changed = await submitWithFormErrors({
-        run: () =>
-            changePassword({
-                uuid: currentUser.uuid,
-                password: payload.adminPassword,
-                newPassword: payload.newPassword,
-                confirmNewPassword: payload.confirmNewPassword,
-            }),
-        applyErrors: (err) =>
+const { handleSubmit, handleChangePassword, changePasswordLoading } =
+    useUserAccountFormSubmit({
+        account: user,
+        applyEditErrors: (err) => formRef.value?.applyBackendErrors(err),
+        applyPasswordErrors: (err) =>
             formRef.value?.applyChangePasswordBackendErrors(err),
-        error: changePasswordError,
-        contextLabel: "useraccount.password",
+        onSaved: () => router.push({ name: "/(app)/" }),
+        onPasswordChanged: () => useLogout().logout(),
     });
-    if (!changed) return;
-    await useLogout().logout();
-};
 </script>
