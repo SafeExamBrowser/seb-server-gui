@@ -31,13 +31,88 @@
                 size="large"
                 variant="tonal"
             >
-                <v-icon
-                    :icon="getConnectionStatusIcon(currentStatus)"
-                    size="18"
-                    start
-                />
-                {{ translate(currentStatus) }}
+                <v-icon :icon="statusIcon" size="18" start />
+                {{ $t(currentStatus) }}
             </v-chip>
+
+            <!-- notifications (shown right under the status — they are important) -->
+            <template v-if="hasNotifications">
+                <div ref="notificationsRef" class="d-flex flex-column ga-2">
+                    <span
+                        class="text-body-small font-weight-bold text-uppercase text-medium-emphasis"
+                    >
+                        {{ $t("monitoringDetails.main.notifications") }}
+                    </span>
+
+                    <!-- raised hand -->
+                    <v-card
+                        v-if="raiseHandNotification"
+                        class="pa-3"
+                        color="primary"
+                        rounded="lg"
+                        variant="tonal"
+                    >
+                        <div class="d-flex align-center ga-2 mb-1">
+                            <v-icon
+                                color="primary"
+                                icon="mdi-hand-back-right"
+                                size="20"
+                            />
+                            <span class="text-body-medium font-weight-bold">
+                                {{ $t("monitoringDetails.main.raiseHand") }}
+                            </span>
+                        </div>
+                        <div class="text-body-small mb-3">
+                            {{ raiseHandNotification.text }}
+                        </div>
+                        <v-btn
+                            block
+                            color="primary"
+                            :loading="resolveRaiseHandSent"
+                            size="small"
+                            variant="flat"
+                            @click="handleResolveRaiseHand"
+                        >
+                            {{ $t("monitoringDetails.main.resolveRaiseHand") }}
+                        </v-btn>
+                    </v-card>
+
+                    <!-- lock screen messages -->
+                    <v-card
+                        v-for="message in messages"
+                        :key="message.id"
+                        class="pa-3"
+                        color="primary"
+                        rounded="lg"
+                        variant="tonal"
+                    >
+                        <div class="d-flex align-center ga-2 mb-1">
+                            <v-icon
+                                color="primary"
+                                icon="mdi-monitor-lock"
+                                size="20"
+                            />
+                            <span class="text-body-medium font-weight-bold">
+                                {{ $t("monitoringDetails.main.lockScreen") }}
+                            </span>
+                        </div>
+                        <div class="text-body-small mb-3">
+                            {{ message.text }}
+                        </div>
+                        <v-btn
+                            block
+                            color="primary"
+                            :loading="resolveLockScreenSent"
+                            size="small"
+                            variant="flat"
+                            @click="handleResolveMessage(message)"
+                        >
+                            {{ $t("monitoringDetails.main.unlockScreen") }}
+                        </v-btn>
+                    </v-card>
+                </div>
+                <v-divider />
+            </template>
 
             <!-- groups -->
             <div
@@ -116,89 +191,6 @@
                     </div>
                 </div>
             </template>
-
-            <!-- notifications -->
-            <template v-if="hasNotifications">
-                <v-divider />
-                <div ref="notificationsRef" class="d-flex flex-column ga-2">
-                    <span
-                        class="text-body-small font-weight-bold text-uppercase text-medium-emphasis"
-                    >
-                        {{ $t("monitoringDetails.main.notifications") }}
-                    </span>
-
-                    <!-- raised hand -->
-                    <v-card
-                        v-if="raiseHandNotification != null"
-                        class="pa-3"
-                        color="primary"
-                        rounded="lg"
-                        variant="tonal"
-                    >
-                        <div class="d-flex align-center ga-2 mb-1">
-                            <v-icon
-                                color="primary"
-                                icon="mdi-hand-back-right"
-                                size="20"
-                            />
-                            <span class="text-body-medium font-weight-bold">
-                                {{ $t("monitoringDetails.main.raiseHand") }}
-                            </span>
-                        </div>
-                        <div class="text-body-small mb-3">
-                            {{ raiseHandNotification.text }}
-                        </div>
-                        <v-btn
-                            block
-                            color="primary"
-                            :loading="resolveRaiseHandSent"
-                            size="small"
-                            variant="flat"
-                            @click="
-                                confirmNotification(
-                                    raiseHandNotification.id.toString(),
-                                )
-                            "
-                        >
-                            {{ $t("monitoringDetails.main.resolveRaiseHand") }}
-                        </v-btn>
-                    </v-card>
-
-                    <!-- lock screen messages -->
-                    <v-card
-                        v-for="message in messages"
-                        :key="message.id"
-                        class="pa-3"
-                        color="primary"
-                        rounded="lg"
-                        variant="tonal"
-                    >
-                        <div class="d-flex align-center ga-2 mb-1">
-                            <v-icon
-                                color="primary"
-                                icon="mdi-monitor-lock"
-                                size="20"
-                            />
-                            <span class="text-body-medium font-weight-bold">
-                                {{ $t("monitoringDetails.main.lockScreen") }}
-                            </span>
-                        </div>
-                        <div class="text-body-small mb-3">
-                            {{ message.text }}
-                        </div>
-                        <v-btn
-                            block
-                            color="primary"
-                            :loading="resolveLockScreenSent"
-                            size="small"
-                            variant="flat"
-                            @click="confirmNotification(message.id.toString())"
-                        >
-                            {{ $t("monitoringDetails.main.unlockScreen") }}
-                        </v-btn>
-                    </v-card>
-                </div>
-            </template>
         </div>
 
         <!-- actions -->
@@ -208,49 +200,33 @@
                 <v-btn
                     block
                     color="black"
-                    :disabled="!canLockScreen()"
+                    :disabled="isLockDisabled"
                     height="44"
                     prepend-icon="mdi-monitor-lock"
                     variant="outlined"
-                    @click="
-                        openInstructionConfirmDialog(
-                            InstructionEnum.SEB_FORCE_LOCK_SCREEN,
-                        )
-                    "
+                    @click="handleLockClient"
                 >
                     {{ $t("monitoringDetails.info.lock") }}
                 </v-btn>
                 <v-btn
                     block
                     color="black"
-                    :disabled="
-                        !connectionStateBehavior[currentStatus || 'UNKNOWN']
-                            ?.quit
-                    "
+                    :disabled="isQuitDisabled"
                     height="44"
                     prepend-icon="mdi-backspace-outline"
                     variant="outlined"
-                    @click="
-                        openInstructionConfirmDialog(InstructionEnum.SEB_QUIT)
-                    "
+                    @click="handleQuitClient"
                 >
                     {{ $t("monitoringDetails.info.quit") }}
                 </v-btn>
                 <v-btn
                     block
                     color="error"
-                    :disabled="
-                        !connectionStateBehavior[currentStatus || 'UNKNOWN']
-                            ?.cancel
-                    "
+                    :disabled="isCancelDisabled"
                     height="44"
                     prepend-icon="mdi-cancel"
                     variant="flat"
-                    @click="
-                        openInstructionConfirmDialog(
-                            InstructionEnum.SEB_MARK_AS_CANCELLED,
-                        )
-                    "
+                    @click="handleCancelClient"
                 >
                     {{ $t("monitoringDetails.info.mark-cancelled") }}
                 </v-btn>
@@ -264,7 +240,7 @@
                 :instruction-type="selectedInstructionType"
                 :is-cancel-instruction="isSelectedInstructionCancel"
                 @close-instruction-confirm-dialog="
-                    closeInstructionConfirmDialog
+                    handleCloseInstructionConfirmDialog
                 "
             />
         </v-dialog>
@@ -276,7 +252,6 @@ import { computed, nextTick, ref, watch, type CSSProperties } from "vue";
 import { useMonitoringStore } from "@/stores/seb-server/monitoringStore.ts";
 import * as monitoringService from "@/services/seb-server/monitoringService.ts";
 import * as generalUtils from "@/utils/generalUtils.ts";
-import { translate } from "@/utils/generalUtils.ts";
 import { getConnectionStatusColor } from "@/utils/monitoringUtils.ts";
 import { ConnectionStatusEnum } from "@/models/seb-server/connectionStatusEnum.ts";
 import { InstructionEnum } from "@/models/seb-server/instructionEnum.ts";
@@ -284,6 +259,7 @@ import {
     IndicatorEnum,
     NotificationEnum,
 } from "@/models/seb-server/monitoringEnums.ts";
+import { ClientNotification } from "@/models/seb-server/monitoring.ts";
 import InstructionConfirmDialog from "@/pages/(app)/monitoring/[examId]/client/components/InstructionConfirmDialog.vue";
 
 const props = defineProps<{
@@ -295,11 +271,9 @@ const emit = defineEmits<{
     (e: "updatePageInfo"): void;
 }>();
 
-// route params
 const examId = props.examId;
 const connectionToken = props.connectionToken;
 
-// stores
 const monitoringStore = useMonitoringStore();
 
 // slightly larger, heavier client name than the M3 title-medium token
@@ -308,113 +282,21 @@ const clientNameStyle: CSSProperties = {
     fontWeight: 800,
 };
 
-// instruction confirm dialog
-const instructionConfirmDialog = ref<boolean>(false);
-const selectedInstructionType = ref<InstructionEnum | null>(null);
-const isSelectedInstructionCancel = ref<boolean>(false);
-
-//= ==============instruction confirm dialog====================
-function openInstructionConfirmDialog(instructionType: InstructionEnum) {
-    selectedInstructionType.value = instructionType;
-    instructionConfirmDialog.value = true;
-    isSelectedInstructionCancel.value =
-        instructionType === InstructionEnum.SEB_MARK_AS_CANCELLED;
-}
-
-function closeInstructionConfirmDialog() {
-    instructionConfirmDialog.value = false;
-    emit("updatePageInfo");
-}
-
-//= ==============pending notifications====================
-const resolveRaiseHandSent = ref<boolean>(false);
-const resolveLockScreenSent = ref<boolean>(false);
-const notificationsRef = ref<HTMLElement>();
-
-const raiseHandNotification = computed(
-    () =>
-        monitoringStore.pendingNotifications.find(
-            (item) => item.notificationType === NotificationEnum.RAISE_HAND,
-        ) ?? null,
-);
-
-const messages = computed(() =>
-    monitoringStore.pendingNotifications.filter(
-        (item) => item.notificationType !== NotificationEnum.RAISE_HAND,
-    ),
-);
-
-const hasNotifications = computed(
-    () => raiseHandNotification.value != null || messages.value.length > 0,
-);
-
-const notificationCount = computed(
-    () => (raiseHandNotification.value != null ? 1 : 0) + messages.value.length,
-);
-
-// scroll a freshly arrived notification into view within the panel
-watch(notificationCount, (count, previousCount) => {
-    if (count > (previousCount ?? 0)) {
-        nextTick(() => {
-            notificationsRef.value?.scrollIntoView({
-                behavior: "smooth",
-                block: "nearest",
-            });
-        });
-    }
-});
-
-async function confirmNotification(notificationId: string) {
-    await monitoringService.confirmNotification(
-        examId,
-        notificationId,
-        connectionToken,
-    );
-    emit("updatePageInfo");
-}
-
-//= ==============split name in parts====================
-const nameParts = computed(() => {
-    const rawName =
-        monitoringStore.selectedSingleConn?.cdat.examUserSessionId || "";
-    return rawName.split("|").filter((p) => p.trim() !== "");
-});
-
-//= ==============groups, tags, and status====================
-const sebInfoParts = computed(() => {
-    const rawInfo = monitoringStore.selectedSingleConn?.cdat.seb_info || "";
-    return rawInfo
-        .split(",")
-        .map((p) => p.trim())
-        .filter((p) => p !== "");
-});
-
-const currentStatus = computed(() => {
-    if (monitoringStore.selectedSingleConn?.miss) {
-        return "MISSING";
-    }
-    return monitoringStore.selectedSingleConn?.cdat.status ?? null;
-});
-
-function canLockScreen(): boolean {
-    const hasLS =
-        monitoringStore.pendingNotifications.find(
-            (item) => item.notificationType === NotificationEnum.LOCK_SCREEN,
-        ) ?? null;
-
-    if (hasLS != null) {
-        return false;
-    }
-
-    return connectionStateBehavior[currentStatus.value || "UNKNOWN"]?.lock;
-}
-
+//= ==============connection state behavior====================
 type ConnectionStateBehavior = {
     wlan: boolean;
     battery: boolean;
     quit: boolean;
     lock: boolean;
     cancel: boolean;
+};
+
+const NO_BEHAVIOR: ConnectionStateBehavior = {
+    wlan: false,
+    battery: false,
+    quit: false,
+    lock: false,
+    cancel: false,
 };
 
 const connectionStateBehavior: Record<string, ConnectionStateBehavior> = {
@@ -456,79 +338,49 @@ const connectionStateBehavior: Record<string, ConnectionStateBehavior> = {
     },
 };
 
-const filteredIndicators = computed(() => {
-    const definitions = monitoringStore.indicators?.content || [];
-    const values = monitoringStore.selectedSingleConn?.iVal || [];
-    const state = currentStatus.value ?? "UNKNOWN";
-    const behavior = connectionStateBehavior[
-        state as keyof typeof connectionStateBehavior
-    ] || {
-        wlan: false,
-        battery: false,
-        quit: false,
-        lock: false,
-        cancel: false,
-    };
-
-    return definitions
-        .filter((def) => {
-            if (def.type === IndicatorEnum.BATTERY_STATUS && !behavior.battery)
-                return false;
-            return !(def.type === IndicatorEnum.WLAN_STATUS && !behavior.wlan);
-            // always show other indicators
-        })
-        .map((def) => {
-            const valObj = values.find((v) => v.id === def.id);
-            let displayValue: string | number | null = valObj
-                ? valObj.val
-                : null;
-
-            if (
-                def.type === IndicatorEnum.LAST_PING &&
-                typeof displayValue === "number"
-            ) {
-                displayValue = generalUtils.formatPing(displayValue);
-            } else if (displayValue !== null) {
-                displayValue = `${displayValue}${indicatorTypeConfig[def.type]?.unit || ""}`;
-            }
-
-            return {
-                ...def,
-                rawValue: valObj ? valObj.val : null,
-                displayValue,
-                ...indicatorTypeConfig[def.type],
-            };
-        });
+//= ==============client info====================
+const nameParts = computed(() => {
+    const rawName =
+        monitoringStore.selectedSingleConn?.cdat.examUserSessionId ?? "";
+    return rawName.split("|").filter((part) => part.trim() !== "");
 });
 
-const showIndicators = computed(
+const sebInfoParts = computed(() => {
+    const rawInfo = monitoringStore.selectedSingleConn?.cdat.seb_info ?? "";
+    return rawInfo
+        .split(",")
+        .map((part) => part.trim())
+        .filter((part) => part !== "");
+});
+
+const currentStatus = computed(() => {
+    if (monitoringStore.selectedSingleConn?.miss) {
+        return ConnectionStatusEnum.MISSING;
+    }
+    return monitoringStore.selectedSingleConn?.cdat.status ?? undefined;
+});
+
+const currentBehavior = computed(
     () =>
-        filteredIndicators.value.length > 0 &&
-        currentStatus.value !== ConnectionStatusEnum.CLOSED &&
-        currentStatus.value !== ConnectionStatusEnum.DISABLED,
+        connectionStateBehavior[currentStatus.value ?? "UNKNOWN"] ??
+        NO_BEHAVIOR,
 );
 
-function getConnectionStatusIcon(connectionStatus: string | null): string {
-    if (connectionStatus == null) return "mdi-chevron-right";
+const connectionStatusIcons: Record<string, string> = {
+    [ConnectionStatusEnum.CONNECTION_REQUESTED]: "mdi-signal-distance-variant",
+    [ConnectionStatusEnum.READY]: "mdi-check",
+    [ConnectionStatusEnum.ACTIVE]: "mdi-check-underline",
+    [ConnectionStatusEnum.CLOSED]: "mdi-close",
+    [ConnectionStatusEnum.DISABLED]: "mdi-send-lock",
+    [ConnectionStatusEnum.MISSING]: "mdi-signal-off",
+};
 
-    switch (connectionStatus) {
-        case ConnectionStatusEnum.CONNECTION_REQUESTED:
-            return "mdi-signal-distance-variant";
-        case ConnectionStatusEnum.READY:
-            return "mdi-check";
-        case ConnectionStatusEnum.ACTIVE:
-            return "mdi-check-underline";
-        case ConnectionStatusEnum.CLOSED:
-            return "mdi-close";
-        case ConnectionStatusEnum.DISABLED:
-            return "mdi-send-lock";
-        case ConnectionStatusEnum.MISSING:
-            return "mdi-signal-off";
-        default:
-            return "mdi-chevron-right";
-    }
-}
+const statusIcon = computed(
+    () =>
+        connectionStatusIcons[currentStatus.value ?? ""] ?? "mdi-chevron-right",
+);
 
+//= ==============indicators====================
 const indicatorTypeConfig: Record<
     string,
     { icon: string; unit?: string; color?: string }
@@ -543,4 +395,153 @@ const indicatorTypeConfig: Record<
     [IndicatorEnum.INFO_COUNT]: { icon: "mdi-information", color: "blue" },
     [IndicatorEnum.WLAN_STATUS]: { icon: "mdi-wifi", color: "green" },
 };
+
+const filteredIndicators = computed(() => {
+    const definitions = monitoringStore.indicators?.content ?? [];
+    const values = monitoringStore.selectedSingleConn?.iVal ?? [];
+    const behavior = currentBehavior.value;
+
+    return definitions
+        .filter((definition) => {
+            if (
+                definition.type === IndicatorEnum.BATTERY_STATUS &&
+                !behavior.battery
+            ) {
+                return false;
+            }
+            if (
+                definition.type === IndicatorEnum.WLAN_STATUS &&
+                !behavior.wlan
+            ) {
+                return false;
+            }
+            return true;
+        })
+        .map((definition) => {
+            const config = indicatorTypeConfig[definition.type];
+            const valueEntry = values.find(
+                (entry) => entry.id === definition.id,
+            );
+            let displayValue: string | number | undefined = valueEntry?.val;
+
+            if (
+                definition.type === IndicatorEnum.LAST_PING &&
+                typeof displayValue === "number"
+            ) {
+                displayValue = generalUtils.formatPing(displayValue);
+            } else if (displayValue !== undefined) {
+                displayValue = `${displayValue}${config?.unit ?? ""}`;
+            }
+
+            return { ...definition, displayValue, ...config };
+        });
+});
+
+const showIndicators = computed(
+    () =>
+        filteredIndicators.value.length > 0 &&
+        currentStatus.value !== ConnectionStatusEnum.CLOSED &&
+        currentStatus.value !== ConnectionStatusEnum.DISABLED,
+);
+
+//= ==============instruction confirm dialog====================
+const instructionConfirmDialog = ref(false);
+const selectedInstructionType = ref<InstructionEnum | null>(null);
+const isSelectedInstructionCancel = ref(false);
+
+const hasPendingLockScreen = computed(() =>
+    monitoringStore.pendingNotifications.some(
+        (item) => item.notificationType === NotificationEnum.LOCK_SCREEN,
+    ),
+);
+
+const isLockDisabled = computed(
+    () => hasPendingLockScreen.value || !currentBehavior.value.lock,
+);
+const isQuitDisabled = computed(() => !currentBehavior.value.quit);
+const isCancelDisabled = computed(() => !currentBehavior.value.cancel);
+
+function openInstructionConfirmDialog(instructionType: InstructionEnum) {
+    selectedInstructionType.value = instructionType;
+    isSelectedInstructionCancel.value =
+        instructionType === InstructionEnum.SEB_MARK_AS_CANCELLED;
+    instructionConfirmDialog.value = true;
+}
+
+function handleLockClient() {
+    openInstructionConfirmDialog(InstructionEnum.SEB_FORCE_LOCK_SCREEN);
+}
+
+function handleQuitClient() {
+    openInstructionConfirmDialog(InstructionEnum.SEB_QUIT);
+}
+
+function handleCancelClient() {
+    openInstructionConfirmDialog(InstructionEnum.SEB_MARK_AS_CANCELLED);
+}
+
+function handleCloseInstructionConfirmDialog() {
+    instructionConfirmDialog.value = false;
+    emit("updatePageInfo");
+}
+
+//= ==============pending notifications====================
+const resolveRaiseHandSent = ref(false);
+const resolveLockScreenSent = ref(false);
+const notificationsRef = ref<HTMLElement>();
+
+const raiseHandNotification = computed(() =>
+    monitoringStore.pendingNotifications.find(
+        (item) => item.notificationType === NotificationEnum.RAISE_HAND,
+    ),
+);
+
+const messages = computed(() =>
+    monitoringStore.pendingNotifications.filter(
+        (item) => item.notificationType !== NotificationEnum.RAISE_HAND,
+    ),
+);
+
+const hasNotifications = computed(
+    () =>
+        raiseHandNotification.value !== undefined || messages.value.length > 0,
+);
+
+const notificationCount = computed(
+    () =>
+        (raiseHandNotification.value !== undefined ? 1 : 0) +
+        messages.value.length,
+);
+
+// scroll a freshly arrived notification into view within the panel
+watch(notificationCount, (count, previousCount) => {
+    if (count > previousCount) {
+        nextTick(() => {
+            notificationsRef.value?.scrollIntoView({
+                behavior: "smooth",
+                block: "nearest",
+            });
+        });
+    }
+});
+
+async function confirmNotification(notificationId: string) {
+    await monitoringService.confirmNotification(
+        examId,
+        notificationId,
+        connectionToken,
+    );
+    emit("updatePageInfo");
+}
+
+function handleResolveRaiseHand() {
+    if (raiseHandNotification.value === undefined) {
+        return;
+    }
+    confirmNotification(raiseHandNotification.value.id.toString());
+}
+
+function handleResolveMessage(message: ClientNotification) {
+    confirmNotification(message.id.toString());
+}
 </script>

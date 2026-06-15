@@ -10,7 +10,7 @@
             <MonitoringDetailsContextPanel
                 :exam-id="examId"
                 :connection-token="connectionToken"
-                @update-page-info="updatePage"
+                @update-page-info="handleUpdatePage"
             />
         </template>
 
@@ -19,7 +19,7 @@
                 color="black"
                 prepend-icon="mdi-arrow-left"
                 variant="outlined"
-                @click="goBackToMonitoringClients"
+                @click="handleBackToClientList"
             >
                 {{ $t("monitoringDetails.info.backToClientList") }}
             </v-btn>
@@ -60,7 +60,7 @@ const monitoringStore = useMonitoringStore();
 const router = useRouter();
 
 // data load
-const isDataLoaded = ref<boolean>(false);
+const isDataLoaded = ref(false);
 
 // interval
 let intervalRefresh: ReturnType<typeof setInterval> | null = null;
@@ -87,8 +87,8 @@ onBeforeUnmount(() => {
 //= ==============breadcrumb, title and navigation====================
 const nameParts = computed(() => {
     const rawName =
-        monitoringStore.selectedSingleConn?.cdat.examUserSessionId || "";
-    return rawName.split("|").filter((p) => p.trim() !== "");
+        monitoringStore.selectedSingleConn?.cdat.examUserSessionId ?? "";
+    return rawName.split("|").filter((part) => part.trim() !== "");
 });
 
 const clientName = computed(() => nameParts.value.join(" ").trim());
@@ -123,7 +123,7 @@ const breadCrumb = computed<BreadCrumbItem[]>(() => {
     return items;
 });
 
-function goBackToMonitoringClients() {
+function handleBackToClientList() {
     void router.push({
         name: "/(app)/monitoring/[examId]/client/",
         params: { examId },
@@ -207,7 +207,7 @@ function stopIntervalRefresh() {
     }
 }
 
-async function updatePage() {
+async function handleUpdatePage() {
     getSingleConnection();
     getPendingNotifications();
 }

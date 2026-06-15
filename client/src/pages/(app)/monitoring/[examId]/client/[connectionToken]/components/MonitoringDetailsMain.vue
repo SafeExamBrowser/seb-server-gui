@@ -1,5 +1,4 @@
 <template>
-    <!-- Main card: peer views -->
     <v-card border elevation="1" rounded="lg">
         <template v-if="screenProctoringEnabled">
             <v-tabs v-model="currentView" color="primary" grow>
@@ -37,13 +36,10 @@ const props = defineProps<{
     connectionToken: string;
 }>();
 
-// route params
 const connectionToken = props.connectionToken;
 
-// stores
 const monitoringStore = useMonitoringStore();
 
-// attributes for switch between logs and screen proctor view
 const screenProctoringEnabled = computed(() => {
     return (
         monitoringStore.selectedExam?.additionalAttributes
