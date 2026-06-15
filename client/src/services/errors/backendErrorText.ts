@@ -24,13 +24,10 @@ function translateFirst(
     params?: Record<string, unknown> | string[],
 ): string | undefined {
     for (const key of keys) {
-        if (!key) {
+        if (!key || !i18n.global.te(key)) {
             continue;
         }
-        const translated = translate(key, params);
-        if (translated !== key) {
-            return translated;
-        }
+        return translate(key, params);
     }
     return undefined;
 }

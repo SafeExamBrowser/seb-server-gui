@@ -11,10 +11,6 @@ import type {
 
 const zApiMessageArray = z.array(zApiMessage);
 
-export function isAPIMessage(value: unknown): value is APIMessage {
-    return zApiMessage.safeParse(value).success;
-}
-
 export function isAppError(error: unknown): error is AppError {
     if (typeof error !== "object" || error === null) {
         return false;
