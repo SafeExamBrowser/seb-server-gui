@@ -21,7 +21,15 @@ import ExamTemplateBox from "@/pages/(app)/exam-template/[id]/components/ExamTem
 import ScreenProctoringEditDialog from "./components/ScreenProctoringEditDialog.vue";
 import KeyValueList from "@/components/widgets/keyValueList/KeyValueList.vue";
 import { KeyValueItem } from "@/components/widgets/keyValueList/types.ts";
+import { ScreenProctoringCollectionStrategy } from "@/models/seb-server/screenProctoring.ts";
 import { ScreenProctoringSelection } from "./types.ts";
+
+const STRATEGY_LABEL_KEYS: Record<ScreenProctoringCollectionStrategy, string> =
+    {
+        EXAM: "screenProctoring.collectionStrategy.strategies.EXAM",
+        APPLY_SEB_GROUPS:
+            "screenProctoring.collectionStrategy.strategies.APPLY_SEB_GROUPS",
+    };
 
 const { enabled, collectionStrategy } =
     defineProps<ScreenProctoringSelection>();
@@ -32,19 +40,9 @@ const emit = defineEmits<{
 
 const { t } = useI18n();
 
-const strategyLabel = computed<string | undefined>(() => {
-    if (collectionStrategy === "EXAM") {
-        return t("screenProctoring.collectionStrategy.strategies.EXAM");
-    }
-
-    if (collectionStrategy === "APPLY_SEB_GROUPS") {
-        return t(
-            "screenProctoring.collectionStrategy.strategies.APPLY_SEB_GROUPS",
-        );
-    }
-
-    return undefined;
-});
+const strategyLabel = computed<string | undefined>(() =>
+    collectionStrategy ? t(STRATEGY_LABEL_KEYS[collectionStrategy]) : undefined,
+);
 
 const items = computed<KeyValueItem[]>(() => {
     const result: KeyValueItem[] = [
