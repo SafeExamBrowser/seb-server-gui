@@ -11,6 +11,7 @@
                     class="mb-1"
                     :label="option.label"
                     :color="option.color"
+                    :count="option.count"
                     :multiple="section.multiple"
                     :selected="
                         isFilterValueSelected(

@@ -16,6 +16,12 @@
             />
             <v-icon v-if="color" :color="color" icon="mdi-circle" :size="8" />
             <span class="text-body-medium font-weight-medium">{{ label }}</span>
+            <span
+                v-if="count !== undefined"
+                class="ms-auto text-body-small font-weight-bold text-medium-emphasis"
+            >
+                {{ count }}
+            </span>
         </div>
     </v-list-item>
 </template>
@@ -29,9 +35,15 @@ const props = withDefaults(
         selected: boolean;
         multiple?: boolean;
         color?: string;
+        count?: number;
         dataTestId?: string;
     }>(),
-    { multiple: false, color: undefined, dataTestId: undefined },
+    {
+        multiple: false,
+        color: undefined,
+        count: undefined,
+        dataTestId: undefined,
+    },
 );
 
 const controlIcon = computed(() => {
