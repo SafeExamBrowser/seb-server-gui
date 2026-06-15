@@ -13,7 +13,7 @@
             {{ text }}
         </div>
         <div
-            class="flex-grow-1 flex-shrink-1 fill-height mt-8"
+            class="flex-grow-1 flex-shrink-1 fill-height mt-4 pt-4"
             :class="{ 'overflow-y-auto': manualScrollManagement }"
         >
             <slot></slot>
