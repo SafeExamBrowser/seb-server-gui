@@ -26,7 +26,7 @@ export class PlaywrightRegisterPage {
 
     // Feedback
     readonly successAlert: Locator;
-    readonly errorAlert: Locator;
+    readonly usernameBackendError: Locator;
 
     // Optional: Vuetify validation messages
     readonly validationMessages: Locator;
@@ -73,7 +73,10 @@ export class PlaywrightRegisterPage {
 
         // Feedback
         this.successAlert = page.getByTestId("register-success-alert");
-        this.errorAlert = page.getByTestId("register-error-alert");
+        this.usernameBackendError = page
+            .getByTestId("register-username-input")
+            .locator(".v-messages__message")
+            .filter({ hasText: "already in use" });
 
         this.validationMessages = page.locator(
             ".v-messages .v-messages__message",
@@ -99,8 +102,11 @@ export class PlaywrightRegisterPage {
     }
 
     async expectErrorVisible() {
-        await this.errorAlert.waitFor({ state: "attached", timeout: 10_000 });
-        await expect(this.errorAlert).toBeVisible();
+        await this.usernameBackendError.waitFor({
+            state: "attached",
+            timeout: 10_000,
+        });
+        await expect(this.usernameBackendError).toBeVisible();
     }
 
     async expectSuccessNotVisible() {
@@ -108,7 +114,7 @@ export class PlaywrightRegisterPage {
     }
 
     async expectErrorNotVisible() {
-        await expect(this.errorAlert).toHaveCount(0);
+        await expect(this.usernameBackendError).toHaveCount(0);
     }
 
     // ------------------------

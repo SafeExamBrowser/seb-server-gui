@@ -22,20 +22,6 @@
 
                         <div class="mt-10">
                             <div
-                                v-if="registerError"
-                                data-testid="register-error-alert"
-                            >
-                                <AlertMsg
-                                    :alert-props="{
-                                        title: '',
-                                        color: 'error',
-                                        type: 'alert',
-                                        textKey: 'register-error',
-                                    }"
-                                >
-                                </AlertMsg>
-                            </div>
-                            <div
                                 v-if="registerSuccess"
                                 data-testid="register-success-alert"
                             >
@@ -73,6 +59,9 @@
                                             :disabled="
                                                 institutionSelectDisabled
                                             "
+                                            :error-messages="
+                                                backendFieldErrors.selectedInstitution
+                                            "
                                             item-title="name"
                                             item-value="modelId"
                                             :items="institutions ?? []"
@@ -85,6 +74,9 @@
                                             :required="institutionRequired"
                                             :rules="institutionRules"
                                             variant="outlined"
+                                            @update:model-value="
+                                                handleInstitutionInput
+                                            "
                                         />
                                     </v-col>
 
@@ -93,6 +85,9 @@
                                             v-model="username"
                                             data-testid="register-username-input"
                                             density="compact"
+                                            :error-messages="
+                                                backendFieldErrors.username
+                                            "
                                             :label="
                                                 translate(
                                                     'userAccount.registerPage.labels.usernameLabel',
@@ -102,6 +97,9 @@
                                             :required="usernameRequired"
                                             :rules="usernameRules"
                                             variant="outlined"
+                                            @update:model-value="
+                                                handleUsernameInput
+                                            "
                                         />
                                     </v-col>
 
@@ -144,6 +142,9 @@
                                             v-model="email"
                                             data-testid="register-email-input"
                                             density="compact"
+                                            :error-messages="
+                                                backendFieldErrors.email
+                                            "
                                             :label="
                                                 translate(
                                                     'userAccount.registerPage.labels.emailLabel',
@@ -154,6 +155,9 @@
                                             :rules="emailRules"
                                             validate-on="blur"
                                             variant="outlined"
+                                            @update:model-value="
+                                                handleEmailInput
+                                            "
                                         />
                                     </v-col>
 
@@ -318,8 +322,24 @@ import { useInstitutions } from "@/composables/useInstitutions";
 import { useRegisterUserAccountMutation } from "@/pages/(app)/user-account/api/useRegisterUserAccountMutation.ts";
 import { useZodFormRules } from "@/composables/useZodFormRules.ts";
 import { userAccountCreateSchema } from "@/models/userAccount.ts";
+import { submitWithFormErrors } from "@/services/errors/submitWithFormErrors.ts";
+import {
+    buildBackendFieldErrorMap,
+    hasOnlyHandledFieldErrors,
+    type ApplyBackendErrorsResult,
+} from "@/services/errors/formErrorMapping.ts";
+import { toAppErrorOrUndefined } from "@/services/errors/toAppError.ts";
+import type {
+    BackendFieldAliasMap,
+    BackendFieldErrorMap,
+} from "@/services/errors/types.ts";
 import { RouterLink, useRouter } from "vue-router";
 import AlertMsg from "@/components/widgets/AlertMsg.vue";
+
+const REGISTER_FIELD_ALIASES = {
+    institutionId: "selectedInstitution",
+} satisfies BackendFieldAliasMap;
+const REGISTER_FIELD_NAMES = ["selectedInstitution", "username", "email"];
 
 definePage({
     meta: {
@@ -364,8 +384,40 @@ const {
     error: registerSubmitError,
 } = useRegisterUserAccountMutation();
 
-const registerError = computed(() => !!registerSubmitError.value);
+const registerError = computed(() =>
+    toAppErrorOrUndefined(registerSubmitError.value),
+);
 const registerSuccess = computed(() => !!registered.value);
+
+const backendFieldErrors = ref<BackendFieldErrorMap>({});
+
+function applyBackendErrors(error: unknown): ApplyBackendErrorsResult {
+    const result = buildBackendFieldErrorMap(error, {
+        aliases: REGISTER_FIELD_ALIASES,
+        allowedFields: REGISTER_FIELD_NAMES,
+    });
+    backendFieldErrors.value = result.fieldErrors;
+    return {
+        fullyHandled: hasOnlyHandledFieldErrors(result),
+        appError: result.appError,
+        unhandledMessages: result.unhandledMessages,
+    };
+}
+
+function clearBackendError(field: string) {
+    if (!backendFieldErrors.value[field]) {
+        return;
+    }
+    backendFieldErrors.value = Object.fromEntries(
+        Object.entries(backendFieldErrors.value).filter(
+            ([key]) => key !== field,
+        ),
+    );
+}
+
+const handleInstitutionInput = () => clearBackendError("selectedInstitution");
+const handleUsernameInput = () => clearBackendError("username");
+const handleEmailInput = () => clearBackendError("email");
 
 const formRef = ref();
 
@@ -412,27 +464,35 @@ async function register() {
         return;
     }
 
+    backendFieldErrors.value = {};
     const language = navigator.language?.split("-")[0] || "en";
 
-    try {
-        await submitRegister({
-            institutionId: Number(selectedInstitution.value),
-            name: name.value,
-            surname: surname.value,
-            username: username.value,
-            newPassword: password.value,
-            confirmNewPassword: confirmPassword.value,
-            timezone: timezone.value,
-            language,
-            email: email.value || undefined,
-            userRoles: ["EXAM_SUPPORTER"],
-        });
-        setTimeout(() => {
-            router.push({ name: "/(public)/login/" });
-        }, 2500);
-    } catch {
+    const registeredAccount = await submitWithFormErrors({
+        run: () =>
+            submitRegister({
+                institutionId: Number(selectedInstitution.value),
+                name: name.value,
+                surname: surname.value,
+                username: username.value,
+                newPassword: password.value,
+                confirmNewPassword: confirmPassword.value,
+                timezone: timezone.value,
+                language,
+                email: email.value || undefined,
+                userRoles: ["EXAM_SUPPORTER"],
+            }),
+        applyErrors: applyBackendErrors,
+        error: registerError,
+        contextLabel: "useraccount",
+    });
+
+    if (!registeredAccount) {
         return;
     }
+
+    setTimeout(() => {
+        router.push({ name: "/(public)/login/" });
+    }, 2500);
 }
 
 function handleTabKeyEvent(event: KeyboardEvent, action: string) {
