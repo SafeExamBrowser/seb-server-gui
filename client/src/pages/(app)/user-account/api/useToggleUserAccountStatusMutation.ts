@@ -41,9 +41,6 @@ const throwOnReportErrors = async (
 export const useToggleUserAccountStatusMutation = () => {
     const queryClient = useQueryClient();
 
-    const invalidateList = () =>
-        queryClient.invalidateQueries({ queryKey: listKey() });
-
     const activate = useMutation<
         EntityProcessingReport,
         AppError | Error,
@@ -56,7 +53,6 @@ export const useToggleUserAccountStatusMutation = () => {
                 { queryKey: listKey() },
                 flipActiveInList(uuid, true),
             );
-            invalidateList();
         },
     });
 
@@ -72,7 +68,6 @@ export const useToggleUserAccountStatusMutation = () => {
                 { queryKey: listKey() },
                 flipActiveInList(uuid, false),
             );
-            invalidateList();
         },
     });
 

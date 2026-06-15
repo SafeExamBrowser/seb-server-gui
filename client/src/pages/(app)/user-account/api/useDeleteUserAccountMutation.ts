@@ -33,7 +33,6 @@ export const useDeleteUserAccountMutation = () => {
                           }
                         : page,
             );
-            queryClient.invalidateQueries({ queryKey: listKey() });
         },
     });
 };
