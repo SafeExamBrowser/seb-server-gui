@@ -1,80 +1,75 @@
 <template>
-    <v-sheet class="rounded-lg pa-8" elevation="2">
+    <div>
         <!-- Filters & Search Row -->
-        <v-row class="mb-4 align-center">
-            <v-col cols="4">
-                <v-tabs
-                    v-model="statusFilter"
-                    class="mb-4"
-                    color="primary"
-                    fixed-tabs
+        <div class="d-flex flex-wrap align-center ga-4 mb-4">
+            <v-tabs
+                v-model="statusFilter"
+                color="primary"
+                density="comfortable"
+                class="flex-grow-1"
+            >
+                <v-tab value="all">{{
+                    translate(
+                        "monitoringDetails.logContainer.sortingAndFilter.all",
+                    )
+                }}</v-tab>
+                <v-tab value="info">{{
+                    translate(
+                        "monitoringDetails.logContainer.sortingAndFilter.info",
+                    )
+                }}</v-tab>
+                <v-tab value="warn"
+                    >{{
+                        translate(
+                            "monitoringDetails.logContainer.sortingAndFilter.warning",
+                        )
+                    }}
+                </v-tab>
+                <v-tab value="error"
+                    >{{
+                        translate(
+                            "monitoringDetails.logContainer.sortingAndFilter.error",
+                        )
+                    }}
+                </v-tab>
+            </v-tabs>
+
+            <div class="d-flex align-center ga-2">
+                <v-text-field
+                    v-model="searchQuery"
+                    append-inner-icon="mdi-magnify"
+                    density="compact"
+                    hide-details
+                    :placeholder="
+                        translate(
+                            'monitoringDetails.logContainer.sortingAndFilter.searchForLogs',
+                        )
+                    "
+                    single-line
+                    style="min-width: 220px"
+                    type="text"
+                    variant="outlined"
+                    @keydown.enter="onSearch"
+                    @keydown.esc="onClearSearch"
+                />
+                <v-btn
+                    color="black"
+                    rounded="sm"
+                    variant="outlined"
+                    @click="onClearSearch()"
                 >
-                    <v-tab value="all">{{
-                        translate(
-                            "monitoringDetails.logContainer.sortingAndFilter.all",
-                        )
-                    }}</v-tab>
-                    <v-tab value="info">{{
-                        translate(
-                            "monitoringDetails.logContainer.sortingAndFilter.info",
-                        )
-                    }}</v-tab>
-                    <v-tab value="warn"
-                        >{{
-                            translate(
-                                "monitoringDetails.logContainer.sortingAndFilter.warning",
-                            )
-                        }}
-                    </v-tab>
-                    <v-tab value="error"
-                        >{{
-                            translate(
-                                "monitoringDetails.logContainer.sortingAndFilter.error",
-                            )
-                        }}
-                    </v-tab>
-                </v-tabs>
-            </v-col>
-            <v-col cols="2"> </v-col>
-            <v-col cols="6">
-                <div class="d-flex align-center justify-end">
-                    <v-btn
-                        color="black"
-                        rounded="sm"
-                        variant="outlined"
-                        @click="onClearSearch()"
-                    >
-                        {{ translate("general.cancelButton") }}
-                    </v-btn>
-
-                    <v-btn
-                        class="ml-2"
-                        color="primary"
-                        rounded="sm"
-                        variant="flat"
-                        @click="onSearch()"
-                    >
-                        {{ translate("general.searchButton") }}
-                    </v-btn>
-
-                    <v-text-field
-                        v-model="searchQuery"
-                        class="search-input ml-4"
-                        density="comfortable"
-                        hide-details
-                        :placeholder="
-                            translate(
-                                'monitoringDetails.logContainer.sortingAndFilter.searchForLogs',
-                            )
-                        "
-                        type="text"
-                        variant="outlined"
-                        @keydown.enter="onSearch"
-                        @keydown.esc="onClearSearch"
-                    />
-                </div>
-            </v-col>
-        </v-row>
+                    {{ translate("general.cancelButton") }}
+                </v-btn>
+                <v-btn
+                    color="primary"
+                    rounded="sm"
+                    variant="flat"
+                    @click="onSearch()"
+                >
+                    {{ translate("general.searchButton") }}
+                </v-btn>
+            </div>
+        </div>
 
         <!-- Data Table of Log Entries -->
         <v-data-table-server
@@ -125,7 +120,7 @@
                 {{ item.value || "-" }}
             </template>
         </v-data-table-server>
-    </v-sheet>
+    </div>
 </template>
 
 <script setup lang="ts">
