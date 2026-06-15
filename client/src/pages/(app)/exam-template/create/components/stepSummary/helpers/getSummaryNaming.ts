@@ -105,9 +105,7 @@ export const getSummaryNaming = (
             {
                 type: "basic" as const,
                 key: "screenProctoringEnabled",
-                label: i18n.global.t(
-                    "createTemplateExam.general.fields.screenProctoringEnabled.label",
-                ),
+                label: i18n.global.t("screenProctoring.enabled.label"),
                 value: {
                     type: "boolean",
                     value:

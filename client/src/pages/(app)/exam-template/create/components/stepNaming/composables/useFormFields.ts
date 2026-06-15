@@ -148,9 +148,7 @@ export const useFormFields = () => {
                 type: "switch" as const,
                 name: "screenProctoringEnabled",
                 model: modelScreenProctoringEnabled,
-                label: i18n.global.t(
-                    "createTemplateExam.general.fields.screenProctoringEnabled.label",
-                ),
+                label: i18n.global.t("screenProctoring.enabled.label"),
             },
         ];
     });

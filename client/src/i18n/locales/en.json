@@ -367,26 +367,24 @@
             }
         }
     },
-    "createTemplateExam": {
-        "general": {
-            "fields": {
-                "screenProctoringEnabled": {
-                    "label": "Screen Proctoring"
-                },
-                "screenProctoringCollectionStrategy": {
-                    "label": "Grouping Strategy",
-                    "placeholder": "Select the grouping strategy",
-                    "info": {
-                        "EXAM": "This strategy does not allow you to toggle the screen proctoring per group.",
-                        "APPLY_SEB_GROUPS": "With this strategy, you must create at least one group with screen proctoring enabled."
-                    },
-                    "strategies": {
-                        "EXAM": "One Group for Exam",
-                        "APPLY_SEB_GROUPS": "Apply to SEB Client Groups"
-                    }
-                }
-            }
+    "screenProctoring": {
+        "enabled": {
+            "label": "Screen Proctoring"
         },
+        "collectionStrategy": {
+            "label": "Grouping Strategy",
+            "placeholder": "Select the grouping strategy",
+            "info": {
+                "EXAM": "This strategy does not allow you to toggle the screen proctoring per group.",
+                "APPLY_SEB_GROUPS": "With this strategy, you must create at least one group with screen proctoring enabled."
+            },
+            "strategies": {
+                "EXAM": "One Group for Exam",
+                "APPLY_SEB_GROUPS": "Apply to SEB Client Groups"
+            }
+        }
+    },
+    "createTemplateExam": {
         "steps": {
             "naming": {
                 "title": "Define Basic Settings",
@@ -498,7 +496,8 @@
                 }
             },
             "screenProctoringSettings": {
-                "title": "Screen Proctoring"
+                "title": "Screen Proctoring Settings",
+                "dialogTitle": "Edit Screen Proctoring Settings"
             },
             "groups": {
                 "errors": {

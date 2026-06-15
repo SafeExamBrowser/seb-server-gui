@@ -21,7 +21,13 @@
                 />
             </template>
             <template #screenProctoringSettings>
-                <BoxScreenProctoringSettings />
+                <BoxScreenProctoringSettings
+                    :enabled="screenProctoring.enabled.value"
+                    :collection-strategy="
+                        screenProctoring.collectionStrategy.value
+                    "
+                    @change="handleScreenProctoringChange"
+                />
             </template>
             <template #groups>
                 <BoxClientGroups
@@ -42,7 +48,7 @@ import BoxBasicSettings from "./components/BoxBasicSettings.vue";
 import BoxSebSettings from "./components/BoxSebSettings.vue";
 import BoxIndicators from "./components/BoxIndicators.vue";
 import BoxSupervisors from "./components/BoxSupervisors.vue";
-import BoxScreenProctoringSettings from "./components/BoxScreenProctoringSettings.vue";
+import BoxScreenProctoringSettings from "./components/BoxScreenProctoringSettings/BoxScreenProctoringSettings.vue";
 import BoxClientGroups from "./components/BoxClientGroups.vue";
 
 const {
@@ -57,6 +63,7 @@ const {
     clientGroups,
     screenProctoring,
     updateTemplate,
+    handleScreenProctoringChange,
 } = useExamTemplateDetailPage();
 
 const handleSupervisorsChange = (ids: string[]) =>

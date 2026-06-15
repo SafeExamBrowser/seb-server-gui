@@ -9,7 +9,11 @@ import {
     IndicatorExisting,
 } from "@/models/seb-server/examTemplate.ts";
 import { updateExamTemplate } from "@/services/seb-server/examTemplateService.ts";
-import { SCREEN_PROCTORING_COLLECTION_STRATEGY } from "@/models/seb-server/screenProctoring.ts";
+import {
+    SCREEN_PROCTORING_COLLECTION_STRATEGY,
+    ScreenProctoringCollectionStrategy,
+    buildScreenProctoringExamAttributes,
+} from "@/models/seb-server/screenProctoring.ts";
 import { useSupervisors } from "@/composables/useSupervisors.ts";
 import { useMutation } from "@/composables/useMutation.ts";
 import { useExamTemplate } from "./api/useExamTemplate.ts";
@@ -104,6 +108,9 @@ export const useExamTemplateDetailPage = () => {
                     examTemplate.value?.EXAM_ATTRIBUTES?.spsCollectingStrategy,
             ),
         ),
+        fallbackGroupName: computed(
+            () => examTemplate.value?.EXAM_ATTRIBUTES?.spsCollectingGroupName,
+        ),
     };
 
     const updateMutation = useMutation((template: ExamTemplate) =>
@@ -138,6 +145,29 @@ export const useExamTemplateDetailPage = () => {
         examTemplate.value = examTemplateUpdated;
     };
 
+    const handleScreenProctoringChange = ({
+        enabled,
+        collectionStrategy,
+    }: {
+        enabled: boolean;
+        collectionStrategy?: ScreenProctoringCollectionStrategy;
+    }) => {
+        if (!examTemplate.value) {
+            return;
+        }
+
+        // spsSEBGroupsSelection is deliberately not managed here, as this is owned by the backend
+        return updateTemplate({
+            EXAM_ATTRIBUTES: {
+                ...examTemplate.value.EXAM_ATTRIBUTES,
+                ...buildScreenProctoringExamAttributes({
+                    enabled,
+                    collectionStrategy,
+                }),
+            },
+        });
+    };
+
     return {
         examTemplateId,
         loading,
@@ -150,5 +180,6 @@ export const useExamTemplateDetailPage = () => {
         clientGroups,
         screenProctoring,
         updateTemplate,
+        handleScreenProctoringChange,
     };
 };

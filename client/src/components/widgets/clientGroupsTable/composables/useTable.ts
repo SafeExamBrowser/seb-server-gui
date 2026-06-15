@@ -9,6 +9,7 @@ import {
 } from "@/components/widgets/clientGroupsTable/types.ts";
 import { computed, Ref } from "vue";
 import i18n from "@/i18n";
+import { RuleAliases } from "vuetify/labs/rules";
 import { useFormFields } from "./useFormFields.ts";
 import { CrudTableConfig } from "@/components/widgets/crudTable/types.ts";
 
@@ -19,10 +20,12 @@ const getEmptyClientGroup = (): ClientGroupTransient => ({
 export const useTable = (
     deps: ClientGroupsTableDeps,
     screenProctoringAllowedForGroups: Ref<boolean>,
+    rules: RuleAliases,
 ): CrudTableConfig<ClientGroupForTable, ClientGroupTransient> => {
     const { getFormFields } = useFormFields(
         deps.clientGroups,
         screenProctoringAllowedForGroups,
+        rules,
     );
 
     const headers = [
@@ -63,9 +66,11 @@ export const useTable = (
                 id: SCREEN_PROCTORING_FALLBACK_ROW_ID,
                 type: "SCREEN_PROCTORING_SINGLE" as const,
                 screenProctoringEnabled: true,
-                name: i18n.global.t(
-                    "clientGroups.screenProctoringSingleGroupName",
-                ),
+                name:
+                    deps.screenProctoring.fallbackGroupName?.value ??
+                    i18n.global.t(
+                        "clientGroups.screenProctoringSingleGroupName",
+                    ),
             };
         }
 
@@ -77,9 +82,11 @@ export const useTable = (
                 id: SCREEN_PROCTORING_FALLBACK_ROW_ID,
                 type: "SCREEN_PROCTORING_FALLBACK" as const,
                 screenProctoringEnabled: true,
-                name: i18n.global.t(
-                    "clientGroups.screenProctoringFallbackGroupName",
-                ),
+                name:
+                    deps.screenProctoring.fallbackGroupName?.value ??
+                    i18n.global.t(
+                        "clientGroups.screenProctoringFallbackGroupName",
+                    ),
             };
         }
 

@@ -8,14 +8,13 @@ import { useFormFieldsScreenProctoring } from "./useFormFieldsScreenProctoring.t
 import { useFormFieldsTypeIPRange } from "./useFormFieldsTypeIPRange.ts";
 import { useFormFieldsTypeClientOS } from "./useFormFieldsTypeClientOS.ts";
 import { useFormFieldsTypeNameAlphabeticalRange } from "./useFormFieldsTypeNameAlphabeticalRange.ts";
-import { useRules } from "vuetify/labs/rules";
+import { RuleAliases } from "vuetify/labs/rules";
 
 export const useFormFields = (
     groups: Ref<ClientGroupExisting[]>,
     screenProctoringAllowedForGroups: Ref<boolean>,
+    rules: RuleAliases,
 ) => {
-    const rules = useRules();
-
     const getFormFields = (
         clientGroup: Ref<ClientGroupTransient>,
     ): FormField[] =>
