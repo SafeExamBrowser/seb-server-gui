@@ -15,10 +15,7 @@
         <v-icon icon="mdi-pencil" size="x-small" />
     </v-btn>
 
-    <v-dialog
-        v-model="dialogOpen"
-        :max-width="useDisplay().thresholds.value.sm"
-    >
+    <v-dialog v-model="dialogOpen" :max-width="thresholds.sm">
         <v-card>
             <v-card-title>
                 {{
@@ -65,6 +62,9 @@ const emit = defineEmits<{
 }>();
 
 const { t } = useI18n();
+
+const { thresholds: thresholdsRef } = useDisplay();
+const thresholds = computed(() => thresholdsRef.value);
 
 const dialogOpen = ref(false);
 const enabledTransient = ref(false);
