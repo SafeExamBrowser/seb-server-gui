@@ -35,6 +35,10 @@ import type {
     UserMod,
 } from "@/api/seb-server/generated/hey-api/types.gen.ts";
 
+// TODO(backend): userRoles should not be mandatory on the register schema. The /register
+// endpoint already assigns EXAM_SUPPORTER server-side; it is sent here only because the shared
+// UserMod marks userRoles required. Once the backend exposes a register schema without a
+// mandatory role, drop this and let userAccountRegisterSchema omit userRoles entirely.
 const SELF_REGISTER_ROLES: UserMod["userRoles"] = ["EXAM_SUPPORTER"];
 
 export const registerUserAccount = (
