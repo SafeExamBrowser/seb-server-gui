@@ -2,6 +2,10 @@ import { computed, Ref } from "vue";
 import { useI18n } from "vue-i18n";
 import { KeyValueItem } from "@/components/widgets/keyValueList/types.ts";
 import { useClientConfigurationNames } from "@/composables/useClientConfigurationNames.ts";
+import {
+    ExamTypeEnum,
+    toSelectableExamType,
+} from "@/models/seb-server/examFiltersEnum.ts";
 import { BasicSettings } from "@/models/seb-server/examTemplate.ts";
 
 export const useBasicSettingsItems = (basicSettings: Ref<BasicSettings>) => {
@@ -43,17 +47,18 @@ export const useBasicSettingsItems = (basicSettings: Ref<BasicSettings>) => {
             });
         }
 
-        if (basicSettings.value.examType !== undefined) {
-            result.push({
-                key: "examType",
-                type: "basic",
-                label: t("examTemplate.fields.examType.label"),
-                value: {
-                    type: "string",
-                    value: t(basicSettings.value.examType),
-                },
-            });
-        }
+        result.push({
+            key: "examType",
+            type: "basic",
+            label: t("examTemplate.fields.examType.label"),
+            value: {
+                type: "string",
+                value: t(
+                    toSelectableExamType(basicSettings.value.examType) ??
+                        ExamTypeEnum.UNDEFINED,
+                ),
+            },
+        });
 
         if (clientConfigurationName.value !== undefined) {
             result.push({

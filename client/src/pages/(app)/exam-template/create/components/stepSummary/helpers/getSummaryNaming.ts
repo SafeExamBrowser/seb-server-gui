@@ -1,4 +1,8 @@
 import i18n from "@/i18n";
+import {
+    ExamTypeEnum,
+    toSelectableExamType,
+} from "@/models/seb-server/examFiltersEnum.ts";
 import { ExamTemplate } from "@/models/seb-server/examTemplate.ts";
 import { SummarySectionData } from "@/components/widgets/wizardSummary/types.ts";
 import { ConnectionConfigurationName } from "@/models/seb-server/connectionConfiguration.ts";
@@ -9,7 +13,7 @@ export const getSummaryNaming = (
 ): SummarySectionData => {
     const getClientConfigurationValue = (clientConfigurationId?: number) => {
         if (!clientConfigurationId) {
-            return i18n.global.t("createTemplateExam.steps.summary.emptyValue");
+            return i18n.global.t("general.noData");
         }
 
         const clientConfiguration = clientConfigurationNames.find(
@@ -43,9 +47,7 @@ export const getSummaryNaming = (
                     type: "string",
                     value:
                         examTemplate.description ??
-                        i18n.global.t(
-                            "createTemplateExam.steps.summary.emptyValue",
-                        ),
+                        i18n.global.t("general.noData"),
                 },
             },
             {
@@ -54,11 +56,10 @@ export const getSummaryNaming = (
                 label: i18n.global.t("examTemplate.fields.examType.label"),
                 value: {
                     type: "string",
-                    value: examTemplate.examType
-                        ? i18n.global.t(examTemplate.examType)
-                        : i18n.global.t(
-                              "createTemplateExam.steps.summary.emptyValue",
-                          ),
+                    value: i18n.global.t(
+                        toSelectableExamType(examTemplate.examType) ??
+                            ExamTypeEnum.UNDEFINED,
+                    ),
                 },
             },
             {

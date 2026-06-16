@@ -1,7 +1,10 @@
 import { computed, Ref } from "vue";
 import { useRules } from "vuetify/labs/rules";
 import { FormField } from "@/components/widgets/formBuilder/types.ts";
-import { ExamTypeEnum } from "@/models/seb-server/examFiltersEnum.ts";
+import {
+    ExamTypeEnum,
+    SELECTABLE_EXAM_TYPES,
+} from "@/models/seb-server/examFiltersEnum.ts";
 import { useClientConfigurationNames } from "@/composables/useClientConfigurationNames.ts";
 import i18n from "@/i18n";
 import { useExamTemplateNames } from "./api/useExamTemplateNames.ts";
@@ -99,11 +102,7 @@ export const useExamTemplateBasicSettingsFields = (
                 type: "select" as const,
                 name: "examType",
                 model: models.examType,
-                options: [
-                    ExamTypeEnum.MANAGED,
-                    ExamTypeEnum.BYOD,
-                    ExamTypeEnum.VDI,
-                ].map((enumValue) => ({
+                options: SELECTABLE_EXAM_TYPES.map((enumValue) => ({
                     value: enumValue,
                     text: i18n.global.t(enumValue),
                 })),

@@ -43,7 +43,11 @@ import { computed, ref } from "vue";
 import { useDisplay } from "vuetify";
 import FormBuilder from "@/components/widgets/formBuilder/FormBuilder.vue";
 import LoadingFallbackComponent from "@/components/widgets/loadingFallbackComponent/LoadingFallbackComponent.vue";
-import { ExamTypeEnum } from "@/models/seb-server/examFiltersEnum.ts";
+import {
+    ExamTypeEnum,
+    toApiExamType,
+    toSelectableExamType,
+} from "@/models/seb-server/examFiltersEnum.ts";
 import { useExamTemplateBasicSettingsFields } from "@/pages/(app)/exam-template/composables/useExamTemplateBasicSettingsFields.ts";
 import { BasicSettings } from "@/models/seb-server/examTemplate.ts";
 
@@ -81,9 +85,7 @@ const { formFields, loading, errors } = useExamTemplateBasicSettingsFields(
 const handleButtonEditClick = () => {
     nameTransient.value = basicSettings.name;
     descriptionTransient.value = basicSettings.description;
-    examTypeTransient.value = Object.values(ExamTypeEnum).find(
-        (value) => value === basicSettings.examType,
-    );
+    examTypeTransient.value = toSelectableExamType(basicSettings.examType);
     clientConfigurationTransient.value =
         basicSettings.clientConfigurationId !== undefined
             ? String(basicSettings.clientConfigurationId)
@@ -101,7 +103,7 @@ const handleButtonSaveClick = () => {
     emit("change", {
         name: nameTransient.value ?? basicSettings.name,
         description: descriptionTransient.value,
-        examType: examTypeTransient.value,
+        examType: toApiExamType(examTypeTransient.value),
         clientConfigurationId:
             clientConfigurationTransient.value !== undefined
                 ? Number(clientConfigurationTransient.value)
