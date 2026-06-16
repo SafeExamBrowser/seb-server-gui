@@ -1,6 +1,6 @@
 <template>
     <v-card border elevation="1" rounded="lg">
-        <div class="d-flex align-center ga-2 px-5 py-4">
+        <div class="d-flex align-center ga-2 px-5 py-4 bg-background">
             <span class="text-body-medium font-weight-bold">
                 {{ $t("monitoringOverview.groups.groups") }}
             </span>
@@ -26,46 +26,35 @@
                     <v-sheet
                         border
                         rounded="lg"
-                        class="pa-5 d-flex flex-column ga-4 h-100"
+                        class="d-flex flex-column h-100 overflow-hidden"
                     >
                         <div
-                            class="d-flex align-start justify-space-between ga-2"
+                            class="d-flex align-start justify-space-between ga-2 px-5 pt-5 pb-3 bg-background"
                         >
-                            <div>
-                                <div
-                                    class="text-body-large pb-1 font-weight-bold"
-                                >
-                                    {{ getGroupName(clientGroupItem) }}
-                                </div>
-                                <div
-                                    class="text-body-small font-weight-bold text-uppercase text-medium-emphasis"
-                                >
-                                    {{ translate(clientGroupItem.type) }}
-                                </div>
+                            <div class="text-body-large font-weight-bold">
+                                {{ getGroupName(clientGroupItem) }}
                             </div>
                             <v-chip
-                                color="primary"
-                                variant="tonal"
+                                color="surface"
+                                variant="flat"
                                 size="small"
-                                class="font-weight-semibold flex-shrink-0"
+                                class="border font-weight-semibold flex-shrink-0"
                             >
                                 {{ clientGroupItem.clientAmount
                                 }}{{ $t("monitoringOverview.groups.clients") }}
                             </v-chip>
                         </div>
 
-                        <div
-                            class="d-flex align-center ga-2 text-body-medium font-weight-medium text-medium-emphasis"
-                        >
-                            <v-icon size="18">
-                                {{ getGroupIcon(clientGroupItem) }}
-                            </v-icon>
-                            <span class="font-weight-semibold">{{
-                                getGroupValueText(clientGroupItem)
+                        <div class="text-body-small px-5 pt-4 py-2">
+                            {{ translate(clientGroupItem.type) }}:
+                            <span class="font-weight-bold">{{
+                                getGroupValue(clientGroupItem)
                             }}</span>
                         </div>
 
-                        <div class="d-flex flex-wrap ga-2 mt-auto">
+                        <div
+                            class="d-flex flex-wrap ga-2 px-5 pt-2 pb-5 mt-auto"
+                        >
                             <v-btn
                                 v-if="clientGroupItem.spsGroupUUID"
                                 color="primary"
@@ -120,23 +109,19 @@
                     <v-sheet
                         border
                         rounded="lg"
-                        class="pa-5 d-flex flex-column ga-4 h-100"
+                        class="d-flex flex-column h-100 overflow-hidden"
                     >
                         <div
-                            class="d-flex align-start justify-space-between ga-2"
+                            class="d-flex align-start justify-space-between ga-2 px-5 pt-5 pb-4 bg-background"
                         >
-                            <div>
-                                <div class="text-body-medium font-weight-bold">
-                                    {{
-                                        $t("monitoringOverview.groups.spsGroup")
-                                    }}
-                                </div>
+                            <div class="text-body-large font-weight-bold">
+                                {{ $t("monitoringOverview.groups.spsGroup") }}
                             </div>
                             <v-chip
-                                color="primary"
-                                variant="tonal"
+                                color="surface"
+                                variant="flat"
                                 size="small"
-                                class="flex-shrink-0"
+                                class="border font-weight-semibold flex-shrink-0"
                             >
                                 {{
                                     screenProctoringFallbackGroup?.clientAmount ??
@@ -145,18 +130,13 @@
                             </v-chip>
                         </div>
 
-                        <div
-                            class="d-flex align-center ga-2 text-body-medium font-weight-medium text-medium-emphasis"
-                        >
-                            <v-icon size="18">mdi-account-multiple</v-icon>
-                            <span>
-                                {{
-                                    $t("monitoringOverview.groups.spsFallback")
-                                }}
-                            </span>
+                        <div class="text-body-small px-5 py-2">
+                            {{ $t("monitoringOverview.groups.spsFallback") }}
                         </div>
 
-                        <div class="d-flex flex-wrap ga-2 mt-auto">
+                        <div
+                            class="d-flex flex-wrap ga-2 px-5 pt-4 pb-5 mt-auto"
+                        >
                             <v-btn
                                 v-if="screenProctoringFallbackGroup !== null"
                                 color="primary"
@@ -208,10 +188,7 @@
 <script setup lang="ts">
 import { useMonitoringStore } from "@/stores/seb-server/monitoringStore.ts";
 import { translate } from "@/utils/generalUtils.ts";
-import {
-    ClientGroupEnum,
-    ClientOSEnum,
-} from "@/models/seb-server/clientGroupEnum.ts";
+import { ClientGroupEnum } from "@/models/seb-server/clientGroupEnum.ts";
 import { MonitoringHeaderEnum } from "@/models/seb-server/monitoringEnums.ts";
 import * as generalUtils from "@/utils/generalUtils.ts";
 import { computed } from "vue";
@@ -313,38 +290,12 @@ function getGroupName(group: OverviewClientGroup): string {
     return `${group.name}`;
 }
 
-function getGroupIcon(group: OverviewClientGroup): string {
-    switch (group.type) {
-        case ClientGroupEnum.NAME_ALPHABETICAL_RANGE:
-            return "mdi-sort-alphabetical-variant";
-        case ClientGroupEnum.IP_V4_RANGE:
-            return "mdi-lan";
-        case ClientGroupEnum.CLIENT_OS:
-            return getClientOsIcon(group.typeValue);
-        case ClientGroupEnum.NONE:
-        case ClientGroupEnum.SP_FALLBACK_GROUP:
-            return "mdi-account-multiple-remove";
-        default:
-            return "mdi-help-circle-outline";
-    }
-}
-
-function getClientOsIcon(typeValue: string): string {
-    if (typeValue === ClientOSEnum.WINDOWS) {
-        return "mdi-microsoft-windows";
-    }
-    if (typeValue === ClientOSEnum.MAC_OS) {
-        return "mdi-apple";
-    }
-    if (["I_OS", "IPAD_OS", "I_OS_OR_IPAD_OS"].includes(typeValue)) {
-        return "mdi-cellphone";
-    }
-    return "mdi-help-circle-outline";
-}
-
-function getGroupValueText(group: OverviewClientGroup): string {
-    if (group.type === ClientGroupEnum.NAME_ALPHABETICAL_RANGE) {
-        return `${translate("monitoringOverview.groups.range")} ${group.typeValue}`;
+function getGroupValue(group: OverviewClientGroup): string {
+    if (
+        group.type === ClientGroupEnum.NAME_ALPHABETICAL_RANGE ||
+        group.type === ClientGroupEnum.IP_V4_RANGE
+    ) {
+        return group.typeValue;
     }
     if (
         group.type === ClientGroupEnum.NONE ||
