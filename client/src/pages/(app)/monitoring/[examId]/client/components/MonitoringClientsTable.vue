@@ -1,187 +1,190 @@
 <template>
-    <v-row>
-        <v-col>
-            <v-sheet class="rounded-lg pa-8" elevation="2">
-                <div class="mb-2">
-                    {{ translate("monitoringClients.main.displayedClients") }}
-                    {{ monitoringDataTable.length }}
-                </div>
-                <div
-                    v-if="monitoringStore.selectedMonitoringIds.length != 0"
-                    class="mb-2"
-                >
-                    {{ translate("monitoringClients.main.selectedClients") }}
-                    {{ monitoringStore.selectedMonitoringIds.length }}
-                </div>
+    <div class="d-flex align-center px-5 py-4">
+        <span class="text-body-medium font-weight-bold">
+            {{ $t("monitoringClients.main.title") }}
+        </span>
+        <v-spacer />
+        <span class="text-body-small text-medium-emphasis">
+            {{
+                isFiltered
+                    ? $t("monitoringClients.main.filtered")
+                    : $t("monitoringClients.main.allConnections")
+            }}
+        </span>
+    </div>
+    <v-divider />
 
-                <v-data-table
-                    v-model="monitoringStore.selectedMonitoringIds"
-                    :headers="clientsTableHeaders"
-                    hide-default-footer
-                    :hover="true"
-                    item-value="id"
-                    :items="monitoringDataTable"
-                    :items-length="monitoringDataTable.length"
-                    :items-per-page="monitoringDataTable.length"
-                    select-strategy="all"
-                    show-select
-                >
-                    <template
-                        #headers="{
-                            columns,
-                            isSorted,
-                            getSortIcon,
-                            toggleSort,
-                            selectAll,
-                            allSelected,
-                            someSelected,
-                        }"
+    <v-data-table
+        v-model="monitoringStore.selectedMonitoringIds"
+        :headers="clientsTableHeaders"
+        hide-default-footer
+        :hover="true"
+        item-value="id"
+        :items="monitoringDataTable"
+        :items-length="monitoringDataTable.length"
+        :items-per-page="monitoringDataTable.length"
+        select-strategy="all"
+        show-select
+    >
+        <template
+            #headers="{
+                columns,
+                isSorted,
+                getSortIcon,
+                toggleSort,
+                selectAll,
+                allSelected,
+                someSelected,
+            }"
+        >
+            <TableHeaders
+                :all-selected="allSelected"
+                :columns="columns"
+                :get-sort-icon="getSortIcon"
+                :header-refs-prop="clientsTableHeadersRef"
+                :is-sorted="isSorted"
+                :select-all="selectAll"
+                :some-selected="someSelected"
+                table-key="monitoringClients"
+                :toggle-sort="toggleSort"
+                @add-indicator-headers="addIndicatorHeaders"
+                @remove-indicator-headers="removeIndicatorHeaders"
+            >
+            </TableHeaders>
+        </template>
+
+        <template #item="{ item, isSelected, toggleSelect, internalItem }">
+            <tr :class="isSelected(internalItem) ? 'bg-surface-tint' : ''">
+                <!------selection checkbox------->
+                <td width="2%">
+                    <v-checkbox-btn
+                        :model-value="isSelected(internalItem)"
+                        @update:model-value="toggleSelect(internalItem)"
                     >
-                        <TableHeaders
-                            :all-selected="allSelected"
-                            :columns="columns"
-                            :get-sort-icon="getSortIcon"
-                            :header-refs-prop="clientsTableHeadersRef"
-                            :is-sorted="isSorted"
-                            :select-all="selectAll"
-                            :some-selected="someSelected"
-                            table-key="monitoringClients"
-                            :toggle-sort="toggleSort"
-                            @add-indicator-headers="addIndicatorHeaders"
-                            @remove-indicator-headers="removeIndicatorHeaders"
-                        >
-                        </TableHeaders>
-                    </template>
+                    </v-checkbox-btn>
+                </td>
 
+                <!------notification icons------->
+                <td width="2%">
+                    <v-icon
+                        v-if="hasNotification(item)"
+                        color="warning"
+                        icon="mdi-alert-decagram"
+                    ></v-icon>
+                </td>
+
+                <!------client name------->
+                <td>
+                    <span class="font-weight-bold">
+                        {{ item.nameOrSession }}
+                    </span>
+                </td>
+
+                <!------client groups------->
+                <td>
                     <template
-                        #item="{ item, isSelected, toggleSelect, internalItem }"
+                        v-for="(clientGroup, index) in item.clientGroups"
+                        :key="clientGroup.id"
                     >
-                        <tr>
-                            <!------selection checkbox------->
-                            <td width="2%">
-                                <v-checkbox-btn
-                                    :model-value="isSelected(internalItem)"
-                                    @update:model-value="
-                                        toggleSelect(internalItem)
-                                    "
-                                >
-                                </v-checkbox-btn>
-                            </td>
-
-                            <!------notification icons------->
-                            <td width="2%">
-                                <v-icon
-                                    v-if="hasNotification(item)"
-                                    icon="mdi-alert-decagram"
-                                ></v-icon>
-                            </td>
-
-                            <!------client name------->
-                            <td>{{ item.nameOrSession }}</td>
-
-                            <!------client groups------->
-                            <td>
-                                <template
-                                    v-for="(
-                                        clientGroup, index
-                                    ) in item.clientGroups"
-                                    :key="clientGroup.id"
-                                >
-                                    <div>
-                                        <v-chip
-                                            class="mb-2"
-                                            :class="[index == 0 ? 'mt-2' : '']"
-                                            size="small"
-                                            variant="tonal"
-                                            @click="
-                                                openClientGroupDialog(
-                                                    clientGroup,
-                                                )
-                                            "
-                                        >
-                                            {{ clientGroup.name }}
-                                        </v-chip>
-                                    </div>
-                                </template>
-                            </td>
-
-                            <!------connection info------->
-                            <td>{{ item.connectionInfo }}</td>
-
-                            <!------status------->
-                            <td>{{ translateStatus(item) }}</td>
-
-                            <!------battery indicator------->
-                            <td
-                                v-if="
-                                    (tableStore.isIndicatorsExpanded ||
-                                        isBatteryIndicator) &&
-                                    monitoringStore.batteryIndicatorId != null
-                                "
+                        <div>
+                            <v-chip
+                                class="mb-2"
+                                :class="[index == 0 ? 'mt-2' : '']"
+                                color="primary"
+                                size="small"
+                                variant="tonal"
+                                @click="openClientGroupDialog(clientGroup)"
                             >
-                                <v-chip
-                                    :color="
-                                        getIndicatorColor(
-                                            item.indicators?.get(
-                                                monitoringStore.batteryIndicatorId,
-                                            ),
-                                        )
-                                    "
-                                >
-                                    {{
-                                        item.indicators?.get(
-                                            monitoringStore.batteryIndicatorId,
-                                        )?.indicatorValue
-                                    }}
-                                </v-chip>
-                            </td>
-
-                            <!------wlan indicator------->
-                            <td
-                                v-if="
-                                    (tableStore.isIndicatorsExpanded ||
-                                        isWlanIndicator) &&
-                                    monitoringStore.wlanIndicatorId != null
-                                "
-                            >
-                                <v-chip
-                                    :color="
-                                        getIndicatorColor(
-                                            item.indicators?.get(
-                                                monitoringStore.wlanIndicatorId,
-                                            ),
-                                        )
-                                    "
-                                >
-                                    {{
-                                        item.indicators?.get(
-                                            monitoringStore.wlanIndicatorId,
-                                        )?.indicatorValue
-                                    }}
-                                </v-chip>
-                            </td>
-
-                            <!------navigation button------->
-                            <td align="right">
-                                <v-icon
-                                    icon="mdi-chevron-right"
-                                    style="font-size: 30px"
-                                    @click="
-                                        goToMonitoringDetails(
-                                            examId,
-                                            item.connectionToken,
-                                            route.query,
-                                        )
-                                    "
-                                >
-                                </v-icon>
-                            </td>
-                        </tr>
+                                {{ clientGroup.name }}
+                            </v-chip>
+                        </div>
                     </template>
-                </v-data-table>
-            </v-sheet>
-        </v-col>
-    </v-row>
+                </td>
+
+                <!------connection info------->
+                <td>
+                    <span class="text-medium-emphasis">
+                        {{ item.connectionInfo }}
+                    </span>
+                </td>
+
+                <!------status------->
+                <td>
+                    <EnumChip
+                        :color="getStatusColor(item)"
+                        :label="translateStatus(item)"
+                    />
+                </td>
+
+                <!------battery indicator------->
+                <td
+                    v-if="
+                        (tableStore.isIndicatorsExpanded ||
+                            isBatteryIndicator) &&
+                        monitoringStore.batteryIndicatorId != null
+                    "
+                >
+                    <v-chip
+                        :color="
+                            getIndicatorColor(
+                                item.indicators?.get(
+                                    monitoringStore.batteryIndicatorId,
+                                ),
+                            )
+                        "
+                        size="small"
+                    >
+                        {{
+                            item.indicators?.get(
+                                monitoringStore.batteryIndicatorId,
+                            )?.indicatorValue
+                        }}
+                    </v-chip>
+                </td>
+
+                <!------wlan indicator------->
+                <td
+                    v-if="
+                        (tableStore.isIndicatorsExpanded || isWlanIndicator) &&
+                        monitoringStore.wlanIndicatorId != null
+                    "
+                >
+                    <v-chip
+                        :color="
+                            getIndicatorColor(
+                                item.indicators?.get(
+                                    monitoringStore.wlanIndicatorId,
+                                ),
+                            )
+                        "
+                        size="small"
+                    >
+                        {{
+                            item.indicators?.get(
+                                monitoringStore.wlanIndicatorId,
+                            )?.indicatorValue
+                        }}
+                    </v-chip>
+                </td>
+
+                <!------navigation button------->
+                <td align="right">
+                    <v-icon
+                        icon="mdi-chevron-right"
+                        style="font-size: 30px"
+                        @click="
+                            goToMonitoringDetails(
+                                examId,
+                                item.connectionToken,
+                                route.query,
+                            )
+                        "
+                    >
+                    </v-icon>
+                </td>
+            </tr>
+        </template>
+    </v-data-table>
 
     <!-----------group dialog---------->
     <v-dialog v-model="clientGroupDialog" max-width="800">
@@ -200,20 +203,22 @@ import { translate } from "@/utils/generalUtils.ts";
 import * as generalUtils from "@/utils/generalUtils.ts";
 import * as monitoringService from "@/services/seb-server/monitoringService.ts";
 import TableHeaders from "@/utils/table/TableHeaders.vue";
+import EnumChip from "@/components/widgets/EnumChip.vue";
 import {
     IndicatorEnum,
     IndicatorObject,
     MonitoringHeaderEnum,
 } from "@/models/seb-server/monitoringEnums.ts";
 import { MonitoringRow } from "@/models/seb-server/monitoringClients.ts";
+import { ConnectionStatusEnum } from "@/models/seb-server/connectionStatusEnum.ts";
 import { useI18n } from "vue-i18n";
 import { LocationQueryValue, useRoute } from "vue-router";
 import {
+    computed,
     ref,
     onMounted,
     watch,
     onUnmounted,
-    //    onUpdated,
     onBeforeUnmount,
 } from "vue";
 import {
@@ -226,7 +231,10 @@ import { Indicator } from "@/models/seb-server/indicators.ts";
 import { ClientGroup } from "@/models/seb-server/clientGroup.ts";
 import ClientGroupInfoDialog from "./ClientGroupInfoDialog.vue";
 import { goToMonitoringDetails } from "@/pages/(app)/monitoring/[examId]/composables/useMonitoringNavigation.ts";
-import { extractClientGroupNames } from "@/utils/monitoringUtils.ts";
+import {
+    extractClientGroupNames,
+    getConnectionStatusColor,
+} from "@/utils/monitoringUtils.ts";
 
 const props = defineProps<{
     examId: string;
@@ -243,7 +251,6 @@ const i18n = useI18n();
 
 // stores
 const monitoringStore = useMonitoringStore();
-//const monitoringStoreRef = storeToRefs(monitoringStore);
 const tableStore = useTableStore();
 
 // items
@@ -293,6 +300,10 @@ const clientsTableHeaders = ref([
     { title: "", key: "link", width: "5%" },
 ]);
 
+const isFiltered = computed(
+    () => !monitoringStore.isNoFilterSelected || !!monitoringStore.searchName,
+);
+
 //= ========events & watchers================
 onMounted(async () => {
     await initalize();
@@ -315,7 +326,9 @@ function updateTableData() {
         }),
     ).filter((row) => {
         if (monitoringStore.searchName != null) {
-            return row.nameOrSession.includes(monitoringStore.searchName);
+            return row.nameOrSession
+                .toLowerCase()
+                .includes(monitoringStore.searchName.toLowerCase());
         }
         return true;
     });
@@ -350,7 +363,9 @@ watch(connections, async () => {
 });
 
 //= =============data fetching================
-defineExpose({ updatePage });
+const displayedCount = computed(() => monitoringDataTable.value.length);
+defineExpose({ updatePage, displayedCount });
+
 async function updatePage() {
     setTimeout(getAndSetConnections, 100);
 }
@@ -572,6 +587,12 @@ function translateStatus(row: MonitoringRow): string {
         return translate("MISSING", i18n);
     }
     return translate(row.status, i18n);
+}
+
+function getStatusColor(row: MonitoringRow): string {
+    return getConnectionStatusColor(
+        row.missing ? ConnectionStatusEnum.MISSING : row.status,
+    );
 }
 
 function getAllConnectionIds(): number[] {
@@ -830,13 +851,3 @@ function closeClientGroupDialog() {
     clientGroupDialog.value = false;
 }
 </script>
-
-<style scoped>
-.default-color {
-    color: #2196f3;
-}
-
-.test-bg {
-    background-color: red;
-}
-</style>

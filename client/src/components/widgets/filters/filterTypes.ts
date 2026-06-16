@@ -2,6 +2,7 @@ export type FilterOption = {
     value: string;
     label: string;
     color?: string;
+    count?: number;
 };
 
 export type FilterSectionDef = {

@@ -5,6 +5,15 @@
         :data-test-id="dataTestId"
         :panel-left-collapsed="!filtersOpen"
     >
+        <template #ActionButton>
+            <AddButton
+                :route="{ name: '/(app)/exam/create/' }"
+                :label="$t('general.prepareButton')"
+                icon="mdi-clipboard-edit-outline"
+                :data-test-id="dataTestId"
+            />
+        </template>
+
         <template #PanelLeft>
             <SearchBar
                 v-model="list.searchInputValue"
@@ -65,6 +74,7 @@
 
 <script setup lang="ts">
 import BasicPage from "@/components/layout/pages/BasicPage.vue";
+import AddButton from "@/components/widgets/AddButton.vue";
 import SearchBar from "@/components/widgets/searches/SearchBar.vue";
 import EntityTable from "@/components/widgets/entity-table/EntityTable.vue";
 import EnumChip from "@/components/widgets/EnumChip.vue";

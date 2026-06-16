@@ -73,7 +73,33 @@
 
         <div class="flex-shrink-0">
             <v-divider />
-            <div class="px-5 py-4">
+            <div class="px-5 py-4 d-flex flex-column ga-2">
+                <template v-if="isScreenProctoringAvailable">
+                    <v-btn
+                        block
+                        color="primary"
+                        variant="outlined"
+                        height="44"
+                        :to="spSearchRoute"
+                        data-test-id="monitoring-spSearch-action"
+                    >
+                        {{ $t("monitoringOverview.actions.proctoringSearch") }}
+                    </v-btn>
+                    <v-btn
+                        block
+                        color="primary"
+                        variant="outlined"
+                        height="44"
+                        :to="spApplicationsRoute"
+                        data-test-id="monitoring-spApplications-action"
+                    >
+                        {{
+                            $t(
+                                "monitoringOverview.actions.proctoringApplications",
+                            )
+                        }}
+                    </v-btn>
+                </template>
                 <v-btn
                     block
                     color="error"
@@ -101,12 +127,22 @@ import { ExamStatusEnum } from "@/models/seb-server/examFiltersEnum.ts";
 import * as generalUtils from "@/utils/generalUtils.ts";
 import * as timeUtils from "@/utils/timeUtils.ts";
 import { quitAll } from "@/services/seb-server/monitoringService.ts";
+import { typedTo } from "@/router/typedTo.ts";
 import MonitoringOverviewASK from "./MonitoringOverviewASK.vue";
 import QuitAllDialog from "./dialogs/QuitAllDialog.vue";
 
 withDefaults(defineProps<{ refreshSeconds?: number }>(), { refreshSeconds: 5 });
 
 const monitoringStore = useMonitoringStore();
+
+const spSearchRoute = typedTo({ name: "/(app)/sp-search/" });
+const spApplicationsRoute = typedTo({ name: "/(app)/applications-search/" });
+
+const isScreenProctoringAvailable = computed(
+    () =>
+        monitoringStore.selectedExam?.additionalAttributes
+            .enableScreenProctoring === "true",
+);
 
 const statusLabel = computed(() =>
     generalUtils.translate(
