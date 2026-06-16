@@ -309,7 +309,7 @@ function getGroupName(group: OverviewClientGroup): string {
         return translate("monitoringOverview.groups.fallbackGroup");
     }
 
-    return `${translate("monitoringOverview.groups.group")} ${group.name}`;
+    return `${group.name}`;
 }
 
 function getGroupIcon(group: OverviewClientGroup): string {
