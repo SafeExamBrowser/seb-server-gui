@@ -50,6 +50,10 @@ import {
 } from "@/models/seb-server/examFiltersEnum.ts";
 import { useExamTemplateBasicSettingsFields } from "@/pages/(app)/exam-template/composables/useExamTemplateBasicSettingsFields.ts";
 import { BasicSettings } from "@/models/seb-server/examTemplate.ts";
+import {
+    toApiClientConfigurationId,
+    toSelectableClientConfigurationId,
+} from "@/models/seb-server/connectionConfiguration.ts";
 
 const { basicSettings } = defineProps<{ basicSettings: BasicSettings }>();
 
@@ -89,10 +93,9 @@ const handleButtonEditClick = () => {
     nameTransient.value = basicSettings.name;
     descriptionTransient.value = basicSettings.description;
     examTypeTransient.value = toSelectableExamType(basicSettings.examType);
-    clientConfigurationTransient.value =
-        basicSettings.clientConfigurationId !== undefined
-            ? String(basicSettings.clientConfigurationId)
-            : undefined;
+    clientConfigurationTransient.value = toSelectableClientConfigurationId(
+        basicSettings.clientConfigurationId,
+    );
     lmsIntegrationTransient.value = basicSettings.lmsIntegration;
     institutionalDefaultTransient.value = basicSettings.institutionalDefault;
     dialogOpen.value = true;
@@ -107,10 +110,9 @@ const handleButtonSaveClick = () => {
         name: nameTransient.value ?? basicSettings.name,
         description: descriptionTransient.value,
         examType: toApiExamType(examTypeTransient.value),
-        clientConfigurationId:
-            clientConfigurationTransient.value !== undefined
-                ? Number(clientConfigurationTransient.value)
-                : undefined,
+        clientConfigurationId: toApiClientConfigurationId(
+            clientConfigurationTransient.value,
+        ),
         lmsIntegration: lmsIntegrationTransient.value,
         institutionalDefault: institutionalDefaultTransient.value,
     });

@@ -9,6 +9,7 @@ import { useScreenProctoringStore } from "@/pages/(app)/exam-template/create/com
 import { buildScreenProctoringExamAttributes } from "@/models/seb-server/screenProctoring.ts";
 import i18n from "@/i18n";
 import { ExamTemplate } from "@/models/seb-server/examTemplate.ts";
+import { toApiClientConfigurationId } from "@/models/seb-server/connectionConfiguration.ts";
 import { useStepIndicatorsStore } from "@/pages/(app)/exam-template/create/components/stepIndicators/composables/store/useStepIndicatorsStore.ts";
 
 const staticStepData = [
@@ -115,9 +116,9 @@ export const useCreateExamTemplateStore = defineStore(
             configurationTemplateId: stepNamingStore.configurationTemplate
                 ? parseInt(stepNamingStore.configurationTemplate)
                 : undefined,
-            clientConfigurationId: stepNamingStore.clientConfiguration
-                ? parseInt(stepNamingStore.clientConfiguration)
-                : undefined,
+            clientConfigurationId: toApiClientConfigurationId(
+                stepNamingStore.clientConfiguration,
+            ),
             institutionalDefault: stepNamingStore.institutionalDefault,
             lmsIntegration: stepNamingStore.lmsIntegration,
             indicatorTemplates: stepIndicatorsStore.indicators,

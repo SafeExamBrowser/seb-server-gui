@@ -11,16 +11,29 @@ import { BasicSettings } from "@/models/seb-server/examTemplate.ts";
 export const useBasicSettingsItems = (basicSettings: Ref<BasicSettings>) => {
     const { t } = useI18n();
 
-    const { data: clientConfigurationNames } = useClientConfigurationNames();
+    const {
+        data: clientConfigurationNames,
+        loading: loadingClientConfigurationNames,
+    } = useClientConfigurationNames();
 
-    const clientConfigurationName = computed<string | undefined>(
-        () =>
+    const clientConfigurationValue = computed(() => {
+        if (!basicSettings.value.clientConfigurationId) {
+            return t("general.noData");
+        }
+
+        // avoid flickering by waiting for the names request to resolve
+        if (loadingClientConfigurationNames.value) {
+            return "";
+        }
+
+        return (
             clientConfigurationNames.value?.find(
                 (clientConfiguration) =>
                     clientConfiguration.modelId ===
                     String(basicSettings.value.clientConfigurationId),
-            )?.name,
-    );
+            )?.name ?? t("general.noData")
+        );
+    });
 
     const items = computed<KeyValueItem[]>(() => {
         const result: KeyValueItem[] = [
@@ -60,14 +73,15 @@ export const useBasicSettingsItems = (basicSettings: Ref<BasicSettings>) => {
             },
         });
 
-        if (clientConfigurationName.value !== undefined) {
-            result.push({
-                key: "clientConfiguration",
-                type: "basic",
-                label: t("examTemplate.fields.clientConfiguration.label"),
-                value: { type: "string", value: clientConfigurationName.value },
-            });
-        }
+        result.push({
+            key: "clientConfiguration",
+            type: "basic",
+            label: t("examTemplate.fields.clientConfiguration.label"),
+            value: {
+                type: "string",
+                value: clientConfigurationValue.value,
+            },
+        });
 
         result.push(
             {
