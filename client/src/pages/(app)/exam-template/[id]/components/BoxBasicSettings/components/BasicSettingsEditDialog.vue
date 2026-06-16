@@ -70,6 +70,9 @@ const clientConfigurationTransient = ref<string>();
 const lmsIntegrationTransient = ref(false);
 const institutionalDefaultTransient = ref(false);
 
+// TODO @alain (TanStack Query migration): these name lookups (examTemplateNames + clientConfigurationNames)
+// fetch eagerly on page mount even though they're only needed once this dialog is open. Gate the underlying
+// queries with `enabled` tied to `dialogOpen` so they only run on open. The wizard consumer keeps them eager.
 const { formFields, loading, errors } = useExamTemplateBasicSettingsFields(
     {
         name: nameTransient,
