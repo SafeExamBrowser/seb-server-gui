@@ -47,7 +47,7 @@
                                 color="primary"
                                 variant="tonal"
                                 size="small"
-                                class="font-weight-semibold"
+                                class="font-weight-semibold flex-shrink-0"
                             >
                                 {{ clientGroupItem.clientAmount
                                 }}{{ $t("monitoringOverview.groups.clients") }}
@@ -136,6 +136,7 @@
                                 color="primary"
                                 variant="tonal"
                                 size="small"
+                                class="flex-shrink-0"
                             >
                                 {{
                                     screenProctoringFallbackGroup?.clientAmount ??
