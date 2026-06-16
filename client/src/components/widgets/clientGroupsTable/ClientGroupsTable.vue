@@ -24,12 +24,14 @@ import {
     isFallbackGroup,
 } from "@/components/widgets/clientGroupsTable/types.ts";
 import { isScreenProctoringAllowedForGroups } from "@/models/seb-server/screenProctoring.ts";
+import { useRules } from "vuetify/labs/rules";
 
 const { deps } = defineProps<{
     deps: ClientGroupsTableDeps;
 }>();
 
 const { t } = useI18n();
+const rules = useRules();
 
 const screenProctoringAllowedForGroups = computed<boolean>(() =>
     isScreenProctoringAllowedForGroups(
@@ -39,7 +41,7 @@ const screenProctoringAllowedForGroups = computed<boolean>(() =>
 );
 
 const tableConfig = computed(() =>
-    useTable(deps, screenProctoringAllowedForGroups),
+    useTable(deps, screenProctoringAllowedForGroups, rules),
 );
 
 const getTranslatedType = (item: ClientGroupForTable) =>

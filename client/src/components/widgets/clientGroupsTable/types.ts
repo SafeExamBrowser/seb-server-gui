@@ -70,6 +70,7 @@ export type ClientGroupsTableDeps = {
     screenProctoring: {
         enabled: Ref<boolean>;
         collectionStrategy: Ref<ScreenProctoringCollectionStrategy | undefined>;
+        fallbackGroupName?: Ref<string | undefined>;
     };
     createItem: (item: ClientGroup) => Promise<void>;
     updateItem: (item: ClientGroupExisting) => Promise<void>;

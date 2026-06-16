@@ -4,12 +4,17 @@ import { useRoute } from "vue-router";
 import i18n from "@/i18n";
 import type { BreadCrumbItem } from "@/components/widgets/breadCrumb/types.ts";
 import {
+    BasicSettings,
     ClientGroupExisting,
     ExamTemplate,
     IndicatorExisting,
 } from "@/models/seb-server/examTemplate.ts";
 import { updateExamTemplate } from "@/services/seb-server/examTemplateService.ts";
-import { SCREEN_PROCTORING_COLLECTION_STRATEGY } from "@/models/seb-server/screenProctoring.ts";
+import {
+    SCREEN_PROCTORING_COLLECTION_STRATEGY,
+    ScreenProctoringCollectionStrategy,
+    buildScreenProctoringExamAttributes,
+} from "@/models/seb-server/screenProctoring.ts";
 import { useSupervisors } from "@/composables/useSupervisors.ts";
 import { useMutation } from "@/composables/useMutation.ts";
 import { useExamTemplate } from "./api/useExamTemplate.ts";
@@ -91,6 +96,15 @@ export const useExamTemplateDetailPage = () => {
         () => examTemplate.value?.CLIENT_GROUP_TEMPLATES ?? [],
     );
 
+    const basicSettings = computed<BasicSettings>(() => ({
+        name: examTemplate.value?.name ?? "",
+        description: examTemplate.value?.description,
+        examType: examTemplate.value?.examType,
+        clientConfigurationId: examTemplate.value?.clientConfigurationId,
+        lmsIntegration: examTemplate.value?.lmsIntegration ?? false,
+        institutionalDefault: examTemplate.value?.institutionalDefault ?? false,
+    }));
+
     const screenProctoring = {
         enabled: computed(
             () =>
@@ -103,6 +117,9 @@ export const useExamTemplateDetailPage = () => {
                     strategy ===
                     examTemplate.value?.EXAM_ATTRIBUTES?.spsCollectingStrategy,
             ),
+        ),
+        fallbackGroupName: computed(
+            () => examTemplate.value?.EXAM_ATTRIBUTES?.spsCollectingGroupName,
         ),
     };
 
@@ -138,6 +155,32 @@ export const useExamTemplateDetailPage = () => {
         examTemplate.value = examTemplateUpdated;
     };
 
+    const handleBasicSettingsChange = (patch: BasicSettings) =>
+        updateTemplate(patch);
+
+    const handleScreenProctoringChange = ({
+        enabled,
+        collectionStrategy,
+    }: {
+        enabled: boolean;
+        collectionStrategy?: ScreenProctoringCollectionStrategy;
+    }) => {
+        if (!examTemplate.value) {
+            return;
+        }
+
+        // spsSEBGroupsSelection is deliberately not managed here, as this is owned by the backend
+        return updateTemplate({
+            EXAM_ATTRIBUTES: {
+                ...examTemplate.value.EXAM_ATTRIBUTES,
+                ...buildScreenProctoringExamAttributes({
+                    enabled,
+                    collectionStrategy,
+                }),
+            },
+        });
+    };
+
     return {
         examTemplateId,
         loading,
@@ -149,6 +192,9 @@ export const useExamTemplateDetailPage = () => {
         selectedSupervisorIds,
         clientGroups,
         screenProctoring,
+        basicSettings,
         updateTemplate,
+        handleScreenProctoringChange,
+        handleBasicSettingsChange,
     };
 };

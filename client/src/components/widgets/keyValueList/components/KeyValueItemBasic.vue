@@ -17,6 +17,13 @@
                             ? $t('general.true')
                             : $t('general.false')
                     "
+                    :aria-label="
+                        item.value.value
+                            ? $t('general.true')
+                            : $t('general.false')
+                    "
+                    aria-hidden="false"
+                    role="img"
                 ></v-icon>
             </template>
             <template v-else-if="item.value.type === 'string'">
@@ -59,11 +66,11 @@
 </template>
 <script setup lang="ts">
 import { ref } from "vue";
-import { SummarySectionItem } from "@/components/widgets/wizardSummary/types";
+import { KeyValueItem } from "@/components/widgets/keyValueList/types.ts";
 import ChipThreshold from "@/components/widgets/chipThreshold/ChipThreshold.vue";
 
 defineProps<{
-    item: SummarySectionItem & { type: "basic" };
+    item: KeyValueItem & { type: "basic" };
     isFirst: boolean;
 }>();
 
