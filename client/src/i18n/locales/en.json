@@ -1927,6 +1927,10 @@
             "security": "Security",
             "connections": "connections"
         },
+        "actions": {
+            "proctoringSearch": "Screen Proctoring Search",
+            "proctoringApplications": "Screen Proctoring Applications"
+        },
         "clients": {
             "total": "Total:"
         },
