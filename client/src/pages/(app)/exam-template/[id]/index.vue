@@ -5,7 +5,12 @@
             :title="title"
             :bread-crumb="breadCrumb"
         >
-            <template #basicSettings><BoxBasicSettings /></template>
+            <template #basicSettings>
+                <BoxBasicSettings
+                    :basic-settings="basicSettings"
+                    @change="handleBasicSettingsChange"
+                />
+            </template>
             <template #sebSettings><BoxSebSettings /></template>
             <template #indicators>
                 <BoxIndicators
@@ -44,7 +49,7 @@
 import GridPage from "@/components/layout/pages/GridPage.vue";
 import LoadingFallbackComponent from "@/components/widgets/loadingFallbackComponent/LoadingFallbackComponent.vue";
 import { useExamTemplateDetailPage } from "./composables/useExamTemplateDetailPage.ts";
-import BoxBasicSettings from "./components/BoxBasicSettings.vue";
+import BoxBasicSettings from "./components/BoxBasicSettings/BoxBasicSettings.vue";
 import BoxSebSettings from "./components/BoxSebSettings.vue";
 import BoxIndicators from "./components/BoxIndicators.vue";
 import BoxSupervisors from "./components/BoxSupervisors.vue";
@@ -62,8 +67,10 @@ const {
     selectedSupervisorIds,
     clientGroups,
     screenProctoring,
+    basicSettings,
     updateTemplate,
     handleScreenProctoringChange,
+    handleBasicSettingsChange,
 } = useExamTemplateDetailPage();
 
 const handleSupervisorsChange = (ids: string[]) =>

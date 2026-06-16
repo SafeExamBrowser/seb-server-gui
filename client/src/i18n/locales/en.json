@@ -384,38 +384,42 @@
             }
         }
     },
+    "examTemplate": {
+        "fields": {
+            "name": {
+                "label": "Name",
+                "placeholder": "Enter a name for the exam template",
+                "validationErrorUniqueName": "An exam template with this name already exists"
+            },
+            "description": {
+                "label": "Description",
+                "placeholder": "Describe the exam template"
+            },
+            "examType": {
+                "label": "Exam Type",
+                "placeholder": "Select the exam type"
+            },
+            "clientConfiguration": {
+                "label": "Connection Configuration",
+                "placeholder": "Select the connection configuration"
+            },
+            "lmsIntegration": {
+                "label": "Assessment Tool Integration"
+            },
+            "institutionalDefault": {
+                "label": "Institutional Default"
+            }
+        }
+    },
     "createTemplateExam": {
         "steps": {
             "naming": {
                 "title": "Define Basic Settings",
                 "subtitle": "Fill out the form. Create a SEB Client Template and a Connection Configuration, if you haven't done so already.",
                 "fields": {
-                    "name": {
-                        "label": "Name",
-                        "placeholder": "Enter a name for the exam template",
-                        "validationErrorUniqueName": "An exam template with this name already exists"
-                    },
-                    "description": {
-                        "label": "Description",
-                        "placeholder": "Describe the exam template"
-                    },
-                    "examType": {
-                        "label": "Exam Type",
-                        "placeholder": "Select the exam type"
-                    },
                     "configurationTemplate": {
                         "label": "SEB Client Template",
                         "placeholder": "Select the SEB client template"
-                    },
-                    "clientConfiguration": {
-                        "label": "Connection Configuration",
-                        "placeholder": "Select the connection configuration"
-                    },
-                    "lmsIntegration": {
-                        "label": "Assessment Tool Integration"
-                    },
-                    "institutionalDefault": {
-                        "label": "Institutional Default"
                     }
                 }
             },
@@ -476,7 +480,8 @@
     "examTemplateDetail": {
         "boxes": {
             "basicSettings": {
-                "title": "Basic Settings"
+                "title": "Basic Settings",
+                "dialogTitle": "Edit Basic Settings"
             },
             "sebSettings": {
                 "title": "SEB Settings"

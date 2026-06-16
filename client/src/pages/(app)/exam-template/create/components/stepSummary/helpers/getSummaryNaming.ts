@@ -32,17 +32,13 @@ export const getSummaryNaming = (
             {
                 type: "basic" as const,
                 key: "name",
-                label: i18n.global.t(
-                    "createTemplateExam.steps.naming.fields.name.label",
-                ),
+                label: i18n.global.t("examTemplate.fields.name.label"),
                 value: { type: "string", value: examTemplate.name },
             },
             {
                 type: "basic" as const,
                 key: "description",
-                label: i18n.global.t(
-                    "createTemplateExam.steps.naming.fields.description.label",
-                ),
+                label: i18n.global.t("examTemplate.fields.description.label"),
                 value: {
                     type: "string",
                     value:
@@ -55,9 +51,7 @@ export const getSummaryNaming = (
             {
                 type: "basic" as const,
                 key: "examType",
-                label: i18n.global.t(
-                    "createTemplateExam.steps.naming.fields.examType.label",
-                ),
+                label: i18n.global.t("examTemplate.fields.examType.label"),
                 value: {
                     type: "string",
                     value: examTemplate.examType
@@ -71,7 +65,7 @@ export const getSummaryNaming = (
                 type: "basic" as const,
                 key: "clientConfiguration",
                 label: i18n.global.t(
-                    "createTemplateExam.steps.naming.fields.clientConfiguration.label",
+                    "examTemplate.fields.clientConfiguration.label",
                 ),
                 value: {
                     type: "string",
@@ -84,7 +78,7 @@ export const getSummaryNaming = (
                 type: "basic" as const,
                 key: "lmsIntegration",
                 label: i18n.global.t(
-                    "createTemplateExam.steps.naming.fields.lmsIntegration.label",
+                    "examTemplate.fields.lmsIntegration.label",
                 ),
                 value: {
                     type: "boolean",
@@ -95,7 +89,7 @@ export const getSummaryNaming = (
                 type: "basic" as const,
                 key: "institutionalDefault",
                 label: i18n.global.t(
-                    "createTemplateExam.steps.naming.fields.institutionalDefault.label",
+                    "examTemplate.fields.institutionalDefault.label",
                 ),
                 value: {
                     type: "boolean",

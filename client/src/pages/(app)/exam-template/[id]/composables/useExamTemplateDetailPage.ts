@@ -4,6 +4,7 @@ import { useRoute } from "vue-router";
 import i18n from "@/i18n";
 import type { BreadCrumbItem } from "@/components/widgets/breadCrumb/types.ts";
 import {
+    BasicSettings,
     ClientGroupExisting,
     ExamTemplate,
     IndicatorExisting,
@@ -95,6 +96,15 @@ export const useExamTemplateDetailPage = () => {
         () => examTemplate.value?.CLIENT_GROUP_TEMPLATES ?? [],
     );
 
+    const basicSettings = computed<BasicSettings>(() => ({
+        name: examTemplate.value?.name ?? "",
+        description: examTemplate.value?.description,
+        examType: examTemplate.value?.examType,
+        clientConfigurationId: examTemplate.value?.clientConfigurationId,
+        lmsIntegration: examTemplate.value?.lmsIntegration ?? false,
+        institutionalDefault: examTemplate.value?.institutionalDefault ?? false,
+    }));
+
     const screenProctoring = {
         enabled: computed(
             () =>
@@ -145,6 +155,9 @@ export const useExamTemplateDetailPage = () => {
         examTemplate.value = examTemplateUpdated;
     };
 
+    const handleBasicSettingsChange = (patch: BasicSettings) =>
+        updateTemplate(patch);
+
     const handleScreenProctoringChange = ({
         enabled,
         collectionStrategy,
@@ -179,7 +192,9 @@ export const useExamTemplateDetailPage = () => {
         selectedSupervisorIds,
         clientGroups,
         screenProctoring,
+        basicSettings,
         updateTemplate,
         handleScreenProctoringChange,
+        handleBasicSettingsChange,
     };
 };
