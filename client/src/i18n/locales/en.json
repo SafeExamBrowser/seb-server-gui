@@ -85,7 +85,8 @@
             "ipAddress": "Field must be a valid IP address",
             "alphabeticalBefore": "Field must be alphabetically before \"{referenceValue}\"",
             "alphabeticalAfter": "Field must be alphabetically after \"{referenceValue}\"",
-            "fileExtensions": "Only the following file types are allowed: {extensions}"
+            "fileExtensions": "Only the following file types are allowed: {extensions}",
+            "invalidTimeRange": "This time range is invalid"
         },
         "formFields": {
             "file": {
@@ -292,6 +293,28 @@
                     "startUrl": "Start URL"
                 }
             },
+            "withURL": {
+                "title": "Exam with URL",
+                "subtitle": "Enter Exam Data",
+                "text": "If you want SEB Server without Assessment Tool Integration, you can add an exam with URL.",
+                "fields": {
+                    "examName": {
+                        "label": "Exam Name"
+                    },
+                    "examDescription": {
+                        "label": "Description"
+                    },
+                    "timeRange": {
+                        "label": "Time Range",
+                        "labelFrom": "Start date and time",
+                        "labelTo": "End date and time"
+                    },
+                    "examURL": {
+                        "label": "Exam URL",
+                        "invalid": "Invalid URL format"
+                    }
+                }
+            },
             "examTemplate": {
                 "title": "Choose Exam Template",
                 "subtitle": "Click on the Exam Template you want to use for the exam.",
@@ -327,6 +350,9 @@
                 "emptyValue": "No data",
                 "notFoundValue": "Not found",
                 "sections": {
+                    "examWithURL": {
+                        "title": "Exam with URL"
+                    },
                     "assessmentTool": {
                         "title": "Assessment Tool"
                     },

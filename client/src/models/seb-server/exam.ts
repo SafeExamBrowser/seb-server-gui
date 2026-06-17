@@ -1,9 +1,25 @@
+import { APIMessage } from "@/services/errors/types";
+
 export type CreateExamPar = {
     institutionId?: number;
     lmsSetupId: number;
     lms_setup_id: number;
     externalId: string;
     quiz_id: string;
+    examTemplateId: number;
+    type?: string;
+    quitPassword?: string;
+    supporter: string[];
+    clientGroupIds: string;
+};
+
+export type CreateExamWithURLPar = {
+    institutionId?: number;
+    quizName: string;
+    quiz_description: string;
+    quizStartTime: number;
+    quizEndTime: number;
+    quiz_start_url: string;
     examTemplateId: number;
     type?: string;
     quitPassword?: string;
@@ -50,4 +66,9 @@ export type Exams = {
     page_number: number;
     page_size: number;
     content: Exam[];
+};
+
+export type CreateExamResult = {
+    examId: string;
+    partialMessages?: APIMessage[];
 };
