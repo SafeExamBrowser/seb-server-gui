@@ -24,7 +24,7 @@
 
             <div
                 v-if="floating"
-                class="flex-grow-1 h-100 overflow-y-auto overflow-x-hidden"
+                class="flex-grow-1 h-100 overflow-y-auto overflow-x-hidden pa-3 ma-n3"
                 :style="{ minWidth: 0, minHeight: 0 }"
             >
                 <v-card
