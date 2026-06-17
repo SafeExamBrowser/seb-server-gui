@@ -5,7 +5,12 @@
         color="background"
         rounded="lg"
         class="pa-3 d-flex align-center ga-3"
+        role="button"
+        tabindex="0"
+        aria-haspopup="dialog"
+        :aria-label="askButtonLabel"
         @click="openAskDialog()"
+        @keydown="handleActivate"
     >
         <v-avatar color="surface" size="42" rounded="lg" border>
             <v-icon size="22">mdi-shield-key-outline</v-icon>
@@ -39,9 +44,11 @@
 import { useMonitoringStore } from "@/stores/seb-server/monitoringStore.ts";
 import AskDialog from "./dialogs/AskDialog.vue";
 import { ref, computed } from "vue";
+import { useI18n } from "vue-i18n";
 import { AppSignatureKeysWithGrantValues } from "@/models/seb-server/appSignatureKey.ts";
 
 const monitoringStore = useMonitoringStore();
+const { t } = useI18n();
 
 const appSignatureKeys = computed<AppSignatureKeysWithGrantValues[]>(
     () => monitoringStore.appSignatureKeys ?? [],
@@ -49,10 +56,21 @@ const appSignatureKeys = computed<AppSignatureKeysWithGrantValues[]>(
 const askDialog = ref(false);
 const askKeyCount = computed(() => appSignatureKeys.value?.length ?? 0);
 
+const askButtonLabel = computed(
+    () => `${t("monitoringOverview.ask.askKey")}: ${askKeyCount.value}`,
+);
+
 function openAskDialog() {
     askDialog.value = true;
 }
 function closeAskDialog() {
     askDialog.value = false;
+}
+function handleActivate(event: KeyboardEvent) {
+    if (event.key !== "Enter" && event.key !== " ") {
+        return;
+    }
+    event.preventDefault();
+    openAskDialog();
 }
 </script>
