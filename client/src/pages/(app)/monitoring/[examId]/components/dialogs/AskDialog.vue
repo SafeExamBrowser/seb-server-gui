@@ -7,12 +7,22 @@
                     icon="mdi-refresh"
                     class="mr-2"
                     color="primary"
+                    :aria-label="
+                        $t('monitoringDetails.monitoringASKDialog.refresh')
+                    "
                     @click="refreshAsk"
                 />
             </v-toolbar-title>
 
             <template #append>
-                <v-btn icon="mdi-close" class="mr-8" @click="closeDialog" />
+                <v-btn
+                    icon="mdi-close"
+                    class="mr-8"
+                    :aria-label="
+                        $t('monitoringDetails.monitoringASKDialog.close')
+                    "
+                    @click="closeDialog"
+                />
             </template>
         </v-toolbar>
 
@@ -93,6 +103,11 @@
                             variant="outlined"
                             hide-details
                             data-testid="aks-status-filter"
+                            :aria-label="
+                                $t(
+                                    'monitoringDetails.monitoringASKDialog.statusFilterLabel',
+                                )
+                            "
                             style="max-width: 260px"
                         >
                             <template #item="{ props, item, index }">
@@ -125,6 +140,11 @@
                             hide-details
                             append-inner-icon="mdi-magnify"
                             :placeholder="
+                                $t(
+                                    'monitoringDetails.monitoringASKDialog.searchText',
+                                )
+                            "
+                            :aria-label="
                                 $t(
                                     'monitoringDetails.monitoringASKDialog.searchText',
                                 )
