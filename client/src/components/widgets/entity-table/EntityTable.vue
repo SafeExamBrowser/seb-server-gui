@@ -133,7 +133,7 @@ const props = withDefaults(
         // TODO @andrei: prefer undefined over null here
         detailRoute?: (item: TableItem) => RouteLocationAsRelative | null;
         actions?: TableAction[];
-        selection?: TableRowSelect;
+        selection?: TableRowSelect | null;
         cellFormatters?: Record<string, CellFormatter>;
         itemKey?: string;
     }>(),
@@ -146,6 +146,7 @@ const props = withDefaults(
         actions: undefined,
         cellFormatters: () => ({}),
         itemKey: "id",
+        selection: null,
     },
 );
 

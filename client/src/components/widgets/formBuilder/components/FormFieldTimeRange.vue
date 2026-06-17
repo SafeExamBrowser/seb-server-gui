@@ -3,9 +3,9 @@
         <v-col cols="2/3">
             <v-date-input
                 v-if="model?.fromDate"
-                v-model="model.fromDate"
                 v-bind="props.standardProperties"
                 ref="fromDate"
+                v-model="model.fromDate"
                 :label="$t(`${props.labelFrom}.labelFrom`)"
                 :rules="[checkValidDateRange]"
                 append-inner-icon="mdi-calendar"
@@ -47,9 +47,9 @@
         <v-col cols="2/3">
             <v-date-input
                 v-if="model?.toDate"
-                v-model="model.toDate"
                 v-bind="props.standardProperties"
                 ref="toDate"
+                v-model="model.toDate"
                 :label="$t(`${props.labelFrom}.labelTo`)"
                 :rules="[checkValidDateRange]"
                 append-inner-icon="mdi-calendar"
