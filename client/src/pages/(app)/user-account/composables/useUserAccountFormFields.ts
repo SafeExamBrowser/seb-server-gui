@@ -120,8 +120,7 @@ export const useUserAccountFormFields = (mode: UserAccountFormMode) => {
         [errorInstitutions.value].filter((e) => e !== undefined),
     );
     const confirmPasswordRule = (value: string | undefined) =>
-        value === password.value ||
-        i18n.global.t("userAccount.general.validation.passwordsDontMatch");
+        value === password.value || i18n.global.t("validation.passwordsMatch");
 
     const fieldValidation = {
         institutionId: {

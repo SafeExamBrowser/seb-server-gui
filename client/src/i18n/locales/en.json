@@ -589,13 +589,6 @@
     },
     "userAccount": {
         "general": {
-            "validation": {
-                "required": "This field is required",
-                "passwordTooShort": "Password must be at least 8 characters",
-                "passwordsDontMatch": "Passwords must match",
-                "invalidEmail": "Invalid email format",
-                "invalidRoleSelection": "Please select at least one Role"
-            },
             "status": {
                 "active": "Active",
                 "inactive": "Inactive"
@@ -2206,6 +2199,13 @@
             "rowsPerPageText": "Items per page:",
             "pageText": "{0}-{1} of {2}"
         }
+    },
+    "validation": {
+        "required": "This field is required",
+        "minLength": "You must enter a minimum of {min} characters",
+        "maxLength": "You must enter a maximum of {max} characters",
+        "email": "Please enter a valid email",
+        "passwordsMatch": "Passwords must match"
     },
     "errors": {
         "backend": {

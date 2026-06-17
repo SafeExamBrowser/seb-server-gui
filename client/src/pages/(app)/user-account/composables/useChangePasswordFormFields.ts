@@ -14,7 +14,7 @@ export const useChangePasswordFormFields = () => {
     const { isRequired, fieldRules } = useZodFormRules();
     const confirmNewPasswordRule = (value: string | undefined) =>
         value === newPassword.value ||
-        i18n.global.t("userAccount.general.validation.passwordsDontMatch");
+        i18n.global.t("validation.passwordsMatch");
 
     const formFields = computed<FormField[]>(() => [
         {

@@ -51,8 +51,7 @@ export const useRegisterFormFields = () => {
     const errors = computed(() => (error.value ? [error.value] : []));
 
     const confirmPasswordRule = (value: string | undefined) =>
-        value === password.value ||
-        i18n.global.t("userAccount.general.validation.passwordsDontMatch");
+        value === password.value || i18n.global.t("validation.passwordsMatch");
 
     const fieldValidation = {
         institutionId: { required: isRequired(schema.shape.institutionId) },
