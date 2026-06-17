@@ -1,6 +1,6 @@
 <template>
     <v-card border elevation="1" rounded="lg" class="h-100 d-flex flex-column">
-        <div class="d-flex align-center px-5 py-4">
+        <div class="d-flex align-center px-5 py-4 bg-background">
             <span class="text-body-medium font-weight-bold">
                 {{ $t("monitoringOverview.notifications.notifications") }}
             </span>

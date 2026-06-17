@@ -19,7 +19,7 @@
     </slot>
     <v-dialog
         v-model="isDialogOpen"
-        :max-width="useDisplay().thresholds.value.sm"
+        :max-width="thresholds.sm"
         :persistent="submitting"
     >
         <v-card :title="labelActivator">
@@ -96,6 +96,9 @@ const props = withDefaults(
         labelActivatorVisible: false,
     },
 );
+
+const { thresholds: thresholdsRef } = useDisplay();
+const thresholds = computed(() => thresholdsRef.value);
 
 const isDialogOpen = ref(false);
 const item = ref<TTransient>(props.getItem());

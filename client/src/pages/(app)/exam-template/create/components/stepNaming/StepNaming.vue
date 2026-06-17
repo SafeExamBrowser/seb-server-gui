@@ -3,10 +3,7 @@
         :title="$t('createTemplateExam.steps.naming.title')"
         :subtitle="$t('createTemplateExam.steps.naming.subtitle')"
     >
-        <v-container
-            class="ma-0 pa-0"
-            :max-width="useDisplay().thresholds.value.sm"
-        >
+        <v-container class="ma-0 pa-0" :max-width="thresholds.sm">
             <LoadingFallbackComponent :loading="loading" :errors="errors">
                 <FormBuilder
                     v-model="useStepNamingStore().isReady"
@@ -18,6 +15,7 @@
 </template>
 
 <script setup lang="ts">
+import { computed } from "vue";
 import { useFormFields } from "./composables/useFormFields.ts";
 import { useStepNamingStore } from "./composables/store/useStepNamingStore.ts";
 import { useDisplay } from "vuetify";
@@ -26,4 +24,7 @@ import LoadingFallbackComponent from "@/components/widgets/loadingFallbackCompon
 import StepItem from "@/components/widgets/stepItem/StepItem.vue";
 
 const { formFields, loading, errors } = useFormFields();
+
+const { thresholds: thresholdsRef } = useDisplay();
+const thresholds = computed(() => thresholdsRef.value);
 </script>

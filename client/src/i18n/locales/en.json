@@ -393,59 +393,55 @@
             }
         }
     },
-    "createTemplateExam": {
-        "general": {
-            "fields": {
-                "screenProctoringEnabled": {
-                    "label": "Screen Proctoring"
-                },
-                "screenProctoringCollectionStrategy": {
-                    "label": "Grouping Strategy",
-                    "placeholder": "Select the grouping strategy",
-                    "info": {
-                        "EXAM": "This strategy does not allow you to toggle the screen proctoring per group.",
-                        "APPLY_SEB_GROUPS": "With this strategy, you must create at least one group with screen proctoring enabled."
-                    },
-                    "strategies": {
-                        "EXAM": "One Group for Exam",
-                        "APPLY_SEB_GROUPS": "Apply to SEB Client Groups"
-                    }
-                }
-            }
+    "screenProctoring": {
+        "enabled": {
+            "label": "Screen Proctoring"
         },
+        "collectionStrategy": {
+            "label": "Grouping Strategy",
+            "placeholder": "Select the grouping strategy",
+            "info": {
+                "EXAM": "This strategy does not allow you to toggle the screen proctoring per group.",
+                "APPLY_SEB_GROUPS": "With this strategy, you must create at least one group with screen proctoring enabled."
+            },
+            "strategies": {
+                "EXAM": "One Group for Exam",
+                "APPLY_SEB_GROUPS": "Apply to SEB Client Groups"
+            }
+        }
+    },
+    "examTemplate": {
+        "fields": {
+            "name": {
+                "label": "Name",
+                "placeholder": "Enter a name for the exam template",
+                "validationErrorUniqueName": "An exam template with this name already exists"
+            },
+            "description": {
+                "label": "Description",
+                "placeholder": "Describe the exam template"
+            },
+            "examType": {
+                "label": "Exam Type",
+                "placeholder": "Select the exam type"
+            },
+            "clientConfiguration": {
+                "label": "Connection Configuration",
+                "placeholder": "Select the connection configuration"
+            },
+            "lmsIntegration": {
+                "label": "Assessment Tool Integration"
+            },
+            "institutionalDefault": {
+                "label": "Institutional Default"
+            }
+        }
+    },
+    "createTemplateExam": {
         "steps": {
             "naming": {
                 "title": "Define Basic Settings",
-                "subtitle": "Fill out the form. Create a SEB Client Template and a Connection Configuration, if you haven't done so already.",
-                "fields": {
-                    "name": {
-                        "label": "Name",
-                        "placeholder": "Enter a name for the exam template",
-                        "validationErrorUniqueName": "An exam template with this name already exists"
-                    },
-                    "description": {
-                        "label": "Description",
-                        "placeholder": "Describe the exam template"
-                    },
-                    "examType": {
-                        "label": "Exam Type",
-                        "placeholder": "Select the exam type"
-                    },
-                    "configurationTemplate": {
-                        "label": "SEB Client Template",
-                        "placeholder": "Select the SEB client template"
-                    },
-                    "clientConfiguration": {
-                        "label": "Connection Configuration",
-                        "placeholder": "Select the connection configuration"
-                    },
-                    "lmsIntegration": {
-                        "label": "Assessment Tool Integration"
-                    },
-                    "institutionalDefault": {
-                        "label": "Institutional Default"
-                    }
-                }
+                "subtitle": "Fill out the form. Create a SEB Client Template and a Connection Configuration, if you haven't done so already."
             },
             "seb-settings": {
                 "title": "Enter SEB Settings",
@@ -504,7 +500,8 @@
     "examTemplateDetail": {
         "boxes": {
             "basicSettings": {
-                "title": "Basic Settings"
+                "title": "Basic Settings",
+                "dialogTitle": "Edit Basic Settings"
             },
             "sebSettings": {
                 "title": "SEB Settings"
@@ -524,7 +521,8 @@
                 }
             },
             "screenProctoringSettings": {
-                "title": "Screen Proctoring"
+                "title": "Screen Proctoring Settings",
+                "dialogTitle": "Edit Screen Proctoring Settings"
             },
             "groups": {
                 "errors": {
@@ -1952,6 +1950,10 @@
             "live": "Live · refreshing every {seconds}s",
             "security": "Security",
             "connections": "connections"
+        },
+        "actions": {
+            "proctoringSearch": "Screen Proctoring Search",
+            "proctoringApplications": "Screen Proctoring Applications"
         },
         "clients": {
             "total": "Total:"

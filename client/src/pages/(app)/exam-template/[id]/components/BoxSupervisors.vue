@@ -32,13 +32,10 @@
             </template>
         </v-data-table>
 
-        <v-dialog
-            v-model="dialogOpen"
-            :max-width="useDisplay().thresholds.value.sm"
-        >
+        <v-dialog v-model="dialogOpen" :max-width="thresholds.sm">
             <v-card
                 class="d-flex flex-column"
-                :height="`min(${useDisplay().thresholds.value.sm}px, 90vh)`"
+                :height="`min(${thresholds.sm}px, 90vh)`"
             >
                 <v-card-title>
                     {{ $t("examTemplateDetail.boxes.supervisors.dialogTitle") }}
@@ -85,6 +82,9 @@ const emit = defineEmits<{
 }>();
 
 const { t } = useI18n();
+
+const { thresholds: thresholdsRef } = useDisplay();
+const thresholds = computed(() => thresholdsRef.value);
 
 const headers = computed(() => [
     {
