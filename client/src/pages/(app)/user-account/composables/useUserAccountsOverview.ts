@@ -85,7 +85,6 @@ export const useUserAccountsOverview = () => {
         onEdit: (item) => {
             const target = userAccountDetailRoute(item);
             if (!target) {
-                // TODO @andrei implement error handling
                 return;
             }
             void router.push(target);
