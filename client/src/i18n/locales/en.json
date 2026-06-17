@@ -2263,7 +2263,6 @@
             },
             "objects": {
                 "user": {
-                    "_label": "User account",
                     "fields": {
                         "institutionId": "Institution",
                         "username": "Username",
@@ -2282,7 +2281,6 @@
                     }
                 },
                 "institution": {
-                    "_label": "Institution",
                     "fields": {
                         "name": "Name",
                         "urlSuffix": "URL suffix",
@@ -2290,7 +2288,6 @@
                     }
                 },
                 "lmsSetup": {
-                    "_label": "LMS setup",
                     "fields": {
                         "name": "Name",
                         "lmsType": "LMS type",
@@ -2301,7 +2298,6 @@
                     }
                 },
                 "clientConfig": {
-                    "_label": "Connection configuration",
                     "fields": {
                         "name": "Name",
                         "sebConfigPurpose": "Configuration purpose",
@@ -2315,14 +2311,12 @@
                     }
                 },
                 "certificate": {
-                    "_label": "Certificate",
                     "fields": {
                         "alias": "Alias",
                         "certificate": "Certificate file"
                     }
                 },
                 "clientconfig": {
-                    "_label": "Connection configuration",
                     "fields": {
                         "name": "Name",
                         "sebConfigPurpose": "Configuration purpose",
@@ -2346,7 +2340,6 @@
                 "confirmPassword": "Confirm password"
             },
             "fieldFallback": "{field}: {rule}",
-            "fallbackLine": "{systemMessage} ({details})",
             "rateLimit": "Too many requests. Please slow down and try again.",
             "codes": {
                 "GENERIC": "Generic error",
