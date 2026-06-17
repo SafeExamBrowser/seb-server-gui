@@ -5,10 +5,10 @@
                 <v-col cols="12" lg="8" md="6" sm="6">
                     <v-card class="pa-8">
                         <div class="d-flex ml-15 mr-15 justify-center">
-                            <img
+                            <v-img
                                 alt="SEB Logo"
-                                class="w-100 mb-4"
-                                style="max-width: 150px; height: auto"
+                                class="mb-4"
+                                :max-width="150"
                                 src="/img/seb-logo-no-border.png"
                             />
                         </div>
@@ -49,28 +49,30 @@
                                 :loading="loading"
                                 :errors="errors"
                             >
-                                <FormBuilder
-                                    ref="formRef"
-                                    :fields="formFields"
-                                    data-testid="register-form"
-                                    @submit="handleRegister"
-                                />
+                                <template v-if="!registerSuccess">
+                                    <FormBuilder
+                                        ref="formRef"
+                                        :fields="formFields"
+                                        data-testid="register-form"
+                                        @submit="handleRegister"
+                                    />
 
-                                <v-btn
-                                    block
-                                    class="mt-4"
-                                    color="primary"
-                                    data-testid="register-submit-btn"
-                                    :loading="registerLoading"
-                                    rounded="sm"
-                                    @click="handleRegister"
-                                >
-                                    {{
-                                        translate(
-                                            "userAccount.registerPage.buttons.register",
-                                        )
-                                    }}
-                                </v-btn>
+                                    <v-btn
+                                        block
+                                        class="mt-4"
+                                        color="primary"
+                                        data-testid="register-submit-btn"
+                                        :loading="registerLoading"
+                                        rounded="sm"
+                                        @click="handleRegister"
+                                    >
+                                        {{
+                                            translate(
+                                                "userAccount.registerPage.buttons.register",
+                                            )
+                                        }}
+                                    </v-btn>
+                                </template>
 
                                 <div class="text-center mt-7">
                                     <span>{{
@@ -171,6 +173,10 @@ const applyBackendErrors = (error: unknown) =>
     });
 
 const handleRegister = async () => {
+    if (registerLoading.value || registerSuccess.value) {
+        return;
+    }
+
     const result = await formRef.value?.validate();
     if (!result?.valid) {
         return;
