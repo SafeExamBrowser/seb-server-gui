@@ -202,25 +202,35 @@ export function getTimestampFromPeriodSelection(
     return now.getTime().toString();
 }
 
-export const getTimeRangeDisplayValue = (range: TimeRange) => {
-    const fromDate = formatTimestampToFullDate(
-        getTimestampFromDateAndTime(range.fromDate, range.fromTime),
+export const formatIsoToReadableTimeRange = (range: TimeRange) => {
+    const from = getDateWithTime(range.fromDate, range.fromTime);
+    const to = getDateWithTime(range.toDate, range.toTime);
+
+    return (
+        formatIsoToReadableDateTime(String(from)) +
+        " - " +
+        formatIsoToReadableDateTime(String(to))
     );
-    const toDate = formatTimestampToFullDate(
-        getTimestampFromDateAndTime(range.toDate, range.toTime),
-    );
-    return fromDate + " - " + toDate;
 };
 
-export const getTimestampFromDateAndTime = (date: Date, time: string) => {
+export const getTimestampFromDateAndTime = (
+    date: Date,
+    time: string,
+): number => {
     const timeSplit = time.split(":");
     date.setHours(Number(timeSplit[0]), Number(timeSplit[1]));
     return date.getTime();
 };
 
-export const getTimestampFromDateTime = (dateTime: DateTime) => {
+export const getTimestampFromDateTime = (dateTime: DateTime): number => {
     const date = dateTime.date;
     const time = dateTime.time.split(":");
     date.setHours(Number(time[0]), Number(time[1]));
     return date.getTime();
+};
+
+export const getDateWithTime = (date: Date, time: string): Date => {
+    const timeSplit = time.split(":");
+    date.setHours(Number(timeSplit[0]), Number(timeSplit[1]));
+    return new Date(date);
 };

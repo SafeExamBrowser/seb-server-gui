@@ -1,7 +1,7 @@
 import i18n from "@/i18n";
 import { SummarySectionData } from "@/components/widgets/wizardSummary/types.ts";
 import { useStepWithURLStore } from "@/pages/(app)/exam/create/components/stepWithURL/composables/store/useStepWithURLStore";
-import { getTimeRangeDisplayValue } from "@/utils/timeUtils";
+import { formatIsoToReadableTimeRange } from "@/utils/timeUtils";
 
 export const getSummaryExamWithURL = (): SummarySectionData => {
     const stepWithURL = useStepWithURLStore();
@@ -38,7 +38,7 @@ export const getSummaryExamWithURL = (): SummarySectionData => {
                 key: "timeRange",
                 value: {
                     type: "string" as const,
-                    value: getTimeRangeDisplayValue(stepWithURL.timeRange),
+                    value: formatIsoToReadableTimeRange(stepWithURL.timeRange),
                 },
                 label: i18n.global.t(
                     "createExam.steps.withURL.fields.timeRange.label",

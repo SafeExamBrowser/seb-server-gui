@@ -26,6 +26,7 @@ export const useStepWithURLStore = defineStore("createExam_stepWithURL", () => {
     const $reset = () => {
         const initState = getInitialState();
         examName.value = initState.examName;
+        examDescription.value = initState.examDescription;
         timeRange.value = initState.timeRange;
         examURL.value = initState.examURL;
     };
