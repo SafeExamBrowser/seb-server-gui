@@ -136,6 +136,7 @@ import {
 const USER_ACCOUNT_FIELD_ALIASES = {
     timeZone: "timezone",
     userRoles: "role",
+    newPassword: "password",
     confirmNewPassword: "confirmPassword",
 } satisfies BackendFieldAliasMap;
 
