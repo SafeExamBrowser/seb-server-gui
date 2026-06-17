@@ -7,7 +7,6 @@
             <v-col class="text-body-large">
                 <SettingsTitle
                     label="sebSettings.examView.sessionHandling.title"
-                    :tooltip="true"
                 />
                 <v-row>
                     <v-col
