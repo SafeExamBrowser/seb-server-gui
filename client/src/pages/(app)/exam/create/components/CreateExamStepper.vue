@@ -51,6 +51,7 @@ import { useStepQuizStore } from "@/pages/(app)/exam/create/components/stepQuiz/
 import SelectedQuizPreview from "@/pages/(app)/exam/create/components/stepQuiz/components/SelectedQuizPreview.vue";
 import { watch, watchEffect } from "vue";
 import { useRouter } from "vue-router";
+import { useCreateExamWithURL } from "@/pages/(app)/exam/create/composables/api/useCreateExamWithURL";
 
 defineProps<{
     createWithURL: boolean;
@@ -60,12 +61,26 @@ const store = useCreateExamStore();
 const quizStore = useStepQuizStore();
 const router = useRouter();
 const { create: createExam, data: createExamResult } = useCreateExam();
+const { createWithURL: createExamWithURL, data: createExamWithURLResult } =
+    useCreateExamWithURL();
 
 watchEffect(() => {
     if (!createExamResult.value) {
         return;
     }
     const { examId } = createExamResult.value;
+    store.$reset();
+    router.push({
+        name: "/(app)/exam/[id]/",
+        params: { id: examId },
+    });
+});
+
+watchEffect(() => {
+    if (!createExamWithURLResult.value) {
+        return;
+    }
+    const { examId } = createExamWithURLResult.value;
     store.$reset();
     router.push({
         name: "/(app)/exam/[id]/",
@@ -91,6 +106,10 @@ const handleStepperPrev = () => {
 };
 
 const handleStepperFinish = async () => {
-    createExam(store.createExamPayload);
+    if (store.createWithURL) {
+        createExamWithURL(store.createExamWithURLPayload);
+    } else {
+        createExam(store.createExamPayload);
+    }
 };
 </script>

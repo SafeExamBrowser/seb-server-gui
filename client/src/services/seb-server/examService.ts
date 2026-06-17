@@ -1,6 +1,11 @@
 import * as apiService from "@/services/apiService";
 import { OptionalParGetExams } from "@/models/seb-server/optionalParamters";
-import { CreateExamPar, Exam, Exams } from "@/models/seb-server/exam";
+import {
+    CreateExamPar,
+    CreateExamWithURLPar,
+    Exam,
+    Exams,
+} from "@/models/seb-server/exam";
 import {
     AppSignatureKey,
     GrantedAppSignatureKey,
@@ -17,6 +22,19 @@ export const getExam = async (id: string): Promise<Exam> =>
     ).data;
 
 export const createExam = async (createExamPar: CreateExamPar): Promise<Exam> =>
+    (
+        await apiService.postRequest({
+            url: baseUrl,
+            data: createExamPar,
+            options: {
+                _authType: "seb",
+            },
+        })
+    ).data;
+
+export const createExamWithURL = async (
+    createExamPar: CreateExamWithURLPar,
+): Promise<Exam> =>
     (
         await apiService.postRequest({
             url: baseUrl,

@@ -139,3 +139,9 @@ export function formatPing(milliseconds: number | null): string {
         return mins > 0 ? `${hours}h ${mins}m ago` : `${hours}h ago`;
     }
 }
+
+export const isURL = (val: string): boolean => {
+    const regexURL =
+        /https?:\/\/(www\.)?[-a-zA-Z0-9@:%._+~#=]{1,256}\.[a-zA-Z0-9()]{1,6}\b([-a-zA-Z0-9()@:%_+.~#?&//=]*)/gm;
+    return regexURL.test(val);
+};

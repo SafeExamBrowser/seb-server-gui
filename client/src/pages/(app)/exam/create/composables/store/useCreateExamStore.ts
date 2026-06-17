@@ -3,7 +3,10 @@ import { computed, ref } from "vue";
 import i18n from "@/i18n";
 import { StepItem } from "@/components/widgets/stepperVertical/types.ts";
 import { StepItemCreateExam } from "@/pages/(app)/exam/create/types/types.ts";
-import { CreateExamPar } from "@/models/seb-server/exam.ts";
+import {
+    CreateExamPar,
+    CreateExamWithURLPar,
+} from "@/models/seb-server/exam.ts";
 import { useStepAssessmentToolStore } from "@/pages/(app)/exam/create/components/stepAssessmentTool/composables/store/useStepAssessmentToolStore.ts";
 import { useStepQuizStore } from "@/pages/(app)/exam/create/components/stepQuiz/composables/store/useStepQuizStore.ts";
 import { useStepExamTemplateStore } from "@/pages/(app)/exam/create/components/stepExamTemplate/composables/store/useStepExamTemplateStore.ts";
@@ -11,6 +14,7 @@ import { useStepClientGroupsStore } from "@/pages/(app)/exam/create/components/s
 import { useStepSupervisorsStore } from "@/pages/(app)/exam/create/components/stepSupervisors/composables/store/useStepSupervisorsStore.ts";
 import { useStepQuitPasswordStore } from "@/pages/(app)/exam/create/components/stepQuitPassword/composables/store/useStepQuitPasswordStore.ts";
 import { useStepWithURLStore } from "@/pages/(app)/exam/create/components/stepWithURL/composables/store/useStepWithURLStore";
+import { getTimestampFromDateAndTime } from "@/utils/timeUtils";
 
 const staticStepData = [
     {
@@ -179,6 +183,53 @@ export const useCreateExamStore = defineStore("createExam", () => {
         };
     });
 
+    const createExamWithURLPayload = computed<CreateExamWithURLPar>(() => {
+        const examTemplate = stepExamTemplateStore.selectedExamTemplate;
+        const examName = stepWithURL.examName;
+        const timeRange = stepWithURL.timeRange;
+        const examURL = stepWithURL.examURL;
+
+        if (
+            !examName ||
+            !examTemplate ||
+            examTemplate.id === undefined ||
+            !timeRange ||
+            !examURL
+        ) {
+            throw new Error(
+                "Cannot assemble create exam payload before quiz and template are selected",
+            );
+        }
+
+        const fromTimestamp = getTimestampFromDateAndTime(
+            timeRange.fromDate,
+            timeRange.fromTime,
+        );
+        const toTimestamp = getTimestampFromDateAndTime(
+            timeRange.toDate,
+            timeRange.toTime,
+        );
+
+        const clientGroupIds = stepClientGroupsStore.selectedClientGroups
+            .map((group) => group.id)
+            .filter((id): id is number => typeof id === "number")
+            .map(String)
+            .join(",");
+
+        return {
+            quizName: examName,
+            quiz_description: stepWithURL.examDescription,
+            quizStartTime: fromTimestamp,
+            quizEndTime: toTimestamp,
+            quiz_start_url: examURL,
+            examTemplateId: examTemplate.id,
+            type: examTemplate.examType,
+            quitPassword: stepQuitPasswordStore.quitPassword,
+            supporter: stepSupervisorsStore.selectedSupervisorIds,
+            clientGroupIds,
+        };
+    });
+
     const increaseCurrentStepIndex = () => {
         if (currentStepIndex.value < visibleStepData.value.length - 1) {
             currentStepIndex.value++;
@@ -222,6 +273,7 @@ export const useCreateExamStore = defineStore("createExam", () => {
         stepperModel,
         currentStep,
         createExamPayload,
+        createExamWithURLPayload,
 
         increaseCurrentStepIndex,
         decreaseCurrentStepIndex,

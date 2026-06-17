@@ -1,6 +1,6 @@
 <template>
     <v-row>
-        <v-col>
+        <v-col cols="2/3">
             <v-date-input
                 v-if="model?.date"
                 v-model="model.date"
@@ -13,16 +13,14 @@
             />
         </v-col>
 
-        <v-col>
+        <v-col cols="1/3">
             <v-text-field
                 v-if="model?.time"
                 :model-value="model.time"
                 prepend-icon="mdi-clock-time-four-outline"
                 readonly
-                max-width="200"
                 variant="outlined"
                 density="compact"
-                @update:focused="updateValidation"
             >
                 <v-menu
                     v-model="showMenu"
@@ -50,21 +48,4 @@ const showMenu = ref(false);
 const props = defineProps<{
     standardProperties: FormFieldBaseProperties;
 }>();
-
-function updateValidation(focus: boolean) {
-    if (!focus) {
-        //console.info("****** val:" );
-        // TODO @anhefti @ahorner: I would like to get the input reference to the v-date-input here
-        //      tryed many things but nothing works!!! Once we have the rev we can call validate on
-        //      it to apply date validation also when time is changed
-        // if (props.standardProperties.ref) {
-        //     const what = props.standardProperties.ref!.valueOf() ;
-        //     what.validate();
-        // }
-        // if (dateInputRef.value) {
-        //     const nodeRef = dateInputRef.value as VInput
-        //     nodeRef.validate();
-        // }
-    }
-}
 </script>

@@ -102,6 +102,11 @@ export type FormFieldSimple = FormFieldBase &
               required?: boolean;
               model: Ref<DateTime | undefined>;
           }
+        | {
+              type: "time-range";
+              required?: boolean;
+              model: Ref<TimeRange | undefined>;
+          }
     );
 
 export type FormFieldCollection = FormFieldBase & {
@@ -131,4 +136,11 @@ export type FormFieldsComponentProps = {
 export type DateTime = {
     date: Date;
     time: string;
+};
+
+export type TimeRange = {
+    fromDate: Date;
+    fromTime: string;
+    toDate: Date;
+    toTime: string;
 };

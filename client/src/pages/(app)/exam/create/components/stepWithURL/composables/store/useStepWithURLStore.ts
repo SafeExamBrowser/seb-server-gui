@@ -1,47 +1,54 @@
-import { DateTime } from "@/components/widgets/formBuilder/types";
-import { getTimestampFromDateTime } from "@/utils/timeUtils";
+import { TimeRange } from "@/components/widgets/formBuilder/types";
+import { isURL } from "@/utils/generalUtils";
+import { getTimestampFromDateAndTime } from "@/utils/timeUtils";
 import { defineStore } from "pinia";
 import { computed, ref } from "vue";
 
 const getInitialState = () => ({
     examName: "",
     examDescription: "",
-    startDate: {
-        date: new Date(Date.now()),
-        time: `${new Date(Date.now()).getHours()}:${new Date(Date.now()).getMinutes()}`,
-    },
-    endDate: {
-        date: new Date(Date.now()),
-        time: `${new Date(Date.now()).getHours() + 1}:${new Date(Date.now()).getMinutes()}`,
+    timeRange: {
+        fromDate: new Date(Date.now()),
+        fromTime: `${new Date(Date.now()).getHours()}:${new Date(Date.now()).getMinutes()}`,
+        toDate: new Date(Date.now()),
+        toTime: `${new Date(Date.now()).getHours() + 1}:${new Date(Date.now()).getMinutes()}`,
     },
     examURL: "",
 });
 
 export const useStepWithURLStore = defineStore("createExam_stepWithURL", () => {
-    const examName = ref<string>(getInitialState().examName);
-    const examDescription = ref<string>(getInitialState().examDescription);
-    const startDate = ref<DateTime>(getInitialState().startDate);
-    const endDate = ref<DateTime>(getInitialState().endDate);
-    const examURL = ref<string>(getInitialState().examURL);
+    const initState = getInitialState();
+    const examName = ref<string>(initState.examName);
+    const examDescription = ref<string>(initState.examDescription);
+    const timeRange = ref<TimeRange>(initState.timeRange);
+    const examURL = ref<string>(initState.examURL);
 
     const $reset = () => {
-        examName.value = getInitialState().examName;
+        const initState = getInitialState();
+        examName.value = initState.examName;
+        timeRange.value = initState.timeRange;
+        examURL.value = initState.examURL;
     };
 
     const isReady = computed<boolean>(
         () =>
             examName.value.length > 3 &&
-            examURL.value.length > 3 &&
-            getTimestampFromDateTime(startDate.value) <
-                getTimestampFromDateTime(endDate.value),
+            isURL(examURL.value) &&
+            getTimestampFromDateAndTime(
+                timeRange.value.fromDate,
+                timeRange.value.fromTime,
+            ) <
+                getTimestampFromDateAndTime(
+                    timeRange.value.toDate,
+                    timeRange.value.toTime,
+                ),
     );
 
     return {
         isReady,
         examName,
         examDescription,
-        startDate,
-        endDate,
+        timeRange,
         examURL,
 
         $reset,

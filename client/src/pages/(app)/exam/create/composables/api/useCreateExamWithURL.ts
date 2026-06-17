@@ -1,8 +1,8 @@
-import { createExam } from "@/services/seb-server/examService.ts";
+import { createExamWithURL } from "@/services/seb-server/examService.ts";
 import { useMutation } from "@/composables/useMutation.ts";
 import {
-    CreateExamPar,
     CreateExamResult,
+    CreateExamWithURLPar,
     Exam,
 } from "@/models/seb-server/exam.ts";
 import { APIMessage } from "@/models/seb-server/apiMessages.ts";
@@ -13,10 +13,12 @@ import { APIMessage } from "@/models/seb-server/apiMessages.ts";
 //   id. This happens when the exam row is created but a post-creation
 //   step (e.g. linking the configuration template) fails — the exam still
 //   exists and the user should be navigated to it.
-export const useCreateExam = () => {
+export const useCreateExamWithURL = () => {
     const { data, loading, error, mutateData } = useMutation(
-        async (payload: CreateExamPar): Promise<CreateExamResult> => {
-            const response = (await createExam(payload)) as Exam | APIMessage[];
+        async (payload: CreateExamWithURLPar): Promise<CreateExamResult> => {
+            const response = (await createExamWithURL(payload)) as
+                | Exam
+                | APIMessage[];
 
             if (Array.isArray(response)) {
                 const examId = response[0]?.details;
@@ -33,7 +35,7 @@ export const useCreateExam = () => {
     );
 
     return {
-        create: mutateData,
+        createWithURL: mutateData,
         loading,
         error,
         data,

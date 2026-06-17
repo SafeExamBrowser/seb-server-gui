@@ -1,6 +1,6 @@
 import { toZonedTime } from "date-fns-tz";
 import { useUserAccountStore } from "@/stores/authentication/userAccountStore";
-import { DateTime } from "@/components/widgets/formBuilder/types";
+import { DateTime, TimeRange } from "@/components/widgets/formBuilder/types";
 
 export function getCurrentDateString(): string {
     const date = new Date();
@@ -201,6 +201,22 @@ export function getTimestampFromPeriodSelection(
 
     return now.getTime().toString();
 }
+
+export const getTimeRangeDisplayValue = (range: TimeRange) => {
+    const fromDate = formatTimestampToFullDate(
+        getTimestampFromDateAndTime(range.fromDate, range.fromTime),
+    );
+    const toDate = formatTimestampToFullDate(
+        getTimestampFromDateAndTime(range.toDate, range.toTime),
+    );
+    return fromDate + " - " + toDate;
+};
+
+export const getTimestampFromDateAndTime = (date: Date, time: string) => {
+    const timeSplit = time.split(":");
+    date.setHours(Number(timeSplit[0]), Number(timeSplit[1]));
+    return date.getTime();
+};
 
 export const getTimestampFromDateTime = (dateTime: DateTime) => {
     const date = dateTime.date;

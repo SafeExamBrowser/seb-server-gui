@@ -118,7 +118,13 @@
             <FormFieldDateTime
                 v-else-if="field.type === 'date-time'"
                 v-model="field.model.value"
-                :field-name="field.name"
+                :standard-properties="getBaseProperties(field)"
+            />
+            <FormFieldTimeRange
+                v-else-if="field.type === 'time-range'"
+                v-model="field.model.value"
+                :label-from="field.label"
+                :label-to="field.label"
                 :standard-properties="getBaseProperties(field)"
             />
         </div>
@@ -141,6 +147,7 @@ import FormFieldFile from "./FormFieldFile.vue";
 import FormFieldImage from "./FormFieldImage.vue";
 import FormFieldPassword from "./FormFieldPassword.vue";
 import FormFieldDateTime from "@/components/widgets/formBuilder/components/FormFieldDateTime.vue";
+import FormFieldTimeRange from "@/components/widgets/formBuilder/components/FormFieldTimeRange.vue";
 
 const props = withDefaults(defineProps<FormFieldsComponentProps>(), {
     layout: "vertical" as const,
