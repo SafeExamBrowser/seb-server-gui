@@ -92,10 +92,10 @@ function getApiMessageLine(message: APIMessage): string {
         return message.details ? `${codeText} (${message.details})` : codeText;
     }
 
-    return translate("errors.backend.fallbackLine", {
-        systemMessage: message.systemMessage ?? "",
-        details: message.details ?? "",
-    });
+    if (message.details) {
+        return message.details;
+    }
+    return translate("errors.backend.title.generic");
 }
 
 export function getBackendMessageTitle(

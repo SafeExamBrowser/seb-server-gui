@@ -18,8 +18,8 @@ export async function submitWithFormErrors<T>({
 }: SubmitWithFormErrorsOptions<T>): Promise<T | undefined> {
     try {
         return await run();
-    } catch {
-        const result = applyErrors(error.value);
+    } catch (thrown) {
+        const result = applyErrors(thrown);
         if (!result?.fullyHandled) {
             notify.serverError(result?.appError ?? error.value, {
                 contextLabel,
