@@ -1,6 +1,6 @@
-import { useRules } from "vuetify/labs/rules";
 import type { VInput } from "vuetify/components";
 import { z } from "zod";
+import { useValidationRules } from "@/composables/useValidationRules.ts";
 
 type VInputProps = InstanceType<typeof VInput>["$props"];
 type ValidationRules = NonNullable<VInputProps["rules"]>;
@@ -66,7 +66,7 @@ const unwrap = (schema: z.ZodType): z.ZodType => {
 };
 
 export const useZodFormRules = () => {
-    const rules = useRules();
+    const rules = useValidationRules();
 
     const isRequired = (schema: z.ZodType): boolean => !schema.isOptional();
 

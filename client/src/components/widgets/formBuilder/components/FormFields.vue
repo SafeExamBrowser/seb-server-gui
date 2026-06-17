@@ -119,7 +119,7 @@
 </template>
 
 <script setup lang="ts">
-import { useRules } from "vuetify/labs/rules";
+import { useValidationRules } from "@/composables/useValidationRules.ts";
 import {
     FormField,
     FormFieldBaseProperties,
@@ -141,6 +141,8 @@ const props = withDefaults(defineProps<FormFieldsComponentProps>(), {
 const emit = defineEmits<{
     (e: "clearBackendError", fieldName: string): void;
 }>();
+
+const validationRules = useValidationRules();
 
 const fieldsRefs = new Map<
     string,
@@ -174,7 +176,7 @@ const getBaseProperties = (field: FormField): FormFieldBaseProperties => {
         density: "compact" as const,
         variant: "outlined" as const,
         rules: [
-            ...(isRequired ? [useRules().required()] : []),
+            ...(isRequired ? [validationRules.required()] : []),
             ...(field.rules ?? []),
         ],
         hint: field.info || undefined,
