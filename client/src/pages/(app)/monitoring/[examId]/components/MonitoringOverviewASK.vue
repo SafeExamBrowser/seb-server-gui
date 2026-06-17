@@ -1,11 +1,17 @@
 <template>
     <v-card
+        ref="launcherRef"
         link
         border
         color="background"
         rounded="lg"
         class="pa-3 d-flex align-center ga-3"
+        role="button"
+        tabindex="0"
+        aria-haspopup="dialog"
+        :aria-label="askButtonLabel"
         @click="openAskDialog()"
+        @keydown="handleActivate"
     >
         <v-avatar color="surface" size="42" rounded="lg" border>
             <v-icon size="22">mdi-shield-key-outline</v-icon>
@@ -27,7 +33,11 @@
         </v-avatar>
     </v-card>
 
-    <v-dialog v-model="askDialog" max-width="1200">
+    <v-dialog
+        v-model="askDialog"
+        max-width="1200"
+        @after-leave="restoreLauncherFocus"
+    >
         <AskDialog
             :app-signature-keys="appSignatureKeys"
             @close-ask-dialog="closeAskDialog"
@@ -38,10 +48,14 @@
 <script setup lang="ts">
 import { useMonitoringStore } from "@/stores/seb-server/monitoringStore.ts";
 import AskDialog from "./dialogs/AskDialog.vue";
-import { ref, computed } from "vue";
+import { ref, computed, type ComponentPublicInstance } from "vue";
+import { useI18n } from "vue-i18n";
 import { AppSignatureKeysWithGrantValues } from "@/models/seb-server/appSignatureKey.ts";
 
 const monitoringStore = useMonitoringStore();
+const { t } = useI18n();
+
+const launcherRef = ref<ComponentPublicInstance>();
 
 const appSignatureKeys = computed<AppSignatureKeysWithGrantValues[]>(
     () => monitoringStore.appSignatureKeys ?? [],
@@ -49,10 +63,29 @@ const appSignatureKeys = computed<AppSignatureKeysWithGrantValues[]>(
 const askDialog = ref(false);
 const askKeyCount = computed(() => appSignatureKeys.value?.length ?? 0);
 
+const askButtonLabel = computed(
+    () => `${t("monitoringOverview.ask.askKey")}: ${askKeyCount.value}`,
+);
+
 function openAskDialog() {
     askDialog.value = true;
 }
 function closeAskDialog() {
     askDialog.value = false;
+}
+// The dialog has no activator, so Vuetify can't restore focus on close.
+// Return focus to the launcher card after it finishes closing (also on Esc).
+function restoreLauncherFocus() {
+    const el = launcherRef.value?.$el;
+    if (el instanceof HTMLElement) {
+        el.focus();
+    }
+}
+function handleActivate(event: KeyboardEvent) {
+    if (event.key !== "Enter" && event.key !== " ") {
+        return;
+    }
+    event.preventDefault();
+    openAskDialog();
 }
 </script>

@@ -1,6 +1,6 @@
 <template>
     <ExamTemplateBox :title="$t('examTemplateDetail.boxes.sebSettings.title')">
-        <div>TODO</div>
+        <div>TODO @andreas: implement</div>
     </ExamTemplateBox>
 </template>
 

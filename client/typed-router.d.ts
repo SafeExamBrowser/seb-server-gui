@@ -53,6 +53,7 @@ declare module 'vue-router/auto-routes' {
       | '/(app)/exam/'
       | '/(app)/exam/[id]/'
       | '/(app)/exam/create/'
+      | '/(app)/exam/create/withURL/'
       | '/(app)/gallery_[uuid]_[examId]/'
       | '/(app)/institution/'
       | '/(app)/institution/[id]/'
@@ -164,6 +165,13 @@ declare module 'vue-router/auto-routes' {
     '/(app)/exam/create/': RouteRecordInfo<
       '/(app)/exam/create/',
       '/exam/create',
+      Record<never, never>,
+      Record<never, never>,
+      | never
+    >,
+    '/(app)/exam/create/withURL/': RouteRecordInfo<
+      '/(app)/exam/create/withURL/',
+      '/exam/create/withURL',
       Record<never, never>,
       Record<never, never>,
       | never
@@ -356,6 +364,7 @@ declare module 'vue-router/auto-routes' {
         | '/(app)/exam/'
         | '/(app)/exam/[id]/'
         | '/(app)/exam/create/'
+        | '/(app)/exam/create/withURL/'
         | '/(app)/gallery_[uuid]_[examId]/'
         | '/(app)/institution/'
         | '/(app)/institution/[id]/'
@@ -484,6 +493,14 @@ declare module 'vue-router/auto-routes' {
     'src/pages/(app)/exam/create/index.vue': {
       routes:
         | '/(app)/exam/create/'
+      views:
+        | never
+      pathParamNames:
+        | never
+    }
+    'src/pages/(app)/exam/create/withURL/index.vue': {
+      routes:
+        | '/(app)/exam/create/withURL/'
       views:
         | never
       pathParamNames:

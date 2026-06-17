@@ -13,7 +13,7 @@
 <script setup lang="ts">
 import { storeToRefs } from "pinia";
 import StepItem from "@/components/widgets/stepItem/StepItem.vue";
-import ScreenProctoringForm from "./components/screenProctoringForm/ScreenProctoringForm.vue";
+import ScreenProctoringForm from "./components/ScreenProctoringForm.vue";
 import ClientGroupsTable from "@/components/widgets/clientGroupsTable/ClientGroupsTable.vue";
 import { ClientGroupsTableDeps } from "@/components/widgets/clientGroupsTable/types.ts";
 import {

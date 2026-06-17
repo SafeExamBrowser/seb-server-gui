@@ -117,6 +117,17 @@ export type ExamTemplate = {
     EXAM_ATTRIBUTES: ExamAttribute; // additional exam attributes see ExamAttribute
 };
 
+// TODO @alain: once we have a proper zod schema for ExamTemplate, the BasicSettings type can be more strict and be inferred from the schema
+export type BasicSettings = Pick<
+    ExamTemplate,
+    | "name"
+    | "description"
+    | "examType"
+    | "clientConfigurationId"
+    | "lmsIntegration"
+    | "institutionalDefault"
+>;
+
 export type ExamTemplates = {
     number_of_pages: number;
     page_number: number;

@@ -97,6 +97,16 @@ export type FormFieldSimple = FormFieldBase &
               hint?: string;
               maxFileSizeMB?: number;
           }
+        | {
+              type: "date-time";
+              required?: boolean;
+              model: Ref<DateTime | undefined>;
+          }
+        | {
+              type: "time-range";
+              required?: boolean;
+              model: Ref<TimeRange | undefined>;
+          }
     );
 
 export type FormFieldCollection = FormFieldBase & {
@@ -121,4 +131,16 @@ export type FormFieldsComponentProps = {
     fields: FormField[];
     layout?: "vertical" | "horizontal";
     backendErrors?: BackendFieldErrorMap;
+};
+
+export type DateTime = {
+    date: Date;
+    time: string;
+};
+
+export type TimeRange = {
+    fromDate: Date;
+    fromTime: string;
+    toDate: Date;
+    toTime: string;
 };
