@@ -49,11 +49,12 @@ const props = withDefaults(
         multiSelection?: TableRowSelect;
         clearSelection: () => void;
         selectionText?: string;
-        dataTestId?: string;
+        dataTestId?: string | null;
     }>(),
     {
         multiSelection: undefined,
         selectionText: "selected",
+        dataTestId: null,
     },
 );
 </script>

@@ -1150,7 +1150,7 @@
                 "enableScrollLock": "Enable scroll lock (iOS)",
                 "enableScrollLock_tooltip": "With the scroll lock button and/or side menu item, web page scrolling, selecting text and the text magnifier can be disabled. This can facilitate using drag-and-drop and drawing question types. (iOS only)",
                 "showScrollLockButton": "Show scroll lock button (iOS)",
-                "showScrollLockButto_tooltip": "Shows the scroll lock button in the Dock if the scroll lock feature is enabled (iOS only)",
+                "showScrollLockButton_tooltip": "Shows the scroll lock button in the Dock if the scroll lock feature is enabled (iOS only)",
                 "showQuitButton": "Show quit button",
                 "showQuitButton_tooltip": "Shows the Quit SEB/Session Dock button",
                 "showScanQRCodeButton": "Show scan QR code button (iOS)",

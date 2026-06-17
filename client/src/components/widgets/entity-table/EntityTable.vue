@@ -135,7 +135,7 @@ const props = withDefaults(
             item: TableItem,
         ) => RouteLocationAsRelative | null | undefined;
         actions?: TableAction[];
-        selection?: TableRowSelect;
+        selection?: TableRowSelect | null;
         cellFormatters?: Record<string, CellFormatter>;
         itemKey?: string;
     }>(),
@@ -148,6 +148,7 @@ const props = withDefaults(
         actions: undefined,
         cellFormatters: () => ({}),
         itemKey: "id",
+        selection: null,
     },
 );
 

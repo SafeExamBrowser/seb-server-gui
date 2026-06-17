@@ -28,7 +28,7 @@ withDefaults(
     defineProps<{
         title: string;
         subtitle: string;
-        text?: string;
+        text?: string | null;
 
         /**
          * If true:
@@ -41,6 +41,7 @@ withDefaults(
         manualScrollManagement?: boolean;
     }>(),
     {
+        text: null,
         manualScrollManagement: false,
     },
 );
