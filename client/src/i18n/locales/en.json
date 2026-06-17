@@ -2053,6 +2053,9 @@
             "lowConnectionsTooltip": "This key has 3 connections or less and is not granted",
             "grantKeyButton": "Grant Key",
             "removeGrantButton": "Remove Grant",
+            "refresh": "Refresh",
+            "close": "Close",
+            "statusFilterLabel": "Filter by status",
             "statuses": {
                 "ALL": "All",
                 "ACTIVE": "Active",
