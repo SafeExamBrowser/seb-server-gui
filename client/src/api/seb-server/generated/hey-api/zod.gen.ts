@@ -297,10 +297,13 @@ export const zLmsSetupTestResult = z.object({
     missingLMSSetupAttribute: z.array(zApiMessage).optional()
 });
 
+/**
+ * An institution managed by SEB Server.
+ */
 export const zInstitution = z.object({
     id: z.int().optional(),
     name: z.string().min(3).max(255),
-    urlSuffix: z.string().regex(/(^$|.{3,45})/).optional(),
+    urlSuffix: z.string().max(45).regex(/(^$|.{3,45})/).optional(),
     logoImage: z.string().optional(),
     themeName: z.string().optional(),
     active: z.boolean().optional()
@@ -365,8 +368,8 @@ export const zExam = z.object({
     followupId: z.int().optional(),
     excludeFromDeletion: z.boolean().optional(),
     additionalAttributes: z.record(z.string(), z.string()).optional(),
-    startURL: z.string().optional(),
-    description: z.string().optional()
+    description: z.string().optional(),
+    startURL: z.string().optional()
 });
 
 export const zClientGroupTemplate = z.object({
@@ -551,7 +554,8 @@ export const zConfigurationNode = z.object({
         'ARCHIVED'
     ]).optional(),
     lastUpdateTime: z.iso.datetime().optional(),
-    lastUpdateUser: z.string().optional()
+    lastUpdateUser: z.string().optional(),
+    lastUpdateUserName: z.string().optional()
 });
 
 export const zConfigCreationInfo = z.object({
@@ -1268,11 +1272,12 @@ export const zClientNotification = z.object({
 });
 
 export const zClientMonitoringDataView = z.object({
+    pendingNotification: z.boolean().optional(),
     missingPing: z.boolean().optional(),
     grantChecked: z.boolean().optional(),
     grantDenied: z.boolean().optional(),
     sebversionDenied: z.boolean().optional(),
-    pendingNotification: z.boolean().optional(),
+    id: z.int().optional(),
     nf: z.int().min(-2147483648, { error: 'Invalid value: Expected int32 to be >= -2147483648' }).max(2147483647, { error: 'Invalid value: Expected int32 to be <= 2147483647' }).optional(),
     st: z.enum([
         'UNDEFINED',
@@ -1283,8 +1288,7 @@ export const zClientMonitoringDataView = z.object({
         'DISABLED'
     ]).optional(),
     lat: z.int().optional(),
-    iv: z.record(z.string(), z.string()).optional(),
-    id: z.int().optional()
+    iv: z.record(z.string(), z.string()).optional()
 });
 
 export const zMonitoringSebConnectionData = z.object({
@@ -2211,7 +2215,9 @@ export const zGetInstitutionsQuery = z.object({
     page_number: z.int().min(-2147483648, { error: 'Invalid value: Expected int32 to be >= -2147483648' }).max(2147483647, { error: 'Invalid value: Expected int32 to be <= 2147483647' }).optional(),
     page_size: z.int().min(-2147483648, { error: 'Invalid value: Expected int32 to be >= -2147483648' }).max(2147483647, { error: 'Invalid value: Expected int32 to be <= 2147483647' }).optional(),
     sort: z.string().optional(),
-    institutionId: z.int().optional()
+    institutionId: z.int().optional(),
+    name: z.string().optional(),
+    active: z.boolean().optional()
 });
 
 /**
@@ -4643,9 +4649,9 @@ export const zGetInstitutionDependenciesQuery = z.object({
 export const zGetInstitutionDependenciesResponse = z.array(zEntityDependency);
 
 /**
- * OK
+ * The current user's institution.
  */
-export const zGetOwnResponse = zInstitution;
+export const zGetInstitutionSelfResponse = zInstitution;
 
 export const zGetInstitutionNamesQuery = z.object({
     institutionId: z.int().optional()
