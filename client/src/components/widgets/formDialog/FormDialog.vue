@@ -3,16 +3,15 @@
         <v-btn
             class="text-none"
             :disabled="disabled"
-            :append-icon="iconActivator"
             :color="colorActivator"
             variant="text"
             density="compact"
-            :size="sizeActivator"
-            :title="labelActivator"
+            :title="title"
             :aria-label="labelActivator"
             @click="openDialog"
         >
-            <span v-if="labelActivatorVisible">
+            <v-icon :icon="iconActivator" :size="sizeActivator" />
+            <span v-if="labelActivatorVisible" class="ml-2">
                 {{ labelActivator }}
             </span>
         </v-btn>
@@ -76,6 +75,7 @@ import { errorMessageOf } from "@/services/errors/toAppError.ts";
 const props = withDefaults(
     defineProps<{
         disabled?: boolean;
+        title?: string;
         iconActivator: IconValue;
         colorActivator: string;
         sizeActivator?: string;
@@ -91,6 +91,7 @@ const props = withDefaults(
         onSubmit: (item: TTransient) => void | Promise<void>;
     }>(),
     {
+        title: "",
         disabled: false,
         sizeActivator: undefined,
         labelActivatorVisible: false,

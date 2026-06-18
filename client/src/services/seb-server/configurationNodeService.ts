@@ -42,3 +42,19 @@ export const importSEBSettings = async (
             },
         })
     ).data;
+
+export const exportSEBSettings = async (
+    configTemplateId: string,
+): Promise<Blob> =>
+    (
+        await apiService.getRequest({
+            url: `${baseUrl}/${configTemplateId}/downloadSettings`,
+            options: {
+                _authType: "seb",
+                responseType: "blob",
+                headers: {
+                    accept: "application/octet-stream",
+                },
+            },
+        })
+    ).data;

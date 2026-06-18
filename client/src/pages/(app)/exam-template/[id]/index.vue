@@ -12,8 +12,9 @@
                 />
             </template>
             <template #sebSettings>
-                <BoxSebSettings
-                    :exam-template-id="examTemplateId"
+                <BoxSEBSettings
+                    v-if="basicSettings.configurationTemplateId"
+                    :exam-template-name="basicSettings.name"
                     :config-template-id="basicSettings.configurationTemplateId"
                 />
             </template>
@@ -54,8 +55,8 @@
 import GridPage from "@/components/layout/pages/GridPage.vue";
 import LoadingFallbackComponent from "@/components/widgets/loadingFallbackComponent/LoadingFallbackComponent.vue";
 import { useExamTemplateDetailPage } from "./composables/useExamTemplateDetailPage.ts";
-import BoxBasicSettings from "./components/BoxBasicSettings/BoxBasicSettings.vue";
-import BoxSebSettings from "./components/BoxSebSettings.vue";
+import BoxBasicSettings from "@/pages/(app)/exam-template/[id]/components/BoxBasicSettings/BoxBasicSettings.vue";
+import BoxSEBSettings from "@/pages/(app)/exam-template/[id]/components/BoxSEBSettings/BoxSEBSettings.vue";
 import BoxIndicators from "./components/BoxIndicators.vue";
 import BoxSupervisors from "./components/BoxSupervisors.vue";
 import BoxScreenProctoringSettings from "./components/BoxScreenProctoringSettings/BoxScreenProctoringSettings.vue";
