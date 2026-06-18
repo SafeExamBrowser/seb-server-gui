@@ -98,7 +98,8 @@
                 "hint": "Allowed types: {types}",
                 "replace": "Replace image",
                 "remove": "Remove image",
-                "sizeError": "Image exceeds the {size} MB limit"
+                "sizeError": "Image exceeds the {size} MB limit",
+                "extensionError": "Allowed image types: {types}"
             }
         },
         "closeButton": "Close"
