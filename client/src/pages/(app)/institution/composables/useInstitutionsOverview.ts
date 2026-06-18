@@ -4,36 +4,46 @@ import type { TableItem } from "@/components/widgets/entity-table/types.ts";
 import { useInstitutionsTableHeaders } from "./useInstitutionsTableHeaders.ts";
 import { useInstitutionsTableActions } from "./useInstitutionsTableActions.ts";
 import { useInstitutionsList } from "./useInstitutionsList.ts";
-import { useDeleteInstitution } from "@/pages/(app)/institution/api/useDeleteInstitution.ts";
-import { useToggleInstitutionStatus } from "@/pages/(app)/institution/api/useToggleInstitutionStatus.ts";
+import { useDeleteInstitutionMutation } from "@/pages/(app)/institution/api/useDeleteInstitutionMutation.ts";
+import { useToggleInstitutionStatusMutation } from "@/pages/(app)/institution/api/useToggleInstitutionStatusMutation.ts";
 import { useEntityDeleteFlow } from "@/components/widgets/entity-table/composables/useEntityDeleteFlow.ts";
 import { useEntityStatusFlow } from "@/components/widgets/entity-table/composables/useEntityStatusFlow.ts";
+import { toAppErrorOrUndefined } from "@/services/errors/toAppError.ts";
 
 export const useInstitutionsOverview = () => {
     const router = useRouter();
 
     const institutionDetailRoute = (
         item: TableItem,
-    ): RouteLocationAsRelative | null =>
-        typeof item.id === "number"
+    ): RouteLocationAsRelative | undefined =>
+        item.id != null
             ? {
                   name: "/(app)/institution/[id]/",
                   params: { id: String(item.id) },
               }
-            : null;
+            : undefined;
 
     const { headers } = useInstitutionsTableHeaders();
 
     const list = useInstitutionsList();
 
     const {
-        removeInstitutionFromItem,
-        error: deleteError,
-        loading: deleteLoading,
-    } = useDeleteInstitution();
+        mutateAsync: removeInstitution,
+        error: deleteMutationError,
+        isPending: deleteLoading,
+    } = useDeleteInstitutionMutation();
+    const deleteError = computed(() =>
+        toAppErrorOrUndefined(deleteMutationError.value),
+    );
 
     const deleteFlow = useEntityDeleteFlow({
-        remove: removeInstitutionFromItem,
+        remove: async (item) => {
+            try {
+                await removeInstitution(String(item.id));
+            } catch {
+                /* empty */
+            }
+        },
         error: deleteError,
         loading: deleteLoading,
         contextLabel: "institution",
@@ -42,13 +52,22 @@ export const useInstitutionsOverview = () => {
     });
 
     const {
-        toggleInstitutionStatusFromItem,
-        error: statusError,
-        loading: statusLoading,
-    } = useToggleInstitutionStatus();
+        changeInstitutionStatus,
+        error: statusMutationError,
+        isPending: statusLoading,
+    } = useToggleInstitutionStatusMutation();
+    const statusError = computed(() =>
+        toAppErrorOrUndefined(statusMutationError.value),
+    );
 
     const statusFlow = useEntityStatusFlow({
-        toggle: toggleInstitutionStatusFromItem,
+        toggle: async (item) => {
+            try {
+                await changeInstitutionStatus(String(item.id), !!item.active);
+            } catch {
+                /* empty */
+            }
+        },
         error: statusError,
         loading: statusLoading,
         contextLabel: "institution.status",

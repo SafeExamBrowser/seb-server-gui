@@ -1,9 +1,12 @@
 import { computed } from "vue";
 import { useUrlTableState } from "@/components/widgets/entity-table/composables/useUrlTableState.ts";
-import { STATUS_FILTER_KEY } from "@/components/widgets/filters/statusFilterSection.ts";
 import { usePagedListData } from "@/components/widgets/entity-table/composables/usePagedListData.ts";
+import { STATUS_FILTER_KEY } from "@/components/widgets/filters/statusFilterSection.ts";
 import { useInstitutionsFilters } from "./useInstitutionsFilters.ts";
-import { useInstitutions } from "@/pages/(app)/institution/api/useInstitutions.ts";
+import { useInstitutionsQuery } from "@/pages/(app)/institution/api/useInstitutionsQuery.ts";
+import { toAppErrorOrUndefined } from "@/services/errors/toAppError.ts";
+import { toServerPageQuery } from "@/utils/table/tableUtils.ts";
+import type { GetInstitutionsData } from "@/api/seb-server/generated/hey-api/types.gen.ts";
 
 export const useInstitutionsList = () => {
     const filterSections = useInstitutionsFilters();
@@ -18,30 +21,43 @@ export const useInstitutionsList = () => {
         onClearSearch,
         setFilters,
         clearAll,
-    } = useUrlTableState(async () => {
-        await fetchInstitutions();
-    }, [STATUS_FILTER_KEY]);
+    } = useUrlTableState(async () => {}, [STATUS_FILTER_KEY]);
 
-    const selectedStatus = computed(() => selectedFilters.value.status);
+    const institutionsQuery = computed<GetInstitutionsData["query"]>(() => {
+        const status = selectedFilters.value.status;
+        return {
+            ...toServerPageQuery(options.value),
+            name: searchField.value || undefined,
+            active:
+                status === "Active"
+                    ? true
+                    : status === "Inactive"
+                      ? false
+                      : undefined,
+        };
+    });
 
     const {
         data,
-        loading,
-        error,
-        fetchData: fetchInstitutions,
-    } = useInstitutions(options, searchField, selectedStatus);
+        isFetching,
+        error: queryError,
+        refetch,
+    } = useInstitutionsQuery(institutionsQuery);
+    const error = computed(() => toAppErrorOrUndefined(queryError.value));
 
     const { items, pageCount, errors, reloadList } = usePagedListData({
         data,
         error,
         options,
-        fetchData: fetchInstitutions,
+        fetchData: async () => {
+            await refetch();
+        },
     });
 
     return {
         items,
         pageCount,
-        loading,
+        loading: isFetching,
         errors,
         options,
         searchInputValue,

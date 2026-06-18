@@ -117,9 +117,16 @@ const emit = defineEmits<{
 }>();
 
 const acceptAttr = computed(() => props.acceptExtensions.join(","));
-const sizeError = ref<string>();
+const validationError = ref<string>();
 const fileInputRef = ref<HTMLInputElement>();
 const objectUrl = ref<string>();
+
+const hasAcceptedExtension = (file: File): boolean => {
+    const lowerName = file.name.toLowerCase();
+    return props.acceptExtensions.some((ext) =>
+        lowerName.endsWith(ext.toLowerCase()),
+    );
+};
 
 const replaceLabel = computed(() =>
     i18n.global.t("general.formFields.image.replace"),
@@ -138,7 +145,7 @@ const backendErrors = computed<string[]>(() => {
 
 const errorMessages = computed(() => [
     ...backendErrors.value,
-    ...(sizeError.value ? [sizeError.value] : []),
+    ...(validationError.value ? [validationError.value] : []),
 ]);
 
 watch(
@@ -172,13 +179,21 @@ const previewSrc = computed(() => {
 });
 
 const applyFile = (file: File | undefined) => {
-    if (file && file.size > props.maxFileSizeMB * 1024 * 1024) {
-        sizeError.value = i18n.global.t("general.formFields.image.sizeError", {
-            size: props.maxFileSizeMB,
-        });
+    if (file && !hasAcceptedExtension(file)) {
+        validationError.value = i18n.global.t(
+            "general.formFields.image.extensionError",
+            { types: props.acceptExtensions.join(", ") },
+        );
         return;
     }
-    sizeError.value = undefined;
+    if (file && file.size > props.maxFileSizeMB * 1024 * 1024) {
+        validationError.value = i18n.global.t(
+            "general.formFields.image.sizeError",
+            { size: props.maxFileSizeMB },
+        );
+        return;
+    }
+    validationError.value = undefined;
     emit("update:modelValue", file ?? undefined);
 };
 
@@ -198,7 +213,7 @@ const onPick = (event: Event) => {
 };
 
 const remove = () => {
-    sizeError.value = undefined;
+    validationError.value = undefined;
     emit("update:modelValue", undefined);
 };
 </script>

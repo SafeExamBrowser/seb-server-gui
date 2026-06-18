@@ -19,7 +19,7 @@ export function useInstitutionBranding() {
             if (id === undefined) {
                 throw new Error("unreachable: enabled guards institutionId");
             }
-            return getInstitutionById(Number(id));
+            return getInstitutionById(String(id));
         },
         enabled: computed(() => user.value?.institutionId !== undefined),
     });
