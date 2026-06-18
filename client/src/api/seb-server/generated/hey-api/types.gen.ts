@@ -228,12 +228,33 @@ export type LmsSetupTestResult = {
     missingLMSSetupAttribute?: Array<ApiMessage>;
 };
 
+/**
+ * An institution managed by SEB Server.
+ */
 export type Institution = {
+    /**
+     * Institution identifier. Omit for creation; assigned by the server.
+     */
     id?: number;
+    /**
+     * Institution name.
+     */
     name: string;
+    /**
+     * URL path suffix that routes to this institution. Empty, or 3 to 45 characters.
+     */
     urlSuffix?: string;
+    /**
+     * Base64-encoded institution logo image. Blanked in list responses.
+     */
     logoImage?: string;
+    /**
+     * Name of the visual theme applied for this institution.
+     */
     themeName?: string;
+    /**
+     * Whether the institution is active.
+     */
     active?: boolean;
 };
 
@@ -279,8 +300,8 @@ export type Exam = {
     additionalAttributes?: {
         [key: string]: string;
     };
-    startURL?: string;
     description?: string;
+    startURL?: string;
 };
 
 export type ClientGroupTemplate = {
@@ -402,6 +423,7 @@ export type ConfigurationNode = {
     status?: 'CONSTRUCTION' | 'READY_TO_USE' | 'IN_USE' | 'ARCHIVED';
     lastUpdateTime?: string;
     lastUpdateUser?: string;
+    lastUpdateUserName?: string;
 };
 
 export type ConfigCreationInfo = {
@@ -1199,18 +1221,18 @@ export type ClientNotification = {
 };
 
 export type ClientMonitoringDataView = {
+    pendingNotification?: boolean;
     missingPing?: boolean;
     grantChecked?: boolean;
     grantDenied?: boolean;
     sebversionDenied?: boolean;
-    pendingNotification?: boolean;
+    id?: number;
     nf?: number;
     st?: 'UNDEFINED' | 'CONNECTION_REQUESTED' | 'READY' | 'ACTIVE' | 'CLOSED' | 'DISABLED';
     lat?: number;
     iv?: {
         [key: string]: string;
     };
-    id?: number;
 };
 
 export type MonitoringFullPageData = {
@@ -4059,6 +4081,14 @@ export type GetInstitutionsData = {
          * Default is the institution identifier of the institution of the current user
          */
         institutionId?: number;
+        /**
+         * Filters institutions by name.
+         */
+        name?: string;
+        /**
+         * Filters institutions by active state.
+         */
+        active?: boolean;
     };
     url: '/admin-api/v1/institution';
 };
@@ -14574,14 +14604,14 @@ export type GetInstitutionDependenciesResponses = {
 
 export type GetInstitutionDependenciesResponse = GetInstitutionDependenciesResponses[keyof GetInstitutionDependenciesResponses];
 
-export type GetOwnData = {
+export type GetInstitutionSelfData = {
     body?: never;
     path?: never;
     query?: never;
     url: '/admin-api/v1/institution/self';
 };
 
-export type GetOwnErrors = {
+export type GetInstitutionSelfErrors = {
     /**
      * Bad request, e.g. field validation or an illegal argument. The body is usually a list of APIMessage, but may be absent for some illegal-argument cases.
      */
@@ -14608,16 +14638,16 @@ export type GetOwnErrors = {
     500: Array<ApiMessage>;
 };
 
-export type GetOwnError = GetOwnErrors[keyof GetOwnErrors];
+export type GetInstitutionSelfError = GetInstitutionSelfErrors[keyof GetInstitutionSelfErrors];
 
-export type GetOwnResponses = {
+export type GetInstitutionSelfResponses = {
     /**
-     * OK
+     * The current user's institution.
      */
     200: Institution;
 };
 
-export type GetOwnResponse = GetOwnResponses[keyof GetOwnResponses];
+export type GetInstitutionSelfResponse = GetInstitutionSelfResponses[keyof GetInstitutionSelfResponses];
 
 export type GetInstitutionNamesData = {
     body?: never;
