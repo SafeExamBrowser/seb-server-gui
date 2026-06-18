@@ -617,13 +617,6 @@
     },
     "userAccount": {
         "general": {
-            "validation": {
-                "required": "This field is required",
-                "passwordTooShort": "Password must be at least 8 characters",
-                "passwordsDontMatch": "Passwords must match",
-                "invalidEmail": "Invalid email format",
-                "invalidRoleSelection": "Please select at least one Role"
-            },
             "status": {
                 "active": "Active",
                 "inactive": "Inactive"
@@ -1095,12 +1088,12 @@
         },
         "userView": {
             "view_mode": {
-                "title": "Browser View Mode",
                 "0": "Use browser window",
-                "0_tooltip": "Use window for the SEB browser which can be scaled and moved around, also to another screen of available",
                 "1": "Use full screen mode",
-                "1_tooltip": "Display the SEB browser full screen",
                 "2": "Touch optimized",
+                "title": "Browser View Mode",
+                "0_tooltip": "Use window for the SEB browser which can be scaled and moved around, also to another screen of available",
+                "1_tooltip": "Display the SEB browser full screen",
                 "2_tooltip": "Mainly to be used on Windows tablets. In Windows 10, Tablet Mode needs to be activated. Not working with the Create New Desktop kiosk mode, you have to reconfigure the SEB client settings to Disable Explorer Shell."
             },
             "main_browser": {
@@ -1305,36 +1298,36 @@
                 "tabFocusesLinks_tooltip": "Pressing the tab key moves focus to the next link and form control. Shift-tab moves focus to the previous control"
             },
             "uaDesktop": {
-                "title": "User agent for desktop mode",
                 "0": "Desktop default",
-                "0_tooltip": "Zoom whole web pages using Ctrl-Mousewheel (Win)Mozilla/5.0 (Windows NT 10.0; WOW64; rv:52.0) Gecko/20100101 Firefox/52.0",
                 "1": "Custom",
+                "title": "User agent for desktop mode",
+                "0_tooltip": "Zoom whole web pages using Ctrl-Mousewheel (Win)Mozilla/5.0 (Windows NT 10.0; WOW64; rv:52.0) Gecko/20100101 Firefox/52.0",
                 "1_tooltip": "Zoom only text on web pages using Ctrl-Mousewheel (Win)",
                 "custom_tooltip": "Custom desktop user agent string (SEB appends its version number automatically)"
             },
             "uaTouch": {
-                "title": "User agent for touch/tablet mode",
                 "0": "Touch default",
-                "0_tooltip": "Mozilla/5.0 (Windows NT 10.0; WOW64; rv:52.0; Touch) Gecko/20100101 Firefox/52.0",
                 "1": "iPad",
                 "2": "Custom",
+                "title": "User agent for touch/tablet mode",
+                "0_tooltip": "Mozilla/5.0 (Windows NT 10.0; WOW64; rv:52.0; Touch) Gecko/20100101 Firefox/52.0",
                 "2_tooltip": "Zoom only text on web pages using Ctrl-Mousewheel (Win)",
                 "custom_tooltip": "This text is displayed as the title of the confirmation alert and as tooltip on the icon"
             },
             "uaiOS": {
-                "title": "User agent for iOS",
-                "title_tooltip": "SEB always appends its version number. Default string depends on the iOS version and therefore can differ on exam clients.",
                 "0": "iOS default",
                 "1": "Mac Desktop",
                 "2": "Custom",
                 "3": "iPad",
+                "title": "User agent for iOS",
+                "title_tooltip": "SEB always appends its version number. Default string depends on the iOS version and therefore can differ on exam clients.",
                 "custom_tooltip": "This text is displayed as the title of the confirmation alert and as tooltip on the icon"
             },
             "uaMac": {
-                "title": "User agent (Mac)",
                 "0": "Default",
-                "0_tooltip": "Depends on installed Safari/WebKit version",
                 "1": "Custom",
+                "title": "User agent (Mac)",
+                "0_tooltip": "Depends on installed Safari/WebKit version",
                 "1_tooltip": "Zoom only text on web pages using Ctrl-Mousewheel (Win)",
                 "custom_tooltip": "This text is displayed as the title of the confirmation alert and as tooltip on the icon"
             },
@@ -1594,10 +1587,10 @@
                 "title": "SEB Service (Win)",
                 "note": "Recommended for BYOD scenarios.",
                 "sebServicePolicy": {
-                    "title": "SEB Service policy",
                     "0": "allow to run SEB without service",
                     "1": "display warning when service is not running",
-                    "2": "allow to use SEB only with service"
+                    "2": "allow to use SEB only with service",
+                    "title": "SEB Service policy"
                 },
                 "sebServicePolicy_tooltip": "Policy that applies when an exam client doesn't have the SEB client running",
                 "sebServiceIgnore": "Enable SEB Service Component",
@@ -1611,10 +1604,10 @@
                 "kioskMode_tooltip": "The kiosk mode setting reflects how the computer is locked down in SEB",
                 "items": {
                     "0": "Create new desktop",
-                    "0_tooltip": "This kiosk mode may prevent specific third party software to run correctly together with SEB, like some screen recording software or the Windows onscreen keyboard.",
                     "1": "Disable explorer Shell",
-                    "1_tooltip": "This kiosk mode is compatible with some screen recording/proctoring software and the Windows onscreen keyboard.",
                     "2": "None (for debugging only)",
+                    "0_tooltip": "This kiosk mode may prevent specific third party software to run correctly together with SEB, like some screen recording software or the Windows onscreen keyboard.",
+                    "1_tooltip": "This kiosk mode is compatible with some screen recording/proctoring software and the Windows onscreen keyboard.",
                     "2_tooltip": "SEB runs without kiosk mode, switching to other applications is possible. Use this for debugging purposes only."
                 }
             },
@@ -1730,12 +1723,12 @@
                 "allowiOSVersionNumberPatch": "Patch version number"
             },
             "clipboard": {
-                "title": "Clipboard Policy",
                 "0": "Allow",
-                "0_tooltip": "Allows the usage of the system clipboard without restrictions",
                 "1": "Block",
-                "1_tooltip": "Completely blocks the usage of the system clipboard by continuously cleaning the content and blocking the keyboard shortcuts for cut, copy and paste.",
                 "2": "SEB Only",
+                "title": "Clipboard Policy",
+                "0_tooltip": "Allows the usage of the system clipboard without restrictions",
+                "1_tooltip": "Completely blocks the usage of the system clipboard by continuously cleaning the content and blocking the keyboard shortcuts for cut, copy and paste.",
                 "2_tooltip": "Continuously cleaning the content of the system clipboard and enables an isolated clipboard only working within the browser application of SEB."
             },
             "sebVersion": {
@@ -2238,6 +2231,13 @@
             "pageText": "{0}-{1} of {2}"
         }
     },
+    "validation": {
+        "required": "This field is required",
+        "minLength": "You must enter a minimum of {min} characters",
+        "maxLength": "You must enter a maximum of {max} characters",
+        "email": "Please enter a valid email",
+        "passwordsMatch": "Passwords must match"
+    },
     "errors": {
         "backend": {
             "title": {
@@ -2286,46 +2286,14 @@
                 "404": "Not found",
                 "409": "Conflict",
                 "422": "Validation error",
-                "500": "Server error",
                 "429": "Too many requests",
+                "500": "Server error",
                 "502": "Server unavailable",
                 "503": "Service unavailable",
                 "504": "Gateway timeout"
             },
-            "code": {
-                "0": "Generic error",
-                "1": "Bad request",
-                "1000": "Unauthorized",
-                "1001": "Forbidden",
-                "1002": "Resource not found",
-                "1010": "Illegal API argument",
-                "1100": "Unexpected server error",
-                "1101": "Integrity validation failed",
-                "1200": "Field validation error",
-                "1300": "Password mismatch",
-                "1301": "Missing password",
-                "1302": "LMS warnings",
-                "1400": "Exam consistency: no supporter",
-                "1401": "Exam consistency: no SEB configuration",
-                "1402": "Exam consistency: LMS restriction missing",
-                "1403": "Exam consistency: no indicator",
-                "1404": "Exam consistency: no LMS connection",
-                "1405": "Exam consistency: invalid exam–course reference",
-                "1500": "External service binding error",
-                "1600": "Exam import: partial success (setup issues)",
-                "1601": "Exam import: failed to create indicator(s)",
-                "1602": "Exam import: failed to create attributes",
-                "1603": "Exam import: failed to apply SEB restriction",
-                "1604": "Exam import: partial success",
-                "1605": "Exam import: partial success",
-                "1610": "Exam import: failed to create/link configuration",
-                "1611": "Exam import: failed to link auto configuration",
-                "1700": "Client connection integrity violation",
-                "1800": "Additional confirmation required"
-            },
             "objects": {
                 "user": {
-                    "_label": "User account",
                     "fields": {
                         "institutionId": "Institution",
                         "username": "Username",
@@ -2341,15 +2309,9 @@
                         "newPassword": "New password",
                         "confirmNewPassword": "Confirm password",
                         "confirmPassword": "Confirm password"
-                    },
-                    "rules": {
-                        "email": {
-                            "notunique": "A user account with this email address already exists."
-                        }
                     }
                 },
                 "institution": {
-                    "_label": "Institution",
                     "fields": {
                         "name": "Name",
                         "urlSuffix": "URL suffix",
@@ -2357,7 +2319,6 @@
                     }
                 },
                 "lmsSetup": {
-                    "_label": "LMS setup",
                     "fields": {
                         "name": "Name",
                         "lmsType": "LMS type",
@@ -2368,7 +2329,6 @@
                     }
                 },
                 "clientConfig": {
-                    "_label": "Connection configuration",
                     "fields": {
                         "name": "Name",
                         "sebConfigPurpose": "Configuration purpose",
@@ -2382,14 +2342,12 @@
                     }
                 },
                 "certificate": {
-                    "_label": "Certificate",
                     "fields": {
                         "alias": "Alias",
                         "certificate": "Certificate file"
                     }
                 },
                 "clientconfig": {
-                    "_label": "Connection configuration",
                     "fields": {
                         "name": "Name",
                         "sebConfigPurpose": "Configuration purpose",
@@ -2412,35 +2370,70 @@
                 "confirmNewPassword": "Confirm password",
                 "confirmPassword": "Confirm password"
             },
-            "rules": {
-                "username": {
-                    "notunique": "This username is already in use. Please choose another one."
-                },
-                "email": "Please enter a valid email address.",
-                "password": {
-                    "wrong": "Your password is wrong.",
-                    "mismatch": "The repeated password does not match the new password."
-                },
-                "notNull": "{field} is required.",
-                "mandatory": "{field} is required.",
-                "notunique": "{field} is already in use. Please choose another one.",
-                "mismatch": "The values do not match.",
-                "wrong": "{field} is wrong.",
-                "name": {
-                    "notunique": "This name is already in use. Please choose another one."
-                },
-                "exists": "This name already exists. Please choose another one.",
-                "invalidURL": "The input does not match the URL pattern.",
-                "url": {
-                    "invalid": "Invalid URL. The given URL cannot be reached.",
-                    "noaccess": "Access was denied by the service. Please check the given access credentials.",
-                    "noservice": "The expected service is not available within the given URL and API access."
-                },
-                "size": "{field} must be between {0} and {1} characters."
-            },
             "fieldFallback": "{field}: {rule}",
-            "fallbackLine": "{systemMessage} ({details})",
-            "rateLimit": "Too many requests. Please slow down and try again."
+            "rateLimit": "Too many requests. Please slow down and try again.",
+            "codes": {
+                "GENERIC": "Generic error",
+                "BAD_REQUEST": "Bad Request",
+                "UNAUTHORIZED": "Unauthorized",
+                "FORBIDDEN": "Forbidden",
+                "RESOURCE_NOT_FOUND": "Resource not found",
+                "ILLEGAL_API_ARGUMENT": "Illegal API request argument",
+                "UNEXPECTED": "Unexpected internal server-side error",
+                "INTEGRITY_VALIDATION": "The action would lead to an integrity violation",
+                "FIELD_VALIDATION": "Field validation error",
+                "PASSWORD_MISMATCH": "The new password does not match the confirmed password",
+                "MISSING_PASSWORD": "Missing password",
+                "LMS_WARNINGS": "Warnings from the LMS",
+                "EXAM_CONSISTENCY_VALIDATION_SUPPORTER": "No Exam Supporter defined for the Exam",
+                "EXAM_CONSISTENCY_VALIDATION_CONFIG": "No SEB Exam Configuration defined for the Exam",
+                "EXAM_CONSISTENCY_VALIDATION_SEB_RESTRICTION": "SEB restriction API available but Exam not restricted on LMS side yet",
+                "EXAM_CONSISTENCY_VALIDATION_INDICATOR": "No Indicator defined for the Exam",
+                "EXAM_CONSISTENCY_VALIDATION_LMS_CONNECTION": "No Connection To LMS",
+                "EXAM_CONSISTENCY_VALIDATION_INVALID_ID_REFERENCE": "There seems to be an invalid exam - course identifier reference. The course cannot be found",
+                "EXTERNAL_SERVICE_BINDING_ERROR": "External binding error",
+                "EXAM_IMPORT_ERROR_AUTO_SETUP": "Exam successfully imported but some additional initialization failed",
+                "EXAM_IMPORT_ERROR_AUTO_INDICATOR": "Failed to automatically create pre-defined indicator(s) for the exam",
+                "EXAM_IMPORT_ERROR_AUTO_ATTRIBUTES": "Failed to automatically create pre-defined attributes for the exam",
+                "EXAM_IMPORT_ERROR_AUTO_RESTRICTION": "Failed to automatically apply SEB restriction for the exam to the involved LMS",
+                "EXAM_IMPORT_ERROR_AUTO_CONFIG": "Failed to automatically create and link exam configuration from the exam template to the exam",
+                "EXAM_IMPORT_ERROR_AUTO_CONFIG_LINKING": "Failed to automatically link auto-generated exam configuration to the exam",
+                "CLIENT_CONNECTION_INTEGRITY_VIOLATION": "SEB client connection is not in valid state to apply requested operation",
+                "NEED_CONFIRMATION": "Some additional user confirmation needed"
+            },
+            "validation": {
+                "changeDeniedActiveClients": "Cannot be changed while there are active SEB client connections",
+                "collecting-strategy-not-changeable": "Not changeable once created",
+                "email": "Invalid mail address",
+                "email-notunique": "A user account with this e-mail address already exists.",
+                "endBeforeStart": "Invalid Date Range, End before Start",
+                "exists": "This name already exists. Please choose another one",
+                "group-not-deletable": "Existing groups with data are not deletable",
+                "hasInvalidTrailing": "The value must not start or end with a space.",
+                "invalidAlphaRange": "Invalid Alphabetical Range",
+                "invalidDateRange": "Invalid Date Range",
+                "invalidIP": "Invalid IP v4. Please enter a valid IP-address (v4)",
+                "invalidIPRange": "Invalid IP-address Range",
+                "invalidURL": "The input does not match the URL pattern",
+                "mandatory": "This field is mandatory",
+                "name": "The name is mandatory and must have a size between {3} and {4} characters",
+                "name-notunique": "This name is already in use. Please choose another one.",
+                "notNull": "This field is mandatory",
+                "password-mismatch": "The retyped password doesn't match the new password",
+                "password-wrong": "Your password is wrong",
+                "serverNotAvailable": "No service seems to be available within the given URL",
+                "size": "The size must be between {3} and {4}",
+                "size-max": "The size must be less than {3} characters",
+                "thresholdDuplicate": "There are duplicate threshold values.",
+                "thresholdEmpty": "There are missing values or colors for the threshold declaration",
+                "typeInvalid": "This type is not implemented yet and cannot be used.",
+                "url-invalid": "Invalid URL. The given URL cannot be reached.",
+                "url-noAccess": "Access was denied",
+                "url-noaccess": "No access has been granted by the service. Please check the given access credentials.",
+                "url-noservice": "The expected service is not available within the given URL and API access.",
+                "urlSuffix": "The URL suffix must have a size between {3} and {4} characters",
+                "username-notunique": "This Username is already in use. Please choose another one."
+            }
         }
     }
 }

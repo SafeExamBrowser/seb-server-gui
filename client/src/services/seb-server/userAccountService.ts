@@ -1,140 +1,124 @@
-import * as apiService from "@/services/apiService";
+import { heySebServerClient as client } from "@/api/seb-server/http/heySebServerClient.ts";
 import {
-    CreateUserPar,
-    EditUserAccountParameters,
-    OptionalParGetUserAccounts,
-    RegisterUserAccountParams,
-    SingleUserAccountResponse,
-    UserAccount,
-    UserAccountName,
-    UserAccountResponse,
-} from "@/models/userAccount";
+    activateUserAccount as activateUserAccountSdk,
+    changeUserAccountPassword as changeUserAccountPasswordSdk,
+    createUserAccount as createUserAccountSdk,
+    deactivateUserAccount as deactivateUserAccountSdk,
+    deleteUserAccount as deleteUserAccountSdk,
+    editUserAccount as editUserAccountSdk,
+    getCurrentUserAccount as getCurrentUserAccountSdk,
+    getUserAccountById as getUserAccountByIdSdk,
+    getUserAccountSupervisors as getUserAccountSupervisorsSdk,
+    getUserAccounts as getUserAccountsSdk,
+    registerUserAccount as registerUserAccountSdk,
+} from "@/api/seb-server/generated/hey-api/sdk.gen.ts";
+import {
+    userAccountCreateSchema,
+    userAccountNameSchema,
+    userAccountPageSchema,
+    userAccountPasswordChangeSchema,
+    userAccountRegisterSchema,
+    userAccountSchema,
+    type UserAccount,
+    type UserAccountCreateRequest,
+    type UserAccountName,
+    type UserAccountPage,
+    type UserAccountPasswordChange,
+    type UserAccountRegisterRequest,
+} from "@/models/userAccount.ts";
+import { decodeWire, encodeWire } from "@/services/errors/wireCodec.ts";
+import { zEntityProcessingReport } from "@/api/seb-server/generated/hey-api/zod.gen.ts";
+import type {
+    EntityProcessingReport,
+    GetUserAccountSupervisorsData,
+    GetUserAccountsData,
+    UserMod,
+} from "@/api/seb-server/generated/hey-api/types.gen.ts";
 
-import { OptionalParInstitutionId } from "@/models/seb-server/optionalParamters";
+// TODO(backend): userRoles should not be mandatory on the register schema. The /register
+// endpoint already assigns EXAM_SUPPORTER server-side; it is sent here only because the shared
+// UserMod marks userRoles required. Once the backend exposes a register schema without a
+// mandatory role, drop this and let userAccountRegisterSchema omit userRoles entirely.
+const SELF_REGISTER_ROLES: UserMod["userRoles"] = ["EXAM_SUPPORTER"];
 
-const baseUrl = "/useraccount" as const;
-
-export const registerUserAccount = async (
-    payload: RegisterUserAccountParams,
+export const registerUserAccount = (
+    body: UserAccountRegisterRequest,
 ): Promise<UserAccount> =>
-    (
-        await apiService.postRequest({
-            url: `/register`,
-            data: payload,
-            options: {
-                headers: {
-                    "Content-Type": "application/x-www-form-urlencoded",
-                },
-            },
-        })
-    ).data;
+    registerUserAccountSdk({
+        client,
+        body: {
+            ...encodeWire(userAccountRegisterSchema, body),
+            userRoles: SELF_REGISTER_ROLES,
+        },
+    }).then(({ data }) => decodeWire(userAccountSchema, data));
 
-export const changePassword = async (
-    uuid: string,
-    password: string,
-    newPassword: string,
-    confirmNewPassword: string,
-): Promise<UserAccount[]> =>
-    (
-        await apiService.putRequest({
-            url: `${baseUrl}/password`,
-            data: {
-                uuid,
-                password,
-                newPassword,
-                confirmNewPassword,
-            },
-            options: { _authType: "seb" },
-        })
-    ).data;
+export const getUserAccounts = (
+    query?: GetUserAccountsData["query"],
+): Promise<UserAccountPage> =>
+    getUserAccountsSdk({ client, query }).then(({ data }) =>
+        decodeWire(userAccountPageSchema, data),
+    );
 
-export const deleteUserAccount = async (accountId: string): Promise<unknown> =>
-    (
-        await apiService.deleteRequest({
-            url: `${baseUrl}/${accountId}`,
-            options: { _authType: "seb" },
-        })
-    ).data;
+export const getUserAccountById = (modelId: string): Promise<UserAccount> =>
+    getUserAccountByIdSdk({
+        client,
+        path: { modelId },
+    }).then(({ data }) => decodeWire(userAccountSchema, data));
 
-export const getPersonalUserAccount = async (): Promise<UserAccount> =>
-    (
-        await apiService.getRequest({
-            url: `${baseUrl}/me`,
-            options: { _authType: "seb" },
-        })
-    ).data;
+export const getCurrentUserAccount = (): Promise<UserAccount> =>
+    getCurrentUserAccountSdk({ client }).then(({ data }) =>
+        decodeWire(userAccountSchema, data),
+    );
 
-export const getUserAccountById = async (
-    accountId: string,
-): Promise<UserAccount> =>
-    (
-        await apiService.getRequest({
-            url: `${baseUrl}/${accountId}`,
-            options: { _authType: "seb" },
-        })
-    ).data;
-
-export const getUserAccounts = async (
-    optionalParameters?: OptionalParGetUserAccounts,
-): Promise<UserAccountResponse> =>
-    (
-        await apiService.getRequest({
-            url: baseUrl,
-            options: { _authType: "seb", params: optionalParameters },
-        })
-    ).data;
-
-export const createUserAccount = async (
-    userAccount: CreateUserPar,
-): Promise<SingleUserAccountResponse> =>
-    (
-        await apiService.postRequest({
-            url: baseUrl,
-            data: userAccount,
-            options: { _authType: "seb" },
-        })
-    ).data;
-
-export const editUserAccount = async (
-    userAccount: EditUserAccountParameters,
-): Promise<UserAccountResponse> =>
-    (
-        await apiService.putRequest({
-            url: baseUrl,
-            data: userAccount,
-            options: { _authType: "seb" },
-        })
-    ).data;
-
-export const getSupervisorNames = async (
-    optionalParameters?: OptionalParInstitutionId,
+export const getUserAccountSupervisors = (
+    query?: GetUserAccountSupervisorsData["query"],
 ): Promise<UserAccountName[]> =>
-    (
-        await apiService.getRequest({
-            url: `${baseUrl}/supervisors`,
-            options: {
-                _authType: "seb",
-                params: optionalParameters,
-            },
-        })
-    ).data;
+    getUserAccountSupervisorsSdk({
+        client,
+        query,
+    }).then(({ data }) =>
+        (data ?? []).map((name) => decodeWire(userAccountNameSchema, name)),
+    );
 
-export const activateUserAccount = async (
-    accountId: string,
+export const createUserAccount = (
+    body: UserAccountCreateRequest,
 ): Promise<UserAccount> =>
-    (
-        await apiService.postRequest({
-            url: `${baseUrl}/${accountId}/active`,
-            options: { _authType: "seb" },
-        })
-    ).data;
+    createUserAccountSdk({
+        client,
+        body: encodeWire(userAccountCreateSchema, body),
+    }).then(({ data }) => decodeWire(userAccountSchema, data));
 
-export const deactivateUserAccount = async (
-    accountId: string,
+export const editUserAccount = (body: UserAccount): Promise<UserAccount> =>
+    editUserAccountSdk({
+        client,
+        body: encodeWire(userAccountSchema, body),
+    }).then(({ data }) => decodeWire(userAccountSchema, data));
+
+export const changeUserAccountPassword = (
+    body: UserAccountPasswordChange,
 ): Promise<UserAccount> =>
-    (
-        await apiService.postRequest({
-            url: `${baseUrl}/${accountId}/inactive`,
-            options: { _authType: "seb" },
-        })
-    ).data;
+    changeUserAccountPasswordSdk({
+        client,
+        body: encodeWire(userAccountPasswordChangeSchema, body),
+    }).then(({ data }) => decodeWire(userAccountSchema, data));
+
+export const deleteUserAccount = (
+    modelId: string,
+): Promise<EntityProcessingReport> =>
+    deleteUserAccountSdk({ client, path: { modelId } }).then(({ data }) =>
+        decodeWire(zEntityProcessingReport, data),
+    );
+
+export const activateUserAccount = (
+    modelId: string,
+): Promise<EntityProcessingReport> =>
+    activateUserAccountSdk({ client, path: { modelId } }).then(({ data }) =>
+        decodeWire(zEntityProcessingReport, data),
+    );
+
+export const deactivateUserAccount = (
+    modelId: string,
+): Promise<EntityProcessingReport> =>
+    deactivateUserAccountSdk({ client, path: { modelId } }).then(({ data }) =>
+        decodeWire(zEntityProcessingReport, data),
+    );

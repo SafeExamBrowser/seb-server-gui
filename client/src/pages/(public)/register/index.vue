@@ -5,9 +5,10 @@
                 <v-col cols="12" lg="8" md="6" sm="6">
                     <v-card class="pa-8">
                         <div class="d-flex ml-15 mr-15 justify-center">
-                            <img
+                            <v-img
                                 alt="SEB Logo"
-                                class="logo-img"
+                                class="mb-4"
+                                :max-width="150"
                                 src="/img/seb-logo-no-border.png"
                             />
                         </div>
@@ -19,25 +20,8 @@
                             </div>
                         </div>
 
-                        <div class="mt-10">
-                            <div
-                                v-if="registerError"
-                                data-testid="register-error-alert"
-                            >
-                                <AlertMsg
-                                    :alert-props="{
-                                        title: '',
-                                        color: 'error',
-                                        type: 'alert',
-                                        textKey: 'register-error',
-                                    }"
-                                >
-                                </AlertMsg>
-                            </div>
-                            <div
-                                v-if="registerSuccess"
-                                data-testid="register-success-alert"
-                            >
+                        <div v-if="registerSuccess" class="mt-10">
+                            <div data-testid="register-success-alert">
                                 <AlertMsg
                                     :alert-props="{
                                         title: '',
@@ -45,234 +29,50 @@
                                         type: 'alert',
                                         textKey: 'register-success',
                                     }"
-                                >
-                                </AlertMsg>
+                                />
                             </div>
                         </div>
 
                         <v-card-title class="mt-10">
                             {{ translate("titles.register") }}
                         </v-card-title>
-                        <v-card-subtitle
-                            >{{
+                        <v-card-subtitle>
+                            {{
                                 translate(
                                     "userAccount.registerPage.info.accountRegistrationInfo",
                                 )
                             }}
                         </v-card-subtitle>
 
-                        <v-card-text>
-                            <v-form ref="formRef" @keyup.enter="register()">
-                                <v-row density="compact">
-                                    <v-col cols="12">
-                                        <v-select
-                                            v-model="selectedInstitution"
-                                            data-testid="register-institution-select"
-                                            density="compact"
-                                            :disabled="
-                                                institutionSelectDisabled
-                                            "
-                                            item-title="name"
-                                            item-value="modelId"
-                                            :items="institutions"
-                                            :label="
-                                                translate(
-                                                    'userAccount.registerPage.labels.institutionLabel',
-                                                )
-                                            "
-                                            prepend-inner-icon="mdi-domain"
-                                            required
-                                            :rules="[requiredRule]"
-                                            variant="outlined"
-                                        />
-                                    </v-col>
+                        <v-card-text class="pt-12">
+                            <LoadingFallbackComponent
+                                :loading="loading"
+                                :errors="errors"
+                            >
+                                <template v-if="!registerSuccess">
+                                    <FormBuilder
+                                        ref="formRef"
+                                        :fields="formFields"
+                                        data-testid="register-form"
+                                        @submit="handleRegister"
+                                    />
 
-                                    <v-col cols="12">
-                                        <v-text-field
-                                            v-model="username"
-                                            data-testid="register-username-input"
-                                            density="compact"
-                                            :label="
-                                                translate(
-                                                    'userAccount.registerPage.labels.usernameLabel',
-                                                )
-                                            "
-                                            prepend-inner-icon="mdi-account-outline"
-                                            required
-                                            :rules="[requiredRule]"
-                                            variant="outlined"
-                                        />
-                                    </v-col>
-
-                                    <v-col cols="12">
-                                        <v-text-field
-                                            v-model="name"
-                                            data-testid="register-name-input"
-                                            density="compact"
-                                            :label="
-                                                translate(
-                                                    'userAccount.registerPage.labels.nameLabel',
-                                                )
-                                            "
-                                            prepend-inner-icon="mdi-account-outline"
-                                            required
-                                            :rules="[requiredRule]"
-                                            variant="outlined"
-                                        />
-                                    </v-col>
-
-                                    <v-col cols="12">
-                                        <v-text-field
-                                            v-model="surname"
-                                            data-testid="register-surname-input"
-                                            density="compact"
-                                            :label="
-                                                translate(
-                                                    'userAccount.registerPage.labels.surnameLabel',
-                                                )
-                                            "
-                                            prepend-inner-icon="mdi-account-outline"
-                                            required
-                                            :rules="[requiredRule]"
-                                            variant="outlined"
-                                        />
-                                    </v-col>
-
-                                    <v-col cols="12">
-                                        <v-text-field
-                                            v-model="email"
-                                            data-testid="register-email-input"
-                                            density="compact"
-                                            :label="
-                                                translate(
-                                                    'userAccount.registerPage.labels.emailLabel',
-                                                )
-                                            "
-                                            prepend-inner-icon="mdi-email-outline"
-                                            :rules="[emailRule]"
-                                            validate-on="blur"
-                                            variant="outlined"
-                                        />
-                                    </v-col>
-
-                                    <v-col cols="12">
-                                        <v-select
-                                            v-model="timezone"
-                                            data-testid="register-timezone-select"
-                                            density="compact"
-                                            :items="timezoneOptions"
-                                            :label="
-                                                translate(
-                                                    'userAccount.registerPage.labels.timeZoneLabel',
-                                                )
-                                            "
-                                            prepend-inner-icon="mdi-map-clock-outline"
-                                            required
-                                            :return-object="false"
-                                            :rules="[requiredRule]"
-                                            variant="outlined"
-                                        />
-                                    </v-col>
-
-                                    <v-col cols="12">
-                                        <v-text-field
-                                            v-model="password"
-                                            data-testid="register-password-input"
-                                            density="compact"
-                                            :label="
-                                                translate(
-                                                    'userAccount.registerPage.labels.passwordLabel',
-                                                )
-                                            "
-                                            prepend-inner-icon="mdi-lock-outline"
-                                            required
-                                            :rules="[
-                                                requiredRule,
-                                                passwordRule,
-                                            ]"
-                                            :type="
-                                                passwordVisible
-                                                    ? 'text'
-                                                    : 'password'
-                                            "
-                                            validate-on="blur"
-                                            variant="outlined"
-                                        >
-                                            <template #append-inner>
-                                                <v-btn
-                                                    data-testid="register-password-toggle"
-                                                    density="compact"
-                                                    :icon="
-                                                        passwordVisible
-                                                            ? 'mdi-eye-off'
-                                                            : 'mdi-eye'
-                                                    "
-                                                    variant="text"
-                                                    @click="
-                                                        passwordVisible =
-                                                            !passwordVisible
-                                                    "
-                                                />
-                                            </template>
-                                        </v-text-field>
-                                    </v-col>
-
-                                    <v-col cols="12">
-                                        <v-text-field
-                                            v-model="confirmPassword"
-                                            class="mb-2"
-                                            data-testid="register-confirmPassword-input"
-                                            density="compact"
-                                            :label="
-                                                translate(
-                                                    'userAccount.registerPage.labels.confirmPasswordLabel',
-                                                )
-                                            "
-                                            prepend-inner-icon="mdi-lock-outline"
-                                            required
-                                            :rules="[
-                                                requiredRule,
-                                                confirmPasswordRule,
-                                            ]"
-                                            :type="
-                                                confirmPasswordVisible
-                                                    ? 'text'
-                                                    : 'password'
-                                            "
-                                            validate-on="blur"
-                                            variant="outlined"
-                                        >
-                                            <template #append-inner>
-                                                <v-btn
-                                                    data-testid="register-confirmPassword-toggle"
-                                                    density="compact"
-                                                    :icon="
-                                                        confirmPasswordVisible
-                                                            ? 'mdi-eye-off'
-                                                            : 'mdi-eye'
-                                                    "
-                                                    variant="text"
-                                                    @click="
-                                                        confirmPasswordVisible =
-                                                            !confirmPasswordVisible
-                                                    "
-                                                />
-                                            </template>
-                                        </v-text-field>
-                                    </v-col>
-
-                                    <v-col cols="12">
-                                        <v-btn
-                                            block
-                                            color="primary"
-                                            data-testid="register-submit-btn"
-                                            rounded="sm"
-                                            @click="register"
-                                        >
-                                            Register
-                                        </v-btn>
-                                    </v-col>
-                                </v-row>
+                                    <v-btn
+                                        block
+                                        class="mt-4"
+                                        color="primary"
+                                        data-testid="register-submit-btn"
+                                        :loading="registerLoading"
+                                        rounded="sm"
+                                        @click="handleRegister"
+                                    >
+                                        {{
+                                            translate(
+                                                "userAccount.registerPage.buttons.register",
+                                            )
+                                        }}
+                                    </v-btn>
+                                </template>
 
                                 <div class="text-center mt-7">
                                     <span>{{
@@ -280,31 +80,18 @@
                                             "userAccount.registerPage.info.alreadyHaveAccount",
                                         )
                                     }}</span>
-                                    <span
-                                        class="text-decoration-underline"
-                                        role="button"
-                                        tabindex="0"
+                                    <RouterLink
                                         data-testid="register-login-link"
-                                        @keydown="
-                                            handleTabKeyEvent(
-                                                $event,
-                                                'navigate',
-                                            )
-                                        "
+                                        :to="{ name: '/(public)/login/' }"
                                     >
-                                        <RouterLink
-                                            :to="{
-                                                name: '/(public)/login/',
-                                            }"
-                                            >{{
-                                                translate(
-                                                    "userAccount.registerPage.buttons.login",
-                                                )
-                                            }}</RouterLink
-                                        >
-                                    </span>
+                                        {{
+                                            translate(
+                                                "userAccount.registerPage.buttons.login",
+                                            )
+                                        }}
+                                    </RouterLink>
                                 </div>
-                            </v-form>
+                            </LoadingFallbackComponent>
                         </v-card-text>
                     </v-card>
                 </v-col>
@@ -314,16 +101,18 @@
 </template>
 
 <script setup lang="ts">
-import { ref } from "vue";
-import { onMounted } from "vue";
-import moment from "moment-timezone";
-import { translate } from "@/utils/generalUtils";
-import { useI18n } from "vue-i18n";
-import { Institution } from "@/models/seb-server/institution";
-import { getInstitutions } from "@/services/seb-server/institutionService.ts";
-import { registerUserAccount } from "@/services/seb-server/userAccountService.ts";
+import { computed, ref } from "vue";
 import { RouterLink, useRouter } from "vue-router";
+import { translate } from "@/utils/generalUtils";
+import FormBuilder from "@/components/widgets/formBuilder/FormBuilder.vue";
+import LoadingFallbackComponent from "@/components/widgets/loadingFallbackComponent/LoadingFallbackComponent.vue";
 import AlertMsg from "@/components/widgets/AlertMsg.vue";
+import { useRegisterFormFields } from "./composables/useRegisterFormFields.ts";
+import { useRegisterUserAccountMutation } from "@/pages/(app)/user-account/api/useRegisterUserAccountMutation.ts";
+import { submitWithFormErrors } from "@/services/errors/submitWithFormErrors.ts";
+import { applyBackendFieldErrors } from "@/services/errors/formErrorMapping.ts";
+import { toAppErrorOrUndefined } from "@/services/errors/toAppError.ts";
+import type { BackendFieldAliasMap } from "@/services/errors/types.ts";
 
 definePage({
     meta: {
@@ -331,122 +120,98 @@ definePage({
     },
 });
 
-// form fields
-const selectedInstitution = ref<string>("");
-const name = ref<string>("");
-const surname = ref<string>("");
-const username = ref<string>("");
-const email = ref<string>();
-const timezone = ref<string>("");
-const password = ref<string>("");
-const confirmPassword = ref<string>("");
-
-// error handling
-const registerError = ref(false);
-const registerSuccess = ref(false);
-const i18n = useI18n();
-
-// password icon logic
-const passwordVisible = ref<boolean>(false);
-const confirmPasswordVisible = ref<boolean>(false);
-
-// institution setters
-const institutions = ref<Institution[]>([]);
-const institutionSelectDisabled = ref<boolean>(false);
-
-// load timezones
-const timezoneOptions = moment.tz.names();
+const REGISTER_FIELD_ALIASES = {
+    timeZone: "timezone",
+    newPassword: "password",
+    confirmNewPassword: "confirmPassword",
+} satisfies BackendFieldAliasMap;
 
 const router = useRouter();
+const formRef = ref<InstanceType<typeof FormBuilder>>();
 
-// fetch Institutions
-onMounted(async () => {
-    const result: Institution[] | null = await getInstitutions();
-    if (result && result.length > 0) {
-        institutions.value = result;
+const {
+    formFields,
+    loading,
+    errors,
+    institutionId,
+    username,
+    name,
+    surname,
+    email,
+    timezone,
+    password,
+    confirmPassword,
+} = useRegisterFormFields();
 
-        if (result.length === 1) {
-            selectedInstitution.value = result[0].modelId;
-            institutionSelectDisabled.value = true;
-        }
+const {
+    mutateAsync: register,
+    data: registered,
+    isPending: registerLoading,
+    error: registerMutationError,
+} = useRegisterUserAccountMutation();
+const registerError = computed(() =>
+    toAppErrorOrUndefined(registerMutationError.value),
+);
+const registerSuccess = computed(() => !!registered.value);
+
+const requireValidatedField = <T,>(value: T | undefined): T => {
+    if (value === undefined || value === "") {
+        throw new Error("validated register field is missing");
     }
-});
+    return value;
+};
 
-// validation rules
-const requiredRule = (v: string) =>
-    !!v || translate("userAccount.general.validation.required", i18n);
-const passwordRule = (v: string) =>
-    (v && v.length >= 8) ||
-    translate("userAccount.general.validation.passwordTooShort", i18n);
-const formRef = ref();
-const confirmPasswordRule = (v: string) =>
-    v === password.value ||
-    translate("userAccount.general.validation.passwordsDontMatch", i18n);
-const emailRule = (v: string) =>
-    !v ||
-    /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(v) ||
-    translate("userAccount.general.validation.invalidEmail", i18n);
+const applyBackendErrors = (error: unknown) =>
+    applyBackendFieldErrors(error, {
+        aliases: REGISTER_FIELD_ALIASES,
+        forms: [
+            {
+                form: formRef.value,
+                fields: formFields.value.map((field) => field.name),
+            },
+        ],
+    });
 
-// register
-async function register() {
-    registerError.value = false;
-    registerSuccess.value = false;
-
-    const { valid } = await formRef.value.validate();
-    if (!valid) {
+const handleRegister = async () => {
+    if (registerLoading.value || registerSuccess.value) {
         return;
     }
 
-    try {
-        const language = navigator.language?.split("-")[0] || "gr";
-
-        const result = await registerUserAccount({
-            institutionId: selectedInstitution.value,
-            name: name.value,
-            surname: surname.value,
-            username: username.value,
-            newPassword: password.value,
-            confirmNewPassword: confirmPassword.value,
-            timezone: timezone.value,
-            language,
-            email: email.value,
-        });
-
-        if (result) {
-            registerSuccess.value = true;
-
-            setTimeout(() => {
-                router.push({ name: "/(public)/login/" });
-            }, 2500);
-        } else {
-            registerError.value = true;
-        }
-    } catch {
-        registerError.value = true;
+    const result = await formRef.value?.validate();
+    if (!result?.valid) {
+        return;
     }
-}
-function handleTabKeyEvent(event: KeyboardEvent, action: string) {
-    if (event.key === "Enter" || event.key === " ") {
-        if (action === "navigate") {
-            router.push({ name: "/(public)/login/" });
-        }
+
+    const language = navigator.language?.split("-")[0] || "en";
+
+    const registeredAccount = await submitWithFormErrors({
+        run: () =>
+            register({
+                institutionId: Number(
+                    requireValidatedField(institutionId.value),
+                ),
+                username: requireValidatedField(username.value),
+                name: requireValidatedField(name.value),
+                surname: requireValidatedField(surname.value),
+                email: email.value || undefined,
+                timezone: requireValidatedField(timezone.value),
+                language,
+                newPassword: requireValidatedField(password.value),
+                confirmNewPassword: requireValidatedField(
+                    confirmPassword.value,
+                ),
+            }),
+        applyErrors: applyBackendErrors,
+        error: registerError,
+        contextLabel: "useraccount",
+    });
+
+    if (!registeredAccount) {
+        return;
     }
-}
+
+    setTimeout(() => {
+        router.push({ name: "/(public)/login/" });
+    }, 2500);
+};
 </script>
-
-<style scoped>
-.logo-img {
-    width: 100%;
-    max-width: 150px;
-    height: auto;
-    margin-bottom: 1rem;
-}
-
-.v-card-text {
-    padding-top: 3rem;
-}
-
-.v-messages {
-    min-height: 20px; /* Reserve space for validation messages */
-}
-</style>

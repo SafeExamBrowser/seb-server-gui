@@ -1,12 +1,15 @@
 import { useFetch } from "@/composables/useFetch";
-import { getSupervisorNames } from "@/services/seb-server/userAccountService";
-import { useUserAccountStore } from "@/stores/authentication/userAccountStore";
+import { getUserAccountSupervisors } from "@/services/seb-server/userAccountService";
+import { useCurrentUserQuery } from "@/composables/useCurrentUser";
 
-export const useSupervisors = () =>
-    useFetch(
+export const useSupervisors = () => {
+    const { data: currentUser } = useCurrentUserQuery();
+
+    return useFetch(
         () =>
-            getSupervisorNames({
-                institutionId: useUserAccountStore().userAccount?.institutionId,
+            getUserAccountSupervisors({
+                institutionId: currentUser.value?.institutionId,
             }),
         { immediate: true },
     );
+};

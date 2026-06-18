@@ -5,7 +5,7 @@ import {
     CreateExamWithURLPar,
     Exam,
 } from "@/models/seb-server/exam.ts";
-import { APIMessage } from "@/models/seb-server/apiMessages.ts";
+import type { APIMessage } from "@/services/errors/types.ts";
 
 // The `/api/exam` POST returns one of two shapes:
 // - 200 OK   → `Exam` object with `id`

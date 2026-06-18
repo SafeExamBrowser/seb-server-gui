@@ -1,7 +1,8 @@
 import { computed, ref } from "vue";
-import { useRules } from "vuetify/labs/rules";
 import i18n from "@/i18n";
 import { FormField } from "@/components/widgets/formBuilder/types.ts";
+import { useZodFormRules } from "@/composables/useZodFormRules.ts";
+import { userAccountPasswordChangeSchema } from "@/models/userAccount.ts";
 
 const t = (key: string) => i18n.global.t(`userAccount.changePassword.${key}`);
 
@@ -10,7 +11,10 @@ export const useChangePasswordFormFields = () => {
     const newPassword = ref<string | undefined>(undefined);
     const confirmNewPassword = ref<string | undefined>(undefined);
 
-    const rules = useRules();
+    const { isRequired, fieldRules } = useZodFormRules();
+    const confirmNewPasswordRule = (value: string | undefined) =>
+        value === newPassword.value ||
+        i18n.global.t("validation.passwordsMatch");
 
     const formFields = computed<FormField[]>(() => [
         {
@@ -18,31 +22,38 @@ export const useChangePasswordFormFields = () => {
             name: "adminPassword",
             model: adminPassword,
             label: t("fields.adminPassword.label"),
-            required: true,
-            rules: [rules.required()],
+            required: isRequired(
+                userAccountPasswordChangeSchema.shape.password,
+            ),
+            rules: fieldRules(userAccountPasswordChangeSchema.shape.password),
         },
         {
             type: "password" as const,
             name: "newPassword",
             model: newPassword,
             label: t("fields.newPassword.label"),
-            required: true,
-            rules: [rules.required(), rules.minLength(8)],
+            required: isRequired(
+                userAccountPasswordChangeSchema.shape.newPassword,
+            ),
+            rules: fieldRules(
+                userAccountPasswordChangeSchema.shape.newPassword,
+            ),
         },
         {
             type: "password" as const,
             name: "confirmNewPassword",
             model: confirmNewPassword,
             label: t("fields.confirmNewPassword.label"),
-            required: true,
-            validationDependsOn: ["newPassword"],
+            required: isRequired(
+                userAccountPasswordChangeSchema.shape.confirmNewPassword,
+            ),
             rules: [
-                (v: string | undefined) =>
-                    v === newPassword.value ||
-                    i18n.global.t(
-                        "userAccount.general.validation.passwordsDontMatch",
-                    ),
+                ...fieldRules(
+                    userAccountPasswordChangeSchema.shape.confirmNewPassword,
+                ),
+                confirmNewPasswordRule,
             ],
+            validationDependsOn: ["newPassword"],
         },
     ]);
 

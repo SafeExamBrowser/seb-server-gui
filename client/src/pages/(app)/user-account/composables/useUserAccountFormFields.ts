@@ -1,11 +1,29 @@
 import { computed, ref, watch } from "vue";
 import moment from "moment-timezone";
-import { useRules } from "vuetify/labs/rules";
 import i18n from "@/i18n";
 import { FormField } from "@/components/widgets/formBuilder/types.ts";
 import { useInstitutions } from "@/composables/useInstitutions.ts";
-import { useUserAccountStore } from "@/stores/authentication/userAccountStore.ts";
-import { UserRoleEnum } from "@/models/userRoleEnum.ts";
+import { useCurrentUserQuery } from "@/composables/useCurrentUser.ts";
+import { useZodFormRules } from "@/composables/useZodFormRules.ts";
+import {
+    USER_ROLES,
+    userAccountCreateSchema,
+    userAccountSchema,
+    type UserRole,
+} from "@/models/userAccount.ts";
+
+const ADMIN_VISIBLE_ROLES: ReadonlySet<UserRole> = new Set<UserRole>([
+    "SEB_SERVER_ADMIN",
+    "INSTITUTIONAL_ADMIN",
+    "EXAM_ADMIN",
+    "EXAM_SUPPORTER",
+]);
+
+const INSTITUTIONAL_VISIBLE_ROLES: ReadonlySet<UserRole> = new Set<UserRole>([
+    "INSTITUTIONAL_ADMIN",
+    "EXAM_ADMIN",
+    "EXAM_SUPPORTER",
+]);
 
 const timezoneOptions = moment.tz
     .names()
@@ -26,7 +44,12 @@ export const useUserAccountFormFields = (mode: UserAccountFormMode) => {
     );
     const password = ref<string | undefined>(undefined);
     const confirmPassword = ref<string | undefined>(undefined);
-    const role = ref<string | undefined>(undefined);
+    const role = ref<UserRole | undefined>(undefined);
+
+    const { isRequired, fieldRules } = useZodFormRules();
+
+    const sharedSchema =
+        mode === "create" ? userAccountCreateSchema : userAccountSchema;
 
     const {
         data: institutions,
@@ -34,23 +57,27 @@ export const useUserAccountFormFields = (mode: UserAccountFormMode) => {
         error: errorInstitutions,
     } = useInstitutions();
 
-    const authenticatedUser = useUserAccountStore().userAccount;
-    const userRoles = authenticatedUser?.userRoles ?? [];
-    const hasSebServerAdmin = userRoles.includes(UserRoleEnum.SEB_SERVER_ADMIN);
-    const hasInstitutionalAdmin = userRoles.includes(
-        UserRoleEnum.INSTITUTIONAL_ADMIN,
+    const { data: authenticatedUser } = useCurrentUserQuery();
+    const userRoles = computed(() => authenticatedUser.value?.userRoles ?? []);
+    const hasSebServerAdmin = computed(() =>
+        userRoles.value.includes("SEB_SERVER_ADMIN"),
+    );
+    const hasInstitutionalAdmin = computed(() =>
+        userRoles.value.includes("INSTITUTIONAL_ADMIN"),
     );
 
     const institutionSelectDisabled = ref(
-        !hasSebServerAdmin || mode !== "create",
+        !hasSebServerAdmin.value || mode !== "create",
     );
 
     watch(
         institutions,
         (data) => {
             if (!data || mode !== "create") return;
-            if (!hasInstitutionalAdmin || hasSebServerAdmin) return;
-            const userInstitutionId = String(authenticatedUser?.institutionId);
+            if (!hasInstitutionalAdmin.value || hasSebServerAdmin.value) return;
+            const userInstitutionId = String(
+                authenticatedUser.value?.institutionId,
+            );
             const matched = data.find((i) => i.modelId === userInstitutionId);
             if (matched) {
                 institutionId.value = matched.modelId;
@@ -64,35 +91,25 @@ export const useUserAccountFormFields = (mode: UserAccountFormMode) => {
         (institutions.value ?? [])
             .filter(
                 (i) =>
-                    hasSebServerAdmin ||
-                    i.modelId === String(authenticatedUser?.institutionId),
+                    hasSebServerAdmin.value ||
+                    i.modelId ===
+                        String(authenticatedUser.value?.institutionId),
             )
             .map((i) => ({ value: i.modelId, text: i.name })),
     );
 
     const availableRoles = computed(() => {
-        const allRoles = Object.values(UserRoleEnum).map((r) => ({
-            value: r,
-            text: i18n.global.t(`general.userRoles.${r}`),
+        const allRoles = USER_ROLES.map((value) => ({
+            value,
+            text: i18n.global.t(`general.userRoles.${value}`),
         }));
 
-        if (hasSebServerAdmin) {
-            return allRoles.filter((r) =>
-                [
-                    UserRoleEnum.SEB_SERVER_ADMIN,
-                    UserRoleEnum.INSTITUTIONAL_ADMIN,
-                    UserRoleEnum.EXAM_ADMIN,
-                    UserRoleEnum.EXAM_SUPPORTER,
-                ].includes(r.value as UserRoleEnum),
-            );
+        if (hasSebServerAdmin.value) {
+            return allRoles.filter((r) => ADMIN_VISIBLE_ROLES.has(r.value));
         }
-        if (hasInstitutionalAdmin) {
+        if (hasInstitutionalAdmin.value) {
             return allRoles.filter((r) =>
-                [
-                    UserRoleEnum.INSTITUTIONAL_ADMIN,
-                    UserRoleEnum.EXAM_ADMIN,
-                    UserRoleEnum.EXAM_SUPPORTER,
-                ].includes(r.value as UserRoleEnum),
+                INSTITUTIONAL_VISIBLE_ROLES.has(r.value),
             );
         }
         return [];
@@ -102,6 +119,42 @@ export const useUserAccountFormFields = (mode: UserAccountFormMode) => {
     const errors = computed(() =>
         [errorInstitutions.value].filter((e) => e !== undefined),
     );
+    const confirmPasswordRule = (value: string | undefined) =>
+        value === password.value || i18n.global.t("validation.passwordsMatch");
+
+    const fieldValidation = {
+        institutionId: {
+            required: isRequired(sharedSchema.shape.institutionId),
+        },
+        username: {
+            required: isRequired(sharedSchema.shape.username),
+            rules: fieldRules(sharedSchema.shape.username),
+        },
+        name: {
+            required: isRequired(sharedSchema.shape.name),
+            rules: fieldRules(sharedSchema.shape.name),
+        },
+        surname: {
+            required: isRequired(sharedSchema.shape.surname),
+            rules: fieldRules(sharedSchema.shape.surname),
+        },
+        email: {
+            required: isRequired(sharedSchema.shape.email),
+            rules: fieldRules(sharedSchema.shape.email),
+        },
+        timezone: { required: isRequired(sharedSchema.shape.timezone) },
+        userRoles: { required: isRequired(sharedSchema.shape.userRoles) },
+        newPassword: {
+            required: isRequired(userAccountCreateSchema.shape.newPassword),
+            rules: fieldRules(userAccountCreateSchema.shape.newPassword),
+        },
+        confirmNewPassword: {
+            required: isRequired(
+                userAccountCreateSchema.shape.confirmNewPassword,
+            ),
+            rules: fieldRules(userAccountCreateSchema.shape.confirmNewPassword),
+        },
+    };
 
     const leftFormFields = computed<FormField[]>(() => {
         if (loading.value) return [];
@@ -113,7 +166,7 @@ export const useUserAccountFormFields = (mode: UserAccountFormMode) => {
                 model: institutionId,
                 label: t("fields.institution.label"),
                 options: institutionOptions.value,
-                required: true,
+                required: fieldValidation.institutionId.required,
                 disabled: institutionSelectDisabled.value,
             },
             {
@@ -121,35 +174,32 @@ export const useUserAccountFormFields = (mode: UserAccountFormMode) => {
                 name: "username",
                 model: username,
                 label: t("fields.username.label"),
-                required: true,
+                required: fieldValidation.username.required,
+                rules: fieldValidation.username.rules,
             },
             {
                 type: "text" as const,
                 name: "name",
                 model: name,
                 label: t("fields.name.label"),
-                required: true,
+                required: fieldValidation.name.required,
+                rules: fieldValidation.name.rules,
             },
             {
                 type: "text" as const,
                 name: "surname",
                 model: surname,
                 label: t("fields.surname.label"),
-                required: true,
+                required: fieldValidation.surname.required,
+                rules: fieldValidation.surname.rules,
             },
             {
                 type: "text" as const,
                 name: "email",
                 model: email,
                 label: t("fields.email.label"),
-                rules: [
-                    (v: string | undefined) =>
-                        !v ||
-                        /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(v) ||
-                        i18n.global.t(
-                            "userAccount.general.validation.invalidEmail",
-                        ),
-                ],
+                required: fieldValidation.email.required,
+                rules: fieldValidation.email.rules,
             },
             {
                 type: "select" as const,
@@ -157,7 +207,7 @@ export const useUserAccountFormFields = (mode: UserAccountFormMode) => {
                 model: timezone,
                 label: t("fields.timezone.label"),
                 options: timezoneOptions,
-                required: true,
+                required: fieldValidation.timezone.required,
             },
         ];
 
@@ -168,23 +218,20 @@ export const useUserAccountFormFields = (mode: UserAccountFormMode) => {
                     name: "password",
                     model: password,
                     label: t("fields.password.label"),
-                    required: true,
-                    rules: [useRules().minLength(8)],
+                    required: fieldValidation.newPassword.required,
+                    rules: fieldValidation.newPassword.rules,
                 },
                 {
                     type: "password" as const,
                     name: "confirmPassword",
                     model: confirmPassword,
                     label: t("fields.confirmPassword.label"),
-                    required: true,
-                    validationDependsOn: ["password"],
+                    required: fieldValidation.confirmNewPassword.required,
                     rules: [
-                        (v: string | undefined) =>
-                            v === password.value ||
-                            i18n.global.t(
-                                "userAccount.general.validation.passwordsDontMatch",
-                            ),
+                        ...fieldValidation.confirmNewPassword.rules,
+                        confirmPasswordRule,
                     ],
+                    validationDependsOn: ["password"],
                 },
             );
         }
@@ -199,7 +246,7 @@ export const useUserAccountFormFields = (mode: UserAccountFormMode) => {
             model: role,
             label: t("fields.role.label"),
             options: availableRoles.value,
-            required: true,
+            required: fieldValidation.userRoles.required,
             disabled: mode === "profile",
         },
     ]);

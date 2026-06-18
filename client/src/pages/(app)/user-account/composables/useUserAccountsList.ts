@@ -4,7 +4,10 @@ import { usePagedListData } from "@/components/widgets/entity-table/composables/
 import { STATUS_FILTER_KEY } from "@/components/widgets/filters/statusFilterSection.ts";
 import { INSTITUTION_FILTER_KEY } from "@/components/widgets/filters/useInstitutionFilterSection.ts";
 import { useUserAccountsFilters } from "./useUserAccountsFilters.ts";
-import { useUserAccounts } from "@/pages/(app)/user-account/api/useUserAccounts.ts";
+import { useUserAccountsQuery } from "@/pages/(app)/user-account/api/useUserAccountsQuery.ts";
+import { toAppErrorOrUndefined } from "@/services/errors/toAppError.ts";
+import { toServerPageQuery } from "@/utils/table/tableUtils.ts";
+import type { GetUserAccountsData } from "@/api/seb-server/generated/hey-api/types.gen.ts";
 
 export const useUserAccountsList = () => {
     const filterSections = useUserAccountsFilters();
@@ -19,38 +22,48 @@ export const useUserAccountsList = () => {
         onClearSearch,
         setFilters,
         clearAll,
-    } = useUrlTableState(async () => {
-        await fetchUserAccounts();
-    }, [STATUS_FILTER_KEY, INSTITUTION_FILTER_KEY]);
+    } = useUrlTableState(async () => {}, [
+        STATUS_FILTER_KEY,
+        INSTITUTION_FILTER_KEY,
+    ]);
 
-    const selectedStatus = computed(() => selectedFilters.value.status);
-    const selectedInstitutionId = computed(
-        () => selectedFilters.value.institutionId,
-    );
+    const accountsQuery = computed<GetUserAccountsData["query"]>(() => {
+        const status = selectedFilters.value.status;
+        const institutionId = selectedFilters.value.institutionId;
+        return {
+            ...toServerPageQuery(options.value),
+            surname: searchField.value || undefined,
+            active:
+                status === "Active"
+                    ? true
+                    : status === "Inactive"
+                      ? false
+                      : undefined,
+            institutionId: institutionId ? Number(institutionId) : undefined,
+        };
+    });
 
     const {
         data,
-        loading,
-        error,
-        fetchData: fetchUserAccounts,
-    } = useUserAccounts(
-        options,
-        searchField,
-        selectedStatus,
-        selectedInstitutionId,
-    );
+        isFetching,
+        error: queryError,
+        refetch,
+    } = useUserAccountsQuery(accountsQuery);
+    const error = computed(() => toAppErrorOrUndefined(queryError.value));
 
     const { items, pageCount, errors, reloadList } = usePagedListData({
         data,
         error,
         options,
-        fetchData: fetchUserAccounts,
+        fetchData: async () => {
+            await refetch();
+        },
     });
 
     return {
         items,
         pageCount,
-        loading,
+        loading: isFetching,
         errors,
         options,
         searchInputValue,

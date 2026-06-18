@@ -1,94 +1,89 @@
-export type UserAccount = {
-    id: number;
-    institutionId: number;
-    uuid: string;
-    name: string;
-    surname: string;
-    username: string;
-    email: string;
-    language: string;
-    timezone: string;
-    userRoles: string[];
-    creationTime: number;
-    active: boolean;
-    lastUpdateTime: number;
-    terminationTime?: number | null;
-    creationDate: string;
-};
+import { z } from "zod";
+import {
+    zEntityName,
+    zPageUserInfo,
+    zPasswordChange,
+    zUserInfo,
+    zUserMod,
+} from "@/api/seb-server/generated/hey-api/zod.gen.ts";
+import { isoDateTimeCodec } from "@/models/codecs.ts";
 
-export type UserAccountResponse = {
-    number_of_pages: number;
-    page_number: number;
-    page_size: number;
-    content: UserAccount[];
-};
+// Other SEB Server clients store a missing email as "" — accept that on the
+// wire, but keep the app model at "valid email or undefined" and never send
+// "" back.
+const emptyableEmailCodec = z.codec(
+    z.union([zUserInfo.shape.email.unwrap(), z.literal("")]).optional(),
+    zUserInfo.shape.email,
+    {
+        decode: (wire) => (wire === "" ? undefined : wire),
+        encode: (app) => app,
+    },
+);
 
-export type SingleUserAccountResponse = {
-    uuid: string;
-    institutionId: number;
-    creationDate: string;
-    name: string;
-    surname: string;
-    username: string;
-    email: string;
-    active: boolean;
-    directLogin: boolean;
-    localAccount: boolean;
-    language: string;
-    timezone: string;
-    userRoles: string[];
-};
+export const userAccountSchema = zUserInfo
+    .pick({
+        uuid: true,
+        institutionId: true,
+        name: true,
+        surname: true,
+        username: true,
+        active: true,
+        language: true,
+        timezone: true,
+        userRoles: true,
+    })
+    .extend({
+        email: emptyableEmailCodec,
+        creationDate: isoDateTimeCodec.optional(),
+    });
+export type UserAccount = z.infer<typeof userAccountSchema>;
 
-export type EditUserAccountParameters = {
-    uuid: string;
-    institutionId: number;
-    creationDate: string;
-    name: string;
-    surname: string;
-    username: string;
-    email: string;
-    active: boolean;
-    language: string;
-    timezone: string;
-    userRoles: string[];
-};
+export const userAccountPageSchema = zPageUserInfo
+    .pick({
+        number_of_pages: true,
+        page_number: true,
+        page_size: true,
+        sort: true,
+    })
+    .extend({ content: z.array(userAccountSchema).optional() });
+export type UserAccountPage = z.infer<typeof userAccountPageSchema>;
 
-export type UserAccountName = {
-    modelId: string;
-    entityType: string;
-    name: string;
-};
+export const userAccountCreateSchema = zUserMod.pick({
+    institutionId: true,
+    name: true,
+    surname: true,
+    username: true,
+    email: true,
+    language: true,
+    timezone: true,
+    userRoles: true,
+    newPassword: true,
+    confirmNewPassword: true,
+});
+export type UserAccountCreateRequest = z.infer<typeof userAccountCreateSchema>;
 
-export type CreateUserPar = {
-    institutionId: string;
-    name: string;
-    surname: string;
-    username: string;
-    email: string;
-    language: string;
-    timezone: string;
-    userRoles: string[];
-    newPassword: string;
-    confirmNewPassword: string;
-};
+export const userAccountRegisterSchema = userAccountCreateSchema.omit({
+    userRoles: true,
+});
+export type UserAccountRegisterRequest = z.infer<
+    typeof userAccountRegisterSchema
+>;
 
-export type OptionalParGetUserAccounts = {
-    page_size?: number;
-    page_number?: number;
-    surname?: string;
-    active?: string | null;
-    institutionId?: string | null;
-    sort?: string;
-};
+export const userAccountPasswordChangeSchema = zPasswordChange.pick({
+    uuid: true,
+    password: true,
+    newPassword: true,
+    confirmNewPassword: true,
+});
+export type UserAccountPasswordChange = z.infer<
+    typeof userAccountPasswordChangeSchema
+>;
 
-export type RegisterUserAccountParams = {
-    institutionId: string;
-    name: string;
-    surname: string;
-    username: string;
-    newPassword: string;
-    confirmNewPassword: string;
-    timezone: string;
-    language: string;
-    email?: string;
-};
+export const userAccountNameSchema = zEntityName.pick({
+    modelId: true,
+    name: true,
+});
+export type UserAccountName = z.infer<typeof userAccountNameSchema>;
+
+export const USER_ROLES = userAccountSchema.shape.userRoles.element.options;
+export type UserRole = (typeof USER_ROLES)[number];
