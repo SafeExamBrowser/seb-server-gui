@@ -4,36 +4,46 @@ import type { TableItem } from "@/components/widgets/entity-table/types.ts";
 import { useUserAccountsTableHeaders } from "./useUserAccountsTableHeaders.ts";
 import { useUserAccountsTableActions } from "./useUserAccountsTableActions.ts";
 import { useUserAccountsList } from "./useUserAccountsList.ts";
-import { useDeleteUserAccount } from "@/pages/(app)/user-account/api/useDeleteUserAccount.ts";
-import { useToggleUserAccountStatus } from "@/pages/(app)/user-account/api/useToggleUserAccountStatus.ts";
+import { useDeleteUserAccountMutation } from "@/pages/(app)/user-account/api/useDeleteUserAccountMutation.ts";
+import { useToggleUserAccountStatusMutation } from "@/pages/(app)/user-account/api/useToggleUserAccountStatusMutation.ts";
 import { useEntityDeleteFlow } from "@/components/widgets/entity-table/composables/useEntityDeleteFlow.ts";
 import { useEntityStatusFlow } from "@/components/widgets/entity-table/composables/useEntityStatusFlow.ts";
+import { toAppErrorOrUndefined } from "@/services/errors/toAppError.ts";
 
 export const useUserAccountsOverview = () => {
     const router = useRouter();
 
     const userAccountDetailRoute = (
         item: TableItem,
-    ): RouteLocationAsRelative | null =>
+    ): RouteLocationAsRelative | undefined =>
         item.uuid != null
             ? {
                   name: "/(app)/user-account/[userUuid]/",
                   params: { userUuid: String(item.uuid) },
               }
-            : null;
+            : undefined;
 
     const { headers, cellFormatters } = useUserAccountsTableHeaders();
 
     const list = useUserAccountsList();
 
     const {
-        removeUserAccountFromItem,
-        error: deleteError,
-        loading: deleteLoading,
-    } = useDeleteUserAccount();
+        mutateAsync: removeUserAccount,
+        error: deleteMutationError,
+        isPending: deleteLoading,
+    } = useDeleteUserAccountMutation();
+    const deleteError = computed(() =>
+        toAppErrorOrUndefined(deleteMutationError.value),
+    );
 
     const deleteFlow = useEntityDeleteFlow({
-        remove: removeUserAccountFromItem,
+        remove: async (item) => {
+            try {
+                await removeUserAccount(String(item.uuid));
+            } catch {
+                /* empty */
+            }
+        },
         error: deleteError,
         loading: deleteLoading,
         contextLabel: "useraccount",
@@ -42,13 +52,22 @@ export const useUserAccountsOverview = () => {
     });
 
     const {
-        toggleUserAccountStatusFromItem,
-        error: statusError,
-        loading: statusLoading,
-    } = useToggleUserAccountStatus();
+        changeUserAccountStatus,
+        error: statusMutationError,
+        isPending: statusLoading,
+    } = useToggleUserAccountStatusMutation();
+    const statusError = computed(() =>
+        toAppErrorOrUndefined(statusMutationError.value),
+    );
 
     const statusFlow = useEntityStatusFlow({
-        toggle: toggleUserAccountStatusFromItem,
+        toggle: async (item) => {
+            try {
+                await changeUserAccountStatus(String(item.uuid), !!item.active);
+            } catch {
+                /* empty */
+            }
+        },
         error: statusError,
         loading: statusLoading,
         contextLabel: "useraccount.status",
@@ -66,7 +85,6 @@ export const useUserAccountsOverview = () => {
         onEdit: (item) => {
             const target = userAccountDetailRoute(item);
             if (!target) {
-                // TODO @andrei implement error handling
                 return;
             }
             void router.push(target);

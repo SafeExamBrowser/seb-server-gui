@@ -5,16 +5,16 @@
 <script setup lang="ts">
 import { onBeforeMount } from "vue";
 import { useRouter } from "vue-router";
-import { useUserAccountStore } from "@/stores/authentication/userAccountStore.ts";
+import { useCurrentUserQuery } from "@/composables/useCurrentUser.ts";
 import { getLandingRoute } from "@/router/getLandingRoute.ts";
 
 // The former home page is now a role-based landing redirect. The auth guard
-// has already hydrated the user account (and its roles) before this mounts.
+// has already hydrated the current user (and its roles) before this mounts.
 const router = useRouter();
-const userAccountStore = useUserAccountStore();
+const { data: currentUser } = useCurrentUserQuery();
 
 onBeforeMount(() => {
-    const userRoles = userAccountStore.userAccount?.userRoles ?? [];
+    const userRoles = currentUser.value?.userRoles ?? [];
     void router.replace(getLandingRoute(userRoles));
 });
 </script>

@@ -2,7 +2,7 @@ import { computed, ref, watch } from "vue";
 import i18n from "@/i18n";
 import type { FormField } from "@/components/widgets/formBuilder/types.ts";
 import { useInstitutions } from "@/composables/useInstitutions.ts";
-import { useUserAccountStore } from "@/stores/authentication/userAccountStore.ts";
+import { useCurrentUserQuery } from "@/composables/useCurrentUser.ts";
 import { LMSTypeEnum } from "@/models/seb-server/assessmentToolEnums.ts";
 
 export type AuthMode = "client" | "token";
@@ -41,13 +41,15 @@ export const useAssessmentToolFormFields = (
         error: errorInstitutions,
     } = useInstitutions();
 
-    const authenticatedUser = useUserAccountStore().userAccount;
+    const { data: authenticatedUser } = useCurrentUserQuery();
 
     watch(
         institutions,
         (data) => {
             if (!data) return;
-            const userInstitutionId = String(authenticatedUser?.institutionId);
+            const userInstitutionId = String(
+                authenticatedUser.value?.institutionId,
+            );
             const matched = data.find((i) => i.modelId === userInstitutionId);
             if (matched) {
                 institutionId.value = matched.modelId;
@@ -59,7 +61,9 @@ export const useAssessmentToolFormFields = (
     const institutionOptions = computed(() =>
         (institutions.value ?? [])
             .filter(
-                (i) => i.modelId === String(authenticatedUser?.institutionId),
+                (i) =>
+                    i.modelId ===
+                    String(authenticatedUser.value?.institutionId),
             )
             .map((i) => ({ value: i.modelId, text: i.name })),
     );

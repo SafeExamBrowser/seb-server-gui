@@ -121,32 +121,24 @@ import {
     useUserAccountFormFields,
     type UserAccountFormMode,
 } from "@/pages/(app)/user-account/composables/useUserAccountFormFields.ts";
-import { UserRoleEnum } from "@/models/userRoleEnum.ts";
-import type { UserAccount } from "@/models/userAccount.ts";
 import type { BackendFieldAliasMap } from "@/services/errors/types.ts";
 import type { BreadCrumbItem } from "@/components/widgets/breadCrumb/types";
 import {
     applyBackendFieldErrors,
     type ApplyBackendErrorsResult,
 } from "@/services/errors/formErrorMapping.ts";
+import {
+    type UserAccount,
+    type UserAccountCreateRequest,
+    type UserRole,
+} from "@/models/userAccount.ts";
 
 const USER_ACCOUNT_FIELD_ALIASES = {
     timeZone: "timezone",
     userRoles: "role",
+    newPassword: "password",
     confirmNewPassword: "confirmPassword",
 } satisfies BackendFieldAliasMap;
-
-export type UserAccountFormPayload = {
-    institutionId: string;
-    username: string;
-    name: string;
-    surname: string;
-    email: string;
-    timezone: string;
-    userRoles: string[];
-    password?: string;
-    confirmPassword?: string;
-};
 
 export type ChangePasswordPayload = {
     adminPassword: string;
@@ -163,7 +155,8 @@ const props = defineProps<{
 }>();
 
 const emit = defineEmits<{
-    submit: [payload: UserAccountFormPayload];
+    createSubmit: [payload: UserAccountCreateRequest];
+    editSubmit: [payload: UserAccount];
     cancel: [];
     changePassword: [payload: ChangePasswordPayload];
 }>();
@@ -217,20 +210,22 @@ const breadCrumb = computed<BreadCrumbItem[]>(() => {
     ];
 });
 
-const getHighestRole = (roles: string[]): string | undefined => {
-    if (roles.includes(UserRoleEnum.SEB_SERVER_ADMIN)) {
-        return UserRoleEnum.SEB_SERVER_ADMIN;
+const getHighestRole = (
+    roles: ReadonlyArray<UserRole>,
+): UserRole | undefined => {
+    if (roles.includes("SEB_SERVER_ADMIN")) {
+        return "SEB_SERVER_ADMIN";
     }
-    if (roles.includes(UserRoleEnum.INSTITUTIONAL_ADMIN)) {
-        return UserRoleEnum.INSTITUTIONAL_ADMIN;
+    if (roles.includes("INSTITUTIONAL_ADMIN")) {
+        return "INSTITUTIONAL_ADMIN";
     }
-    if (roles.includes(UserRoleEnum.EXAM_ADMIN)) {
-        return UserRoleEnum.EXAM_ADMIN;
+    if (roles.includes("EXAM_ADMIN")) {
+        return "EXAM_ADMIN";
     }
-    if (roles.includes(UserRoleEnum.TEACHER)) {
-        return UserRoleEnum.TEACHER;
+    if (roles.includes("TEACHER")) {
+        return "TEACHER";
     }
-    return roles.length > 0 ? UserRoleEnum.EXAM_SUPPORTER : undefined;
+    return roles.length > 0 ? "EXAM_SUPPORTER" : undefined;
 };
 
 const { isDirty, snapshot } = useDirtyTracking(() => ({
@@ -248,9 +243,9 @@ const hydrate = (user: UserAccount) => {
     username.value = user.username;
     name.value = user.name;
     surname.value = user.surname;
-    email.value = user.email ?? "";
+    email.value = user.email;
     timezone.value = user.timezone;
-    role.value = getHighestRole((user.userRoles as string[]) ?? []);
+    role.value = getHighestRole(user.userRoles);
     snapshot();
 };
 
@@ -269,23 +264,26 @@ watch(
     },
 );
 
-const formatDate = (iso?: string): string => {
-    if (!iso) return "";
-    return moment(iso).format("MMM D, YYYY");
+const formatDate = (date?: Date): string => {
+    if (!date) return "";
+    return moment(date).format("MMM D, YYYY");
 };
 
-const buildUserRoles = (selectedRole: string): string[] => {
-    if (selectedRole === UserRoleEnum.INSTITUTIONAL_ADMIN) {
-        return [
-            UserRoleEnum.INSTITUTIONAL_ADMIN,
-            UserRoleEnum.EXAM_ADMIN,
-            UserRoleEnum.EXAM_SUPPORTER,
-        ];
+const buildUserRoles = (selectedRole: UserRole): UserAccount["userRoles"] => {
+    if (selectedRole === "INSTITUTIONAL_ADMIN") {
+        return ["INSTITUTIONAL_ADMIN", "EXAM_ADMIN", "EXAM_SUPPORTER"];
     }
-    if (selectedRole === UserRoleEnum.EXAM_ADMIN) {
-        return [UserRoleEnum.EXAM_ADMIN, UserRoleEnum.EXAM_SUPPORTER];
+    if (selectedRole === "EXAM_ADMIN") {
+        return ["EXAM_ADMIN", "EXAM_SUPPORTER"];
     }
     return [selectedRole];
+};
+
+const requireValidatedField = <T,>(value: T | undefined): T => {
+    if (value === undefined || value === "") {
+        throw new Error("validated user account form field is missing");
+    }
+    return value;
 };
 
 const submit = async () => {
@@ -295,32 +293,39 @@ const submit = async () => {
     ]);
     if (!leftResult?.valid || !rightResult?.valid) return;
 
-    if (
-        !institutionId.value ||
-        !username.value ||
-        !name.value ||
-        !surname.value ||
-        !timezone.value ||
-        !role.value
-    ) {
+    const selectedUserRoles = buildUserRoles(requireValidatedField(role.value));
+
+    const baseUserAccount = {
+        institutionId: Number(requireValidatedField(institutionId.value)),
+        username: requireValidatedField(username.value),
+        name: requireValidatedField(name.value),
+        surname: requireValidatedField(surname.value),
+        email: email.value || undefined,
+        timezone: requireValidatedField(timezone.value),
+    };
+
+    if (props.mode === "create") {
+        emit("createSubmit", {
+            ...baseUserAccount,
+            language: "en",
+            userRoles: selectedUserRoles,
+            newPassword: requireValidatedField(password.value),
+            confirmNewPassword: requireValidatedField(confirmPassword.value),
+        });
         return;
     }
 
-    const userRoles =
-        props.mode === "profile"
-            ? ((props.initialUser?.userRoles as string[]) ?? [])
-            : buildUserRoles(role.value);
+    if (!props.initialUser) {
+        return;
+    }
 
-    emit("submit", {
-        institutionId: institutionId.value,
-        username: username.value,
-        name: name.value,
-        surname: surname.value,
-        email: email.value ?? "",
-        timezone: timezone.value,
-        userRoles,
-        password: password.value,
-        confirmPassword: confirmPassword.value,
+    emit("editSubmit", {
+        ...props.initialUser,
+        ...baseUserAccount,
+        userRoles:
+            props.mode === "profile"
+                ? props.initialUser.userRoles
+                : selectedUserRoles,
     });
 };
 

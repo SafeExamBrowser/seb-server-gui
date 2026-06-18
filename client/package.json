@@ -22,6 +22,9 @@
         "check:precommit": "lint-staged",
         "quality:fix:all": "npm run lint:fix:all && npm run prettier:fix:all && vue-tsc --noEmit",
         "quality:fix:all:no-format": "npm run lint:fix:all && vue-tsc --noEmit",
+        "openapi:fetch:seb-server": "node scripts/fetch-seb-server-openapi.mjs",
+        "openapi:generate": "openapi-ts --file openapi-ts.config.ts",
+        "openapi:refresh": "npm run openapi:fetch:seb-server && npm run openapi:generate",
         "prepare": "cd .. && husky ./client/.husky",
         "typecheck:playwright": "tsc -p tsconfig.playwright.json --noEmit",
         "test:e2e": "npx playwright test",
@@ -41,6 +44,7 @@
         "@eslint/js": "10.0.1",
         "@mdi/font": "7.4.47",
         "@playwright/test": "1.60.0",
+        "@tanstack/vue-query": "5.100.14",
         "@types/lodash": "4.17.24",
         "@types/node": "24.12.4",
         "@vitejs/plugin-vue": "6.0.7",
@@ -76,7 +80,8 @@
         "vue-router": "5.1.0",
         "vue-tsc": "3.3.3",
         "vuetify": "4.1.0",
-        "zod": "4.4.3"
+        "zod": "4.4.3",
+        "@hey-api/openapi-ts": "0.97.3"
     },
     "keywords": [],
     "author": "",

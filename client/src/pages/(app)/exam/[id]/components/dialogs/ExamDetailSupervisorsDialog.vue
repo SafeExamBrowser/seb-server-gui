@@ -155,7 +155,7 @@
 <script setup lang="ts">
 import {
     getUserAccountById,
-    getSupervisorNames,
+    getUserAccountSupervisors,
 } from "@/services/seb-server/userAccountService.ts";
 import * as tableUtils from "@/utils/table/tableUtils.ts";
 import { translate } from "@/utils/generalUtils.ts";
@@ -205,7 +205,7 @@ function assignSupervisorsToLocalVar() {
 
 async function getAvailableUserAccounts() {
     const userAccountNamesResponse: UserAccountName[] | null =
-        await getSupervisorNames();
+        await getUserAccountSupervisors();
 
     if (userAccountNamesResponse == null) {
         return;

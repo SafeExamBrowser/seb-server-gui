@@ -3,7 +3,6 @@ import {
     ExamTypeEnum,
 } from "@/models/seb-server/examFiltersEnum";
 import { useTableStore } from "@/stores/store";
-import { OptionalParGetUserAccounts } from "@/models/userAccount";
 import { ServerTablePaging } from "@/models/types";
 import {
     OptionalParGetExams,
@@ -167,39 +166,6 @@ export function assignPagingOptions(
     return pagingParameters;
 }
 
-export function assignUserAccountSelectPagingOptions(
-    serverTablePaging: ServerTablePaging,
-    surnameQuery: string | undefined,
-    selectedStatus: string | undefined,
-    selectedInstitutionId: string | undefined,
-): OptionalParGetUserAccounts {
-    const opt: OptionalParGetUserAccounts = {};
-
-    opt.page_size = serverTablePaging.itemsPerPage;
-    opt.page_number = serverTablePaging.page;
-
-    if (serverTablePaging.sortBy.length !== 0) {
-        let sortString = serverTablePaging.sortBy[0].key;
-        if (serverTablePaging.sortBy[0].order === "desc") {
-            sortString = "-" + sortString;
-        }
-        opt.sort = sortString;
-    }
-    opt.active =
-        selectedStatus === "Active"
-            ? "true"
-            : selectedStatus === "Inactive"
-              ? "false"
-              : null;
-    opt.institutionId = selectedInstitutionId ?? null;
-
-    if (surnameQuery && surnameQuery !== "") {
-        opt.surname = surnameQuery;
-    }
-
-    return opt;
-}
-
 export function assignClientLogDetailsPagingOptions(
     serverTablePaging: ServerTablePaging,
     name: string | undefined,
@@ -340,4 +306,18 @@ export const normaliseBasicListParams = (basicListParams?: BasicListParams) => {
             ? sortOrderToSortString(basicListParams.sortOrder)
             : undefined,
     };
+};
+
+export const toServerPageQuery = (paging: ServerTablePaging) => {
+    const [sort] = paging.sortBy;
+    const sortOrder: SortOrder | undefined =
+        sort?.order === "asc" || sort?.order === "desc"
+            ? { key: sort.key, order: sort.order }
+            : undefined;
+
+    return normaliseBasicListParams({
+        pageNumber: paging.page,
+        pageSize: paging.itemsPerPage,
+        sortOrder,
+    });
 };

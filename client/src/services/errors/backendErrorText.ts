@@ -1,25 +1,33 @@
 import i18n from "@/i18n";
+import { ErrorCode } from "@/api/seb-server/generated/hey-api/types.gen.ts";
+import { parseBackendFieldError } from "@/services/errors/toAppError.ts";
 import type {
     APIMessage,
     AppError,
     BackendFieldError,
 } from "@/services/errors/types.ts";
 
-const translate = (key: string, params?: Record<string, unknown>): string =>
-    i18n.global.t(key, params ?? {});
+const ERROR_CODE_NAMES: Record<string, string> = Object.fromEntries(
+    Object.entries(ErrorCode).map(([name, code]) => [code, name]),
+);
+
+const translate = (
+    key: string,
+    params?: Record<string, unknown> | string[],
+): string =>
+    Array.isArray(params)
+        ? i18n.global.t(key, params)
+        : i18n.global.t(key, params ?? {});
 
 function translateFirst(
     keys: (string | undefined)[],
-    params?: Record<string, unknown>,
+    params?: Record<string, unknown> | string[],
 ): string | undefined {
     for (const key of keys) {
-        if (!key) {
+        if (!key || !i18n.global.te(key)) {
             continue;
         }
-        const translated = translate(key, params);
-        if (translated !== key) {
-            return translated;
-        }
+        return translate(key, params);
     }
     return undefined;
 }
@@ -35,16 +43,6 @@ function humanize(value: string): string {
     return spaced.charAt(0).toUpperCase() + spaced.slice(1);
 }
 
-function getObjectLabel(domain?: string): string | undefined {
-    if (!domain) {
-        return undefined;
-    }
-    return (
-        translateFirst([`errors.backend.objects.${domain}._label`]) ??
-        humanize(domain)
-    );
-}
-
 function getFieldLabel(domain: string | undefined, field: string): string {
     const keys: (string | undefined)[] = [
         domain ? `errors.backend.objects.${domain}.fields.${field}` : undefined,
@@ -53,69 +51,51 @@ function getFieldLabel(domain: string | undefined, field: string): string {
     return translateFirst(keys) ?? humanize(field);
 }
 
+// validation rule names contain dots ("email.notunique"), which vue-i18n
+// treats as path separators — the keys are stored dash-separated instead.
+const validationMessageKey = (rule: string): string =>
+    `errors.backend.validation.${rule.replace(/\./g, "-")}`;
+
 export function getBackendFieldErrorText(error: BackendFieldError): string {
     const { domain, backendField, rule, ruleParams } = error;
     const field = backendField ?? "";
-    const fieldLabel = getFieldLabel(domain, field);
 
-    const params: Record<string, unknown> = {
-        field: fieldLabel,
-        object: getObjectLabel(domain) ?? "",
-        rule: rule ?? "",
-    };
-    ruleParams.forEach((value, index) => {
-        params[index] = value;
-        params[`param${index}`] = value;
-    });
-
-    if (rule) {
-        const ruleLeaf = rule.includes(".")
-            ? (rule.split(".").pop() ?? rule)
-            : rule;
-        const ruleText = translateFirst(
-            [
-                domain
-                    ? `errors.backend.objects.${domain}.fields.${field}.rules.${rule}`
-                    : undefined,
-                domain
-                    ? `errors.backend.objects.${domain}.rules.${rule}`
-                    : undefined,
-                `errors.backend.rules.${rule}`,
-                `errors.backend.rules.${ruleLeaf}`,
-            ],
-            params,
-        );
-        if (ruleText) {
-            return ruleText;
-        }
+    const candidates = rule
+        ? [`${field}.${rule}`, `${rule}.${ruleParams[0] ?? ""}`, rule]
+        : [];
+    const translated = translateFirst(
+        candidates.map(validationMessageKey),
+        error.apiMessage.attributes ?? [],
+    );
+    if (translated) {
+        return translated;
     }
 
-    return translate("errors.backend.fieldFallback", params);
+    return translate("errors.backend.fieldFallback", {
+        field: getFieldLabel(domain, field),
+        rule: rule ?? "",
+    });
 }
 
 function getApiMessageLine(message: APIMessage): string {
-    const attributes = message.attributes ?? [];
-    if (message.messageCode === "1200" && attributes.length >= 3) {
-        return getBackendFieldErrorText({
-            apiMessage: message,
-            domain: attributes[0],
-            backendField: attributes[1],
-            rule: attributes[2],
-            ruleParams: attributes.slice(3),
-        });
+    const fieldError = parseBackendFieldError(message);
+    if (fieldError) {
+        return getBackendFieldErrorText(fieldError);
     }
 
-    const codeText = translateFirst([
-        `errors.backend.code.${message.messageCode}`,
-    ]);
+    const codeName = ERROR_CODE_NAMES[message.messageCode];
+    const codeText =
+        (codeName
+            ? translateFirst([`errors.backend.codes.${codeName}`])
+            : undefined) ?? message.systemMessage;
     if (codeText) {
         return message.details ? `${codeText} (${message.details})` : codeText;
     }
 
-    return translate("errors.backend.fallbackLine", {
-        systemMessage: message.systemMessage ?? "",
-        details: message.details ?? "",
-    });
+    if (message.details) {
+        return message.details;
+    }
+    return translate("errors.backend.title.generic");
 }
 
 export function getBackendMessageTitle(

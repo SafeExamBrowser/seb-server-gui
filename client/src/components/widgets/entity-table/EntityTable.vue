@@ -130,8 +130,10 @@ const props = withDefaults(
         itemsPerPage?: number;
         pageCount?: number;
         itemsLength?: number;
-        // TODO @andrei: prefer undefined over null here
-        detailRoute?: (item: TableItem) => RouteLocationAsRelative | null;
+        // TODO @andrei: prefer undefined over null here (legacy overviews still return null)
+        detailRoute?: (
+            item: TableItem,
+        ) => RouteLocationAsRelative | null | undefined;
         actions?: TableAction[];
         selection?: TableRowSelect | null;
         cellFormatters?: Record<string, CellFormatter>;
