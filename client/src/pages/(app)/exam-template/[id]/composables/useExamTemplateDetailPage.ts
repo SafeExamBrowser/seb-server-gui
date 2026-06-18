@@ -101,6 +101,7 @@ export const useExamTemplateDetailPage = () => {
         description: examTemplate.value?.description,
         examType: examTemplate.value?.examType,
         clientConfigurationId: examTemplate.value?.clientConfigurationId,
+        configurationTemplateId: examTemplate.value?.configurationTemplateId,
         lmsIntegration: examTemplate.value?.lmsIntegration ?? false,
         institutionalDefault: examTemplate.value?.institutionalDefault ?? false,
     }));

@@ -504,7 +504,11 @@
                 "dialogTitle": "Edit Basic Settings"
             },
             "sebSettings": {
-                "title": "SEB Settings"
+                "title": "SEB Settings",
+                "modifiedby": "Last modified by",
+                "edit": "Edit SEB Settings",
+                "export": "Export SEB Settings",
+                "import": "Import SEB Settings"
             },
             "indicators": {
                 "title": "Indicators",

@@ -7,7 +7,7 @@ import {
 
 const baseUrl = "/configuration-node" as const;
 
-export const getConfigurationTemplateName = async (
+export const getConfigurationTemplate = async (
     id: string,
 ): Promise<ConfigurationTemplateKey> =>
     (

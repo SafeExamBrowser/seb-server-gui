@@ -11,7 +11,12 @@
                     @change="handleBasicSettingsChange"
                 />
             </template>
-            <template #sebSettings><BoxSebSettings /></template>
+            <template #sebSettings>
+                <BoxSebSettings
+                    :exam-template-id="examTemplateId"
+                    :config-template-id="basicSettings.configurationTemplateId"
+                />
+            </template>
             <template #indicators>
                 <BoxIndicators
                     :exam-template-id="examTemplateId"

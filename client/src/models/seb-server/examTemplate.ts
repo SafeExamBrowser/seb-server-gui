@@ -124,6 +124,7 @@ export type BasicSettings = Pick<
     | "description"
     | "examType"
     | "clientConfigurationId"
+    | "configurationTemplateId"
     | "lmsIntegration"
     | "institutionalDefault"
 >;
