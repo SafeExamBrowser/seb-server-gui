@@ -1,25 +1,19 @@
 <template>
-    <div class="d-flex justify-end mx-6">
+    <div class="d-flex justify-end">
         <v-btn
             :active="false"
-            class="text-none"
-            color="primary"
+            class="text-none bg-primary pa-1 rounded-lg"
             variant="text"
             height="auto"
             :data-testid="`${dataTestId}-add-button`"
             @click="handleClick"
         >
-            <div class="d-flex align-center ga-2">
-                <span
-                    class="text-title-large font-weight-medium"
-                    style="letter-spacing: normal"
-                >
-                    {{ $t("general.addButton") }}
-                </span>
+            <div class="d-flex align-center ga-2 pr-4 pl-2">
+                <v-icon size="25">{{ icon }}</v-icon>
 
-                <v-icon color="primary" size="38"
-                    >mdi-plus-circle-outline</v-icon
-                >
+                <span class="text-title-medium" style="letter-spacing: normal">
+                    {{ label ?? $t("general.addButton") }}
+                </span>
             </div>
         </v-btn>
     </div>
@@ -30,20 +24,30 @@ import { useRouter } from "vue-router";
 import type { RouteLocationAsRelative } from "vue-router";
 
 const router = useRouter();
-const props = defineProps<{
-    route?: RouteLocationAsRelative;
-    dataTestId?: string;
-}>();
+const props = withDefaults(
+    defineProps<{
+        route?: RouteLocationAsRelative;
+        dataTestId?: string;
+        label?: string;
+        icon?: string;
+    }>(),
+    {
+        route: undefined,
+        dataTestId: undefined,
+        label: undefined,
+        icon: "mdi-plus",
+    },
+);
 
 const emit = defineEmits<{
-    (e: "click"): void;
+    (e: "click", event: MouseEvent): void;
 }>();
 
-function handleClick() {
+function handleClick(event: MouseEvent) {
     if (props.route) {
         router.push(props.route);
     } else {
-        emit("click");
+        emit("click", event);
     }
 }
 </script>

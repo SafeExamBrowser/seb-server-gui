@@ -6,9 +6,10 @@ import { defineStore } from "pinia";
 import { computed, ref } from "vue";
 import { useStepClientGroupStore } from "@/pages/(app)/exam-template/create/components/stepClientGroup/composables/store/useStepClientGroupStore.ts";
 import { useScreenProctoringStore } from "@/pages/(app)/exam-template/create/composables/store/useScreenProctoringStore.ts";
+import { buildScreenProctoringExamAttributes } from "@/models/seb-server/screenProctoring.ts";
 import i18n from "@/i18n";
 import { ExamTemplate } from "@/models/seb-server/examTemplate.ts";
-import { ClientGroupEnum } from "@/models/seb-server/clientGroupEnum.ts";
+import { toApiClientConfigurationId } from "@/models/seb-server/connectionConfiguration.ts";
 import { useStepIndicatorsStore } from "@/pages/(app)/exam-template/create/components/stepIndicators/composables/store/useStepIndicatorsStore.ts";
 
 const staticStepData = [
@@ -115,61 +116,19 @@ export const useCreateExamTemplateStore = defineStore(
             configurationTemplateId: stepNamingStore.configurationTemplate
                 ? parseInt(stepNamingStore.configurationTemplate)
                 : undefined,
-            clientConfigurationId: stepNamingStore.clientConfiguration
-                ? parseInt(stepNamingStore.clientConfiguration)
-                : undefined,
+            clientConfigurationId: toApiClientConfigurationId(
+                stepNamingStore.clientConfiguration,
+            ),
             institutionalDefault: stepNamingStore.institutionalDefault,
             lmsIntegration: stepNamingStore.lmsIntegration,
-            indicatorTemplates: stepIndicatorsStore.indicators.map(
-                (indicator) => ({
-                    name: indicator.name,
-                    type: indicator.type,
-                    thresholds: indicator.thresholds.map((threshold) => ({
-                        value: threshold.value,
-                        color: threshold.color.slice(1), // strip the '#' from the hex color string
-                    })),
-                }),
-            ),
-            CLIENT_GROUP_TEMPLATES: stepClientGroupStore.groups.map(
-                (group) => ({
-                    name: group.name,
-                    type: group.type,
-                    ipRangeStart:
-                        group.type === ClientGroupEnum.IP_V4_RANGE
-                            ? group.ipRangeStart
-                            : undefined,
-                    ipRangeEnd:
-                        group.type === ClientGroupEnum.IP_V4_RANGE
-                            ? group.ipRangeEnd
-                            : undefined,
-                    clientOS:
-                        group.type === ClientGroupEnum.CLIENT_OS
-                            ? group.clientOS
-                            : undefined,
-                    nameRangeStartLetter:
-                        group.type === ClientGroupEnum.NAME_ALPHABETICAL_RANGE
-                            ? group.nameRangeStartLetter
-                            : undefined,
-                    nameRangeEndLetter:
-                        group.type === ClientGroupEnum.NAME_ALPHABETICAL_RANGE
-                            ? group.nameRangeEndLetter
-                            : undefined,
-                }),
-            ),
+            indicatorTemplates: stepIndicatorsStore.indicators,
+            CLIENT_GROUP_TEMPLATES: stepClientGroupStore.groups,
             EXAM_ATTRIBUTES: {
-                enableScreenProctoring: screenProctoringStore.enabled
-                    ? "true"
-                    : "false",
-                spsCollectingStrategy: screenProctoringStore.collectionStrategy,
-                spsCollectingGroupName: screenProctoringStore.enabled
-                    ? screenProctoringStore.collectionStrategy === "EXAM"
-                        ? i18n.global.t(
-                              "createTemplateExam.steps.clientGroup.screenProctoringSingleGroupName",
-                          )
-                        : i18n.global.t(
-                              "createTemplateExam.steps.clientGroup.screenProctoringFallbackGroupName",
-                          )
-                    : undefined,
+                ...buildScreenProctoringExamAttributes({
+                    enabled: screenProctoringStore.enabled,
+                    collectionStrategy:
+                        screenProctoringStore.collectionStrategy,
+                }),
                 spsSEBGroupsSelection:
                     screenProctoringStore.screenProctoringAllowedForGroups
                         ? stepClientGroupStore.groups

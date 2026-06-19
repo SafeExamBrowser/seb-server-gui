@@ -13,11 +13,10 @@
         </ContainerHeader>
 
         <div
-            class="d-flex flex-1-1-0 ga-6 px-6 pb-6 pt-4"
+            class="d-flex flex-1-1-0 ga-4 px-6 pb-6 pt-2"
             :style="{ minHeight: 0 }"
         >
             <ContainerSidePanel
-                :home-route="homeRoute"
                 :is-navigation-overview-route="isNavigationOverviewRoute"
                 :links="mainNavigationLinks"
                 :navigation-overview-route="navigationOverviewRoute"
@@ -25,15 +24,23 @@
             />
 
             <v-card
-                class="flex-1-1-0 rounded-lg overflow-y-auto"
-                :class="isPageBlue ? '' : 'pt-3 pl-4 pr-3 pb-3'"
-                :color="isPageBlue ? 'primary' : undefined"
+                v-if="isPageBlue"
+                class="flex-1-1-0 rounded-lg overflow-y-auto pa-4"
+                color="primary"
                 :data-testid="`${pageTestId}-page-container`"
                 elevation="1"
                 :style="{ minHeight: 0, minWidth: 0 }"
             >
                 <RouterView />
             </v-card>
+            <div
+                v-else
+                class="flex-1-1-0 overflow-y-auto pa-3 ma-n3"
+                :data-testid="`${pageTestId}-page-container`"
+                :style="{ minHeight: 0, minWidth: 0 }"
+            >
+                <RouterView />
+            </div>
         </div>
     </div>
 </template>
@@ -48,14 +55,14 @@ import ContainerHeader from "./ContainerHeader.vue";
 import ContainerSidePanel from "./ContainerSidePanel.vue";
 import ContainerRouteActions from "./ContainerRouteActions.vue";
 import { buildBaseNavigationLinks } from "./navigationLinks";
-import { useCurrentUser } from "@/composables/useCurrentUser";
+import { useCurrentUserQuery } from "@/composables/useCurrentUser";
 import { useInstitutionBranding } from "@/composables/useInstitutionBranding";
 import { useAbilities } from "@/services/ability";
 
 const route = useRoute();
 const { t } = useI18n();
 const { logout } = useLogout();
-const { user } = useCurrentUser();
+const { data: user } = useCurrentUserQuery();
 const { institutionName, institutionLogo } = useInstitutionBranding();
 const ability = useAbilities();
 

@@ -7,7 +7,7 @@
         <v-btn
             v-if="ability.canView(GUIComponent.NavigationOverview)"
             :active="false"
-            class="mb-2 rounded-lg overflow-hidden"
+            class="rounded-lg overflow-hidden"
             :class="
                 isNavigationOverviewRoute ? undefined : 'text-medium-emphasis'
             "
@@ -15,13 +15,11 @@
             data-testid="layout-navOverview-toggle"
             :icon="isNavigationOverviewRoute ? 'mdi-close' : 'mdi-menu'"
             size="large"
-            :to="
-                isNavigationOverviewRoute ? homeRoute : navigationOverviewRoute
-            "
+            :to="navigationOverviewRoute"
             :variant="isNavigationOverviewRoute ? 'flat' : 'text'"
         />
 
-        <v-divider class="align-self-stretch mb-4 mx-2" :opacity="0.2" />
+        <v-divider class="align-self-stretch mb-2 mx-2" :opacity="0.2" />
 
         <v-btn
             v-for="link in links"
@@ -57,7 +55,6 @@ defineProps<{
     links: BaseNavigationLink[];
     isNavigationOverviewRoute: boolean;
     navigationOverviewRoute: RouteLocationAsRelative;
-    homeRoute: RouteLocationAsRelative;
     ability: AbilityLike;
 }>();
 

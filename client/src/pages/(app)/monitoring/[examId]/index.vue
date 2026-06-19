@@ -9,75 +9,71 @@
         }"
     >
     </AlertMsg>
-    <v-row v-else>
-        <v-col cols="12">
-            <!-- Infos -->
-            <v-row>
-                <v-col cols="12">
-                    <MonitoringOverviewInfos></MonitoringOverviewInfos>
+
+    <BasicPage
+        v-else
+        floating
+        :title="monitoringStore.selectedExam?.quizName ?? ''"
+        :bread-crumb="breadCrumb"
+        data-test-id="monitoring-detail-page"
+    >
+        <template #PanelLeft>
+            <MonitoringContextPanel
+                :refresh-seconds="REFRESH_INTERVAL / 1000"
+            />
+        </template>
+
+        <template v-if="connectionsTotal != null" #ActionButton>
+            <v-sheet
+                border
+                color="surface"
+                rounded="lg"
+                class="d-inline-flex align-center ga-2 px-4 py-2"
+            >
+                <v-icon color="primary" size="18">
+                    mdi-account-multiple-outline
+                </v-icon>
+                <span class="text-title-medium font-weight-bold text-primary">
+                    {{ connectionsTotal }}
+                </span>
+                <span class="text-body-medium font-weight-bold">
+                    {{ $t("monitoringOverview.infos.connections") }}
+                </span>
+            </v-sheet>
+        </template>
+
+        <template #PanelMain>
+            <v-row class="align-stretch">
+                <v-col cols="12" :md="dashColMd">
+                    <MonitoringOverviewClients :exam-id="examId" />
+                </v-col>
+                <v-col v-if="hasNotifications" cols="12" :md="dashColMd">
+                    <MonitoringOverviewNotifications :exam-id="examId" />
+                </v-col>
+                <v-col v-if="hasIndicators" cols="12" :md="dashColMd">
+                    <MonitoringOverviewIndicators :exam-id="examId" />
+                </v-col>
+                <v-col v-if="hasGroups" cols="12">
+                    <MonitoringOverviewGroups :exam-id="examId" />
                 </v-col>
             </v-row>
-
-            <!-- Client States, Notifications and Indicators -->
-            <v-row class="mt-5 align-stretch">
-                <!-- Client States -->
-                <v-col :cols="hasIndicators ? 4 : 6">
-                    <v-sheet class="pa-6 h-100" elevation="2" rounded="lg">
-                        <MonitoringOverviewClients :exam-id="examId" />
-                    </v-sheet>
-                </v-col>
-
-                <!-- Notifications and ask -->
-                <v-col :cols="hasIndicators ? 4 : 6">
-                    <v-sheet class="pa-6 h-100" elevation="2" rounded="lg">
-                        <MonitoringOverviewNotifications
-                            v-if="
-                                monitoringStore.monitoringOverviewData
-                                    ?.notifications
-                            "
-                            :exam-id="examId"
-                        />
-                    </v-sheet>
-                </v-col>
-
-                <!-- Indicators -->
-                <v-col v-if="hasIndicators" cols="4">
-                    <v-sheet class="pa-6 h-100" elevation="2" rounded="lg">
-                        <MonitoringOverviewIndicators :exam-id="examId" />
-                    </v-sheet>
-                </v-col>
-            </v-row>
-
-            <!-- Groups -->
-            <v-row v-if="hasGroups" class="mt-5">
-                <v-col cols="12">
-                    <v-sheet
-                        class="pa-6 fill-height min-height-sheet"
-                        elevation="2"
-                        rounded="lg"
-                    >
-                        <MonitoringOverviewGroups
-                            :exam-id="examId"
-                        ></MonitoringOverviewGroups>
-                    </v-sheet>
-                </v-col>
-            </v-row>
-        </v-col>
-    </v-row>
+        </template>
+    </BasicPage>
 </template>
 
 <script setup lang="ts">
 import AlertMsg from "@/components/widgets/AlertMsg.vue";
+import BasicPage from "@/components/layout/pages/BasicPage.vue";
 import { useMonitoringStore } from "@/stores/seb-server/monitoringStore.ts";
-import MonitoringOverviewIndicators from "./components/MonitoringOverviewIndicators.vue";
 import * as indicatorService from "@/services/seb-server/indicatorService.ts";
 import { useRoute } from "vue-router";
 import { computed, onBeforeMount, onBeforeUnmount } from "vue";
 import { MonitoringOverview } from "@/models/seb-server/monitoring.ts";
 import { Indicators } from "@/models/seb-server/indicators.ts";
-import MonitoringOverviewInfos from "./components/MonitoringOverviewInfos.vue";
+import MonitoringContextPanel from "./components/MonitoringContextPanel.vue";
 import MonitoringOverviewClients from "./components/MonitoringOverviewClients.vue";
 import MonitoringOverviewNotifications from "./components/MonitoringOverviewNotifications.vue";
+import MonitoringOverviewIndicators from "./components/MonitoringOverviewIndicators.vue";
 import MonitoringOverviewGroups from "./components/MonitoringOverviewGroups.vue";
 import * as monitoringService from "@/services/seb-server/monitoringService.ts";
 import * as useMonitoringData from "./client/composables/useMonitoringData.ts";
@@ -85,6 +81,9 @@ import {
     getMonitoringDisabledWarningText,
     isMonitoringDisabled,
 } from "@/utils/monitoringUtils.ts";
+import { translate } from "@/utils/generalUtils.ts";
+import { typedTo } from "@/router/typedTo.ts";
+import type { BreadCrumbItem } from "@/components/widgets/breadCrumb/types.ts";
 
 definePage({
     meta: {
@@ -116,6 +115,22 @@ onBeforeUnmount(() => {
     stopIntervalRefresh();
 });
 
+const breadCrumb = computed<BreadCrumbItem[]>(() => [
+    {
+        label: translate("titles.monitoring"),
+        link: typedTo({ name: "/(app)/monitoring/" }),
+    },
+    { label: monitoringStore.selectedExam?.quizName ?? "" },
+]);
+
+const connectionsTotal = computed(
+    () => monitoringStore.monitoringOverviewData?.clientStates.total,
+);
+
+const hasNotifications = computed(
+    () => monitoringStore.monitoringOverviewData?.notifications != null,
+);
+
 const hasIndicators = computed(
     () =>
         monitoringStore.monitoringOverviewData?.indicators.BATTERY_STATUS !=
@@ -127,6 +142,12 @@ const hasGroups = computed(
     () =>
         (monitoringStore.monitoringOverviewData?.clientGroups.length ?? 0) > 0,
 );
+
+const dashColMd = computed(() => {
+    const count =
+        1 + (hasNotifications.value ? 1 : 0) + (hasIndicators.value ? 1 : 0);
+    return Math.floor(12 / count);
+});
 
 // NOTE: This is the backend data fetch that gets called in an update interval.
 //       To prevent subsequent calls when the backend is not responding, what would lead to
@@ -189,9 +210,3 @@ function stopIntervalRefresh() {
     }
 }
 </script>
-
-<style scoped>
-.min-height-sheet {
-    min-height: 354px;
-}
-</style>

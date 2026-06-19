@@ -1,38 +1,10 @@
-import { Threshold } from "@/models/seb-server/examTemplate";
+import { KeyValueItem } from "@/components/widgets/keyValueList/types.ts";
 
-type SummarySectionValueType =
-    | {
-          type: "string";
-          value: string;
-      }
-    | {
-          type: "boolean";
-          value: boolean;
-      }
-    | {
-          type: "thresholds";
-          value: Threshold[];
-      }
-    | {
-          type: "password";
-          value: string;
-      };
-
-export type SummarySectionItem = {
-    key: string;
-} & (
-    | {
-          type: "basic";
-          label: string;
-          value: SummarySectionValueType;
-      }
-    | {
-          type: "collection";
-          items: (SummarySectionItem & { type: "basic" })[];
-      }
-);
+// The summary rows are plain key-value items. Kept as an alias so the existing
+// getSummary*.ts helpers can keep importing SummarySectionItem.
+export type SummarySectionItem = KeyValueItem;
 
 export type SummarySectionData = {
     label: string;
-    items: SummarySectionItem[];
+    items: KeyValueItem[];
 };

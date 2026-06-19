@@ -1,9 +1,6 @@
-export type APIMessage = {
-    messageCode: string;
-    systemMessage?: string;
-    details?: string;
-    attributes?: string[];
-};
+import type { APIMessage } from "@/services/errors/apiMessage.ts";
+
+export type { APIMessage };
 
 export type BackendFieldError = {
     apiMessage: APIMessage;

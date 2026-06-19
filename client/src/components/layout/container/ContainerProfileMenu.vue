@@ -202,7 +202,7 @@ const quickActions = computed(() => [
         href: undefined,
         rel: undefined,
         target: undefined,
-        to: typedTo({ name: "/(app)/user-account/profile/" }),
+        to: typedTo({ name: "/(app)/profile/" }),
     },
     {
         icon: "mdi-file-document-outline",

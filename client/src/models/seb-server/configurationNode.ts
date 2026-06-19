@@ -1,6 +1,8 @@
 export type ConfigurationTemplateKey = {
     id: string;
     name: string;
+    lastUpdateTime: string;
+    lastUpdateUserName: string;
 };
 
 export type SEBSettingsImport = {

@@ -1,8 +1,19 @@
 <template>
-    <BasicSettingsPage
+    <BasicPage
         :title="$t('titles.createInstitution')"
+        :bread-crumb="[
+            {
+                label: $t('titles.institutions'),
+                link: { name: '/(app)/institution/' },
+            },
+            { label: $t('titles.createInstitution') },
+        ]"
         data-testid="createInstitution-page"
     >
+        <template #SubNav>
+            <SettingsNavigation />
+        </template>
+
         <template #PanelMain>
             <HintText
                 text-identifier="institutions.hints.create"
@@ -33,21 +44,22 @@
                 />
             </div>
         </template>
-    </BasicSettingsPage>
+    </BasicPage>
 </template>
 
 <script setup lang="ts">
-import { ref } from "vue";
+import { computed, ref } from "vue";
 import { useRouter } from "vue-router";
-import BasicSettingsPage from "@/components/layout/pages/BasicSettingsPage.vue";
+import BasicPage from "@/components/layout/pages/BasicPage.vue";
+import SettingsNavigation from "@/components/widgets/navigation/SettingsNavigation.vue";
 import FormBuilder from "@/components/widgets/formBuilder/FormBuilder.vue";
 import CancelButton from "@/components/widgets/CancelButton.vue";
 import ConfirmButton from "@/components/widgets/ConfirmButton.vue";
 import HintText from "@/components/widgets/HintText.vue";
-import { useMutation } from "@/composables/useMutation.ts";
-import { notify } from "@/services/notifications/notify.ts";
 import { applyBackendFieldErrors } from "@/services/errors/formErrorMapping.ts";
-import { createInstitution } from "@/services/seb-server/institutionService.ts";
+import { submitWithFormErrors } from "@/services/errors/submitWithFormErrors.ts";
+import { toAppErrorOrUndefined } from "@/services/errors/toAppError.ts";
+import { useCreateInstitutionMutation } from "@/pages/(app)/institution/api/useCreateInstitutionMutation.ts";
 import { useInstitutionFormFields } from "@/pages/(app)/institution/composables/useInstitutionFormFields.ts";
 
 definePage({
@@ -64,48 +76,52 @@ const { formFields, name, urlSuffix, logoImage } = useInstitutionFormFields();
 
 const formRef = ref<InstanceType<typeof FormBuilder>>();
 
-const {
-    mutateData: createInst,
-    data: createdInstitution,
-    error: createError,
-} = useMutation(createInstitution);
+const { mutateAsync: createInstitution, error: createMutationError } =
+    useCreateInstitutionMutation();
+const createError = computed(() =>
+    toAppErrorOrUndefined(createMutationError.value),
+);
 
-async function submit() {
-    const result = await formRef.value?.validate();
-    if (!result?.valid) return;
-
-    const selectedName = name.value;
-    if (!selectedName) return;
-
-    await createInst({
-        name: selectedName,
-        urlSuffix: urlSuffix.value || undefined,
-        logoImage: logoImage.value ?? undefined,
+const applyBackendErrors = (error: unknown) =>
+    applyBackendFieldErrors(error, {
+        forms: [
+            {
+                form: formRef.value,
+                fields: formFields.value.map((field) => field.name),
+            },
+        ],
     });
 
-    if (createdInstitution.value) {
-        const search = createdInstitution.value.name;
-        await router.push({
-            name: "/(app)/institution/",
-            query: { search },
-        });
+const submit = async () => {
+    const result = await formRef.value?.validate();
+    if (!result?.valid) {
         return;
     }
-    if (createError.value) {
-        const result = applyBackendFieldErrors(createError.value, {
-            forms: [
-                {
-                    form: formRef.value,
-                    fields: formFields.value.map((field) => field.name),
-                },
-            ],
-        });
-        if (!result.fullyHandled) {
-            notify.serverError(result.appError, {
-                contextLabel: "institution",
-                onlyMessages: result.unhandledMessages,
-            });
-        }
+
+    const institutionName = name.value;
+    if (!institutionName) {
+        return;
     }
-}
+
+    const created = await submitWithFormErrors({
+        run: () =>
+            createInstitution({
+                name: institutionName,
+                urlSuffix: urlSuffix.value || undefined,
+                logoImage: logoImage.value ?? undefined,
+            }),
+        applyErrors: applyBackendErrors,
+        error: createError,
+        contextLabel: "institution",
+    });
+
+    if (!created) {
+        return;
+    }
+
+    await router.push({
+        name: "/(app)/institution/",
+        query: { search: created.name },
+    });
+};
 </script>

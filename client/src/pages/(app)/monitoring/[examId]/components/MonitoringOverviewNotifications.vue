@@ -1,108 +1,94 @@
 <template>
-    <v-row>
-        <!-- Notifications -->
-        <v-col cols="12">
-            <template
-                v-if="monitoringStore.monitoringOverviewData?.notifications"
-            >
-                <div class="text-title-large font-weight-bold mb-4">
-                    {{
-                        translate(
-                            "monitoringOverview.notifications.notifications",
-                        )
-                    }}
-                </div>
+    <v-card border elevation="1" rounded="lg" class="h-100 d-flex flex-column">
+        <div class="d-flex align-center px-5 py-4 bg-background">
+            <span class="text-body-medium font-weight-bold">
+                {{ $t("monitoringOverview.notifications.notifications") }}
+            </span>
+        </div>
+        <v-divider />
 
-                <template
-                    v-for="(value, key) in monitoringStore
-                        .monitoringOverviewData?.notifications"
-                    :key="key"
-                >
-                    <v-card
-                        v-if="key !== 'total'"
-                        class="rounded-lg mb-3 px-4 py-3 d-flex align-center justify-space-between"
-                        :color="getNotificationCardBackground(key, value)"
-                        :hover="true"
-                        :ripple="false"
-                        variant="flat"
+        <div class="flex-grow-1 pa-5">
+            <template
+                v-for="(entry, index) in notificationEntries"
+                :key="entry.key"
+            >
+                <v-divider v-if="index > 0" />
+                <v-hover v-slot="{ isHovering, props: hoverProps }">
+                    <div
+                        v-bind="hoverProps"
+                        class="d-flex align-center ga-3 px-2 py-3 rounded-lg"
+                        :class="isHovering ? 'bg-background' : ''"
+                        :style="{ cursor: 'pointer' }"
                         @click="
                             goToMonitoring(
                                 MonitoringHeaderEnum.SHOW_NOTIFCATION,
                                 generalUtils.findEnumValue(
                                     NotificationEnum,
-                                    key,
+                                    entry.key,
                                 )!,
                                 examId,
                             )
                         "
                     >
-                        <div class="d-flex align-center">
-                            <!-- Icon Box -->
-                            <div
-                                class="mr-3 d-flex align-center justify-center"
-                                style="
-                                    width: 52px;
-                                    height: 52px;
-                                    border-radius: 10px;
-                                    padding: 8px;
+                        <v-avatar
+                            :color="
+                                getNotificationIconBackground(
+                                    entry.key,
+                                    entry.value,
+                                )
+                            "
+                            size="42"
+                            rounded="lg"
+                        >
+                            <v-icon
+                                :color="
+                                    getNotificationIconColor(
+                                        entry.key,
+                                        entry.value,
+                                    )
                                 "
-                                :style="{
-                                    backgroundColor:
-                                        getNotificationIconBackground(
-                                            key,
-                                            value,
-                                        ),
-                                }"
+                                size="22"
                             >
-                                <v-icon
-                                    :color="
-                                        getNotificationIconColor(key, value)
-                                    "
-                                    size="28"
-                                >
-                                    {{
-                                        getNotificationIcon(
-                                            generalUtils.findEnumValue(
-                                                NotificationEnum,
-                                                key,
-                                            ),
-                                        )
-                                    }}
-                                </v-icon>
-                            </div>
+                                {{
+                                    getNotificationIcon(
+                                        generalUtils.findEnumValue(
+                                            NotificationEnum,
+                                            entry.key,
+                                        ),
+                                    )
+                                }}
+                            </v-icon>
+                        </v-avatar>
 
-                            <!-- Text -->
-                            <div>
-                                <div
-                                    class="text-body-medium font-weight-bold text-grey-darken-1"
-                                >
-                                    {{ translate(key) }}
-                                </div>
-                                <div class="font-weight-bold text-body-large">
-                                    {{
-                                        key === "RAISE_HAND"
-                                            ? "Students requesting assistance"
-                                            : "Temporarily restricted access"
-                                    }}
-                                </div>
+                        <div class="flex-grow-1">
+                            <div class="text-body-medium font-weight-bold">
+                                {{ translate(entry.key) }}
+                            </div>
+                            <div class="text-body-small text-medium-emphasis">
+                                {{ getNotificationSub(entry.key) }}
                             </div>
                         </div>
 
-                        <!-- Count -->
                         <v-avatar
-                            :color="getNotificationAvatarColor(key, value)"
-                            size="45"
+                            :color="
+                                getNotificationAvatarColor(
+                                    entry.key,
+                                    entry.value,
+                                )
+                            "
+                            size="36"
                         >
                             <span
-                                class="text-white text-body-large font-weight-bold"
-                                >{{ value }}</span
+                                class="text-body-medium font-weight-bold text-white"
                             >
+                                {{ entry.value }}
+                            </span>
                         </v-avatar>
-                    </v-card>
-                </template>
+                    </div>
+                </v-hover>
             </template>
-        </v-col>
-    </v-row>
+        </div>
+    </v-card>
 </template>
 
 <script setup lang="ts">
@@ -114,16 +100,20 @@ import { useMonitoringStore } from "@/stores/seb-server/monitoringStore.ts";
 import { translate } from "@/utils/generalUtils.ts";
 import * as generalUtils from "@/utils/generalUtils.ts";
 import { goToMonitoring } from "../composables/useMonitoringNavigation.ts";
+import { computed } from "vue";
 
 const props = defineProps<{
     examId: string;
 }>();
 
-// exam
 const examId = props.examId;
-
-// stores
 const monitoringStore = useMonitoringStore();
+
+const notificationEntries = computed(() =>
+    Object.entries(monitoringStore.monitoringOverviewData?.notifications ?? {})
+        .filter(([key]) => key !== "total")
+        .map(([key, value]) => ({ key, value })),
+);
 
 const NEUTRAL_BG = "#f0f0f0";
 const NEUTRAL_ICON = "#000000";
@@ -157,14 +147,16 @@ function getNotificationIconBackground(key: string, value: unknown): string {
     }
 }
 
-function getNotificationCardBackground(key: string, value: unknown): string {
-    return getNotificationIconBackground(key, value);
-}
-
 function getNotificationAvatarColor(key: string, value: unknown): string {
     return isActiveNotification(value)
         ? getNotificationIconColor(key, value)
         : NEUTRAL_AVATAR;
+}
+
+function getNotificationSub(key: string): string {
+    return key === "RAISE_HAND"
+        ? "Students requesting assistance"
+        : "Temporarily restricted access";
 }
 
 function getNotificationIcon(notification: NotificationEnum | null): string {
@@ -179,5 +171,3 @@ function getNotificationIcon(notification: NotificationEnum | null): string {
     }
 }
 </script>
-
-<style scoped></style>

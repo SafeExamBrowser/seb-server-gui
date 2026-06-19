@@ -1,33 +1,21 @@
-import { useFetch } from "@/composables/useFetch";
-import type { UserAccount } from "@/models/userAccount";
-import { getPersonalUserAccount } from "@/services/seb-server/userAccountService";
+import { queryOptions, useQuery } from "@tanstack/vue-query";
+import { getCurrentUserAccountQueryKey } from "@/api/seb-server/generated/hey-api/@tanstack/vue-query.gen.ts";
+import { heySebServerClient } from "@/api/seb-server/http/heySebServerClient";
+import { getCurrentUserAccount } from "@/services/seb-server/userAccountService";
+import { queryClient } from "@/services/http/queryClient";
 
-const {
-    data: user,
-    loading,
-    error,
-    fetchData,
-} = useFetch<UserAccount>(getPersonalUserAccount);
+export const currentUserQueryOptions = () =>
+    queryOptions({
+        queryKey: getCurrentUserAccountQueryKey({
+            client: heySebServerClient,
+        }),
+        queryFn: () => getCurrentUserAccount(),
+    });
+
+export const useCurrentUserQuery = () => useQuery(currentUserQueryOptions());
 
 export function clearCurrentUser(): void {
-    user.value = undefined;
-    error.value = undefined;
-    loading.value = false;
-}
-
-export function useCurrentUser() {
-    if (
-        user.value === undefined &&
-        !loading.value &&
-        error.value === undefined
-    ) {
-        void fetchData();
-    }
-
-    return {
-        user,
-        loading,
-        error,
-        refetch: fetchData,
-    };
+    queryClient.removeQueries({
+        queryKey: currentUserQueryOptions().queryKey,
+    });
 }

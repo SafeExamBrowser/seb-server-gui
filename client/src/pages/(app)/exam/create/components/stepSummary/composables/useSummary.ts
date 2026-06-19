@@ -12,8 +12,11 @@ import { getSummaryExamTemplate } from "@/pages/(app)/exam/create/components/ste
 import { getSummaryClientGroups } from "@/pages/(app)/exam/create/components/stepSummary/helpers/getSummaryClientGroups.ts";
 import { getSummarySupervisors } from "@/pages/(app)/exam/create/components/stepSummary/helpers/getSummarySupervisors.ts";
 import { getSummaryQuitPassword } from "@/pages/(app)/exam/create/components/stepSummary/helpers/getSummaryQuitPassword.ts";
+import { useCreateExamStore } from "@/pages/(app)/exam/create/composables/store/useCreateExamStore";
+import { getSummaryExamWithURL } from "@/pages/(app)/exam/create/components/stepSummary/helpers/getSummaryExamWithURL.ts";
 
 export const useSummary = () => {
+    const examStore = useCreateExamStore();
     const assessmentToolStore = useStepAssessmentToolStore();
     const examTemplateStore = useStepExamTemplateStore();
     const clientGroupsStore = useStepClientGroupsStore();
@@ -45,6 +48,19 @@ export const useSummary = () => {
     const summarySections = computed<SummarySectionData[]>(() => {
         if (loading.value || errors.value.length > 0) {
             return [];
+        }
+
+        if (examStore.createWithURL) {
+            return [
+                getSummaryExamWithURL(),
+                getSummaryExamTemplate(examTemplateStore.selectedExamTemplate),
+                getSummaryClientGroups(clientGroupsStore.selectedClientGroups),
+                getSummarySupervisors(
+                    supervisorsStore.selectedSupervisorIds,
+                    supervisors.value ?? [],
+                ),
+                getSummaryQuitPassword(quitPasswordStore.quitPassword),
+            ];
         }
 
         return [

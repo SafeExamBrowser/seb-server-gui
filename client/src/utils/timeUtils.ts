@@ -1,5 +1,7 @@
 import { toZonedTime } from "date-fns-tz";
-import { useUserAccountStore } from "@/stores/authentication/userAccountStore";
+import { currentUserQueryOptions } from "@/composables/useCurrentUser";
+import { queryClient } from "@/services/http/queryClient";
+import { DateTime, TimeRange } from "@/components/widgets/formBuilder/types";
 
 export function getCurrentDateString(): string {
     const date = new Date();
@@ -143,10 +145,11 @@ export function getStartAndEndTimestampOfDay(sqlDate: string): {
 }
 
 function convertUTCToTimeZone(utcDate: number): Date {
-    const userAccountStore = useUserAccountStore();
-
     const utcDateObject = new Date(utcDate);
-    const timezone: string | undefined = userAccountStore.userAccount?.timezone;
+    // plain function without a reactive context: read the cached current user once
+    const timezone: string | undefined = queryClient.getQueryData(
+        currentUserQueryOptions().queryKey,
+    )?.timezone;
     if (timezone === null || timezone === undefined) {
         return utcDateObject;
     }
@@ -200,3 +203,36 @@ export function getTimestampFromPeriodSelection(
 
     return now.getTime().toString();
 }
+
+export const formatIsoToReadableTimeRange = (range: TimeRange) => {
+    const from = getDateWithTime(range.fromDate, range.fromTime);
+    const to = getDateWithTime(range.toDate, range.toTime);
+
+    return (
+        formatIsoToReadableDateTime(String(from)) +
+        " - " +
+        formatIsoToReadableDateTime(String(to))
+    );
+};
+
+export const getTimestampFromDateAndTime = (
+    date: Date,
+    time: string,
+): number => {
+    const timeSplit = time.split(":");
+    date.setHours(Number(timeSplit[0]), Number(timeSplit[1]));
+    return date.getTime();
+};
+
+export const getTimestampFromDateTime = (dateTime: DateTime): number => {
+    const date = dateTime.date;
+    const time = dateTime.time.split(":");
+    date.setHours(Number(time[0]), Number(time[1]));
+    return date.getTime();
+};
+
+export const getDateWithTime = (date: Date, time: string): Date => {
+    const timeSplit = time.split(":");
+    date.setHours(Number(timeSplit[0]), Number(timeSplit[1]));
+    return new Date(date);
+};

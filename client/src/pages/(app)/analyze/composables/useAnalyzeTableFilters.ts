@@ -13,11 +13,6 @@ import {
 export function useAnalyzeTableFilters() {
     return computed<FilterSectionDef[]>(() => [
         {
-            key: TYPE_FILTER_KEY,
-            title: translate(`${TRANSLATION_PREFIX}.examType`),
-            options: EXAM_TYPE_OPTIONS,
-        },
-        {
             key: EXAM_STATUS_FILTER_KEY,
             title: translate(`${TRANSLATION_PREFIX}.examState`),
             options: [
@@ -32,6 +27,12 @@ export function useAnalyzeTableFilters() {
                     color: getExamStatusFilterColor(ExamStatusEnum.ARCHIVED),
                 },
             ],
+        },
+        {
+            key: TYPE_FILTER_KEY,
+            title: translate(`${TRANSLATION_PREFIX}.examType`),
+            options: EXAM_TYPE_OPTIONS,
+            multiple: true,
         },
     ]);
 }

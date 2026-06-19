@@ -1,5 +1,6 @@
 import StepAssessmentTool from "@/pages/(app)/exam/create/components/stepAssessmentTool/StepAssessmentTool.vue";
 import StepQuiz from "@/pages/(app)/exam/create/components/stepQuiz/StepQuiz.vue";
+import StepWithURL from "@/pages/(app)/exam/create/components/stepWithURL/StepWithURL.vue";
 import StepExamTemplate from "@/pages/(app)/exam/create/components/stepExamTemplate/StepExamTemplate.vue";
 import StepClientGroups from "@/pages/(app)/exam/create/components/stepClientGroups/StepClientGroups.vue";
 import StepSupervisors from "@/pages/(app)/exam/create/components/stepSupervisors/StepSupervisors.vue";
@@ -9,6 +10,7 @@ import StepSummary from "@/pages/(app)/exam/create/components/stepSummary/StepSu
 export const stepComponents = {
     StepAssessmentTool,
     StepQuiz,
+    StepWithURL,
     StepExamTemplate,
     StepClientGroups,
     StepSupervisors,

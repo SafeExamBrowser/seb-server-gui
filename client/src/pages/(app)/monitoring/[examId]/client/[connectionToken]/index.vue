@@ -1,33 +1,55 @@
 <template>
-    <template v-if="isDataLoaded">
-        <MonitoringDetailsInfo
-            :exam-id="examId"
-            :connection-token="connectionToken"
-            @update-page-info="updatePage"
-        ></MonitoringDetailsInfo>
-        <MonitoringDetailsMain
-            :exam-id="examId"
-            :connection-token="connectionToken"
-            @update-page-main="updatePage"
-        ></MonitoringDetailsMain>
-    </template>
+    <BasicPage
+        v-if="isDataLoaded"
+        floating
+        :title="clientName"
+        :bread-crumb="breadCrumb"
+        data-test-id="monitoring-client-detail-page"
+    >
+        <template #PanelLeft>
+            <MonitoringDetailsContextPanel
+                :exam-id="examId"
+                :connection-token="connectionToken"
+                @update-page-info="handleUpdatePage"
+            />
+        </template>
+
+        <template #ActionButton>
+            <v-btn
+                color="black"
+                prepend-icon="mdi-arrow-left"
+                variant="outlined"
+                @click="handleBackToClientList"
+            >
+                {{ $t("monitoringDetails.info.backToClientList") }}
+            </v-btn>
+        </template>
+
+        <template #PanelMain>
+            <MonitoringDetailsMain :connection-token="connectionToken" />
+        </template>
+    </BasicPage>
 </template>
 
 <script setup lang="ts">
+import BasicPage from "@/components/layout/pages/BasicPage.vue";
 import { useMonitoringStore } from "@/stores/seb-server/monitoringStore.ts";
 import * as monitoringService from "@/services/seb-server/monitoringService.ts";
 import * as indicatorService from "@/services/seb-server/indicatorService.ts";
-import { useRoute } from "vue-router";
-import { ref, onBeforeMount, onBeforeUnmount } from "vue";
+import { useRoute, useRouter } from "vue-router";
+import { computed, ref, onBeforeMount, onBeforeUnmount } from "vue";
 import {
     ClientNotification,
     SingleConnection,
 } from "@/models/seb-server/monitoring.ts";
 import { Indicators } from "@/models/seb-server/indicators.ts";
 import MonitoringDetailsMain from "./components/MonitoringDetailsMain.vue";
-import MonitoringDetailsInfo from "./components/MonitoringDetailsInfo.vue";
+import MonitoringDetailsContextPanel from "./components/MonitoringDetailsContextPanel.vue";
 import * as useMonitoringData from "@/pages/(app)/monitoring/[examId]/client/composables/useMonitoringData.ts";
 import { extractClientGroupNames } from "@/utils/monitoringUtils.ts";
+import { translate } from "@/utils/generalUtils.ts";
+import { typedTo } from "@/router/typedTo.ts";
+import type { BreadCrumbItem } from "@/components/widgets/breadCrumb/types.ts";
 
 // route params
 const examId = useRoute().params.examId;
@@ -35,9 +57,10 @@ const connectionToken = useRoute().params.connectionToken;
 
 // stores
 const monitoringStore = useMonitoringStore();
+const router = useRouter();
 
 // data load
-const isDataLoaded = ref<boolean>(false);
+const isDataLoaded = ref(false);
 
 // interval
 let intervalRefresh: ReturnType<typeof setInterval> | null = null;
@@ -60,6 +83,53 @@ onBeforeMount(async () => {
 onBeforeUnmount(() => {
     stopIntervalRefresh();
 });
+
+//= ==============breadcrumb, title and navigation====================
+const nameParts = computed(() => {
+    const rawName =
+        monitoringStore.selectedSingleConn?.cdat.examUserSessionId ?? "";
+    return rawName.split("|").filter((part) => part.trim() !== "");
+});
+
+const clientName = computed(() => nameParts.value.join(" ").trim());
+
+const breadCrumb = computed<BreadCrumbItem[]>(() => {
+    const items: BreadCrumbItem[] = [
+        {
+            label: translate("titles.monitoring"),
+            link: typedTo({ name: "/(app)/monitoring/" }),
+        },
+    ];
+
+    const selectedExam = monitoringStore.selectedExam;
+    if (selectedExam !== null) {
+        items.push({
+            label: selectedExam.quizName,
+            link: typedTo({
+                name: "/(app)/monitoring/[examId]/",
+                params: { examId: selectedExam.id.toString() },
+            }),
+        });
+    }
+
+    items.push({
+        label: translate("titles.clientList"),
+        link: typedTo({
+            name: "/(app)/monitoring/[examId]/client/",
+            params: { examId },
+        }),
+    });
+
+    return items;
+});
+
+function handleBackToClientList() {
+    void router.push({
+        name: "/(app)/monitoring/[examId]/client/",
+        params: { examId },
+        query: monitoringStore.currentMonitoringQuery,
+    });
+}
 
 //= =============data fetching================
 // NOTE: This is the backend data fetch that gets called in an update interval.
@@ -137,25 +207,8 @@ function stopIntervalRefresh() {
     }
 }
 
-async function updatePage() {
+async function handleUpdatePage() {
     getSingleConnection();
     getPendingNotifications();
 }
-
-// //todo
-//
-// // Search + clear search
-// function onSearch() {
-//     searchQuery.value = userAccountStore.searchField?.trim().toLowerCase() ?? "";
-//     options.value.page = 1;
-// }
-// function onClearSearch() {
-//     userAccountStore.searchField = "";
-//     searchQuery.value = "";
-//     selectedStatus.value = null;
-//     selectedInstitutionId.value = null;
-//     options.value.page = 1;
-// }
 </script>
-
-<style scoped></style>

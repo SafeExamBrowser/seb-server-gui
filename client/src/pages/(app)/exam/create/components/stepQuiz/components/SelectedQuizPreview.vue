@@ -1,45 +1,63 @@
 <template>
-    <div class="pa-4">
-        <div class="text-primary text-title-large font-weight-bold mb-2">
-            {{ quiz.quiz_name }}
+    <div class="d-flex align-start ga-3 pa-4">
+        <v-icon
+            icon="mdi-check-circle-outline"
+            color="primary"
+            size="26"
+            class="mt-1"
+        />
+        <div class="flex-grow-1">
+            <div
+                class="d-flex align-center ga-1 text-body-small text-medium-emphasis text-uppercase font-weight-bold mb-1"
+            >
+                <v-icon icon="mdi-magnify" size="14" />
+                {{ $t("createExam.steps.quiz.preview.selectedExam") }}
+            </div>
+            <div class="text-primary text-title-medium font-weight-bold mb-3">
+                {{ quiz.quiz_name }}
+            </div>
+            <div class="d-flex flex-wrap ga-8">
+                <div>
+                    <div class="text-body-small text-medium-emphasis">
+                        {{ $t("createExam.steps.quiz.preview.start") }}
+                    </div>
+                    <div
+                        class="text-primary text-body-medium font-weight-medium"
+                    >
+                        {{ formatIsoToReadableDateTime(quiz.quiz_start_time) }}
+                    </div>
+                </div>
+                <div>
+                    <div class="text-body-small text-medium-emphasis">
+                        {{ $t("createExam.steps.quiz.preview.end") }}
+                    </div>
+                    <div
+                        class="text-primary text-body-medium font-weight-medium"
+                    >
+                        {{
+                            quiz.quiz_end_time
+                                ? formatIsoToReadableDateTime(
+                                      quiz.quiz_end_time,
+                                  )
+                                : "—"
+                        }}
+                    </div>
+                </div>
+                <div v-if="quiz.quiz_start_url">
+                    <div class="text-body-small text-medium-emphasis">
+                        {{ $t("createExam.steps.quiz.preview.startUrl") }}
+                    </div>
+                    <a
+                        class="text-primary text-body-medium text-decoration-underline"
+                        :href="quiz.quiz_start_url"
+                        target="_blank"
+                        rel="noopener"
+                    >
+                        {{ quiz.quiz_start_url }}
+                    </a>
+                </div>
+            </div>
         </div>
-        <v-row no-gutters>
-            <v-col cols="12" md="6">
-                <div class="text-body-medium">
-                    {{ $t("createExam.steps.quiz.preview.start") }}
-                </div>
-                <div class="text-primary text-body-large font-weight-medium">
-                    {{ formatIsoToReadableDateTime(quiz.quiz_start_time) }}
-                </div>
-            </v-col>
-            <v-col cols="12" md="6">
-                <div class="text-body-medium">
-                    {{ $t("createExam.steps.quiz.preview.end") }}
-                </div>
-                <div class="text-primary text-body-large font-weight-medium">
-                    {{
-                        quiz.quiz_end_time
-                            ? formatIsoToReadableDateTime(quiz.quiz_end_time)
-                            : "—"
-                    }}
-                </div>
-            </v-col>
-        </v-row>
-        <v-row v-if="quiz.quiz_start_url" no-gutters class="mt-2">
-            <v-col>
-                <div class="text-body-medium">
-                    {{ $t("createExam.steps.quiz.preview.startUrl") }}
-                </div>
-                <a
-                    class="text-primary text-body-medium text-decoration-underline"
-                    :href="quiz.quiz_start_url"
-                    target="_blank"
-                    rel="noopener"
-                >
-                    {{ quiz.quiz_start_url }}
-                </a>
-            </v-col>
-        </v-row>
     </div>
 </template>
 

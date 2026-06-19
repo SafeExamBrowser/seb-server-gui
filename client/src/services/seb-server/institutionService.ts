@@ -1,54 +1,63 @@
-import * as apiService from "@/services/apiService";
+import { heySebServerClient as client } from "@/api/seb-server/http/heySebServerClient.ts";
 import {
-    CreateInstitutionPar,
-    EditInstitutionPar,
-    Institution,
-    InstitutionAdmin,
-    InstitutionResponse,
-} from "@/models/seb-server/institution";
-import { BasicListParams } from "@/services/types";
-import { normaliseBasicListParams } from "@/utils/table/tableUtils";
-
-const infoBaseUrl = "/info" as const;
-const adminBaseUrl = "/institution" as const;
-
-export const getInstitutions = async (): Promise<Institution[]> =>
-    (
-        await apiService.getRequest({
-            url: `${infoBaseUrl}/institution`,
-            options: {
-                headers: {
-                    "Content-Type": "application/x-www-form-urlencoded",
-                },
-            },
-        })
-    ).data;
-
-export const getInstitutionLogo = async (
-    institutionSuffix: string,
-): Promise<string> =>
-    (
-        await apiService.getRequest({
-            url: `${infoBaseUrl}/logo/${institutionSuffix}`,
-            options: {
-                _authType: "seb",
-                headers: { Accept: "application/json, text/plain, */*" },
-            },
-        })
-    ).data;
+    activateInstitution as activateInstitutionSdk,
+    createInstitution as createInstitutionSdk,
+    deactivateInstitution as deactivateInstitutionSdk,
+    deleteInstitution as deleteInstitutionSdk,
+    editInstitution as editInstitutionSdk,
+    getInstitutionById as getInstitutionByIdSdk,
+    getInstitutions as getInstitutionsSdk,
+} from "@/api/seb-server/generated/hey-api/sdk.gen.ts";
+import {
+    institutionCreateSchema,
+    institutionPageSchema,
+    institutionSchema,
+    type Institution,
+    type InstitutionCreateRequest,
+    type InstitutionEditRequest,
+    type InstitutionPage,
+} from "@/models/institution.ts";
+import { decodeWire, encodeWire } from "@/services/errors/wireCodec.ts";
+import { zEntityProcessingReport } from "@/api/seb-server/generated/hey-api/zod.gen.ts";
+import type {
+    EntityProcessingReport,
+    GetInstitutionsData,
+} from "@/api/seb-server/generated/hey-api/types.gen.ts";
 
 const RAW_LOGO_MIME = "image/png";
 
+const detectLogoMime = (base64: string): string => {
+    if (base64.startsWith("/9j/")) {
+        return "image/jpeg";
+    }
+    if (base64.startsWith("R0lGOD")) {
+        return "image/gif";
+    }
+    if (base64.startsWith("UklGR")) {
+        return "image/webp";
+    }
+    if (base64.startsWith("PHN2") || base64.startsWith("PD94")) {
+        return "image/svg+xml";
+    }
+    return RAW_LOGO_MIME;
+};
+
 const decodeLogo = (raw: string | undefined): string | undefined => {
-    if (!raw) return undefined;
+    if (!raw) {
+        return undefined;
+    }
     return raw.startsWith("data:")
         ? raw
-        : `data:${RAW_LOGO_MIME};base64,${raw}`;
+        : `data:${detectLogoMime(raw)};base64,${raw}`;
 };
 
 const encodeLogo = (url: string | undefined): string | undefined => {
-    if (!url) return undefined;
-    if (!url.startsWith("data:")) return url;
+    if (!url) {
+        return undefined;
+    }
+    if (!url.startsWith("data:")) {
+        return url;
+    }
     const comma = url.indexOf(",");
     return comma >= 0 ? url.slice(comma + 1) : url;
 };
@@ -68,107 +77,86 @@ const fileToBase64 = (file: File): Promise<string> =>
 const serializeLogo = async (
     logo: File | string | undefined,
 ): Promise<string | undefined> => {
-    if (!logo) return undefined;
-    if (logo instanceof File) return fileToBase64(logo);
+    if (logo === undefined) {
+        return undefined;
+    }
+    if (logo instanceof File) {
+        return fileToBase64(logo);
+    }
+    if (logo === "") {
+        return "";
+    }
     return encodeLogo(logo);
 };
 
-const decodeAdmin = (i: InstitutionAdmin): InstitutionAdmin => ({
-    ...i,
-    logoImage: decodeLogo(i.logoImage),
-});
+const withDecodedLogo = (
+    institution: Institution,
+    wireLogo: string | undefined,
+): Institution => ({ ...institution, logoImage: decodeLogo(wireLogo) });
 
-export const getInstitutionsAdmin = async ({
-    basicListParams,
-    name,
-    active,
-}: {
-    basicListParams?: BasicListParams;
-    name?: string;
-    active?: string;
-}): Promise<InstitutionResponse> => {
-    const response = (
-        await apiService.getRequest({
-            url: adminBaseUrl,
-            options: {
-                _authType: "seb",
-                params: {
-                    ...normaliseBasicListParams(basicListParams),
-                    name,
-                    active,
-                },
-            },
-        })
-    ).data as InstitutionResponse;
+export const getInstitutions = (
+    query?: GetInstitutionsData["query"],
+): Promise<InstitutionPage> =>
+    getInstitutionsSdk({ client, query }).then(({ data }) => {
+        const page = decodeWire(institutionPageSchema, data);
+        return {
+            ...page,
+            content: page.content?.map((row, index) =>
+                withDecodedLogo(row, data?.content?.[index]?.logoImage),
+            ),
+        };
+    });
 
-    return {
-        ...response,
-        content: response.content.map(decodeAdmin),
-    };
-};
-
-export const getInstitutionById = async (
-    id: number,
-): Promise<InstitutionAdmin> => {
-    const data = (
-        await apiService.getRequest({
-            url: `${adminBaseUrl}/${id}`,
-            options: { _authType: "seb" },
-        })
-    ).data as InstitutionAdmin;
-    return decodeAdmin(data);
-};
+export const getInstitutionById = (modelId: string): Promise<Institution> =>
+    getInstitutionByIdSdk({ client, path: { modelId } }).then(({ data }) =>
+        withDecodedLogo(decodeWire(institutionSchema, data), data?.logoImage),
+    );
 
 export const createInstitution = async (
-    institution: CreateInstitutionPar,
-): Promise<InstitutionAdmin> => {
-    const logoImage = await serializeLogo(institution.logoImage);
-    return (
-        await apiService.postRequest({
-            url: adminBaseUrl,
-            data: { ...institution, logoImage },
-            options: { _authType: "seb" },
-        })
-    ).data;
+    body: InstitutionCreateRequest,
+): Promise<Institution> => {
+    const logoImage = await serializeLogo(body.logoImage);
+    const { data } = await createInstitutionSdk({
+        client,
+        body: { ...encodeWire(institutionCreateSchema, body), logoImage },
+    });
+    return withDecodedLogo(
+        decodeWire(institutionSchema, data),
+        data?.logoImage,
+    );
 };
 
 export const editInstitution = async (
-    institution: EditInstitutionPar,
-): Promise<InstitutionAdmin> => {
-    const logoImage = await serializeLogo(institution.logoImage);
-    return (
-        await apiService.putRequest({
-            url: adminBaseUrl,
-            data: { ...institution, logoImage },
-            options: { _authType: "seb" },
-        })
-    ).data;
+    body: InstitutionEditRequest,
+): Promise<Institution> => {
+    const logoImage = await serializeLogo(body.logoImage);
+    const { data } = await editInstitutionSdk({
+        client,
+        body: { ...encodeWire(institutionSchema, body), logoImage },
+    });
+    return withDecodedLogo(
+        decodeWire(institutionSchema, data),
+        data?.logoImage,
+    );
 };
 
-export const deleteInstitution = async (id: number): Promise<unknown> =>
-    (
-        await apiService.deleteRequest({
-            url: `${adminBaseUrl}/${id}`,
-            options: { _authType: "seb" },
-        })
-    ).data;
+export const deleteInstitution = (
+    modelId: string,
+): Promise<EntityProcessingReport> =>
+    deleteInstitutionSdk({ client, path: { modelId } }).then(({ data }) =>
+        decodeWire(zEntityProcessingReport, data),
+    );
 
-export const activateInstitution = async (
-    id: number,
-): Promise<InstitutionAdmin> =>
-    (
-        await apiService.postRequest({
-            url: `${adminBaseUrl}/${id}/active`,
-            options: { _authType: "seb" },
-        })
-    ).data;
+export const activateInstitution = (
+    modelId: string,
+): Promise<EntityProcessingReport> =>
+    activateInstitutionSdk({ client, path: { modelId } }).then(({ data }) =>
+        decodeWire(zEntityProcessingReport, data),
+    );
 
-export const deactivateInstitution = async (
-    id: number,
-): Promise<InstitutionAdmin> =>
-    (
-        await apiService.postRequest({
-            url: `${adminBaseUrl}/${id}/inactive`,
-            options: { _authType: "seb" },
-        })
-    ).data;
+export const deactivateInstitution = (
+    modelId: string,
+): Promise<EntityProcessingReport> =>
+    deactivateInstitutionSdk({ client, path: { modelId } }).then(({ data }) =>
+        decodeWire(zEntityProcessingReport, data),
+    );

@@ -1,16 +1,12 @@
-import { defineStore } from "pinia";
-import { UserRoleEnum } from "@/models/userRoleEnum";
+import type { UserRole } from "@/models/userAccount";
 import { ExamStatusEnum } from "@/models/seb-server/examFiltersEnum";
-import { useUserAccountStore } from "@/stores/authentication/userAccountStore";
+import { useCurrentUserQuery } from "@/composables/useCurrentUser";
 import * as generalUtils from "@/utils/generalUtils";
-import { ref } from "vue";
 import { Exam } from "@/models/seb-server/exam";
 import { FeatureEnum, featureNameMapping } from "@/models/features";
 import * as apiService from "@/services/apiService";
 
-// NOTE: anhefti, This should act as Ability-Interface and should be used in generic components
-//       we need to refactor the Ability-Service to not use a store but the inteface should not change
-//       and can be used also after the change without the need to apply changes everywhere it us used now
+// NOTE: anhefti, This acts as the Ability-Interface and should be used in generic components
 export type AbilityLike = {
     canView: (component: GUIComponent) => boolean;
     canDo: (action: GUIAction) => boolean;
@@ -21,9 +17,11 @@ export type AbilityLike = {
 export enum GUIComponent {
     // Overall components
     NavigationOverview = "NavigationOverview",
+    Home = "Home",
 
     // Settings
     Settings = "Settings",
+    Institutions = "Institutions",
     UserAccounts = "UserAccounts",
     ConnectionConfigs = "ConnectionConfigs",
     LMSSetups = "LMSSetups",
@@ -68,254 +66,272 @@ export enum GUIAction {
     ShowFinishedExamData = "ShowFinishedExamData",
 }
 
-export const useAbilities = defineStore("ability", () => {
-    const guiComponents = ref<Map<UserRoleEnum, Set<GUIComponent>>>(
-        new Map<UserRoleEnum, Set<GUIComponent>>(),
-    );
-    const guiActions = ref<Map<UserRoleEnum, Set<GUIAction>>>(
-        new Map<UserRoleEnum, Set<GUIAction>>(),
-    );
-    const examStatusActions = ref<Map<ExamStatusEnum, Set<GUIAction>>>(
-        new Map<ExamStatusEnum, Set<GUIAction>>(),
-    );
+const guiComponents = new Map<UserRole, Set<GUIComponent>>();
+const guiActions = new Map<UserRole, Set<GUIAction>>();
+const examStatusActions = new Map<ExamStatusEnum, Set<GUIAction>>();
 
-    let systemFeaturesFetched = false;
-    const systemFeatures = ref<Map<string, boolean>>(
-        new Map<string, boolean>(),
-    );
+let systemFeaturesFetched = false;
+let systemFeatures = new Map<string, boolean>();
 
-    // -----------------------------------------------------------------------------
-    // User Role based ability mapping
+// -----------------------------------------------------------------------------
+// User Role based ability mapping
 
-    // --- GUI Component Privileges -----------------------
+// --- GUI Component Privileges -----------------------
 
-    guiComponents.value.set(
-        UserRoleEnum.SEB_SERVER_ADMIN,
-        new Set<GUIComponent>([
-            GUIComponent.NavigationOverview,
-            GUIComponent.Settings,
-            GUIComponent.UserAccounts,
-            GUIComponent.ConnectionConfigs,
-            GUIComponent.LMSSetups,
-            GUIComponent.Certificates,
-        ]),
-    );
+guiComponents.set(
+    "SEB_SERVER_ADMIN",
+    new Set<GUIComponent>([
+        GUIComponent.NavigationOverview,
+        GUIComponent.Settings,
+        GUIComponent.UserAccounts,
+        GUIComponent.Institutions,
+    ]),
+);
 
-    // --- INSTITUTIONAL_ADMIN component privileges
-    guiComponents.value.set(
-        UserRoleEnum.INSTITUTIONAL_ADMIN,
-        new Set<GUIComponent>([
-            GUIComponent.NavigationOverview,
-            GUIComponent.Settings,
-            GUIComponent.UserAccounts,
-            GUIComponent.ConnectionConfigs,
-            GUIComponent.LMSSetups,
-            GUIComponent.Certificates,
-            GUIComponent.ExamTemplate,
-            GUIComponent.Exams,
-            GUIComponent.AnalyzeExams,
-            GUIComponent.ArchiveExams,
-        ]),
-    );
+// --- INSTITUTIONAL_ADMIN component privileges
+guiComponents.set(
+    "INSTITUTIONAL_ADMIN",
+    new Set<GUIComponent>([
+        GUIComponent.NavigationOverview,
+        GUIComponent.Home,
+        GUIComponent.Settings,
+        GUIComponent.UserAccounts,
+        GUIComponent.ConnectionConfigs,
+        GUIComponent.LMSSetups,
+        GUIComponent.Certificates,
+        GUIComponent.ExamTemplate,
+        GUIComponent.Exams,
+        GUIComponent.AnalyzeExams,
+        GUIComponent.ArchiveExams,
+    ]),
+);
 
-    // --- EXAM_ADMIN component privileges
-    guiComponents.value.set(
-        UserRoleEnum.EXAM_ADMIN,
-        new Set<GUIComponent>([
-            GUIComponent.PrepareExam,
-            GUIComponent.AddExamWithURL,
-            GUIComponent.RunningExams,
-            GUIComponent.ScreenProctoring,
-            GUIComponent.ScreenProctoringSearch,
-            GUIComponent.ScreenProctoringApplicationSearch,
-            GUIComponent.AnalyzeExams,
-            GUIComponent.ArchiveExams,
-            GUIComponent.Exams,
-        ]),
-    );
+// --- EXAM_ADMIN component privileges
+guiComponents.set(
+    "EXAM_ADMIN",
+    new Set<GUIComponent>([
+        GUIComponent.Home,
+        GUIComponent.PrepareExam,
+        GUIComponent.AddExamWithURL,
+        GUIComponent.RunningExams,
+        GUIComponent.ScreenProctoring,
+        GUIComponent.ScreenProctoringSearch,
+        GUIComponent.ScreenProctoringApplicationSearch,
+        GUIComponent.AnalyzeExams,
+        GUIComponent.ArchiveExams,
+        GUIComponent.Exams,
+    ]),
+);
 
-    // --- EXAM_SUPPORTER component privileges
-    guiComponents.value.set(
-        UserRoleEnum.EXAM_SUPPORTER,
-        new Set<GUIComponent>([
-            GUIComponent.Exams,
-            GUIComponent.RunningExams,
-            GUIComponent.ScreenProctoring,
-            GUIComponent.ScreenProctoringSearch,
-            GUIComponent.ScreenProctoringApplicationSearch,
-        ]),
-    );
+// --- EXAM_SUPPORTER component privileges
+guiComponents.set(
+    "EXAM_SUPPORTER",
+    new Set<GUIComponent>([
+        GUIComponent.Home,
+        GUIComponent.Exams,
+        GUIComponent.RunningExams,
+        GUIComponent.ScreenProctoring,
+        GUIComponent.ScreenProctoringSearch,
+        GUIComponent.ScreenProctoringApplicationSearch,
+    ]),
+);
 
-    // --- GUI Action Privileges -----------------------
+// --- GUI Action Privileges -----------------------
 
-    // // --- SEB_SERVER_ADMIN action privileges
-    // guiActions.value.set(
-    //     UserRoleEnum.SEB_SERVER_ADMIN,
-    //     new Set<GUIAction>([
-    //         GUIAction.CreateUserAccount,
-    //         GUIAction.EditUserAccount,
-    //         GUIAction.DeleteUserAccount,
-    //     ]),
-    // );
+// // --- SEB_SERVER_ADMIN action privileges
+// guiActions.set(
+//     "SEB_SERVER_ADMIN",
+//     new Set<GUIAction>([
+//         GUIAction.CreateUserAccount,
+//         GUIAction.EditUserAccount,
+//         GUIAction.DeleteUserAccount,
+//     ]),
+// );
 
-    // --- INSTITUTIONAL_ADMIN action privileges
-    guiActions.value.set(
-        UserRoleEnum.INSTITUTIONAL_ADMIN,
-        new Set<GUIAction>([
-            // Exam actions
-            GUIAction.ArchiveExam,
-            GUIAction.DeleteExam,
-            GUIAction.EditFullSEBSettings, // TODO just for testing yet
-            GUIAction.ViewASKSettings,
-        ]),
-    );
+// --- INSTITUTIONAL_ADMIN action privileges
+guiActions.set(
+    "INSTITUTIONAL_ADMIN",
+    new Set<GUIAction>([
+        // Exam actions
+        GUIAction.ArchiveExam,
+        GUIAction.DeleteExam,
+        GUIAction.EditFullSEBSettings, // TODO just for testing yet
+        GUIAction.ViewASKSettings,
+    ]),
+);
 
-    // --- EXAM_ADMIN action privileges
-    guiActions.value.set(
-        UserRoleEnum.EXAM_ADMIN,
-        new Set<GUIAction>([
-            // Exam actions
-            GUIAction.EditExamSettings,
-            GUIAction.ArchiveExam,
-            GUIAction.DeleteExam,
-            GUIAction.ApplyTestRun,
-            GUIAction.DisableTestRun,
-            GUIAction.ExportExamClientConfig,
-            GUIAction.ViewASKSettings,
-            GUIAction.EditASKSettings,
-            GUIAction.EditScreenProctoring,
-            GUIAction.EditSEBSettings,
-            GUIAction.EditIndicators,
-            GUIAction.EditClientGroups,
-            GUIAction.ApplySEBRestriction,
-            GUIAction.ShowMonitoring,
-            GUIAction.ShowFinishedExamData,
-        ]),
-    );
+// --- EXAM_ADMIN action privileges
+guiActions.set(
+    "EXAM_ADMIN",
+    new Set<GUIAction>([
+        // Exam actions
+        GUIAction.EditExamSettings,
+        GUIAction.ArchiveExam,
+        GUIAction.DeleteExam,
+        GUIAction.ApplyTestRun,
+        GUIAction.DisableTestRun,
+        GUIAction.ExportExamClientConfig,
+        GUIAction.ViewASKSettings,
+        GUIAction.EditASKSettings,
+        GUIAction.EditScreenProctoring,
+        GUIAction.EditSEBSettings,
+        GUIAction.EditIndicators,
+        GUIAction.EditClientGroups,
+        GUIAction.ApplySEBRestriction,
+        GUIAction.ShowMonitoring,
+        GUIAction.ShowFinishedExamData,
+    ]),
+);
 
-    // --- EXAM_SUPPORTER action privileges
-    guiActions.value.set(
-        UserRoleEnum.EXAM_SUPPORTER,
-        new Set<GUIAction>([
-            // Exam actions
-            GUIAction.EditExamSettings,
-            GUIAction.ApplyTestRun,
-            GUIAction.DisableTestRun,
-            GUIAction.ExportExamClientConfig,
-            GUIAction.ViewASKSettings,
-            GUIAction.EditASKSettings,
-            GUIAction.EditScreenProctoring,
-            GUIAction.EditSEBSettings,
-            GUIAction.EditIndicators,
-            GUIAction.EditClientGroups,
-            GUIAction.ApplySEBRestriction,
-            GUIAction.ShowMonitoring,
-            GUIAction.ShowFinishedExamData,
-        ]),
-    );
+// --- EXAM_SUPPORTER action privileges
+guiActions.set(
+    "EXAM_SUPPORTER",
+    new Set<GUIAction>([
+        // Exam actions
+        GUIAction.EditExamSettings,
+        GUIAction.ApplyTestRun,
+        GUIAction.DisableTestRun,
+        GUIAction.ExportExamClientConfig,
+        GUIAction.ViewASKSettings,
+        GUIAction.EditASKSettings,
+        GUIAction.EditScreenProctoring,
+        GUIAction.EditSEBSettings,
+        GUIAction.EditIndicators,
+        GUIAction.EditClientGroups,
+        GUIAction.ApplySEBRestriction,
+        GUIAction.ShowMonitoring,
+        GUIAction.ShowFinishedExamData,
+    ]),
+);
 
-    // --- TEACHER action privileges
-    guiActions.value.set(
-        UserRoleEnum.TEACHER,
-        new Set<GUIAction>([
-            // Exam actions
-            GUIAction.ApplyTestRun,
-            GUIAction.DisableTestRun,
-            GUIAction.ViewASKSettings,
-        ]),
-    );
+// --- TEACHER action privileges
+guiActions.set(
+    "TEACHER",
+    new Set<GUIAction>([
+        // Exam actions
+        GUIAction.ApplyTestRun,
+        GUIAction.DisableTestRun,
+        GUIAction.ViewASKSettings,
+    ]),
+);
 
-    // -----------------------------------------------------------------------
-    // Exam Status ability mapping (SEBSERV-685)
+// -----------------------------------------------------------------------
+// Exam Status ability mapping (SEBSERV-685)
 
-    // ExamStatusEnum.UP_COMING
-    examStatusActions.value.set(
-        ExamStatusEnum.UP_COMING,
-        new Set<GUIAction>([
-            GUIAction.EditExamSettings,
-            GUIAction.DeleteExam,
-            GUIAction.ApplyTestRun,
-            GUIAction.ExportExamClientConfig,
-            GUIAction.ViewASKSettings,
-            GUIAction.EditASKSettings,
-            GUIAction.EditScreenProctoring,
-            GUIAction.EditSEBSettings,
-            GUIAction.EditIndicators,
-            GUIAction.EditClientGroups,
-            GUIAction.ApplySEBRestriction,
-        ]),
-    );
+// ExamStatusEnum.UP_COMING
+examStatusActions.set(
+    ExamStatusEnum.UP_COMING,
+    new Set<GUIAction>([
+        GUIAction.EditExamSettings,
+        GUIAction.DeleteExam,
+        GUIAction.ApplyTestRun,
+        GUIAction.ExportExamClientConfig,
+        GUIAction.ViewASKSettings,
+        GUIAction.EditASKSettings,
+        GUIAction.EditScreenProctoring,
+        GUIAction.EditSEBSettings,
+        GUIAction.EditIndicators,
+        GUIAction.EditClientGroups,
+        GUIAction.ApplySEBRestriction,
+    ]),
+);
 
-    // ExamStatusEnum.TEST_RUN
-    examStatusActions.value.set(
-        ExamStatusEnum.TEST_RUN,
-        new Set<GUIAction>([
-            GUIAction.EditExamSettings,
-            GUIAction.DeleteExam,
-            GUIAction.DisableTestRun,
-            GUIAction.ExportExamClientConfig,
-            GUIAction.ViewASKSettings,
-            GUIAction.EditASKSettings,
-            GUIAction.EditScreenProctoring,
-            GUIAction.EditSEBSettings,
-            GUIAction.EditIndicators,
-            GUIAction.EditClientGroups,
-            GUIAction.ApplySEBRestriction,
-            GUIAction.ShowMonitoring,
-        ]),
-    );
+// ExamStatusEnum.TEST_RUN
+examStatusActions.set(
+    ExamStatusEnum.TEST_RUN,
+    new Set<GUIAction>([
+        GUIAction.EditExamSettings,
+        GUIAction.DeleteExam,
+        GUIAction.DisableTestRun,
+        GUIAction.ExportExamClientConfig,
+        GUIAction.ViewASKSettings,
+        GUIAction.EditASKSettings,
+        GUIAction.EditScreenProctoring,
+        GUIAction.EditSEBSettings,
+        GUIAction.EditIndicators,
+        GUIAction.EditClientGroups,
+        GUIAction.ApplySEBRestriction,
+        GUIAction.ShowMonitoring,
+    ]),
+);
 
-    // ExamStatusEnum.RUNNING
-    examStatusActions.value.set(
-        ExamStatusEnum.RUNNING,
-        new Set<GUIAction>([
-            GUIAction.EditExamSettings,
-            GUIAction.DeleteExam,
-            GUIAction.ExportExamClientConfig,
-            GUIAction.ViewASKSettings,
-            GUIAction.EditASKSettings,
-            GUIAction.EditScreenProctoring,
-            GUIAction.EditSEBSettings,
-            GUIAction.EditIndicators,
-            GUIAction.EditClientGroups,
-            GUIAction.ApplySEBRestriction,
-            GUIAction.ShowMonitoring,
-        ]),
-    );
+// ExamStatusEnum.RUNNING
+examStatusActions.set(
+    ExamStatusEnum.RUNNING,
+    new Set<GUIAction>([
+        GUIAction.EditExamSettings,
+        GUIAction.DeleteExam,
+        GUIAction.ExportExamClientConfig,
+        GUIAction.ViewASKSettings,
+        GUIAction.EditASKSettings,
+        GUIAction.EditScreenProctoring,
+        GUIAction.EditSEBSettings,
+        GUIAction.EditIndicators,
+        GUIAction.EditClientGroups,
+        GUIAction.ApplySEBRestriction,
+        GUIAction.ShowMonitoring,
+    ]),
+);
 
-    // ExamStatusEnum.FINISHED
-    examStatusActions.value.set(
-        ExamStatusEnum.FINISHED,
-        new Set<GUIAction>([
-            GUIAction.ArchiveExam,
-            GUIAction.DeleteExam,
-            GUIAction.ExportExamClientConfig,
-            GUIAction.ViewASKSettings,
-            GUIAction.ApplySEBRestriction,
-            GUIAction.ShowFinishedExamData,
-        ]),
-    );
+// ExamStatusEnum.FINISHED
+examStatusActions.set(
+    ExamStatusEnum.FINISHED,
+    new Set<GUIAction>([
+        GUIAction.ArchiveExam,
+        GUIAction.DeleteExam,
+        GUIAction.ExportExamClientConfig,
+        GUIAction.ViewASKSettings,
+        GUIAction.ApplySEBRestriction,
+        GUIAction.ShowFinishedExamData,
+    ]),
+);
 
-    // ExamStatusEnum.ARCHIVED
-    examStatusActions.value.set(
-        ExamStatusEnum.ARCHIVED,
-        new Set<GUIAction>([
-            GUIAction.DeleteExam,
-            GUIAction.ViewASKSettings,
-            GUIAction.ShowFinishedExamData,
-        ]),
-    );
+// ExamStatusEnum.ARCHIVED
+examStatusActions.set(
+    ExamStatusEnum.ARCHIVED,
+    new Set<GUIAction>([
+        GUIAction.DeleteExam,
+        GUIAction.ViewASKSettings,
+        GUIAction.ShowFinishedExamData,
+    ]),
+);
+
+async function hasSystemFeature(feature: FeatureEnum): Promise<boolean> {
+    if (!systemFeaturesFetched) {
+        // fetch from server
+        const response: Map<string, boolean> | null = (
+            await apiService.getRequest({
+                url: "/quiz",
+                options: { _authType: "seb" },
+            })
+        ).data;
+        if (response) {
+            systemFeatures = response;
+            systemFeaturesFetched = true;
+        }
+    }
+
+    if (!systemFeaturesFetched) {
+        return false;
+    }
+
+    const fName = featureNameMapping.get(feature);
+    if (!fName) {
+        return false;
+    }
+
+    return systemFeatures.get(fName) ?? false;
+}
+
+export const useAbilities = () => {
+    const { data: currentUser } = useCurrentUserQuery();
 
     function canView(view: GUIComponent): boolean {
-        const user = useUserAccountStore().userAccount;
+        const user = currentUser.value;
         if (user == null) return false;
 
         for (const role of user.userRoles) {
-            const roleEnum = generalUtils.findEnumValue(UserRoleEnum, role);
-            if (
-                roleEnum != null &&
-                guiComponents.value.get(roleEnum)?.has(view)
-            ) {
+            if (guiComponents.get(role)?.has(view)) {
                 return true;
             }
         }
@@ -324,15 +340,11 @@ export const useAbilities = defineStore("ability", () => {
     }
 
     function canDo(action: GUIAction): boolean {
-        const user = useUserAccountStore().userAccount;
+        const user = currentUser.value;
         if (user == null) return false;
 
         for (const role of user.userRoles) {
-            const roleEnum = generalUtils.findEnumValue(UserRoleEnum, role);
-            if (
-                roleEnum != null &&
-                guiActions.value.get(roleEnum)?.has(action)
-            ) {
+            if (guiActions.get(role)?.has(action)) {
                 return true;
             }
         }
@@ -341,7 +353,7 @@ export const useAbilities = defineStore("ability", () => {
 
     // This would be for special case, when we need to know if a user has Exam access on Exam supporter mapping
     function isExamSupporter(exam: Exam): boolean {
-        const user = useUserAccountStore().userAccount;
+        const user = currentUser.value;
         if (user == null) return false;
 
         // check if the user is assigned as supporter
@@ -355,7 +367,7 @@ export const useAbilities = defineStore("ability", () => {
             return false;
         }
 
-        const user = useUserAccountStore().userAccount;
+        const user = currentUser.value;
         if (user == null) return false;
         if (user.institutionId != exam.institutionId) {
             return false;
@@ -373,39 +385,12 @@ export const useAbilities = defineStore("ability", () => {
             return false;
         }
 
-        const statusSet = examStatusActions.value.get(examStatus);
+        const statusSet = examStatusActions.get(examStatus);
         if (statusSet) {
             return statusSet.has(action);
         }
 
         return false;
-    }
-
-    async function hasSystemFeature(feature: FeatureEnum): Promise<boolean> {
-        if (!systemFeaturesFetched) {
-            // fetch from server
-            const response: Map<string, boolean> | null = (
-                await apiService.getRequest({
-                    url: "/quiz",
-                    options: { _authType: "seb" },
-                })
-            ).data;
-            if (response) {
-                systemFeatures.value = response;
-                systemFeaturesFetched = true;
-            }
-        }
-
-        if (!systemFeaturesFetched) {
-            return false;
-        }
-
-        const fName = featureNameMapping.get(feature);
-        if (!fName) {
-            return false;
-        }
-
-        return systemFeatures.value.get(fName) ?? false;
     }
 
     return {
@@ -415,7 +400,7 @@ export const useAbilities = defineStore("ability", () => {
         canDoExamAction,
         hasSystemFeature,
     };
-});
+};
 
 // In the pages or in the code we can then just use this like
 

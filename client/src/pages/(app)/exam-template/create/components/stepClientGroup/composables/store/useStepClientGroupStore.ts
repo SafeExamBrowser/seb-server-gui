@@ -2,18 +2,14 @@ import { defineStore } from "pinia";
 import { computed, ref } from "vue";
 import {
     ClientGroup,
-    ClientGroupTransient,
-} from "@/pages/(app)/exam-template/create/components/stepClientGroup/types.ts";
+    ClientGroupExisting,
+    clientGroupExistingSchema,
+} from "@/models/seb-server/examTemplate.ts";
 import { useScreenProctoringStore } from "@/pages/(app)/exam-template/create/composables/store/useScreenProctoringStore.ts";
 
 const getInitialState = () => ({
     isScreenProctoringFormReady: false,
     groups: [],
-});
-
-export const getEmptyClientGroup = (): ClientGroupTransient => ({
-    id: crypto.getRandomValues(new Uint32Array(1))[0], // random ID, for FE use only (when submitting to BE, the BE will generate the real ID)
-    screenProctoringEnabled: false,
 });
 
 export const useStepClientGroupStore = defineStore("stepClientGroup", () => {
@@ -23,7 +19,7 @@ export const useStepClientGroupStore = defineStore("stepClientGroup", () => {
         getInitialState().isScreenProctoringFormReady,
     );
 
-    const groups = ref<ClientGroup[]>(getInitialState().groups);
+    const groups = ref<ClientGroupExisting[]>(getInitialState().groups);
 
     const $reset = () => {
         isScreenProctoringFormReady.value =
@@ -32,16 +28,22 @@ export const useStepClientGroupStore = defineStore("stepClientGroup", () => {
     };
 
     const createGroup = (group: ClientGroup) => {
-        groups.value.push(group);
+        groups.value.push(
+            clientGroupExistingSchema.parse({
+                ...group,
+                // random ID, for identification in the store only (when submitting to BE, the BE will generate the real ID)
+                id: crypto.getRandomValues(new Uint32Array(1))[0],
+            }),
+        );
     };
 
-    const updateGroup = (updatedGroup: ClientGroup) => {
+    const updateGroup = (updatedGroup: ClientGroupExisting) => {
         groups.value = groups.value.map((existingGroup) =>
             existingGroup.id === updatedGroup.id ? updatedGroup : existingGroup,
         );
     };
 
-    const deleteGroup = (group: ClientGroup) => {
+    const deleteGroup = (group: ClientGroupExisting) => {
         groups.value = groups.value.filter((g) => g.id !== group.id);
     };
 

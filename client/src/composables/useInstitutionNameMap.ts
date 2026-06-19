@@ -1,8 +1,8 @@
 import { computed, ref } from "vue";
-import type { Institution } from "@/models/seb-server/institution";
-import { getInstitutions } from "@/services/seb-server/institutionService";
+import type { InstitutionName } from "@/models/institution";
+import { getInstitutions } from "@/services/seb-server/institutionInfoService";
 
-const institutions = ref<Institution[]>([]);
+const institutions = ref<InstitutionName[]>([]);
 const loading = ref(false);
 const error = ref<string>();
 const hasFetched = ref(false);

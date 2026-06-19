@@ -1,5 +1,5 @@
 <template>
-    <v-dialog v-model="model" max-width="500">
+    <v-dialog v-model="model" max-width="500" :persistent="loading">
         <v-card :data-testid="rootTestId">
             <v-card-title
                 class="text-title-large font-weight-bold"
@@ -23,6 +23,7 @@
                 <v-btn
                     variant="text"
                     :data-testid="cancelTestId"
+                    :disabled="loading"
                     @click="model = false"
                 >
                     {{ $t("general.cancelButton") }}
@@ -32,6 +33,7 @@
                     color="error"
                     variant="text"
                     :data-testid="confirmTestId"
+                    :loading="loading"
                     @click="emit('confirm')"
                 >
                     {{ $t(`${translationKeyPrefix}.deleteDialog.action`) }}
@@ -50,8 +52,13 @@ const model = defineModel<boolean>({ required: true });
 const props = withDefaults(
     defineProps<{
         detailText?: string;
+        // TODO @andrei: avoid programmatic translation key generation:
+        // - this is inflexible (translations need to have a certain shape)
+        // - this mmakes it very hard to refactor translation keys (search and replace is impossible)
+        // => accept fully translated strings instead
         translationKeyPrefix: string;
         dataTestId?: string;
+        loading?: boolean;
     }>(),
     { detailText: undefined, dataTestId: undefined },
 );

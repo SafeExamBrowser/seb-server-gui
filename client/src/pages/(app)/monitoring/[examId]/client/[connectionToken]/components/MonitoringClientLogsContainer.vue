@@ -1,86 +1,85 @@
 <template>
-    <v-sheet class="rounded-lg pa-8" elevation="2">
+    <div>
         <!-- Filters & Search Row -->
-        <v-row class="mb-4 align-center">
-            <v-col cols="4">
-                <v-tabs
-                    v-model="statusFilter"
-                    class="mb-4"
-                    color="primary"
-                    fixed-tabs
-                >
-                    <v-tab value="all">{{
-                        translate(
+        <div class="d-flex flex-wrap align-center ga-4 mb-4">
+            <v-tabs
+                v-model="statusFilter"
+                color="primary"
+                density="comfortable"
+                class="flex-grow-1"
+            >
+                <v-tab value="all">
+                    {{
+                        $t(
                             "monitoringDetails.logContainer.sortingAndFilter.all",
                         )
-                    }}</v-tab>
-                    <v-tab value="info">{{
-                        translate(
+                    }}
+                </v-tab>
+                <v-tab value="info">
+                    {{
+                        $t(
                             "monitoringDetails.logContainer.sortingAndFilter.info",
                         )
-                    }}</v-tab>
-                    <v-tab value="warn"
-                        >{{
-                            translate(
-                                "monitoringDetails.logContainer.sortingAndFilter.warning",
-                            )
-                        }}
-                    </v-tab>
-                    <v-tab value="error"
-                        >{{
-                            translate(
-                                "monitoringDetails.logContainer.sortingAndFilter.error",
-                            )
-                        }}
-                    </v-tab>
-                </v-tabs>
-            </v-col>
-            <v-col cols="2"> </v-col>
-            <v-col cols="6">
-                <div class="d-flex align-center justify-end">
-                    <v-btn
-                        color="black"
-                        rounded="sm"
-                        variant="outlined"
-                        @click="onClearSearch()"
-                    >
-                        {{ translate("general.cancelButton") }}
-                    </v-btn>
+                    }}
+                </v-tab>
+                <v-tab value="warn">
+                    {{
+                        $t(
+                            "monitoringDetails.logContainer.sortingAndFilter.warning",
+                        )
+                    }}
+                </v-tab>
+                <v-tab value="error">
+                    {{
+                        $t(
+                            "monitoringDetails.logContainer.sortingAndFilter.error",
+                        )
+                    }}
+                </v-tab>
+            </v-tabs>
 
-                    <v-btn
-                        class="ml-2"
-                        color="primary"
-                        rounded="sm"
-                        variant="flat"
-                        @click="onSearch()"
-                    >
-                        {{ translate("general.searchButton") }}
-                    </v-btn>
-
-                    <v-text-field
-                        v-model="searchQuery"
-                        class="search-input ml-4"
-                        density="comfortable"
-                        hide-details
-                        :placeholder="
-                            translate(
-                                'monitoringDetails.logContainer.sortingAndFilter.searchForLogs',
-                            )
-                        "
-                        type="text"
-                        variant="outlined"
-                        @keydown.enter="onSearch"
-                        @keydown.esc="onClearSearch"
-                    />
-                </div>
-            </v-col>
-        </v-row>
+            <div class="d-flex align-center ga-2">
+                <v-text-field
+                    v-model="searchQuery"
+                    append-inner-icon="mdi-magnify"
+                    density="compact"
+                    hide-details
+                    :placeholder="
+                        $t(
+                            'monitoringDetails.logContainer.sortingAndFilter.searchForLogs',
+                        )
+                    "
+                    single-line
+                    style="min-width: 220px"
+                    type="text"
+                    variant="outlined"
+                    @keydown.enter="handleSearch"
+                    @keydown.esc="handleClearSearch"
+                />
+                <v-btn
+                    color="black"
+                    rounded="sm"
+                    variant="outlined"
+                    @click="handleClearSearch"
+                >
+                    {{ $t("general.cancelButton") }}
+                </v-btn>
+                <v-btn
+                    color="primary"
+                    rounded="sm"
+                    variant="flat"
+                    @click="handleSearch"
+                >
+                    {{ $t("general.searchButton") }}
+                </v-btn>
+            </div>
+        </div>
 
         <!-- Data Table of Log Entries -->
         <v-data-table-server
             v-model:options="options"
             :headers="clientEventsTableHeaders"
-            :items="monitoringStore.clientLogEvents || []"
+            :items="monitoringStore.clientLogEvents ?? []"
             :items-length="totalItems"
             :items-per-page="10"
             :items-per-page-options="[10]"
@@ -95,15 +94,9 @@
                 <div class="d-flex align-center">
                     <v-icon
                         class="mr-2"
-                        :color="
-                            severityMap[
-                                item.type.replace('_LOG', '').toLowerCase()
-                            ]?.color || 'grey'
-                        "
+                        :color="logSeverity(item.type)?.color ?? 'grey'"
                         :icon="
-                            severityMap[
-                                item.type.replace('_LOG', '').toLowerCase()
-                            ]?.icon || 'mdi-help-circle'
+                            logSeverity(item.type)?.icon ?? 'mdi-help-circle'
                         "
                     />
                     {{ item.type }}
@@ -125,7 +118,7 @@
                 {{ item.value || "-" }}
             </template>
         </v-data-table-server>
-    </v-sheet>
+    </div>
 </template>
 
 <script setup lang="ts">
@@ -141,9 +134,7 @@ import { getSingleConnectionEvents } from "@/services/seb-server/monitoringServi
 const monitoringStore = useMonitoringStore();
 
 // Default sort configuration
-const defaultSort: { key: string; order: string }[] = [
-    { key: "serverTime", order: "desc" },
-];
+const defaultSort = [{ key: "serverTime", order: "desc" }];
 
 // Table options (pagination, sorting)
 const options = ref({
@@ -153,8 +144,8 @@ const options = ref({
 });
 
 // Reactive state
-const searchQuery = ref<string>("");
-const statusFilter = ref<string>("all");
+const searchQuery = ref("");
+const statusFilter = ref("all");
 const isLoading = shallowRef(false);
 const totalItems = ref(0);
 
@@ -164,6 +155,10 @@ const severityMap: Record<string, { icon: string; color: string }> = {
     warn: { icon: "mdi-alert", color: "orange" },
     error: { icon: "mdi-alert-circle", color: "red" },
 };
+
+function logSeverity(type: string) {
+    return severityMap[type.replace("_LOG", "").toLowerCase()];
+}
 
 // Table headers
 const clientEventsTableHeaders = [
@@ -218,7 +213,7 @@ function formatTimeLabel(ts: number): string {
 }
 
 // Maps status filter value to backend log type
-function mapStatusFilter(status: string): string | null {
+function mapStatusFilter(status: string): string | undefined {
     switch (status) {
         case "info":
             return "INFO_LOG";
@@ -227,7 +222,7 @@ function mapStatusFilter(status: string): string | null {
         case "error":
             return "ERROR_LOG";
         default:
-            return null;
+            return undefined;
     }
 }
 
@@ -245,7 +240,7 @@ async function getClientEvents(serverTablePaging: ServerTablePaging) {
     const parameters: OptionalParGetMonitoringClientLogs =
         tableUtils.assignClientLogDetailsPagingOptions(
             serverTablePaging,
-            monitoringStore.logSearchField,
+            monitoringStore.logSearchField ?? undefined,
             mapStatusFilter(statusFilter.value),
         );
 
@@ -259,7 +254,7 @@ async function getClientEvents(serverTablePaging: ServerTablePaging) {
         );
         if (response) {
             monitoringStore.clientLogEvents = response.content;
-            totalItems.value = response.number_of_pages * response.page_size; // Adjust if needed
+            totalItems.value = response.number_of_pages * response.page_size;
         }
     } finally {
         isLoading.value = false;
@@ -267,7 +262,7 @@ async function getClientEvents(serverTablePaging: ServerTablePaging) {
 }
 
 // Handles search button click — applies search query and refreshes data
-function onSearch() {
+function handleSearch() {
     monitoringStore.logSearchField = searchQuery.value;
     options.value.page = 1;
     getClientEvents(options.value);
@@ -275,7 +270,7 @@ function onSearch() {
 }
 
 // Handles clear button click — resets search, filters, and reloads data
-function onClearSearch() {
+function handleClearSearch() {
     monitoringStore.logSearchField = "";
     searchQuery.value = "";
     statusFilter.value = "all";
@@ -284,7 +279,3 @@ function onClearSearch() {
     isLoading.value = false;
 }
 </script>
-
-<style scoped>
-/* (existing styling as needed) */
-</style>

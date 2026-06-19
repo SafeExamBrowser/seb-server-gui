@@ -1,27 +1,31 @@
 <template>
-    <ExamTemplateBox :title="$t('examTemplateDetail.boxes.indicators.title')">
-        <LoadingFallbackComponent :loading="loading" :errors="errors">
-            <IndicatorsTable :deps="tableDeps" />
-        </LoadingFallbackComponent>
+    <ExamTemplateBox>
+        <IndicatorsTable :deps="tableDeps" />
     </ExamTemplateBox>
 </template>
 
 <script setup lang="ts">
 import ExamTemplateBox from "./ExamTemplateBox.vue";
 import IndicatorsTable from "@/components/widgets/indicatorsTable/IndicatorsTable.vue";
-import LoadingFallbackComponent from "@/components/widgets/loadingFallbackComponent/LoadingFallbackComponent.vue";
+import { IndicatorExisting } from "@/models/seb-server/examTemplate.ts";
 import { IndicatorsTableDeps } from "@/components/widgets/indicatorsTable/types.ts";
-import { useIndicatorTemplates } from "@/pages/(app)/exam-template/[id]/composables/api/useIndicatorTemplates.ts";
+import { useIndicators } from "@/pages/(app)/exam-template/[id]/composables/api/useIndicators.ts";
 
-const { examTemplateId } = defineProps<{ examTemplateId: number }>();
+const { examTemplateId, indicators: initialIndicators } = defineProps<{
+    examTemplateId: number;
+    indicators: IndicatorExisting[];
+}>();
 
-const { indicators, loading, errors, createItem, updateItem, deleteItem } =
-    useIndicatorTemplates(examTemplateId);
+const { indicators, createItem, updateItem, deleteItem } = useIndicators(
+    examTemplateId,
+    initialIndicators,
+);
 
 const tableDeps: IndicatorsTableDeps = {
     indicators,
     createItem,
     updateItem,
     deleteItem,
+    confirmDelete: true,
 };
 </script>

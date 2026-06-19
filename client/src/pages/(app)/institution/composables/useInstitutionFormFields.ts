@@ -1,19 +1,26 @@
 import { computed, ref } from "vue";
-import { useRules } from "vuetify/labs/rules";
 import i18n from "@/i18n";
 import { FormField } from "@/components/widgets/formBuilder/types.ts";
+import { useZodFormRules } from "@/composables/useZodFormRules.ts";
+import { institutionCreateSchema } from "@/models/institution.ts";
 
 const URL_SUFFIX_PATTERN = /^$|^.{3,45}$/;
 const LOGO_ACCEPT_EXTENSIONS = [".png", ".jpg", ".jpeg", ".svg"];
 
+const t = (key: string) => i18n.global.t(`institutions.${key}`);
+
 export const useInstitutionFormFields = () => {
     const name = ref<string | undefined>(undefined);
     const urlSuffix = ref<string | undefined>(undefined);
-    const logoImage = ref<File | null>(null);
+    const logoImage = ref<File | string | undefined>(undefined);
 
-    const t = (key: string) => i18n.global.t(`institutions.${key}`);
+    const { isRequired, fieldRules } = useZodFormRules();
 
-    const rules = useRules();
+    // urlSuffix is "empty or 3-45 chars" — a regex useZodFormRules can't derive.
+    const urlSuffixRule = (value: string | undefined) =>
+        !value ||
+        URL_SUFFIX_PATTERN.test(value) ||
+        t("fields.urlSuffix.validation");
 
     const formFields = computed<FormField[]>(() => [
         {
@@ -32,19 +39,18 @@ export const useInstitutionFormFields = () => {
             name: "name",
             model: name,
             label: t("fields.name.label"),
-            required: true,
-            rules: [rules.required(), rules.minLength(3), rules.maxLength(255)],
+            required: isRequired(institutionCreateSchema.shape.name),
+            rules: fieldRules(institutionCreateSchema.shape.name),
         },
         {
             type: "text",
             name: "urlSuffix",
             model: urlSuffix,
             label: t("fields.urlSuffix.label"),
+            required: isRequired(institutionCreateSchema.shape.urlSuffix),
             rules: [
-                (v: string | undefined) =>
-                    !v ||
-                    URL_SUFFIX_PATTERN.test(v) ||
-                    t("fields.urlSuffix.validation"),
+                ...fieldRules(institutionCreateSchema.shape.urlSuffix),
+                urlSuffixRule,
             ],
         },
     ]);

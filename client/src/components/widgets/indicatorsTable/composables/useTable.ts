@@ -1,49 +1,41 @@
 import i18n from "@/i18n";
+import { IndicatorExisting } from "@/models/seb-server/examTemplate.ts";
 import {
-    Indicator,
     IndicatorsTableDeps,
     IndicatorTransient,
     indicatorTransientToIndicator,
+    indicatorTransientToIndicatorExisting,
 } from "@/components/widgets/indicatorsTable/types.ts";
 import { useFormFields } from "@/components/widgets/indicatorsTable/composables/useFormFields.ts";
 import { CrudTableConfig } from "@/components/widgets/crudTable/types.ts";
 
 export const getEmptyIndicator = (): IndicatorTransient => ({
-    id: crypto.getRandomValues(new Uint32Array(1))[0], // random ID, for FE use only (when submitting to BE, the BE will generate the real ID)
     thresholds: [],
 });
 
 export const useTable = (
     deps: IndicatorsTableDeps,
-): CrudTableConfig<Indicator, IndicatorTransient> => {
+): CrudTableConfig<IndicatorExisting, IndicatorTransient> => {
     const { getFormFields } = useFormFields(deps.indicators);
 
     const headers = [
         {
-            title: i18n.global.t(
-                "createTemplateExam.steps.indicators.fields.name.label",
-            ),
+            title: i18n.global.t("indicators.fields.name.label"),
             value: "name",
             width: "30%",
         },
         {
-            title: i18n.global.t(
-                "createTemplateExam.steps.indicators.fields.type.label",
-            ),
+            title: i18n.global.t("indicators.fields.type.label"),
             value: "type",
             width: "30%",
         },
         {
-            title: i18n.global.t(
-                "createTemplateExam.steps.indicators.fields.thresholds.label",
-            ),
+            title: i18n.global.t("indicators.fields.thresholds.label"),
             value: "thresholds",
             width: "30%",
         },
         {
-            title: i18n.global.t(
-                "createTemplateExam.steps.indicators.fields.actions.label",
-            ),
+            title: i18n.global.t("indicators.fields.actions.label"),
             value: "actions",
             align: "end" as const,
             width: "10%",
@@ -54,9 +46,9 @@ export const useTable = (
         deps.createItem(indicatorTransientToIndicator(item));
 
     const updateItem = (item: IndicatorTransient) =>
-        deps.updateItem(indicatorTransientToIndicator(item));
+        deps.updateItem(indicatorTransientToIndicatorExisting(item));
 
-    const getExistingItem = (item: Indicator): IndicatorTransient => ({
+    const getExistingItem = (item: IndicatorExisting): IndicatorTransient => ({
         ...item,
     });
 
@@ -79,6 +71,12 @@ export const useTable = (
         },
         deleteConfig: {
             deleteItem: deps.deleteItem,
+            confirm: deps.confirmDelete
+                ? {
+                      translationKeyPrefix: "indicators",
+                      getDetailText: (item: IndicatorExisting) => item.name,
+                  }
+                : undefined,
         },
     };
 };

@@ -7,7 +7,11 @@
             :get-item="() => updateConfig.getItem(item)"
             :update-item="updateConfig.updateItem"
         />
-        <CrudDelete :item="item" :delete-item="deleteConfig.deleteItem" />
+        <CrudDelete
+            :item="item"
+            :delete-item="deleteConfig.deleteItem"
+            :confirm="deleteConfig.confirm"
+        />
     </div>
 </template>
 

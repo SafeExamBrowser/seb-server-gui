@@ -1,6 +1,6 @@
 <template>
-    <v-chip variant="flat" :color="`#${threshold.color}`" density="compact">
-        {{ threshold.value }}% / #{{ threshold.color }}</v-chip
+    <v-chip variant="flat" :color="threshold.color" density="compact">
+        {{ threshold.value }}% / {{ threshold.color }}</v-chip
     >
 </template>
 

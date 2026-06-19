@@ -3,7 +3,6 @@ import {
     ExamTypeEnum,
 } from "@/models/seb-server/examFiltersEnum";
 import { useTableStore } from "@/stores/store";
-import { OptionalParGetUserAccounts } from "@/models/userAccount";
 import { ServerTablePaging } from "@/models/types";
 import {
     OptionalParGetExams,
@@ -67,9 +66,9 @@ export function sortTable(key: number, headerRefs: HeaderRefs) {
 
 export function assignQuizSelectPagingOptions(
     serverTablePaging: ServerTablePaging,
-    name: string | null,
+    name: string | undefined,
     startTimestamp: number | null,
-    assessmentToolId: string | null,
+    assessmentToolId: string | undefined,
     forceNewSearch: boolean,
 ): OptionalParGetQuizzes {
     const optionalParGetQuizzes: OptionalParGetQuizzes = {
@@ -105,10 +104,10 @@ export function assignQuizSelectPagingOptions(
 
 export function assignExamSelectPagingOptions(
     serverTablePaging: ServerTablePaging,
-    name: string | null,
+    name: string | undefined,
     startTimestamp: number | null,
-    activeTypeFilter: ExamTypeEnum | null | string,
-    activeStatusFilter: ExamStatusEnum | null | string,
+    activeTypeFilter: ExamTypeEnum | string | undefined,
+    activeStatusFilter: ExamStatusEnum | string | undefined,
 ): OptionalParGetExams {
     const optionalParGetExams: OptionalParGetExams = {};
 
@@ -167,43 +166,10 @@ export function assignPagingOptions(
     return pagingParameters;
 }
 
-export function assignUserAccountSelectPagingOptions(
-    serverTablePaging: ServerTablePaging,
-    surnameQuery: string | null,
-    selectedStatus: string | null,
-    selectedInstitutionId: string | null,
-): OptionalParGetUserAccounts {
-    const opt: OptionalParGetUserAccounts = {};
-
-    opt.page_size = serverTablePaging.itemsPerPage;
-    opt.page_number = serverTablePaging.page;
-
-    if (serverTablePaging.sortBy.length !== 0) {
-        let sortString = serverTablePaging.sortBy[0].key;
-        if (serverTablePaging.sortBy[0].order === "desc") {
-            sortString = "-" + sortString;
-        }
-        opt.sort = sortString;
-    }
-    opt.active =
-        selectedStatus === "Active"
-            ? "true"
-            : selectedStatus === "Inactive"
-              ? "false"
-              : null;
-    opt.institutionId = selectedInstitutionId ?? null;
-
-    if (surnameQuery && surnameQuery !== "") {
-        opt.surname = surnameQuery;
-    }
-
-    return opt;
-}
-
 export function assignClientLogDetailsPagingOptions(
     serverTablePaging: ServerTablePaging,
-    name: string | null,
-    type: string | null,
+    name: string | undefined,
+    type: string | undefined,
 ): OptionalParGetMonitoringClientLogs {
     const optionalParGetMonitoringClientLogs: OptionalParGetMonitoringClientLogs =
         {};
@@ -232,10 +198,10 @@ export function assignClientLogDetailsPagingOptions(
 
 export function assignAssessmentToolSelectPagingOptions(
     serverTablePaging: ServerTablePaging,
-    selectedStatus: string | null,
+    selectedStatus: string | undefined,
     selectedType: LMSTypeEnum | null,
-    selectedInstitutionId: string | null,
-    name: string | null,
+    selectedInstitutionId: string | undefined,
+    name: string | undefined,
 ): OptionalParGetAssessmentTool {
     const opt: OptionalParGetAssessmentTool = {};
 
@@ -267,9 +233,9 @@ export function assignAssessmentToolSelectPagingOptions(
 
 export function assignConnectionConfigurationSelectPagingOptions(
     serverTablePaging: ServerTablePaging,
-    name: string | null,
-    selectedStatus: string | null,
-    selectedInstitutionId: string | null,
+    name: string | undefined,
+    selectedStatus: string | undefined,
+    selectedInstitutionId: string | undefined,
 ): OptionalParGetConnectionConfiguration {
     const opt: OptionalParGetConnectionConfiguration = {};
 
@@ -304,7 +270,7 @@ export function assignConnectionConfigurationSelectPagingOptions(
 export function assignCertificateSelectPagingOptions(
     serverTablePaging: ServerTablePaging,
 
-    alias: string | null,
+    alias: string | undefined,
 ): OptionalParGetCertificates {
     const opt: OptionalParGetCertificates = {};
 
@@ -340,4 +306,18 @@ export const normaliseBasicListParams = (basicListParams?: BasicListParams) => {
             ? sortOrderToSortString(basicListParams.sortOrder)
             : undefined,
     };
+};
+
+export const toServerPageQuery = (paging: ServerTablePaging) => {
+    const [sort] = paging.sortBy;
+    const sortOrder: SortOrder | undefined =
+        sort?.order === "asc" || sort?.order === "desc"
+            ? { key: sort.key, order: sort.order }
+            : undefined;
+
+    return normaliseBasicListParams({
+        pageNumber: paging.page,
+        pageSize: paging.itemsPerPage,
+        sortOrder,
+    });
 };

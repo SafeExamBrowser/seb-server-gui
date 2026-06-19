@@ -7,10 +7,19 @@
             },
         ]"
         :data-test-id="dataTestId"
+        :panel-left-collapsed="!filtersOpen"
     >
-        <template #PanelTop>
+        <template #ActionButton>
+            <AddButton
+                :route="{ name: '/(app)/exam-template/create/' }"
+                :data-test-id="dataTestId"
+            />
+        </template>
+
+        <template #PanelLeft>
             <SearchBar
                 v-model="list.searchInputValue"
+                :applied-search="list.searchField"
                 search-text="examTemplateList.info.nameSearchPlaceholder"
                 :filter-sections="list.filterSections"
                 :filter-values="list.selectedFilters"
@@ -22,6 +31,14 @@
             />
         </template>
         <template #PanelMain>
+            <FilterControlsRow
+                :open="filtersOpen"
+                :pills="activePills"
+                :data-test-id="dataTestId"
+                @toggle="filtersOpen = !filtersOpen"
+                @remove="onRemovePill"
+                @clear-all="list.clearAll"
+            />
             <!-- TODO @andrei: properly display errors, once we have a proper generic error component -->
             <div v-if="deleteFlow.error">
                 {{ deleteFlow.error }}
@@ -31,6 +48,7 @@
             </div>
             <LoadingFallbackComponent :loading="false" :errors="list.errors">
                 <EntityTable
+                    class="px-2 pt-2"
                     :headers="list.headers"
                     :items="list.items"
                     :page-count="list.pageCount"
@@ -62,8 +80,11 @@
 
 <script setup lang="ts">
 import BasicPage from "@/components/layout/pages/BasicPage.vue";
+import AddButton from "@/components/widgets/AddButton.vue";
 import SearchBar from "@/components/widgets/searches/SearchBar.vue";
 import EntityTable from "@/components/widgets/entity-table/EntityTable.vue";
+import FilterControlsRow from "@/components/widgets/filters/FilterControlsRow.vue";
+import { useListFilterPanel } from "@/components/widgets/filters/useListFilterPanel.ts";
 import DeleteConfirmDialog from "@/components/widgets/confirmDialog/DeleteConfirmDialog.vue";
 import LoadingFallbackComponent from "@/components/widgets/loadingFallbackComponent/LoadingFallbackComponent.vue";
 import { useExamTemplateOverview } from "./composables/useExamTemplateOverview.ts";
@@ -71,4 +92,11 @@ import { useExamTemplateOverview } from "./composables/useExamTemplateOverview.t
 const dataTestId = "examTemplates";
 
 const { list, deleteFlow, copyFlow } = useExamTemplateOverview();
+
+const { filtersOpen, activePills, onRemovePill } = useListFilterPanel({
+    search: { applied: () => list.searchField, clear: list.onClearSearch },
+    filterSections: () => list.filterSections,
+    selectedFilters: () => list.selectedFilters,
+    setFilters: list.setFilters,
+});
 </script>

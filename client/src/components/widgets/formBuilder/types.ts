@@ -91,11 +91,21 @@ export type FormFieldSimple = FormFieldBase &
         | {
               type: "image";
               required?: boolean;
-              model: Ref<File | null>;
+              model: Ref<File | string | undefined>;
               dropTitle: string;
               acceptExtensions?: string[];
               hint?: string;
               maxFileSizeMB?: number;
+          }
+        | {
+              type: "date-time";
+              required?: boolean;
+              model: Ref<DateTime | undefined>;
+          }
+        | {
+              type: "time-range";
+              required?: boolean;
+              model: Ref<TimeRange | undefined>;
           }
     );
 
@@ -121,4 +131,16 @@ export type FormFieldsComponentProps = {
     fields: FormField[];
     layout?: "vertical" | "horizontal";
     backendErrors?: BackendFieldErrorMap;
+};
+
+export type DateTime = {
+    date: Date;
+    time: string;
+};
+
+export type TimeRange = {
+    fromDate: Date;
+    fromTime: string;
+    toDate: Date;
+    toTime: string;
 };

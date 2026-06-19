@@ -7,7 +7,7 @@ import {
 
 const baseUrl = "/configuration-node" as const;
 
-export const getConfigurationTemplateName = async (
+export const getConfigurationTemplate = async (
     id: string,
 ): Promise<ConfigurationTemplateKey> =>
     (
@@ -38,6 +38,22 @@ export const importSEBSettings = async (
                     ...(settingsImport.quitPassword
                         ? { quitPassword: settingsImport.quitPassword }
                         : {}),
+                },
+            },
+        })
+    ).data;
+
+export const exportSEBSettings = async (
+    configTemplateId: string,
+): Promise<Blob> =>
+    (
+        await apiService.getRequest({
+            url: `${baseUrl}/${configTemplateId}/downloadSettings`,
+            options: {
+                _authType: "seb",
+                responseType: "blob",
+                headers: {
+                    accept: "application/octet-stream",
                 },
             },
         })

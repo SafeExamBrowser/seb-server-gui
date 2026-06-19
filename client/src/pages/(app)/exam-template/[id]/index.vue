@@ -5,16 +5,48 @@
             :title="title"
             :bread-crumb="breadCrumb"
         >
-            <template #basicSettings><BoxBasicSettings /></template>
-            <template #sebSettings><BoxSebSettings /></template>
+            <template #basicSettings>
+                <BoxBasicSettings
+                    :basic-settings="basicSettings"
+                    @change="handleBasicSettingsChange"
+                />
+            </template>
+            <template #sebSettings>
+                <BoxSEBSettings
+                    v-if="basicSettings.configurationTemplateId"
+                    :exam-template-name="basicSettings.name"
+                    :config-template-id="basicSettings.configurationTemplateId"
+                />
+            </template>
             <template #indicators>
-                <BoxIndicators :exam-template-id="examTemplateId" />
+                <BoxIndicators
+                    :exam-template-id="examTemplateId"
+                    :indicators="indicators"
+                />
             </template>
-            <template #supervisors><BoxSupervisors /></template>
+            <template #supervisors>
+                <BoxSupervisors
+                    :available-supervisors="availableSupervisors ?? []"
+                    :selected-supervisor-ids="selectedSupervisorIds"
+                    @change="handleSupervisorsChange"
+                />
+            </template>
             <template #screenProctoringSettings>
-                <BoxScreenProctoringSettings />
+                <BoxScreenProctoringSettings
+                    :enabled="screenProctoring.enabled.value"
+                    :collection-strategy="
+                        screenProctoring.collectionStrategy.value
+                    "
+                    @change="handleScreenProctoringChange"
+                />
             </template>
-            <template #groups><BoxGroups /></template>
+            <template #groups>
+                <BoxClientGroups
+                    :exam-template-id="examTemplateId"
+                    :client-groups="clientGroups"
+                    :screen-proctoring="screenProctoring"
+                />
+            </template>
         </GridPage>
     </LoadingFallbackComponent>
 </template>
@@ -23,13 +55,32 @@
 import GridPage from "@/components/layout/pages/GridPage.vue";
 import LoadingFallbackComponent from "@/components/widgets/loadingFallbackComponent/LoadingFallbackComponent.vue";
 import { useExamTemplateDetailPage } from "./composables/useExamTemplateDetailPage.ts";
-import BoxBasicSettings from "./components/BoxBasicSettings.vue";
-import BoxSebSettings from "./components/BoxSebSettings.vue";
+import BoxBasicSettings from "@/pages/(app)/exam-template/[id]/components/BoxBasicSettings/BoxBasicSettings.vue";
+import BoxSEBSettings from "@/pages/(app)/exam-template/[id]/components/BoxSEBSettings/BoxSEBSettings.vue";
 import BoxIndicators from "./components/BoxIndicators.vue";
 import BoxSupervisors from "./components/BoxSupervisors.vue";
-import BoxScreenProctoringSettings from "./components/BoxScreenProctoringSettings.vue";
-import BoxGroups from "./components/BoxGroups.vue";
+import BoxScreenProctoringSettings from "./components/BoxScreenProctoringSettings/BoxScreenProctoringSettings.vue";
+import BoxClientGroups from "./components/BoxClientGroups.vue";
 
-const { examTemplateId, title, breadCrumb, errors, loading } =
-    useExamTemplateDetailPage();
+const {
+    examTemplateId,
+    title,
+    breadCrumb,
+    errors,
+    loading,
+    indicators,
+    availableSupervisors,
+    selectedSupervisorIds,
+    clientGroups,
+    screenProctoring,
+    basicSettings,
+    updateTemplate,
+    handleScreenProctoringChange,
+    handleBasicSettingsChange,
+} = useExamTemplateDetailPage();
+
+const handleSupervisorsChange = (ids: string[]) =>
+    updateTemplate({
+        supporter: ids,
+    });
 </script>

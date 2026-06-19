@@ -16,8 +16,8 @@
                         isHovering ? (action.color ?? 'primary') : undefined
                     "
                     :data-testid="`${dataTestId}-${action.key}-button`"
-                    @click.stop="action.onClick(item)"
                     :v-tooltip="action.tooltip"
+                    @click.stop="action.onClick(item)"
                 />
 
                 <v-tooltip

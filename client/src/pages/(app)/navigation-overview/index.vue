@@ -78,11 +78,11 @@ const settingsItems = computed(() =>
 );
 
 const preparationItems = computed(() =>
-    buildPreparationNavigationItems("navigationOverview"),
+    buildPreparationNavigationItems(ability, "navigationOverview"),
 );
 
 const monitoringItems = computed(() =>
-    buildMonitoringNavigationItems("navigationOverview"),
+    buildMonitoringNavigationItems(ability, "navigationOverview"),
 );
 
 const followUpItems = computed(() =>

@@ -1,54 +1,43 @@
 <template>
-    <v-row>
-        <!-- ASK keys -->
-        <v-col cols="12">
-            <v-card
-                :hover="true"
-                :ripple="false"
-                class="rounded-lg px-2 py-2 d-flex align-center justify-space-between"
-                variant="flat"
-                style="background-color: #f0f0f0"
-                @click="openAskDialog()"
-            >
-                <div class="d-flex align-center">
-                    <!-- Icon Box -->
-                    <div
-                        class="mr-3 d-flex align-center justify-center"
-                        style="
-                            width: 52px;
-                            height: 52px;
-                            border-radius: 10px;
-                            padding: 8px;
-                            background-color: #f0f0f0;
-                        "
-                    >
-                        <v-icon color="#000000" size="28">
-                            mdi-shield-key-outline
-                        </v-icon>
-                    </div>
+    <v-card
+        ref="launcherRef"
+        link
+        border
+        color="background"
+        rounded="lg"
+        class="pa-3 d-flex align-center ga-3"
+        role="button"
+        tabindex="0"
+        aria-haspopup="dialog"
+        :aria-label="askButtonLabel"
+        @click="openAskDialog()"
+        @keydown="handleActivate"
+    >
+        <v-avatar color="surface" size="42" rounded="lg" border>
+            <v-icon size="22">mdi-shield-key-outline</v-icon>
+        </v-avatar>
 
-                    <div>
-                        <div
-                            class="text-body-medium font-weight-bold text-grey-darken-1"
-                        >
-                            {{ translate("monitoringOverview.ask.askKey") }}
-                        </div>
-                        <div class="font-weight-bold text-body-large">
-                            {{ translate("monitoringOverview.ask.askKeyInfo") }}
-                        </div>
-                    </div>
-                </div>
+        <div class="flex-grow-1">
+            <div class="text-body-medium font-weight-bold">
+                {{ $t("monitoringOverview.ask.askKey") }}
+            </div>
+            <div class="text-body-small text-medium-emphasis">
+                {{ $t("monitoringOverview.ask.askKeyInfo") }}
+            </div>
+        </div>
 
-                <v-avatar color="#bdbdbd" size="45">
-                    <span class="text-white text-body-large font-weight-bold">
-                        {{ askKeyCount }}
-                    </span>
-                </v-avatar>
-            </v-card>
-        </v-col>
-    </v-row>
+        <v-avatar color="grey" size="34">
+            <span class="text-body-medium font-weight-bold text-white">
+                {{ askKeyCount }}
+            </span>
+        </v-avatar>
+    </v-card>
 
-    <v-dialog v-model="askDialog" max-width="1200">
+    <v-dialog
+        v-model="askDialog"
+        max-width="1200"
+        @after-leave="restoreLauncherFocus"
+    >
         <AskDialog
             :app-signature-keys="appSignatureKeys"
             @close-ask-dialog="closeAskDialog"
@@ -58,13 +47,15 @@
 
 <script setup lang="ts">
 import { useMonitoringStore } from "@/stores/seb-server/monitoringStore.ts";
-import { translate } from "@/utils/generalUtils.ts";
-import AskDialog from "../components/dialogs/AskDialog.vue";
-import { ref, computed } from "vue";
+import AskDialog from "./dialogs/AskDialog.vue";
+import { ref, computed, type ComponentPublicInstance } from "vue";
+import { useI18n } from "vue-i18n";
 import { AppSignatureKeysWithGrantValues } from "@/models/seb-server/appSignatureKey.ts";
 
-// stores
 const monitoringStore = useMonitoringStore();
+const { t } = useI18n();
+
+const launcherRef = ref<ComponentPublicInstance>();
 
 const appSignatureKeys = computed<AppSignatureKeysWithGrantValues[]>(
     () => monitoringStore.appSignatureKeys ?? [],
@@ -72,12 +63,29 @@ const appSignatureKeys = computed<AppSignatureKeysWithGrantValues[]>(
 const askDialog = ref(false);
 const askKeyCount = computed(() => appSignatureKeys.value?.length ?? 0);
 
+const askButtonLabel = computed(
+    () => `${t("monitoringOverview.ask.askKey")}: ${askKeyCount.value}`,
+);
+
 function openAskDialog() {
     askDialog.value = true;
 }
 function closeAskDialog() {
     askDialog.value = false;
 }
+// The dialog has no activator, so Vuetify can't restore focus on close.
+// Return focus to the launcher card after it finishes closing (also on Esc).
+function restoreLauncherFocus() {
+    const el = launcherRef.value?.$el;
+    if (el instanceof HTMLElement) {
+        el.focus();
+    }
+}
+function handleActivate(event: KeyboardEvent) {
+    if (event.key !== "Enter" && event.key !== " ") {
+        return;
+    }
+    event.preventDefault();
+    openAskDialog();
+}
 </script>
-
-<style scoped></style>

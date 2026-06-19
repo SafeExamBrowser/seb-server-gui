@@ -6,6 +6,7 @@
         rounded="sm"
         variant="flat"
         density="default"
+        :block="block"
         :disabled="disabled"
         @click="emit('click')"
     >
@@ -20,9 +21,10 @@ withDefaults(
     defineProps<{
         text: string;
         disabled?: boolean;
+        block?: boolean;
         dataTestId?: string;
     }>(),
-    { disabled: false, dataTestId: undefined },
+    { disabled: false, block: false, dataTestId: undefined },
 );
 
 const emit = defineEmits<{

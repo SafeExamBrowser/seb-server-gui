@@ -1,27 +1,93 @@
-export type Threshold = {
-    value: number; // mandatory, the value of the threshold, range from 0 to 100 (%) for Battery and WiFi
-    color: string; // mandatory, hex color value without the "#"
+import { z } from "zod";
+import { IndicatorEnum } from "@/models/seb-server/monitoringEnums.ts";
+import {
+    ClientGroupEnum,
+    clientOSLimitedValues,
+} from "@/models/seb-server/clientGroupEnum.ts";
+
+// RGB hash translation:
+// - the API delivers/expects colors without a "#", the app works with a "#"
+// - decode adds the hash (API -> app), encode strips it (app -> API)
+export const colorCodec = z.codec(z.string(), z.string(), {
+    decode: (api) => (api.startsWith("#") ? api : `#${api}`),
+    encode: (app) => (app.startsWith("#") ? app.slice(1) : app),
+});
+
+export const thresholdSchema = z.object({
+    value: z.number(), // the value of the threshold, range from 0 to 100 (%) for Battery and WiFi
+    color: colorCodec, // the hex color value with the "#"
+});
+
+export type Threshold = z.infer<typeof thresholdSchema>;
+
+export const indicatorSchema = z.object({
+    name: z.string(),
+    type: z.enum([IndicatorEnum.BATTERY_STATUS, IndicatorEnum.WLAN_STATUS]),
+    thresholds: z.array(thresholdSchema),
+});
+
+export type Indicator = z.infer<typeof indicatorSchema>;
+
+export const indicatorExistingSchema = indicatorSchema.extend({
+    id: z.number(),
+});
+
+export type IndicatorExisting = z.infer<typeof indicatorExistingSchema>;
+
+export const indicatorTemplatesSchema = z.array(indicatorExistingSchema);
+
+const clientGroupBaseShape = {
+    name: z.string(), // rules: min 3 - max 255 chars, unique within an exam template
+    screenProctoringEnabled: z.boolean(),
 };
 
-export type IndicatorTemplate = {
-    id?: number; // PK of the IndicatorTemplate only available when the IndicatorTemplate exists
-    examTemplateId?: number; // PK reference to the ExamTemplate, only available when the IndicatorTemplate exists
-    name: string; // mandatory, min 3 - max 255 chars, name is unique within indicatorTemplates of ExamTemplate
-    type: string; // mandatory, type of indicator, enum selection values BATTERY_STATUS | WLAN_STATUS
-    thresholds: Threshold[]; // mandatory, list of thresholds, must not be empty
+const ipV4RangeShape = {
+    type: z.literal(ClientGroupEnum.IP_V4_RANGE),
+    ipRangeStart: z.string(), // rules: IP address
+    ipRangeEnd: z.string(), // rules: IP address
 };
 
-export type ClientGroupTemplate = {
-    id?: number; // PK of the ClientGroupTemplate only available when the ClientGroupTemplate exists
-    name: string; // mandatory, min 3 - max 255 chars, name is unique within CLIENT_GROUP_TEMPLATES of ExamTemplate
-    type: string; // mandatory, type of client group: "ClientGroupEnum" (do not use SP_FALLBACK_GROUP in selection)
-    color?: string; // optional, hex color value without the "#"
-    ipRangeStart?: string; // optional (only when type is IP_V4_RANGE), IP address, validate correct IP address format
-    ipRangeEnd?: string; // optional (only when type is IP_V4_RANGE), IP address, validate correct IP address format
-    clientOS?: string; // optional (only when type is CLIENT_OS), ClientOSEnum value
-    nameRangeStartLetter?: string; // optional (mandatory only when type id NAME_ALPHABETICAL_RANGE), no min, max 255, first letter must be before first letter of nameRangeEndLetter
-    nameRangeEndLetter?: string; // optional (mandatory only when type id NAME_ALPHABETICAL_RANGE), no min, max 255, first letter must be after first letter of nameRangeStartLetter
+const clientOSShape = {
+    type: z.literal(ClientGroupEnum.CLIENT_OS),
+    clientOS: z.enum(clientOSLimitedValues),
 };
+
+const nameRangeShape = {
+    type: z.literal(ClientGroupEnum.NAME_ALPHABETICAL_RANGE),
+    nameRangeStartLetter: z.string(), // rules: first letter must be before nameRangeEndLetter
+    nameRangeEndLetter: z.string(), // rules: first letter must be after nameRangeStartLetter
+};
+
+const ipV4RangeGroupSchema = z.object({
+    ...clientGroupBaseShape,
+    ...ipV4RangeShape,
+});
+const clientOSGroupSchema = z.object({
+    ...clientGroupBaseShape,
+    ...clientOSShape,
+});
+const nameRangeGroupSchema = z.object({
+    ...clientGroupBaseShape,
+    ...nameRangeShape,
+});
+
+export const clientGroupSchema = z.discriminatedUnion("type", [
+    ipV4RangeGroupSchema,
+    clientOSGroupSchema,
+    nameRangeGroupSchema,
+]);
+
+export type ClientGroup = z.infer<typeof clientGroupSchema>;
+
+export const clientGroupExistingSchema = z.discriminatedUnion("type", [
+    ipV4RangeGroupSchema.extend({ id: z.number() }),
+    clientOSGroupSchema.extend({ id: z.number() }),
+    nameRangeGroupSchema.extend({ id: z.number() }),
+]);
+
+export type ClientGroupExisting = z.infer<typeof clientGroupExistingSchema>;
+
+export const clientGroupTemplatesSchema = z.array(clientGroupExistingSchema);
 
 export type ExamAttribute = {
     enableScreenProctoring: string; // mandatory, screen proctoring enabled flag
@@ -32,6 +98,10 @@ export type ExamAttribute = {
     quitPassword?: string; // optional, is not used yet, ignore it
 };
 
+// TODO @alain: we should soon differentiate between ExamTemplate and ExamTemplateExisting
+// - id undefined vs number
+// - indicatorTemplates will have a different type
+// - CLIENT_GROUP_TEMPLATES will have a different type
 export type ExamTemplate = {
     id?: number; // PK of the ExamTemplate only available when the ExamTemplate exists
     name: string; // mandatory, min 3 - max 255 chars, name is unique for all ExamTemplate (2)
@@ -42,10 +112,22 @@ export type ExamTemplate = {
     institutionalDefault: boolean; // mandatory, institutional default flag
     lmsIntegration: boolean; // mandatory, Assessment Tool Integration flag
     clientConfigurationId?: number; // (optional or mandatory?) identifier of the the selected connection configuration. (4)
-    indicatorTemplates: IndicatorTemplate[]; // optional list of created IndicatorTemplates
-    CLIENT_GROUP_TEMPLATES: ClientGroupTemplate[]; //optional list of created ClientGroupTemplates
+    indicatorTemplates: IndicatorExisting[];
+    CLIENT_GROUP_TEMPLATES: ClientGroupExisting[]; //optional list of created ClientGroups
     EXAM_ATTRIBUTES: ExamAttribute; // additional exam attributes see ExamAttribute
 };
+
+// TODO @alain: once we have a proper zod schema for ExamTemplate, the BasicSettings type can be more strict and be inferred from the schema
+export type BasicSettings = Pick<
+    ExamTemplate,
+    | "name"
+    | "description"
+    | "examType"
+    | "clientConfigurationId"
+    | "configurationTemplateId"
+    | "lmsIntegration"
+    | "institutionalDefault"
+>;
 
 export type ExamTemplates = {
     number_of_pages: number;

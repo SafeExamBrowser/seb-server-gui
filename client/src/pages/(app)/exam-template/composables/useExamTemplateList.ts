@@ -63,6 +63,7 @@ export const useExamTemplateList = () => {
         errors,
         options,
         searchInputValue,
+        searchField,
         selectedFilters,
         filterSections,
         onSearch,

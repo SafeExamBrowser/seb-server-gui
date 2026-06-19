@@ -1,23 +1,33 @@
 import { defineStore } from "pinia";
 import { computed, ref } from "vue";
-import { Indicator } from "@/components/widgets/indicatorsTable/types.ts";
+import {
+    Indicator,
+    IndicatorExisting,
+    indicatorExistingSchema,
+} from "@/models/seb-server/examTemplate.ts";
 
 const getInitialState = () => ({
     indicators: [],
 });
 
 export const useStepIndicatorsStore = defineStore("stepIndicators", () => {
-    const indicators = ref<Indicator[]>(getInitialState().indicators);
+    const indicators = ref<IndicatorExisting[]>(getInitialState().indicators);
 
     const $reset = () => {
         indicators.value = getInitialState().indicators;
     };
 
     const createIndicator = (indicator: Indicator) => {
-        indicators.value.push(indicator);
+        indicators.value.push(
+            indicatorExistingSchema.parse({
+                ...indicator,
+                // random ID, for identification in the store only (when submitting to BE, the BE will generate the real ID)
+                id: crypto.getRandomValues(new Uint32Array(1))[0],
+            }),
+        );
     };
 
-    const updateIndicator = (updatedIndicator: Indicator) => {
+    const updateIndicator = (updatedIndicator: IndicatorExisting) => {
         indicators.value = indicators.value.map((existingIndicator) =>
             existingIndicator.id === updatedIndicator.id
                 ? updatedIndicator
@@ -25,7 +35,7 @@ export const useStepIndicatorsStore = defineStore("stepIndicators", () => {
         );
     };
 
-    const deleteIndicator = (indicator: Indicator) => {
+    const deleteIndicator = (indicator: IndicatorExisting) => {
         indicators.value = indicators.value.filter(
             (i) => i.id !== indicator.id,
         );

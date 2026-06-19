@@ -1,5 +1,5 @@
 import { createProxyServer } from "http-proxy-3";
-import { logRequest } from "./logger.js";
+import { logError, logRequest } from "./logger.js";
 import type { Request, Response } from "express";
 
 const prepareProxyRequest = ({
@@ -16,6 +16,13 @@ const prepareProxyRequest = ({
   if (req.url === "/oauth/token") {
     // /oauth/token requests are secured with basic auth
     req.headers.authorization = `Basic ${Buffer.from(`${basicAuthUsername}:${basicAuthPassword}`).toString("base64")}`;
+    return req;
+  }
+
+  if (
+    req.url === defaultUrlPrefix ||
+    req.url?.startsWith(`${defaultUrlPrefix}/`)
+  ) {
     return req;
   }
 
@@ -45,6 +52,14 @@ export const createBackend = ({
       url: `${baseUrl}${req.url ?? "/"}`,
       statusCode: proxyRes.statusCode,
     });
+  });
+
+  proxy.on("error", (err, req, res) => {
+    logError(`${req.method ?? "?"} ${baseUrl}${req.url ?? "/"} → ${err.message || err.name}`);
+    if ("writeHead" in res && !res.headersSent) {
+      res.writeHead(502);
+    }
+    res.end();
   });
 
   return {

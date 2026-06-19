@@ -1,15 +1,8 @@
 <template>
     <v-row v-if="!showError" class="d-flex align-stretch" no-gutters>
         <!-----------video player---------->
-        <v-col
-            class="video-col"
-            :class="{
-                open: isMetadataInfo,
-                closed: !isMetadataInfo,
-            }"
-            :cols="isMetadataInfo ? 8 : 11"
-        >
-            <v-sheet class="rounded-lg pt-4 pl-4 pr-4" elevation="2">
+        <v-col cols="12">
+            <div class="proctor">
                 <div
                     id="player-wrapper"
                     ref="videoPlayer"
@@ -17,18 +10,24 @@
                     @mouseleave="onMouseLeave"
                     @mousemove="onMouseMove"
                 >
-                    <v-img
-                        eager
-                        :aspect-ratio="16 / 9"
-                        class="img-styling"
-                        :src="imageLink"
-                    >
-                        <template #error> no img available </template>
-                    </v-img>
+                    <div class="proctor__screen">
+                        <span v-if="isLiveSelected" class="proctor__livebadge">
+                            <span class="pulse"></span>
+                            Live
+                        </span>
+                        <v-img
+                            eager
+                            :aspect-ratio="16 / 9"
+                            class="img-styling"
+                            :src="imageLink"
+                        >
+                            <template #error> no img available </template>
+                        </v-img>
+                    </div>
 
                     <!-----------controls---------->
                     <div
-                        class="controls"
+                        class="controls proctor__bar"
                         :class="{
                             'controls-hidden': !controlsVisible,
                         }"
@@ -37,13 +36,13 @@
                         <v-slider
                             v-model="sliderTime"
                             class="mt-4"
-                            :color="isFullscreen ? 'white' : undefined"
+                            color="white"
                             :max="sliderMax"
                             :min="sliderMin"
                             :step="1000"
-                            :thumb-color="isFullscreen ? 'white' : undefined"
+                            thumb-color="white"
                             thumb-label
-                            :track-color="isFullscreen ? '#bbb' : undefined"
+                            track-color="#bbb"
                         >
                             <template #thumb-label>
                                 {{ currentTimeString }}
@@ -167,99 +166,80 @@
                                     variant="text"
                                     @click="toggle"
                                 ></v-btn>
+
+                                <!-----------session info on hover---------->
+                                <v-menu
+                                    attach="#player-wrapper"
+                                    :close-on-content-click="false"
+                                    location="top end"
+                                    open-on-hover
+                                >
+                                    <template #activator="{ props: infoProps }">
+                                        <v-btn
+                                            v-bind="infoProps"
+                                            aria-label="Session info"
+                                            icon="mdi-information-outline"
+                                            variant="text"
+                                        >
+                                        </v-btn>
+                                    </template>
+                                    <div class="proctor-info">
+                                        <div class="proctor-info__group">
+                                            <div class="proctor-info__title">
+                                                SEB Session Info
+                                            </div>
+                                            <div
+                                                v-for="(
+                                                    value, key
+                                                ) in sessionInfodata"
+                                                :key="key"
+                                                class="proctor-info__row"
+                                            >
+                                                <span
+                                                    class="proctor-info__label"
+                                                >
+                                                    {{ key }}
+                                                </span>
+                                                <span
+                                                    class="proctor-info__value"
+                                                >
+                                                    {{ value }}
+                                                </span>
+                                            </div>
+                                        </div>
+
+                                        <div class="proctor-info__group">
+                                            <div class="proctor-info__title">
+                                                Screenshot Metadata
+                                            </div>
+                                            <div
+                                                v-for="(
+                                                    value, key
+                                                ) in screenshotMetadata"
+                                                :key="key"
+                                                class="proctor-info__row"
+                                            >
+                                                <span
+                                                    class="proctor-info__label"
+                                                >
+                                                    {{ key }}
+                                                </span>
+                                                <span
+                                                    class="proctor-info__value"
+                                                >
+                                                    {{ value }}
+                                                </span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </v-menu>
                             </template>
                             <!-------------------------->
                         </v-slider>
                         <!-------------------------->
                     </div>
                 </div>
-            </v-sheet>
-        </v-col>
-        <!-------------------------->
-
-        <!-----------info box---------->
-
-        <v-col
-            class="metadata-col"
-            :class="{
-                open: isMetadataInfo,
-                closed: !isMetadataInfo,
-            }"
-            cols="3"
-        >
-            <v-card
-                class="metadata-card d-flex flex-column"
-                style="height: 100%; width: 100%"
-            >
-                <template #title> </template>
-                <v-card-text>
-                    <v-table class="text-body-small" density="comfortable">
-                        <thead>
-                            <tr>
-                                <th class="text-left text-no-wrap">
-                                    <h3 class="text-title-small">
-                                        SEB Session Info
-                                    </h3>
-                                </th>
-                                <th class="text-left"></th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            <tr
-                                v-for="(value, key) in sessionInfodata"
-                                :key="key"
-                            >
-                                <th>{{ key }}</th>
-                                <td align="right">{{ value }}</td>
-                            </tr>
-                        </tbody>
-
-                        <thead>
-                            <tr>
-                                <th class="text-left text-no-wrap">
-                                    <h3 class="text-title-small">
-                                        Screenshot Metadata
-                                    </h3>
-                                </th>
-                                <th class="text-left"></th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            <tr
-                                v-for="(value, key) in screenshotMetadata"
-                                :key="key"
-                            >
-                                <th>{{ key }}:</th>
-                                <td align="right">{{ value }}</td>
-                            </tr>
-                        </tbody>
-                    </v-table>
-                </v-card-text>
-            </v-card>
-        </v-col>
-        <v-col
-            class="toggle-col d-flex align-center justify-center"
-            :class="{
-                open: isMetadataInfo,
-                closed: !isMetadataInfo,
-            }"
-            cols="1"
-            @click="hideShowMetadataInfo()"
-        >
-            <v-card
-                class="toggle-card d-flex flex-column align-center justify-center"
-                elevation="2"
-                style="width: 100%; height: 100%"
-            >
-                <v-icon icon="mdi-information" />
-                <v-icon
-                    :icon="
-                        isMetadataInfo
-                            ? 'mdi-chevron-double-right'
-                            : 'mdi-chevron-double-left'
-                    "
-                />
-            </v-card>
+            </div>
         </v-col>
         <!-------------------------->
     </v-row>
@@ -267,15 +247,7 @@
 
 <script setup lang="ts">
 import { useRoute } from "vue-router";
-import {
-    computed,
-    nextTick,
-    onBeforeMount,
-    onBeforeUnmount,
-    onMounted,
-    ref,
-    watch,
-} from "vue";
+import { computed, onBeforeMount, onBeforeUnmount, ref, watch } from "vue";
 import * as screenshotDataService from "@/services/screen-proctoring/screenshotDataService";
 import * as timeUtils from "@/utils/timeUtils";
 import * as groupingUtils from "@/utils/groupingUtils";
@@ -357,7 +329,6 @@ const videoPlayer = ref<HTMLDivElement | null>(null);
 const { isFullscreen, toggle } = useFullscreen(videoPlayer);
 
 // metadata
-const isMetadataInfo = ref<boolean>(true);
 const totalAmountOfScreenshots = ref<number>();
 
 // New state for control visibility
@@ -368,8 +339,6 @@ let hideControlsTimeout: ReturnType<typeof setTimeout> | null = null;
 const props = defineProps<{
     sessionIdProp: string;
 }>();
-
-const videoHeight = ref(0);
 
 //= ============lifecycle and watchers==================
 onBeforeMount(async () => {
@@ -383,16 +352,6 @@ onBeforeMount(async () => {
         goLive();
     } else {
         totalAmountOfScreenshots.value = await calcTotalNrOfScreenshots();
-    }
-});
-
-onMounted(() => {
-    if (isMetadataInfo.value) {
-        nextTick(() => {
-            if (videoPlayer.value) {
-                videoHeight.value = videoPlayer.value.clientHeight;
-            }
-        });
     }
 });
 
@@ -498,16 +457,6 @@ watch(isLive, async () => {
         isLiveSelected.value = false;
         stopIntervalLiveImage();
         totalAmountOfScreenshots.value = await calcTotalNrOfScreenshots();
-    }
-});
-
-watch(isMetadataInfo, (newVal) => {
-    if (newVal) {
-        nextTick(() => {
-            if (videoPlayer.value) {
-                videoHeight.value = videoPlayer.value.clientHeight;
-            }
-        });
     }
 });
 
@@ -906,10 +855,6 @@ const screenshotDisplay = computed<string>(() => {
     return currentScreenshotIndex + " / " + totalAmountOfScreenshots.value;
 });
 
-function hideShowMetadataInfo() {
-    isMetadataInfo.value = !isMetadataInfo.value;
-}
-
 async function calcTotalNrOfScreenshots(): Promise<number> {
     if (!firstScreenshotTime.value) return 0;
 
@@ -931,13 +876,141 @@ async function calcTotalNrOfScreenshots(): Promise<number> {
 
 <style scoped>
 .img-styling {
-    background-color: black;
+    background-color: transparent;
     transition: transform 0.3s ease-in-out;
 }
 
 .player-wrapper {
     position: relative;
     z-index: 0;
+}
+
+/* dark "screen proctoring" player surface (matches monitoring detail design) */
+.proctor {
+    border: 1px solid rgba(0, 0, 0, 0.08);
+    border-radius: 12px;
+    overflow: hidden;
+    background: #0d1320;
+}
+
+.proctor__screen {
+    position: relative;
+    color: rgba(255, 255, 255, 0.7);
+    background:
+        radial-gradient(
+            circle at 30% 30%,
+            rgba(92, 187, 246, 0.16),
+            transparent 60%
+        ),
+        radial-gradient(
+            circle at 75% 70%,
+            rgba(33, 92, 175, 0.22),
+            transparent 55%
+        ),
+        #0d1320;
+}
+
+.proctor__livebadge {
+    position: absolute;
+    top: 12px;
+    left: 12px;
+    z-index: 2;
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    padding: 4px 10px;
+    border-radius: 999px;
+    background: rgba(0, 0, 0, 0.55);
+    color: white;
+    font-size: 12px;
+    font-weight: 700;
+}
+
+.proctor__livebadge .pulse {
+    width: 7px;
+    height: 7px;
+    border-radius: 50%;
+    background: #ef5350;
+    animation: pulse-red 1.6s infinite;
+}
+
+@keyframes pulse-red {
+    0% {
+        box-shadow: 0 0 0 0 rgba(239, 83, 80, 0.6);
+    }
+    70% {
+        box-shadow: 0 0 0 7px rgba(239, 83, 80, 0);
+    }
+    100% {
+        box-shadow: 0 0 0 0 rgba(239, 83, 80, 0);
+    }
+}
+
+.proctor__bar {
+    background: #141b2d;
+    padding: 0 14px 4px;
+}
+
+.proctor__bar :deep(.v-btn) {
+    color: #fff;
+}
+
+.proctor__bar :deep(.v-chip) {
+    color: #fff;
+    border-color: rgba(255, 255, 255, 0.4);
+}
+
+/* "stats for nerds"-style info overlay, themed to match the dark player */
+.proctor-info {
+    max-width: 400px;
+    max-height: 420px;
+    overflow-y: auto;
+    padding: 12px 14px;
+    border-radius: 10px;
+    border: 1px solid rgba(255, 255, 255, 0.12);
+    background: rgba(13, 19, 32, 0.92);
+    backdrop-filter: blur(6px);
+    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.45);
+    color: rgba(255, 255, 255, 0.9);
+    font-size: 12px;
+    line-height: 1.4;
+}
+
+.proctor-info__group + .proctor-info__group {
+    margin-top: 12px;
+    padding-top: 12px;
+    border-top: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.proctor-info__title {
+    margin-bottom: 6px;
+    font-size: 10.5px;
+    font-weight: 800;
+    letter-spacing: 0.6px;
+    text-transform: uppercase;
+    color: rgba(255, 255, 255, 0.5);
+}
+
+.proctor-info__row {
+    display: flex;
+    align-items: baseline;
+    justify-content: space-between;
+    gap: 16px;
+    padding: 3px 0;
+}
+
+.proctor-info__label {
+    flex-shrink: 0;
+    color: rgba(255, 255, 255, 0.6);
+}
+
+.proctor-info__value {
+    font-family: ui-monospace, "SFMono-Regular", "Menlo", monospace;
+    font-variant-numeric: tabular-nums;
+    font-weight: 600;
+    text-align: right;
+    color: #fff;
+    word-break: break-word;
 }
 
 .controls {
@@ -1048,92 +1121,7 @@ async function calcTotalNrOfScreenshots(): Promise<number> {
     border-color: white !important;
 }
 
-.metadata-card .v-card-text {
-    flex: 1 1 auto;
-    overflow-y: auto;
-    padding-right: 8px;
-}
-.metadata-card .v-card-title,
-.metadata-card .v-card-subtitle {
-    flex: 0 0 auto;
-}
-
-.toggle-col {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    cursor: pointer;
-}
-.toggle-col v-btn {
-    width: 100%;
-    height: 100%;
-    border-radius: 0;
-}
-
 .v-icon {
     color: rgb(var(--v-theme-primary));
-}
-
-.video-col,
-.metadata-col,
-.toggle-col {
-    transition:
-        flex-basis 0.3s ease,
-        max-width 0.3s ease,
-        opacity 0.3s ease;
-}
-
-.video-col.closed {
-    flex: 0 0 91.66% !important;
-    max-width: 91.66% !important;
-}
-.video-col.open {
-    flex: 1 1 66.66% !important;
-    max-width: 100% !important;
-}
-
-.metadata-col.closed {
-    flex: 0 0 0 !important;
-    max-width: 0 !important;
-    opacity: 0;
-    overflow: hidden;
-}
-.metadata-col.open {
-    flex: 0 0 25% !important;
-    max-width: 25% !important;
-    opacity: 1;
-}
-
-.toggle-col.closed {
-    flex: 0 0 8.33% !important;
-    max-width: 8.33% !important;
-}
-.toggle-col.open {
-    flex: 0 0 50px !important;
-    max-width: 50px !important;
-}
-
-.metadata-col {
-    transform: translateZ(0);
-}
-
-.video-col,
-.toggle-col {
-    transition:
-        flex-basis 0.3s ease,
-        max-width 0.3s ease;
-}
-
-.metadata-card {
-    height: 100%;
-}
-
-.scrollable-details {
-    overflow-y: auto;
-    flex-grow: 1;
-}
-
-.toggle-col {
-    cursor: pointer;
 }
 </style>

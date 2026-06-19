@@ -16,14 +16,7 @@ export function buildBaseNavigationLinks(
     ability: AbilityLike,
     i18n: I18nLike,
 ): BaseNavigationLink[] {
-    const result: BaseNavigationLink[] = [
-        {
-            title: i18n.t("titles.home"),
-            route: typedTo({ name: "/(app)/" }),
-            icon: "mdi-home",
-            testId: "layout-home-button",
-        },
-    ];
+    const result: BaseNavigationLink[] = [];
 
     if (ability.canView(GUIComponent.Exams)) {
         result.push({
@@ -49,6 +42,16 @@ export function buildBaseNavigationLinks(
             route: typedTo({ name: "/(app)/analyze/" }),
             icon: "mdi-folder-eye",
             testId: "layout-analyze-button",
+            disabled: true,
+        });
+    }
+
+    if (ability.canView(GUIComponent.ArchiveExams)) {
+        result.push({
+            title: i18n.t("titles.archive"),
+            route: typedTo({ name: "/(app)/archive/" }),
+            icon: "mdi-archive",
+            testId: "layout-archive-button",
             disabled: true,
         });
     }

@@ -1,5 +1,5 @@
 import { translate } from "@/utils/generalUtils";
-import { AbilityLike, GUIComponent } from "@/services/ability";
+import { AbilityLike, GUIAction, GUIComponent } from "@/services/ability";
 import { typedTo } from "@/router/typedTo";
 import type { NavigationSectionItem } from "@/components/widgets/navigationWidgets/types.ts";
 
@@ -12,6 +12,7 @@ export function buildSettingsNavigationItems(
             label: translate("titles.institutions"),
             to: typedTo({ name: "/(app)/institution/" }),
             testId: `${testIdPrefix}-institutions-link`,
+            visible: ability.canView(GUIComponent.Institutions),
         },
         {
             label: translate("titles.assessmentToolConnections"),
@@ -41,6 +42,7 @@ export function buildSettingsNavigationItems(
 }
 
 export function buildPreparationNavigationItems(
+    ability: AbilityLike,
     testIdPrefix: string,
 ): NavigationSectionItem[] {
     return [
@@ -48,25 +50,31 @@ export function buildPreparationNavigationItems(
             label: translate("titles.createTemplateExam"),
             to: typedTo({ name: "/(app)/exam-template/create/" }),
             testId: `${testIdPrefix}-createTemplate-link`,
+            visible: ability.canView(GUIComponent.ExamTemplate),
         },
         {
-            label: translate("titles.editExamTemplates"),
+            label: translate("titles.examTemplateList"),
             to: typedTo({ name: "/(app)/exam-template/" }),
             testId: `${testIdPrefix}-examTemplateList-link`,
+            visible: ability.canView(GUIComponent.ExamTemplate),
         },
         {
             label: translate("titles.createExam"),
             to: typedTo({ name: "/(app)/exam/create/" }),
             testId: `${testIdPrefix}-prepareExam-link`,
+            visible: ability.canView(GUIComponent.Exams),
         },
         {
             label: translate("titles.addExamWithURL"),
+            to: typedTo({ name: "/(app)/exam/create/withURL/" }),
             testId: `${testIdPrefix}-addExamWithURL-text`,
+            visible: ability.canView(GUIComponent.Exams),
         },
     ];
 }
 
 export function buildMonitoringNavigationItems(
+    ability: AbilityLike,
     testIdPrefix: string,
 ): NavigationSectionItem[] {
     return [
@@ -74,18 +82,22 @@ export function buildMonitoringNavigationItems(
             label: translate("titles.monitoring"),
             to: typedTo({ name: "/(app)/monitoring/" }),
             testId: `${testIdPrefix}-runningExams-link`,
+            visible:
+                ability.canDo(GUIAction.ShowMonitoring) ||
+                ability.canView(GUIComponent.Exams),
         },
         {
             label: translate("titles.spSearch"),
             to: typedTo({ name: "/(app)/sp-search/" }),
             thickDivider: true,
-
             testId: `${testIdPrefix}-spSearch-link`,
+            visible: ability.canView(GUIComponent.Exams),
         },
         {
             label: translate("titles.spApplications"),
             to: typedTo({ name: "/(app)/applications-search/" }),
             testId: `${testIdPrefix}-spApplications-link`,
+            visible: ability.canView(GUIComponent.Exams),
         },
     ];
 }
@@ -102,7 +114,8 @@ export function buildFollowUpNavigationItems(
             testId: `${testIdPrefix}-analyzeExams-text`,
         },
         {
-            label: translate("titles.archiveExams"),
+            label: translate("navigation.routeNames.archiveExams"),
+            to: typedTo({ name: "/(app)/archive/" }),
             visible: ability.canView(GUIComponent.ArchiveExams),
             testId: `${testIdPrefix}-archiveExams-text`,
         },

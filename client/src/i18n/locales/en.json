@@ -42,16 +42,19 @@
     "general": {
         "loadingText": "Loading... Please wait",
         "addButton": "Add",
+        "prepareButton": "Prepare",
         "cancelButton": "Cancel",
         "backButton": "Back",
         "nextButton": "Next",
+        "stepProgress": "Step {current} of {total}",
         "searchButton": "Search",
-        "searchTitle": "Search",
-        "cancelSearch": "Cancel Search",
         "clearAll": "Clear all",
-        "showAdvancedFilters": "Show advanced filters",
-        "hideAdvancedFilters": "Hide advanced filters",
-        "activeFilters": "Active filters",
+        "clearSelection": "Clear selection",
+        "activeFilters": "Active",
+        "filters": "Filters",
+        "reset": "Reset",
+        "hideFilters": "Hide filters",
+        "noFiltersApplied": "No filters applied",
         "saveButton": "Save",
         "startButton": "Start",
         "downloadButton": "Download",
@@ -82,7 +85,8 @@
             "ipAddress": "Field must be a valid IP address",
             "alphabeticalBefore": "Field must be alphabetically before \"{referenceValue}\"",
             "alphabeticalAfter": "Field must be alphabetically after \"{referenceValue}\"",
-            "fileExtensions": "Only the following file types are allowed: {extensions}"
+            "fileExtensions": "Only the following file types are allowed: {extensions}",
+            "invalidTimeRange": "This time range is invalid"
         },
         "formFields": {
             "file": {
@@ -91,7 +95,11 @@
             },
             "image": {
                 "dropTitle": "Drop an image here or click to browse",
-                "hint": "Allowed types: {types}"
+                "hint": "Allowed types: {types}",
+                "replace": "Replace image",
+                "remove": "Remove image",
+                "sizeError": "Image exceeds the {size} MB limit",
+                "extensionError": "Allowed image types: {types}"
             }
         },
         "closeButton": "Close"
@@ -103,6 +111,64 @@
         "entityNamePlural": "Groups",
         "addDialogTitle": "Add Group",
         "editDialogTitle": "Edit Group",
+        "deleteDialog": {
+            "title": "Delete Group",
+            "text": "Are you sure you want to delete this group?",
+            "action": "Delete"
+        },
+        "screenProctoringSingleGroupName": "Single Group",
+        "screenProctoringFallbackGroupName": "Fallback Group",
+        "fields": {
+            "actions": {
+                "label": "Actions"
+            },
+            "name": {
+                "label": "Name",
+                "placeholder": "Enter the desired group name",
+                "validationErrorUniqueName": "A group with this name already exists on this exam template"
+            },
+            "screenProctoringEnabled": {
+                "label": "Screen Proctoring"
+            },
+            "type": {
+                "label": "Type",
+                "placeholder": "Select the group type",
+                "types": {
+                    "SCREEN_PROCTORING_SINGLE": "Screen Proctoring Single Group",
+                    "SCREEN_PROCTORING_FALLBACK": "Screen Proctoring Fallback Group",
+                    "IP_V4_RANGE": "IP v4 Range",
+                    "CLIENT_OS": "SEB Client OS",
+                    "NAME_ALPHABETICAL_RANGE": "Alphabetical User Name Range"
+                }
+            },
+            "ipRangeStart": {
+                "label": "Start of IP range",
+                "placeholder": "Enter the start of the IP range"
+            },
+            "ipRangeEnd": {
+                "label": "End of IP range",
+                "placeholder": "Enter the end of the IP range"
+            },
+            "clientOS": {
+                "label": "Client OS Type",
+                "placeholder": "Select client OS Type",
+                "types": {
+                    "WINDOWS": "Windows",
+                    "MAC_OS": "macOS",
+                    "I_OS": "iOS",
+                    "IPAD_OS": "iPadOS",
+                    "I_OS_OR_IPAD_OS": "iOS/iPadOS"
+                }
+            },
+            "nameRangeStartLetter": {
+                "label": "Start Letter",
+                "placeholder": "Enter the start letter of the name range"
+            },
+            "nameRangeEndLetter": {
+                "label": "End Letter",
+                "placeholder": "Enter the end letter of the name range"
+            }
+        },
         "description": {
             "ip": [
                 "With IP v4 range groups you can group the SEB client connections within a IP ranges.",
@@ -130,7 +196,45 @@
     "indicators": {
         "entityNamePlural": "Indicators",
         "addDialogTitle": "Add Indicator",
-        "editDialogTitle": "Edit Indicator"
+        "editDialogTitle": "Edit Indicator",
+        "deleteDialog": {
+            "title": "Delete Indicator",
+            "text": "Are you sure you want to delete this indicator?",
+            "action": "Delete"
+        },
+        "fields": {
+            "actions": {
+                "label": "Actions"
+            },
+            "name": {
+                "label": "Name",
+                "placeholder": "Enter the desired indicator name",
+                "validationErrorUniqueName": "An indicator with this name already exists on this exam template"
+            },
+            "type": {
+                "label": "Type",
+                "placeholder": "Select the indicator type",
+                "types": {
+                    "BATTERY_STATUS": "Battery Status",
+                    "WLAN_STATUS": "Wifi Status"
+                }
+            },
+            "thresholds": {
+                "label": "Thresholds",
+                "labelRow": "Threshold #",
+                "labelAdd": "Add Threshold",
+                "fields": {
+                    "value": {
+                        "label": "Value",
+                        "placeholder": "Enter 0% – 100%"
+                    },
+                    "color": {
+                        "label": "Color",
+                        "placeholder": "Enter hex color value"
+                    }
+                }
+            }
+        }
     },
     "loginPage": {
         "title": "SEB Server",
@@ -184,9 +288,32 @@
                     "end": "End"
                 },
                 "preview": {
+                    "selectedExam": "Selected exam",
                     "start": "Start",
                     "end": "End",
                     "startUrl": "Start URL"
+                }
+            },
+            "withURL": {
+                "title": "Exam with URL",
+                "subtitle": "Enter Exam Data",
+                "text": "If you want SEB Server without Assessment Tool Integration, you can add an exam with URL.",
+                "fields": {
+                    "examName": {
+                        "label": "Exam Name"
+                    },
+                    "examDescription": {
+                        "label": "Description"
+                    },
+                    "timeRange": {
+                        "label": "Time Range",
+                        "labelFrom": "Start date and time",
+                        "labelTo": "End date and time"
+                    },
+                    "examURL": {
+                        "label": "Exam URL",
+                        "invalid": "Invalid URL format"
+                    }
                 }
             },
             "examTemplate": {
@@ -224,6 +351,9 @@
                 "emptyValue": "No data",
                 "notFoundValue": "Not found",
                 "sections": {
+                    "examWithURL": {
+                        "title": "Exam with URL"
+                    },
                     "assessmentTool": {
                         "title": "Assessment Tool"
                     },
@@ -264,59 +394,55 @@
             }
         }
     },
-    "createTemplateExam": {
-        "general": {
-            "fields": {
-                "screenProctoringEnabled": {
-                    "label": "Screen Proctoring"
-                },
-                "screenProctoringCollectionStrategy": {
-                    "label": "Grouping Strategy",
-                    "placeholder": "Select the grouping strategy",
-                    "info": {
-                        "EXAM": "This strategy does not allow you to toggle the screen proctoring per group.",
-                        "APPLY_SEB_GROUPS": "With this strategy, you must create at least one group with screen proctoring enabled."
-                    },
-                    "strategies": {
-                        "EXAM": "One Group for Exam",
-                        "APPLY_SEB_GROUPS": "Apply to SEB Client Groups"
-                    }
-                }
-            }
+    "screenProctoring": {
+        "enabled": {
+            "label": "Screen Proctoring"
         },
+        "collectionStrategy": {
+            "label": "Grouping Strategy",
+            "placeholder": "Select the grouping strategy",
+            "info": {
+                "EXAM": "This strategy does not allow you to toggle the screen proctoring per group.",
+                "APPLY_SEB_GROUPS": "With this strategy, you must create at least one group with screen proctoring enabled."
+            },
+            "strategies": {
+                "EXAM": "One Group for Exam",
+                "APPLY_SEB_GROUPS": "Apply to SEB Client Groups"
+            }
+        }
+    },
+    "examTemplate": {
+        "fields": {
+            "name": {
+                "label": "Name",
+                "placeholder": "Enter a name for the exam template",
+                "validationErrorUniqueName": "An exam template with this name already exists"
+            },
+            "description": {
+                "label": "Description",
+                "placeholder": "Describe the exam template"
+            },
+            "examType": {
+                "label": "Exam Type",
+                "placeholder": "Select the exam type"
+            },
+            "clientConfiguration": {
+                "label": "Connection Configuration",
+                "placeholder": "Select the connection configuration"
+            },
+            "lmsIntegration": {
+                "label": "Assessment Tool Integration"
+            },
+            "institutionalDefault": {
+                "label": "Institutional Default"
+            }
+        }
+    },
+    "createTemplateExam": {
         "steps": {
             "naming": {
                 "title": "Define Basic Settings",
-                "subtitle": "Fill out the form. Create a SEB Client Template and a Connection Configuration, if you haven't done so already.",
-                "fields": {
-                    "name": {
-                        "label": "Name",
-                        "placeholder": "Enter a name for the exam template",
-                        "validationErrorUniqueName": "An exam template with this name already exists"
-                    },
-                    "description": {
-                        "label": "Description",
-                        "placeholder": "Describe the exam template"
-                    },
-                    "examType": {
-                        "label": "Exam Type",
-                        "placeholder": "Select the exam type"
-                    },
-                    "configurationTemplate": {
-                        "label": "SEB Client Template",
-                        "placeholder": "Select the SEB client template"
-                    },
-                    "clientConfiguration": {
-                        "label": "Connection Configuration",
-                        "placeholder": "Select the connection configuration"
-                    },
-                    "lmsIntegration": {
-                        "label": "Assessment Tool Integration"
-                    },
-                    "institutionalDefault": {
-                        "label": "Institutional Default"
-                    }
-                }
+                "subtitle": "Fill out the form. Create a SEB Client Template and a Connection Configuration, if you haven't done so already."
             },
             "seb-settings": {
                 "title": "Enter SEB Settings",
@@ -338,98 +464,12 @@
             },
             "indicators": {
                 "title": "Add Indicators",
-                "subtitle": "TODO: translate (Kristina)",
-                "fields": {
-                    "actions": {
-                        "label": "Actions"
-                    },
-                    "name": {
-                        "label": "Name",
-                        "placeholder": "Enter the desired indicator name",
-                        "validationErrorUniqueName": "An indicator with this name already exists on this exam template"
-                    },
-                    "type": {
-                        "label": "Type",
-                        "placeholder": "Select the indicator type",
-                        "types": {
-                            "BATTERY_STATUS": "Battery Status",
-                            "WLAN_STATUS": "Wifi Status"
-                        }
-                    },
-                    "thresholds": {
-                        "label": "Thresholds",
-                        "labelRow": "Threshold #",
-                        "labelAdd": "Add Threshold",
-                        "fields": {
-                            "value": {
-                                "label": "Value",
-                                "placeholder": "Enter 0% – 100%"
-                            },
-                            "color": {
-                                "label": "Color",
-                                "placeholder": "Enter hex color value"
-                            }
-                        }
-                    }
-                }
+                "subtitle": "TODO: translate (Kristina)"
             },
             "clientGroup": {
                 "title": "Add Groups",
                 "subtitle": "Add the groups, you want for your exam template. You can only use Screen Proctoring for a group, if you enabled Screen Proctoring in the first step.",
-                "subtitleScreenProctoring": "Screen Proctoring Settings",
-                "screenProctoringSingleGroupName": "Single Group",
-                "screenProctoringFallbackGroupName": "Fallback Group",
-                "fields": {
-                    "actions": {
-                        "label": "Actions"
-                    },
-                    "name": {
-                        "label": "Name",
-                        "placeholder": "Enter the desired group name",
-                        "validationErrorUniqueName": "A group with this name already exists on this exam template"
-                    },
-                    "screenProctoringEnabled": {
-                        "label": "Screen Proctoring"
-                    },
-                    "type": {
-                        "label": "Type",
-                        "placeholder": "Select the group type",
-                        "types": {
-                            "SCREEN_PROCTORING_SINGLE": "Screen Proctoring Single Group",
-                            "SCREEN_PROCTORING_FALLBACK": "Screen Proctoring Fallback Group",
-                            "IP_V4_RANGE": "IP v4 Range",
-                            "CLIENT_OS": "SEB Client OS",
-                            "NAME_ALPHABETICAL_RANGE": "Alphabetical User Name Range"
-                        }
-                    },
-                    "ipRangeStart": {
-                        "label": "Start of IP range",
-                        "placeholder": "Enter the start of the IP range"
-                    },
-                    "ipRangeEnd": {
-                        "label": "End of IP range",
-                        "placeholder": "Enter the end of the IP range"
-                    },
-                    "clientOS": {
-                        "label": "Client OS Type",
-                        "placeholder": "Select client OS Type",
-                        "types": {
-                            "WINDOWS": "Windows",
-                            "MAC_OS": "macOS",
-                            "I_OS": "iOS",
-                            "IPAD_OS": "iPadOS",
-                            "I_OS_OR_IPAD_OS": "iOS/iPadOS"
-                        }
-                    },
-                    "nameRangeStartLetter": {
-                        "label": "Start Letter",
-                        "placeholder": "Enter the start letter of the name range"
-                    },
-                    "nameRangeEndLetter": {
-                        "label": "End Letter",
-                        "placeholder": "Enter the end letter of the name range"
-                    }
-                }
+                "subtitleScreenProctoring": "Screen Proctoring Settings"
             },
             "summary": {
                 "title": "Overview Exam Template",
@@ -461,10 +501,15 @@
     "examTemplateDetail": {
         "boxes": {
             "basicSettings": {
-                "title": "Basic Settings"
+                "title": "Basic Settings",
+                "dialogTitle": "Edit Basic Settings"
             },
             "sebSettings": {
-                "title": "SEB Settings"
+                "title": "SEB Settings",
+                "modifiedby": "Last modified by",
+                "edit": "Edit SEB Settings",
+                "export": "Export SEB Settings",
+                "import": "Import SEB Settings"
             },
             "indicators": {
                 "title": "Indicators",
@@ -473,13 +518,21 @@
                 }
             },
             "supervisors": {
-                "title": "Exam Supervisors"
+                "title": "Exam Supervisors",
+                "dialogTitle": "Edit Exam Supervisors",
+                "headers": {
+                    "username": "Username",
+                    "name": "Name"
+                }
             },
             "screenProctoringSettings": {
-                "title": "Screen Proctoring"
+                "title": "Screen Proctoring Settings",
+                "dialogTitle": "Edit Screen Proctoring Settings"
             },
             "groups": {
-                "title": "Groups"
+                "errors": {
+                    "deleteFailed": "Failed to delete group"
+                }
             }
         },
         "errors": {
@@ -543,18 +596,28 @@
         },
         "actions": {
             "downloadSEBLogs": "Download SEB Logs",
-            "showSPS": "Show Screen Proctoring"
-        }
+            "showSPS": "Show Screen Proctoring",
+            "archive": "Archive this Exam",
+            "archiveSelected": "Archive selected"
+        },
+        "archive": {
+            "confirm": {
+                "title": "Archive this exam?",
+                "text": "The exam will be moved to the archive. You can still find it by filtering for the \"Archived\" state.",
+                "action": "Archive"
+            }
+        },
+        "archiveAll": {
+            "confirm": {
+                "title": "Archive this exams?",
+                "text": "The selected exams will be moved to the archive. You can still find it by filtering for the \"Archived\" state.",
+                "action": "Archive"
+            }
+        },
+        "selected": "exam(s) selected"
     },
     "userAccount": {
         "general": {
-            "validation": {
-                "required": "This field is required",
-                "passwordTooShort": "Password must be at least 8 characters",
-                "passwordsDontMatch": "Passwords must match",
-                "invalidEmail": "Invalid email format",
-                "invalidRoleSelection": "Please select at least one Role"
-            },
             "status": {
                 "active": "Active",
                 "inactive": "Inactive"
@@ -625,31 +688,31 @@
         },
         "fields": {
             "institution": {
-                "label": "Institution *"
+                "label": "Institution"
             },
             "username": {
-                "label": "Username *"
+                "label": "Username"
             },
             "name": {
-                "label": "Name *"
+                "label": "Name"
             },
             "surname": {
-                "label": "Last Name *"
+                "label": "Last Name"
             },
             "email": {
                 "label": "Email"
             },
             "timezone": {
-                "label": "Time Zone *"
+                "label": "Time Zone"
             },
             "password": {
-                "label": "Password *"
+                "label": "Password"
             },
             "confirmPassword": {
-                "label": "Confirm Password *"
+                "label": "Confirm Password"
             },
             "role": {
-                "label": "User Role *"
+                "label": "User Role"
             },
             "passwordPlaceholder": {
                 "label": "Password"
@@ -714,46 +777,46 @@
         },
         "fields": {
             "institution": {
-                "label": "Institution *"
+                "label": "Institution"
             },
             "name": {
-                "label": "Name *"
+                "label": "Name"
             },
             "type": {
-                "label": "Type *"
+                "label": "Type"
             },
             "serverAddress": {
-                "label": "Assessment Tool Server Address *",
+                "label": "Assessment Tool Server Address",
                 "validation": "Must start with http:// or https://"
             },
             "clientUsername": {
-                "label": "Assessment Tool Server Username *"
+                "label": "Assessment Tool Server Username"
             },
             "clientPassword": {
-                "label": "Assessment Tool Server Password *"
+                "label": "Assessment Tool Server Password"
             },
             "accessToken": {
-                "label": "Access Token *"
+                "label": "Access Token"
             },
             "withProxy": {
                 "label": "With Proxy",
                 "ariaLabel": "Toggle proxy settings"
             },
             "proxyHost": {
-                "label": "Proxy Host *",
+                "label": "Proxy Host",
                 "placeholder": "Enter proxy host"
             },
             "proxyPort": {
-                "label": "Proxy Port *",
+                "label": "Proxy Port",
                 "placeholder": "Enter proxy port",
                 "validation": "Invalid port, ex. 8080"
             },
             "proxyUsername": {
-                "label": "Proxy Username *",
+                "label": "Proxy Username",
                 "placeholder": "Enter proxy username"
             },
             "proxyPassword": {
-                "label": "Proxy Password *",
+                "label": "Proxy Password",
                 "placeholder": "Enter proxy password"
             }
         },
@@ -814,10 +877,10 @@
         },
         "fields": {
             "name": {
-                "label": "Name *"
+                "label": "Name"
             },
             "configurationPurpose": {
-                "label": "Configuration Purpose *"
+                "label": "Configuration Purpose"
             },
             "configurationPassword": {
                 "label": "Configuration Password"
@@ -832,23 +895,23 @@
                 "label": "Use asymmetric-only encryption"
             },
             "pingInterval": {
-                "label": "Ping Interval in seconds *"
+                "label": "Ping Interval in seconds"
             },
             "withFallback": {
                 "label": "With Fallback",
                 "ariaLabel": "Toggle Fallback settings"
             },
             "fallbackStartUrl": {
-                "label": "Fallback Start URL *"
+                "label": "Fallback Start URL"
             },
             "connectionAttempts": {
-                "label": "Connection Attempts *"
+                "label": "Connection Attempts"
             },
             "interval": {
-                "label": "Interval in seconds *"
+                "label": "Interval in seconds"
             },
             "connectionTimeout": {
-                "label": "Connection Timeout in seconds *"
+                "label": "Connection Timeout in seconds"
             },
             "fallbackPassword": {
                 "label": "Fallback Password"
@@ -953,7 +1016,7 @@
         },
         "fields": {
             "name": {
-                "label": "Name *"
+                "label": "Name"
             },
             "urlSuffix": {
                 "label": "URL Suffix",
@@ -1026,12 +1089,12 @@
         },
         "userView": {
             "view_mode": {
-                "title": "Browser View Mode",
                 "0": "Use browser window",
-                "0_tooltip": "Use window for the SEB browser which can be scaled and moved around, also to another screen of available",
                 "1": "Use full screen mode",
-                "1_tooltip": "Display the SEB browser full screen",
                 "2": "Touch optimized",
+                "title": "Browser View Mode",
+                "0_tooltip": "Use window for the SEB browser which can be scaled and moved around, also to another screen of available",
+                "1_tooltip": "Display the SEB browser full screen",
                 "2_tooltip": "Mainly to be used on Windows tablets. In Windows 10, Tablet Mode needs to be activated. Not working with the Create New Desktop kiosk mode, you have to reconfigure the SEB client settings to Disable Explorer Shell."
             },
             "main_browser": {
@@ -1092,7 +1155,7 @@
                 "enableScrollLock": "Enable scroll lock (iOS)",
                 "enableScrollLock_tooltip": "With the scroll lock button and/or side menu item, web page scrolling, selecting text and the text magnifier can be disabled. This can facilitate using drag-and-drop and drawing question types. (iOS only)",
                 "showScrollLockButton": "Show scroll lock button (iOS)",
-                "showScrollLockButto_tooltip": "Shows the scroll lock button in the Dock if the scroll lock feature is enabled (iOS only)",
+                "showScrollLockButton_tooltip": "Shows the scroll lock button in the Dock if the scroll lock feature is enabled (iOS only)",
                 "showQuitButton": "Show quit button",
                 "showQuitButton_tooltip": "Shows the Quit SEB/Session Dock button",
                 "showScanQRCodeButton": "Show scan QR code button (iOS)",
@@ -1236,36 +1299,36 @@
                 "tabFocusesLinks_tooltip": "Pressing the tab key moves focus to the next link and form control. Shift-tab moves focus to the previous control"
             },
             "uaDesktop": {
-                "title": "User agent for desktop mode",
                 "0": "Desktop default",
-                "0_tooltip": "Zoom whole web pages using Ctrl-Mousewheel (Win)Mozilla/5.0 (Windows NT 10.0; WOW64; rv:52.0) Gecko/20100101 Firefox/52.0",
                 "1": "Custom",
+                "title": "User agent for desktop mode",
+                "0_tooltip": "Zoom whole web pages using Ctrl-Mousewheel (Win)Mozilla/5.0 (Windows NT 10.0; WOW64; rv:52.0) Gecko/20100101 Firefox/52.0",
                 "1_tooltip": "Zoom only text on web pages using Ctrl-Mousewheel (Win)",
                 "custom_tooltip": "Custom desktop user agent string (SEB appends its version number automatically)"
             },
             "uaTouch": {
-                "title": "User agent for touch/tablet mode",
                 "0": "Touch default",
-                "0_tooltip": "Mozilla/5.0 (Windows NT 10.0; WOW64; rv:52.0; Touch) Gecko/20100101 Firefox/52.0",
                 "1": "iPad",
                 "2": "Custom",
+                "title": "User agent for touch/tablet mode",
+                "0_tooltip": "Mozilla/5.0 (Windows NT 10.0; WOW64; rv:52.0; Touch) Gecko/20100101 Firefox/52.0",
                 "2_tooltip": "Zoom only text on web pages using Ctrl-Mousewheel (Win)",
                 "custom_tooltip": "This text is displayed as the title of the confirmation alert and as tooltip on the icon"
             },
             "uaiOS": {
-                "title": "User agent for iOS",
-                "title_tooltip": "SEB always appends its version number. Default string depends on the iOS version and therefore can differ on exam clients.",
                 "0": "iOS default",
                 "1": "Mac Desktop",
                 "2": "Custom",
                 "3": "iPad",
+                "title": "User agent for iOS",
+                "title_tooltip": "SEB always appends its version number. Default string depends on the iOS version and therefore can differ on exam clients.",
                 "custom_tooltip": "This text is displayed as the title of the confirmation alert and as tooltip on the icon"
             },
             "uaMac": {
-                "title": "User agent (Mac)",
                 "0": "Default",
-                "0_tooltip": "Depends on installed Safari/WebKit version",
                 "1": "Custom",
+                "title": "User agent (Mac)",
+                "0_tooltip": "Depends on installed Safari/WebKit version",
                 "1_tooltip": "Zoom only text on web pages using Ctrl-Mousewheel (Win)",
                 "custom_tooltip": "This text is displayed as the title of the confirmation alert and as tooltip on the icon"
             },
@@ -1525,10 +1588,10 @@
                 "title": "SEB Service (Win)",
                 "note": "Recommended for BYOD scenarios.",
                 "sebServicePolicy": {
-                    "title": "SEB Service policy",
                     "0": "allow to run SEB without service",
                     "1": "display warning when service is not running",
-                    "2": "allow to use SEB only with service"
+                    "2": "allow to use SEB only with service",
+                    "title": "SEB Service policy"
                 },
                 "sebServicePolicy_tooltip": "Policy that applies when an exam client doesn't have the SEB client running",
                 "sebServiceIgnore": "Enable SEB Service Component",
@@ -1542,10 +1605,10 @@
                 "kioskMode_tooltip": "The kiosk mode setting reflects how the computer is locked down in SEB",
                 "items": {
                     "0": "Create new desktop",
-                    "0_tooltip": "This kiosk mode may prevent specific third party software to run correctly together with SEB, like some screen recording software or the Windows onscreen keyboard.",
                     "1": "Disable explorer Shell",
-                    "1_tooltip": "This kiosk mode is compatible with some screen recording/proctoring software and the Windows onscreen keyboard.",
                     "2": "None (for debugging only)",
+                    "0_tooltip": "This kiosk mode may prevent specific third party software to run correctly together with SEB, like some screen recording software or the Windows onscreen keyboard.",
+                    "1_tooltip": "This kiosk mode is compatible with some screen recording/proctoring software and the Windows onscreen keyboard.",
                     "2_tooltip": "SEB runs without kiosk mode, switching to other applications is possible. Use this for debugging purposes only."
                 }
             },
@@ -1661,12 +1724,12 @@
                 "allowiOSVersionNumberPatch": "Patch version number"
             },
             "clipboard": {
-                "title": "Clipboard Policy",
                 "0": "Allow",
-                "0_tooltip": "Allows the usage of the system clipboard without restrictions",
                 "1": "Block",
-                "1_tooltip": "Completely blocks the usage of the system clipboard by continuously cleaning the content and blocking the keyboard shortcuts for cut, copy and paste.",
                 "2": "SEB Only",
+                "title": "Clipboard Policy",
+                "0_tooltip": "Allows the usage of the system clipboard without restrictions",
+                "1_tooltip": "Completely blocks the usage of the system clipboard by continuously cleaning the content and blocking the keyboard shortcuts for cut, copy and paste.",
                 "2_tooltip": "Continuously cleaning the content of the system clipboard and enables an isolated clipboard only working within the browser application of SEB."
             },
             "sebVersion": {
@@ -1881,7 +1944,14 @@
         "infos": {
             "start": "Start Date",
             "end": "End Date",
-            "status": "Status"
+            "status": "Status",
+            "live": "Live · refreshing every {seconds}s",
+            "security": "Security",
+            "connections": "connections"
+        },
+        "actions": {
+            "proctoringSearch": "Screen Proctoring Search",
+            "proctoringApplications": "Screen Proctoring Applications"
         },
         "clients": {
             "total": "Total:"
@@ -1929,20 +1999,21 @@
     },
     "monitoringClients": {
         "info": {
-            "clearAll": "Clear All",
-            "filters": "Filters",
-            "actions": "Actions",
             "groups": "Groups",
             "clientStates": "Client States",
             "notifications": "Notifications",
             "indicators": "Indicators",
+            "searchPlaceholder": "Search Clients",
             "lockClients": "Lock selected clients",
             "quitClients": "Quit selected clients",
             "cancelClients": "Cancel selected clients"
         },
         "main": {
-            "displayedClients": "Displayed clients:",
-            "selectedClients": "Selected clients:",
+            "title": "Clients",
+            "filtered": "Filtered",
+            "allConnections": "All connections",
+            "displayed": "displayed",
+            "selected": "selected",
             "tableHeaderBattery": "Battery Status",
             "tableHeaderWlan": "Wifi Status",
             "tableHeaderNameSession": "User Name or Session",
@@ -1962,13 +2033,18 @@
             "lock": "Lock Screen",
             "quit": "Quit Client",
             "group": "Group:",
-            "mark-cancelled": "Mark as cancelled"
+            "mark-cancelled": "Mark as cancelled",
+            "client": "Client",
+            "groups": "Groups",
+            "sebInfo": "SEB Info",
+            "indicators": "Indicators",
+            "backToClientList": "Back to Client List"
         },
         "main": {
             "notifications": "Notifications",
             "resolveRaiseHand": "Resolve Raise Hand",
-            "noNotifications": "No notifications available",
-            "messages": "Messages",
+            "raiseHand": "Raised Hand",
+            "lockScreen": "Lock Screen",
             "unlockScreen": "Unlock Screen",
             "screenProctoring": "Screen Proctoring",
             "clientLogs": "Client Logs"
@@ -1996,11 +2072,14 @@
             "selectAskKey": "Select an ASK to view its connections",
             "searchText": "Search",
             "grantKeyPlaceholder": "Tag Name",
-            "tag": "Tag: ",
             "granted": "Granted",
             "notGranted": "Not Granted",
             "lowConnectionsTooltip": "This key has 3 connections or less and is not granted",
             "grantKeyButton": "Grant Key",
+            "removeGrantButton": "Remove Grant",
+            "refresh": "Refresh",
+            "close": "Close",
+            "statusFilterLabel": "Filter by status",
             "statuses": {
                 "ALL": "All",
                 "ACTIVE": "Active",
@@ -2014,7 +2093,6 @@
         }
     },
     "titles": {
-        "home": "Home",
         "navigationOverview": "Navigation Overview",
         "exams": "Exams",
         "examsOverview": "Exams Overview",
@@ -2057,7 +2135,8 @@
         "editInstitution": "Edit Institution",
         "editExamTemplate": "Edit Exam Template",
         "galleryView": "Gallery View",
-        "analyze": "Analyze"
+        "analyze": "Analyze",
+        "archive": "Archive"
     },
     "warnings": {
         "no-data": "No data available",
@@ -2090,6 +2169,7 @@
         "routeNames": {
             "runningExams": "Running Exams",
             "analyzeExams": "Analyze Exams",
+            "archiveExams": "Archive Exams",
             "search": "Search",
             "assessmentToolConnections": "Assessment Tool Connections",
             "connectionConfiguration": "Connection Configuration",
@@ -2152,6 +2232,13 @@
             "pageText": "{0}-{1} of {2}"
         }
     },
+    "validation": {
+        "required": "This field is required",
+        "minLength": "You must enter a minimum of {min} characters",
+        "maxLength": "You must enter a maximum of {max} characters",
+        "email": "Please enter a valid email",
+        "passwordsMatch": "Passwords must match"
+    },
     "errors": {
         "backend": {
             "title": {
@@ -2186,6 +2273,11 @@
                     "post": "Error uploading certificate",
                     "put": "Error updating certificate",
                     "delete": "Error deleting certificate"
+                },
+                "exam": {
+                    "archive": {
+                        "patch": "Error archiving exam"
+                    }
                 }
             },
             "http": {
@@ -2195,46 +2287,14 @@
                 "404": "Not found",
                 "409": "Conflict",
                 "422": "Validation error",
-                "500": "Server error",
                 "429": "Too many requests",
+                "500": "Server error",
                 "502": "Server unavailable",
                 "503": "Service unavailable",
                 "504": "Gateway timeout"
             },
-            "code": {
-                "0": "Generic error",
-                "1": "Bad request",
-                "1000": "Unauthorized",
-                "1001": "Forbidden",
-                "1002": "Resource not found",
-                "1010": "Illegal API argument",
-                "1100": "Unexpected server error",
-                "1101": "Integrity validation failed",
-                "1200": "Field validation error",
-                "1300": "Password mismatch",
-                "1301": "Missing password",
-                "1302": "LMS warnings",
-                "1400": "Exam consistency: no supporter",
-                "1401": "Exam consistency: no SEB configuration",
-                "1402": "Exam consistency: LMS restriction missing",
-                "1403": "Exam consistency: no indicator",
-                "1404": "Exam consistency: no LMS connection",
-                "1405": "Exam consistency: invalid exam–course reference",
-                "1500": "External service binding error",
-                "1600": "Exam import: partial success (setup issues)",
-                "1601": "Exam import: failed to create indicator(s)",
-                "1602": "Exam import: failed to create attributes",
-                "1603": "Exam import: failed to apply SEB restriction",
-                "1604": "Exam import: partial success",
-                "1605": "Exam import: partial success",
-                "1610": "Exam import: failed to create/link configuration",
-                "1611": "Exam import: failed to link auto configuration",
-                "1700": "Client connection integrity violation",
-                "1800": "Additional confirmation required"
-            },
             "objects": {
                 "user": {
-                    "_label": "User account",
                     "fields": {
                         "institutionId": "Institution",
                         "username": "Username",
@@ -2250,15 +2310,9 @@
                         "newPassword": "New password",
                         "confirmNewPassword": "Confirm password",
                         "confirmPassword": "Confirm password"
-                    },
-                    "rules": {
-                        "email": {
-                            "notunique": "A user account with this email address already exists."
-                        }
                     }
                 },
                 "institution": {
-                    "_label": "Institution",
                     "fields": {
                         "name": "Name",
                         "urlSuffix": "URL suffix",
@@ -2266,7 +2320,6 @@
                     }
                 },
                 "lmsSetup": {
-                    "_label": "LMS setup",
                     "fields": {
                         "name": "Name",
                         "lmsType": "LMS type",
@@ -2277,7 +2330,6 @@
                     }
                 },
                 "clientConfig": {
-                    "_label": "Connection configuration",
                     "fields": {
                         "name": "Name",
                         "sebConfigPurpose": "Configuration purpose",
@@ -2291,14 +2343,12 @@
                     }
                 },
                 "certificate": {
-                    "_label": "Certificate",
                     "fields": {
                         "alias": "Alias",
                         "certificate": "Certificate file"
                     }
                 },
                 "clientconfig": {
-                    "_label": "Connection configuration",
                     "fields": {
                         "name": "Name",
                         "sebConfigPurpose": "Configuration purpose",
@@ -2321,35 +2371,70 @@
                 "confirmNewPassword": "Confirm password",
                 "confirmPassword": "Confirm password"
             },
-            "rules": {
-                "username": {
-                    "notunique": "This username is already in use. Please choose another one."
-                },
-                "email": "Please enter a valid email address.",
-                "password": {
-                    "wrong": "Your password is wrong.",
-                    "mismatch": "The repeated password does not match the new password."
-                },
-                "notNull": "{field} is required.",
-                "mandatory": "{field} is required.",
-                "notunique": "{field} is already in use. Please choose another one.",
-                "mismatch": "The values do not match.",
-                "wrong": "{field} is wrong.",
-                "name": {
-                    "notunique": "This name is already in use. Please choose another one."
-                },
-                "exists": "This name already exists. Please choose another one.",
-                "invalidURL": "The input does not match the URL pattern.",
-                "url": {
-                    "invalid": "Invalid URL. The given URL cannot be reached.",
-                    "noaccess": "Access was denied by the service. Please check the given access credentials.",
-                    "noservice": "The expected service is not available within the given URL and API access."
-                },
-                "size": "{field} must be between {0} and {1} characters."
-            },
             "fieldFallback": "{field}: {rule}",
-            "fallbackLine": "{systemMessage} ({details})",
-            "rateLimit": "Too many requests. Please slow down and try again."
+            "rateLimit": "Too many requests. Please slow down and try again.",
+            "codes": {
+                "GENERIC": "Generic error",
+                "BAD_REQUEST": "Bad Request",
+                "UNAUTHORIZED": "Unauthorized",
+                "FORBIDDEN": "Forbidden",
+                "RESOURCE_NOT_FOUND": "Resource not found",
+                "ILLEGAL_API_ARGUMENT": "Illegal API request argument",
+                "UNEXPECTED": "Unexpected internal server-side error",
+                "INTEGRITY_VALIDATION": "The action would lead to an integrity violation",
+                "FIELD_VALIDATION": "Field validation error",
+                "PASSWORD_MISMATCH": "The new password does not match the confirmed password",
+                "MISSING_PASSWORD": "Missing password",
+                "LMS_WARNINGS": "Warnings from the LMS",
+                "EXAM_CONSISTENCY_VALIDATION_SUPPORTER": "No Exam Supporter defined for the Exam",
+                "EXAM_CONSISTENCY_VALIDATION_CONFIG": "No SEB Exam Configuration defined for the Exam",
+                "EXAM_CONSISTENCY_VALIDATION_SEB_RESTRICTION": "SEB restriction API available but Exam not restricted on LMS side yet",
+                "EXAM_CONSISTENCY_VALIDATION_INDICATOR": "No Indicator defined for the Exam",
+                "EXAM_CONSISTENCY_VALIDATION_LMS_CONNECTION": "No Connection To LMS",
+                "EXAM_CONSISTENCY_VALIDATION_INVALID_ID_REFERENCE": "There seems to be an invalid exam - course identifier reference. The course cannot be found",
+                "EXTERNAL_SERVICE_BINDING_ERROR": "External binding error",
+                "EXAM_IMPORT_ERROR_AUTO_SETUP": "Exam successfully imported but some additional initialization failed",
+                "EXAM_IMPORT_ERROR_AUTO_INDICATOR": "Failed to automatically create pre-defined indicator(s) for the exam",
+                "EXAM_IMPORT_ERROR_AUTO_ATTRIBUTES": "Failed to automatically create pre-defined attributes for the exam",
+                "EXAM_IMPORT_ERROR_AUTO_RESTRICTION": "Failed to automatically apply SEB restriction for the exam to the involved LMS",
+                "EXAM_IMPORT_ERROR_AUTO_CONFIG": "Failed to automatically create and link exam configuration from the exam template to the exam",
+                "EXAM_IMPORT_ERROR_AUTO_CONFIG_LINKING": "Failed to automatically link auto-generated exam configuration to the exam",
+                "CLIENT_CONNECTION_INTEGRITY_VIOLATION": "SEB client connection is not in valid state to apply requested operation",
+                "NEED_CONFIRMATION": "Some additional user confirmation needed"
+            },
+            "validation": {
+                "changeDeniedActiveClients": "Cannot be changed while there are active SEB client connections",
+                "collecting-strategy-not-changeable": "Not changeable once created",
+                "email": "Invalid mail address",
+                "email-notunique": "A user account with this e-mail address already exists.",
+                "endBeforeStart": "Invalid Date Range, End before Start",
+                "exists": "This name already exists. Please choose another one",
+                "group-not-deletable": "Existing groups with data are not deletable",
+                "hasInvalidTrailing": "The value must not start or end with a space.",
+                "invalidAlphaRange": "Invalid Alphabetical Range",
+                "invalidDateRange": "Invalid Date Range",
+                "invalidIP": "Invalid IP v4. Please enter a valid IP-address (v4)",
+                "invalidIPRange": "Invalid IP-address Range",
+                "invalidURL": "The input does not match the URL pattern",
+                "mandatory": "This field is mandatory",
+                "name": "The name is mandatory and must have a size between {3} and {4} characters",
+                "name-notunique": "This name is already in use. Please choose another one.",
+                "notNull": "This field is mandatory",
+                "password-mismatch": "The retyped password doesn't match the new password",
+                "password-wrong": "Your password is wrong",
+                "serverNotAvailable": "No service seems to be available within the given URL",
+                "size": "The size must be between {3} and {4}",
+                "size-max": "The size must be less than {3} characters",
+                "thresholdDuplicate": "There are duplicate threshold values.",
+                "thresholdEmpty": "There are missing values or colors for the threshold declaration",
+                "typeInvalid": "This type is not implemented yet and cannot be used.",
+                "url-invalid": "Invalid URL. The given URL cannot be reached.",
+                "url-noAccess": "Access was denied",
+                "url-noaccess": "No access has been granted by the service. Please check the given access credentials.",
+                "url-noservice": "The expected service is not available within the given URL and API access.",
+                "urlSuffix": "The URL suffix must have a size between {3} and {4} characters",
+                "username-notunique": "This Username is already in use. Please choose another one."
+            }
         }
     }
 }

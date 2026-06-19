@@ -41,7 +41,7 @@
                         :label-tooltip="true"
                         :disabled="
                             context.readonly || igonreSEBServiceRef
-                                ? igonreSEBServiceRef?.boolVal
+                                ? !igonreSEBServiceRef?.boolVal
                                 : false
                         "
                     />
@@ -54,7 +54,7 @@
                         :tooltip="false"
                         :disabled="
                             context.readonly || igonreSEBServiceRef
-                                ? igonreSEBServiceRef?.boolVal
+                                ? !igonreSEBServiceRef?.boolVal
                                 : false
                         "
                     />
@@ -67,7 +67,7 @@
                         :tooltip="false"
                         :disabled="
                             context.readonly || igonreSEBServiceRef
-                                ? igonreSEBServiceRef?.boolVal
+                                ? !igonreSEBServiceRef?.boolVal
                                 : false
                         "
                     />
@@ -80,7 +80,7 @@
                         :tooltip="false"
                         :disabled="
                             context.readonly || igonreSEBServiceRef
-                                ? igonreSEBServiceRef?.boolVal
+                                ? !igonreSEBServiceRef?.boolVal
                                 : false
                         "
                     />

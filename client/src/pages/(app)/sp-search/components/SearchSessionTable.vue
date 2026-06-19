@@ -197,8 +197,7 @@ import * as tableUtils from "@/utils/table/tableUtils";
 import SearchScreenshotsTable from "@/pages/(app)/sp-search/components/SearchScreenshotsTable.vue";
 import TableHeaders from "@/utils/table/TableHeaders.vue";
 import { useTableStore } from "@/stores/store";
-import { useUserAccountStore } from "@/stores/authentication/userAccountStore";
-import { UserRoleEnum } from "@/models/userRoleEnum";
+import { useCurrentUserQuery } from "@/composables/useCurrentUser";
 import { ServerTablePaging } from "@/models/types";
 import {
     SearchSessions,
@@ -211,7 +210,7 @@ import { openRouteInNewTab } from "@/router/openRouteInNewTab.ts";
 
 // store
 const tableStore = useTableStore();
-const userAccountStore = useUserAccountStore();
+const { data: currentUser } = useCurrentUserQuery();
 const isUserAdmin = ref<boolean>();
 
 // props
@@ -257,9 +256,8 @@ const errorAvailable = ref<boolean>();
 
 //= ==========================data fetching=======================
 async function loadItems(serverTablePaging: ServerTablePaging) {
-    isUserAdmin.value = userAccountStore.userAccount?.userRoles.includes(
-        UserRoleEnum.SEB_SERVER_ADMIN,
-    );
+    isUserAdmin.value =
+        currentUser.value?.userRoles.includes("SEB_SERVER_ADMIN");
     isLoading.value = true;
     if (isOnLoad.value) {
         serverTablePaging.sortBy = defaultSort;

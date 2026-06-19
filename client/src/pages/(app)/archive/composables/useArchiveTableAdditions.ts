@@ -1,0 +1,24 @@
+import { computed } from "vue";
+import { useI18n } from "vue-i18n";
+import type {
+    TableAction,
+    TableItem,
+} from "@/components/widgets/entity-table/types.ts";
+
+export function useArchiveTableActions(deps: {
+    onArchiveExam: (item: TableItem) => void;
+    canArchiveExam: (item: TableItem) => boolean;
+}) {
+    const { t } = useI18n();
+
+    return computed<TableAction[]>(() => [
+        {
+            key: "archiveExam",
+            icon: "mdi-archive",
+            label: t("examList.actions.archive"),
+            tooltip: t("examList.actions.archive"),
+            onClick: deps.onArchiveExam,
+            visible: deps.canArchiveExam,
+        },
+    ]);
+}

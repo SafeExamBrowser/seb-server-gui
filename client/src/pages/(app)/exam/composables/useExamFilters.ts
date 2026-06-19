@@ -35,13 +35,9 @@ export const EXAM_TYPE_OPTIONS: FilterOption[] = [
 export function useExamFilters() {
     return computed<FilterSectionDef[]>(() => [
         {
-            key: TYPE_FILTER_KEY,
-            title: translate(`${TRANSLATION_PREFIX}.examType`),
-            options: EXAM_TYPE_OPTIONS,
-        },
-        {
             key: EXAM_STATUS_FILTER_KEY,
             title: translate(`${TRANSLATION_PREFIX}.examState`),
+            multiple: true,
             options: [
                 {
                     value: ExamStatusEnum.UP_COMING,
@@ -64,6 +60,12 @@ export function useExamFilters() {
                     color: getExamStatusFilterColor(ExamStatusEnum.FINISHED),
                 },
             ],
+        },
+        {
+            key: TYPE_FILTER_KEY,
+            title: translate(`${TRANSLATION_PREFIX}.examType`),
+            options: EXAM_TYPE_OPTIONS,
+            multiple: true,
         },
     ]);
 }
