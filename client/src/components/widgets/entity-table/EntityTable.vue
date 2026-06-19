@@ -17,8 +17,8 @@
             hover
             hide-default-footer
             :data-testid="`${dataTestId}-table`"
-            :show-select="selection !== undefined"
-            :select-strategy="selection !== null ? 'page' : undefined"
+            :show-select="!!selection"
+            :select-strategy="selection ? 'page' : undefined"
             @update:options="emit('update:options', $event)"
         >
             <template
@@ -135,7 +135,7 @@ const props = withDefaults(
             item: TableItem,
         ) => RouteLocationAsRelative | null | undefined;
         actions?: TableAction[];
-        selection?: TableRowSelect | null;
+        selection?: TableRowSelect;
         cellFormatters?: Record<string, CellFormatter>;
         itemKey?: string;
     }>(),
@@ -148,7 +148,7 @@ const props = withDefaults(
         actions: undefined,
         cellFormatters: () => ({}),
         itemKey: "id",
-        selection: null,
+        selection: undefined,
     },
 );
 
