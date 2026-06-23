@@ -38,6 +38,13 @@ export type AppError =
           raw: unknown;
       }
     | {
+          kind: "assessmentToolTest";
+          message: string;
+          status?: number;
+          method?: string;
+          raw: unknown;
+      }
+    | {
           kind: "unknown";
           message: string;
           status?: number;
