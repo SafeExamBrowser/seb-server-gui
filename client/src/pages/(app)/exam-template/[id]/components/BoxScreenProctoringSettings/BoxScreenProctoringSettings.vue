@@ -1,5 +1,5 @@
 <template>
-    <ExamTemplateBox
+    <DetailBox
         :title="$t('examTemplateDetail.boxes.screenProctoringSettings.title')"
     >
         <template #action>
@@ -11,13 +11,13 @@
         </template>
 
         <KeyValueList :items="items" class="pt-4" />
-    </ExamTemplateBox>
+    </DetailBox>
 </template>
 
 <script setup lang="ts">
 import { computed } from "vue";
 import { useI18n } from "vue-i18n";
-import ExamTemplateBox from "@/pages/(app)/exam-template/[id]/components/ExamTemplateBox.vue";
+import DetailBox from "@/components/widgets/DetailBox.vue";
 import ScreenProctoringEditDialog from "./components/ScreenProctoringEditDialog.vue";
 import KeyValueList from "@/components/widgets/keyValueList/KeyValueList.vue";
 import { KeyValueItem } from "@/components/widgets/keyValueList/types.ts";

@@ -21,7 +21,7 @@ export interface TableAction<T extends TableItem = TableItem> {
     key: string;
     icon: string;
     label: string;
-    tooltip?: string;
+    tooltip?: string | ((item: T) => string | undefined);
     color?: string;
     bgcolor?: string;
     onClick: (item: T) => void | Promise<void>;

@@ -140,7 +140,7 @@
 <script setup lang="ts">
 import { computed, ref } from "vue";
 import { useI18n } from "vue-i18n";
-import type { UserAccount } from "@/models/userAccount";
+import { isTeacherOnlyAccount, type UserAccount } from "@/models/userAccount";
 import { typedTo } from "@/router/typedTo";
 import UserAvatar from "@/components/widgets/UserAvatar.vue";
 
@@ -195,24 +195,31 @@ const fullName = computed(() => {
     return `${name} ${surname}`.trim();
 });
 
-const quickActions = computed(() => [
-    {
+// Teacher accounts are auto-generated and cannot be edited, so they have no
+// profile settings to manage.
+const isTeacherAccount = computed(() =>
+    isTeacherOnlyAccount(props.userAccount?.userRoles),
+);
+
+const quickActions = computed(() => {
+    const profileSettings = {
         icon: "mdi-account-cog-outline",
         label: t("titles.profileSettings"),
         href: undefined,
         rel: undefined,
         target: undefined,
         to: typedTo({ name: "/(app)/profile/" }),
-    },
-    {
+    };
+    const docs = {
         icon: "mdi-file-document-outline",
         label: t("navigation.profileMenu.docs"),
         href: "https://seb-server.readthedocs.io/en/latest/index.html",
         rel: "noopener noreferrer",
         target: "_blank",
         to: undefined,
-    },
-]);
+    };
+    return isTeacherAccount.value ? [docs] : [profileSettings, docs];
+});
 
 function translateUserRole(role: string): string {
     const translationKey = `general.userRoles.${role}`;
