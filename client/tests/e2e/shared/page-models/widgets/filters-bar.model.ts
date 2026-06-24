@@ -15,9 +15,9 @@ export class FiltersBarModel {
         );
     }
 
-    chip(testIdSuffix: string, value: string | number): Locator {
+    option(testIdSuffix: string, value: string | number): Locator {
         return this.page.getByTestId(
-            `${this.testIdBase}-${testIdSuffix}-chip-${value}`,
+            `${this.testIdBase}-${testIdSuffix}-option-${value}`,
         );
     }
 
@@ -30,6 +30,6 @@ export class FiltersBarModel {
     }
 
     async toggle(testIdSuffix: string, value: string | number) {
-        await this.chip(testIdSuffix, value).click();
+        await this.option(testIdSuffix, value).click();
     }
 }

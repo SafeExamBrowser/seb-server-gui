@@ -49,15 +49,12 @@ export class EntityTableModel {
         return this.rowAction(id, "delete");
     }
 
-    headerByText(text: string): Locator {
-        return this.root
-            .locator("th")
-            .filter({ hasText: new RegExp(`^\\s*${text}\\s*$`, "i") })
-            .first();
+    header(columnKey: string): Locator {
+        return this.page.getByTestId(`${this.testIdBase}-header-${columnKey}`);
     }
 
-    async sortByHeaderText(text: string) {
-        await this.headerByText(text).click();
+    async sortByColumn(columnKey: string) {
+        await this.header(columnKey).dispatchEvent("click");
     }
 
     pageButton(pageNumber: number): Locator {
