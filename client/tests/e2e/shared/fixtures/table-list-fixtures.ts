@@ -4,12 +4,14 @@ import { UserAccountsListModel } from "../../01-user-account/models/user-account
 import { InstitutionsListModel } from "../../02-institution/models/institutions-list.model";
 import { ConnectionConfigurationsListModel } from "../../04-connection-configuration/models/connection-configurations-list.model";
 import { CertificatesListModel } from "../../03-certificate/models/certificates-list.model";
+import { AssessmentToolsListModel } from "../../05-assessment-tool-connection/models/assessment-tools-list.model";
 
 type Fixtures = {
     userAccounts: UserAccountsListModel;
     institutions: InstitutionsListModel;
     connectionConfigurations: ConnectionConfigurationsListModel;
     certificates: CertificatesListModel;
+    assessmentTools: AssessmentToolsListModel;
 };
 
 export const test = base.extend<Fixtures>({
@@ -28,6 +30,10 @@ export const test = base.extend<Fixtures>({
     certificates: async ({ page }, use) => {
         await loginAsServerAdmin(page);
         await use(new CertificatesListModel(page));
+    },
+    assessmentTools: async ({ page }, use) => {
+        await loginAsServerAdmin(page);
+        await use(new AssessmentToolsListModel(page));
     },
 });
 
