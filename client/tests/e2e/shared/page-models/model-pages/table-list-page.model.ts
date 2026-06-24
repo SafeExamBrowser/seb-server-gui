@@ -2,6 +2,7 @@ import { expect, type Page } from "@playwright/test";
 import {
     expectRequestSucceeded,
     waitForRequest,
+    waitForResponse,
 } from "../../../utils/networkAssertions";
 import { BasicSettingsPageModel } from "../layout/basic-settings-page.model";
 import { ConfirmDialogModel } from "../widgets/confirm-dialog.model";
@@ -40,7 +41,10 @@ export class TableListPageModel {
     }
 
     async goto() {
+        const { method, urlRegex } = this.config.listRequest;
+        const listLoaded = waitForResponse(this.page, method, urlRegex);
         await this.page.goto(this.config.route);
+        await listLoaded;
         await this.expectVisible();
     }
 
