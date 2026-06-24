@@ -102,11 +102,13 @@ test.describe("01 User Accounts - READ Get All", () => {
 
     test("C sorts and paginates", async ({ userAccounts }, testInfo) => {
         const surname = addBrowserSuffixToText(searchSurname, testInfo);
+        const activeId = addBrowserSuffixToText(activeUserUuid, testInfo);
 
         await userAccounts.goto();
         await userAccounts.expectListRequestSucceeded(() =>
             userAccounts.search(surname),
         );
+        await userAccounts.table.expectRowVisible(activeId);
 
         await test.step("sort by Username triggers sort=username", async () => {
             await userAccounts.expectListRequestSucceeded(
