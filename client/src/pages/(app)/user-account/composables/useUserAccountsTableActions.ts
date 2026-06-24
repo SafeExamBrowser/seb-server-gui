@@ -1,5 +1,6 @@
 import { computed } from "vue";
 import { useI18n } from "vue-i18n";
+import { ROW_ACTION } from "@/components/widgets/entity-table/rowActions.ts";
 import type {
     TableAction,
     TableItem,
@@ -13,13 +14,13 @@ export function useUserAccountsTableActions(deps: {
 
     return computed<TableAction[]>(() => [
         {
-            key: "edit",
+            key: ROW_ACTION.edit,
             icon: "mdi-pencil",
             label: t("general.editButton"),
             onClick: deps.onEdit,
         },
         {
-            key: "delete",
+            key: ROW_ACTION.delete,
             icon: "mdi-delete",
             label: t("general.deleteButton"),
             color: "error",

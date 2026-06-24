@@ -52,7 +52,7 @@
                     :detail-route="list.detailRoute"
                     :actions="list.actions"
                     :data-test-id="dataTestId"
-                    item-key="id"
+                    :item-key="institutionListConfig.itemKey"
                     @update:options="list.loadItems"
                 >
                     <template #cell-logoImage="{ item, rowTestId }">
@@ -106,6 +106,7 @@ import StatusConfirmDialog from "@/components/widgets/confirmDialog/StatusConfir
 import LoadingFallbackComponent from "@/components/widgets/loadingFallbackComponent/LoadingFallbackComponent.vue";
 import AddButton from "@/components/widgets/AddButton.vue";
 import type { TableItem } from "@/components/widgets/entity-table/types.ts";
+import { institutionListConfig } from "./institutionListConfig.ts";
 import { useInstitutionsOverview } from "./composables/useInstitutionsOverview.ts";
 
 definePage({
@@ -116,7 +117,7 @@ definePage({
     },
 });
 
-const dataTestId = "institutions";
+const dataTestId = institutionListConfig.testIdBase;
 
 const { list, deleteFlow, statusFlow } = useInstitutionsOverview();
 
