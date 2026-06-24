@@ -835,6 +835,27 @@
             "MOODLE_PLUGIN": "Moodle with Seb Server Plugin",
             "ANS_DELFT": "Ans Delft",
             "OPEN_OLAT": "OLAT"
+        },
+        "test": {
+            "action": {
+                "title": "Test Assessment Tool Connection"
+            },
+            "error": {
+                "title": "Test Assessment Tool Connection failed",
+                "message": {
+                    "API_NOT_SUPPORTED": "The Assessment Tool (API) is not supported",
+                    "MISSING_ATTRIBUTE": "There are missing attributes. Please make sure you have set all needed attributes",
+                    "TOKEN_REQUEST": "Access ist denied. Please make sure your client credentials or access token is correct",
+                    "QUIZ_ACCESS_API_REQUEST": "Failed to load quizzes from Assessment Tool",
+                    "QUIZ_RESTRICTION_API_REQUEST": "Failed to apply SEB restriction on the Assessment Tool",
+                    "TEMPLATE_CREATION": "Failed to apply SEB Server templates for Assessment Tool integration",
+                    "APPLY_FULL_INTEGRATION": "Failed to apply full Assessment Tool integration"
+                }
+            },
+            "success": {
+                "title": "Test Assessment Tool",
+                "message": "Successully connected to Assessment Tool"
+            }
         }
     },
     "connectionConfigurations": {

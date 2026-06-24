@@ -228,6 +228,12 @@
 
                             <v-col align="right">
                                 <v-btn
+                                    :disabled="
+                                        !ability.canDoExamAction(
+                                            GUIAction.EditSupervisors,
+                                            examStore.selectedExam,
+                                        )
+                                    "
                                     color="primary"
                                     density="compact"
                                     icon="mdi-pencil-circle-outline"
@@ -595,7 +601,11 @@
                                                 ></v-divider>
 
                                                 <!----------Apply SEB Lock--------->
-                                                <v-list-item>
+                                                <v-list-item
+                                                    v-if="
+                                                        hasSEBRestrictionFeature()
+                                                    "
+                                                >
                                                     <v-list-item-title
                                                         :class="[
                                                             hasSEBRestrictionFeature() &&
@@ -639,12 +649,19 @@
                                                     </template>
                                                 </v-list-item>
                                                 <v-divider
+                                                    v-if="
+                                                        hasSEBRestrictionFeature()
+                                                    "
                                                     class="border-opacity-25"
                                                     :thickness="2"
                                                 ></v-divider>
 
                                                 <!----------SEB Keys--------->
-                                                <v-list-item>
+                                                <v-list-item
+                                                    v-if="
+                                                        hasSEBRestrictionFeature()
+                                                    "
+                                                >
                                                     <v-list-item-title
                                                         :class="[
                                                             hasSEBRestrictionFeature() &&
@@ -684,6 +701,9 @@
                                                     </template>
                                                 </v-list-item>
                                                 <v-divider
+                                                    v-if="
+                                                        hasSEBRestrictionFeature()
+                                                    "
                                                     class="border-opacity-25"
                                                     :thickness="2"
                                                 ></v-divider>
@@ -703,6 +723,12 @@
                                                         >
                                                             <v-icon
                                                                 icon="mdi-delete-outline"
+                                                                :disabled="
+                                                                    !ability.canDoExamAction(
+                                                                        GUIAction.DeleteExam,
+                                                                        examStore.selectedExam,
+                                                                    )
+                                                                "
                                                                 style="
                                                                     font-size: 30px;
                                                                 "

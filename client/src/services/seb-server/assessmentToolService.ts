@@ -2,6 +2,7 @@ import * as apiService from "@/services/apiService";
 import {
     AssessmentTool,
     AssessmentToolsResponse,
+    AssessmentToolTestResult,
     CreateAssessmentToolPar,
     OptionalParGetAssessmentTool,
     UpdateAssessmentToolPar,
@@ -83,6 +84,16 @@ export const editAssessmentTool = async (
         await apiService.putRequest({
             url: baseUrl,
             data: assessmentTool,
+            options: { _authType: "seb" },
+        })
+    ).data;
+
+export const testAssessmentTool = async (
+    assessmentToolId: string,
+): Promise<AssessmentToolTestResult> =>
+    (
+        await apiService.getRequest({
+            url: `${baseUrl}/test/${assessmentToolId}`,
             options: { _authType: "seb" },
         })
     ).data;

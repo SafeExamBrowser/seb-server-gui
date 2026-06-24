@@ -8,6 +8,8 @@ import { useDeleteAssessmentTool } from "@/pages/(app)/assessment-tool/api/useDe
 import { useToggleAssessmentToolStatus } from "@/pages/(app)/assessment-tool/api/useToggleAssessmentTool.ts";
 import { useEntityDeleteFlow } from "@/components/widgets/entity-table/composables/useEntityDeleteFlow.ts";
 import { useEntityStatusFlow } from "@/components/widgets/entity-table/composables/useEntityStatusFlow.ts";
+import { useAssesmentToolTestFlow } from "@/pages/(app)/assessment-tool/composables/useAssessmentToolTestFlow.ts";
+import { useTestAssessmentTool } from "@/pages/(app)/assessment-tool/api/useTestAssessmentTool.ts";
 
 export const useAssessmentToolsOverview = () => {
     const router = useRouter();
@@ -55,6 +57,21 @@ export const useAssessmentToolsOverview = () => {
         onStatusChangeSuccess: list.reloadList,
     });
 
+    const {
+        testeAssessmentToolFromItem,
+        error: testError,
+        testResult: testResult,
+        loading: testLoading,
+    } = useTestAssessmentTool();
+
+    const testFlow = useAssesmentToolTestFlow({
+        test: testeAssessmentToolFromItem,
+        testResult: testResult,
+        error: testError,
+        loading: testLoading,
+        contextLabel: "assessmentToolConnections.test",
+    });
+
     const tableLoading = computed(
         () =>
             list.loading.value ||
@@ -63,6 +80,7 @@ export const useAssessmentToolsOverview = () => {
     );
 
     const actions = useAssessmentToolsTableActions({
+        onTest: testFlow.testAssessmentTool,
         onEdit: (item) => {
             const target = assessmentToolDetailRoute(item);
             if (!target) {

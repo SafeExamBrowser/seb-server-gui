@@ -19,6 +19,16 @@ export type AssessmentTool = {
     integrationActive: boolean;
 };
 
+export type AssessmentToolErrorType = {
+    errorType: string;
+    errorMessage: string;
+};
+
+export type AssessmentToolTestResult = {
+    lmsType: string;
+    errors: AssessmentToolErrorType[];
+};
+
 export type AssessmentToolsResponse = {
     number_of_pages: number;
     page_number: number;

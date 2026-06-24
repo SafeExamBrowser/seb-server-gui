@@ -22,17 +22,6 @@ export function useAssessmentToolsTableHeaders() {
     const headers = computed<TableHeader[]>(() => {
         const base: TableHeader[] = [];
 
-        if (showInstitutionColumn.value) {
-            base.push({
-                title: translate(
-                    "assessmentToolConnections.list.tableHeaders.institution",
-                ),
-                key: "institutionId",
-                width: "20%",
-                sortable: true,
-            });
-        }
-
         base.push(
             {
                 title: translate(
