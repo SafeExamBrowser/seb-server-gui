@@ -1,4 +1,5 @@
 import { expect, type Locator, type Page } from "@playwright/test";
+import { selectVuetifyOptionByName } from "../../../utils/helpers";
 
 export class EntityTableModel {
     readonly page: Page;
@@ -68,6 +69,14 @@ export class EntityTableModel {
 
     async goToPage(pageNumber: number) {
         await this.pageButton(pageNumber).first().click();
+    }
+
+    async setItemsPerPage(value: number) {
+        await selectVuetifyOptionByName(
+            this.page,
+            this.itemsPerPage,
+            String(value),
+        );
     }
 
     async hasPage(pageNumber: number): Promise<boolean> {
