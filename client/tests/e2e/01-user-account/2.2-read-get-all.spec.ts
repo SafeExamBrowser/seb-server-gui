@@ -110,13 +110,23 @@ test.describe("01 User Accounts - READ Get All", () => {
         );
         await userAccounts.table.expectRowVisible(activeId);
 
-        await test.step("sort by Username triggers sort=username", async () => {
+        await test.step("sort by Username ascending triggers sort=username", async () => {
             await userAccounts.expectListRequestSucceeded(
                 () =>
                     userAccounts.table.sortByColumn(
                         USER_ACCOUNT_COLUMN.username,
                     ),
-                { urlMustContain: [/[?&]sort=username/i] },
+                { urlMustContain: [/[?&]sort=username(?:&|$)/i] },
+            );
+        });
+
+        await test.step("sort by Username again triggers descending sort=-username", async () => {
+            await userAccounts.expectListRequestSucceeded(
+                () =>
+                    userAccounts.table.sortByColumn(
+                        USER_ACCOUNT_COLUMN.username,
+                    ),
+                { urlMustContain: [/[?&]sort=-username/i] },
             );
         });
 
@@ -124,6 +134,14 @@ test.describe("01 User Accounts - READ Get All", () => {
             await userAccounts.expectListRequestSucceeded(
                 () => userAccounts.table.sortByColumn(USER_ACCOUNT_COLUMN.name),
                 { urlMustContain: [/[?&]sort=name/i] },
+            );
+        });
+
+        await test.step("items-per-page resizes the page request", async () => {
+            await userAccounts.goto();
+            await userAccounts.expectListRequestSucceeded(
+                () => userAccounts.table.setItemsPerPage(5),
+                { urlMustContain: [/[?&]page_size=5/i] },
             );
         });
 
@@ -183,5 +201,41 @@ test.describe("01 User Accounts - READ Get All", () => {
             await userAccounts.statusDialog.expectHidden();
             await userAccounts.table.expectStatusText(activeId, "Active");
         });
+    });
+
+    test("F restores search and filters from the URL", async ({
+        userAccounts,
+    }, testInfo) => {
+        const surname = addBrowserSuffixToText(searchSurname, testInfo);
+        const activeId = addBrowserSuffixToText(activeUserUuid, testInfo);
+        const inactiveId = addBrowserSuffixToText(inactiveUserUuid, testInfo);
+
+        await userAccounts.page.goto(
+            `/user-account?search=${encodeURIComponent(surname)}&status=Inactive`,
+        );
+
+        await userAccounts.searchBar.expectInputValue(surname);
+        await userAccounts.table.expectRowVisible(inactiveId);
+        await userAccounts.table.expectRowAbsent(activeId);
+    });
+
+    test("G shows the empty state when nothing matches", async ({
+        userAccounts,
+    }) => {
+        await userAccounts.goto();
+        await userAccounts.expectListRequestSucceeded(() =>
+            userAccounts.search("zzz-no-such-account-000"),
+        );
+        await expect(
+            userAccounts.page.getByText("No Data Available"),
+        ).toBeVisible();
+    });
+
+    test("H add button navigates to the create page", async ({
+        userAccounts,
+    }) => {
+        await userAccounts.goto();
+        await userAccounts.layout.addButton.click();
+        await expect(userAccounts.page).toHaveURL(/\/user-account\/create/);
     });
 });

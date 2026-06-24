@@ -62,10 +62,25 @@ test.describe("02 Institutions - READ Get All", () => {
     test("C sorts and paginates", async ({ institutions }) => {
         await institutions.goto();
 
-        await test.step("sort by Name triggers sort=name", async () => {
+        await test.step("sort by Name ascending triggers sort=name", async () => {
             await institutions.expectListRequestSucceeded(
                 () => institutions.table.sortByColumn(INSTITUTION_COLUMN.name),
-                { urlMustContain: [/[?&]sort=name/i] },
+                { urlMustContain: [/[?&]sort=name(?:&|$)/i] },
+            );
+        });
+
+        await test.step("sort by Name again triggers descending sort=-name", async () => {
+            await institutions.expectListRequestSucceeded(
+                () => institutions.table.sortByColumn(INSTITUTION_COLUMN.name),
+                { urlMustContain: [/[?&]sort=-name/i] },
+            );
+        });
+
+        await test.step("items-per-page resizes the page request", async () => {
+            await institutions.goto();
+            await institutions.expectListRequestSucceeded(
+                () => institutions.table.setItemsPerPage(5),
+                { urlMustContain: [/[?&]page_size=5/i] },
             );
         });
 
@@ -127,5 +142,37 @@ test.describe("02 Institutions - READ Get All", () => {
                 "Inactive",
             );
         });
+    });
+
+    test("F restores search and filters from the URL", async ({
+        institutions,
+    }) => {
+        await institutions.page.goto(
+            `/institution?search=${encodeURIComponent(searchName)}&status=Inactive`,
+        );
+
+        await institutions.searchBar.expectInputValue(searchName);
+        await institutions.table.expectRowVisible(inactiveInstitutionId);
+        await institutions.table.expectRowAbsent(activeInstitutionId);
+    });
+
+    test("G shows the empty state when nothing matches", async ({
+        institutions,
+    }) => {
+        await institutions.goto();
+        await institutions.expectListRequestSucceeded(() =>
+            institutions.search("zzz-no-such-institution-000"),
+        );
+        await expect(
+            institutions.page.getByText("No Data Available"),
+        ).toBeVisible();
+    });
+
+    test("H add button navigates to the create page", async ({
+        institutions,
+    }) => {
+        await institutions.goto();
+        await institutions.layout.addButton.click();
+        await expect(institutions.page).toHaveURL(/\/institution\/create/);
     });
 });
