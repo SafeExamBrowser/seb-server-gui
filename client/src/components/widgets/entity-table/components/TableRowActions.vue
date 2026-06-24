@@ -16,15 +16,14 @@
                         isHovering ? (action.color ?? 'primary') : undefined
                     "
                     :data-testid="`${dataTestId}-${action.key}-button`"
-                    :v-tooltip="action.tooltip"
                     @click.stop="action.onClick(item)"
                 />
 
                 <v-tooltip
-                    v-if="action.tooltip"
+                    v-if="tooltipText(action)"
                     activator="parent"
                     location="top left"
-                    :text="action.tooltip"
+                    :text="tooltipText(action)"
                 />
             </v-hover>
         </div>
@@ -47,6 +46,14 @@ const props = defineProps<{
 const visibleActions = computed(() =>
     props.actions.filter((a) => a.visible?.(props.item) ?? true),
 );
+
+// Resolve the tooltip per row: an action may expose a static string or a
+// function of the item (e.g. a hint shown only on rows where it is disabled).
+function tooltipText(action: TableAction): string | undefined {
+    return typeof action.tooltip === "function"
+        ? action.tooltip(props.item)
+        : action.tooltip;
+}
 
 function getBGColor(action: TableAction): string {
     return action.bgcolor

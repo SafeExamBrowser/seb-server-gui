@@ -9,6 +9,7 @@ import { useToggleUserAccountStatusMutation } from "@/pages/(app)/user-account/a
 import { useEntityDeleteFlow } from "@/components/widgets/entity-table/composables/useEntityDeleteFlow.ts";
 import { useEntityStatusFlow } from "@/components/widgets/entity-table/composables/useEntityStatusFlow.ts";
 import { toAppErrorOrUndefined } from "@/services/errors/toAppError.ts";
+import { isTeacherOnlyAccount } from "@/models/userAccount.ts";
 
 export const useUserAccountsOverview = () => {
     const router = useRouter();
@@ -16,7 +17,7 @@ export const useUserAccountsOverview = () => {
     const userAccountDetailRoute = (
         item: TableItem,
     ): RouteLocationAsRelative | undefined =>
-        item.uuid != null
+        item.uuid != null && !isTeacherOnlyAccount(item.userRoles)
             ? {
                   name: "/(app)/user-account/[userUuid]/",
                   params: { userUuid: String(item.uuid) },

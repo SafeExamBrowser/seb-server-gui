@@ -4,7 +4,7 @@
         :errors="fetchError ? [fetchError] : []"
     >
         <UserAccountForm
-            v-if="user"
+            v-if="user && !isTeacherAccount"
             ref="formRef"
             :title="$t('titles.editUserAccount')"
             mode="edit"
@@ -19,8 +19,9 @@
 </template>
 
 <script setup lang="ts">
-import { computed, ref } from "vue";
+import { computed, ref, watch } from "vue";
 import { useRoute, useRouter } from "vue-router";
+import { useI18n } from "vue-i18n";
 import UserAccountForm from "@/pages/(app)/user-account/components/UserAccountForm.vue";
 import LoadingFallbackComponent from "@/components/widgets/loadingFallbackComponent/LoadingFallbackComponent.vue";
 import { useCurrentUserQuery } from "@/composables/useCurrentUser.ts";
@@ -28,6 +29,8 @@ import { useLogout } from "@/composables/useLogout.ts";
 import { useUserAccountQuery } from "@/pages/(app)/user-account/api/useUserAccountQuery.ts";
 import { useUserAccountFormSubmit } from "@/pages/(app)/user-account/composables/useUserAccountFormSubmit.ts";
 import { toAppErrorOrUndefined } from "@/services/errors/toAppError.ts";
+import { isTeacherOnlyAccount } from "@/models/userAccount.ts";
+import { notify } from "@/services/notifications/notify.ts";
 
 definePage({
     meta: {
@@ -39,6 +42,7 @@ definePage({
 
 const route = useRoute("/(app)/user-account/[userUuid]/");
 const router = useRouter();
+const { t } = useI18n();
 
 const formRef = ref<InstanceType<typeof UserAccountForm>>();
 const userUuid = computed(() => {
@@ -51,6 +55,25 @@ const {
     error: userError,
 } = useUserAccountQuery(userUuid);
 const fetchError = computed(() => toAppErrorOrUndefined(userError.value));
+
+// Teacher accounts are auto-generated and cannot be edited. If someone reaches
+// this page directly (e.g. by URL) for one, warn them and send them home.
+const isTeacherAccount = computed(() =>
+    isTeacherOnlyAccount(user.value?.userRoles),
+);
+
+watch(
+    isTeacherAccount,
+    (isTeacher) => {
+        if (!isTeacher) return;
+        notify.warning(
+            t("userAccount.teacherNotEditable.title"),
+            t("userAccount.teacherNotEditable.message"),
+        );
+        void router.replace({ name: "/(app)/" });
+    },
+    { immediate: true },
+);
 
 const { data: authenticatedUser } = useCurrentUserQuery();
 
