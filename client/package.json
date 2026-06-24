@@ -26,7 +26,7 @@
         "openapi:generate": "openapi-ts --file openapi-ts.config.ts",
         "openapi:refresh": "npm run openapi:fetch:seb-server && npm run openapi:generate",
         "prepare": "cd .. && husky ./client/.husky",
-        "typecheck:playwright": "tsc -p tsconfig.playwright.json --noEmit",
+        "typecheck:playwright": "tsc -p tests/tsconfig.json --noEmit",
         "test:e2e": "npx playwright test",
         "test:e2eui": "npx playwright test --ui",
         "test:e2e:headed": "npx playwright test --headed",
