@@ -15,5 +15,5 @@ export async function loginAsServerAdmin(
     await loginPage.expectVisible();
     await loginPage.login(username, password);
 
-    await expectToHaveUrl(page, "");
+    await expectToHaveUrl(page, "navigation-overview");
 }
