@@ -1867,12 +1867,20 @@
         }
     },
     "examDetail": {
+        "boxes": {
+            "basicSettings": {
+                "title": "Basic Settings"
+            }
+        },
         "info": {
-            "url": "Url",
+            "name": "Exam Name",
+            "url": "Start Url",
             "start": "Start",
             "end": "End",
             "description": "Description",
-            "typeStatus": "Exam Type & Status"
+            "typeStatus": "Exam Type & Status",
+            "type": "Exam Type",
+            "status": "Exam Status"
         },
         "main": {
             "testExam": "Test Exam",

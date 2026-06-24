@@ -61,6 +61,17 @@ export type Exam = {
     quitPassword: string;
 };
 
+export type BasicSettings = Pick<
+    Exam,
+    | "quizName"
+    | "description"
+    | "startURL"
+    | "quizStartTime"
+    | "quizEndTime"
+    | "type"
+    | "status"
+>;
+
 export type Exams = {
     number_of_pages: number;
     page_number: number;

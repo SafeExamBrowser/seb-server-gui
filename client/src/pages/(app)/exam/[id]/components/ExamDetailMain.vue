@@ -22,6 +22,15 @@
                     <v-spacer></v-spacer>
                     <!----------left side--------->
                     <v-col cols="6" xl="4">
+                        <!----------basic settings--------->
+                        <v-row>
+                            <v-col>
+                                <BoxBasicSettings
+                                    :basic-settings="basicSettings"
+                                />
+                            </v-col>
+                        </v-row>
+
                         <!----------test run--------->
                         <v-row>
                             <v-col>
@@ -873,7 +882,7 @@ import { GUIAction, useAbilities } from "@/services/ability.ts";
 import { useRouter } from "vue-router";
 import { UserAccount } from "@/models/userAccount.ts";
 import { ScreenProctoringSettings } from "@/models/seb-server/screenProctoring.ts";
-import { Exam } from "@/models/seb-server/exam.ts";
+import { BasicSettings, Exam } from "@/models/seb-server/exam.ts";
 import { ConnectionConfigurations } from "@/models/seb-server/connectionConfiguration.ts";
 import { ClientGroups } from "@/models/seb-server/clientGroup.ts";
 import { AssessmentTool } from "@/models/seb-server/assessmentTool.ts";
@@ -887,6 +896,7 @@ import SebSettingsDialog from "@/components/widgets/sebSettings/SebSettingsDialo
 import { activateScreenProctoring } from "@/services/seb-server/screenProctoringService.ts";
 import * as timeUtils from "@/utils/timeUtils.ts";
 import { SEBSettingsContext } from "@/components/widgets/sebSettings/types.ts";
+import BoxBasicSettings from "@/pages/(app)/exam/[id]/components/BoxBasicSettings/BoxBasicSettings.vue";
 
 const router = useRouter();
 const props = defineProps<{
@@ -901,6 +911,16 @@ const ability = useAbilities();
 
 // exam
 const examId = props.id;
+
+const basicSettings = computed<BasicSettings>(() => ({
+    quizName: examStore.selectedExam?.quizName ?? "",
+    description: examStore.selectedExam?.description ?? "",
+    startURL: examStore.selectedExam?.startURL ?? "",
+    quizStartTime: examStore.selectedExam?.quizStartTime ?? "",
+    quizEndTime: examStore.selectedExam?.quizEndTime ?? "",
+    type: examStore.selectedExam?.type ?? "",
+    status: examStore.selectedExam?.status ?? "",
+}));
 
 function openMonitoringOverview() {
     void router.push({
