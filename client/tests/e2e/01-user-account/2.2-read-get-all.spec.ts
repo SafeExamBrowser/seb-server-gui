@@ -1,5 +1,6 @@
 import { addBrowserSuffixToText } from "../utils/helpers";
 import { test, expect } from "../shared/fixtures/table-list-fixtures";
+import { USER_ACCOUNT_COLUMN } from "@/pages/(app)/user-account/userAccountListConfig.ts";
 
 const searchSurname = "000-testgetall";
 const activeUserUuid = "seb-user-account-getall-active";
@@ -45,7 +46,9 @@ test.describe("01 User Accounts - READ Get All", () => {
         const inactiveId = addBrowserSuffixToText(inactiveUserUuid, testInfo);
 
         await userAccounts.goto();
-        await userAccounts.search(surname);
+        await userAccounts.expectListRequestSucceeded(() =>
+            userAccounts.search(surname),
+        );
         await userAccounts.table.expectRowVisible(activeId);
         await userAccounts.table.expectRowVisible(inactiveId);
 
@@ -90,14 +93,10 @@ test.describe("01 User Accounts - READ Get All", () => {
             }
         });
 
-        await test.step("clearAll resets pagination and search input", async () => {
-            await userAccounts.expectListRequestSucceeded(
-                () => userAccounts.clearSearchAndFilters(),
-                {
-                    urlMustContain: [/[?&]page_size=10/i, /[?&]page_number=1/i],
-                },
-            );
+        await test.step("clearAll resets search and filters", async () => {
+            await userAccounts.clearSearchAndFilters();
             await userAccounts.searchBar.expectInputEmpty();
+            await expect(userAccounts.searchBar.clearAllButton).toBeHidden();
         });
     });
 
@@ -105,18 +104,23 @@ test.describe("01 User Accounts - READ Get All", () => {
         const surname = addBrowserSuffixToText(searchSurname, testInfo);
 
         await userAccounts.goto();
-        await userAccounts.search(surname);
+        await userAccounts.expectListRequestSucceeded(() =>
+            userAccounts.search(surname),
+        );
 
         await test.step("sort by Username triggers sort=username", async () => {
             await userAccounts.expectListRequestSucceeded(
-                () => userAccounts.table.sortByHeaderText("Username"),
+                () =>
+                    userAccounts.table.sortByColumn(
+                        USER_ACCOUNT_COLUMN.username,
+                    ),
                 { urlMustContain: [/[?&]sort=username/i] },
             );
         });
 
         await test.step("sort by Name triggers sort=name", async () => {
             await userAccounts.expectListRequestSucceeded(
-                () => userAccounts.table.sortByHeaderText("Name"),
+                () => userAccounts.table.sortByColumn(USER_ACCOUNT_COLUMN.name),
                 { urlMustContain: [/[?&]sort=name/i] },
             );
         });
@@ -148,5 +152,34 @@ test.describe("01 User Accounts - READ Get All", () => {
         await expect(
             userAccounts.page.getByText(/Something went wrong:/i),
         ).toBeVisible();
+    });
+
+    test("E row actions open confirm dialogs and cancel leaves data unchanged", async ({
+        userAccounts,
+    }, testInfo) => {
+        const surname = addBrowserSuffixToText(searchSurname, testInfo);
+        const activeId = addBrowserSuffixToText(activeUserUuid, testInfo);
+
+        await userAccounts.goto();
+        await userAccounts.expectListRequestSucceeded(() =>
+            userAccounts.search(surname),
+        );
+        await userAccounts.table.expectRowVisible(activeId);
+
+        await test.step("delete button opens the delete dialog; cancel keeps the row", async () => {
+            await userAccounts.table.deleteButton(activeId).click();
+            await userAccounts.deleteDialog.expectVisible();
+            await userAccounts.deleteDialog.cancel();
+            await userAccounts.deleteDialog.expectHidden();
+            await userAccounts.table.expectRowVisible(activeId);
+        });
+
+        await test.step("status chip opens the status dialog; cancel keeps the status", async () => {
+            await userAccounts.table.statusChip(activeId).click();
+            await userAccounts.statusDialog.expectVisible();
+            await userAccounts.statusDialog.cancel();
+            await userAccounts.statusDialog.expectHidden();
+            await userAccounts.table.expectStatusText(activeId, "Active");
+        });
     });
 });

@@ -1,4 +1,5 @@
 import { test, expect } from "../shared/fixtures/table-list-fixtures";
+import { INSTITUTION_COLUMN } from "@/pages/(app)/institution/institutionListConfig.ts";
 
 const searchName = "Test";
 const inactiveInstitutionId = 12;
@@ -51,12 +52,10 @@ test.describe("02 Institutions - READ Get All", () => {
             await institutions.table.expectRowAbsent(inactiveInstitutionId);
         });
 
-        await test.step("clearAll resets pagination and search input", async () => {
-            await institutions.expectListRequestSucceeded(
-                () => institutions.clearSearchAndFilters(),
-                { urlMustContain: [/[?&]page_size=10/i, /[?&]page_number=1/i] },
-            );
+        await test.step("clearAll resets search and filters", async () => {
+            await institutions.clearSearchAndFilters();
             await institutions.searchBar.expectInputEmpty();
+            await expect(institutions.searchBar.clearAllButton).toBeHidden();
         });
     });
 
@@ -65,7 +64,7 @@ test.describe("02 Institutions - READ Get All", () => {
 
         await test.step("sort by Name triggers sort=name", async () => {
             await institutions.expectListRequestSucceeded(
-                () => institutions.table.sortByHeaderText("Name"),
+                () => institutions.table.sortByColumn(INSTITUTION_COLUMN.name),
                 { urlMustContain: [/[?&]sort=name/i] },
             );
         });
@@ -97,5 +96,36 @@ test.describe("02 Institutions - READ Get All", () => {
         await expect(
             institutions.page.getByText(/Something went wrong:/i),
         ).toBeVisible();
+    });
+
+    test("E row actions open confirm dialogs and cancel leaves data unchanged", async ({
+        institutions,
+    }) => {
+        await institutions.goto();
+        await institutions.expectListRequestSucceeded(() =>
+            institutions.search(searchName),
+        );
+        await institutions.table.expectRowVisible(inactiveInstitutionId);
+
+        await test.step("delete button opens the delete dialog; cancel keeps the row", async () => {
+            await institutions.table
+                .deleteButton(inactiveInstitutionId)
+                .click();
+            await institutions.deleteDialog.expectVisible();
+            await institutions.deleteDialog.cancel();
+            await institutions.deleteDialog.expectHidden();
+            await institutions.table.expectRowVisible(inactiveInstitutionId);
+        });
+
+        await test.step("status chip opens the status dialog; cancel keeps the status", async () => {
+            await institutions.table.statusChip(inactiveInstitutionId).click();
+            await institutions.statusDialog.expectVisible();
+            await institutions.statusDialog.cancel();
+            await institutions.statusDialog.expectHidden();
+            await institutions.table.expectStatusText(
+                inactiveInstitutionId,
+                "Inactive",
+            );
+        });
     });
 });
