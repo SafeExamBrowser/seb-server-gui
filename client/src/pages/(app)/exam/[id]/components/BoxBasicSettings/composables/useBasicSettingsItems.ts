@@ -75,7 +75,7 @@ export const useBasicSettingsItems = (basicSettings: Ref<BasicSettings>) => {
         result.push({
             key: "examType",
             type: "basic",
-            label: t("examTemplate.fields.examType.label"),
+            label: t("examDetail.info.type"),
             value: {
                 type: "string",
                 value: t(
@@ -93,7 +93,7 @@ export const useBasicSettingsItems = (basicSettings: Ref<BasicSettings>) => {
             result.push({
                 key: "clientConfiguration",
                 type: "basic",
-                label: t("examTemplate.fields.clientConfiguration.label"),
+                label: t("examDetail.info.status"),
                 value: {
                     type: "string",
                     value: t(status),
