@@ -666,14 +666,9 @@
                                                 ></v-divider>
 
                                                 <!----------SEB Keys--------->
-                                                <v-list-item
-                                                    v-if="
-                                                        hasSEBRestrictionFeature()
-                                                    "
-                                                >
+                                                <v-list-item>
                                                     <v-list-item-title
                                                         :class="[
-                                                            hasSEBRestrictionFeature() &&
                                                             ability.canDoExamAction(
                                                                 GUIAction.ApplySEBRestriction,
                                                                 examStore.selectedExam,
@@ -694,7 +689,6 @@
                                                         >
                                                             <v-icon
                                                                 :disabled="
-                                                                    !hasSEBRestrictionFeature() ||
                                                                     !ability.canDoExamAction(
                                                                         GUIAction.ApplySEBRestriction,
                                                                         examStore.selectedExam,
@@ -710,9 +704,6 @@
                                                     </template>
                                                 </v-list-item>
                                                 <v-divider
-                                                    v-if="
-                                                        hasSEBRestrictionFeature()
-                                                    "
                                                     class="border-opacity-25"
                                                     :thickness="2"
                                                 ></v-divider>
