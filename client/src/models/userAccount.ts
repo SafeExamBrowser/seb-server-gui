@@ -87,3 +87,8 @@ export type UserAccountName = z.infer<typeof userAccountNameSchema>;
 
 export const USER_ROLES = userAccountSchema.shape.userRoles.element.options;
 export type UserRole = (typeof USER_ROLES)[number];
+
+export const isTeacherOnlyAccount = (userRoles: unknown): boolean =>
+    Array.isArray(userRoles) &&
+    userRoles.length > 0 &&
+    userRoles.every((role) => role === "TEACHER");

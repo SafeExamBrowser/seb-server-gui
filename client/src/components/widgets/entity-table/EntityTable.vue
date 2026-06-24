@@ -25,7 +25,11 @@
                 #item="{ item, isSelected, toggleSelect, index, internalItem }"
             >
                 <tr
-                    :class="{ 'v-data-table__tr--clickable': !!detailRoute }"
+                    :class="{
+                        'v-data-table__tr--clickable': isRowClickable(
+                            getRawItem(item),
+                        ),
+                    }"
                     :data-testid="rowTestId(getRawItem(item), index)"
                     @click="navigateToItem(getRawItem(item))"
                 >
@@ -198,6 +202,13 @@ function isItemSelectable(item: TableItem): boolean {
     }
 
     return !(props.selection.disabled?.(item) ?? true);
+}
+
+// A row is only clickable when detailRoute yields a target for that specific
+// item, so rows without a destination (e.g. non-editable accounts) don't get
+// the pointer cursor or trigger navigation.
+function isRowClickable(item: TableItem): boolean {
+    return !!props.detailRoute?.(item);
 }
 
 async function navigateToItem(item: TableItem) {
