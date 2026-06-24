@@ -1,5 +1,5 @@
 <template>
-    <ExamTemplateBox :title="$t('examTemplateDetail.boxes.supervisors.title')">
+    <DetailBox :title="$t('examTemplateDetail.boxes.supervisors.title')">
         <template #action>
             <v-btn
                 class="text-none"
@@ -57,14 +57,14 @@
                 </v-card-actions>
             </v-card>
         </v-dialog>
-    </ExamTemplateBox>
+    </DetailBox>
 </template>
 
 <script setup lang="ts">
 import { computed, ref } from "vue";
 import { useI18n } from "vue-i18n";
 import { useDisplay } from "vuetify";
-import ExamTemplateBox from "./ExamTemplateBox.vue";
+import DetailBox from "@/components/widgets/DetailBox.vue";
 import SupervisorPicker from "@/components/widgets/supervisorPicker/SupervisorPicker.vue";
 import { UserAccountName } from "@/models/userAccount";
 import {

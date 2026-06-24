@@ -1,8 +1,6 @@
 <template>
     <LoadingFallbackComponent :loading="loading">
-        <ExamTemplateBox
-            :title="$t('examTemplateDetail.boxes.sebSettings.title')"
-        >
+        <DetailBox :title="$t('examTemplateDetail.boxes.sebSettings.title')">
             <template v-if="configTemplateId !== undefined" #action>
                 <FormDialog
                     icon-activator="mdi-plus-circle-outline"
@@ -66,7 +64,7 @@
                 NO CONFIG TEMPLATE APPLIED
             </p>
             <KeyValueList v-if="configTemplate" :items="info" class="pt-4" />
-        </ExamTemplateBox>
+        </DetailBox>
     </LoadingFallbackComponent>
 </template>
 
@@ -74,7 +72,7 @@
 import { useConfigurationTemplate } from "@/pages/(app)/exam-template/[id]/composables/api/useConfigurationTemplate.ts";
 import LoadingFallbackComponent from "@/components/widgets/loadingFallbackComponent/LoadingFallbackComponent.vue";
 import KeyValueList from "@/components/widgets/keyValueList/KeyValueList.vue";
-import ExamTemplateBox from "@/pages/(app)/exam-template/[id]/components/ExamTemplateBox.vue";
+import DetailBox from "@/components/widgets/DetailBox.vue";
 import { formatIsoToReadableDateTime } from "@/utils/timeUtils.ts";
 import { KeyValueItem } from "@/components/widgets/keyValueList/types.ts";
 import { computed, ComputedRef, ref } from "vue";

@@ -1,11 +1,11 @@
 <template>
-    <ExamTemplateBox>
+    <DetailBox>
         <IndicatorsTable :deps="tableDeps" />
-    </ExamTemplateBox>
+    </DetailBox>
 </template>
 
 <script setup lang="ts">
-import ExamTemplateBox from "./ExamTemplateBox.vue";
+import DetailBox from "@/components/widgets/DetailBox.vue";
 import IndicatorsTable from "@/components/widgets/indicatorsTable/IndicatorsTable.vue";
 import { IndicatorExisting } from "@/models/seb-server/examTemplate.ts";
 import { IndicatorsTableDeps } from "@/components/widgets/indicatorsTable/types.ts";

@@ -1,7 +1,5 @@
 <template>
-    <ExamTemplateBox
-        :title="$t('examTemplateDetail.boxes.basicSettings.title')"
-    >
+    <DetailBox :title="$t('examTemplateDetail.boxes.basicSettings.title')">
         <template #action>
             <BasicSettingsEditDialog
                 :basic-settings="basicSettings"
@@ -10,12 +8,12 @@
         </template>
 
         <KeyValueList :items="items" class="pt-4" />
-    </ExamTemplateBox>
+    </DetailBox>
 </template>
 
 <script setup lang="ts">
 import { computed } from "vue";
-import ExamTemplateBox from "@/pages/(app)/exam-template/[id]/components/ExamTemplateBox.vue";
+import DetailBox from "@/components/widgets/DetailBox.vue";
 import KeyValueList from "@/components/widgets/keyValueList/KeyValueList.vue";
 import { BasicSettings } from "@/models/seb-server/examTemplate.ts";
 import BasicSettingsEditDialog from "./components/BasicSettingsEditDialog.vue";

@@ -1,11 +1,11 @@
 <template>
-    <ExamTemplateBox>
+    <DetailBox>
         <ClientGroupsTable :deps="tableDeps" />
-    </ExamTemplateBox>
+    </DetailBox>
 </template>
 
 <script setup lang="ts">
-import ExamTemplateBox from "./ExamTemplateBox.vue";
+import DetailBox from "@/components/widgets/DetailBox.vue";
 import ClientGroupsTable from "@/components/widgets/clientGroupsTable/ClientGroupsTable.vue";
 import { ClientGroupsTableDeps } from "@/components/widgets/clientGroupsTable/types.ts";
 import { ClientGroupExisting } from "@/models/seb-server/examTemplate.ts";
