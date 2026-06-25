@@ -64,6 +64,8 @@ declare module 'vue-router/auto-routes' {
       | '/(app)/monitoring/[examId]/client/[connectionToken]/'
       | '/(app)/navigation-overview/'
       | '/(app)/profile/'
+      | '/(app)/scheduled-deletion/'
+      | '/(app)/scheduled-deletion/[id]/'
       | '/(app)/sp-recording/[sessionId]/'
       | '/(app)/sp-recording/application-search/[sessionId]/'
       | '/(app)/sp-search/'
@@ -267,6 +269,20 @@ declare module 'vue-router/auto-routes' {
       Record<never, never>,
       | never
     >,
+    '/(app)/scheduled-deletion/': RouteRecordInfo<
+      '/(app)/scheduled-deletion/',
+      '/scheduled-deletion',
+      Record<never, never>,
+      Record<never, never>,
+      | never
+    >,
+    '/(app)/scheduled-deletion/[id]/': RouteRecordInfo<
+      '/(app)/scheduled-deletion/[id]/',
+      '/scheduled-deletion/:id',
+      { id: ParamValue<true> },
+      { id: ParamValue<false> },
+      | never
+    >,
     '/(app)/sp-recording/[sessionId]/': RouteRecordInfo<
       '/(app)/sp-recording/[sessionId]/',
       '/sp-recording/:sessionId',
@@ -375,6 +391,8 @@ declare module 'vue-router/auto-routes' {
         | '/(app)/monitoring/[examId]/client/[connectionToken]/'
         | '/(app)/navigation-overview/'
         | '/(app)/profile/'
+        | '/(app)/scheduled-deletion/'
+        | '/(app)/scheduled-deletion/[id]/'
         | '/(app)/sp-recording/[sessionId]/'
         | '/(app)/sp-recording/application-search/[sessionId]/'
         | '/(app)/sp-search/'
@@ -605,6 +623,22 @@ declare module 'vue-router/auto-routes' {
     'src/pages/(app)/profile/index.vue': {
       routes:
         | '/(app)/profile/'
+      views:
+        | never
+      pathParamNames:
+        | never
+    }
+    'src/pages/(app)/scheduled-deletion/index.vue': {
+      routes:
+        | '/(app)/scheduled-deletion/'
+      views:
+        | never
+      pathParamNames:
+        | never
+    }
+    'src/pages/(app)/scheduled-deletion/[id]/index.vue': {
+      routes:
+        | '/(app)/scheduled-deletion/[id]/'
       views:
         | never
       pathParamNames:

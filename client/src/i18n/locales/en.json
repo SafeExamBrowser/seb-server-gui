@@ -411,6 +411,21 @@
             }
         }
     },
+    "scheduledDelete": {
+        "list": {
+            "headerName": "Name",
+            "headerDueTime": "Deletion Due Time",
+            "headerScheduleTime": "Scheduled At",
+            "headerStatus": "Status",
+            "filterStatus": "Schedule Status"
+        },
+        "status": {
+            "PENDING": "Pending",
+            "SPS_RUNNING": "Running (SPS)",
+            "RUNNING": "Running",
+            "FINISHED": "Finished"
+        }
+    },
     "examTemplate": {
         "fields": {
             "name": {
@@ -2169,7 +2184,8 @@
         "editExamTemplate": "Edit Exam Template",
         "galleryView": "Gallery View",
         "analyze": "Analyze",
-        "archive": "Archive"
+        "archive": "Archive",
+        "scheduled-deletion": "Scheduled Deletion"
     },
     "warnings": {
         "no-data": "No data available",

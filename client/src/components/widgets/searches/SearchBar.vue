@@ -30,6 +30,7 @@
             :style="{ minHeight: 0 }"
         >
             <SearchBox
+                v-if="enableTextSearch"
                 :model-value="modelValue"
                 :search-text="searchText"
                 :data-test-id="dataTestId"
@@ -107,6 +108,7 @@ import type { SearchBarAction } from "./types.ts";
 const props = withDefaults(
     defineProps<{
         modelValue: string | undefined;
+        enableTextSearch?: boolean;
         searchText: string;
         filterSections: FilterSectionDef[];
         filterValues: TableFilters;
@@ -119,6 +121,7 @@ const props = withDefaults(
     {
         actions: () => [],
         dataTestId: undefined,
+        enableTextSearch: true,
         appliedSearch: undefined,
         dateTitle: undefined,
         dateValue: undefined,
