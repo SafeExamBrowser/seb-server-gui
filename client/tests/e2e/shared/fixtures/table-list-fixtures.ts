@@ -1,6 +1,7 @@
 import { test as base } from "@playwright/test";
 import { loginAsServerAdmin } from "../../utils/authenticate";
 import { UserAccountsListModel } from "../../01-user-account/models/user-accounts-list.model";
+import { UserAccountCreateModel } from "../../01-user-account/models/user-account-create.model";
 import { InstitutionsListModel } from "../../02-institution/models/institutions-list.model";
 import { ConnectionConfigurationsListModel } from "../../04-connection-configuration/models/connection-configurations-list.model";
 import { CertificatesListModel } from "../../03-certificate/models/certificates-list.model";
@@ -8,6 +9,7 @@ import { AssessmentToolsListModel } from "../../05-assessment-tool-connection/mo
 
 type Fixtures = {
     userAccounts: UserAccountsListModel;
+    userAccountCreate: UserAccountCreateModel;
     institutions: InstitutionsListModel;
     connectionConfigurations: ConnectionConfigurationsListModel;
     certificates: CertificatesListModel;
@@ -18,6 +20,10 @@ export const test = base.extend<Fixtures>({
     userAccounts: async ({ page }, use) => {
         await loginAsServerAdmin(page);
         await use(new UserAccountsListModel(page));
+    },
+    userAccountCreate: async ({ page }, use) => {
+        await loginAsServerAdmin(page);
+        await use(new UserAccountCreateModel(page));
     },
     institutions: async ({ page }, use) => {
         await loginAsServerAdmin(page);

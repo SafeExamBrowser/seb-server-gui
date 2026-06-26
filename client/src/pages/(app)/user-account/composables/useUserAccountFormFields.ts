@@ -5,6 +5,7 @@ import { FormField } from "@/components/widgets/formBuilder/types.ts";
 import { useInstitutions } from "@/composables/useInstitutions.ts";
 import { useCurrentUserQuery } from "@/composables/useCurrentUser.ts";
 import { useZodFormRules } from "@/composables/useZodFormRules.ts";
+import { USER_ACCOUNT_FIELD } from "@/pages/(app)/user-account/userAccountFormConfig.ts";
 import {
     USER_ROLES,
     userAccountCreateSchema,
@@ -162,7 +163,7 @@ export const useUserAccountFormFields = (mode: UserAccountFormMode) => {
         const fields: FormField[] = [
             {
                 type: "select" as const,
-                name: "institutionId",
+                name: USER_ACCOUNT_FIELD.institutionId,
                 model: institutionId,
                 label: t("fields.institution.label"),
                 options: institutionOptions.value,
@@ -171,7 +172,7 @@ export const useUserAccountFormFields = (mode: UserAccountFormMode) => {
             },
             {
                 type: "text" as const,
-                name: "username",
+                name: USER_ACCOUNT_FIELD.username,
                 model: username,
                 label: t("fields.username.label"),
                 required: fieldValidation.username.required,
@@ -179,7 +180,7 @@ export const useUserAccountFormFields = (mode: UserAccountFormMode) => {
             },
             {
                 type: "text" as const,
-                name: "name",
+                name: USER_ACCOUNT_FIELD.name,
                 model: name,
                 label: t("fields.name.label"),
                 required: fieldValidation.name.required,
@@ -187,7 +188,7 @@ export const useUserAccountFormFields = (mode: UserAccountFormMode) => {
             },
             {
                 type: "text" as const,
-                name: "surname",
+                name: USER_ACCOUNT_FIELD.surname,
                 model: surname,
                 label: t("fields.surname.label"),
                 required: fieldValidation.surname.required,
@@ -195,7 +196,7 @@ export const useUserAccountFormFields = (mode: UserAccountFormMode) => {
             },
             {
                 type: "text" as const,
-                name: "email",
+                name: USER_ACCOUNT_FIELD.email,
                 model: email,
                 label: t("fields.email.label"),
                 required: fieldValidation.email.required,
@@ -203,7 +204,7 @@ export const useUserAccountFormFields = (mode: UserAccountFormMode) => {
             },
             {
                 type: "select" as const,
-                name: "timezone",
+                name: USER_ACCOUNT_FIELD.timezone,
                 model: timezone,
                 label: t("fields.timezone.label"),
                 options: timezoneOptions,
@@ -215,7 +216,7 @@ export const useUserAccountFormFields = (mode: UserAccountFormMode) => {
             fields.push(
                 {
                     type: "password" as const,
-                    name: "password",
+                    name: USER_ACCOUNT_FIELD.password,
                     model: password,
                     label: t("fields.password.label"),
                     required: fieldValidation.newPassword.required,
@@ -223,7 +224,7 @@ export const useUserAccountFormFields = (mode: UserAccountFormMode) => {
                 },
                 {
                     type: "password" as const,
-                    name: "confirmPassword",
+                    name: USER_ACCOUNT_FIELD.confirmPassword,
                     model: confirmPassword,
                     label: t("fields.confirmPassword.label"),
                     required: fieldValidation.confirmNewPassword.required,
@@ -231,7 +232,7 @@ export const useUserAccountFormFields = (mode: UserAccountFormMode) => {
                         ...fieldValidation.confirmNewPassword.rules,
                         confirmPasswordRule,
                     ],
-                    validationDependsOn: ["password"],
+                    validationDependsOn: [USER_ACCOUNT_FIELD.password],
                 },
             );
         }
@@ -242,7 +243,7 @@ export const useUserAccountFormFields = (mode: UserAccountFormMode) => {
     const rightFormFields = computed<FormField[]>(() => [
         {
             type: "select" as const,
-            name: "role",
+            name: USER_ACCOUNT_FIELD.role,
             model: role,
             label: t("fields.role.label"),
             options: availableRoles.value,
