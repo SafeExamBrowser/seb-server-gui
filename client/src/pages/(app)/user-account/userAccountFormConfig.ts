@@ -13,4 +13,6 @@ export const USER_ACCOUNT_FIELD = {
 export const userAccountFormConfig = {
     createRoute: "/user-account/create",
     createTestPrefix: "createUserAccount",
+    editRoute: (userUuid: string) => `/user-account/${userUuid}`,
+    editTestPrefix: "editUserAccount",
 } as const;

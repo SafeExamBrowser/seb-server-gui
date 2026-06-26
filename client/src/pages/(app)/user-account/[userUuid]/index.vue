@@ -9,7 +9,7 @@
             :title="$t('titles.editUserAccount')"
             mode="edit"
             :initial-user="user"
-            data-test-prefix="editUserAccount"
+            :data-test-prefix="userAccountFormConfig.editTestPrefix"
             :change-password-loading="changePasswordLoading"
             @edit-submit="handleSubmit"
             @cancel="router.push({ name: '/(app)/user-account/' })"
@@ -23,6 +23,7 @@ import { computed, ref, watch } from "vue";
 import { useRoute, useRouter } from "vue-router";
 import { useI18n } from "vue-i18n";
 import UserAccountForm from "@/pages/(app)/user-account/components/UserAccountForm.vue";
+import { userAccountFormConfig } from "@/pages/(app)/user-account/userAccountFormConfig.ts";
 import LoadingFallbackComponent from "@/components/widgets/loadingFallbackComponent/LoadingFallbackComponent.vue";
 import { useCurrentUserQuery } from "@/composables/useCurrentUser.ts";
 import { useLogout } from "@/composables/useLogout.ts";
