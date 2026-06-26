@@ -1,8 +1,9 @@
-import { expect, type Page } from "@playwright/test";
+import { expect, type Page, type Request } from "@playwright/test";
 import {
     expectRequestSucceeded,
     waitForRequest,
     waitForResponse,
+    type HttpMethod,
 } from "../../../utils/networkAssertions";
 import { BasicSettingsPageModel } from "../layout/basic-settings-page.model";
 import { ConfirmDialogModel } from "../widgets/confirm-dialog.model";
@@ -91,5 +92,45 @@ export class TableListPageModel {
 
     async clearSearchAndFilters() {
         await this.searchBar.clearAll();
+    }
+
+    // Opens the delete dialog for a row, confirms it, and resolves with the
+    // DELETE request the confirmation fired. The caller mocks the endpoint and
+    // asserts the request; `request` is the per-domain row-delete matcher.
+    async confirmDelete(
+        id: string | number,
+        opts: { request: RegExp },
+    ): Promise<Request> {
+        const requestPromise = waitForRequest(
+            this.page,
+            "DELETE",
+            opts.request,
+        );
+        await this.table.deleteButton(id).click();
+        await this.deleteDialog.expectVisible();
+        await this.deleteDialog.confirm();
+        const request = await requestPromise;
+        await this.deleteDialog.expectHidden();
+        return request;
+    }
+
+    // Opens the status dialog from a row's status chip, confirms it, and resolves
+    // with the activate/deactivate request. The direction depends on the row's
+    // current state, so the caller passes the expected method and matcher.
+    async confirmStatusChange(
+        id: string | number,
+        opts: { method: HttpMethod; request: RegExp },
+    ): Promise<Request> {
+        const requestPromise = waitForRequest(
+            this.page,
+            opts.method,
+            opts.request,
+        );
+        await this.table.statusChip(id).click();
+        await this.statusDialog.expectVisible();
+        await this.statusDialog.confirm();
+        const request = await requestPromise;
+        await this.statusDialog.expectHidden();
+        return request;
     }
 }

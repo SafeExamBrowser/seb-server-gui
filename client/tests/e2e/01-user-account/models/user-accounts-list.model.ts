@@ -7,6 +7,9 @@ import {
 } from "@/components/widgets/filters/filterContracts.ts";
 import { TableListPageModel } from "../../shared/page-models/model-pages/table-list-page.model";
 import type { TableListPageConfig } from "../../shared/types/table-list-page.types";
+import { entityRowActionRequests } from "../../utils/entityRowRequests";
+
+export const userAccountRowRequests = entityRowActionRequests("/useraccount");
 
 const config: TableListPageConfig = {
     route: userAccountListConfig.route,
