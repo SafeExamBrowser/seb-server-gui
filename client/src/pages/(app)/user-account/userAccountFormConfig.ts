@@ -15,4 +15,6 @@ export const userAccountFormConfig = {
     createTestPrefix: "createUserAccount",
     editRoute: (userUuid: string) => `/user-account/${userUuid}`,
     editTestPrefix: "editUserAccount",
+    profileRoute: "/profile",
+    profileTestPrefix: "profile",
 } as const;

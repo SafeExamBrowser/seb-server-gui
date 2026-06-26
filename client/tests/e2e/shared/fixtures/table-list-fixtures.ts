@@ -4,6 +4,8 @@ import { UserAccountsListModel } from "../../01-user-account/models/user-account
 import { UserAccountCreateModel } from "../../01-user-account/models/user-account-create.model";
 import { UserAccountEditModel } from "../../01-user-account/models/user-account-edit.model";
 import { UserAccountRegisterModel } from "../../01-user-account/models/user-account-register.model";
+import { UserAccountProfileModel } from "../../01-user-account/models/user-account-profile.model";
+import { ProfileMenuModel } from "../page-models/layout/profile-menu.model";
 import { InstitutionsListModel } from "../../02-institution/models/institutions-list.model";
 import { ConnectionConfigurationsListModel } from "../../04-connection-configuration/models/connection-configurations-list.model";
 import { CertificatesListModel } from "../../03-certificate/models/certificates-list.model";
@@ -14,6 +16,8 @@ type Fixtures = {
     userAccountCreate: UserAccountCreateModel;
     userAccountEdit: UserAccountEditModel;
     userAccountRegister: UserAccountRegisterModel;
+    userAccountProfile: UserAccountProfileModel;
+    profileMenu: ProfileMenuModel;
     institutions: InstitutionsListModel;
     connectionConfigurations: ConnectionConfigurationsListModel;
     certificates: CertificatesListModel;
@@ -36,6 +40,14 @@ export const test = base.extend<Fixtures>({
     userAccountRegister: async ({ page }, use) => {
         // Register is a public page; it must work without authentication.
         await use(new UserAccountRegisterModel(page));
+    },
+    userAccountProfile: async ({ page }, use) => {
+        await loginAsServerAdmin(page);
+        await use(new UserAccountProfileModel(page));
+    },
+    profileMenu: async ({ page }, use) => {
+        await loginAsServerAdmin(page);
+        await use(new ProfileMenuModel(page));
     },
     institutions: async ({ page }, use) => {
         await loginAsServerAdmin(page);
