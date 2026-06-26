@@ -23,7 +23,6 @@
                     ...getBaseProperties(field),
                     ...getTextualProperties(field),
                 }"
-                :rules="field.rules"
             >
             </v-text-field>
             <FormFieldPassword
