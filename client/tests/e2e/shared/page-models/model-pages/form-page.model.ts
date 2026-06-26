@@ -15,6 +15,10 @@ export type FormPageConfig = {
     route: string;
     testPrefix: string;
     fields: FormFieldSpec[];
+    // Forms whose confirm/cancel buttons don't follow the `${testPrefix}-save-button`
+    // convention (e.g. the public register page) can point at their own test ids.
+    saveTestId?: string;
+    cancelTestId?: string;
 };
 
 export class FormPageModel {
@@ -29,11 +33,11 @@ export class FormPageModel {
         this.config = config;
         this.saveButton = new ConfirmButtonModel(
             page,
-            `${config.testPrefix}-save-button`,
+            config.saveTestId ?? `${config.testPrefix}-save-button`,
         );
         this.cancelButton = new ConfirmButtonModel(
             page,
-            `${config.testPrefix}-cancel-button`,
+            config.cancelTestId ?? `${config.testPrefix}-cancel-button`,
         );
         this.fieldModels = new Map(
             config.fields.map((field) => [

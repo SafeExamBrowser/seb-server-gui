@@ -54,6 +54,10 @@ export class FormFieldModel {
         await expect(this.root).toBeVisible();
     }
 
+    async expectValue(value: string) {
+        await expect(this.input).toHaveValue(value);
+    }
+
     async expectError(message?: string) {
         const error = this.root.locator(".v-messages__message").first();
         await expect(error).toBeVisible();
