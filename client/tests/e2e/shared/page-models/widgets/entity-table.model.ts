@@ -55,7 +55,7 @@ export class EntityTableModel {
     }
 
     async sortByColumn(columnKey: string) {
-        await this.header(columnKey).dispatchEvent("click");
+        await this.header(columnKey).click();
     }
 
     pageButton(pageNumber: number): Locator {

@@ -34,7 +34,7 @@ const fields: FormFieldSpec[] = [
 ];
 
 // Current user load + profile save share the /useraccount base; matchers are
-// method-aware (GET me, PUT save, POST password).
+// method-aware (GET me, PUT save, PUT password).
 export const CURRENT_USER_REQUEST = /\/useraccount\/me(?:$|\?)/i;
 export const PROFILE_SAVE_REQUEST = /\/useraccount(?:$|\?)/i;
 export const CHANGE_PASSWORD_REQUEST = /\/useraccount\/password(?:$|\?)/i;

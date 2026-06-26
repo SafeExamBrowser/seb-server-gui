@@ -30,7 +30,7 @@ export default defineConfig({
 
     use: {
         baseURL,
-        trace: "on",
+        trace: "on-first-retry",
         ignoreHTTPSErrors,
         contextOptions: {
             javaScriptEnabled: true,

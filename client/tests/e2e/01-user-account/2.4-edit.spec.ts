@@ -1,6 +1,6 @@
 import { test, expect } from "../shared/fixtures/table-list-fixtures";
 import { waitForRequest } from "../utils/networkAssertions";
-import { expectToHaveUrl } from "../utils/helpers";
+import { addBrowserSuffixToText, expectToHaveUrl } from "../utils/helpers";
 import { USER_ACCOUNT_FIELD } from "@/pages/(app)/user-account/userAccountFormConfig.ts";
 import {
     EDIT_USER_UUID,
@@ -23,6 +23,10 @@ const existingUser = {
 };
 
 const editedSurname = "e2e-edit-account-changed";
+
+// Seeded rows (shared with the read spec) for the real list -> edit navigation.
+const searchSurname = "000-testgetall";
+const activeUserUuid = "seb-user-account-getall-active";
 
 async function mockUserLoad(page: Page) {
     await page.route(userAccountByIdRequest(EDIT_USER_UUID), (route) => {
@@ -71,6 +75,13 @@ test.describe("01 User Accounts - EDIT", () => {
             .field(USER_ACCOUNT_FIELD.surname)
             .set(editedSurname);
         await userAccountEdit.saveButton.expectEnabled();
+
+        await test.step("reverting the change disables Save again", async () => {
+            await userAccountEdit
+                .field(USER_ACCOUNT_FIELD.surname)
+                .set(existingUser.surname);
+            await userAccountEdit.saveButton.expectDisabled();
+        });
     });
 
     test("C sends the edited values and returns to the list", async ({
@@ -125,5 +136,24 @@ test.describe("01 User Accounts - EDIT", () => {
         await userAccountEdit.cancel();
 
         await expectToHaveUrl(userAccountEdit.page, "user-account");
+    });
+
+    test("E the row edit button opens the edit page for that user", async ({
+        userAccounts,
+    }, testInfo) => {
+        const surname = addBrowserSuffixToText(searchSurname, testInfo);
+        const activeId = addBrowserSuffixToText(activeUserUuid, testInfo);
+
+        await userAccounts.goto();
+        await userAccounts.expectListRequestSucceeded(() =>
+            userAccounts.search(surname),
+        );
+        await userAccounts.table.expectRowVisible(activeId);
+
+        await userAccounts.table.editButton(activeId).click();
+
+        await expect(userAccounts.page).toHaveURL(
+            new RegExp(`/user-account/${activeId}`),
+        );
     });
 });
