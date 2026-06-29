@@ -2,14 +2,13 @@ import { ref } from "vue";
 import { getQuizzes } from "@/services/seb-server/quizService.ts";
 import { Quizzes } from "@/models/seb-server/quiz.ts";
 import { wait } from "@/utils/generalUtils.ts";
+import { toServerPageQuery } from "@/utils/table/tableUtils.ts";
+import type { ServerTablePaging } from "@/models/types.ts";
 
 const POLL_INTERVAL_MS = 3000;
 const POLL_MAX_ATTEMPTS = 30;
 
-export type FetchQuizzesParams = {
-    pageNumber: number;
-    pageSize: number;
-    sort?: string;
+export type FetchQuizzesFilters = {
     name?: string;
     startTimestampMillis?: number;
     lmsSetupId: number;
@@ -22,7 +21,8 @@ export const useQuizzes = () => {
     let currentRequestId = 0;
 
     const fetch = async (
-        params: FetchQuizzesParams,
+        options: ServerTablePaging,
+        filters: FetchQuizzesFilters,
         forceNewSearch = false,
     ) => {
         const requestId = ++currentRequestId;
@@ -30,22 +30,27 @@ export const useQuizzes = () => {
         error.value = undefined;
         data.value = undefined;
 
+        const buildParams = (force: boolean) => ({
+            ...toServerPageQuery(options),
+            name: filters.name || undefined,
+            start_timestamp_millis: filters.startTimestampMillis,
+            lms_setup: filters.lmsSetupId.toString(),
+            force_new_search: force,
+        });
+
         try {
-            let response: Quizzes = await getQuizzes({
-                page_number: params.pageNumber,
-                page_size: params.pageSize,
-                sort: params.sort,
-                name: params.name || undefined,
-                start_timestamp_millis: params.startTimestampMillis,
-                lms_setup: params.lmsSetupId.toString(),
-                force_new_search: forceNewSearch,
-            });
+            let response: Quizzes = await getQuizzes(
+                buildParams(forceNewSearch),
+            );
 
             if (requestId !== currentRequestId) {
                 return;
             }
             data.value = response;
 
+            // The quiz lookup runs asynchronously on the backend: while
+            // `complete` is false, only a partial result set is available, so we
+            // keep polling the same page until the lookup finished.
             let attempts = 0;
             while (!response.complete && attempts < POLL_MAX_ATTEMPTS) {
                 await wait(POLL_INTERVAL_MS);
@@ -53,15 +58,7 @@ export const useQuizzes = () => {
                     return;
                 }
 
-                response = await getQuizzes({
-                    page_number: params.pageNumber,
-                    page_size: params.pageSize,
-                    sort: params.sort,
-                    name: params.name || undefined,
-                    start_timestamp_millis: params.startTimestampMillis,
-                    lms_setup: params.lmsSetupId.toString(),
-                    force_new_search: false,
-                });
+                response = await getQuizzes(buildParams(false));
 
                 if (requestId !== currentRequestId) {
                     return;

@@ -17,6 +17,24 @@ export function formatDate(dateString: string): string {
     return `${day}.${month}.${year}`;
 }
 
+// A date-only picker (e.g. `v-date-input`) yields a `Date` at the browser's
+// local midnight. Backends that resolve a date filter in a server-side timezone
+// (the SEB Server quiz lookup snaps to the user's *profile* timezone) would then
+// see an off-by-one day whenever the browser timezone differs from it. Anchoring
+// to 12:00 UTC of the picked calendar date keeps the day stable across all
+// practical timezones.
+export function calendarDateToUtcMillis(date: Date): number {
+    return Date.UTC(
+        date.getFullYear(),
+        date.getMonth(),
+        date.getDate(),
+        12,
+        0,
+        0,
+        0,
+    );
+}
+
 export function formatIsoToReadableDateTime(dateStr?: string | null): string {
     if (!dateStr) return "";
 
