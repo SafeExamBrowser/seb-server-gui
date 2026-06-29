@@ -13,6 +13,26 @@ type BulkActionType = "HARD_DELETE" | "ACTIVATE" | "DEACTIVATE";
 const report = (bulkActionType: BulkActionType) =>
     JSON.stringify({ source: [], results: [], errors: [], bulkActionType });
 
+// A 200 EntityProcessingReport whose errors[] is populated: the API's "the HTTP call
+// succeeded but the operation failed" shape. entityProcessingReportToAppError turns a
+// non-empty errors[] into a thrown AppError, so the mutation rejects, the optimistic
+// list update and the follow-up reloadList never run, and the user is shown an error.
+const failedReport = (bulkActionType: BulkActionType) =>
+    JSON.stringify({
+        source: [],
+        results: [],
+        errors: [
+            {
+                error_message: {
+                    messageCode: "1370",
+                    systemMessage: "The operation could not be completed.",
+                    attributes: [],
+                },
+            },
+        ],
+        bulkActionType,
+    });
+
 // Mutations are mocked so the seeded rows survive and the specs stay re-runnable;
 // the assertions verify the right endpoint fires, not real backend state changes.
 async function mockOk(
@@ -29,6 +49,58 @@ async function mockOk(
             status: 200,
             contentType: "application/json",
             body: report(bulkActionType),
+        });
+    });
+}
+
+type MockRow = {
+    uuid: string;
+    institutionId: number;
+    name: string;
+    surname: string;
+    username: string;
+    email: string;
+    active: boolean;
+    language: string;
+    timezone: string;
+    userRoles: string[];
+};
+
+const mockRow = (overrides: Partial<MockRow> = {}): MockRow => ({
+    uuid: "mock-row-action-user",
+    institutionId: 11,
+    name: "Mock",
+    surname: "RowAction",
+    username: "mock-row-action",
+    email: "mock-row-action@example.com",
+    active: true,
+    language: "en",
+    timezone: "UTC",
+    userRoles: ["EXAM_ADMIN"],
+    ...overrides,
+});
+
+const listResponse = (rows: MockRow[]) =>
+    JSON.stringify({
+        number_of_pages: 1,
+        page_number: 1,
+        page_size: 10,
+        content: rows,
+    });
+
+// A successful delete/deactivate runs an optimistic cache update AND a reloadList refetch.
+// A mocked mutation can't persist, so against the real backend the refetch would re-show the
+// row and mask the outcome. The outcome specs therefore serve the list from an in-memory
+// `state.rows` the action route mutates, so the refetch reflects the new backend state.
+function mockUserAccountList(page: Page, state: { rows: MockRow[] }) {
+    return page.route(/\/useraccount\?/i, (route) => {
+        if (route.request().method() !== "GET") {
+            return route.continue();
+        }
+        return route.fulfill({
+            status: 200,
+            contentType: "application/json",
+            body: listResponse(state.rows),
         });
     });
 }
@@ -103,5 +175,135 @@ test.describe("01 User Accounts - ROW ACTIONS", () => {
             request: activateRequest,
         });
         expect(request.url()).toMatch(activateRequest);
+    });
+
+    test("D a delete that fails on the report keeps the row and surfaces an error", async ({
+        userAccounts,
+    }) => {
+        const page = userAccounts.page;
+        const row = mockRow();
+        const state = { rows: [row] };
+        const deleteRequest = userAccountRowRequests.delete(row.uuid);
+
+        await mockUserAccountList(page, state);
+        await page.route(deleteRequest, (route) => {
+            if (route.request().method() !== "DELETE") {
+                return route.continue();
+            }
+            return route.fulfill({
+                status: 200,
+                contentType: "application/json",
+                body: failedReport("HARD_DELETE"),
+            });
+        });
+
+        await userAccounts.goto();
+        await userAccounts.table.expectRowVisible(row.uuid);
+
+        await userAccounts.confirmDelete(row.uuid, { request: deleteRequest });
+
+        // The op logically failed, so the row must survive and the user must be told.
+        await userAccounts.table.expectRowVisible(row.uuid);
+        await expect(
+            page.locator(".v-snackbar__content").first(),
+        ).toBeVisible();
+    });
+
+    test("E a deactivate that fails on the report keeps the row active and surfaces an error", async ({
+        userAccounts,
+    }) => {
+        const page = userAccounts.page;
+        const row = mockRow();
+        const state = { rows: [row] };
+        const deactivateRequest = userAccountRowRequests.deactivate(row.uuid);
+
+        await mockUserAccountList(page, state);
+        await page.route(deactivateRequest, (route) => {
+            if (route.request().method() !== "POST") {
+                return route.continue();
+            }
+            return route.fulfill({
+                status: 200,
+                contentType: "application/json",
+                body: failedReport("DEACTIVATE"),
+            });
+        });
+
+        await userAccounts.goto();
+        await userAccounts.table.expectStatusText(row.uuid, "Active");
+
+        await userAccounts.confirmStatusChange(row.uuid, {
+            method: "POST",
+            request: deactivateRequest,
+        });
+
+        // The op logically failed, so the status must not flip and the user must be told.
+        await userAccounts.table.expectStatusText(row.uuid, "Active");
+        await expect(
+            page.locator(".v-snackbar__content").first(),
+        ).toBeVisible();
+    });
+
+    test("F a successful delete removes the row from the list", async ({
+        userAccounts,
+    }) => {
+        const page = userAccounts.page;
+        const row = mockRow();
+        const state = { rows: [row] };
+        const deleteRequest = userAccountRowRequests.delete(row.uuid);
+
+        await mockUserAccountList(page, state);
+        await page.route(deleteRequest, (route) => {
+            if (route.request().method() !== "DELETE") {
+                return route.continue();
+            }
+            state.rows = state.rows.filter((r) => r.uuid !== row.uuid);
+            return route.fulfill({
+                status: 200,
+                contentType: "application/json",
+                body: report("HARD_DELETE"),
+            });
+        });
+
+        await userAccounts.goto();
+        await userAccounts.table.expectRowVisible(row.uuid);
+
+        await userAccounts.confirmDelete(row.uuid, { request: deleteRequest });
+
+        await userAccounts.table.expectRowAbsent(row.uuid);
+    });
+
+    test("G a successful deactivate flips the row status to Inactive", async ({
+        userAccounts,
+    }) => {
+        const page = userAccounts.page;
+        const row = mockRow();
+        const state = { rows: [row] };
+        const deactivateRequest = userAccountRowRequests.deactivate(row.uuid);
+
+        await mockUserAccountList(page, state);
+        await page.route(deactivateRequest, (route) => {
+            if (route.request().method() !== "POST") {
+                return route.continue();
+            }
+            state.rows = state.rows.map((r) =>
+                r.uuid === row.uuid ? { ...r, active: false } : r,
+            );
+            return route.fulfill({
+                status: 200,
+                contentType: "application/json",
+                body: report("DEACTIVATE"),
+            });
+        });
+
+        await userAccounts.goto();
+        await userAccounts.table.expectStatusText(row.uuid, "Active");
+
+        await userAccounts.confirmStatusChange(row.uuid, {
+            method: "POST",
+            request: deactivateRequest,
+        });
+
+        await userAccounts.table.expectStatusText(row.uuid, "Inactive");
     });
 });
