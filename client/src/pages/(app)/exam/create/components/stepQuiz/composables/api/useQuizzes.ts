@@ -28,7 +28,6 @@ export const useQuizzes = () => {
         const requestId = ++currentRequestId;
         loading.value = true;
         error.value = undefined;
-        data.value = undefined;
 
         const buildParams = (force: boolean) => ({
             ...toServerPageQuery(options),
