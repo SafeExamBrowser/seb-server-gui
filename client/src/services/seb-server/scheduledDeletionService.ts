@@ -8,11 +8,11 @@ const baseUrl = "/scheduled-delete" as const;
 export const getScheduledDeletions = async ({
     basicListParams,
     dueTimestamp,
-    status,
+    state,
 }: {
     basicListParams?: BasicListParams;
     dueTimestamp?: number;
-    status?: string;
+    state?: string;
 }): Promise<ScheduledDeletions> =>
     (
         await apiService.getRequest({
@@ -22,7 +22,7 @@ export const getScheduledDeletions = async ({
                 params: {
                     ...normaliseBasicListParams(basicListParams),
                     dueTimestamp,
-                    status,
+                    state,
                 },
             },
         })

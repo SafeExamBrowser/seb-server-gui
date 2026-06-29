@@ -414,7 +414,7 @@
     "scheduledDelete": {
         "list": {
             "headerName": "Name",
-            "headerDueTime": "Deletion Due Time",
+            "headerDueTime": "Deletion Due Date",
             "headerScheduleTime": "Scheduled At",
             "headerStatus": "Status",
             "filterStatus": "Schedule Status"
@@ -2228,7 +2228,8 @@
             "oldUserAccounts": "Old User Accounts :)",
             "oldCertificates": "Old Certificates :)",
             "oldConnectionConfigurations": "Old Connection Configurations :)",
-            "oldAssessmentTools": "Old Assessment Tools :)"
+            "oldAssessmentTools": "Old Assessment Tools :)",
+            "scheduledDeletion": "Scheduled Deletion"
         },
         "screenReader": {
             "titleImage": "SEB Server Homepage",

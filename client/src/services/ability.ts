@@ -44,6 +44,7 @@ export enum GUIComponent {
     // Followup
     AnalyzeExams = "AnalyzeExams",
     ArchiveExams = "ArchiveExams",
+    ScheduledDeletion = "ScheduledDeletion",
 }
 
 export enum GUIAction {
@@ -104,6 +105,7 @@ guiComponents.set(
         GUIComponent.Exams,
         GUIComponent.AnalyzeExams,
         GUIComponent.ArchiveExams,
+        GUIComponent.ScheduledDeletion,
     ]),
 );
 

@@ -66,10 +66,11 @@
             </template>
         </div>
 
-        <v-divider />
+        <v-divider v-if="enableTextSearch || actions.length > 0" />
 
         <div class="pa-4 d-flex flex-column ga-2">
             <ConfirmButton
+                v-if="enableTextSearch"
                 text="general.searchButton"
                 block
                 :disabled="searchDisabled"

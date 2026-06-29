@@ -6,14 +6,14 @@ import { getScheduledDeleteStatusFilterColor } from "@/utils/generalUtils.ts";
 import { ScheduledDeleteStatusEnum } from "@/models/seb-server/sheduled-deletion";
 
 export const TRANSLATION_PREFIX = "scheduledDelete.list";
-const STATUS_PREFIX = TRANSLATION_PREFIX + ".status.";
-export const STATUS_FILTER_KEY = "status";
+const STATUS_PREFIX = "scheduledDelete.status.";
+export const STATUS_FILTER_KEY = "state";
 
 export function useScheduledDeleteFilters() {
     return computed<FilterSectionDef[]>(() => [
         {
             key: STATUS_FILTER_KEY,
-            title: translate(`${TRANSLATION_PREFIX}.examState`),
+            title: translate(`${TRANSLATION_PREFIX}.filterStatus`),
             multiple: true,
             options: [
                 {

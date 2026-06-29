@@ -1,6 +1,9 @@
 import { computed } from "vue";
 import { translate } from "@/utils/generalUtils.ts";
-import { formatIsoToReadableDateTime } from "@/utils/timeUtils.ts";
+import {
+    formatTimestampToDate,
+    formatTimestampToFullDate,
+} from "@/utils/timeUtils.ts";
 import type {
     TableHeader,
     CellFormatter,
@@ -17,7 +20,7 @@ export function useScheduledDeleteTableHeaders() {
         },
         {
             title: translate(`${TRANSLATION_PREFIX}.headerDueTime`),
-            key: "dueTime",
+            key: "deleteDueTime",
             sortable: true,
         },
         {
@@ -27,20 +30,18 @@ export function useScheduledDeleteTableHeaders() {
         },
         {
             title: translate(`${TRANSLATION_PREFIX}.headerStatus`),
-            key: "status",
+            key: "state",
             width: "8%",
             sortable: true,
         },
     ]);
 
     const cellFormatters: Record<string, CellFormatter> = {
-        sdName: (value) =>
-            value ? `Report ${formatIsoToReadableDateTime(String(value))}` : "",
-        dueTime: (value) =>
-            value ? formatIsoToReadableDateTime(String(value)) : "",
+        deleteDueTime: (value) =>
+            value ? formatTimestampToDate(Number(value)) : "",
         scheduleTime: (value) =>
-            value ? formatIsoToReadableDateTime(String(value)) : "",
-        status: (value) =>
+            value ? formatTimestampToFullDate(String(value)) : "",
+        state: (value) =>
             value ? translate(`scheduledDelete.status.${String(value)}`) : "",
     };
 

@@ -35,7 +35,7 @@ export const fetchSchedueledDeletions = (
                 sortOrder: toSortOrder(paging.value.sortBy),
             },
             dueTimestamp: dueTimestamp.value ?? undefined,
-            status: selectedStatus.value,
+            state: selectedStatus.value,
         }),
     );
 };

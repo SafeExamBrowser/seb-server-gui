@@ -3,12 +3,12 @@
         :title="$t('titles.scheduled-deletion')"
         :bread-crumb="[{ label: $t('titles.scheduled-deletion') }]"
         :data-test-id="dataTestId"
-        :panel-left-collapsed="false"
+        :panel-left-collapsed="!filtersOpen"
     >
         <template #PanelLeft>
             <SearchBar
                 v-model="list.searchInputValue"
-                search-text="examTemplateList.info.nameSearchPlaceholder"
+                search-text="scheduledDelete.info.nameSearchPlaceholder"
                 :enable-text-search="false"
                 :filter-sections="list.filterSections"
                 :filter-values="list.selectedFilters"
@@ -49,11 +49,11 @@
                     <template #cell-sdName="{ item }">
                         <v-chip size="small" variant="tonal">
                             {{
-                                `Report ${formatIsoToReadableDateTime(String(item.dueTime))}`
+                                `Report ${formatTimestampToDate(Number(String(item.deleteDueTime)))}`
                             }}
                         </v-chip>
                     </template>
-                    <template #cell-status="{ value, formattedValue }">
+                    <template #cell-state="{ value, formattedValue }">
                         <EnumChip
                             :label="formattedValue"
                             :color="
@@ -83,7 +83,7 @@ import {
     scheduledDeleteStatusColor,
     ScheduledDeleteStatusEnum,
 } from "@/models/seb-server/sheduled-deletion.ts";
-import { formatIsoToReadableDateTime } from "@/utils/timeUtils.ts";
+import { formatTimestampToDate } from "@/utils/timeUtils.ts";
 
 definePage({
     meta: {
