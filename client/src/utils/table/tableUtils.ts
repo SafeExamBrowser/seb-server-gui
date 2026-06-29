@@ -7,7 +7,6 @@ import { ServerTablePaging } from "@/models/types";
 import {
     OptionalParGetExams,
     OptionalParGetMonitoringClientLogs,
-    OptionalParGetQuizzes,
 } from "@/models/seb-server/optionalParamters";
 import { OptionalParGetConnectionConfiguration } from "@/models/seb-server/connectionConfiguration";
 import { OptionalParGetCertificates } from "@/models/seb-server/certificate";
@@ -62,44 +61,6 @@ export function sortTable(key: number, headerRefs: HeaderRefs) {
     if (Array.isArray(headerRefs) && headerRefs[key]) {
         headerRefs[key].click();
     }
-}
-
-export function assignQuizSelectPagingOptions(
-    serverTablePaging: ServerTablePaging,
-    name: string | undefined,
-    startTimestamp: number | null,
-    assessmentToolId: string | undefined,
-    forceNewSearch: boolean,
-): OptionalParGetQuizzes {
-    const optionalParGetQuizzes: OptionalParGetQuizzes = {
-        force_new_search: forceNewSearch,
-    };
-
-    optionalParGetQuizzes.page_size = serverTablePaging.itemsPerPage;
-    optionalParGetQuizzes.page_number = serverTablePaging.page;
-
-    if (name != null) {
-        optionalParGetQuizzes.name = name;
-    }
-
-    if (startTimestamp != null) {
-        optionalParGetQuizzes.start_timestamp_millis = startTimestamp;
-    }
-
-    if (assessmentToolId != null) {
-        optionalParGetQuizzes.lms_setup = assessmentToolId;
-    }
-
-    if (serverTablePaging.sortBy.length !== 0) {
-        let sortString: string = serverTablePaging.sortBy[0].key;
-        if (serverTablePaging.sortBy[0].order === "desc") {
-            sortString = "-" + sortString;
-        }
-
-        optionalParGetQuizzes.sort = sortString;
-    }
-
-    return optionalParGetQuizzes;
 }
 
 export function assignExamSelectPagingOptions(

@@ -32,3 +32,10 @@ export type TableRowSelect = {
     selectionModel: Ref<string[], string[]>;
     disabled?: (item: TableItem) => boolean;
 };
+
+// Opt-in single-row selection driven by row clicks (as opposed to the
+// checkbox-based, multi-row `TableRowSelect`). `activeKey` is the `itemKey`
+// value of the currently selected row, used to highlight it.
+export type TableSingleSelect = {
+    activeKey?: string | number;
+};

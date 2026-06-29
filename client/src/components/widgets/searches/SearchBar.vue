@@ -21,7 +21,7 @@
                 @click="clearFilters"
             >
                 <v-icon start size="small" icon="mdi-refresh" />
-                {{ $t("general.reset") }}
+                {{ $t("general.clearAll") }}
             </v-btn>
         </div>
 
