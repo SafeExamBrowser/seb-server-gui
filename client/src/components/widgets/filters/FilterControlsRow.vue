@@ -56,6 +56,7 @@
                 :data-testid="`${dataTestId}-clear-all-button`"
                 @click="emit('clearAll')"
             >
+                <v-icon start size="small" icon="mdi-refresh" />
                 {{ $t("general.clearAll") }}
             </v-btn>
         </template>
