@@ -3,7 +3,7 @@
         <v-data-table-server
             v-model="selectedIds"
             :headers="computedHeaders"
-            :item-value="'id'"
+            :item-value="itemKey"
             :items="items"
             :items-length="internalItemsLength"
             :page="currentPage"
@@ -29,9 +29,12 @@
                         'v-data-table__tr--clickable': isRowClickable(
                             getRawItem(item),
                         ),
+                        'bg-blue-lighten-5': isRowActive(getRawItem(item)),
                     }"
+                    :tabindex="singleSelect ? 0 : undefined"
                     :data-testid="rowTestId(getRawItem(item), index)"
-                    @click="navigateToItem(getRawItem(item))"
+                    @click="handleRowClick(getRawItem(item))"
+                    @keyup.enter="handleRowClick(getRawItem(item))"
                 >
                     <td v-if="props.selection">
                         <v-checkbox-btn
@@ -115,6 +118,7 @@ import type {
     TableAction,
     CellFormatter,
     TableRowSelect,
+    TableSingleSelect,
 } from "@/components/widgets/entity-table/types.ts";
 import { useTableHeaders } from "@/components/widgets/entity-table/composables/useTableHeaders.ts";
 import { useTableItems } from "@/components/widgets/entity-table/composables/useTableItems.ts";
@@ -140,6 +144,7 @@ const props = withDefaults(
         ) => RouteLocationAsRelative | null | undefined;
         actions?: TableAction[];
         selection?: TableRowSelect;
+        singleSelect?: TableSingleSelect;
         cellFormatters?: Record<string, CellFormatter>;
         itemKey?: string;
     }>(),
@@ -153,6 +158,7 @@ const props = withDefaults(
         cellFormatters: () => ({}),
         itemKey: "id",
         selection: undefined,
+        singleSelect: undefined,
     },
 );
 
@@ -160,6 +166,7 @@ const selectedIds = props.selection?.selectionModel;
 
 const emit = defineEmits<{
     "update:options": [options: ServerTablePaging];
+    "click:row": [item: TableItem];
 }>();
 
 const router = useRouter();
@@ -204,11 +211,33 @@ function isItemSelectable(item: TableItem): boolean {
     return !(props.selection.disabled?.(item) ?? true);
 }
 
-// A row is only clickable when detailRoute yields a target for that specific
-// item, so rows without a destination (e.g. non-editable accounts) don't get
-// the pointer cursor or trigger navigation.
+// A row is clickable when it has a navigation target (detailRoute) or when the
+// table is in single-select mode, so rows without a destination (e.g.
+// non-editable accounts) don't get the pointer cursor or trigger navigation.
 function isRowClickable(item: TableItem): boolean {
+    if (props.singleSelect) {
+        return true;
+    }
+
     return !!props.detailRoute?.(item);
+}
+
+// In single-select mode, highlight the row whose itemKey matches the currently
+// selected value.
+function isRowActive(item: TableItem): boolean {
+    return (
+        props.singleSelect?.activeKey !== undefined &&
+        item[props.itemKey] === props.singleSelect.activeKey
+    );
+}
+
+function handleRowClick(item: TableItem) {
+    if (props.singleSelect) {
+        emit("click:row", item);
+        return;
+    }
+
+    void navigateToItem(item);
 }
 
 async function navigateToItem(item: TableItem) {

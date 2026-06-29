@@ -277,7 +277,7 @@
                         "placeholder": "Exam Name"
                     },
                     "startDate": {
-                        "label": "Filter By Date",
+                        "label": "Filter by Start Date",
                         "placeholder": "dd.MM.yyyy"
                     }
                 },
