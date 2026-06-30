@@ -53,55 +53,41 @@
             </v-row>
         </v-form>
 
-        <v-data-table-server
+        <EntityTable
             class="mt-4"
             :headers="headers"
             :items="quizzes?.content ?? []"
-            :items-length="totalItems"
-            :items-per-page="pageSize"
+            :page-count="pageCount"
+            :options="options"
             :loading="loading"
-            :hover="true"
-            item-value="quiz_id"
+            :cell-formatters="cellFormatters"
+            :single-select="{ activeKey: store.selectedQuiz?.quiz_id }"
+            item-key="quiz_id"
+            data-test-id="create-exam-quiz"
             @update:options="handleOptionsUpdate"
-        >
-            <template #item="{ item }">
-                <tr
-                    :class="[
-                        'cursor-pointer',
-                        store.selectedQuiz?.quiz_id === item.quiz_id
-                            ? 'bg-blue-lighten-5'
-                            : '',
-                    ]"
-                    tabindex="0"
-                    @click="handleRowClick(item)"
-                    @keyup.enter="handleRowClick(item)"
-                >
-                    <td>{{ item.quiz_name }}</td>
-                    <td>
-                        {{ formatIsoToReadableDateTime(item.quiz_start_time) }}
-                    </td>
-                    <td>
-                        {{ formatIsoToReadableDateTime(item.quiz_end_time) }}
-                    </td>
-                </tr>
-            </template>
-        </v-data-table-server>
+            @click:row="handleRowClick"
+        />
 
         <LoadingFallbackComponent :loading="false" :errors="errors" />
     </StepItem>
 </template>
 
 <script setup lang="ts">
-import { computed, ref, watch } from "vue";
+import { computed, onMounted, ref, watch } from "vue";
 import { useI18n } from "vue-i18n";
 import { VDateInput } from "vuetify/components";
 import StepItem from "@/components/widgets/stepItem/StepItem.vue";
 import LoadingFallbackComponent from "@/components/widgets/loadingFallbackComponent/LoadingFallbackComponent.vue";
+import EntityTable from "@/components/widgets/entity-table/EntityTable.vue";
+import type { TableItem } from "@/components/widgets/entity-table/types.ts";
+import type { ServerTablePaging } from "@/models/types.ts";
 import { useStepQuizStore } from "./composables/store/useStepQuizStore.ts";
 import { useStepAssessmentToolStore } from "@/pages/(app)/exam/create/components/stepAssessmentTool/composables/store/useStepAssessmentToolStore.ts";
 import { useQuizzes } from "./composables/api/useQuizzes.ts";
-import { Quiz } from "@/models/seb-server/quiz.ts";
-import { formatIsoToReadableDateTime } from "@/utils/timeUtils.ts";
+import {
+    calendarDateToUtcMillis,
+    formatIsoToReadableDateTime,
+} from "@/utils/timeUtils.ts";
 
 const { t } = useI18n();
 const store = useStepQuizStore();
@@ -129,21 +115,31 @@ const headers = computed(() => [
     },
 ]);
 
-const pageSize = ref(10);
-const pageNumber = ref(1);
+const formatQuizDateCell = (value: unknown) =>
+    typeof value === "string" ? formatIsoToReadableDateTime(value) : "";
+
+const cellFormatters = {
+    quiz_start_time: formatQuizDateCell,
+    quiz_end_time: formatQuizDateCell,
+};
+
+// Quizzes are always sorted by start time (descending); the columns are not
+// user-sortable, so this stays fixed and is forwarded to the backend via
+// `normaliseBasicListParams` (see `toServerPageQuery` in `useQuizzes`).
+const options = ref<ServerTablePaging>({
+    page: 1,
+    itemsPerPage: 10,
+    sortBy: [{ key: "quiz_start_time", order: "desc" }],
+});
+
 const searchName = ref("");
 const searchDate = ref<Date>();
-const totalItems = computed(
-    () =>
-        (quizzes.value?.number_of_pages ?? 0) *
-        (quizzes.value?.page_size ?? pageSize.value),
-);
+
+const pageCount = computed(() => quizzes.value?.number_of_pages ?? 0);
 
 const errors = computed(() =>
     [errorLoading.value].filter((error) => error !== undefined),
 );
-
-const DEFAULT_SORT = "-quiz_start_time";
 
 const loadItems = (forceNewSearch = false) => {
     if (assessmentToolStore.selectedAssessmentToolId === undefined) {
@@ -154,29 +150,39 @@ const loadItems = (forceNewSearch = false) => {
     store.searchInitialized = true;
 
     fetch(
+        options.value,
         {
-            pageNumber: pageNumber.value,
-            pageSize: pageSize.value,
-            sort: DEFAULT_SORT,
             name: searchName.value,
-            startTimestampMillis: searchDate.value?.getTime(),
+            startTimestampMillis: searchDate.value
+                ? calendarDateToUtcMillis(searchDate.value)
+                : undefined,
             lmsSetupId: assessmentToolStore.selectedAssessmentToolId,
         },
         force,
     );
 };
 
-const handleOptionsUpdate = (options: {
-    page: number;
-    itemsPerPage: number;
-}) => {
-    pageNumber.value = options.page;
-    pageSize.value = options.itemsPerPage;
+// Paging changes coming from the table footer. The sort order is fixed, so it
+// is pinned here regardless of what the table echoes back. A programmatic page
+// reset (e.g. on a new search) echoes the unchanged options back through this
+// handler, so we ignore no-op updates to avoid a duplicate (and possibly
+// non-forced) fetch.
+const handleOptionsUpdate = (newOptions: ServerTablePaging) => {
+    const next = { ...newOptions, sortBy: options.value.sortBy };
+
+    if (
+        next.page === options.value.page &&
+        next.itemsPerPage === options.value.itemsPerPage
+    ) {
+        return;
+    }
+
+    options.value = next;
     loadItems();
 };
 
 const triggerSearch = () => {
-    pageNumber.value = 1;
+    options.value = { ...options.value, page: 1 };
     loadItems(true);
 };
 
@@ -186,19 +192,27 @@ const clearSearch = () => {
     triggerSearch();
 };
 
-const handleRowClick = (quiz: Quiz) => {
-    if (store.selectedQuiz?.quiz_id === quiz.quiz_id) {
-        store.selectedQuiz = undefined;
+const handleRowClick = (item: TableItem) => {
+    const quiz = quizzes.value?.content.find(
+        (candidate) => candidate.quiz_id === item.quiz_id,
+    );
+    if (!quiz) {
         return;
     }
-    store.selectedQuiz = quiz;
+
+    store.selectedQuiz =
+        store.selectedQuiz?.quiz_id === quiz.quiz_id ? undefined : quiz;
 };
+
+onMounted(() => {
+    loadItems();
+});
 
 watch(
     () => assessmentToolStore.selectedAssessmentToolId,
     () => {
         store.selectedQuiz = undefined;
-        loadItems(true);
+        triggerSearch();
     },
 );
 </script>
