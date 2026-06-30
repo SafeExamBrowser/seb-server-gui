@@ -3,7 +3,7 @@
         ref="formRef"
         :title="$t('titles.createUserAccount')"
         mode="create"
-        data-test-prefix="createUserAccount"
+        :data-test-prefix="userAccountFormConfig.createTestPrefix"
         @create-submit="handleSubmit"
         @cancel="router.push({ name: '/(app)/user-account/' })"
     />
@@ -13,6 +13,7 @@
 import { computed, ref } from "vue";
 import { useRouter } from "vue-router";
 import UserAccountForm from "@/pages/(app)/user-account/components/UserAccountForm.vue";
+import { userAccountFormConfig } from "@/pages/(app)/user-account/userAccountFormConfig.ts";
 import { useCreateUserAccountMutation } from "@/pages/(app)/user-account/api/useCreateUserAccountMutation.ts";
 import { submitWithFormErrors } from "@/services/errors/submitWithFormErrors.ts";
 import { toAppErrorOrUndefined } from "@/services/errors/toAppError.ts";

@@ -2,7 +2,7 @@
     <div>
         <v-data-table-server
             v-model="selectedIds"
-            :headers="computedHeaders"
+            :headers="headersWithTestIds"
             :item-value="itemKey"
             :items="items"
             :items-length="internalItemsLength"
@@ -55,7 +55,7 @@
                             `v-data-table-column--align-${header.align}`
                         "
                     >
-                        <template v-if="header.key === '_actions'">
+                        <template v-if="header.key === ACTIONS_COLUMN_KEY">
                             <TableRowActions
                                 :item="getRawItem(item)"
                                 :actions="actions ?? []"
@@ -112,6 +112,7 @@
 </template>
 
 <script setup lang="ts">
+import { computed } from "vue";
 import type {
     TableHeader,
     TableItem,
@@ -120,7 +121,10 @@ import type {
     TableRowSelect,
     TableSingleSelect,
 } from "@/components/widgets/entity-table/types.ts";
-import { useTableHeaders } from "@/components/widgets/entity-table/composables/useTableHeaders.ts";
+import {
+    useTableHeaders,
+    ACTIONS_COLUMN_KEY,
+} from "@/components/widgets/entity-table/composables/useTableHeaders.ts";
 import { useTableItems } from "@/components/widgets/entity-table/composables/useTableItems.ts";
 import { useTablePagination } from "@/components/widgets/entity-table/composables/useTablePagination.ts";
 import TableRowActions from "@/components/widgets/entity-table/components/TableRowActions.vue";
@@ -174,6 +178,20 @@ const router = useRouter();
 const { computedHeaders } = useTableHeaders(
     () => props.headers,
     () => !!props.actions?.length,
+);
+
+const headersWithTestIds = computed<TableHeader[]>(() =>
+    computedHeaders.value.map((header) =>
+        header.key === ACTIONS_COLUMN_KEY
+            ? header
+            : {
+                  ...header,
+                  headerProps: {
+                      ...header.headerProps,
+                      "data-testid": `${props.dataTestId}-header-${header.key}`,
+                  },
+              },
+    ),
 );
 
 const { getRawItem, formatCell } = useTableItems(() => props.cellFormatters);

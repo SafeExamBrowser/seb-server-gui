@@ -53,7 +53,7 @@
                     :cell-formatters="list.cellFormatters"
                     :actions="list.actions"
                     :data-test-id="dataTestId"
-                    item-key="uuid"
+                    :item-key="userAccountListConfig.itemKey"
                     @update:options="list.loadItems"
                 >
                     <template #cell-active="{ item, rowTestId }">
@@ -72,6 +72,7 @@
         v-model="deleteFlow.dialogOpen"
         :detail-text="deleteFlow.detailText"
         translation-key-prefix="userAccount.list"
+        :data-test-id="dataTestId"
         @confirm="deleteFlow.confirm"
     />
 
@@ -79,6 +80,7 @@
         v-model="statusFlow.dialogOpen"
         :active="!!statusFlow.target?.active"
         translation-key-prefix="userAccount.list"
+        :data-test-id="dataTestId"
         @confirm="statusFlow.confirm"
     />
 </template>
@@ -95,6 +97,7 @@ import DeleteConfirmDialog from "@/components/widgets/confirmDialog/DeleteConfir
 import StatusConfirmDialog from "@/components/widgets/confirmDialog/StatusConfirmDialog.vue";
 import LoadingFallbackComponent from "@/components/widgets/loadingFallbackComponent/LoadingFallbackComponent.vue";
 import AddButton from "@/components/widgets/AddButton.vue";
+import { userAccountListConfig } from "./userAccountListConfig.ts";
 import { useUserAccountsOverview } from "./composables/useUserAccountsOverview.ts";
 
 definePage({
@@ -105,7 +108,7 @@ definePage({
     },
 });
 
-const dataTestId = "userAccounts";
+const dataTestId = userAccountListConfig.testIdBase;
 
 const { list, deleteFlow, statusFlow } = useUserAccountsOverview();
 

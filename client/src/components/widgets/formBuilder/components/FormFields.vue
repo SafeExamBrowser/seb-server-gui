@@ -12,6 +12,9 @@
             :key="field.name"
             class="w-100"
             :field="field"
+            :data-testid="
+                dataTestId ? `${dataTestId}-field-${field.name}` : undefined
+            "
         >
             <v-text-field
                 v-if="field.type === 'text'"
@@ -20,7 +23,6 @@
                     ...getBaseProperties(field),
                     ...getTextualProperties(field),
                 }"
-                :rules="field.rules"
             >
             </v-text-field>
             <FormFieldPassword
@@ -149,9 +151,13 @@ import FormFieldPassword from "./FormFieldPassword.vue";
 import FormFieldDateTime from "@/components/widgets/formBuilder/components/FormFieldDateTime.vue";
 import FormFieldTimeRange from "@/components/widgets/formBuilder/components/FormFieldTimeRange.vue";
 
-const props = withDefaults(defineProps<FormFieldsComponentProps>(), {
-    layout: "vertical" as const,
-});
+const props = withDefaults(
+    defineProps<FormFieldsComponentProps & { dataTestId?: string }>(),
+    {
+        layout: "vertical" as const,
+        dataTestId: undefined,
+    },
+);
 
 const emit = defineEmits<{
     (e: "clearBackendError", fieldName: string): void;

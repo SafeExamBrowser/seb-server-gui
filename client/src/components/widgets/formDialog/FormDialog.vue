@@ -21,7 +21,12 @@
         :max-width="thresholds.sm"
         :persistent="submitting"
     >
-        <v-card :title="labelActivator">
+        <v-card
+            :title="labelActivator"
+            :data-testid="
+                dataTestId ? `${dataTestId}-create-dialog` : undefined
+            "
+        >
             <template #text>
                 <FormBuilder
                     v-model="isValid"
@@ -89,12 +94,14 @@ const props = withDefaults(
         ) => FormField[];
         getItem: () => TTransient;
         onSubmit: (item: TTransient) => void | Promise<void>;
+        dataTestId?: string;
     }>(),
     {
         title: "",
         disabled: false,
         sizeActivator: undefined,
         labelActivatorVisible: false,
+        dataTestId: undefined,
     },
 );
 

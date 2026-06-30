@@ -44,6 +44,7 @@
 
         <v-card
             class="overflow-hidden rounded-lg"
+            data-testid="layout-profile-menu"
             elevation="4"
             max-width="24rem"
         >
@@ -61,7 +62,10 @@
                     </v-avatar>
 
                     <div>
-                        <div class="text-title-large font-weight-black">
+                        <div
+                            class="text-title-large font-weight-black"
+                            data-testid="layout-profile-username"
+                        >
                             {{ userAccount?.username }}
                         </div>
                         <div class="text-body-small opacity-80">
@@ -73,6 +77,7 @@
                 <div
                     v-if="translatedRoles.length > 0"
                     class="d-flex flex-wrap ga-2 mt-3"
+                    data-testid="layout-profile-roles"
                 >
                     <v-chip
                         v-for="role in translatedRoles"
@@ -101,6 +106,7 @@
                         :active="false"
                         class="flex-1-1-0 text-none"
                         color="primary"
+                        :data-testid="`layout-profile-action-${action.key}`"
                         :prepend-icon="action.icon"
                         size="small"
                         stacked
@@ -124,6 +130,7 @@
                     block
                     class="justify-start text-none"
                     color="error"
+                    data-testid="layout-profile-logout"
                     prepend-icon="mdi-logout"
                     variant="text"
                     @click="handleLogout"
@@ -203,6 +210,7 @@ const isTeacherAccount = computed(() =>
 
 const quickActions = computed(() => {
     const profileSettings = {
+        key: "profile-settings",
         icon: "mdi-account-cog-outline",
         label: t("titles.profileSettings"),
         href: undefined,
@@ -211,6 +219,7 @@ const quickActions = computed(() => {
         to: typedTo({ name: "/(app)/profile/" }),
     };
     const docs = {
+        key: "docs",
         icon: "mdi-file-document-outline",
         label: t("navigation.profileMenu.docs"),
         href: "https://seb-server.readthedocs.io/en/latest/index.html",

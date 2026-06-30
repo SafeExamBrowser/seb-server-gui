@@ -2,6 +2,7 @@ import { computed, watch } from "vue";
 import { translate } from "@/utils/generalUtils.ts";
 import { useShowInstitutionColumn } from "@/composables/useShowInstitutionColumn.ts";
 import { useInstitutionNameMap } from "@/composables/useInstitutionNameMap.ts";
+import { USER_ACCOUNT_COLUMN } from "@/pages/(app)/user-account/userAccountListConfig.ts";
 import type {
     TableHeader,
     CellFormatter,
@@ -25,7 +26,7 @@ export function useUserAccountsTableHeaders() {
         if (showInstitutionColumn.value) {
             base.push({
                 title: translate("userAccount.list.tableHeaders.institution"),
-                key: "institutionId",
+                key: USER_ACCOUNT_COLUMN.institutionId,
                 width: "6%",
                 sortable: true,
             });
@@ -34,31 +35,31 @@ export function useUserAccountsTableHeaders() {
         base.push(
             {
                 title: translate("userAccount.list.tableHeaders.surname"),
-                key: "surname",
+                key: USER_ACCOUNT_COLUMN.surname,
                 width: "8%",
                 sortable: true,
             },
             {
                 title: translate("userAccount.list.tableHeaders.name"),
-                key: "name",
+                key: USER_ACCOUNT_COLUMN.name,
                 width: "8%",
                 sortable: true,
             },
             {
                 title: translate("userAccount.list.tableHeaders.username"),
-                key: "username",
+                key: USER_ACCOUNT_COLUMN.username,
                 width: "8%",
                 sortable: true,
             },
             {
                 title: translate("userAccount.list.tableHeaders.email"),
-                key: "email",
+                key: USER_ACCOUNT_COLUMN.email,
                 width: "12%",
                 sortable: true,
             },
             {
                 title: translate("userAccount.list.tableHeaders.status"),
-                key: "active",
+                key: USER_ACCOUNT_COLUMN.active,
                 width: "6%",
                 sortable: false,
             },
@@ -68,7 +69,8 @@ export function useUserAccountsTableHeaders() {
     });
 
     const cellFormatters: Record<string, CellFormatter> = {
-        institutionId: (value) => getInstitutionName(value),
+        [USER_ACCOUNT_COLUMN.institutionId]: (value) =>
+            getInstitutionName(value),
     };
 
     return { headers, cellFormatters };

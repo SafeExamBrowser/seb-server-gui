@@ -26,6 +26,7 @@
                 :get-form-fields="uploadForm.getFormFields"
                 :get-item="uploadForm.getEmptyItem"
                 :on-submit="uploadForm.handleUpload"
+                :data-test-id="dataTestId"
             >
                 <template #activator="{ props: activatorProps }">
                     <AddButton
@@ -71,7 +72,7 @@
                     :cell-formatters="list.cellFormatters"
                     :actions="list.actions"
                     :data-test-id="dataTestId"
-                    item-key="alias"
+                    :item-key="certificateListConfig.itemKey"
                     @update:options="list.loadItems"
                 />
             </LoadingFallbackComponent>
@@ -82,6 +83,7 @@
         v-model="deleteFlow.dialogOpen"
         :detail-text="deleteFlow.detailText"
         translation-key-prefix="certificates"
+        :data-test-id="dataTestId"
         @confirm="deleteFlow.confirm"
     />
 </template>
@@ -97,6 +99,7 @@ import LoadingFallbackComponent from "@/components/widgets/loadingFallbackCompon
 import DeleteConfirmDialog from "@/components/widgets/confirmDialog/DeleteConfirmDialog.vue";
 import FormDialog from "@/components/widgets/formDialog/FormDialog.vue";
 import AddButton from "@/components/widgets/AddButton.vue";
+import { certificateListConfig } from "./certificateListConfig.ts";
 import { useCertificatesOverview } from "./composables/useCertificatesOverview.ts";
 
 definePage({
@@ -107,7 +110,7 @@ definePage({
     },
 });
 
-const dataTestId = "certificates";
+const dataTestId = certificateListConfig.testIdBase;
 
 const { list, deleteFlow, uploadForm } = useCertificatesOverview();
 
