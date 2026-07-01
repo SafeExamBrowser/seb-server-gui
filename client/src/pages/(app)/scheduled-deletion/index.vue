@@ -5,6 +5,15 @@
         :data-test-id="dataTestId"
         :panel-left-collapsed="!filtersOpen"
     >
+        <template #ActionButton>
+            <AddButton
+                :route="{ name: '/(app)/scheduled-deletion/create/' }"
+                :label="$t('scheduledDelete.actions.add')"
+                icon="mdi-plus"
+                :data-test-id="dataTestId"
+            />
+        </template>
+
         <template #PanelLeft>
             <SearchBar
                 v-model="list.searchInputValue"
@@ -47,10 +56,16 @@
                     @update:options="list.loadItems"
                 >
                     <template #cell-sdName="{ item }">
-                        <v-chip size="small" variant="tonal">
-                            {{
-                                `Report ${formatTimestampToDate(Number(String(item.deleteDueTime)))}`
-                            }}
+                        <v-chip
+                            size="small"
+                            variant="tonal"
+                            :color="
+                                scheduledDeleteStatusColor[
+                                    item.state as ScheduledDeleteStatusEnum
+                                ]
+                            "
+                        >
+                            {{ getName(item) }}
                         </v-chip>
                     </template>
                     <template #cell-state="{ value, formattedValue }">
@@ -67,28 +82,37 @@
             </LoadingFallbackComponent>
         </template>
     </BasicPage>
+
+    <DeleteConfirmDialog
+        v-model="deleteFlow.dialogOpen"
+        :detail-text="deleteFlow.detailText"
+        translation-key-prefix="scheduledDelete.list"
+        @confirm="deleteFlow.confirm"
+    />
 </template>
 
 <script setup lang="ts">
 import BasicPage from "@/components/layout/pages/BasicPage.vue";
-//import AddButton from "@/components/widgets/AddButton.vue";
+import AddButton from "@/components/widgets/AddButton.vue";
 import SearchBar from "@/components/widgets/searches/SearchBar.vue";
 import EntityTable from "@/components/widgets/entity-table/EntityTable.vue";
 import EnumChip from "@/components/widgets/EnumChip.vue";
 import LoadingFallbackComponent from "@/components/widgets/loadingFallbackComponent/LoadingFallbackComponent.vue";
 import FilterControlsRow from "@/components/widgets/filters/FilterControlsRow.vue";
+import DeleteConfirmDialog from "@/components/widgets/confirmDialog/DeleteConfirmDialog.vue";
 import { useListFilterPanel } from "@/components/widgets/filters/useListFilterPanel.ts";
 import { useScheduledDeletionOverview } from "./composables/useScheduledDeletionOverview.ts";
 import {
     scheduledDeleteStatusColor,
     ScheduledDeleteStatusEnum,
-} from "@/models/seb-server/sheduled-deletion.ts";
+} from "@/models/seb-server/scheduled-deletion.ts";
 import { formatTimestampToDate } from "@/utils/timeUtils.ts";
+import { TableItem } from "@/components/widgets/entity-table/types.ts";
 
 definePage({
     meta: {
-        titleKey: "titles.schedulete-deletion",
-        pageTestId: "schedulete-deletion-page",
+        titleKey: "titles.scheduled-deletion",
+        pageTestId: "scheduled-deletion-page",
     },
 });
 
@@ -97,10 +121,17 @@ const dataTestId = "scheduled-deletions";
 const { list, deleteFlow } = useScheduledDeletionOverview();
 
 const { filtersOpen, activePills, onRemovePill } = useListFilterPanel({
-    //  search: { applied: () => list.searchField, clear: list.onClearSearch },
     filterSections: () => list.filterSections,
     selectedFilters: () => list.selectedFilters,
     setFilters: list.setFilters,
     date: { value: () => list.dateValue, clear: () => list.setDate(null) },
 });
+
+function getName(item: TableItem): string {
+    if (item.state == ScheduledDeleteStatusEnum.PENDING) {
+        return `Scheduled Deletion ${formatTimestampToDate(Number(String(item.scheduleTime)))}`;
+    }
+
+    return `Report ${formatTimestampToDate(Number(String(item.scheduleTime)))}`;
+}
 </script>

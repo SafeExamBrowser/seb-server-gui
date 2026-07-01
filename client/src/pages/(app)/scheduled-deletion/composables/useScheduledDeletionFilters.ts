@@ -3,7 +3,7 @@ import { translate } from "@/utils/generalUtils.ts";
 import type { FilterSectionDef } from "@/components/widgets/filters/filterTypes.ts";
 
 import { getScheduledDeleteStatusFilterColor } from "@/utils/generalUtils.ts";
-import { ScheduledDeleteStatusEnum } from "@/models/seb-server/sheduled-deletion";
+import { ScheduledDeleteStatusEnum } from "@/models/seb-server/scheduled-deletion";
 
 export const TRANSLATION_PREFIX = "scheduledDelete.list";
 const STATUS_PREFIX = "scheduledDelete.status.";
@@ -32,15 +32,6 @@ export function useScheduledDeleteFilters() {
                     ),
                     color: getScheduledDeleteStatusFilterColor(
                         ScheduledDeleteStatusEnum.RUNNING,
-                    ),
-                },
-                {
-                    value: ScheduledDeleteStatusEnum.SPS_RUNNING,
-                    label: translate(
-                        STATUS_PREFIX + ScheduledDeleteStatusEnum.SPS_RUNNING,
-                    ),
-                    color: getScheduledDeleteStatusFilterColor(
-                        ScheduledDeleteStatusEnum.SPS_RUNNING,
                     ),
                 },
                 {

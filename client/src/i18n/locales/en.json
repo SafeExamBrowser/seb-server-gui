@@ -416,13 +416,59 @@
             "headerDueTime": "Deletion Due Date",
             "headerScheduleTime": "Scheduled At",
             "headerStatus": "Status",
-            "filterStatus": "Schedule Status"
+            "filterStatus": "Schedule Status",
+            "deleteDialog": {
+                "title": "Delete Scheduled Deletion",
+                "text": "Are you sure you want to delete this pending deletion?",
+                "action": "Delete"
+            }
         },
         "status": {
             "PENDING": "Pending",
             "SPS_RUNNING": "Running (SPS)",
             "RUNNING": "Running",
             "FINISHED": "Finished"
+        },
+        "actions": {
+            "add": "Add Scheduled Deletion"
+        },
+        "hints": {
+            "create1": "Permanently removes archived exam data from a chosen date (inclusive). ",
+            "create2": "Only exams in the Archived state are affected - upcoming and finished exams are never deleted."
+        },
+        "fields": {
+            "deleteDueTime": "Delete from date (inclusive)"
+        },
+        "confirm": {
+            "title": "Delete archived exam data?",
+            "text": "Are you sure to delete all archived exam data from {date} (inclusive)? Only archived exams are deleted. This cannot be undone once the scheduled deletion runs.",
+            "action": "Schedule"
+        },
+        "createTitle": "Delete Archived Exam Data",
+        "note": "Please Note",
+        "warning": "Deletion is permanent and cannot be undone after the scheduled deletion task is in process or has been processed. Scheduled Deletion Task that still are in pending state, can be deleted until they are running. You will be asked to confirm before a Scheduled Deletion is created that will run at midnight.",
+        "report": {
+            "name": "Name",
+            "state": "Status",
+            "scheduledTime": "Scheduled Task Time",
+            "dueTime": "Deletion Due Time",
+            "startTime": "Task Start Time",
+            "endTime": "Task End Time",
+            "failed": "Failed Deletions",
+            "examsInfoTitle": "Exams to be Deletion",
+            "examsDeleted": "Deleted Exams",
+            "spsInfoTitle": "Screen Proctoring Data without Exam to be deleted",
+            "deletedSPSInfo": "Deleted Screen Proctoring Data without Exam",
+            "spsGroupsTitle": "Screen Proctoring Groups:",
+            "spsGroupsName": "Name",
+            "spsGroupSessions": "Sessions",
+            "errorType": {
+                "UNDEFINED": "Unknown Error",
+                "SERVER_ERROR": "Server Side Error",
+                "DATABASE_CONSTRAINT_ERROR": "Database Constraint Error",
+                "DATA_INCONSISTENCY_ERROR": "Data Inconsistency Error",
+                "EXCLUDED_FROM_DELETION": "Excluded From Deletion"
+            }
         }
     },
     "examTemplate": {
@@ -2184,7 +2230,9 @@
         "galleryView": "Gallery View",
         "analyze": "Analyze",
         "archive": "Archive",
-        "scheduled-deletion": "Scheduled Deletion"
+        "scheduled-deletion": "Scheduled Deletion",
+        "createScheduledDelete": "Add Scheduled Deletion",
+        "scheduledDeletionReport": "Deletion Report"
     },
     "warnings": {
         "no-data": "No data available",

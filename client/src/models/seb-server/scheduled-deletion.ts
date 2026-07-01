@@ -11,7 +11,7 @@ export const scheduledDeleteStatusColor: Record<
     ScheduledDeleteStatusEnum,
     string
 > = {
-    [ScheduledDeleteStatusEnum.PENDING]: "grey-darken-2",
+    [ScheduledDeleteStatusEnum.PENDING]: "blue",
     [ScheduledDeleteStatusEnum.SPS_RUNNING]: "red",
     [ScheduledDeleteStatusEnum.RUNNING]: "red",
     [ScheduledDeleteStatusEnum.FINISHED]: "green",
@@ -22,8 +22,8 @@ export type ScheduledDelete = {
     state: string;
     deleteDueTime: number; // timestamp (millis) must be converted to user date/time
     scheduleTime: number; // timestamp (millis) must be converted to user date/time
-    startTime: number; // timestamp (millis) can be used to calc duration
-    startEnd: number; // timestamp (millis) can be used to calc duration
+    startTime?: number; // timestamp (millis) can be used to calc duration
+    endTime?: number; // timestamp (millis) can be used to calc duration
     ownerUUID: string; // owner UUID must be resolved to user name
 };
 
@@ -39,4 +39,25 @@ export type ScheduledDeletions = {
     page_number: number;
     page_size: number;
     content: ScheduledDelete[];
+};
+
+export type SPSGroupInfo = {
+    groupName: string;
+    numberOfSessions: string;
+};
+
+export type DeletionInfo = {
+    examUUID: string;
+    examName: string;
+    examStartTime: number;
+    numberOfSessions: string;
+    spsExamName?: string;
+    spsGroups: SPSGroupInfo[];
+    error?: string;
+    errorType?: string;
+};
+
+export type ScheduledDeleteReport = ScheduledDelete & {
+    examDeletions: DeletionInfo[];
+    spsOnlyDeletions: DeletionInfo[];
 };

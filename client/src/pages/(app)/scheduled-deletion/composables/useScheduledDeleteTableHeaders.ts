@@ -18,21 +18,22 @@ export function useScheduledDeleteTableHeaders() {
             key: "sdName",
             sortable: false,
         },
-        {
-            title: translate(`${TRANSLATION_PREFIX}.headerDueTime`),
-            key: "deleteDueTime",
-            sortable: true,
-        },
+
         {
             title: translate(`${TRANSLATION_PREFIX}.headerScheduleTime`),
             key: "scheduleTime",
+            sortable: true,
+        },
+        {
+            title: translate(`${TRANSLATION_PREFIX}.headerDueTime`),
+            key: "deleteDueTime",
             sortable: false,
         },
         {
             title: translate(`${TRANSLATION_PREFIX}.headerStatus`),
             key: "state",
             width: "8%",
-            sortable: true,
+            sortable: false,
         },
     ]);
 

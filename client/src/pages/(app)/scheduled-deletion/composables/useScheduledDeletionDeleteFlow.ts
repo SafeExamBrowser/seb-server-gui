@@ -1,6 +1,7 @@
 import { computed, ref } from "vue";
 import { useDeleteScheduledDeletion } from "./api/useDeleteScheduledDeletion";
-import { ScheduledDeleteItem } from "@/models/seb-server/sheduled-deletion";
+import { ScheduledDeleteItem } from "@/models/seb-server/scheduled-deletion";
+import { formatTimestampToDate } from "@/utils/timeUtils";
 
 export const useScheduledDeleteDeleteFlow = ({
     onDeleteSuccess,
@@ -17,7 +18,9 @@ export const useScheduledDeleteDeleteFlow = ({
     const deleteDialogOpen = ref(false);
 
     const deleteDetailText = computed(() =>
-        deleteTarget.value ? deleteTarget.value.state : "",
+        deleteTarget.value
+            ? `Scheduled Deletion ${formatTimestampToDate(Number(String(deleteTarget.value.scheduleTime)))}`
+            : "",
     );
 
     const openDeleteDialog = (item: ScheduledDeleteItem) => {

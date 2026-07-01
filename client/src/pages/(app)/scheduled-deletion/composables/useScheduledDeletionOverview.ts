@@ -5,6 +5,7 @@ import { useScheduledDeleteTableHeaders } from "./useScheduledDeleteTableHeaders
 import { useScheduledDeletionTableActions } from "./useScheduledDeletionTableActions.ts";
 import { useScheduledDeletionList } from "./useScheduledDeletionList.ts";
 import { useScheduledDeleteDeleteFlow } from "./useScheduledDeletionDeleteFlow.ts";
+import { ScheduledDeleteStatusEnum } from "@/models/seb-server/scheduled-deletion.ts";
 
 export const useScheduledDeletionOverview = () => {
     const router = useRouter();
@@ -58,6 +59,9 @@ export const useScheduledDeletionOverview = () => {
                 return;
             }
             void router.push(target);
+        },
+        canDelete: (item) => {
+            return item.state === ScheduledDeleteStatusEnum.PENDING;
         },
         onDelete: openDeleteDialog,
     });

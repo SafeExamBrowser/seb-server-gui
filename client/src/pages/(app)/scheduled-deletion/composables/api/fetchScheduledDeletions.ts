@@ -1,7 +1,7 @@
 import type { Ref } from "vue";
 import { useFetch } from "@/composables/useFetch.ts";
 import type { ServerTablePaging } from "@/models/types.ts";
-import { ScheduledDeletions } from "@/models/seb-server/sheduled-deletion";
+import { ScheduledDeletions } from "@/models/seb-server/scheduled-deletion";
 import { getScheduledDeletions } from "@/services/seb-server/scheduledDeletionService";
 import { SortOrder } from "@/services/types";
 
@@ -22,7 +22,7 @@ const toSortOrder = (
     return { key: first.key, order: first.order };
 };
 
-export const fetchSchedueledDeletions = (
+export const fetchScheduledDeletions = (
     paging: Readonly<Ref<ServerTablePaging>>,
     dueTimestamp: Readonly<Ref<number | null>>,
     selectedStatus: Readonly<Ref<string | undefined>>,

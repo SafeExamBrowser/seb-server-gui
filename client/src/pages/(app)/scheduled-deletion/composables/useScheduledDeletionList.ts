@@ -5,7 +5,7 @@ import {
     useScheduledDeleteFilters,
     STATUS_FILTER_KEY,
 } from "./useScheduledDeletionFilters.ts";
-import { fetchSchedueledDeletions } from "@/pages/(app)/scheduled-deletion/composables/api/fetchScheduledDeletions.ts";
+import { fetchScheduledDeletions } from "@/pages/(app)/scheduled-deletion/composables/api/fetchScheduledDeletions.ts";
 
 export const useScheduledDeletionList = () => {
     const filterSections = useScheduledDeleteFilters();
@@ -25,7 +25,7 @@ export const useScheduledDeletionList = () => {
         setDate,
     } = useUrlTableState(
         async () => {
-            await fetchSchedueledDeletion();
+            await fetchScheduledDeletion();
         },
         [STATUS_FILTER_KEY],
         "dueTimestamp",
@@ -39,18 +39,18 @@ export const useScheduledDeletionList = () => {
         data,
         loading,
         error,
-        fetchData: fetchSchedueledDeletion,
-    } = fetchSchedueledDeletions(options, dateTimestamp, selectedStatus);
+        fetchData: fetchScheduledDeletion,
+    } = fetchScheduledDeletions(options, dateTimestamp, selectedStatus);
 
     const { items, pageCount, errors } = usePagedListData({
         data,
         error,
         options,
-        fetchData: fetchSchedueledDeletion,
+        fetchData: fetchScheduledDeletion,
     });
 
     const reloadList = async () => {
-        await fetchSchedueledDeletion();
+        await fetchScheduledDeletion();
 
         const maxPage = Math.max(1, pageCount.value);
 
@@ -60,7 +60,7 @@ export const useScheduledDeletionList = () => {
 
         options.value.page = maxPage;
 
-        await fetchSchedueledDeletion();
+        await fetchScheduledDeletion();
     };
 
     return {

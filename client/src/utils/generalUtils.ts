@@ -12,7 +12,7 @@ import i18n from "@/i18n";
 import {
     scheduledDeleteStatusColor,
     ScheduledDeleteStatusEnum,
-} from "@/models/seb-server/sheduled-deletion";
+} from "@/models/seb-server/scheduled-deletion";
 
 type I18nLike = { t: (key: string, ...args: unknown[]) => string };
 

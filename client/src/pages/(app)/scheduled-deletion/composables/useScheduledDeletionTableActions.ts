@@ -7,10 +7,11 @@ import type {
 import {
     isScheduledDeleteItem,
     ScheduledDeleteItem,
-} from "@/models/seb-server/sheduled-deletion";
+} from "@/models/seb-server/scheduled-deletion";
 
 export function useScheduledDeletionTableActions(deps: {
     onNavigate: (item: ScheduledDeleteItem) => void;
+    canDelete: (item: TableItem) => boolean;
     onDelete: (item: ScheduledDeleteItem) => void;
 }) {
     const { t } = useI18n();
@@ -31,6 +32,7 @@ export function useScheduledDeletionTableActions(deps: {
             icon: "mdi-delete",
             label: t("general.deleteButton"),
             color: "error",
+            visible: deps.canDelete,
             onClick: guardAction(deps.onDelete),
         },
         {
