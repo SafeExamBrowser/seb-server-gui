@@ -1,0 +1,96 @@
+import { computed } from "vue";
+import { useMutation, useQueryClient } from "@tanstack/vue-query";
+import { getSebClientConfigsQueryKey } from "@/api/seb-server/generated/hey-api/@tanstack/vue-query.gen.ts";
+import { heySebServerClient } from "@/api/seb-server/http/heySebServerClient.ts";
+import {
+    activateConnectionConfiguration,
+    deactivateConnectionConfiguration,
+} from "@/services/seb-server/connectionConfigurationService.ts";
+import { entityProcessingReportToAppError } from "@/services/errors/toAppError.ts";
+import type { AppError } from "@/services/errors/types.ts";
+import type { ConnectionConfigurationPage } from "@/models/connectionConfiguration.ts";
+import type { EntityProcessingReport } from "@/api/seb-server/generated/hey-api/types.gen.ts";
+
+const listKey = () =>
+    getSebClientConfigsQueryKey({ client: heySebServerClient });
+
+const flipActiveInList =
+    (modelId: string, isActive: boolean) =>
+    (
+        page: ConnectionConfigurationPage | undefined,
+    ): ConnectionConfigurationPage | undefined =>
+        page
+            ? {
+                  ...page,
+                  content: page.content?.map((config) =>
+                      String(config.id) === modelId
+                          ? { ...config, active: isActive }
+                          : config,
+                  ),
+              }
+            : page;
+
+const throwOnReportErrors = async (
+    report: Promise<EntityProcessingReport>,
+): Promise<EntityProcessingReport> => {
+    const resolved = await report;
+    const reportError = entityProcessingReportToAppError(resolved);
+    if (reportError) {
+        throw reportError;
+    }
+    return resolved;
+};
+
+export const useToggleConnectionConfigurationStatusMutation = () => {
+    const queryClient = useQueryClient();
+
+    const activate = useMutation<
+        EntityProcessingReport,
+        AppError | Error,
+        string
+    >({
+        mutationFn: (modelId: string) =>
+            throwOnReportErrors(activateConnectionConfiguration(modelId)),
+        onSuccess: (_data, modelId) => {
+            queryClient.setQueriesData<ConnectionConfigurationPage>(
+                { queryKey: listKey() },
+                flipActiveInList(modelId, true),
+            );
+        },
+    });
+
+    const deactivate = useMutation<
+        EntityProcessingReport,
+        AppError | Error,
+        string
+    >({
+        mutationFn: (modelId: string) =>
+            throwOnReportErrors(deactivateConnectionConfiguration(modelId)),
+        onSuccess: (_data, modelId) => {
+            queryClient.setQueriesData<ConnectionConfigurationPage>(
+                { queryKey: listKey() },
+                flipActiveInList(modelId, false),
+            );
+        },
+    });
+
+    const changeConnectionConfigurationStatus = (
+        modelId: string,
+        isCurrentlyActive: boolean,
+    ) => {
+        activate.reset();
+        deactivate.reset();
+        const mutation = isCurrentlyActive ? deactivate : activate;
+        return mutation.mutateAsync(modelId);
+    };
+
+    return {
+        changeConnectionConfigurationStatus,
+        isPending: computed(
+            () => activate.isPending.value || deactivate.isPending.value,
+        ),
+        error: computed(
+            () => activate.error.value ?? deactivate.error.value ?? undefined,
+        ),
+    };
+};

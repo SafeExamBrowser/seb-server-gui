@@ -4,23 +4,24 @@ import type { TableItem } from "@/components/widgets/entity-table/types.ts";
 import { useConnectionConfigurationsTableHeaders } from "./useConnectionConfigurationsTableHeaders.ts";
 import { useConnectionConfigurationsTableActions } from "./useConnectionConfigurationsTableActions.ts";
 import { useConnectionConfigurationsList } from "./useConnectionConfigurationsList.ts";
-import { useDeleteConnectionConfiguration } from "@/pages/(app)/connection-configuration/api/useDeleteConnectionConfiguration.ts";
-import { useToggleConnectionConfigurationStatus } from "@/pages/(app)/connection-configuration/api/useToggleConnectionConfigurationStatus.ts";
+import { useDeleteConnectionConfigurationMutation } from "@/pages/(app)/connection-configuration/api/useDeleteConnectionConfigurationMutation.ts";
+import { useToggleConnectionConfigurationStatusMutation } from "@/pages/(app)/connection-configuration/api/useToggleConnectionConfigurationStatusMutation.ts";
 import { useEntityDeleteFlow } from "@/components/widgets/entity-table/composables/useEntityDeleteFlow.ts";
 import { useEntityStatusFlow } from "@/components/widgets/entity-table/composables/useEntityStatusFlow.ts";
+import { toAppErrorOrUndefined } from "@/services/errors/toAppError.ts";
 
 export const useConnectionConfigurationsOverview = () => {
     const router = useRouter();
 
     const connectionConfigurationDetailRoute = (
         item: TableItem,
-    ): RouteLocationAsRelative | null =>
+    ): RouteLocationAsRelative | undefined =>
         item.id != null
             ? {
                   name: "/(app)/connection-configuration/[id]/",
                   params: { id: String(item.id) },
               }
-            : null;
+            : undefined;
 
     const { headers, cellFormatters } =
         useConnectionConfigurationsTableHeaders();
@@ -28,13 +29,22 @@ export const useConnectionConfigurationsOverview = () => {
     const list = useConnectionConfigurationsList();
 
     const {
-        removeConnectionConfigurationFromItem,
-        error: deleteError,
-        loading: deleteLoading,
-    } = useDeleteConnectionConfiguration();
+        mutateAsync: removeConnectionConfiguration,
+        error: deleteMutationError,
+        isPending: deleteLoading,
+    } = useDeleteConnectionConfigurationMutation();
+    const deleteError = computed(() =>
+        toAppErrorOrUndefined(deleteMutationError.value),
+    );
 
     const deleteFlow = useEntityDeleteFlow({
-        remove: removeConnectionConfigurationFromItem,
+        remove: async (item) => {
+            try {
+                await removeConnectionConfiguration(String(item.id));
+            } catch {
+                /* empty */
+            }
+        },
         error: deleteError,
         loading: deleteLoading,
         contextLabel: "connectionconfiguration",
@@ -43,13 +53,25 @@ export const useConnectionConfigurationsOverview = () => {
     });
 
     const {
-        toggleConnectionConfigurationStatusFromItem,
-        error: statusError,
-        loading: statusLoading,
-    } = useToggleConnectionConfigurationStatus();
+        changeConnectionConfigurationStatus,
+        error: statusMutationError,
+        isPending: statusLoading,
+    } = useToggleConnectionConfigurationStatusMutation();
+    const statusError = computed(() =>
+        toAppErrorOrUndefined(statusMutationError.value),
+    );
 
     const statusFlow = useEntityStatusFlow({
-        toggle: toggleConnectionConfigurationStatusFromItem,
+        toggle: async (item) => {
+            try {
+                await changeConnectionConfigurationStatus(
+                    String(item.id),
+                    !!item.active,
+                );
+            } catch {
+                /* empty */
+            }
+        },
         error: statusError,
         loading: statusLoading,
         contextLabel: "connectionconfiguration.status",

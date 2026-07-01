@@ -170,7 +170,7 @@ import { notify } from "@/services/notifications/notify.ts";
 import { applyBackendFieldErrors } from "@/services/errors/formErrorMapping.ts";
 import { createConnectionConfiguration } from "@/services/seb-server/connectionConfigurationService.ts";
 import { useCertificates } from "@/pages/(app)/connection-configuration/composables/api/useCertificates.ts";
-import type { CreateConnectionConfigurationPar } from "@/models/seb-server/connectionConfiguration.ts";
+import type { ConnectionConfigurationCreateRequest } from "@/models/connectionConfiguration.ts";
 import CancelButton from "@/components/widgets/CancelButton.vue";
 import ConfirmButton from "@/components/widgets/ConfirmButton.vue";
 import HintText from "@/components/widgets/HintText.vue";
@@ -262,11 +262,17 @@ async function submit() {
 
     const selectedPurpose = configurationPurpose.value;
     const selectedPingInterval = pingInterval.value;
-    if (!selectedPurpose || selectedPingInterval == null) return;
+    if (
+        (selectedPurpose !== "START_EXAM" &&
+            selectedPurpose !== "CONFIGURE_CLIENT") ||
+        selectedPingInterval == null
+    ) {
+        return;
+    }
 
     const toMs = (s: number) => Math.round(Number(s) * 1000);
 
-    const params: CreateConnectionConfigurationPar = {
+    const params: ConnectionConfigurationCreateRequest = {
         name: name.value ?? "",
         sebConfigPurpose: selectedPurpose,
         sebServerPingTime: toMs(selectedPingInterval),

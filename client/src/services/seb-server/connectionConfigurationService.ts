@@ -1,124 +1,78 @@
-import * as apiService from "@/services/apiService";
-
+import { heySebServerClient as client } from "@/api/seb-server/http/heySebServerClient.ts";
 import {
-    ConnectionConfiguration,
-    ConnectionConfigurationName,
-    ConnectionConfigurations,
-    CreateConnectionConfigurationPar,
-    OptionalParGetConnectionConfiguration,
-    UpdateConnectionConfigurationPar,
-} from "@/models/seb-server/connectionConfiguration";
+    activateSebClientConfig as activateSebClientConfigSdk,
+    createSebClientConfig as createSebClientConfigSdk,
+    deactivateSebClientConfig as deactivateSebClientConfigSdk,
+    deleteSebClientConfig as deleteSebClientConfigSdk,
+    editSebClientConfig as editSebClientConfigSdk,
+    getSebClientConfigById as getSebClientConfigByIdSdk,
+    getSebClientConfigs as getSebClientConfigsSdk,
+} from "@/api/seb-server/generated/hey-api/sdk.gen.ts";
+import {
+    connectionConfigurationCreateSchema,
+    connectionConfigurationEditSchema,
+    connectionConfigurationPageSchema,
+    connectionConfigurationSchema,
+    type ConnectionConfiguration,
+    type ConnectionConfigurationCreateRequest,
+    type ConnectionConfigurationEditRequest,
+    type ConnectionConfigurationPage,
+} from "@/models/connectionConfiguration.ts";
+import { decodeWire, encodeWire } from "@/services/errors/wireCodec.ts";
+import { zEntityProcessingReport } from "@/api/seb-server/generated/hey-api/zod.gen.ts";
+import type {
+    EntityProcessingReport,
+    GetSebClientConfigsData,
+} from "@/api/seb-server/generated/hey-api/types.gen.ts";
 
-const baseUrl = "/client_configuration" as const;
+export const getConnectionConfigurations = (
+    query?: GetSebClientConfigsData["query"],
+): Promise<ConnectionConfigurationPage> =>
+    getSebClientConfigsSdk({ client, query }).then(({ data }) =>
+        decodeWire(connectionConfigurationPageSchema, data),
+    );
 
-export const getConnectionConfigurationNamesActive = async (): Promise<
-    ConnectionConfigurationName[]
-> =>
-    (
-        await apiService.getRequest({
-            url: baseUrl + "/names",
-            options: {
-                _authType: "seb",
-                params: { active: "true" },
-            },
-        })
-    ).data;
-
-export const getConnectionConfigurationsActive =
-    async (): Promise<ConnectionConfigurations> =>
-        (
-            await apiService.getRequest({
-                url: baseUrl + "/active",
-                options: { _authType: "seb" },
-            })
-        ).data;
-
-export const downloadExamConfig = async (
-    examId: string,
-    connectionId: string,
-): Promise<Blob> =>
-    (
-        await apiService.getRequest({
-            url: `${baseUrl}/download/${connectionId}`,
-            options: {
-                _authType: "seb",
-                params: { id: examId },
-                responseType: "blob",
-                headers: {
-                    accept: "application/octet-stream",
-                },
-            },
-        })
-    ).data;
-
-export const getConnectionConfiguration = async (
-    id: string,
+export const getConnectionConfigurationById = (
+    modelId: string,
 ): Promise<ConnectionConfiguration> =>
-    (
-        await apiService.getRequest({
-            url: baseUrl + "/" + id,
-            options: { _authType: "seb" },
-        })
-    ).data;
+    getSebClientConfigByIdSdk({
+        client,
+        path: { modelId },
+    }).then(({ data }) => decodeWire(connectionConfigurationSchema, data));
 
-export const getConnectionConfigurations = async (
-    optionalParameters?: OptionalParGetConnectionConfiguration,
-): Promise<ConnectionConfigurations> =>
-    (
-        await apiService.getRequest({
-            url: baseUrl,
-            options: { _authType: "seb", params: optionalParameters },
-        })
-    ).data;
-
-export const activateConnectionConfiguration = async (
-    id: string,
+export const createConnectionConfiguration = (
+    body: ConnectionConfigurationCreateRequest,
 ): Promise<ConnectionConfiguration> =>
-    (
-        await apiService.postRequest({
-            url: `${baseUrl}/${id}/active`,
-            options: { _authType: "seb" },
-        })
-    ).data;
+    createSebClientConfigSdk({
+        client,
+        body: encodeWire(connectionConfigurationCreateSchema, body),
+    }).then(({ data }) => decodeWire(connectionConfigurationSchema, data));
 
-export const deactivateConnectionConfiguration = async (
-    id: string,
+export const editConnectionConfiguration = (
+    body: ConnectionConfigurationEditRequest,
 ): Promise<ConnectionConfiguration> =>
-    (
-        await apiService.postRequest({
-            url: `${baseUrl}/${id}/inactive`,
-            options: { _authType: "seb" },
-        })
-    ).data;
+    editSebClientConfigSdk({
+        client,
+        body: encodeWire(connectionConfigurationEditSchema, body),
+    }).then(({ data }) => decodeWire(connectionConfigurationSchema, data));
 
-export const deleteConnectionConfiguration = async (
-    id: string,
-): Promise<undefined | null> =>
-    (
-        await apiService.deleteRequest({
-            url: `${baseUrl}/${id}`,
-            options: { _authType: "seb" },
-        })
-    ).data;
+export const deleteConnectionConfiguration = (
+    modelId: string,
+): Promise<EntityProcessingReport> =>
+    deleteSebClientConfigSdk({ client, path: { modelId } }).then(({ data }) =>
+        decodeWire(zEntityProcessingReport, data),
+    );
 
-export const createConnectionConfiguration = async (
-    connectionConfigurationPar: CreateConnectionConfigurationPar,
-): Promise<ConnectionConfiguration> =>
-    (
-        await apiService.postRequest({
-            url: baseUrl,
-            data: connectionConfigurationPar,
-            options: { _authType: "seb" },
-        })
-    ).data;
+export const activateConnectionConfiguration = (
+    modelId: string,
+): Promise<EntityProcessingReport> =>
+    activateSebClientConfigSdk({ client, path: { modelId } }).then(({ data }) =>
+        decodeWire(zEntityProcessingReport, data),
+    );
 
-export const editConnectionConfiguration = async (
-    connectionConfiguration: UpdateConnectionConfigurationPar,
-): Promise<ConnectionConfiguration> =>
-    (
-        await apiService.putRequest({
-            url: baseUrl,
-            data: connectionConfiguration,
-            options: { _authType: "seb" },
-        })
-    ).data;
+export const deactivateConnectionConfiguration = (
+    modelId: string,
+): Promise<EntityProcessingReport> =>
+    deactivateSebClientConfigSdk({ client, path: { modelId } }).then(
+        ({ data }) => decodeWire(zEntityProcessingReport, data),
+    );

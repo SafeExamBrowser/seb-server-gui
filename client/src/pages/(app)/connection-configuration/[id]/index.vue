@@ -198,12 +198,12 @@ import { useConnectionConfigurationFormFields } from "@/pages/(app)/connection-c
 import { useCertificates } from "@/pages/(app)/connection-configuration/composables/api/useCertificates.ts";
 import {
     editConnectionConfiguration,
-    getConnectionConfiguration,
+    getConnectionConfigurationById,
 } from "@/services/seb-server/connectionConfigurationService.ts";
 import type {
     ConnectionConfiguration,
-    UpdateConnectionConfigurationPar,
-} from "@/models/seb-server/connectionConfiguration.ts";
+    ConnectionConfigurationEditRequest,
+} from "@/models/connectionConfiguration.ts";
 import { useCertificateCreateForm } from "@/pages/(app)/certificate/composables/useCertificateCreateForm.ts";
 import { CertKey } from "@/pages/(app)/certificate/types/types.ts";
 
@@ -290,7 +290,7 @@ const toMs = (s: number) => Math.round(Number(s) * 1000);
 onMounted(async () => {
     fetchLoading.value = true;
     try {
-        const fetched = await getConnectionConfiguration(
+        const fetched = await getConnectionConfigurationById(
             String(route.params.id),
         );
         config.value = fetched;
@@ -300,8 +300,10 @@ onMounted(async () => {
         pingInterval.value = toSeconds(fetched.sebServerPingTime) ?? 1;
         asymmetricOnlyEncryption.value = Boolean(fetched.cert_encryption_asym);
         encryptWithCertificate.value = fetched.cert_alias || undefined;
-        configurationPassword.value = fetched.encryptSecret ?? "";
-        confirmConfigurationPassword.value = fetched.encryptSecret ?? "";
+        // The read model no longer carries the write-only password values (they
+        // come back only as { empty } indicators), so start the inputs empty.
+        configurationPassword.value = "";
+        confirmConfigurationPassword.value = "";
 
         withFallback.value = Boolean(fetched.sebServerFallback);
         fallbackStartUrl.value = fetched.startURL || undefined;
@@ -310,11 +312,10 @@ onMounted(async () => {
             toSeconds(fetched.sebServerFallbackAttemptInterval) ?? 2;
         connectionTimeout.value =
             toSeconds(fetched.sebServerFallbackTimeout) ?? 30;
-        fallbackPassword.value = fetched.sebServerFallbackPasswordHash ?? "";
-        confirmFallbackPassword.value =
-            fetched.sebServerFallbackPasswordHash ?? "";
-        quitPassword.value = fetched.hashedQuitPassword ?? "";
-        confirmQuitPassword.value = fetched.hashedQuitPassword ?? "";
+        fallbackPassword.value = "";
+        confirmFallbackPassword.value = "";
+        quitPassword.value = "";
+        confirmQuitPassword.value = "";
 
         snapshot();
     } catch (err) {
@@ -363,11 +364,19 @@ async function submit() {
         if (!fallbackResult?.valid) return;
     }
 
-    const par: UpdateConnectionConfigurationPar = {
-        id: config.value.id.toString(),
-        institutionId: config.value.institutionId.toString(),
+    const selectedPurpose = configurationPurpose.value;
+    if (
+        selectedPurpose !== "START_EXAM" &&
+        selectedPurpose !== "CONFIGURE_CLIENT"
+    ) {
+        return;
+    }
+
+    const par: ConnectionConfigurationEditRequest = {
+        id: config.value.id,
+        institutionId: config.value.institutionId,
         name: name.value ?? "",
-        sebConfigPurpose: configurationPurpose.value ?? "",
+        sebConfigPurpose: selectedPurpose,
         sebServerPingTime: toMs(pingInterval.value ?? 1),
         cert_alias: encryptWithCertificate.value || undefined,
         cert_encryption_asym: !!asymmetricOnlyEncryption.value,

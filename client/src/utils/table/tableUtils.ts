@@ -8,7 +8,6 @@ import {
     OptionalParGetExams,
     OptionalParGetMonitoringClientLogs,
 } from "@/models/seb-server/optionalParamters";
-import { OptionalParGetConnectionConfiguration } from "@/models/seb-server/connectionConfiguration";
 import { OptionalParGetCertificates } from "@/models/seb-server/certificate";
 import { OptionalParGetAssessmentTool } from "@/models/seb-server/assessmentTool";
 import { OptionalParSearchSessions } from "@/models/screen-proctoring/optionalParamters";
@@ -189,42 +188,6 @@ export function assignAssessmentToolSelectPagingOptions(
     if (name && name !== "") {
         opt.name = name;
     }
-    return opt;
-}
-
-export function assignConnectionConfigurationSelectPagingOptions(
-    serverTablePaging: ServerTablePaging,
-    name: string | undefined,
-    selectedStatus: string | undefined,
-    selectedInstitutionId: string | undefined,
-): OptionalParGetConnectionConfiguration {
-    const opt: OptionalParGetConnectionConfiguration = {};
-
-    opt.page_size = serverTablePaging.itemsPerPage;
-    opt.page_number = serverTablePaging.page;
-
-    if (serverTablePaging.sortBy?.length) {
-        let sortString = serverTablePaging.sortBy[0].key;
-        if (serverTablePaging.sortBy[0].order === "desc")
-            sortString = "-" + sortString;
-        opt.sort = sortString;
-    }
-
-    // filters
-    opt.active =
-        selectedStatus === "Active"
-            ? "true"
-            : selectedStatus === "Inactive"
-              ? "false"
-              : null;
-
-    opt.institutionId = selectedInstitutionId ?? null;
-
-    // search (name)
-    if (name && name.trim() !== "") {
-        opt.name = name.trim();
-    }
-
     return opt;
 }
 
