@@ -6,6 +6,7 @@ export type TableHeader = {
     width?: string;
     sortable?: boolean;
     align?: "start" | "center" | "end";
+    headerProps?: Record<string, unknown>;
 };
 
 export type TableFilters = Record<string, string | undefined>;

@@ -1,4 +1,8 @@
-import { defineConfig, devices } from "@playwright/test";
+import {
+    defineConfig,
+    devices,
+    type ReporterDescription,
+} from "@playwright/test";
 
 const isCI = !!process.env.CI;
 
@@ -9,7 +13,7 @@ const ignoreHTTPSErrors = process.env.E2E_IGNORE_HTTPS_ERRORS === "true";
 const outputDir = process.env.E2E_OUTPUT_DIR || "test-results";
 const reportDir = process.env.E2E_REPORT_DIR || "playwright-report";
 
-const reporters = isCI
+const reporters: ReporterDescription[] = isCI
     ? [["line"], ["html", { outputFolder: reportDir, open: "never" }]]
     : [["html", { outputFolder: reportDir, open: "never" }]];
 
@@ -26,7 +30,7 @@ export default defineConfig({
 
     use: {
         baseURL,
-        trace: "on",
+        trace: "on-first-retry",
         ignoreHTTPSErrors,
         contextOptions: {
             javaScriptEnabled: true,

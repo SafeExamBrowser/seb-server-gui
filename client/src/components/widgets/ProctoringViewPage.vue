@@ -167,12 +167,13 @@
                                     @click="toggle"
                                 ></v-btn>
 
-                                <!-----------session info on hover---------->
+                                <!-----------session info on click (stays open until the info button is clicked again)---------->
                                 <v-menu
                                     attach="#player-wrapper"
+                                    :close-on-back="false"
                                     :close-on-content-click="false"
                                     location="top end"
-                                    open-on-hover
+                                    persistent
                                 >
                                     <template #activator="{ props: infoProps }">
                                         <v-btn

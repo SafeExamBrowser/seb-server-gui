@@ -6,7 +6,7 @@
             :title="$t('titles.profileSettings')"
             mode="profile"
             :initial-user="user"
-            data-test-prefix="profile"
+            :data-test-prefix="userAccountFormConfig.profileTestPrefix"
             :change-password-loading="changePasswordLoading"
             @edit-submit="handleSubmit"
             @cancel="router.push({ name: '/(app)/' })"
@@ -19,6 +19,7 @@
 import { computed, ref } from "vue";
 import { useRouter } from "vue-router";
 import UserAccountForm from "@/pages/(app)/user-account/components/UserAccountForm.vue";
+import { userAccountFormConfig } from "@/pages/(app)/user-account/userAccountFormConfig.ts";
 import LoadingFallbackComponent from "@/components/widgets/loadingFallbackComponent/LoadingFallbackComponent.vue";
 import { useCurrentUserQuery } from "@/composables/useCurrentUser.ts";
 import { toAppErrorOrUndefined } from "@/services/errors/toAppError.ts";

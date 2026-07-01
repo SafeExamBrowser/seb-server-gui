@@ -52,7 +52,7 @@
                     :detail-route="list.detailRoute"
                     :actions="list.actions"
                     :data-test-id="dataTestId"
-                    item-key="id"
+                    :item-key="institutionListConfig.itemKey"
                     @update:options="list.loadItems"
                 >
                     <template #cell-logoImage="{ item, rowTestId }">
@@ -80,6 +80,7 @@
         v-model="deleteFlow.dialogOpen"
         :detail-text="deleteFlow.detailText"
         translation-key-prefix="institutions.list"
+        :data-test-id="dataTestId"
         @confirm="deleteFlow.confirm"
     />
 
@@ -87,6 +88,7 @@
         v-model="statusFlow.dialogOpen"
         :active="!!statusFlow.target?.active"
         translation-key-prefix="institutions.list"
+        :data-test-id="dataTestId"
         @confirm="statusFlow.confirm"
     />
 </template>
@@ -104,6 +106,7 @@ import StatusConfirmDialog from "@/components/widgets/confirmDialog/StatusConfir
 import LoadingFallbackComponent from "@/components/widgets/loadingFallbackComponent/LoadingFallbackComponent.vue";
 import AddButton from "@/components/widgets/AddButton.vue";
 import type { TableItem } from "@/components/widgets/entity-table/types.ts";
+import { institutionListConfig } from "./institutionListConfig.ts";
 import { useInstitutionsOverview } from "./composables/useInstitutionsOverview.ts";
 
 definePage({
@@ -114,7 +117,7 @@ definePage({
     },
 });
 
-const dataTestId = "institutions";
+const dataTestId = institutionListConfig.testIdBase;
 
 const { list, deleteFlow, statusFlow } = useInstitutionsOverview();
 

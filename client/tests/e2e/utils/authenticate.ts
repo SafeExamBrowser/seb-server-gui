@@ -1,6 +1,6 @@
 import { Page } from "@playwright/test";
 import { expectToHaveUrl } from "./helpers";
-import { PlaywrightLoginPage } from "../1-user-account/models/playwright-login-page";
+import { LoginPageModel } from "../shared/page-models/layout/login-page.model";
 
 const SEB_SERVER_ADMIN_USERNAME = "testmain";
 const SEB_SERVER_ADMIN_PASSWORD = "testmain";
@@ -10,10 +10,9 @@ export async function loginAsServerAdmin(
     username: string = SEB_SERVER_ADMIN_USERNAME,
     password: string = SEB_SERVER_ADMIN_PASSWORD,
 ) {
-    const loginPage = new PlaywrightLoginPage(page);
+    const loginPage = new LoginPageModel(page);
     await loginPage.goto();
-    await loginPage.expectVisible();
     await loginPage.login(username, password);
 
-    await expectToHaveUrl(page, "home");
+    await expectToHaveUrl(page, "navigation-overview");
 }

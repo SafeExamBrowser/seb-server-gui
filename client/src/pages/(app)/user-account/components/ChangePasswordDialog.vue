@@ -17,14 +17,23 @@
             </v-card-subtitle>
             <v-divider class="mb-4" />
             <v-card-text class="pt-0">
-                <FormBuilder ref="formRef" :fields="formFields" />
+                <FormBuilder
+                    ref="formRef"
+                    :fields="formFields"
+                    data-testid="changePassword-form"
+                />
             </v-card-text>
             <v-card-actions class="justify-end mt-2">
-                <v-btn variant="text" @click="handleCancel">
+                <v-btn
+                    data-testid="changePassword-cancel-button"
+                    variant="text"
+                    @click="handleCancel"
+                >
                     {{ $t("general.cancelButton") }}
                 </v-btn>
                 <v-btn
                     color="primary"
+                    data-testid="changePassword-save-button"
                     variant="flat"
                     :loading="loading"
                     @click="handleSubmit"
