@@ -245,7 +245,7 @@ export type Institution = {
      */
     urlSuffix?: string;
     /**
-     * Base64-encoded institution logo image. Blanked in list responses.
+     * Base64-encoded institution logo image.
      */
     logoImage?: string;
     /**
@@ -436,7 +436,7 @@ export type ConfigCreationInfo = {
 
 export type SebClientConfig = {
     id?: number;
-    institutionId: number;
+    institutionId?: number;
     name: string;
     sebConfigPurpose: 'START_EXAM' | 'CONFIGURE_CLIENT';
     sebServerPingTime?: number;
@@ -449,25 +449,13 @@ export type SebClientConfig = {
     sebServerFallbackTimeout?: number;
     sebServerFallbackAttempts?: number;
     sebServerFallbackAttemptInterval?: number;
-    sebServerFallbackPasswordHash?: {
-        empty?: boolean;
-    };
-    sebServerFallbackPasswordHashConfirm?: {
-        empty?: boolean;
-    };
-    hashedQuitPassword?: {
-        empty?: boolean;
-    };
-    hashedQuitPasswordConfirm?: {
-        empty?: boolean;
-    };
+    sebServerFallbackPasswordHash?: string;
+    sebServerFallbackPasswordHashConfirm?: string;
+    hashedQuitPassword?: string;
+    hashedQuitPasswordConfirm?: string;
     date?: string;
-    encryptSecret?: {
-        empty?: boolean;
-    };
-    confirm_encrypt_secret?: {
-        empty?: boolean;
-    };
+    encryptSecret?: string;
+    confirm_encrypt_secret?: string;
     cert_alias?: string;
     cert_encryption_asym?: boolean;
     active?: boolean;
@@ -635,6 +623,8 @@ export type ScheduledDeleteViewInfo = {
     examStartTime?: number;
     numberOfSessions?: string;
     spsExamName?: string;
+    error?: string;
+    errorType?: 'UNDEFINED' | 'SERVER_ERROR' | 'DATABASE_CONSTRAINT_ERROR' | 'DATA_INCONSISTENCY_ERROR' | 'EXCLUDED_FROM_DELETION';
     spsGroups?: Array<string>;
 };
 
@@ -1095,6 +1085,7 @@ export type ScheduledDeleteInfo = {
         [key: string]: string;
     };
     errorInfo?: string;
+    errorType?: 'UNDEFINED' | 'SERVER_ERROR' | 'DATABASE_CONSTRAINT_ERROR' | 'DATA_INCONSISTENCY_ERROR' | 'EXCLUDED_FROM_DELETION';
 };
 
 export type PageQuizData = {
@@ -1226,13 +1217,13 @@ export type ClientMonitoringDataView = {
     grantChecked?: boolean;
     grantDenied?: boolean;
     sebversionDenied?: boolean;
-    id?: number;
-    nf?: number;
     st?: 'UNDEFINED' | 'CONNECTION_REQUESTED' | 'READY' | 'ACTIVE' | 'CLOSED' | 'DISABLED';
     lat?: number;
     iv?: {
         [key: string]: string;
     };
+    nf?: number;
+    id?: number;
 };
 
 export type MonitoringFullPageData = {
@@ -2016,6 +2007,8 @@ export type ScheduledDeleteViewInfoWritable = {
     numberOfSessions?: string;
     spsExamName?: string;
     spsGroupNames?: Array<string>;
+    error?: string;
+    errorType?: 'UNDEFINED' | 'SERVER_ERROR' | 'DATABASE_CONSTRAINT_ERROR' | 'DATA_INCONSISTENCY_ERROR' | 'EXCLUDED_FROM_DELETION';
     spsGroups?: Array<string>;
 };
 
@@ -2063,6 +2056,7 @@ export type ScheduledDeleteInfoWritable = {
         [key: string]: string;
     };
     errorInfo?: string;
+    errorType?: 'UNDEFINED' | 'SERVER_ERROR' | 'DATABASE_CONSTRAINT_ERROR' | 'DATA_INCONSISTENCY_ERROR' | 'EXCLUDED_FROM_DELETION';
 };
 
 export type PageExamTemplateWritable = {
@@ -6629,6 +6623,14 @@ export type GetSebClientConfigsData = {
          * Default is the institution identifier of the institution of the current user
          */
         institutionId?: number;
+        /**
+         * Filters connection configurations by name.
+         */
+        name?: string;
+        /**
+         * Filters connection configurations by active state.
+         */
+        active?: boolean;
     };
     url: '/admin-api/v1/client_configuration';
 };
@@ -10183,6 +10185,51 @@ export type SaveSingleValue1Responses = {
 
 export type SaveSingleValue1Response = SaveSingleValue1Responses[keyof SaveSingleValue1Responses];
 
+export type UndoChanges1Data = {
+    body?: never;
+    path: {
+        modelId: number;
+    };
+    query?: never;
+    url: '/admin-api/v1/config-template/seb-settings/{modelId}/undo-changes';
+};
+
+export type UndoChanges1Errors = {
+    /**
+     * Bad request, e.g. field validation or an illegal argument. The body is usually a list of APIMessage, but may be absent for some illegal-argument cases.
+     */
+    400: Array<ApiMessage>;
+    /**
+     * Unauthorized. Body is an APIMessage or a list of APIMessage.
+     */
+    401: ApiMessage | Array<ApiMessage>;
+    /**
+     * Forbidden. Body is a list of APIMessage.
+     */
+    403: Array<ApiMessage>;
+    /**
+     * Resource not found. Body is a list of APIMessage.
+     */
+    404: Array<ApiMessage>;
+    /**
+     * Too many requests (rate limit). Body is the rate-limit code as plain text.
+     */
+    429: string;
+    /**
+     * Unexpected internal server error. Body is a list of APIMessage.
+     */
+    500: Array<ApiMessage>;
+};
+
+export type UndoChanges1Error = UndoChanges1Errors[keyof UndoChanges1Errors];
+
+export type UndoChanges1Responses = {
+    /**
+     * OK
+     */
+    200: unknown;
+};
+
 export type DeleteTableRow1Data = {
     body?: never;
     path: {
@@ -10279,6 +10326,51 @@ export type AddNewTableRow1Responses = {
 };
 
 export type AddNewTableRow1Response = AddNewTableRow1Responses[keyof AddNewTableRow1Responses];
+
+export type Publish1Data = {
+    body?: never;
+    path: {
+        modelId: number;
+    };
+    query?: never;
+    url: '/admin-api/v1/config-template/seb-settings/{modelId}/publish';
+};
+
+export type Publish1Errors = {
+    /**
+     * Bad request, e.g. field validation or an illegal argument. The body is usually a list of APIMessage, but may be absent for some illegal-argument cases.
+     */
+    400: Array<ApiMessage>;
+    /**
+     * Unauthorized. Body is an APIMessage or a list of APIMessage.
+     */
+    401: ApiMessage | Array<ApiMessage>;
+    /**
+     * Forbidden. Body is a list of APIMessage.
+     */
+    403: Array<ApiMessage>;
+    /**
+     * Resource not found. Body is a list of APIMessage.
+     */
+    404: Array<ApiMessage>;
+    /**
+     * Too many requests (rate limit). Body is the rate-limit code as plain text.
+     */
+    429: string;
+    /**
+     * Unexpected internal server error. Body is a list of APIMessage.
+     */
+    500: Array<ApiMessage>;
+};
+
+export type Publish1Error = Publish1Errors[keyof Publish1Errors];
+
+export type Publish1Responses = {
+    /**
+     * OK
+     */
+    200: unknown;
+};
 
 export type DeactivateSebClientConfigData = {
     body?: unknown;

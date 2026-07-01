@@ -568,7 +568,7 @@ export const zConfigCreationInfo = z.object({
 
 export const zSebClientConfig = z.object({
     id: z.int().optional(),
-    institutionId: z.int(),
+    institutionId: z.int().optional(),
     name: z.string().min(3).max(255),
     sebConfigPurpose: z.enum(['START_EXAM', 'CONFIGURE_CLIENT']),
     sebServerPingTime: z.int().optional(),
@@ -581,25 +581,13 @@ export const zSebClientConfig = z.object({
     sebServerFallbackTimeout: z.int().optional(),
     sebServerFallbackAttempts: z.int().min(-2147483648, { error: 'Invalid value: Expected int32 to be >= -2147483648' }).max(2147483647, { error: 'Invalid value: Expected int32 to be <= 2147483647' }).optional(),
     sebServerFallbackAttemptInterval: z.int().min(-2147483648, { error: 'Invalid value: Expected int32 to be >= -2147483648' }).max(2147483647, { error: 'Invalid value: Expected int32 to be <= 2147483647' }).optional(),
-    sebServerFallbackPasswordHash: z.object({
-        empty: z.boolean().optional()
-    }).optional(),
-    sebServerFallbackPasswordHashConfirm: z.object({
-        empty: z.boolean().optional()
-    }).optional(),
-    hashedQuitPassword: z.object({
-        empty: z.boolean().optional()
-    }).optional(),
-    hashedQuitPasswordConfirm: z.object({
-        empty: z.boolean().optional()
-    }).optional(),
+    sebServerFallbackPasswordHash: z.string().optional(),
+    sebServerFallbackPasswordHashConfirm: z.string().optional(),
+    hashedQuitPassword: z.string().optional(),
+    hashedQuitPasswordConfirm: z.string().optional(),
     date: z.iso.datetime().optional(),
-    encryptSecret: z.object({
-        empty: z.boolean().optional()
-    }).optional(),
-    confirm_encrypt_secret: z.object({
-        empty: z.boolean().optional()
-    }).optional(),
+    encryptSecret: z.string().optional(),
+    confirm_encrypt_secret: z.string().optional(),
     cert_alias: z.string().optional(),
     cert_encryption_asym: z.boolean().optional(),
     active: z.boolean().optional(),
@@ -785,6 +773,14 @@ export const zScheduledDeleteViewInfo = z.object({
     examStartTime: z.int().optional(),
     numberOfSessions: z.string().optional(),
     spsExamName: z.string().optional(),
+    error: z.string().optional(),
+    errorType: z.enum([
+        'UNDEFINED',
+        'SERVER_ERROR',
+        'DATABASE_CONSTRAINT_ERROR',
+        'DATA_INCONSISTENCY_ERROR',
+        'EXCLUDED_FROM_DELETION'
+    ]).optional(),
     spsGroups: z.array(z.string()).optional()
 });
 
@@ -1161,7 +1157,14 @@ export const zScheduledDeleteInfo = z.object({
     ]).optional(),
     examUuid: z.string().optional(),
     deletionInfo: z.record(z.string(), z.string()).optional(),
-    errorInfo: z.string().optional()
+    errorInfo: z.string().optional(),
+    errorType: z.enum([
+        'UNDEFINED',
+        'SERVER_ERROR',
+        'DATABASE_CONSTRAINT_ERROR',
+        'DATA_INCONSISTENCY_ERROR',
+        'EXCLUDED_FROM_DELETION'
+    ]).optional()
 });
 
 export const zScheduledDelete = z.object({
@@ -1277,8 +1280,6 @@ export const zClientMonitoringDataView = z.object({
     grantChecked: z.boolean().optional(),
     grantDenied: z.boolean().optional(),
     sebversionDenied: z.boolean().optional(),
-    id: z.int().optional(),
-    nf: z.int().min(-2147483648, { error: 'Invalid value: Expected int32 to be >= -2147483648' }).max(2147483647, { error: 'Invalid value: Expected int32 to be <= 2147483647' }).optional(),
     st: z.enum([
         'UNDEFINED',
         'CONNECTION_REQUESTED',
@@ -1288,7 +1289,9 @@ export const zClientMonitoringDataView = z.object({
         'DISABLED'
     ]).optional(),
     lat: z.int().optional(),
-    iv: z.record(z.string(), z.string()).optional()
+    iv: z.record(z.string(), z.string()).optional(),
+    nf: z.int().min(-2147483648, { error: 'Invalid value: Expected int32 to be >= -2147483648' }).max(2147483647, { error: 'Invalid value: Expected int32 to be <= 2147483647' }).optional(),
+    id: z.int().optional()
 });
 
 export const zMonitoringSebConnectionData = z.object({
@@ -1714,6 +1717,14 @@ export const zScheduledDeleteViewInfoWritable = z.object({
     numberOfSessions: z.string().optional(),
     spsExamName: z.string().optional(),
     spsGroupNames: z.array(z.string()).optional(),
+    error: z.string().optional(),
+    errorType: z.enum([
+        'UNDEFINED',
+        'SERVER_ERROR',
+        'DATABASE_CONSTRAINT_ERROR',
+        'DATA_INCONSISTENCY_ERROR',
+        'EXCLUDED_FROM_DELETION'
+    ]).optional(),
     spsGroups: z.array(z.string()).optional()
 });
 
@@ -1745,7 +1756,14 @@ export const zScheduledDeleteInfoWritable = z.object({
     ]).optional(),
     examUuid: z.string().optional(),
     deletionInfo: z.record(z.string(), z.string()).optional(),
-    errorInfo: z.string().optional()
+    errorInfo: z.string().optional(),
+    errorType: z.enum([
+        'UNDEFINED',
+        'SERVER_ERROR',
+        'DATABASE_CONSTRAINT_ERROR',
+        'DATA_INCONSISTENCY_ERROR',
+        'EXCLUDED_FROM_DELETION'
+    ]).optional()
 });
 
 export const zScheduledDeleteWritable = z.object({
@@ -2777,7 +2795,9 @@ export const zGetSebClientConfigsQuery = z.object({
     page_number: z.int().min(-2147483648, { error: 'Invalid value: Expected int32 to be >= -2147483648' }).max(2147483647, { error: 'Invalid value: Expected int32 to be <= 2147483647' }).optional(),
     page_size: z.int().min(-2147483648, { error: 'Invalid value: Expected int32 to be >= -2147483648' }).max(2147483647, { error: 'Invalid value: Expected int32 to be <= 2147483647' }).optional(),
     sort: z.string().optional(),
-    institutionId: z.int().optional()
+    institutionId: z.int().optional(),
+    name: z.string().optional(),
+    active: z.boolean().optional()
 });
 
 /**
@@ -3606,6 +3626,10 @@ export const zSaveSingleValue1Path = z.object({
  */
 export const zSaveSingleValue1Response = zValue;
 
+export const zUndoChanges1Path = z.object({
+    modelId: z.int()
+});
+
 export const zDeleteTableRow1Path = z.object({
     modelId: z.int()
 });
@@ -3630,6 +3654,10 @@ export const zAddNewTableRow1Path = z.object({
  * OK
  */
 export const zAddNewTableRow1Response = zTableRowValues;
+
+export const zPublish1Path = z.object({
+    modelId: z.int()
+});
 
 export const zDeactivateSebClientConfigBody = z.unknown();
 

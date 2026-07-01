@@ -4977,6 +4977,20 @@
                         "description": "The institution identifier of the request.\nDefault is the institution identifier of the institution of the current user",
                         "required": false,
                         "schema": { "type": "integer" }
+                    },
+                    {
+                        "name": "name",
+                        "in": "query",
+                        "description": "Filters connection configurations by name.",
+                        "required": false,
+                        "schema": { "type": "string" }
+                    },
+                    {
+                        "name": "active",
+                        "in": "query",
+                        "description": "Filters connection configurations by active state.",
+                        "required": false,
+                        "schema": { "type": "boolean" }
                     }
                 ],
                 "responses": {
@@ -8868,6 +8882,42 @@
                 "security": [{ "oauth": [] }]
             }
         },
+        "/admin-api/v1/config-template/seb-settings/{modelId}/undo-changes": {
+            "post": {
+                "tags": ["template-seb-settings-controller"],
+                "operationId": "undoChanges_1",
+                "parameters": [
+                    {
+                        "name": "modelId",
+                        "in": "path",
+                        "required": true,
+                        "schema": { "type": "integer" }
+                    }
+                ],
+                "responses": {
+                    "200": { "description": "OK" },
+                    "400": {
+                        "$ref": "#/components/responses/Error400BadRequest"
+                    },
+                    "401": {
+                        "$ref": "#/components/responses/Error401Unauthorized"
+                    },
+                    "403": {
+                        "$ref": "#/components/responses/Error403Forbidden"
+                    },
+                    "404": {
+                        "$ref": "#/components/responses/Error404NotFound"
+                    },
+                    "429": {
+                        "$ref": "#/components/responses/Error429TooManyRequests"
+                    },
+                    "500": {
+                        "$ref": "#/components/responses/Error500InternalServerError"
+                    }
+                },
+                "security": [{ "oauth": [] }]
+            }
+        },
         "/admin-api/v1/config-template/seb-settings/{modelId}/table/row": {
             "post": {
                 "tags": ["template-seb-settings-controller"],
@@ -8956,6 +9006,42 @@
                             }
                         }
                     },
+                    "400": {
+                        "$ref": "#/components/responses/Error400BadRequest"
+                    },
+                    "401": {
+                        "$ref": "#/components/responses/Error401Unauthorized"
+                    },
+                    "403": {
+                        "$ref": "#/components/responses/Error403Forbidden"
+                    },
+                    "404": {
+                        "$ref": "#/components/responses/Error404NotFound"
+                    },
+                    "429": {
+                        "$ref": "#/components/responses/Error429TooManyRequests"
+                    },
+                    "500": {
+                        "$ref": "#/components/responses/Error500InternalServerError"
+                    }
+                },
+                "security": [{ "oauth": [] }]
+            }
+        },
+        "/admin-api/v1/config-template/seb-settings/{modelId}/publish": {
+            "post": {
+                "tags": ["template-seb-settings-controller"],
+                "operationId": "publish_1",
+                "parameters": [
+                    {
+                        "name": "modelId",
+                        "in": "path",
+                        "required": true,
+                        "schema": { "type": "integer" }
+                    }
+                ],
+                "responses": {
+                    "200": { "description": "OK" },
                     "400": {
                         "$ref": "#/components/responses/Error400BadRequest"
                     },
@@ -20876,7 +20962,7 @@
                     },
                     "logoImage": {
                         "type": "string",
-                        "description": "Base64-encoded institution logo image. Blanked in list responses."
+                        "description": "Base64-encoded institution logo image."
                     },
                     "themeName": {
                         "type": "string",
@@ -21336,31 +21422,15 @@
                         "type": "integer",
                         "format": "int32"
                     },
-                    "sebServerFallbackPasswordHash": {
-                        "type": "object",
-                        "properties": { "empty": { "type": "boolean" } }
-                    },
+                    "sebServerFallbackPasswordHash": { "type": "string" },
                     "sebServerFallbackPasswordHashConfirm": {
-                        "type": "object",
-                        "properties": { "empty": { "type": "boolean" } }
+                        "type": "string"
                     },
-                    "hashedQuitPassword": {
-                        "type": "object",
-                        "properties": { "empty": { "type": "boolean" } }
-                    },
-                    "hashedQuitPasswordConfirm": {
-                        "type": "object",
-                        "properties": { "empty": { "type": "boolean" } }
-                    },
+                    "hashedQuitPassword": { "type": "string" },
+                    "hashedQuitPasswordConfirm": { "type": "string" },
                     "date": { "type": "string", "format": "date-time" },
-                    "encryptSecret": {
-                        "type": "object",
-                        "properties": { "empty": { "type": "boolean" } }
-                    },
-                    "confirm_encrypt_secret": {
-                        "type": "object",
-                        "properties": { "empty": { "type": "boolean" } }
-                    },
+                    "encryptSecret": { "type": "string" },
+                    "confirm_encrypt_secret": { "type": "string" },
                     "cert_alias": { "type": "string" },
                     "cert_encryption_asym": { "type": "boolean" },
                     "active": { "type": "boolean" },
@@ -21375,7 +21445,7 @@
                         "uniqueItems": true
                     }
                 },
-                "required": ["institutionId", "name", "sebConfigPurpose"]
+                "required": ["name", "sebConfigPurpose"]
             },
             "ClientGroup": {
                 "type": "object",
@@ -21700,6 +21770,17 @@
                         "type": "array",
                         "items": { "type": "string" },
                         "writeOnly": true
+                    },
+                    "error": { "type": "string" },
+                    "errorType": {
+                        "type": "string",
+                        "enum": [
+                            "UNDEFINED",
+                            "SERVER_ERROR",
+                            "DATABASE_CONSTRAINT_ERROR",
+                            "DATA_INCONSISTENCY_ERROR",
+                            "EXCLUDED_FROM_DELETION"
+                        ]
                     },
                     "spsGroups": {
                         "type": "array",
@@ -22523,7 +22604,17 @@
                         "type": "object",
                         "additionalProperties": { "type": "string" }
                     },
-                    "errorInfo": { "type": "string" }
+                    "errorInfo": { "type": "string" },
+                    "errorType": {
+                        "type": "string",
+                        "enum": [
+                            "UNDEFINED",
+                            "SERVER_ERROR",
+                            "DATABASE_CONSTRAINT_ERROR",
+                            "DATA_INCONSISTENCY_ERROR",
+                            "EXCLUDED_FROM_DELETION"
+                        ]
+                    }
                 }
             },
             "PageQuizData": {
@@ -22732,8 +22823,6 @@
                     "grantChecked": { "type": "boolean" },
                     "grantDenied": { "type": "boolean" },
                     "sebversionDenied": { "type": "boolean" },
-                    "id": { "type": "integer" },
-                    "nf": { "type": "integer", "format": "int32" },
                     "st": {
                         "type": "string",
                         "enum": [
@@ -22749,7 +22838,9 @@
                     "iv": {
                         "type": "object",
                         "additionalProperties": { "type": "string" }
-                    }
+                    },
+                    "nf": { "type": "integer", "format": "int32" },
+                    "id": { "type": "integer" }
                 }
             },
             "MonitoringFullPageData": {
