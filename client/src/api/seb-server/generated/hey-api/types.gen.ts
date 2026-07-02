@@ -300,8 +300,8 @@ export type Exam = {
     additionalAttributes?: {
         [key: string]: string;
     };
-    description?: string;
     startURL?: string;
+    description?: string;
 };
 
 export type ClientGroupTemplate = {
@@ -1217,13 +1217,13 @@ export type ClientMonitoringDataView = {
     grantChecked?: boolean;
     grantDenied?: boolean;
     sebversionDenied?: boolean;
-    st?: 'UNDEFINED' | 'CONNECTION_REQUESTED' | 'READY' | 'ACTIVE' | 'CLOSED' | 'DISABLED';
-    lat?: number;
+    id?: number;
+    nf?: number;
     iv?: {
         [key: string]: string;
     };
-    nf?: number;
-    id?: number;
+    st?: 'UNDEFINED' | 'CONNECTION_REQUESTED' | 'READY' | 'ACTIVE' | 'CLOSED' | 'DISABLED';
+    lat?: number;
 };
 
 export type MonitoringFullPageData = {
