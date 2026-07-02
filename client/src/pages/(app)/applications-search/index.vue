@@ -1,161 +1,253 @@
 <template>
-    <v-row>
-        <v-col>
-            <v-sheet class="rounded-lg" elevation="2" title="Applications">
-                <div style="visibility: hidden">placeholder</div>
+    <BasicPage
+        :title="$t('applicationsSearch.title')"
+        :bread-crumb="[{ label: $t('applicationsSearch.title') }]"
+        :data-test-id="dataTestId"
+        :panel-left-collapsed="!filtersOpen"
+    >
+        <template #PanelLeft>
+            <ApplicationsSearchForm
+                :data-test-id="dataTestId"
+                @search="handleSearch"
+                @collapse="filtersOpen = false"
+            />
+        </template>
 
-                <v-form
-                    class="form-container"
-                    @keyup.enter="getExamsStarted()"
-                    @keyup.esc="clearForm()"
+        <template #PanelMain>
+            <!------------ controls row ------------->
+            <div
+                class="d-flex align-center flex-wrap ga-2 px-6 pt-4 pb-1"
+                :data-testid="`${dataTestId}-controls`"
+            >
+                <v-btn
+                    :variant="filtersOpen ? 'flat' : 'outlined'"
+                    :color="filtersOpen ? 'primary' : undefined"
+                    class="text-none"
+                    :data-testid="`${dataTestId}-toggle-filters-button`"
+                    @click="filtersOpen = !filtersOpen"
                 >
-                    <!------------Time Period------------->
-                    <v-row class="align-center">
-                        <v-col cols="4"> {{ $t("searchForm.period") }}: </v-col>
-                        <v-col cols="1">
-                            <v-radio
-                                v-model="timePeriodRadio"
-                                :aria-label="$t('searchForm.period')"
-                                @click="radioButtonEvent('period')"
-                            >
-                            </v-radio>
-                        </v-col>
-                        <v-col cols="1">
-                            {{ $t("searchForm.last") }}
-                        </v-col>
-                        <v-col cols="2">
-                            <v-text-field
-                                v-model="timePeriodField"
-                                :aria-label="$t('searchForm.last')"
-                                density="compact"
-                                :disabled="!timePeriodRadio"
-                                hide-details
-                                single-line
-                                type="number"
-                                variant="solo"
-                            >
-                            </v-text-field>
-                        </v-col>
-                        <v-col cols="4">
-                            <v-select
-                                v-model="timePeriodSelect"
-                                :disabled="!timePeriodRadio"
-                                hide-details
-                                :items="[
-                                    { title: $t('timePeriod.day'), value: 1 },
-                                    { title: $t('timePeriod.week'), value: 2 },
-                                    { title: $t('timePeriod.month'), value: 3 },
-                                    { title: $t('timePeriod.year'), value: 4 },
-                                ]"
-                                variant="outlined"
-                            >
-                            </v-select>
-                        </v-col>
-                    </v-row>
-                    <!----------------------------------->
+                    <v-icon
+                        start
+                        :icon="filtersOpen ? 'mdi-chevron-left' : 'mdi-magnify'"
+                    />
+                    {{
+                        filtersOpen
+                            ? $t("applicationsSearch.hideSearch")
+                            : $t("applicationsSearch.search")
+                    }}
+                </v-btn>
 
-                    <!------------Time Selection------------->
-                    <v-row class="align-center">
-                        <v-col cols="4">
-                            {{ $t("searchForm.between") }}:
-                        </v-col>
-                        <v-col cols="1">
-                            <v-radio
-                                v-model="timeSelectionRadio"
-                                :aria-label="$t('searchForm.between')"
-                                @click="radioButtonEvent('selection')"
-                            >
-                            </v-radio>
-                        </v-col>
-                        <v-col cols="7">
-                            <VueDatePicker
-                                v-model="timeSelectionPicker"
-                                :disabled="!timeSelectionRadio"
-                                format="dd.MM.yyyy HH:mm"
-                                range
-                                :teleport="true"
-                            >
-                            </VueDatePicker>
-                        </v-col>
-                    </v-row>
-                    <!----------------------------------->
+                <v-divider vertical class="align-self-stretch mx-1" />
 
-                    <!------------Buttons------------->
-                    <v-row>
-                        <v-col>
-                            <v-btn
-                                color="black"
-                                rounded="sm"
-                                variant="outlined"
-                                @click="clearForm()"
-                            >
-                                {{ $t("searchForm.cancel") }}
-                            </v-btn>
+                <span
+                    class="text-body-small text-medium-emphasis text-uppercase font-weight-medium"
+                >
+                    {{ $t("applicationsSearch.active") }}
+                </span>
+                <v-chip
+                    color="primary"
+                    variant="tonal"
+                    class="font-weight-medium"
+                    :data-testid="`${dataTestId}-time-pill`"
+                >
+                    <v-icon start size="small" icon="mdi-clock-outline" />
+                    {{ search.activeSummary }}
+                </v-chip>
+                <v-chip
+                    v-if="search.metadataAvailable"
+                    color="primary"
+                    variant="tonal"
+                    closable
+                    class="font-weight-medium"
+                    :data-testid="`${dataTestId}-selection-pill`"
+                    @click:close="search.changeSelection()"
+                >
+                    <v-icon
+                        start
+                        size="small"
+                        icon="mdi-file-document-outline"
+                    />
+                    {{
+                        $t("applicationsSearch.examsSelected", {
+                            count: search.submittedCount,
+                        })
+                    }}
+                </v-chip>
 
-                            <v-btn
-                                class="ml-2"
+                <v-spacer />
+
+                <span
+                    class="text-body-small text-medium-emphasis font-weight-medium text-no-wrap"
+                >
+                    {{
+                        $t("applicationsSearch.examsStartedInRange", {
+                            count: search.examCount,
+                        })
+                    }}
+                </span>
+            </div>
+
+            <div class="pa-6">
+                <!------------ error ------------->
+                <v-alert
+                    v-if="search.errorAvailable"
+                    type="error"
+                    variant="tonal"
+                    class="mb-0"
+                    :data-testid="`${dataTestId}-error`"
+                >
+                    {{ $t("applicationsSearch.error") }}
+                </v-alert>
+
+                <!------------ no results ------------->
+                <div
+                    v-else-if="search.noResultsFound"
+                    class="text-center py-10"
+                    :data-testid="`${dataTestId}-no-results`"
+                >
+                    <v-icon
+                        icon="mdi-image-off-outline"
+                        size="40"
+                        class="text-disabled mb-2"
+                    />
+                    <div class="text-subtitle-1 font-weight-bold">
+                        {{ $t("applicationsSearch.noResults") }}
+                    </div>
+                </div>
+
+                <!------------ phase 1: select exams ------------->
+                <v-card
+                    v-else-if="!search.metadataAvailable"
+                    border
+                    rounded="lg"
+                    :data-testid="`${dataTestId}-exams-card`"
+                >
+                    <div class="d-flex align-center ga-3 px-5 py-4">
+                        <v-icon
+                            icon="mdi-file-document-outline"
+                            color="primary"
+                        />
+                        <span class="text-subtitle-1 font-weight-bold">
+                            {{ $t("applicationsSearch.selectExams") }}
+                        </span>
+                        <v-chip size="small" variant="tonal">
+                            {{ search.examCount }}
+                        </v-chip>
+                        <v-spacer />
+                        <span
+                            v-if="search.selectedCount > 0"
+                            class="text-caption text-medium-emphasis font-weight-medium"
+                        >
+                            {{
+                                $t("applicationsSearch.selectedCount", {
+                                    count: search.selectedCount,
+                                })
+                            }}
+                        </span>
+                    </div>
+                    <v-divider />
+
+                    <EntityTable
+                        :headers="search.headers"
+                        :items="search.items"
+                        :page-count="search.pageCount"
+                        :items-per-page="search.options.itemsPerPage"
+                        :options="search.options"
+                        :loading="search.loading"
+                        :cell-formatters="search.cellFormatters"
+                        :selection="search.selection"
+                        :data-test-id="dataTestId"
+                        item-key="id"
+                        @update:options="search.loadItems"
+                    />
+
+                    <v-divider />
+                    <div
+                        class="d-flex align-center flex-wrap ga-3 px-5 py-3 bg-surface-tint"
+                    >
+                        <span
+                            class="text-caption text-medium-emphasis flex-grow-1"
+                        >
+                            {{ $t("applicationsSearch.selectHint") }}
+                        </span>
+                        <v-btn
+                            color="primary"
+                            variant="flat"
+                            class="text-none"
+                            :disabled="search.selectedCount === 0"
+                            :loading="search.metadataLoading"
+                            :data-testid="`${dataTestId}-view-applications-button`"
+                            @click="search.viewApplications()"
+                        >
+                            {{ $t("applicationsSearch.viewApplications")
+                            }}<template v-if="search.selectedCount > 0">
+                                ({{ search.selectedCount }})</template
+                            >
+                            <v-icon end icon="mdi-arrow-right" />
+                        </v-btn>
+                    </div>
+                </v-card>
+
+                <!------------ phase 2: application metadata ------------->
+                <template v-else>
+                    <div class="d-flex align-center flex-wrap ga-4 mb-4">
+                        <v-btn
+                            variant="outlined"
+                            color="primary"
+                            class="text-none"
+                            :data-testid="`${dataTestId}-change-selection-button`"
+                            @click="search.changeSelection()"
+                        >
+                            <v-icon start icon="mdi-arrow-left" />
+                            {{ $t("applicationsSearch.changeSelection") }}
+                        </v-btn>
+                        <span class="text-body-2 text-medium-emphasis">
+                            <v-icon
+                                icon="mdi-apps"
                                 color="primary"
-                                rounded="sm"
-                                variant="flat"
-                                @click="getExamsStarted()"
-                            >
-                                {{ $t("searchForm.search") }}
-                            </v-btn>
-                        </v-col>
-                    </v-row>
-                    <!----------------------------------->
-                </v-form>
-            </v-sheet>
-        </v-col>
-    </v-row>
+                                size="small"
+                                class="mr-1"
+                            />
+                            {{ $t("applicationsSearch.applicationMetadata") }} ·
+                            {{ search.examObjects.length }}
+                        </span>
+                    </div>
 
-    <v-row v-if="examListAvailable">
-        <v-col v-if="noResutsFound">
-            <v-sheet
-                class="rounded-lg pa-4"
-                elevation="2"
-                title="No results match your search criteria"
-            >
-                <v-row>
-                    <v-col class="text-title-large">
-                        No results match your search criteria
-                    </v-col>
-                </v-row>
-            </v-sheet>
-        </v-col>
+                    <div
+                        v-if="search.examObjects.length === 0"
+                        class="text-center py-10"
+                        :data-testid="`${dataTestId}-no-metadata`"
+                    >
+                        <v-icon
+                            icon="mdi-image-off-outline"
+                            size="40"
+                            class="text-disabled mb-2"
+                        />
+                        <div class="text-subtitle-1 font-weight-bold">
+                            {{ $t("applicationsSearch.noMetadata") }}
+                        </div>
+                    </div>
 
-        <v-col v-else>
-            <ApplicationsExamList
-                elevation="4"
-                :exams="examsTable"
-                @get-group-ids-for-exam="getGroupIdsForExam"
-            >
-            </ApplicationsExamList>
-        </v-col>
-    </v-row>
-
-    <template v-if="metadataAvailable">
-        <v-sheet
-            v-for="examObject in examObjects"
-            :key="examObject.exam.id"
-            class="rounded-lg pa-4 mt-4"
-            elevation="2"
-            :title="examObject.exam.name"
-        >
-            <ApplicationsSearchMetadata :exam-object="examObject" />
-        </v-sheet>
-    </template>
+                    <ApplicationsSearchMetadata
+                        v-for="examObject in search.examObjects"
+                        :key="examObject.exam.id"
+                        class="mb-4"
+                        :exam-object="examObject"
+                    />
+                </template>
+            </div>
+        </template>
+    </BasicPage>
 </template>
 
 <script setup lang="ts">
-import { onBeforeMount, ref } from "vue";
-import { VueDatePicker } from "@vuepic/vue-datepicker";
-import * as applicationsSearchService from "@/services/screen-proctoring/applicationsSearchService";
-import ApplicationsExamList from "./components/ApplicationsSearchExamList.vue";
+import { ref } from "vue";
+import BasicPage from "@/components/layout/pages/BasicPage.vue";
+import EntityTable from "@/components/widgets/entity-table/EntityTable.vue";
+import ApplicationsSearchForm from "./components/ApplicationsSearchForm.vue";
 import ApplicationsSearchMetadata from "./components/ApplicationsSearchMetadata.vue";
-import * as timeUtils from "@/utils/timeUtils";
-import * as generalUtils from "@/utils/generalUtils";
-import { SPExam } from "@/models/screen-proctoring/exam";
+import { useApplicationsSearch } from "./composables/useApplicationsSearch";
+import type { ApplicationsSearchQuery } from "./types";
 
 definePage({
     meta: {
@@ -164,127 +256,12 @@ definePage({
     },
 });
 
-// store
+const dataTestId = "applications-search";
 
-// form fields
-const timePeriodField = ref<number>(1);
-const timePeriodRadio = ref<boolean>(true);
-const timePeriodSelect = ref<number>(4);
-const timeSelectionRadio = ref<boolean>(false);
-const timeSelectionPicker = ref(null);
+const filtersOpen = ref<boolean>(true);
+const search = useApplicationsSearch();
 
-// error handling
-const examListAvailable = ref<boolean>(false);
-const metadataAvailable = ref<boolean>(false);
-const noResutsFound = ref<boolean>(false);
-const errorAvailable = ref<boolean>();
-
-// main data
-const examsTable = ref<SPExam[]>([]);
-const examObjects = ref<
-    {
-        exam: SPExam;
-        metadataAppList: string[];
-        groupIds: number[];
-    }[]
->([]);
-
-onBeforeMount(async () => {
-    await getExamsStarted();
-});
-
-// -------------------------------data fetching------------------------------------
-async function getExamsStarted() {
-    errorAvailable.value = false;
-    noResutsFound.value = false;
-    metadataAvailable.value = false;
-    examListAvailable.value = false;
-
-    let fromTime: string = "";
-    let toTime: string = "";
-    if (timePeriodRadio.value)
-        [fromTime, toTime] = timeUtils.calcTimePeriod(
-            timePeriodSelect.value,
-            timePeriodField.value,
-        );
-    if (timeSelectionRadio.value)
-        [fromTime, toTime] = timeUtils.calcTimeSelection(timeSelectionPicker);
-
-    const examList: SPExam[] | null =
-        await applicationsSearchService.getExamsStarted({
-            fromTime,
-            toTime,
-        });
-
-    if (examList == null) {
-        errorAvailable.value = true;
-        return;
-    }
-
-    if (examList.length === 0) {
-        noResutsFound.value = true;
-        examListAvailable.value = true;
-        return;
-    }
-
-    examListAvailable.value = true;
-    examsTable.value = examList;
-}
-
-async function getGroupIdsForExam(selectedExams: SPExam[]) {
-    examObjects.value.length = 0;
-    for (let i = 0; i < selectedExams.length; i++) {
-        // fetch groupdIds for the selected exams
-        const groupIds: number[] | null =
-            await applicationsSearchService.getGroupIdsForExam(
-                selectedExams[i].id,
-            );
-        if (groupIds == null) continue;
-
-        // fetch metadataAppList for the selected exams
-        const metadataAppList: string[] | null =
-            await applicationsSearchService.getDistinctMetadataAppForExam(
-                generalUtils.createStringCommaList(groupIds),
-            );
-        if (metadataAppList == null || metadataAppList.length == 0) continue;
-
-        examObjects.value.push({
-            exam: selectedExams[i],
-            metadataAppList,
-            groupIds,
-        });
-    }
-
-    metadataAvailable.value = true;
-}
-// --------------------------------------------------------------------------------
-
-function clearForm() {
-    timePeriodField.value = 1;
-    timePeriodRadio.value = true;
-    timePeriodSelect.value = 2;
-    timeSelectionRadio.value = false;
-    timeSelectionPicker.value = null;
-
-    getExamsStarted();
-}
-
-function radioButtonEvent(button: string) {
-    if (button === "period") {
-        timePeriodRadio.value = true;
-        timeSelectionRadio.value = false;
-    }
-
-    if (button === "selection") {
-        timeSelectionRadio.value = true;
-        timePeriodRadio.value = false;
-    }
+async function handleSearch(query: ApplicationsSearchQuery) {
+    await search.runSearch(query);
 }
 </script>
-
-<style scoped>
-.form-container {
-    padding-left: 20%;
-    padding-right: 20%;
-}
-</style>
