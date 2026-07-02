@@ -1,6 +1,9 @@
 <template>
-    <div class="mb-6">
-        Total Amount of Screenshots: {{ metadataWindows?.totalAmount }}
+    <div class="text-body-2 font-weight-medium text-medium-emphasis mb-4">
+        {{ $t("applicationsSearch.totalScreenshots") }}:
+        <span class="font-weight-bold text-high-emphasis">
+            {{ metadataWindows?.totalAmount }}
+        </span>
     </div>
 
     <v-data-iterator
@@ -9,23 +12,18 @@
         :search="search"
     >
         <template #header>
-            <v-row>
-                <v-col cols="2">
-                    <v-text-field
-                        v-model="search"
-                        class="mb-6"
-                        clearable
-                        density="comfortable"
-                        hide-details
-                        placeholder="Search"
-                        prepend-inner-icon="mdi-magnify"
-                        style="max-width: 300px"
-                        variant="solo"
-                    >
-                    </v-text-field>
-                </v-col>
-                <v-col> </v-col>
-            </v-row>
+            <v-text-field
+                v-model="search"
+                class="mb-4"
+                clearable
+                density="comfortable"
+                hide-details
+                :placeholder="$t('applicationsSearch.searchWindowTitles')"
+                prepend-inner-icon="mdi-magnify"
+                :style="{ maxWidth: '320px' }"
+                variant="solo-filled"
+                flat
+            />
         </template>
 
         <template #default="{ items }">
@@ -33,22 +31,25 @@
                 <v-expansion-panel
                     v-for="metadataWindow in items"
                     :key="metadataWindow.raw.title"
-                    class="rounded-lg"
+                    class="rounded-lg mb-2"
                     :value="metadataWindow.raw.title"
                 >
-                    <v-expansion-panel-title
-                        class="font-weight-bold panel-styling"
-                    >
+                    <v-expansion-panel-title class="font-weight-bold">
+                        <v-icon
+                            start
+                            icon="mdi-image-outline"
+                            color="primary"
+                            size="small"
+                        />
                         {{ metadataWindow.raw.title }}
                     </v-expansion-panel-title>
 
-                    <v-expansion-panel-text class="panel-styling">
+                    <v-expansion-panel-text>
                         <ApplicationsSearchUserList
                             :group-ids="groupIds"
                             :metadata-app="metadataApp"
                             :metadata-window="metadataWindow.raw.title"
-                        >
-                        </ApplicationsSearchUserList>
+                        />
                     </v-expansion-panel-text>
                 </v-expansion-panel>
             </v-expansion-panels>
@@ -63,10 +64,11 @@
                     rounded
                     variant="tonal"
                     @click="prevPage"
-                >
-                </v-btn>
+                />
 
-                <div class="mx-2">Page {{ page }} of {{ pageCount }}</div>
+                <div class="mx-2">
+                    {{ $t("applicationsSearch.pageOf", { page, pageCount }) }}
+                </div>
 
                 <v-btn
                     class="mx-2"
@@ -76,20 +78,22 @@
                     rounded
                     variant="tonal"
                     @click="nextPage"
-                >
-                </v-btn>
+                />
 
-                <div class="mx-2">Items per page:</div>
+                <div class="mx-2">
+                    {{ $t("applicationsSearch.itemsPerPage") }}
+                </div>
 
                 <v-text-field
-                    v-model="pageSize"
+                    v-model.number="pageSize"
                     class="mx-2 centered-text-input"
                     density="compact"
                     hide-details
-                    style="max-width: 70px"
+                    min="1"
+                    :style="{ maxWidth: '70px' }"
+                    type="number"
                     variant="outlined"
-                >
-                </v-text-field>
+                />
             </div>
         </template>
     </v-data-iterator>
