@@ -1,10 +1,14 @@
 import { computed, ref } from "vue";
 import i18n from "@/i18n";
 import type { FormField } from "@/components/widgets/formBuilder/types.ts";
+import { useZodFormRules } from "@/composables/useZodFormRules.ts";
+import { connectionConfigurationCreateSchema } from "@/models/connectionConfiguration.ts";
 
 const t = (key: string) => i18n.global.t(`connectionConfigurations.${key}`);
 
 export const useConnectionConfigurationFormFields = () => {
+    const { isRequired, fieldRules } = useZodFormRules();
+
     const name = ref<string | undefined>(undefined);
     const configurationPurpose = ref<string | undefined>(undefined);
     const configurationPassword = ref<string | undefined>(undefined);
@@ -53,7 +57,10 @@ export const useConnectionConfigurationFormFields = () => {
             name: "name",
             model: name,
             label: t("fields.name.label"),
-            required: true,
+            required: isRequired(
+                connectionConfigurationCreateSchema.shape.name,
+            ),
+            rules: fieldRules(connectionConfigurationCreateSchema.shape.name),
         },
         {
             type: "select" as const,
@@ -61,7 +68,9 @@ export const useConnectionConfigurationFormFields = () => {
             model: configurationPurpose,
             label: t("fields.configurationPurpose.label"),
             options: configurationPurposeOptions,
-            required: true,
+            required: isRequired(
+                connectionConfigurationCreateSchema.shape.sebConfigPurpose,
+            ),
         },
         {
             type: "password" as const,
