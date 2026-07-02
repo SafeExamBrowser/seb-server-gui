@@ -19,7 +19,10 @@
         </template>
 
         <template #PanelMain>
-            <LoadingFallbackComponent :loading="loading" :errors="errors">
+            <LoadingFallbackComponent
+                :loading="loading"
+                :errors="fetchError ? [fetchError] : []"
+            >
                 <HintText
                     text-identifier="connectionConfigurations.hints.edit"
                     class="px-6 py-2"
@@ -178,8 +181,8 @@
 </template>
 
 <script setup lang="ts">
-import { errorMessageOf } from "@/services/errors/toAppError.ts";
-import { computed, onMounted, ref } from "vue";
+import { toAppErrorOrUndefined } from "@/services/errors/toAppError.ts";
+import { computed, ref, watch } from "vue";
 import { useRoute, useRouter } from "vue-router";
 import moment from "moment-timezone";
 import BasicPage from "@/components/layout/pages/BasicPage.vue";
@@ -190,20 +193,14 @@ import CancelButton from "@/components/widgets/CancelButton.vue";
 import ConfirmButton from "@/components/widgets/ConfirmButton.vue";
 import HintText from "@/components/widgets/HintText.vue";
 import FormDialog from "@/components/widgets/formDialog/FormDialog.vue";
-import { useMutation } from "@/composables/useMutation.ts";
-import { notify } from "@/services/notifications/notify.ts";
 import { applyBackendFieldErrors } from "@/services/errors/formErrorMapping.ts";
+import { submitWithFormErrors } from "@/services/errors/submitWithFormErrors.ts";
 import { useDirtyTracking } from "@/composables/useDirtyTracking.ts";
 import { useConnectionConfigurationFormFields } from "@/pages/(app)/connection-configuration/composables/useConnectionConfigurationFormFields.ts";
 import { useCertificates } from "@/pages/(app)/connection-configuration/composables/api/useCertificates.ts";
-import {
-    editConnectionConfiguration,
-    getConnectionConfigurationById,
-} from "@/services/seb-server/connectionConfigurationService.ts";
-import type {
-    ConnectionConfiguration,
-    ConnectionConfigurationEditRequest,
-} from "@/models/connectionConfiguration.ts";
+import { useConnectionConfigurationQuery } from "@/pages/(app)/connection-configuration/api/useConnectionConfigurationQuery.ts";
+import { useEditConnectionConfigurationMutation } from "@/pages/(app)/connection-configuration/api/useEditConnectionConfigurationMutation.ts";
+import type { ConnectionConfigurationEditRequest } from "@/models/connectionConfiguration.ts";
 import { useCertificateCreateForm } from "@/pages/(app)/certificate/composables/useCertificateCreateForm.ts";
 import { CertKey } from "@/pages/(app)/certificate/types/types.ts";
 
@@ -249,20 +246,22 @@ const {
 const mainFormRef = ref<InstanceType<typeof FormBuilder>>();
 const fallbackFormRef = ref<InstanceType<typeof FormBuilder>>();
 
-const config = ref<ConnectionConfiguration>();
-const fetchLoading = ref(false);
-const fetchError = ref<string>();
-
-const loading = computed(() => fetchLoading.value);
-const errors = computed(() =>
-    [fetchError.value].filter((e) => e !== undefined),
-);
-
+const id = computed(() => {
+    const value = route.params.id;
+    return typeof value === "string" ? value : undefined;
+});
 const {
-    mutateData: save,
-    data: saved,
-    error: saveError,
-} = useMutation(editConnectionConfiguration);
+    data: config,
+    isPending: loading,
+    error: fetchQueryError,
+} = useConnectionConfigurationQuery(id);
+const fetchError = computed(() => toAppErrorOrUndefined(fetchQueryError.value));
+
+const { mutateAsync: save, error: saveMutationError } =
+    useEditConnectionConfigurationMutation();
+const saveError = computed(() =>
+    toAppErrorOrUndefined(saveMutationError.value),
+);
 
 const { isDirty, snapshot } = useDirtyTracking(() => ({
     name: name.value ?? "",
@@ -287,14 +286,10 @@ const toSeconds = (ms?: number) =>
     ms != null ? Math.round(Number(ms) / 1000) : undefined;
 const toMs = (s: number) => Math.round(Number(s) * 1000);
 
-onMounted(async () => {
-    fetchLoading.value = true;
-    try {
-        const fetched = await getConnectionConfigurationById(
-            String(route.params.id),
-        );
-        config.value = fetched;
-
+watch(
+    config,
+    (fetched) => {
+        if (!fetched) return;
         name.value = fetched.name;
         configurationPurpose.value = fetched.sebConfigPurpose;
         pingInterval.value = toSeconds(fetched.sebServerPingTime) ?? 1;
@@ -318,12 +313,9 @@ onMounted(async () => {
         confirmQuitPassword.value = "";
 
         snapshot();
-    } catch (err) {
-        fetchError.value = errorMessageOf(err);
-    } finally {
-        fetchLoading.value = false;
-    }
-});
+    },
+    { immediate: true },
+);
 
 function handleCertChange(val: string | undefined) {
     if (val === "__UPLOAD__") {
@@ -401,32 +393,28 @@ async function submit() {
             (confirmQuitPassword.value ?? "").trim() || undefined;
     }
 
-    await save(par);
-
-    if (saved.value) {
-        await router.push({ name: "/(app)/connection-configuration/" });
-        return;
-    }
-    if (saveError.value) {
-        const applied = applyBackendFieldErrors(saveError.value, {
-            aliases: CONNECTION_CONFIG_FIELD_ALIASES,
-            forms: [
-                {
-                    form: mainFormRef.value,
-                    fields: mainFormFields.value.map((field) => field.name),
-                },
-                {
-                    form: fallbackFormRef.value,
-                    fields: fallbackFormFields.value.map((field) => field.name),
-                },
-            ],
-        });
-        if (!applied.fullyHandled) {
-            notify.serverError(applied.appError, {
-                contextLabel: "connectionconfiguration",
-                onlyMessages: applied.unhandledMessages,
-            });
-        }
-    }
+    const saved = await submitWithFormErrors({
+        run: () => save(par),
+        applyErrors: (err) =>
+            applyBackendFieldErrors(err, {
+                aliases: CONNECTION_CONFIG_FIELD_ALIASES,
+                forms: [
+                    {
+                        form: mainFormRef.value,
+                        fields: mainFormFields.value.map((field) => field.name),
+                    },
+                    {
+                        form: fallbackFormRef.value,
+                        fields: fallbackFormFields.value.map(
+                            (field) => field.name,
+                        ),
+                    },
+                ],
+            }),
+        error: saveError,
+        contextLabel: "connectionconfiguration",
+    });
+    if (!saved) return;
+    await router.push({ name: "/(app)/connection-configuration/" });
 }
 </script>
