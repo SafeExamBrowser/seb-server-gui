@@ -645,7 +645,8 @@
             "examType": "Exam Type",
             "examState": "Exam State",
             "examName": "Exam Name",
-            "examStart": "Exam Start"
+            "examStart": "Exam Start",
+            "excludeFromDeletion": "This Exam is excluded from deletion."
         },
         "main": {
             "tableHeaderName": "Name",
@@ -1979,7 +1980,8 @@
             "sebKeys": "SEB Keys",
             "archiveExam": "Archiv Exam",
             "archiveTooltip": "Archiving is only activated when exam is finished",
-            "deleteExam": "Delete Exam"
+            "deleteExam": "Delete Exam",
+            "excludeFromDeletion": "Exclude Exam from Deletion"
         }
     },
     "monitoringExams": {

@@ -144,46 +144,6 @@
                             </v-col>
                         </v-row>
 
-                        <!----------show finished exam data--------->
-                        <v-row
-                            v-if="
-                                ability.canDoExamAction(
-                                    GUIAction.ShowFinishedExamData,
-                                    examStore.selectedExam,
-                                )
-                            "
-                            class="mt-6"
-                        >
-                            <v-col>
-                                <v-card class="rounded-lg pa-4" elevation="2">
-                                    <v-row class="align-center">
-                                        <v-col>
-                                            {{
-                                                translate(
-                                                    "examDetail.main.showFinishedExamData",
-                                                )
-                                            }}
-                                        </v-col>
-                                        <v-col align="right" cols="4">
-                                            <v-btn
-                                                block
-                                                color="primary"
-                                                rounded="sm"
-                                                variant="flat"
-                                                @click="openFinishedExamData"
-                                            >
-                                                {{
-                                                    translate(
-                                                        "examDetail.main.show",
-                                                    )
-                                                }}
-                                            </v-btn>
-                                        </v-col>
-                                    </v-row>
-                                </v-card>
-                            </v-col>
-                        </v-row>
-
                         <!----------template--------->
                         <v-row class="mt-10">
                             <v-col class="text-primary text-title-large">
@@ -727,7 +687,8 @@
                                                                     !ability.canDoExamAction(
                                                                         GUIAction.DeleteExam,
                                                                         examStore.selectedExam,
-                                                                    )
+                                                                    ) ||
+                                                                    isExcludeFromDeletionActive
                                                                 "
                                                                 style="
                                                                     font-size: 30px;
@@ -737,6 +698,42 @@
                                                                 "
                                                             >
                                                             </v-icon>
+                                                        </v-list-item-action>
+                                                    </template>
+                                                </v-list-item>
+
+                                                <!----------Exclude from Deletion--------->
+
+                                                <v-list-item
+                                                    v-if="
+                                                        ability.canDoExamAction(
+                                                            GUIAction.ExcludeFromDeletion,
+                                                            examStore.selectedExam,
+                                                        )
+                                                    "
+                                                >
+                                                    <v-list-item-title>
+                                                        {{
+                                                            translate(
+                                                                "examDetail.main.excludeFromDeletion",
+                                                            )
+                                                        }}
+                                                    </v-list-item-title>
+                                                    <template #append>
+                                                        <v-list-item-action
+                                                            class="flex-column align-right"
+                                                        >
+                                                            <v-switch
+                                                                v-model="
+                                                                    isExcludeFromDeletionActive
+                                                                "
+                                                                color="primary"
+                                                                hide-details
+                                                                @update:model-value="
+                                                                    toggleExcludeFromExam()
+                                                                "
+                                                            >
+                                                            </v-switch>
                                                         </v-list-item-action>
                                                     </template>
                                                 </v-list-item>
@@ -888,6 +885,7 @@ import { activateScreenProctoring } from "@/services/seb-server/screenProctoring
 import * as timeUtils from "@/utils/timeUtils.ts";
 import { SEBSettingsContext } from "@/components/widgets/sebSettings/types.ts";
 import BoxBasicSettings from "@/pages/(app)/exam/[id]/components/BoxBasicSettings/BoxBasicSettings.vue";
+import { excludeFromDeletion } from "@/services/seb-server/scheduledDeletionService";
 
 const router = useRouter();
 const props = defineProps<{
@@ -918,10 +916,6 @@ function openMonitoringOverview() {
         name: "/(app)/monitoring/[examId]/",
         params: { examId },
     });
-}
-// TODO reroute to finished exam once implemented
-function openFinishedExamData() {
-    return;
 }
 
 // pw field
@@ -957,6 +951,9 @@ const alertKey = ref<string>("");
 
 // SEB lock
 const isSEBLockActive = ref<boolean>(false);
+
+// Exclude from deletion
+const isExcludeFromDeletionActive = ref<boolean>(false);
 
 // screen proctoring
 const isScreenProctoringActive = ref<boolean>(false);
@@ -1036,6 +1033,8 @@ async function getExam() {
 
     examStore.selectedExam = examResponse;
     isSEBLockActive.value = await examService.checkSEBLock(examId);
+    isExcludeFromDeletionActive.value =
+        examStore.selectedExam.excludeFromDeletion;
 }
 
 async function updateExam(isSupervisorsManualUpdate?: boolean) {
@@ -1062,6 +1061,8 @@ async function updateExam(isSupervisorsManualUpdate?: boolean) {
     alertKey.value = "exam-update-successful";
 
     examStore.selectedExam = updateExamResponse;
+    isExcludeFromDeletionActive.value =
+        examStore.selectedExam.excludeFromDeletion;
 }
 
 //= =============seb lock logic=================
@@ -1098,6 +1099,20 @@ async function applySEBLock() {
     }
 
     changeSEBLock(false);
+}
+
+async function toggleExcludeFromExam() {
+    if (examStore.selectedExam == null) {
+        return;
+    }
+
+    await excludeFromDeletion(
+        examStore.selectedExam.id,
+        !examStore.selectedExam.excludeFromDeletion,
+    );
+
+    examStore.selectedExam.excludeFromDeletion =
+        !examStore.selectedExam.excludeFromDeletion;
 }
 
 async function changeSEBLock(enable: boolean) {

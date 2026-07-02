@@ -62,3 +62,14 @@ export const getScheduledDeletionReport = async (
             },
         })
     ).data;
+
+export const excludeFromDeletion = async (
+    id: number,
+    exclude: boolean,
+): Promise<ScheduledDeleteReport> =>
+    (
+        await apiService.postRequest({
+            url: `${baseUrl}/${id}/${exclude ? "mark-exclude" : "unmark-exclude"}`,
+            options: { _authType: "seb" },
+        })
+    ).data;

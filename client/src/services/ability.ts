@@ -66,6 +66,7 @@ export enum GUIAction {
     ApplySEBRestriction = "ApplySEBRestriction",
     ShowMonitoring = "ShowMonitoring",
     ShowFinishedExamData = "ShowFinishedExamData",
+    ExcludeFromDeletion = "ExcludeFromDeletion",
 }
 
 const guiComponents = new Map<UserRole, Set<GUIComponent>>();
@@ -160,6 +161,7 @@ guiActions.set(
         GUIAction.DeleteExam,
         GUIAction.EditFullSEBSettings, // TODO just for testing yet
         GUIAction.ViewASKSettings,
+        GUIAction.ExcludeFromDeletion,
     ]),
 );
 
@@ -301,6 +303,7 @@ examStatusActions.set(
         GUIAction.DeleteExam,
         GUIAction.ViewASKSettings,
         GUIAction.ShowFinishedExamData,
+        GUIAction.ExcludeFromDeletion,
     ]),
 );
 
