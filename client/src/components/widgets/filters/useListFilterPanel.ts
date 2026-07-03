@@ -24,7 +24,7 @@ type DateConfig = {
 };
 
 type ListFilterPanelOptions = {
-    search: SearchConfig;
+    search?: SearchConfig;
     filterSections?: MaybeRefOrGetter<FilterSectionDef[]>;
     selectedFilters?: MaybeRefOrGetter<TableFilters>;
     setFilters?: (filters: TableFilters) => unknown;
@@ -42,7 +42,7 @@ export function useListFilterPanel(options: ListFilterPanelOptions) {
     const activePills = computed<ActiveFilterPill[]>(() => {
         const pills: ActiveFilterPill[] = [];
 
-        const search = toValue(options.search.applied);
+        const search = toValue(options.search?.applied);
         if (search) {
             pills.push({
                 sectionKey: SEARCH_PILL_KEY,
@@ -87,7 +87,7 @@ export function useListFilterPanel(options: ListFilterPanelOptions) {
 
     function onRemovePill(sectionKey: string, optionValue?: string) {
         if (sectionKey === SEARCH_PILL_KEY) {
-            void options.search.clear();
+            void options.search?.clear();
             return;
         }
         if (sectionKey === DATE_PILL_KEY) {

@@ -1,15 +1,15 @@
 <template>
     <BasicPage
-        :title="$t('titles.exams')"
-        :bread-crumb="[{ label: $t('titles.exams') }]"
+        :title="$t('titles.scheduled-deletion')"
+        :bread-crumb="[{ label: $t('titles.scheduled-deletion') }]"
         :data-test-id="dataTestId"
         :panel-left-collapsed="!filtersOpen"
     >
         <template #ActionButton>
             <AddButton
-                :route="{ name: '/(app)/exam/create/' }"
-                :label="$t('general.prepareButton')"
-                icon="mdi-clipboard-edit-outline"
+                :route="{ name: '/(app)/scheduled-deletion/create/' }"
+                :label="$t('scheduledDelete.actions.add')"
+                icon="mdi-plus"
                 :data-test-id="dataTestId"
             />
         </template>
@@ -17,16 +17,11 @@
         <template #PanelLeft>
             <SearchBar
                 v-model="list.searchInputValue"
-                :applied-search="list.searchField"
-                search-text="examList.info.examNameSearchPlaceholder"
-                date-title="examList.info.examStartSearchPlaceholder"
-                :date-value="list.dateValue"
+                search-text="scheduledDelete.info.nameSearchPlaceholder"
+                :enable-text-search="false"
                 :filter-sections="list.filterSections"
                 :filter-values="list.selectedFilters"
                 :data-test-id="dataTestId"
-                @search="list.onSearch"
-                @clear="list.onClearSearch"
-                @update:date-value="list.setDate"
                 @update:filter-values="list.setFilters"
                 @clear-filters="list.clearAll"
             />
@@ -40,6 +35,10 @@
                 @remove="onRemovePill"
                 @clear-all="list.clearAll"
             />
+            <!-- TODO @andrei: properly display errors, once we have a proper generic error component -->
+            <div v-if="deleteFlow.error">
+                {{ deleteFlow.error }}
+            </div>
             <LoadingFallbackComponent :loading="false" :errors="list.errors">
                 <EntityTable
                     class="px-2 pt-2"
@@ -56,35 +55,40 @@
                     item-key="id"
                     @update:options="list.loadItems"
                 >
-                    <template #cell-type="{ formattedValue }">
-                        <EnumChip :label="formattedValue" />
+                    <template #cell-sdName="{ item }">
+                        <v-chip
+                            size="small"
+                            variant="tonal"
+                            :color="
+                                scheduledDeleteStatusColor[
+                                    item.state as ScheduledDeleteStatusEnum
+                                ]
+                            "
+                        >
+                            {{ getName(item) }}
+                        </v-chip>
                     </template>
-
-                    <template #cell-status="{ item, value, formattedValue }">
+                    <template #cell-state="{ value, formattedValue }">
                         <EnumChip
                             :label="formattedValue"
-                            :color="examStatusColor[value as ExamStatusEnum]"
-                        />
-                        <v-icon
-                            v-if="item.excludeFromDeletion"
-                            icon="mdi-delete-off-outline"
-                        >
-                        </v-icon>
-                        <v-tooltip
-                            v-if="item.excludeFromDeletion"
-                            activator="parent"
-                            :aria-label="
-                                $t('examList.info.excludeFromDeletion')
+                            :color="
+                                scheduledDeleteStatusColor[
+                                    value as ScheduledDeleteStatusEnum
+                                ]
                             "
-                            location="bottom"
-                        >
-                            {{ $t("examList.info.excludeFromDeletion") }}
-                        </v-tooltip>
+                        />
                     </template>
                 </EntityTable>
             </LoadingFallbackComponent>
         </template>
     </BasicPage>
+
+    <DeleteConfirmDialog
+        v-model="deleteFlow.dialogOpen"
+        :detail-text="deleteFlow.detailText"
+        translation-key-prefix="scheduledDelete.list"
+        @confirm="deleteFlow.confirm"
+    />
 </template>
 
 <script setup lang="ts">
@@ -95,29 +99,39 @@ import EntityTable from "@/components/widgets/entity-table/EntityTable.vue";
 import EnumChip from "@/components/widgets/EnumChip.vue";
 import LoadingFallbackComponent from "@/components/widgets/loadingFallbackComponent/LoadingFallbackComponent.vue";
 import FilterControlsRow from "@/components/widgets/filters/FilterControlsRow.vue";
+import DeleteConfirmDialog from "@/components/widgets/confirmDialog/DeleteConfirmDialog.vue";
 import { useListFilterPanel } from "@/components/widgets/filters/useListFilterPanel.ts";
+import { useScheduledDeletionOverview } from "./composables/useScheduledDeletionOverview.ts";
 import {
-    ExamStatusEnum,
-    examStatusColor,
-} from "@/models/seb-server/examFiltersEnum.ts";
-import { useExamOverview } from "./composables/useExamOverview.ts";
+    scheduledDeleteStatusColor,
+    ScheduledDeleteStatusEnum,
+} from "@/models/seb-server/scheduled-deletion.ts";
+import { formatTimestampToDate } from "@/utils/timeUtils.ts";
+import { TableItem } from "@/components/widgets/entity-table/types.ts";
 
 definePage({
     meta: {
-        titleKey: "titles.exams",
-        pageTestId: "exams-page",
+        titleKey: "titles.scheduled-deletion",
+        pageTestId: "scheduled-deletion-page",
     },
 });
 
-const dataTestId = "exams";
+const dataTestId = "scheduled-deletions";
 
-const { list } = useExamOverview();
+const { list, deleteFlow } = useScheduledDeletionOverview();
 
 const { filtersOpen, activePills, onRemovePill } = useListFilterPanel({
-    search: { applied: () => list.searchField, clear: list.onClearSearch },
     filterSections: () => list.filterSections,
     selectedFilters: () => list.selectedFilters,
     setFilters: list.setFilters,
     date: { value: () => list.dateValue, clear: () => list.setDate(null) },
 });
+
+function getName(item: TableItem): string {
+    if (item.state == ScheduledDeleteStatusEnum.PENDING) {
+        return `Scheduled Deletion ${formatTimestampToDate(Number(String(item.scheduleTime)))}`;
+    }
+
+    return `Report ${formatTimestampToDate(Number(String(item.scheduleTime)))}`;
+}
 </script>

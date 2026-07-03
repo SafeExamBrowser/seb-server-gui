@@ -30,6 +30,7 @@
             :style="{ minHeight: 0 }"
         >
             <SearchBox
+                v-if="enableTextSearch"
                 :model-value="modelValue"
                 :search-text="searchText"
                 :data-test-id="dataTestId"
@@ -65,10 +66,11 @@
             </template>
         </div>
 
-        <v-divider />
+        <v-divider v-if="enableTextSearch || actions.length > 0" />
 
         <div class="pa-4 d-flex flex-column ga-2">
             <ConfirmButton
+                v-if="enableTextSearch"
                 text="general.searchButton"
                 block
                 :disabled="searchDisabled"
@@ -107,6 +109,7 @@ import type { SearchBarAction } from "./types.ts";
 const props = withDefaults(
     defineProps<{
         modelValue: string | undefined;
+        enableTextSearch?: boolean;
         searchText: string;
         filterSections: FilterSectionDef[];
         filterValues: TableFilters;
@@ -119,6 +122,7 @@ const props = withDefaults(
     {
         actions: () => [],
         dataTestId: undefined,
+        enableTextSearch: true,
         appliedSearch: undefined,
         dateTitle: undefined,
         dateValue: undefined,

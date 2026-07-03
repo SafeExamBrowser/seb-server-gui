@@ -21,7 +21,11 @@
                 <div v-if="props.subTitle" class="font-weight-bold">
                     {{ props.subTitle }}
                 </div>
-                {{ $t(`${translationKeyPrefix}.confirm.text`) }}
+                {{
+                    textProps
+                        ? $t(`${translationKeyPrefix}.confirm.text`, textProps)
+                        : $t(`${translationKeyPrefix}.confirm.text`)
+                }}
             </v-card-text>
 
             <v-card-actions class="justify-end">
@@ -54,6 +58,7 @@ const props = defineProps<{
     icon?: string;
     subTitle?: string;
     translationKeyPrefix: string;
+    textProps?: Record<string, unknown>;
 }>();
 
 const emit = defineEmits<{

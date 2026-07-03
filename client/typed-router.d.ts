@@ -64,6 +64,9 @@ declare module 'vue-router/auto-routes' {
       | '/(app)/monitoring/[examId]/client/[connectionToken]/'
       | '/(app)/navigation-overview/'
       | '/(app)/profile/'
+      | '/(app)/scheduled-deletion/'
+      | '/(app)/scheduled-deletion/[id]/'
+      | '/(app)/scheduled-deletion/create/'
       | '/(app)/sp-recording/[sessionId]/'
       | '/(app)/sp-recording/application-search/[sessionId]/'
       | '/(app)/sp-search/'
@@ -267,6 +270,27 @@ declare module 'vue-router/auto-routes' {
       Record<never, never>,
       | never
     >,
+    '/(app)/scheduled-deletion/': RouteRecordInfo<
+      '/(app)/scheduled-deletion/',
+      '/scheduled-deletion',
+      Record<never, never>,
+      Record<never, never>,
+      | never
+    >,
+    '/(app)/scheduled-deletion/[id]/': RouteRecordInfo<
+      '/(app)/scheduled-deletion/[id]/',
+      '/scheduled-deletion/:id',
+      { id: ParamValue<true> },
+      { id: ParamValue<false> },
+      | never
+    >,
+    '/(app)/scheduled-deletion/create/': RouteRecordInfo<
+      '/(app)/scheduled-deletion/create/',
+      '/scheduled-deletion/create',
+      Record<never, never>,
+      Record<never, never>,
+      | never
+    >,
     '/(app)/sp-recording/[sessionId]/': RouteRecordInfo<
       '/(app)/sp-recording/[sessionId]/',
       '/sp-recording/:sessionId',
@@ -375,6 +399,9 @@ declare module 'vue-router/auto-routes' {
         | '/(app)/monitoring/[examId]/client/[connectionToken]/'
         | '/(app)/navigation-overview/'
         | '/(app)/profile/'
+        | '/(app)/scheduled-deletion/'
+        | '/(app)/scheduled-deletion/[id]/'
+        | '/(app)/scheduled-deletion/create/'
         | '/(app)/sp-recording/[sessionId]/'
         | '/(app)/sp-recording/application-search/[sessionId]/'
         | '/(app)/sp-search/'
@@ -605,6 +632,30 @@ declare module 'vue-router/auto-routes' {
     'src/pages/(app)/profile/index.vue': {
       routes:
         | '/(app)/profile/'
+      views:
+        | never
+      pathParamNames:
+        | never
+    }
+    'src/pages/(app)/scheduled-deletion/index.vue': {
+      routes:
+        | '/(app)/scheduled-deletion/'
+      views:
+        | never
+      pathParamNames:
+        | never
+    }
+    'src/pages/(app)/scheduled-deletion/[id]/index.vue': {
+      routes:
+        | '/(app)/scheduled-deletion/[id]/'
+      views:
+        | never
+      pathParamNames:
+        | never
+    }
+    'src/pages/(app)/scheduled-deletion/create/index.vue': {
+      routes:
+        | '/(app)/scheduled-deletion/create/'
       views:
         | never
       pathParamNames:

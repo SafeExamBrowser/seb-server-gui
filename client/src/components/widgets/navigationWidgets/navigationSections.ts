@@ -111,13 +111,19 @@ export function buildFollowUpNavigationItems(
             label: translate("navigation.routeNames.analyzeExams"),
             to: typedTo({ name: "/(app)/analyze/" }),
             visible: ability.canView(GUIComponent.AnalyzeExams),
-            testId: `${testIdPrefix}-analyzeExams-text`,
+            testId: `${testIdPrefix}-analyzeExams-test`,
         },
         {
             label: translate("navigation.routeNames.archiveExams"),
             to: typedTo({ name: "/(app)/archive/" }),
             visible: ability.canView(GUIComponent.ArchiveExams),
-            testId: `${testIdPrefix}-archiveExams-text`,
+            testId: `${testIdPrefix}-archiveExams-test`,
+        },
+        {
+            label: translate("navigation.routeNames.scheduledDeletion"),
+            to: typedTo({ name: "/(app)/scheduled-deletion/" }),
+            visible: ability.canView(GUIComponent.ScheduledDeletion),
+            testId: `${testIdPrefix}-scheduledDelete-test`,
         },
     ];
 }

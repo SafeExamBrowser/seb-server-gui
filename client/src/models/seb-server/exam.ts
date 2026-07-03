@@ -59,6 +59,8 @@ export type Exam = {
     description: string;
     startURL: string;
     quitPassword: string;
+    followupId: number;
+    excludeFromDeletion: boolean;
 };
 
 export type BasicSettings = Pick<

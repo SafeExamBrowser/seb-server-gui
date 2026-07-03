@@ -58,6 +58,19 @@
                     <span class="pa-2">{{ field.unit }}</span>
                 </template>
             </v-number-input>
+            <v-date-input
+                v-else-if="field.type === 'date'"
+                v-model="field.model.value"
+                v-bind="{
+                    ...getBaseProperties(field),
+                }"
+                append-inner-icon="mdi-calendar"
+                density="compact"
+                display-date-format="dd.MM.yyyy"
+                prepend-icon=""
+                variant="outlined"
+                :max-width="400"
+            />
             <FormFieldColor
                 v-else-if="field.type === 'color'"
                 v-model="field.model.value"

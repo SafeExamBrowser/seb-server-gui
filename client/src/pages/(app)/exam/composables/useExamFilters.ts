@@ -59,6 +59,11 @@ export function useExamFilters() {
                     label: translate(ExamStatusEnum.FINISHED),
                     color: getExamStatusFilterColor(ExamStatusEnum.FINISHED),
                 },
+                {
+                    value: ExamStatusEnum.ARCHIVED,
+                    label: translate(ExamStatusEnum.ARCHIVED),
+                    color: getExamStatusFilterColor(ExamStatusEnum.ARCHIVED),
+                },
             ],
         },
         {

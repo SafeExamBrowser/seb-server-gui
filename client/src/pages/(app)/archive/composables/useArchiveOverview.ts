@@ -10,6 +10,8 @@ import { ExamStatusEnum } from "@/models/seb-server/examFiltersEnum";
 import { useMultiRowSelection } from "@/components/widgets/entity-table/composables/useMultiRowSelection";
 import { useMultiSelectionFlow } from "@/components/widgets/entity-table/composables/useMultiSelectionFlow";
 import { SearchBarAction } from "@/components/widgets/searches/types";
+import { RouteLocationAsRelative } from "vue-router";
+import router from "@/router/router";
 
 export const useArchiveOverview = () => {
     const { headers, cellFormatters } = useExamTableHeaders();
@@ -40,9 +42,27 @@ export const useArchiveOverview = () => {
         onSuccess: list.reloadList,
     });
 
+    const examDetailRoute = (
+        item: TableItem,
+    ): RouteLocationAsRelative | null =>
+        item.id != null
+            ? {
+                  name: "/(app)/exam/[id]/",
+                  params: { id: String(item.id) },
+              }
+            : null;
+
     const rowActions = useArchiveTableActions({
         onArchiveExam: archiveSingleFlow.openStatusDialog,
         canArchiveExam: canArchive,
+        onNavigate: (item) => {
+            const target = examDetailRoute(item);
+            if (!target) {
+                // TODO @andrei implement error handling
+                return;
+            }
+            void router.push(target);
+        },
     });
 
     const multiSelection = useMultiRowSelection({

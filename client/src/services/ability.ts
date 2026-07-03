@@ -44,6 +44,7 @@ export enum GUIComponent {
     // Followup
     AnalyzeExams = "AnalyzeExams",
     ArchiveExams = "ArchiveExams",
+    ScheduledDeletion = "ScheduledDeletion",
 }
 
 export enum GUIAction {
@@ -65,6 +66,7 @@ export enum GUIAction {
     ApplySEBRestriction = "ApplySEBRestriction",
     ShowMonitoring = "ShowMonitoring",
     ShowFinishedExamData = "ShowFinishedExamData",
+    ExcludeFromDeletion = "ExcludeFromDeletion",
 }
 
 const guiComponents = new Map<UserRole, Set<GUIComponent>>();
@@ -104,6 +106,7 @@ guiComponents.set(
         GUIComponent.Exams,
         GUIComponent.AnalyzeExams,
         GUIComponent.ArchiveExams,
+        GUIComponent.ScheduledDeletion,
     ]),
 );
 
@@ -158,6 +161,7 @@ guiActions.set(
         GUIAction.DeleteExam,
         GUIAction.EditFullSEBSettings, // TODO just for testing yet
         GUIAction.ViewASKSettings,
+        GUIAction.ExcludeFromDeletion,
     ]),
 );
 
@@ -299,6 +303,7 @@ examStatusActions.set(
         GUIAction.DeleteExam,
         GUIAction.ViewASKSettings,
         GUIAction.ShowFinishedExamData,
+        GUIAction.ExcludeFromDeletion,
     ]),
 );
 

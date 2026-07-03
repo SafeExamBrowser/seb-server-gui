@@ -9,6 +9,10 @@ import {
     LMSTypeFeatureMappig,
 } from "@/models/seb-server/assessmentToolEnums";
 import i18n from "@/i18n";
+import {
+    scheduledDeleteStatusColor,
+    ScheduledDeleteStatusEnum,
+} from "@/models/seb-server/scheduled-deletion";
 
 type I18nLike = { t: (key: string, ...args: unknown[]) => string };
 
@@ -42,6 +46,13 @@ export function getExamStatusFilterColor(
 ): string {
     if (!status) return "";
     return examStatusColor[status] ?? "";
+}
+
+export function getScheduledDeleteStatusFilterColor(
+    status: ScheduledDeleteStatusEnum | null,
+): string {
+    if (!status) return "";
+    return scheduledDeleteStatusColor[status] ?? "";
 }
 
 export function getClientGroupDescription(
