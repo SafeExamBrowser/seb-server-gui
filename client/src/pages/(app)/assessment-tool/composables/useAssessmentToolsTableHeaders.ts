@@ -2,6 +2,7 @@ import { computed, watch } from "vue";
 import { translate } from "@/utils/generalUtils.ts";
 import { useShowInstitutionColumn } from "@/composables/useShowInstitutionColumn.ts";
 import { useInstitutionNameMap } from "@/composables/useInstitutionNameMap.ts";
+import { ASSESSMENT_TOOL_COLUMN } from "@/pages/(app)/assessment-tool/assessmentToolListConfig.ts";
 import type {
     TableHeader,
     CellFormatter,
@@ -22,12 +23,23 @@ export function useAssessmentToolsTableHeaders() {
     const headers = computed<TableHeader[]>(() => {
         const base: TableHeader[] = [];
 
+        if (showInstitutionColumn.value) {
+            base.push({
+                title: translate(
+                    "assessmentToolConnections.list.tableHeaders.institution",
+                ),
+                key: ASSESSMENT_TOOL_COLUMN.institutionId,
+                width: "20%",
+                sortable: true,
+            });
+        }
+
         base.push(
             {
                 title: translate(
                     "assessmentToolConnections.list.tableHeaders.name",
                 ),
-                key: "name",
+                key: ASSESSMENT_TOOL_COLUMN.name,
                 width: "20%",
                 sortable: true,
             },
@@ -35,7 +47,7 @@ export function useAssessmentToolsTableHeaders() {
                 title: translate(
                     "assessmentToolConnections.list.tableHeaders.type",
                 ),
-                key: "lmsType",
+                key: ASSESSMENT_TOOL_COLUMN.lmsType,
                 width: "20%",
                 sortable: false,
             },
@@ -43,7 +55,7 @@ export function useAssessmentToolsTableHeaders() {
                 title: translate(
                     "assessmentToolConnections.list.tableHeaders.status",
                 ),
-                key: "active",
+                key: ASSESSMENT_TOOL_COLUMN.active,
                 width: "15%",
                 sortable: false,
             },
@@ -53,8 +65,9 @@ export function useAssessmentToolsTableHeaders() {
     });
 
     const cellFormatters: Record<string, CellFormatter> = {
-        institutionId: (value) => getInstitutionName(value),
-        lmsType: (value) =>
+        [ASSESSMENT_TOOL_COLUMN.institutionId]: (value) =>
+            getInstitutionName(value),
+        [ASSESSMENT_TOOL_COLUMN.lmsType]: (value) =>
             value
                 ? translate(
                       `assessmentToolConnections.lmsTypes.${String(value)}`,

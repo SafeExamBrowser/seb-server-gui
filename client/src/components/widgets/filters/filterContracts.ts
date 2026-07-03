@@ -9,4 +9,9 @@ export const INSTITUTION_FILTER = {
     testIdSuffix: "institutionFilter",
 } as const;
 
+export const LMS_TYPE_FILTER = {
+    key: "selectedType",
+    testIdSuffix: "lmsTypeFilter",
+} as const;
+
 export type StatusFilterValue = (typeof STATUS_FILTER.values)[number];

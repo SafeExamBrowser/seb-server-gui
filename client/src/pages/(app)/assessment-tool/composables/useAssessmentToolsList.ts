@@ -7,8 +7,10 @@ import {
     useAssessmentToolsFilters,
     LMS_TYPE_FILTER_KEY,
 } from "./useAssessmentToolsFilters.ts";
-import { useAssessmentTools } from "@/pages/(app)/assessment-tool/api/useAssessmentTools.ts";
-import type { LMSTypeEnum } from "@/models/seb-server/assessmentToolEnums.ts";
+import { useAssessmentToolsQuery } from "@/pages/(app)/assessment-tool/api/useAssessmentToolsQuery.ts";
+import { toAppErrorOrUndefined } from "@/services/errors/toAppError.ts";
+import { toServerPageQuery } from "@/utils/table/tableUtils.ts";
+import type { GetLmsSetupsData } from "@/api/seb-server/generated/hey-api/types.gen.ts";
 
 export const useAssessmentToolsList = () => {
     const filterSections = useAssessmentToolsFilters();
@@ -23,42 +25,51 @@ export const useAssessmentToolsList = () => {
         onClearSearch,
         setFilters,
         clearAll,
-    } = useUrlTableState(async () => {
-        await fetchAssessmentTools();
-    }, [STATUS_FILTER_KEY, INSTITUTION_FILTER_KEY, LMS_TYPE_FILTER_KEY]);
+    } = useUrlTableState(async () => {}, [
+        STATUS_FILTER_KEY,
+        INSTITUTION_FILTER_KEY,
+        LMS_TYPE_FILTER_KEY,
+    ]);
 
-    const selectedStatus = computed(() => selectedFilters.value.status);
-    const selectedInstitutionId = computed(
-        () => selectedFilters.value.institutionId,
-    );
-    const selectedType = computed(
-        () => selectedFilters.value.selectedType as LMSTypeEnum | null,
-    );
+    const assessmentToolsQuery = computed<GetLmsSetupsData["query"]>(() => {
+        const status = selectedFilters.value.status;
+        const institutionId = selectedFilters.value.institutionId;
+        const lmsType = selectedFilters.value[LMS_TYPE_FILTER_KEY];
+        return {
+            ...toServerPageQuery(options.value),
+            name: searchField.value || undefined,
+            lms_type: lmsType || undefined,
+            active:
+                status === "Active"
+                    ? true
+                    : status === "Inactive"
+                      ? false
+                      : undefined,
+            institutionId: institutionId ? Number(institutionId) : undefined,
+        };
+    });
 
     const {
         data,
-        loading,
-        error,
-        fetchData: fetchAssessmentTools,
-    } = useAssessmentTools(
-        options,
-        searchField,
-        selectedStatus,
-        selectedType,
-        selectedInstitutionId,
-    );
+        isFetching,
+        error: queryError,
+        refetch,
+    } = useAssessmentToolsQuery(assessmentToolsQuery);
+    const error = computed(() => toAppErrorOrUndefined(queryError.value));
 
     const { items, pageCount, errors, reloadList } = usePagedListData({
         data,
         error,
         options,
-        fetchData: fetchAssessmentTools,
+        fetchData: async () => {
+            await refetch();
+        },
     });
 
     return {
         items,
         pageCount,
-        loading,
+        loading: isFetching,
         errors,
         options,
         searchInputValue,

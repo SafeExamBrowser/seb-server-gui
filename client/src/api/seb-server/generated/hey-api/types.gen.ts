@@ -178,7 +178,7 @@ export type View = {
 
 export type LmsSetup = {
     id?: number;
-    institutionId: number;
+    institutionId?: number;
     name: string;
     lmsType: 'MOCKUP' | 'OPEN_EDX' | 'MOODLE' | 'MOODLE_PLUGIN' | 'ANS_DELFT' | 'OPEN_OLAT';
     lmsClientname?: string;
@@ -300,8 +300,8 @@ export type Exam = {
     additionalAttributes?: {
         [key: string]: string;
     };
-    description?: string;
     startURL?: string;
+    description?: string;
 };
 
 export type ClientGroupTemplate = {
@@ -1222,12 +1222,12 @@ export type ClientMonitoringDataView = {
     grantChecked?: boolean;
     grantDenied?: boolean;
     sebversionDenied?: boolean;
-    st?: 'UNDEFINED' | 'CONNECTION_REQUESTED' | 'READY' | 'ACTIVE' | 'CLOSED' | 'DISABLED';
+    nf?: number;
     iv?: {
         [key: string]: string;
     };
     lat?: number;
-    nf?: number;
+    st?: 'UNDEFINED' | 'CONNECTION_REQUESTED' | 'READY' | 'ACTIVE' | 'CLOSED' | 'DISABLED';
     id?: number;
 };
 
@@ -3812,6 +3812,18 @@ export type GetLmsSetupsData = {
          * Default is the institution identifier of the institution of the current user
          */
         institutionId?: number;
+        /**
+         * Filters assessment tools by name.
+         */
+        name?: string;
+        /**
+         * Filters assessment tools by LMS type.
+         */
+        lms_type?: string;
+        /**
+         * Filters assessment tools by active state.
+         */
+        active?: boolean;
     };
     url: '/admin-api/v1/lms-setup';
 };

@@ -12,6 +12,8 @@ import { ConnectionConfigurationCreateModel } from "../../04-connection-configur
 import { ConnectionConfigurationEditModel } from "../../04-connection-configuration/models/connection-configuration-edit.model";
 import { CertificatesListModel } from "../../03-certificate/models/certificates-list.model";
 import { AssessmentToolsListModel } from "../../05-assessment-tool-connection/models/assessment-tools-list.model";
+import { AssessmentToolCreateModel } from "../../05-assessment-tool-connection/models/assessment-tool-create.model";
+import { AssessmentToolEditModel } from "../../05-assessment-tool-connection/models/assessment-tool-edit.model";
 
 type Fixtures = {
     userAccounts: UserAccountsListModel;
@@ -26,6 +28,8 @@ type Fixtures = {
     connectionConfigurationEdit: ConnectionConfigurationEditModel;
     certificates: CertificatesListModel;
     assessmentTools: AssessmentToolsListModel;
+    assessmentToolCreate: AssessmentToolCreateModel;
+    assessmentToolEdit: AssessmentToolEditModel;
 };
 
 export const test = base.extend<Fixtures>({
@@ -76,6 +80,14 @@ export const test = base.extend<Fixtures>({
     assessmentTools: async ({ page }, use) => {
         await loginAsServerAdmin(page);
         await use(new AssessmentToolsListModel(page));
+    },
+    assessmentToolCreate: async ({ page }, use) => {
+        await loginAsServerAdmin(page);
+        await use(new AssessmentToolCreateModel(page));
+    },
+    assessmentToolEdit: async ({ page }, use) => {
+        await loginAsServerAdmin(page);
+        await use(new AssessmentToolEditModel(page));
     },
 });
 

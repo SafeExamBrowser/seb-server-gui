@@ -1,99 +1,88 @@
-import * as apiService from "@/services/apiService";
+import { heySebServerClient as client } from "@/api/seb-server/http/heySebServerClient.ts";
 import {
-    AssessmentTool,
-    AssessmentToolsResponse,
-    AssessmentToolTestResult,
-    CreateAssessmentToolPar,
-    OptionalParGetAssessmentTool,
-    UpdateAssessmentToolPar,
-} from "@/models/seb-server/assessmentTool";
-const baseUrl = "/lms-setup" as const;
+    activateLmsSetup as activateLmsSetupSdk,
+    createLmsSetup as createLmsSetupSdk,
+    deactivateLmsSetup as deactivateLmsSetupSdk,
+    deleteLmsSetup as deleteLmsSetupSdk,
+    editLmsSetup as editLmsSetupSdk,
+    getLmsSetupById as getLmsSetupByIdSdk,
+    getLmsSetups as getLmsSetupsSdk,
+    testLms as testLmsSdk,
+} from "@/api/seb-server/generated/hey-api/sdk.gen.ts";
+import {
+    assessmentToolCreateSchema,
+    assessmentToolEditSchema,
+    assessmentToolPageSchema,
+    assessmentToolSchema,
+    assessmentToolTestResultSchema,
+    type AssessmentTool,
+    type AssessmentToolCreateRequest,
+    type AssessmentToolEditRequest,
+    type AssessmentToolPage,
+    type AssessmentToolTestResult,
+} from "@/models/assessmentTool.ts";
+import { decodeWire, encodeWire } from "@/services/errors/wireCodec.ts";
+import { zEntityProcessingReport } from "@/api/seb-server/generated/hey-api/zod.gen.ts";
+import type {
+    EntityProcessingReport,
+    GetLmsSetupsData,
+} from "@/api/seb-server/generated/hey-api/types.gen.ts";
 
-export const getAssessmentToolsActive =
-    async (): Promise<AssessmentToolsResponse> =>
-        (
-            await apiService.getRequest({
-                url: baseUrl + "/active",
-                options: { _authType: "seb" },
-            })
-        ).data;
+export const getAssessmentTools = (
+    query?: GetLmsSetupsData["query"],
+): Promise<AssessmentToolPage> =>
+    getLmsSetupsSdk({ client, query }).then(({ data }) =>
+        decodeWire(assessmentToolPageSchema, data),
+    );
 
-export const getAssessmentTool = async (id: number): Promise<AssessmentTool> =>
-    (
-        await apiService.getRequest({
-            url: `${baseUrl}/${id}`,
-            options: { _authType: "seb" },
-        })
-    ).data;
-
-export const getAssessmentTools = async (
-    optionalParameters?: OptionalParGetAssessmentTool,
-): Promise<AssessmentToolsResponse> =>
-    (
-        await apiService.getRequest({
-            url: baseUrl,
-            options: { _authType: "seb", params: optionalParameters },
-        })
-    ).data;
-
-export const activateAssessmentTool = async (
-    assessmentToolId: string,
+export const getAssessmentToolById = (
+    modelId: string,
 ): Promise<AssessmentTool> =>
-    (
-        await apiService.postRequest({
-            url: `${baseUrl}/${assessmentToolId}/active`,
-            options: { _authType: "seb" },
-        })
-    ).data;
+    getLmsSetupByIdSdk({
+        client,
+        path: { modelId },
+    }).then(({ data }) => decodeWire(assessmentToolSchema, data));
 
-export const deactivateAssessmentTool = async (
-    assessmentToolId: string,
+export const createAssessmentTool = (
+    body: AssessmentToolCreateRequest,
 ): Promise<AssessmentTool> =>
-    (
-        await apiService.postRequest({
-            url: `${baseUrl}/${assessmentToolId}/inactive`,
-            options: { _authType: "seb" },
-        })
-    ).data;
+    createLmsSetupSdk({
+        client,
+        body: encodeWire(assessmentToolCreateSchema, body),
+    }).then(({ data }) => decodeWire(assessmentToolSchema, data));
 
-export const deleteAssessmentTool = async (
-    assessmentToolId: string,
-): Promise<undefined | null> =>
-    (
-        await apiService.deleteRequest({
-            url: `${baseUrl}/${assessmentToolId}`,
-            options: { _authType: "seb" },
-        })
-    ).data;
-
-export const createAssessmentTool = async (
-    assessmentTool: CreateAssessmentToolPar,
+export const editAssessmentTool = (
+    body: AssessmentToolEditRequest,
 ): Promise<AssessmentTool> =>
-    (
-        await apiService.postRequest({
-            url: baseUrl,
-            data: assessmentTool,
-            options: { _authType: "seb" },
-        })
-    ).data;
+    editLmsSetupSdk({
+        client,
+        body: encodeWire(assessmentToolEditSchema, body),
+    }).then(({ data }) => decodeWire(assessmentToolSchema, data));
 
-export const editAssessmentTool = async (
-    assessmentTool: UpdateAssessmentToolPar,
-): Promise<AssessmentTool> =>
-    (
-        await apiService.putRequest({
-            url: baseUrl,
-            data: assessmentTool,
-            options: { _authType: "seb" },
-        })
-    ).data;
+export const deleteAssessmentTool = (
+    modelId: string,
+): Promise<EntityProcessingReport> =>
+    deleteLmsSetupSdk({ client, path: { modelId } }).then(({ data }) =>
+        decodeWire(zEntityProcessingReport, data),
+    );
 
-export const testAssessmentTool = async (
-    assessmentToolId: string,
+export const activateAssessmentTool = (
+    modelId: string,
+): Promise<EntityProcessingReport> =>
+    activateLmsSetupSdk({ client, path: { modelId } }).then(({ data }) =>
+        decodeWire(zEntityProcessingReport, data),
+    );
+
+export const deactivateAssessmentTool = (
+    modelId: string,
+): Promise<EntityProcessingReport> =>
+    deactivateLmsSetupSdk({ client, path: { modelId } }).then(({ data }) =>
+        decodeWire(zEntityProcessingReport, data),
+    );
+
+export const testAssessmentTool = (
+    modelId: number,
 ): Promise<AssessmentToolTestResult> =>
-    (
-        await apiService.getRequest({
-            url: `${baseUrl}/test/${assessmentToolId}`,
-            options: { _authType: "seb" },
-        })
-    ).data;
+    testLmsSdk({ client, path: { modelId } }).then(({ data }) =>
+        decodeWire(assessmentToolTestResultSchema, data),
+    );
