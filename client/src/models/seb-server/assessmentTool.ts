@@ -1,5 +1,6 @@
-import { LMSTypeEnum } from "@/models/seb-server/assessmentToolEnums.ts";
-
+// Legacy assessment-tool (LMS setup) read types still consumed by the not-yet-migrated
+// exam / exam-template domains via assessmentToolInfoService.ts. The assessment-tool domain
+// itself uses the HeyAPI boundary model in @/models/assessmentTool.ts.
 export type AssessmentTool = {
     id: number;
     institutionId: number;
@@ -19,73 +20,10 @@ export type AssessmentTool = {
     integrationActive: boolean;
 };
 
-export type AssessmentToolErrorType = {
-    errorType: string;
-    errorMessage: string;
-};
-
-export type AssessmentToolTestResult = {
-    lmsType: string;
-    errors: AssessmentToolErrorType[];
-};
-
 export type AssessmentToolsResponse = {
     number_of_pages: number;
     page_number: number;
     page_size: number;
     complete: boolean;
     content: AssessmentTool[];
-};
-
-export type OptionalParGetAssessmentTool = {
-    page_size?: number;
-    page_number?: number;
-    sort?: string;
-    name?: string;
-
-    lms_type?: LMSTypeEnum | null;
-    active?: string | null;
-    institutionId?: string | null;
-};
-
-export type CommonAssessmentToolPar = {
-    institutionId: string;
-    name: string;
-    lmsType: string;
-    lmsUrl: string;
-    // proxy (unchanged)
-    lmsProxyHost?: string;
-    lmsProxyPort?: string;
-    lmsProxyAuthUsername?: string;
-    lmsProxyAuthSecret?: string;
-};
-
-export type CreateAssessmentToolPar =
-    | (CommonAssessmentToolPar & {
-          authMode: "token";
-          lmsRestApiToken: string;
-          lmsClientname?: never;
-          lmsClientsecret?: never;
-      })
-    | (CommonAssessmentToolPar & {
-          authMode: "client";
-          lmsClientname: string;
-          lmsClientsecret: string;
-          lmsRestApiToken?: never;
-      });
-
-export type UpdateAssessmentToolPar = {
-    id: string;
-    institutionId: string;
-    name: string;
-    lmsType: string;
-    lmsUrl: string;
-    lmsClientname: string;
-    lmsClientsecret: string;
-    lmsRestApiToken: string;
-    // proxy
-    lmsProxyHost?: string;
-    lmsProxyPort?: number;
-    lmsProxyAuthUsername?: string;
-    lmsProxyAuthSecret?: string;
 };

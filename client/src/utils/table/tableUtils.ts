@@ -9,9 +9,7 @@ import {
     OptionalParGetMonitoringClientLogs,
 } from "@/models/seb-server/optionalParamters";
 import { OptionalParGetCertificates } from "@/models/seb-server/certificate";
-import { OptionalParGetAssessmentTool } from "@/models/seb-server/assessmentTool";
 import { OptionalParSearchSessions } from "@/models/screen-proctoring/optionalParamters";
-import { LMSTypeEnum } from "@/models/seb-server/assessmentToolEnums.ts";
 import { BasicListParams, SortOrder } from "@/services/types";
 import router from "@/router/router";
 import type { RouteLocationAsRelative } from "vue-router";
@@ -154,41 +152,6 @@ export function assignClientLogDetailsPagingOptions(
     }
 
     return optionalParGetMonitoringClientLogs;
-}
-
-export function assignAssessmentToolSelectPagingOptions(
-    serverTablePaging: ServerTablePaging,
-    selectedStatus: string | undefined,
-    selectedType: LMSTypeEnum | null,
-    selectedInstitutionId: string | undefined,
-    name: string | undefined,
-): OptionalParGetAssessmentTool {
-    const opt: OptionalParGetAssessmentTool = {};
-
-    opt.page_size = serverTablePaging.itemsPerPage;
-    opt.page_number = serverTablePaging.page;
-
-    if (serverTablePaging.sortBy?.length) {
-        let sortString = serverTablePaging.sortBy[0].key;
-        if (serverTablePaging.sortBy[0].order === "desc")
-            sortString = "-" + sortString;
-        opt.sort = sortString;
-    }
-
-    // filters
-    opt.lms_type = selectedType ?? null;
-    opt.active =
-        selectedStatus === "Active"
-            ? "true"
-            : selectedStatus === "Inactive"
-              ? "false"
-              : null;
-    opt.institutionId = selectedInstitutionId ?? null;
-
-    if (name && name !== "") {
-        opt.name = name;
-    }
-    return opt;
 }
 
 export function assignCertificateSelectPagingOptions(

@@ -852,7 +852,7 @@ import { ref, onBeforeMount, ComputedRef, computed } from "vue";
 import { useExamStore } from "@/stores/seb-server/examStore.ts";
 import * as examService from "@/services/seb-server/examService.ts";
 import * as sebSettingsService from "@/services/seb-server/sebSettingsService.ts";
-import * as assessmentToolService from "@/services/seb-server/assessmentToolService.ts";
+import * as assessmentToolService from "@/services/seb-server/assessmentToolInfoService.ts";
 import * as examTemplateService from "@/services/seb-server/examTemplateService.ts";
 import * as monitoringService from "@/services/seb-server/monitoringService.ts";
 import * as connectionConfigurationService from "@/services/seb-server/connectionConfigurationInfoService.ts";

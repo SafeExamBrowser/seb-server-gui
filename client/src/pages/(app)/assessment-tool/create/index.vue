@@ -145,17 +145,20 @@
 </template>
 
 <script setup lang="ts">
-import { ref } from "vue";
+import { computed, ref } from "vue";
 import BasicPage from "@/components/layout/pages/BasicPage.vue";
 import SettingsNavigation from "@/components/widgets/navigation/SettingsNavigation.vue";
 import FormBuilder from "@/components/widgets/formBuilder/FormBuilder.vue";
 import LoadingFallbackComponent from "@/components/widgets/loadingFallbackComponent/LoadingFallbackComponent.vue";
 import { useAssessmentToolFormFields } from "@/pages/(app)/assessment-tool/composables/useAssessmentToolFormFields.ts";
-import { useMutation } from "@/composables/useMutation.ts";
-import { notify } from "@/services/notifications/notify.ts";
+import { useCreateAssessmentToolMutation } from "@/pages/(app)/assessment-tool/api/useCreateAssessmentToolMutation.ts";
+import { submitWithFormErrors } from "@/services/errors/submitWithFormErrors.ts";
+import { toAppErrorOrUndefined } from "@/services/errors/toAppError.ts";
 import { applyBackendFieldErrors } from "@/services/errors/formErrorMapping.ts";
-import { createAssessmentTool } from "@/services/seb-server/assessmentToolService.ts";
-import type { CommonAssessmentToolPar } from "@/models/seb-server/assessmentTool.ts";
+import {
+    assessmentToolCreateSchema,
+    type AssessmentToolCreateRequest,
+} from "@/models/assessmentTool.ts";
 import CancelButton from "@/components/widgets/CancelButton.vue";
 import ConfirmButton from "@/components/widgets/ConfirmButton.vue";
 import HintText from "@/components/widgets/HintText.vue";
@@ -192,15 +195,23 @@ const {
     proxyPassword,
 } = useAssessmentToolFormFields("create");
 
-const {
-    mutateData: createTool,
-    data: createdTool,
-    error: toolError,
-} = useMutation(createAssessmentTool);
+const { mutateAsync: createTool, error: createMutationError } =
+    useCreateAssessmentToolMutation();
+const createError = computed(() =>
+    toAppErrorOrUndefined(createMutationError.value),
+);
 
 const mainFormRef = ref<InstanceType<typeof FormBuilder>>();
 const authFormRef = ref<InstanceType<typeof FormBuilder>>();
 const proxyFormRef = ref<InstanceType<typeof FormBuilder>>();
+
+const ASSESSMENT_TOOL_FIELD_ALIASES = {
+    lmsRestApiToken: "accessToken",
+    lmsProxyHost: "proxyHost",
+    lmsProxyPort: "proxyPort",
+    lmsProxyAuthUsername: "proxyUsername",
+    lmsProxyAuthSecret: "proxyPassword",
+};
 
 async function submit() {
     const [mainResult, authResult] = await Promise.all([
@@ -215,86 +226,79 @@ async function submit() {
         if (!proxyResult?.valid) return;
     }
 
+    const parsedLmsType = assessmentToolCreateSchema.shape.lmsType.safeParse(
+        lmsType.value,
+    );
     const selectedInstitutionId = institutionId.value;
     const selectedName = name.value;
-    const selectedLmsType = lmsType.value;
     const selectedServerAddress = lmsUrl.value;
 
     if (
+        !parsedLmsType.success ||
         !selectedInstitutionId ||
         !selectedName ||
-        !selectedLmsType ||
         !selectedServerAddress
     ) {
         return;
     }
 
-    const common: CommonAssessmentToolPar = {
-        institutionId: selectedInstitutionId,
+    const params: AssessmentToolCreateRequest = {
+        institutionId: Number(selectedInstitutionId),
         name: selectedName,
-        lmsType: selectedLmsType,
+        lmsType: parsedLmsType.data,
         lmsUrl: selectedServerAddress,
-        ...(withProxy.value
-            ? {
-                  lmsProxyHost: proxyHost.value,
-                  lmsProxyPort: proxyPort.value,
-                  lmsProxyAuthUsername: proxyUsername.value,
-                  lmsProxyAuthSecret: proxyPassword.value,
-              }
-            : {}),
     };
+
+    if (withProxy.value) {
+        params.lmsProxyHost = proxyHost.value || undefined;
+        params.lmsProxyPort = proxyPort.value
+            ? Number(proxyPort.value)
+            : undefined;
+        params.lmsProxyAuthUsername = proxyUsername.value || undefined;
+        params.lmsProxyAuthSecret = proxyPassword.value || undefined;
+    }
 
     if (authMode.value === "token") {
         const selectedToken = accessToken.value;
         if (!selectedToken) return;
-        await createTool({
-            ...common,
-            authMode: "token",
-            lmsRestApiToken: selectedToken,
-        });
+        params.lmsRestApiToken = selectedToken;
     } else {
         const selectedUsername = lmsClientname.value;
         const selectedPassword = lmsClientsecret.value;
         if (!selectedUsername || !selectedPassword) return;
-        await createTool({
-            ...common,
-            authMode: "client",
-            lmsClientname: selectedUsername,
-            lmsClientsecret: selectedPassword,
-        });
+        params.lmsClientname = selectedUsername;
+        params.lmsClientsecret = selectedPassword;
     }
 
-    if (toolError.value) {
-        const applied = applyBackendFieldErrors(toolError.value, {
-            forms: [
-                {
-                    form: mainFormRef.value,
-                    fields: mainFormFields.value.map((field) => field.name),
-                },
-                {
-                    form: authFormRef.value,
-                    fields: authFormFields.value.map((field) => field.name),
-                },
-                {
-                    form: proxyFormRef.value,
-                    fields: proxyFormFields.value.map((field) => field.name),
-                },
-            ],
-        });
-        if (!applied.fullyHandled) {
-            notify.serverError(applied.appError, {
-                contextLabel: "assessmenttool",
-                onlyMessages: applied.unhandledMessages,
-            });
-        }
-        return;
-    }
-    if (createdTool.value) {
-        const search = createdTool.value.name;
-        await router.push({
-            name: "/(app)/assessment-tool/",
-            query: { search },
-        });
-    }
+    const created = await submitWithFormErrors({
+        run: () => createTool(params),
+        applyErrors: (err) =>
+            applyBackendFieldErrors(err, {
+                aliases: ASSESSMENT_TOOL_FIELD_ALIASES,
+                forms: [
+                    {
+                        form: mainFormRef.value,
+                        fields: mainFormFields.value.map((field) => field.name),
+                    },
+                    {
+                        form: authFormRef.value,
+                        fields: authFormFields.value.map((field) => field.name),
+                    },
+                    {
+                        form: proxyFormRef.value,
+                        fields: proxyFormFields.value.map(
+                            (field) => field.name,
+                        ),
+                    },
+                ],
+            }),
+        error: createError,
+        contextLabel: "assessmenttool",
+    });
+    if (!created) return;
+    await router.push({
+        name: "/(app)/assessment-tool/",
+        query: { search: created.name },
+    });
 }
 </script>

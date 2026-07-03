@@ -55,14 +55,20 @@
                                 mandatory
                                 variant="outlined"
                             >
-                                <v-btn value="token">
+                                <v-btn
+                                    data-testid="editAssessmentTool-authMode-token-button"
+                                    value="token"
+                                >
                                     {{
                                         $t(
                                             "assessmentToolConnections.authMode.restApiToken",
                                         )
                                     }}
                                 </v-btn>
-                                <v-btn value="client">
+                                <v-btn
+                                    data-testid="editAssessmentTool-authMode-client-button"
+                                    value="client"
+                                >
                                     {{
                                         $t(
                                             "assessmentToolConnections.authMode.clientCredentials",
@@ -82,6 +88,7 @@
 
                         <div
                             class="d-flex align-center justify-space-between mb-2"
+                            data-testid="editAssessmentTool-proxy-row"
                         >
                             <label
                                 class="text-grey-darken-1 text-body-large ml-1"
@@ -100,6 +107,7 @@
                                     )
                                 "
                                 color="primary"
+                                data-testid="editAssessmentTool-proxy-switch"
                                 density="compact"
                                 hide-details
                                 inset
@@ -139,8 +147,8 @@
 </template>
 
 <script setup lang="ts">
-import { errorMessageOf } from "@/services/errors/toAppError.ts";
-import { computed, onMounted, ref } from "vue";
+import { toAppErrorOrUndefined } from "@/services/errors/toAppError.ts";
+import { computed, ref, watch } from "vue";
 import { useRoute, useRouter } from "vue-router";
 import BasicPage from "@/components/layout/pages/BasicPage.vue";
 import SettingsNavigation from "@/components/widgets/navigation/SettingsNavigation.vue";
@@ -149,19 +157,16 @@ import LoadingFallbackComponent from "@/components/widgets/loadingFallbackCompon
 import CancelButton from "@/components/widgets/CancelButton.vue";
 import ConfirmButton from "@/components/widgets/ConfirmButton.vue";
 import HintText from "@/components/widgets/HintText.vue";
-import { useMutation } from "@/composables/useMutation.ts";
-import { notify } from "@/services/notifications/notify.ts";
+import { submitWithFormErrors } from "@/services/errors/submitWithFormErrors.ts";
 import { applyBackendFieldErrors } from "@/services/errors/formErrorMapping.ts";
 import { useDirtyTracking } from "@/composables/useDirtyTracking.ts";
 import { useAssessmentToolFormFields } from "@/pages/(app)/assessment-tool/composables/useAssessmentToolFormFields.ts";
+import { useAssessmentToolQuery } from "@/pages/(app)/assessment-tool/api/useAssessmentToolQuery.ts";
+import { useEditAssessmentToolMutation } from "@/pages/(app)/assessment-tool/api/useEditAssessmentToolMutation.ts";
 import {
-    editAssessmentTool,
-    getAssessmentTool,
-} from "@/services/seb-server/assessmentToolService.ts";
-import type {
-    AssessmentTool,
-    UpdateAssessmentToolPar,
-} from "@/models/seb-server/assessmentTool.ts";
+    assessmentToolCreateSchema,
+    type AssessmentToolEditRequest,
+} from "@/models/assessmentTool.ts";
 
 definePage({
     meta: {
@@ -199,20 +204,27 @@ const mainFormRef = ref<InstanceType<typeof FormBuilder>>();
 const authFormRef = ref<InstanceType<typeof FormBuilder>>();
 const proxyFormRef = ref<InstanceType<typeof FormBuilder>>();
 
-const tool = ref<AssessmentTool>();
-const fetchLoading = ref(false);
-const fetchError = ref<string>();
+const id = computed(() => {
+    const value = route.params.id;
+    return typeof value === "string" ? value : undefined;
+});
+const {
+    data: tool,
+    isPending: fetchLoading,
+    error: fetchQueryError,
+} = useAssessmentToolQuery(id);
+const fetchError = computed(() => toAppErrorOrUndefined(fetchQueryError.value));
 
 const loading = computed(() => formLoading.value || fetchLoading.value);
 const errors = computed(() =>
     [...formErrors.value, fetchError.value].filter((e) => e !== undefined),
 );
 
-const {
-    mutateData: saveTool,
-    data: savedTool,
-    error: saveToolError,
-} = useMutation(editAssessmentTool);
+const { mutateAsync: saveTool, error: saveMutationError } =
+    useEditAssessmentToolMutation();
+const saveError = computed(() =>
+    toAppErrorOrUndefined(saveMutationError.value),
+);
 
 const { isDirty, snapshot } = useDirtyTracking(() => ({
     institutionId: institutionId.value ?? "",
@@ -230,19 +242,12 @@ const { isDirty, snapshot } = useDirtyTracking(() => ({
     proxyPassword: proxyPassword.value ?? "",
 }));
 
-onMounted(async () => {
-    fetchLoading.value = true;
-    try {
-        const id = Number(route.params.id);
-        if (!Number.isInteger(id)) {
-            throw new Error(
-                `Invalid assessment tool id in route: ${String(route.params.id)}`,
-            );
-        }
-        const fetched = await getAssessmentTool(id);
-        tool.value = fetched;
+watch(
+    tool,
+    (fetched) => {
+        if (!fetched) return;
 
-        institutionId.value = fetched.institutionId.toString();
+        institutionId.value = String(fetched.institutionId);
         name.value = fetched.name;
         lmsType.value = fetched.lmsType;
         lmsUrl.value = fetched.lmsUrl;
@@ -263,12 +268,17 @@ onMounted(async () => {
         proxyPassword.value = fetched.lmsProxyAuthSecret ?? "";
 
         snapshot();
-    } catch (err) {
-        fetchError.value = errorMessageOf(err);
-    } finally {
-        fetchLoading.value = false;
-    }
-});
+    },
+    { immediate: true },
+);
+
+const ASSESSMENT_TOOL_FIELD_ALIASES = {
+    lmsRestApiToken: "accessToken",
+    lmsProxyHost: "proxyHost",
+    lmsProxyPort: "proxyPort",
+    lmsProxyAuthUsername: "proxyUsername",
+    lmsProxyAuthSecret: "proxyPassword",
+};
 
 async function submit() {
     const [mainResult, authResult] = await Promise.all([
@@ -282,11 +292,18 @@ async function submit() {
         if (!proxyResult?.valid) return;
     }
 
-    const par: UpdateAssessmentToolPar = {
-        id: tool.value.id.toString(),
-        institutionId: institutionId.value ?? "",
+    const parsedLmsType = assessmentToolCreateSchema.shape.lmsType.safeParse(
+        lmsType.value,
+    );
+    if (!parsedLmsType.success) {
+        return;
+    }
+
+    const par: AssessmentToolEditRequest = {
+        id: tool.value.id,
+        institutionId: tool.value.institutionId,
         name: name.value ?? "",
-        lmsType: lmsType.value ?? "",
+        lmsType: parsedLmsType.data,
         lmsUrl: lmsUrl.value ?? "",
         lmsClientname:
             authMode.value === "client" ? (lmsClientname.value ?? "") : "",
@@ -303,35 +320,32 @@ async function submit() {
         lmsProxyAuthSecret: withProxy.value ? proxyPassword.value : undefined,
     };
 
-    await saveTool(par);
-
-    if (savedTool.value) {
-        await router.push({ name: "/(app)/assessment-tool/" });
-        return;
-    }
-    if (saveToolError.value) {
-        const applied = applyBackendFieldErrors(saveToolError.value, {
-            forms: [
-                {
-                    form: mainFormRef.value,
-                    fields: mainFormFields.value.map((field) => field.name),
-                },
-                {
-                    form: authFormRef.value,
-                    fields: authFormFields.value.map((field) => field.name),
-                },
-                {
-                    form: proxyFormRef.value,
-                    fields: proxyFormFields.value.map((field) => field.name),
-                },
-            ],
-        });
-        if (!applied.fullyHandled) {
-            notify.serverError(applied.appError, {
-                contextLabel: "assessmenttool",
-                onlyMessages: applied.unhandledMessages,
-            });
-        }
-    }
+    const saved = await submitWithFormErrors({
+        run: () => saveTool(par),
+        applyErrors: (err) =>
+            applyBackendFieldErrors(err, {
+                aliases: ASSESSMENT_TOOL_FIELD_ALIASES,
+                forms: [
+                    {
+                        form: mainFormRef.value,
+                        fields: mainFormFields.value.map((field) => field.name),
+                    },
+                    {
+                        form: authFormRef.value,
+                        fields: authFormFields.value.map((field) => field.name),
+                    },
+                    {
+                        form: proxyFormRef.value,
+                        fields: proxyFormFields.value.map(
+                            (field) => field.name,
+                        ),
+                    },
+                ],
+            }),
+        error: saveError,
+        contextLabel: "assessmenttool",
+    });
+    if (!saved) return;
+    await router.push({ name: "/(app)/assessment-tool/" });
 }
 </script>
