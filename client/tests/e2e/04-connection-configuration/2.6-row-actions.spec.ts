@@ -325,4 +325,79 @@ test.describe("04 Connection Configurations - ROW ACTIONS", () => {
             "Inactive",
         );
     });
+
+    test("H a deactivated row appears when switching to the Inactive filter", async ({
+        connectionConfigurations,
+    }) => {
+        const page = connectionConfigurations.page;
+        const row = mockRow();
+        const state = { rows: [row] };
+        const deactivateRequest = connectionConfigurationRowRequests.deactivate(
+            row.id,
+        );
+
+        await page.route(/\/client_configuration\?/i, (route) => {
+            if (route.request().method() !== "GET") {
+                return route.continue();
+            }
+            const active = new URL(route.request().url()).searchParams.get(
+                "active",
+            );
+            const rows =
+                active === null
+                    ? state.rows
+                    : state.rows.filter((r) => String(r.active) === active);
+            return route.fulfill({
+                status: 200,
+                contentType: "application/json",
+                body: listResponse(rows),
+            });
+        });
+        await page.route(deactivateRequest, (route) => {
+            if (route.request().method() !== "POST") {
+                return route.continue();
+            }
+            state.rows = state.rows.map((r) =>
+                r.id === row.id ? { ...r, active: false } : r,
+            );
+            return route.fulfill({
+                status: 200,
+                contentType: "application/json",
+                body: report("DEACTIVATE"),
+            });
+        });
+
+        await connectionConfigurations.goto();
+        await connectionConfigurations.table.expectRowVisible(row.id);
+
+        await test.step("visit the Inactive filter first so its page is cached", async () => {
+            await connectionConfigurations.expectListRequestSucceeded(() =>
+                connectionConfigurations.toggleStatusFilter("Inactive"),
+            );
+            await connectionConfigurations.table.expectRowAbsent(row.id);
+        });
+
+        await test.step("back on the Active filter, deactivate the row", async () => {
+            await connectionConfigurations.expectListRequestSucceeded(() =>
+                connectionConfigurations.toggleStatusFilter("Active"),
+            );
+            await connectionConfigurations.table.expectStatusText(
+                row.id,
+                "Active",
+            );
+            await connectionConfigurations.confirmStatusChange(row.id, {
+                method: "POST",
+                request: deactivateRequest,
+            });
+        });
+
+        await test.step("the Inactive filter now shows the freshly deactivated row", async () => {
+            await connectionConfigurations.toggleStatusFilter("Inactive");
+            await connectionConfigurations.table.expectRowVisible(row.id);
+            await connectionConfigurations.table.expectStatusText(
+                row.id,
+                "Inactive",
+            );
+        });
+    });
 });

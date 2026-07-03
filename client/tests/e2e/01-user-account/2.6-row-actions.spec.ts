@@ -306,4 +306,71 @@ test.describe("01 User Accounts - ROW ACTIONS", () => {
 
         await userAccounts.table.expectStatusText(row.uuid, "Inactive");
     });
+
+    test("H a deactivated row appears when switching to the Inactive filter", async ({
+        userAccounts,
+    }) => {
+        const page = userAccounts.page;
+        const row = mockRow();
+        const state = { rows: [row] };
+        const deactivateRequest = userAccountRowRequests.deactivate(row.uuid);
+
+        await page.route(/\/useraccount\?/i, (route) => {
+            if (route.request().method() !== "GET") {
+                return route.continue();
+            }
+            const active = new URL(route.request().url()).searchParams.get(
+                "active",
+            );
+            const rows =
+                active === null
+                    ? state.rows
+                    : state.rows.filter((r) => String(r.active) === active);
+            return route.fulfill({
+                status: 200,
+                contentType: "application/json",
+                body: listResponse(rows),
+            });
+        });
+        await page.route(deactivateRequest, (route) => {
+            if (route.request().method() !== "POST") {
+                return route.continue();
+            }
+            state.rows = state.rows.map((r) =>
+                r.uuid === row.uuid ? { ...r, active: false } : r,
+            );
+            return route.fulfill({
+                status: 200,
+                contentType: "application/json",
+                body: report("DEACTIVATE"),
+            });
+        });
+
+        await userAccounts.goto();
+        await userAccounts.table.expectRowVisible(row.uuid);
+
+        await test.step("visit the Inactive filter first so its page is cached", async () => {
+            await userAccounts.expectListRequestSucceeded(() =>
+                userAccounts.toggleStatusFilter("Inactive"),
+            );
+            await userAccounts.table.expectRowAbsent(row.uuid);
+        });
+
+        await test.step("back on the Active filter, deactivate the row", async () => {
+            await userAccounts.expectListRequestSucceeded(() =>
+                userAccounts.toggleStatusFilter("Active"),
+            );
+            await userAccounts.table.expectStatusText(row.uuid, "Active");
+            await userAccounts.confirmStatusChange(row.uuid, {
+                method: "POST",
+                request: deactivateRequest,
+            });
+        });
+
+        await test.step("the Inactive filter now shows the freshly deactivated row", async () => {
+            await userAccounts.toggleStatusFilter("Inactive");
+            await userAccounts.table.expectRowVisible(row.uuid);
+            await userAccounts.table.expectStatusText(row.uuid, "Inactive");
+        });
+    });
 });
