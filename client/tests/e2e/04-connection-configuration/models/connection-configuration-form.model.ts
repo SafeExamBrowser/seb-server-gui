@@ -120,7 +120,12 @@ export class ConnectionConfigurationFormModel extends FormPageModel {
         this.certSelect = page.getByTestId(
             `${prefix}-encryptWithCertificate-select`,
         );
-        this.fallbackSwitch = page.getByTestId(`${prefix}-fallback-switch`);
+        // The fallback v-switch renders a role="checkbox" input; target it via the row wrapper
+        // (the data-testid on the v-switch itself lands on the input, so a nested role lookup
+        // there would find nothing).
+        this.fallbackSwitch = page
+            .getByTestId(`${prefix}-fallback-row`)
+            .getByRole("checkbox");
     }
 
     // The cert picker is a raw v-select (not a FormBuilder field), so it gets its own
@@ -132,7 +137,7 @@ export class ConnectionConfigurationFormModel extends FormPageModel {
     // The fallback FormBuilder only mounts once this switch is on; enabling it reveals the
     // fields registered under the `<prefix>-fallback-form` base.
     async enableFallback() {
-        await this.fallbackSwitch.getByRole("switch").click();
+        await this.fallbackSwitch.click();
         await this.field(
             CONNECTION_CONFIG_FIELD.fallbackStartUrl,
         ).expectVisible();

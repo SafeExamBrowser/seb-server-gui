@@ -8,6 +8,8 @@ import { UserAccountProfileModel } from "../../01-user-account/models/user-accou
 import { ProfileMenuModel } from "../page-models/layout/profile-menu.model";
 import { InstitutionsListModel } from "../../02-institution/models/institutions-list.model";
 import { ConnectionConfigurationsListModel } from "../../04-connection-configuration/models/connection-configurations-list.model";
+import { ConnectionConfigurationCreateModel } from "../../04-connection-configuration/models/connection-configuration-create.model";
+import { ConnectionConfigurationEditModel } from "../../04-connection-configuration/models/connection-configuration-edit.model";
 import { CertificatesListModel } from "../../03-certificate/models/certificates-list.model";
 import { AssessmentToolsListModel } from "../../05-assessment-tool-connection/models/assessment-tools-list.model";
 
@@ -20,6 +22,8 @@ type Fixtures = {
     profileMenu: ProfileMenuModel;
     institutions: InstitutionsListModel;
     connectionConfigurations: ConnectionConfigurationsListModel;
+    connectionConfigurationCreate: ConnectionConfigurationCreateModel;
+    connectionConfigurationEdit: ConnectionConfigurationEditModel;
     certificates: CertificatesListModel;
     assessmentTools: AssessmentToolsListModel;
 };
@@ -56,6 +60,14 @@ export const test = base.extend<Fixtures>({
     connectionConfigurations: async ({ page }, use) => {
         await loginAsServerAdmin(page);
         await use(new ConnectionConfigurationsListModel(page));
+    },
+    connectionConfigurationCreate: async ({ page }, use) => {
+        await loginAsServerAdmin(page);
+        await use(new ConnectionConfigurationCreateModel(page));
+    },
+    connectionConfigurationEdit: async ({ page }, use) => {
+        await loginAsServerAdmin(page);
+        await use(new ConnectionConfigurationEditModel(page));
     },
     certificates: async ({ page }, use) => {
         await loginAsServerAdmin(page);

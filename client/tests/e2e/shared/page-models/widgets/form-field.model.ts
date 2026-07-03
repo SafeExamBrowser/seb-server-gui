@@ -35,7 +35,8 @@ export class FormFieldModel {
     }
 
     async toggle() {
-        await this.root.getByRole("switch").click();
+        // Vuetify's v-switch renders an <input type="checkbox"> (role "checkbox", not "switch").
+        await this.root.getByRole("checkbox").click();
     }
 
     async set(value: string) {
