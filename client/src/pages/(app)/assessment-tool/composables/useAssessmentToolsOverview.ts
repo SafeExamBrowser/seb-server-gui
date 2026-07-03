@@ -9,7 +9,7 @@ import { useToggleAssessmentToolStatusMutation } from "@/pages/(app)/assessment-
 import { useTestAssessmentToolMutation } from "@/pages/(app)/assessment-tool/api/useTestAssessmentToolMutation.ts";
 import { useEntityDeleteFlow } from "@/components/widgets/entity-table/composables/useEntityDeleteFlow.ts";
 import { useEntityStatusFlow } from "@/components/widgets/entity-table/composables/useEntityStatusFlow.ts";
-import { useAssesmentToolTestFlow } from "@/pages/(app)/assessment-tool/composables/useAssessmentToolTestFlow.ts";
+import { useAssessmentToolTestFlow } from "@/pages/(app)/assessment-tool/composables/useAssessmentToolTestFlow.ts";
 import { toAppErrorOrUndefined } from "@/services/errors/toAppError.ts";
 
 export const useAssessmentToolsOverview = () => {
@@ -84,7 +84,7 @@ export const useAssessmentToolsOverview = () => {
         toAppErrorOrUndefined(testMutation.error.value),
     );
 
-    const testFlow = useAssesmentToolTestFlow({
+    const testFlow = useAssessmentToolTestFlow({
         run: (item) => testMutation.mutateAsync(Number(item.id)),
         error: testError,
         contextLabel: "assessmentToolConnections.test",

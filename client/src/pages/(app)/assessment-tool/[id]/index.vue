@@ -1,172 +1,32 @@
 <template>
-    <BasicPage
-        :title="$t('titles.assessmentToolEdit')"
-        :bread-crumb="[
-            {
-                label: $t('titles.assessmentToolConnections'),
-                link: { name: '/(app)/assessment-tool/' },
-            },
-            { label: tool?.name ?? $t('titles.assessmentToolEdit') },
-        ]"
-        data-testid="editAssessmentTool-page"
+    <LoadingFallbackComponent
+        :loading="loading"
+        :errors="fetchError ? [fetchError] : []"
     >
-        <template #SubNav>
-            <SettingsNavigation />
-        </template>
-
-        <template #PanelMain>
-            <LoadingFallbackComponent :loading="loading" :errors="errors">
-                <v-row class="px-6 pt-4" no-gutters>
-                    <v-col cols="8">
-                        <HintText
-                            text-identifier="assessmentToolConnections.hints.edit"
-                            data-testid="editAssessmentTool-info-text"
-                        />
-                    </v-col>
-                </v-row>
-
-                <v-row class="px-6 mt-2" no-gutters>
-                    <v-col cols="8" class="pa-0">
-                        <FormBuilder
-                            ref="mainFormRef"
-                            :fields="mainFormFields"
-                            data-testid="editAssessmentTool-main-form"
-                        />
-
-                        <div
-                            class="d-flex align-center justify-space-between mb-2"
-                            data-testid="editAssessmentTool-authMode-row"
-                        >
-                            <label
-                                class="text-grey-darken-1 text-body-large ml-1"
-                            >
-                                {{
-                                    $t(
-                                        "assessmentToolConnections.authMode.label",
-                                    )
-                                }}
-                            </label>
-                            <v-btn-toggle
-                                v-model="authMode"
-                                color="primary"
-                                data-testid="editAssessmentTool-authMode-toggle"
-                                density="comfortable"
-                                divided
-                                mandatory
-                                variant="outlined"
-                            >
-                                <v-btn
-                                    data-testid="editAssessmentTool-authMode-token-button"
-                                    value="token"
-                                >
-                                    {{
-                                        $t(
-                                            "assessmentToolConnections.authMode.restApiToken",
-                                        )
-                                    }}
-                                </v-btn>
-                                <v-btn
-                                    data-testid="editAssessmentTool-authMode-client-button"
-                                    value="client"
-                                >
-                                    {{
-                                        $t(
-                                            "assessmentToolConnections.authMode.clientCredentials",
-                                        )
-                                    }}
-                                </v-btn>
-                            </v-btn-toggle>
-                        </div>
-
-                        <FormBuilder
-                            ref="authFormRef"
-                            :fields="authFormFields"
-                            data-testid="editAssessmentTool-auth-form"
-                        />
-
-                        <v-divider class="my-4" />
-
-                        <div
-                            class="d-flex align-center justify-space-between mb-2"
-                            data-testid="editAssessmentTool-proxy-row"
-                        >
-                            <label
-                                class="text-grey-darken-1 text-body-large ml-1"
-                            >
-                                {{
-                                    $t(
-                                        "assessmentToolConnections.fields.withProxy.label",
-                                    )
-                                }}
-                            </label>
-                            <v-switch
-                                v-model="withProxy"
-                                :aria-label="
-                                    $t(
-                                        'assessmentToolConnections.fields.withProxy.ariaLabel',
-                                    )
-                                "
-                                color="primary"
-                                data-testid="editAssessmentTool-proxy-switch"
-                                density="compact"
-                                hide-details
-                                inset
-                            />
-                        </div>
-
-                        <v-expand-transition>
-                            <div v-if="withProxy">
-                                <FormBuilder
-                                    ref="proxyFormRef"
-                                    :fields="proxyFormFields"
-                                    data-testid="editAssessmentTool-proxy-form"
-                                />
-                            </div>
-                        </v-expand-transition>
-                    </v-col>
-                </v-row>
-
-                <div class="d-flex justify-end ga-2 px-6 pb-4">
-                    <CancelButton
-                        data-testid="editAssessmentTool-cancel-button"
-                        text="general.cancelButton"
-                        @click="
-                            router.push({ name: '/(app)/assessment-tool/' })
-                        "
-                    />
-                    <ConfirmButton
-                        data-testid="editAssessmentTool-save-button"
-                        text="general.saveButton"
-                        :disabled="!isDirty"
-                        @click="submit()"
-                    />
-                </div>
-            </LoadingFallbackComponent>
-        </template>
-    </BasicPage>
+        <AssessmentToolForm
+            v-if="tool"
+            ref="formRef"
+            :title="$t('titles.assessmentToolEdit')"
+            mode="edit"
+            :initial-tool="tool"
+            :data-test-prefix="assessmentToolFormConfig.editTestPrefix"
+            @edit-submit="handleSubmit"
+            @cancel="router.push({ name: '/(app)/assessment-tool/' })"
+        />
+    </LoadingFallbackComponent>
 </template>
 
 <script setup lang="ts">
-import { toAppErrorOrUndefined } from "@/services/errors/toAppError.ts";
-import { computed, ref, watch } from "vue";
+import { computed, ref } from "vue";
 import { useRoute, useRouter } from "vue-router";
-import BasicPage from "@/components/layout/pages/BasicPage.vue";
-import SettingsNavigation from "@/components/widgets/navigation/SettingsNavigation.vue";
-import FormBuilder from "@/components/widgets/formBuilder/FormBuilder.vue";
+import AssessmentToolForm from "@/pages/(app)/assessment-tool/components/AssessmentToolForm.vue";
+import { assessmentToolFormConfig } from "@/pages/(app)/assessment-tool/assessmentToolFormConfig.ts";
 import LoadingFallbackComponent from "@/components/widgets/loadingFallbackComponent/LoadingFallbackComponent.vue";
-import CancelButton from "@/components/widgets/CancelButton.vue";
-import ConfirmButton from "@/components/widgets/ConfirmButton.vue";
-import HintText from "@/components/widgets/HintText.vue";
-import { submitWithFormErrors } from "@/services/errors/submitWithFormErrors.ts";
-import { applyBackendFieldErrors } from "@/services/errors/formErrorMapping.ts";
-import { useDirtyTracking } from "@/composables/useDirtyTracking.ts";
-import { useAssessmentToolFormFields } from "@/pages/(app)/assessment-tool/composables/useAssessmentToolFormFields.ts";
 import { useAssessmentToolQuery } from "@/pages/(app)/assessment-tool/api/useAssessmentToolQuery.ts";
 import { useEditAssessmentToolMutation } from "@/pages/(app)/assessment-tool/api/useEditAssessmentToolMutation.ts";
-import {
-    assessmentToolCreateSchema,
-    type AssessmentToolEditRequest,
-} from "@/models/assessmentTool.ts";
+import { submitWithFormErrors } from "@/services/errors/submitWithFormErrors.ts";
+import { toAppErrorOrUndefined } from "@/services/errors/toAppError.ts";
+import type { AssessmentToolEditRequest } from "@/models/assessmentTool.ts";
 
 definePage({
     meta: {
@@ -179,173 +39,32 @@ definePage({
 const route = useRoute("/(app)/assessment-tool/[id]/");
 const router = useRouter();
 
-const {
-    mainFormFields,
-    authFormFields,
-    proxyFormFields,
-    authMode,
-    withProxy,
-    loading: formLoading,
-    errors: formErrors,
-    institutionId,
-    name,
-    lmsType,
-    lmsUrl,
-    lmsClientname,
-    lmsClientsecret,
-    accessToken,
-    proxyHost,
-    proxyPort,
-    proxyUsername,
-    proxyPassword,
-} = useAssessmentToolFormFields("edit");
-
-const mainFormRef = ref<InstanceType<typeof FormBuilder>>();
-const authFormRef = ref<InstanceType<typeof FormBuilder>>();
-const proxyFormRef = ref<InstanceType<typeof FormBuilder>>();
-
+const formRef = ref<InstanceType<typeof AssessmentToolForm>>();
 const id = computed(() => {
     const value = route.params.id;
     return typeof value === "string" ? value : undefined;
 });
 const {
     data: tool,
-    isPending: fetchLoading,
+    isPending: loading,
     error: fetchQueryError,
 } = useAssessmentToolQuery(id);
 const fetchError = computed(() => toAppErrorOrUndefined(fetchQueryError.value));
 
-const loading = computed(() => formLoading.value || fetchLoading.value);
-const errors = computed(() =>
-    [...formErrors.value, fetchError.value].filter((e) => e !== undefined),
-);
-
-const { mutateAsync: saveTool, error: saveMutationError } =
+const { mutateAsync: save, error: saveMutationError } =
     useEditAssessmentToolMutation();
 const saveError = computed(() =>
     toAppErrorOrUndefined(saveMutationError.value),
 );
 
-const { isDirty, snapshot } = useDirtyTracking(() => ({
-    institutionId: institutionId.value ?? "",
-    name: name.value ?? "",
-    lmsType: lmsType.value ?? "",
-    lmsUrl: lmsUrl.value ?? "",
-    authMode: authMode.value,
-    lmsClientname: lmsClientname.value ?? "",
-    lmsClientsecret: lmsClientsecret.value ?? "",
-    accessToken: accessToken.value ?? "",
-    withProxy: withProxy.value,
-    proxyHost: proxyHost.value ?? "",
-    proxyPort: proxyPort.value ?? "",
-    proxyUsername: proxyUsername.value ?? "",
-    proxyPassword: proxyPassword.value ?? "",
-}));
-
-watch(
-    tool,
-    (fetched) => {
-        if (!fetched) return;
-
-        institutionId.value = String(fetched.institutionId);
-        name.value = fetched.name;
-        lmsType.value = fetched.lmsType;
-        lmsUrl.value = fetched.lmsUrl;
-
-        if (fetched.lmsRestApiToken) {
-            authMode.value = "token";
-            accessToken.value = fetched.lmsRestApiToken;
-        } else {
-            authMode.value = "client";
-            lmsClientname.value = fetched.lmsClientname;
-            lmsClientsecret.value = fetched.lmsClientsecret ?? "";
-        }
-
-        withProxy.value = Boolean(fetched.lmsProxyHost || fetched.lmsProxyPort);
-        proxyHost.value = fetched.lmsProxyHost;
-        proxyPort.value = fetched.lmsProxyPort?.toString();
-        proxyUsername.value = fetched.lmsProxyAuthUsername;
-        proxyPassword.value = fetched.lmsProxyAuthSecret ?? "";
-
-        snapshot();
-    },
-    { immediate: true },
-);
-
-const ASSESSMENT_TOOL_FIELD_ALIASES = {
-    lmsRestApiToken: "accessToken",
-    lmsProxyHost: "proxyHost",
-    lmsProxyPort: "proxyPort",
-    lmsProxyAuthUsername: "proxyUsername",
-    lmsProxyAuthSecret: "proxyPassword",
-};
-
-async function submit() {
-    const [mainResult, authResult] = await Promise.all([
-        mainFormRef.value?.validate(),
-        authFormRef.value?.validate(),
-    ]);
-    if (!mainResult?.valid || !authResult?.valid || !tool.value) return;
-
-    if (withProxy.value) {
-        const proxyResult = await proxyFormRef.value?.validate();
-        if (!proxyResult?.valid) return;
-    }
-
-    const parsedLmsType = assessmentToolCreateSchema.shape.lmsType.safeParse(
-        lmsType.value,
-    );
-    if (!parsedLmsType.success) {
-        return;
-    }
-
-    const par: AssessmentToolEditRequest = {
-        id: tool.value.id,
-        institutionId: tool.value.institutionId,
-        name: name.value ?? "",
-        lmsType: parsedLmsType.data,
-        lmsUrl: lmsUrl.value ?? "",
-        lmsClientname:
-            authMode.value === "client" ? (lmsClientname.value ?? "") : "",
-        lmsClientsecret:
-            authMode.value === "client" ? (lmsClientsecret.value ?? "") : "",
-        lmsRestApiToken:
-            authMode.value === "token" ? (accessToken.value ?? "") : "",
-        lmsProxyHost: withProxy.value ? proxyHost.value : undefined,
-        lmsProxyPort:
-            withProxy.value && proxyPort.value
-                ? Number(proxyPort.value)
-                : undefined,
-        lmsProxyAuthUsername: withProxy.value ? proxyUsername.value : undefined,
-        lmsProxyAuthSecret: withProxy.value ? proxyPassword.value : undefined,
-    };
-
+const handleSubmit = async (payload: AssessmentToolEditRequest) => {
     const saved = await submitWithFormErrors({
-        run: () => saveTool(par),
-        applyErrors: (err) =>
-            applyBackendFieldErrors(err, {
-                aliases: ASSESSMENT_TOOL_FIELD_ALIASES,
-                forms: [
-                    {
-                        form: mainFormRef.value,
-                        fields: mainFormFields.value.map((field) => field.name),
-                    },
-                    {
-                        form: authFormRef.value,
-                        fields: authFormFields.value.map((field) => field.name),
-                    },
-                    {
-                        form: proxyFormRef.value,
-                        fields: proxyFormFields.value.map(
-                            (field) => field.name,
-                        ),
-                    },
-                ],
-            }),
+        run: () => save(payload),
+        applyErrors: (err) => formRef.value?.applyBackendErrors(err),
         error: saveError,
         contextLabel: "assessmenttool",
     });
     if (!saved) return;
     await router.push({ name: "/(app)/assessment-tool/" });
-}
+};
 </script>

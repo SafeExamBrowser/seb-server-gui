@@ -79,9 +79,9 @@ export const useAssessmentToolFormFields = (
 
     // The value set is derived from the schema enum so it can't drift from the backend;
     // the labels use the domain's established per-type i18n keys.
-    const lmsTypeOptions = LMS_TYPES.map((v) => ({
-        value: v as string,
-        text: t(`lmsTypes.${v}`),
+    const lmsTypeOptions = LMS_TYPES.map((value) => ({
+        value,
+        text: t(`lmsTypes.${value}`),
     }));
 
     const loading = computed(() => loadingInstitutions.value);
