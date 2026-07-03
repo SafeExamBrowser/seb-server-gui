@@ -56,6 +56,7 @@ export const useToggleConnectionConfigurationStatusMutation = () => {
                 { queryKey: listKey() },
                 flipActiveInList(modelId, true),
             );
+            void queryClient.invalidateQueries({ queryKey: listKey() });
         },
     });
 
@@ -71,6 +72,7 @@ export const useToggleConnectionConfigurationStatusMutation = () => {
                 { queryKey: listKey() },
                 flipActiveInList(modelId, false),
             );
+            void queryClient.invalidateQueries({ queryKey: listKey() });
         },
     });
 
