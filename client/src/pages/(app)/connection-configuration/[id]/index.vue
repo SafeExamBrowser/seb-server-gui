@@ -108,6 +108,7 @@
 
                         <div
                             class="d-flex align-center justify-space-between mb-2"
+                            data-testid="editConnectionConfiguration-fallback-row"
                         >
                             <label
                                 class="text-grey-darken-1 text-body-large ml-1"
@@ -200,7 +201,10 @@ import { useConnectionConfigurationFormFields } from "@/pages/(app)/connection-c
 import { useCertificates } from "@/pages/(app)/connection-configuration/composables/api/useCertificates.ts";
 import { useConnectionConfigurationQuery } from "@/pages/(app)/connection-configuration/api/useConnectionConfigurationQuery.ts";
 import { useEditConnectionConfigurationMutation } from "@/pages/(app)/connection-configuration/api/useEditConnectionConfigurationMutation.ts";
-import type { ConnectionConfigurationEditRequest } from "@/models/connectionConfiguration.ts";
+import {
+    connectionConfigurationCreateSchema,
+    type ConnectionConfigurationEditRequest,
+} from "@/models/connectionConfiguration.ts";
 import { useCertificateCreateForm } from "@/pages/(app)/certificate/composables/useCertificateCreateForm.ts";
 import { CertKey } from "@/pages/(app)/certificate/types/types.ts";
 
@@ -283,7 +287,7 @@ const { isDirty, snapshot } = useDirtyTracking(() => ({
 }));
 
 const toSeconds = (ms?: number) =>
-    ms != null ? Math.round(Number(ms) / 1000) : undefined;
+    ms !== undefined ? Math.round(Number(ms) / 1000) : undefined;
 const toMs = (s: number) => Math.round(Number(s) * 1000);
 
 watch(
@@ -356,11 +360,11 @@ async function submit() {
         if (!fallbackResult?.valid) return;
     }
 
-    const selectedPurpose = configurationPurpose.value;
-    if (
-        selectedPurpose !== "START_EXAM" &&
-        selectedPurpose !== "CONFIGURE_CLIENT"
-    ) {
+    const purpose =
+        connectionConfigurationCreateSchema.shape.sebConfigPurpose.safeParse(
+            configurationPurpose.value,
+        );
+    if (!purpose.success) {
         return;
     }
 
@@ -368,7 +372,7 @@ async function submit() {
         id: config.value.id,
         institutionId: config.value.institutionId,
         name: name.value ?? "",
-        sebConfigPurpose: selectedPurpose,
+        sebConfigPurpose: purpose.data,
         sebServerPingTime: toMs(pingInterval.value ?? 1),
         cert_alias: encryptWithCertificate.value || undefined,
         cert_encryption_asym: !!asymmetricOnlyEncryption.value,

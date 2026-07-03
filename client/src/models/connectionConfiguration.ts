@@ -106,6 +106,10 @@ export type ConnectionConfigurationCreateRequest = z.infer<
     typeof connectionConfigurationCreateSchema
 >;
 
+// Derived from the generated enum so the value set can't drift from the backend.
+export const SEB_CONFIG_PURPOSES =
+    connectionConfigurationCreateSchema.shape.sebConfigPurpose.options;
+
 // Edit is a JSON PUT of the full entity: the create body plus the persisted id and
 // the institution it belongs to.
 export const connectionConfigurationEditSchema =

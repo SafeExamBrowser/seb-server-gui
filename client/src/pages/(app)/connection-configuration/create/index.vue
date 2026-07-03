@@ -170,7 +170,10 @@ import { submitWithFormErrors } from "@/services/errors/submitWithFormErrors.ts"
 import { toAppErrorOrUndefined } from "@/services/errors/toAppError.ts";
 import { applyBackendFieldErrors } from "@/services/errors/formErrorMapping.ts";
 import { useCertificates } from "@/pages/(app)/connection-configuration/composables/api/useCertificates.ts";
-import type { ConnectionConfigurationCreateRequest } from "@/models/connectionConfiguration.ts";
+import {
+    connectionConfigurationCreateSchema,
+    type ConnectionConfigurationCreateRequest,
+} from "@/models/connectionConfiguration.ts";
 import CancelButton from "@/components/widgets/CancelButton.vue";
 import ConfirmButton from "@/components/widgets/ConfirmButton.vue";
 import HintText from "@/components/widgets/HintText.vue";
@@ -260,13 +263,12 @@ async function submit() {
         if (!fallbackResult?.valid) return;
     }
 
-    const selectedPurpose = configurationPurpose.value;
+    const purpose =
+        connectionConfigurationCreateSchema.shape.sebConfigPurpose.safeParse(
+            configurationPurpose.value,
+        );
     const selectedPingInterval = pingInterval.value;
-    if (
-        (selectedPurpose !== "START_EXAM" &&
-            selectedPurpose !== "CONFIGURE_CLIENT") ||
-        selectedPingInterval == null
-    ) {
+    if (!purpose.success || selectedPingInterval === undefined) {
         return;
     }
 
@@ -274,7 +276,7 @@ async function submit() {
 
     const params: ConnectionConfigurationCreateRequest = {
         name: name.value ?? "",
-        sebConfigPurpose: selectedPurpose,
+        sebConfigPurpose: purpose.data,
         sebServerPingTime: toMs(selectedPingInterval),
         cert_alias: encryptWithCertificate.value || undefined,
         encryptSecret: (configurationPassword.value ?? "").trim() || undefined,
@@ -293,9 +295,9 @@ async function submit() {
 
         if (
             !selectedFallbackStartUrl ||
-            selectedConnectionAttempts == null ||
-            selectedInterval == null ||
-            selectedConnectionTimeout == null
+            selectedConnectionAttempts === undefined ||
+            selectedInterval === undefined ||
+            selectedConnectionTimeout === undefined
         ) {
             return;
         }

@@ -2,7 +2,11 @@ import { computed, ref } from "vue";
 import i18n from "@/i18n";
 import type { FormField } from "@/components/widgets/formBuilder/types.ts";
 import { useZodFormRules } from "@/composables/useZodFormRules.ts";
-import { connectionConfigurationCreateSchema } from "@/models/connectionConfiguration.ts";
+import {
+    connectionConfigurationCreateSchema,
+    SEB_CONFIG_PURPOSES,
+} from "@/models/connectionConfiguration.ts";
+import { CONNECTION_CONFIG_FIELD } from "@/pages/(app)/connection-configuration/connectionConfigurationFormConfig.ts";
 
 const t = (key: string) => i18n.global.t(`connectionConfigurations.${key}`);
 
@@ -27,16 +31,19 @@ export const useConnectionConfigurationFormFields = () => {
     const quitPassword = ref<string | undefined>(undefined);
     const confirmQuitPassword = ref<string | undefined>(undefined);
 
-    const configurationPurposeOptions = [
-        {
-            value: "START_EXAM",
-            text: t("selectValues.start_exam"),
-        },
-        {
-            value: "CONFIGURE_CLIENT",
-            text: t("selectValues.configure_client"),
-        },
-    ];
+    // Static i18n keys (per the i18n rule), but the value set is derived from the schema
+    // enum via a typed record — a new backend purpose forces a label here at compile time.
+    const configurationPurposeLabels: Record<
+        (typeof SEB_CONFIG_PURPOSES)[number],
+        string
+    > = {
+        START_EXAM: t("selectValues.start_exam"),
+        CONFIGURE_CLIENT: t("selectValues.configure_client"),
+    };
+    const configurationPurposeOptions = SEB_CONFIG_PURPOSES.map((value) => ({
+        value,
+        text: configurationPurposeLabels[value],
+    }));
 
     const passwordsMatch = (a?: string, b?: string): true | string => {
         const av = (a ?? "").trim();
@@ -47,14 +54,14 @@ export const useConnectionConfigurationFormFields = () => {
     };
 
     const numberRule = (v: number | undefined): true | string => {
-        if (v == null) return t("validation.required");
+        if (v === undefined) return t("validation.required");
         return !Number.isNaN(Number(v)) || t("validation.mustBeNumber");
     };
 
     const mainFormFields = computed<FormField[]>(() => [
         {
             type: "text" as const,
-            name: "name",
+            name: CONNECTION_CONFIG_FIELD.name,
             model: name,
             label: t("fields.name.label"),
             required: isRequired(
@@ -64,7 +71,7 @@ export const useConnectionConfigurationFormFields = () => {
         },
         {
             type: "select" as const,
-            name: "configurationPurpose",
+            name: CONNECTION_CONFIG_FIELD.configurationPurpose,
             model: configurationPurpose,
             label: t("fields.configurationPurpose.label"),
             options: configurationPurposeOptions,
@@ -74,13 +81,13 @@ export const useConnectionConfigurationFormFields = () => {
         },
         {
             type: "password" as const,
-            name: "configurationPassword",
+            name: CONNECTION_CONFIG_FIELD.configurationPassword,
             model: configurationPassword,
             label: t("fields.configurationPassword.label"),
         },
         {
             type: "password" as const,
-            name: "confirmConfigurationPassword",
+            name: CONNECTION_CONFIG_FIELD.confirmConfigurationPassword,
             model: confirmConfigurationPassword,
             label: t("fields.confirmConfigurationPassword.label"),
             validationDependsOn: ["configurationPassword"],
@@ -94,7 +101,7 @@ export const useConnectionConfigurationFormFields = () => {
         },
         {
             type: "number" as const,
-            name: "pingInterval",
+            name: CONNECTION_CONFIG_FIELD.pingInterval,
             model: pingInterval,
             label: t("fields.pingInterval.label"),
             required: true,
@@ -102,7 +109,7 @@ export const useConnectionConfigurationFormFields = () => {
         },
         {
             type: "switch" as const,
-            name: "asymmetricOnlyEncryption",
+            name: CONNECTION_CONFIG_FIELD.asymmetricOnlyEncryption,
             model: asymmetricOnlyEncryption,
             label: t("fields.useAsymmetricOnlyEncryption.label"),
         },
@@ -111,7 +118,7 @@ export const useConnectionConfigurationFormFields = () => {
     const fallbackFormFields = computed<FormField[]>(() => [
         {
             type: "text" as const,
-            name: "fallbackStartUrl",
+            name: CONNECTION_CONFIG_FIELD.fallbackStartUrl,
             model: fallbackStartUrl,
             label: t("fields.fallbackStartUrl.label"),
             required: true,
@@ -129,7 +136,7 @@ export const useConnectionConfigurationFormFields = () => {
         },
         {
             type: "number" as const,
-            name: "connectionAttempts",
+            name: CONNECTION_CONFIG_FIELD.connectionAttempts,
             model: connectionAttempts,
             label: t("fields.connectionAttempts.label"),
             required: true,
@@ -137,7 +144,7 @@ export const useConnectionConfigurationFormFields = () => {
         },
         {
             type: "number" as const,
-            name: "interval",
+            name: CONNECTION_CONFIG_FIELD.interval,
             model: interval,
             label: t("fields.interval.label"),
             required: true,
@@ -145,7 +152,7 @@ export const useConnectionConfigurationFormFields = () => {
         },
         {
             type: "number" as const,
-            name: "connectionTimeout",
+            name: CONNECTION_CONFIG_FIELD.connectionTimeout,
             model: connectionTimeout,
             label: t("fields.connectionTimeout.label"),
             required: true,
@@ -153,13 +160,13 @@ export const useConnectionConfigurationFormFields = () => {
         },
         {
             type: "password" as const,
-            name: "fallbackPassword",
+            name: CONNECTION_CONFIG_FIELD.fallbackPassword,
             model: fallbackPassword,
             label: t("fields.fallbackPassword.label"),
         },
         {
             type: "password" as const,
-            name: "confirmFallbackPassword",
+            name: CONNECTION_CONFIG_FIELD.confirmFallbackPassword,
             model: confirmFallbackPassword,
             label: t("fields.confirmFallbackPassword.label"),
             validationDependsOn: ["fallbackPassword"],
@@ -173,13 +180,13 @@ export const useConnectionConfigurationFormFields = () => {
         },
         {
             type: "password" as const,
-            name: "quitPassword",
+            name: CONNECTION_CONFIG_FIELD.quitPassword,
             model: quitPassword,
             label: t("fields.quitPassword.label"),
         },
         {
             type: "password" as const,
-            name: "confirmQuitPassword",
+            name: CONNECTION_CONFIG_FIELD.confirmQuitPassword,
             model: confirmQuitPassword,
             label: t("fields.confirmQuitPassword.label"),
             validationDependsOn: ["quitPassword"],
