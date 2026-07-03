@@ -237,7 +237,7 @@ export const zView = z.object({
 
 export const zLmsSetup = z.object({
     id: z.int().optional(),
-    institutionId: z.int(),
+    institutionId: z.int().optional(),
     name: z.string().min(3).max(255),
     lmsType: z.enum([
         'MOCKUP',
@@ -368,8 +368,8 @@ export const zExam = z.object({
     followupId: z.int().optional(),
     excludeFromDeletion: z.boolean().optional(),
     additionalAttributes: z.record(z.string(), z.string()).optional(),
-    description: z.string().optional(),
-    startURL: z.string().optional()
+    startURL: z.string().optional(),
+    description: z.string().optional()
 });
 
 export const zClientGroupTemplate = z.object({
@@ -1285,6 +1285,9 @@ export const zClientMonitoringDataView = z.object({
     grantChecked: z.boolean().optional(),
     grantDenied: z.boolean().optional(),
     sebversionDenied: z.boolean().optional(),
+    nf: z.int().min(-2147483648, { error: 'Invalid value: Expected int32 to be >= -2147483648' }).max(2147483647, { error: 'Invalid value: Expected int32 to be <= 2147483647' }).optional(),
+    iv: z.record(z.string(), z.string()).optional(),
+    lat: z.int().optional(),
     st: z.enum([
         'UNDEFINED',
         'CONNECTION_REQUESTED',
@@ -1293,9 +1296,6 @@ export const zClientMonitoringDataView = z.object({
         'CLOSED',
         'DISABLED'
     ]).optional(),
-    iv: z.record(z.string(), z.string()).optional(),
-    lat: z.int().optional(),
-    nf: z.int().min(-2147483648, { error: 'Invalid value: Expected int32 to be >= -2147483648' }).max(2147483647, { error: 'Invalid value: Expected int32 to be <= 2147483647' }).optional(),
     id: z.int().optional()
 });
 
@@ -2183,7 +2183,10 @@ export const zGetLmsSetupsQuery = z.object({
     page_number: z.int().min(-2147483648, { error: 'Invalid value: Expected int32 to be >= -2147483648' }).max(2147483647, { error: 'Invalid value: Expected int32 to be <= 2147483647' }).optional(),
     page_size: z.int().min(-2147483648, { error: 'Invalid value: Expected int32 to be >= -2147483648' }).max(2147483647, { error: 'Invalid value: Expected int32 to be <= 2147483647' }).optional(),
     sort: z.string().optional(),
-    institutionId: z.int().optional()
+    institutionId: z.int().optional(),
+    name: z.string().optional(),
+    lms_type: z.string().optional(),
+    active: z.boolean().optional()
 });
 
 /**
