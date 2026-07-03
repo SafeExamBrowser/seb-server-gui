@@ -4,7 +4,10 @@ import { usePagedListData } from "@/components/widgets/entity-table/composables/
 import { STATUS_FILTER_KEY } from "@/components/widgets/filters/statusFilterSection.ts";
 import { INSTITUTION_FILTER_KEY } from "@/components/widgets/filters/useInstitutionFilterSection.ts";
 import { useConnectionConfigurationsFilters } from "./useConnectionConfigurationsFilters.ts";
-import { useConnectionConfigurations } from "@/pages/(app)/connection-configuration/api/useConnectionConfigurations.ts";
+import { useConnectionConfigurationsQuery } from "@/pages/(app)/connection-configuration/api/useConnectionConfigurationsQuery.ts";
+import { toAppErrorOrUndefined } from "@/services/errors/toAppError.ts";
+import { toServerPageQuery } from "@/utils/table/tableUtils.ts";
+import type { GetSebClientConfigsData } from "@/api/seb-server/generated/hey-api/types.gen.ts";
 
 export const useConnectionConfigurationsList = () => {
     const filterSections = useConnectionConfigurationsFilters();
@@ -19,38 +22,52 @@ export const useConnectionConfigurationsList = () => {
         onClearSearch,
         setFilters,
         clearAll,
-    } = useUrlTableState(async () => {
-        await fetchConnectionConfigurations();
-    }, [STATUS_FILTER_KEY, INSTITUTION_FILTER_KEY]);
+    } = useUrlTableState(async () => {}, [
+        STATUS_FILTER_KEY,
+        INSTITUTION_FILTER_KEY,
+    ]);
 
-    const selectedStatus = computed(() => selectedFilters.value.status);
-    const selectedInstitutionId = computed(
-        () => selectedFilters.value.institutionId,
+    const configurationsQuery = computed<GetSebClientConfigsData["query"]>(
+        () => {
+            const status = selectedFilters.value.status;
+            const institutionId = selectedFilters.value.institutionId;
+            return {
+                ...toServerPageQuery(options.value),
+                name: searchField.value || undefined,
+                active:
+                    status === "Active"
+                        ? true
+                        : status === "Inactive"
+                          ? false
+                          : undefined,
+                institutionId: institutionId
+                    ? Number(institutionId)
+                    : undefined,
+            };
+        },
     );
 
     const {
         data,
-        loading,
-        error,
-        fetchData: fetchConnectionConfigurations,
-    } = useConnectionConfigurations(
-        options,
-        searchField,
-        selectedStatus,
-        selectedInstitutionId,
-    );
+        isFetching,
+        error: queryError,
+        refetch,
+    } = useConnectionConfigurationsQuery(configurationsQuery);
+    const error = computed(() => toAppErrorOrUndefined(queryError.value));
 
     const { items, pageCount, errors, reloadList } = usePagedListData({
         data,
         error,
         options,
-        fetchData: fetchConnectionConfigurations,
+        fetchData: async () => {
+            await refetch();
+        },
     });
 
     return {
         items,
         pageCount,
-        loading,
+        loading: isFetching,
         errors,
         options,
         searchInputValue,

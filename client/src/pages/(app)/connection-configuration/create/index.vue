@@ -160,17 +160,20 @@
 </template>
 
 <script setup lang="ts">
-import { ref } from "vue";
+import { computed, ref } from "vue";
 import BasicPage from "@/components/layout/pages/BasicPage.vue";
 import SettingsNavigation from "@/components/widgets/navigation/SettingsNavigation.vue";
 import FormBuilder from "@/components/widgets/formBuilder/FormBuilder.vue";
 import { useConnectionConfigurationFormFields } from "@/pages/(app)/connection-configuration/composables/useConnectionConfigurationFormFields.ts";
-import { useMutation } from "@/composables/useMutation.ts";
-import { notify } from "@/services/notifications/notify.ts";
+import { useCreateConnectionConfigurationMutation } from "@/pages/(app)/connection-configuration/api/useCreateConnectionConfigurationMutation.ts";
+import { submitWithFormErrors } from "@/services/errors/submitWithFormErrors.ts";
+import { toAppErrorOrUndefined } from "@/services/errors/toAppError.ts";
 import { applyBackendFieldErrors } from "@/services/errors/formErrorMapping.ts";
-import { createConnectionConfiguration } from "@/services/seb-server/connectionConfigurationService.ts";
 import { useCertificates } from "@/pages/(app)/connection-configuration/composables/api/useCertificates.ts";
-import type { CreateConnectionConfigurationPar } from "@/models/seb-server/connectionConfiguration.ts";
+import {
+    connectionConfigurationCreateSchema,
+    type ConnectionConfigurationCreateRequest,
+} from "@/models/connectionConfiguration.ts";
 import CancelButton from "@/components/widgets/CancelButton.vue";
 import ConfirmButton from "@/components/widgets/ConfirmButton.vue";
 import HintText from "@/components/widgets/HintText.vue";
@@ -210,11 +213,11 @@ const {
     confirmQuitPassword,
 } = useConnectionConfigurationFormFields();
 
-const {
-    mutateData: createConfig,
-    data: createdConfig,
-    error: configError,
-} = useMutation(createConnectionConfiguration);
+const { mutateAsync: createConfig, error: createMutationError } =
+    useCreateConnectionConfigurationMutation();
+const createError = computed(() =>
+    toAppErrorOrUndefined(createMutationError.value),
+);
 
 const {
     certificateItems,
@@ -260,15 +263,20 @@ async function submit() {
         if (!fallbackResult?.valid) return;
     }
 
-    const selectedPurpose = configurationPurpose.value;
+    const purpose =
+        connectionConfigurationCreateSchema.shape.sebConfigPurpose.safeParse(
+            configurationPurpose.value,
+        );
     const selectedPingInterval = pingInterval.value;
-    if (!selectedPurpose || selectedPingInterval == null) return;
+    if (!purpose.success || selectedPingInterval === undefined) {
+        return;
+    }
 
     const toMs = (s: number) => Math.round(Number(s) * 1000);
 
-    const params: CreateConnectionConfigurationPar = {
+    const params: ConnectionConfigurationCreateRequest = {
         name: name.value ?? "",
-        sebConfigPurpose: selectedPurpose,
+        sebConfigPurpose: purpose.data,
         sebServerPingTime: toMs(selectedPingInterval),
         cert_alias: encryptWithCertificate.value || undefined,
         encryptSecret: (configurationPassword.value ?? "").trim() || undefined,
@@ -287,9 +295,9 @@ async function submit() {
 
         if (
             !selectedFallbackStartUrl ||
-            selectedConnectionAttempts == null ||
-            selectedInterval == null ||
-            selectedConnectionTimeout == null
+            selectedConnectionAttempts === undefined ||
+            selectedInterval === undefined ||
+            selectedConnectionTimeout === undefined
         ) {
             return;
         }
@@ -308,36 +316,31 @@ async function submit() {
             (confirmQuitPassword.value ?? "").trim() || undefined;
     }
 
-    await createConfig(params);
-
-    if (configError.value) {
-        const applied = applyBackendFieldErrors(configError.value, {
-            aliases: CONNECTION_CONFIG_FIELD_ALIASES,
-            forms: [
-                {
-                    form: mainFormRef.value,
-                    fields: mainFormFields.value.map((field) => field.name),
-                },
-                {
-                    form: fallbackFormRef.value,
-                    fields: fallbackFormFields.value.map((field) => field.name),
-                },
-            ],
-        });
-        if (!applied.fullyHandled) {
-            notify.serverError(applied.appError, {
-                contextLabel: "connectionconfiguration",
-                onlyMessages: applied.unhandledMessages,
-            });
-        }
-        return;
-    }
-    if (createdConfig.value) {
-        const search = createdConfig.value.name;
-        await router.push({
-            name: "/(app)/connection-configuration/",
-            query: { search },
-        });
-    }
+    const created = await submitWithFormErrors({
+        run: () => createConfig(params),
+        applyErrors: (err) =>
+            applyBackendFieldErrors(err, {
+                aliases: CONNECTION_CONFIG_FIELD_ALIASES,
+                forms: [
+                    {
+                        form: mainFormRef.value,
+                        fields: mainFormFields.value.map((field) => field.name),
+                    },
+                    {
+                        form: fallbackFormRef.value,
+                        fields: fallbackFormFields.value.map(
+                            (field) => field.name,
+                        ),
+                    },
+                ],
+            }),
+        error: createError,
+        contextLabel: "connectionconfiguration",
+    });
+    if (!created) return;
+    await router.push({
+        name: "/(app)/connection-configuration/",
+        query: { search: created.name },
+    });
 }
 </script>

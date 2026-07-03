@@ -855,7 +855,7 @@ import * as sebSettingsService from "@/services/seb-server/sebSettingsService.ts
 import * as assessmentToolService from "@/services/seb-server/assessmentToolService.ts";
 import * as examTemplateService from "@/services/seb-server/examTemplateService.ts";
 import * as monitoringService from "@/services/seb-server/monitoringService.ts";
-import * as connectionConfigurationService from "@/services/seb-server/connectionConfigurationService.ts";
+import * as connectionConfigurationService from "@/services/seb-server/connectionConfigurationInfoService.ts";
 
 import * as userAccountService from "@/services/seb-server/userAccountService.ts";
 import * as clientGroupService from "@/services/seb-server/clientGroupService.ts";

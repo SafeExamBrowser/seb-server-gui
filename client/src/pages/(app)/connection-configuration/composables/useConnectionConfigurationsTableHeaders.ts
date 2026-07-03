@@ -3,6 +3,7 @@ import { translate } from "@/utils/generalUtils.ts";
 import { formatIsoToReadableDateTime } from "@/utils/timeUtils.ts";
 import { useShowInstitutionColumn } from "@/composables/useShowInstitutionColumn.ts";
 import { useInstitutionNameMap } from "@/composables/useInstitutionNameMap.ts";
+import { CONNECTION_CONFIGURATION_COLUMN } from "@/pages/(app)/connection-configuration/connectionConfigurationListConfig.ts";
 import type {
     TableHeader,
     CellFormatter,
@@ -28,7 +29,7 @@ export function useConnectionConfigurationsTableHeaders() {
                 title: translate(
                     "connectionConfigurations.list.tableHeaders.institution",
                 ),
-                key: "institutionId",
+                key: CONNECTION_CONFIGURATION_COLUMN.institutionId,
                 width: "20%",
                 sortable: true,
             });
@@ -39,7 +40,7 @@ export function useConnectionConfigurationsTableHeaders() {
                 title: translate(
                     "connectionConfigurations.list.tableHeaders.name",
                 ),
-                key: "name",
+                key: CONNECTION_CONFIGURATION_COLUMN.name,
                 width: "20%",
                 sortable: true,
             },
@@ -47,7 +48,7 @@ export function useConnectionConfigurationsTableHeaders() {
                 title: translate(
                     "connectionConfigurations.list.tableHeaders.creationDate",
                 ),
-                key: "date",
+                key: CONNECTION_CONFIGURATION_COLUMN.date,
                 width: "20%",
                 sortable: true,
             },
@@ -55,7 +56,7 @@ export function useConnectionConfigurationsTableHeaders() {
                 title: translate(
                     "connectionConfigurations.list.tableHeaders.status",
                 ),
-                key: "active",
+                key: CONNECTION_CONFIGURATION_COLUMN.active,
                 width: "15%",
                 sortable: false,
             },
@@ -65,8 +66,9 @@ export function useConnectionConfigurationsTableHeaders() {
     });
 
     const cellFormatters: Record<string, CellFormatter> = {
-        institutionId: (value) => getInstitutionName(value),
-        date: (value) =>
+        [CONNECTION_CONFIGURATION_COLUMN.institutionId]: (value) =>
+            getInstitutionName(value),
+        [CONNECTION_CONFIGURATION_COLUMN.date]: (value) =>
             value ? formatIsoToReadableDateTime(String(value)) : "",
     };
 
