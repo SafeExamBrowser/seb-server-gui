@@ -154,4 +154,43 @@ test.describe("05 Assessment Tools - CREATE", () => {
             .expectError();
         await expect(page).toHaveURL(/\/assessment-tool\/create/);
     });
+
+    test("E builds the client-credentials create request (the other auth branch)", async ({
+        assessmentToolCreate,
+    }) => {
+        const page = assessmentToolCreate.page;
+
+        await page.route(ASSESSMENT_TOOL_CREATE_REQUEST, async (route) => {
+            if (route.request().method() !== "POST") {
+                return route.continue();
+            }
+            await route.fulfill({
+                status: 200,
+                contentType: "application/json",
+                body: JSON.stringify(createdTool),
+            });
+        });
+
+        const createRequest = waitForRequest(
+            page,
+            "POST",
+            ASSESSMENT_TOOL_CREATE_REQUEST,
+        );
+
+        await assessmentToolCreate.goto();
+        await assessmentToolCreate.fillForm(mainInput);
+        await assessmentToolCreate.fillAuthClient({
+            username: "e2e-client-name",
+            password: "e2e-client-secret",
+        });
+        await assessmentToolCreate.submit();
+
+        // Client mode sends lmsClientname/lmsClientsecret and OMITS the token field.
+        const body = new URLSearchParams(
+            (await createRequest).postData() ?? "",
+        );
+        expect(body.get("lmsClientname")).toBe("e2e-client-name");
+        expect(body.get("lmsClientsecret")).toBe("e2e-client-secret");
+        expect(body.get("lmsRestApiToken")).toBeNull();
+    });
 });

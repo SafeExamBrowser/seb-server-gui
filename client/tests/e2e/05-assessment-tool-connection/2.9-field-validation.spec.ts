@@ -14,6 +14,11 @@ const validMainInput = {
 
 const validToken = "e2e-valid-token";
 
+const validClient = {
+    username: "e2e-client-name",
+    password: "e2e-client-secret",
+};
+
 const validProxy = {
     proxyHost: "proxy.example.com",
     proxyPort: "8080",
@@ -35,6 +40,7 @@ type ValidationCase = {
     attributes: string[];
     message: string;
     requiresProxy?: boolean;
+    authMode?: "token" | "client";
 };
 
 const cases: ValidationCase[] = [
@@ -75,6 +81,53 @@ const cases: ValidationCase[] = [
         message: MANDATORY,
         requiresProxy: true,
     },
+    {
+        title: "server address mandatory",
+        field: ASSESSMENT_TOOL_FIELD.lmsUrl,
+        attributes: ["lmsSetup", "lmsUrl", "notNull"],
+        message: MANDATORY,
+    },
+    {
+        title: "proxy port mandatory (aliased)",
+        field: ASSESSMENT_TOOL_FIELD.proxyPort,
+        attributes: ["lmsSetup", "lmsProxyPort", "notNull"],
+        message: MANDATORY,
+        requiresProxy: true,
+    },
+    {
+        title: "proxy username mandatory (aliased)",
+        field: ASSESSMENT_TOOL_FIELD.proxyUsername,
+        attributes: ["lmsSetup", "lmsProxyAuthUsername", "notNull"],
+        message: MANDATORY,
+        requiresProxy: true,
+    },
+    {
+        title: "proxy secret mandatory (aliased)",
+        field: ASSESSMENT_TOOL_FIELD.proxyPassword,
+        attributes: ["lmsSetup", "lmsProxyAuthSecret", "notNull"],
+        message: MANDATORY,
+        requiresProxy: true,
+    },
+    {
+        title: "client name mandatory",
+        field: ASSESSMENT_TOOL_FIELD.lmsClientname,
+        attributes: ["lmsSetup", "lmsClientname", "notNull"],
+        message: MANDATORY,
+        authMode: "client",
+    },
+    {
+        title: "client secret mandatory",
+        field: ASSESSMENT_TOOL_FIELD.lmsClientsecret,
+        attributes: ["lmsSetup", "lmsClientsecret", "notNull"],
+        message: MANDATORY,
+        authMode: "client",
+    },
+    {
+        title: "name not unique",
+        field: ASSESSMENT_TOOL_FIELD.name,
+        attributes: ["lmsSetup", "name", "name.notunique"],
+        message: "This name is already in use. Please choose another one.",
+    },
 ];
 
 test.describe("05 Assessment Tools - BACKEND FIELD VALIDATION", () => {
@@ -103,7 +156,11 @@ test.describe("05 Assessment Tools - BACKEND FIELD VALIDATION", () => {
 
             await assessmentToolCreate.goto();
             await assessmentToolCreate.fillForm(validMainInput);
-            await assessmentToolCreate.fillAuthToken(validToken);
+            if (validationCase.authMode === "client") {
+                await assessmentToolCreate.fillAuthClient(validClient);
+            } else {
+                await assessmentToolCreate.fillAuthToken(validToken);
+            }
             if (validationCase.requiresProxy) {
                 await assessmentToolCreate.enableProxy();
                 await assessmentToolCreate.fillProxy(validProxy);

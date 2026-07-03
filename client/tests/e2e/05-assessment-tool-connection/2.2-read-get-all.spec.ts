@@ -61,6 +61,14 @@ test.describe("05 Assessment Tools - READ Get All", () => {
             await assessmentTools.table.expectRowAbsent(inactiveId);
         });
 
+        await test.step("LMS-type filter carries lms_type= and keeps matching rows", async () => {
+            await assessmentTools.expectListRequestSucceeded(
+                () => assessmentTools.toggleTypeFilter("MOCKUP"),
+                { urlMustContain: [/[?&]lms_type=MOCKUP/i] },
+            );
+            await assessmentTools.table.expectRowVisible(activeId);
+        });
+
         await test.step("institution filter (if visible) narrows by institution", async () => {
             if (await assessmentTools.hasInstitutionFilter()) {
                 await assessmentTools.expectInstitutionFilterVisible();

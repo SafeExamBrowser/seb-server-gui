@@ -2,6 +2,7 @@ import { type Page } from "@playwright/test";
 import { assessmentToolListConfig } from "@/pages/(app)/assessment-tool/assessmentToolListConfig.ts";
 import {
     INSTITUTION_FILTER,
+    LMS_TYPE_FILTER,
     STATUS_FILTER,
     type StatusFilterValue,
 } from "@/components/widgets/filters/filterContracts.ts";
@@ -35,6 +36,17 @@ export class AssessmentToolsListModel extends TableListPageModel {
 
     async toggleStatusFilter(status: StatusFilterValue) {
         await this.searchBar.filters.toggle(STATUS_FILTER.testIdSuffix, status);
+    }
+
+    typeFilterOption(type: string) {
+        return this.searchBar.filters.option(
+            LMS_TYPE_FILTER.testIdSuffix,
+            type,
+        );
+    }
+
+    async toggleTypeFilter(type: string) {
+        await this.searchBar.filters.toggle(LMS_TYPE_FILTER.testIdSuffix, type);
     }
 
     institutionFilterSection() {
