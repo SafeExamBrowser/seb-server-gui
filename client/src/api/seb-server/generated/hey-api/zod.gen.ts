@@ -368,8 +368,8 @@ export const zExam = z.object({
     followupId: z.int().optional(),
     excludeFromDeletion: z.boolean().optional(),
     additionalAttributes: z.record(z.string(), z.string()).optional(),
-    startURL: z.string().optional(),
-    description: z.string().optional()
+    description: z.string().optional(),
+    startURL: z.string().optional()
 });
 
 export const zClientGroupTemplate = z.object({
@@ -579,8 +579,8 @@ export const zSebClientConfig = z.object({
     sebServerFallback: z.boolean().optional(),
     startURL: z.string().optional(),
     sebServerFallbackTimeout: z.int().optional(),
-    sebServerFallbackAttempts: z.int().min(-2147483648, { error: 'Invalid value: Expected int32 to be >= -2147483648' }).max(2147483647, { error: 'Invalid value: Expected int32 to be <= 2147483647' }).optional(),
-    sebServerFallbackAttemptInterval: z.int().min(-2147483648, { error: 'Invalid value: Expected int32 to be >= -2147483648' }).max(2147483647, { error: 'Invalid value: Expected int32 to be <= 2147483647' }).optional(),
+    sebServerFallbackAttempts: z.int().optional(),
+    sebServerFallbackAttemptInterval: z.int().optional(),
     sebServerFallbackPasswordHash: z.string().optional(),
     sebServerFallbackPasswordHashConfirm: z.string().optional(),
     hashedQuitPassword: z.string().optional(),
@@ -767,6 +767,11 @@ export const zSessionDeletionReport = z.object({
     spsDeletions: z.array(zSessionDeletionInfo).optional()
 });
 
+export const zGroupInfo = z.object({
+    groupName: z.string().optional(),
+    numberOfSessions: z.string().optional()
+});
+
 export const zScheduledDeleteViewInfo = z.object({
     examUUID: z.string().optional(),
     examName: z.string().optional(),
@@ -781,7 +786,7 @@ export const zScheduledDeleteViewInfo = z.object({
         'DATA_INCONSISTENCY_ERROR',
         'EXCLUDED_FROM_DELETION'
     ]).optional(),
-    spsGroups: z.array(z.string()).optional()
+    spsGroups: z.array(zGroupInfo).optional()
 });
 
 export const zScheduledDeleteReport = z.object({
@@ -1280,9 +1285,6 @@ export const zClientMonitoringDataView = z.object({
     grantChecked: z.boolean().optional(),
     grantDenied: z.boolean().optional(),
     sebversionDenied: z.boolean().optional(),
-    id: z.int().optional(),
-    nf: z.int().min(-2147483648, { error: 'Invalid value: Expected int32 to be >= -2147483648' }).max(2147483647, { error: 'Invalid value: Expected int32 to be <= 2147483647' }).optional(),
-    iv: z.record(z.string(), z.string()).optional(),
     st: z.enum([
         'UNDEFINED',
         'CONNECTION_REQUESTED',
@@ -1291,7 +1293,10 @@ export const zClientMonitoringDataView = z.object({
         'CLOSED',
         'DISABLED'
     ]).optional(),
-    lat: z.int().optional()
+    iv: z.record(z.string(), z.string()).optional(),
+    lat: z.int().optional(),
+    nf: z.int().min(-2147483648, { error: 'Invalid value: Expected int32 to be >= -2147483648' }).max(2147483647, { error: 'Invalid value: Expected int32 to be <= 2147483647' }).optional(),
+    id: z.int().optional()
 });
 
 export const zMonitoringSebConnectionData = z.object({
@@ -1716,7 +1721,7 @@ export const zScheduledDeleteViewInfoWritable = z.object({
     examStartTime: z.int().optional(),
     numberOfSessions: z.string().optional(),
     spsExamName: z.string().optional(),
-    spsGroupNames: z.array(z.string()).optional(),
+    spsGroupNames: z.array(zGroupInfo).optional(),
     error: z.string().optional(),
     errorType: z.enum([
         'UNDEFINED',
@@ -1725,7 +1730,7 @@ export const zScheduledDeleteViewInfoWritable = z.object({
         'DATA_INCONSISTENCY_ERROR',
         'EXCLUDED_FROM_DELETION'
     ]).optional(),
-    spsGroups: z.array(z.string()).optional()
+    spsGroups: z.array(zGroupInfo).optional()
 });
 
 export const zScheduledDeleteReportWritable = z.object({
@@ -3039,16 +3044,16 @@ export const zCreateScheduledDeleteBody = z.int();
  */
 export const zCreateScheduledDeleteResponse = zScheduledDeleteReport;
 
-export const zUnmarkIncludeBody = z.unknown();
+export const zUnmarkExcludeBody = z.unknown();
 
-export const zUnmarkIncludePath = z.object({
+export const zUnmarkExcludePath = z.object({
     modelId: z.string()
 });
 
 /**
  * OK
  */
-export const zUnmarkIncludeResponse = zScheduledDeleteReport;
+export const zUnmarkExcludeResponse = zScheduledDeleteReport;
 
 export const zMarkExcludeBody = z.unknown();
 

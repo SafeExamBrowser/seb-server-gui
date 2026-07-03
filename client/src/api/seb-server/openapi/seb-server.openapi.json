@@ -6357,10 +6357,10 @@
                 "security": [{ "oauth": [] }]
             }
         },
-        "/admin-api/v1/scheduled-delete/unmark-exclude/{modelId}": {
+        "/admin-api/v1/scheduled-delete/{modelId}/unmark-exclude": {
             "post": {
                 "tags": ["scheduled-delete-controller"],
-                "operationId": "unmarkInclude",
+                "operationId": "unmarkExclude",
                 "parameters": [
                     {
                         "name": "modelId",
@@ -6405,7 +6405,7 @@
                 "security": [{ "oauth": [] }]
             }
         },
-        "/admin-api/v1/scheduled-delete/mark-exclude/{modelId}": {
+        "/admin-api/v1/scheduled-delete/{modelId}/mark-exclude": {
             "post": {
                 "tags": ["scheduled-delete-controller"],
                 "operationId": "markExclude",
@@ -21063,8 +21063,8 @@
                         "type": "object",
                         "additionalProperties": { "type": "string" }
                     },
-                    "startURL": { "type": "string" },
-                    "description": { "type": "string" }
+                    "description": { "type": "string" },
+                    "startURL": { "type": "string" }
                 },
                 "required": ["externalId", "institutionId", "type"]
             },
@@ -21414,14 +21414,8 @@
                     "sebServerFallback": { "type": "boolean" },
                     "startURL": { "type": "string" },
                     "sebServerFallbackTimeout": { "type": "integer" },
-                    "sebServerFallbackAttempts": {
-                        "type": "integer",
-                        "format": "int32"
-                    },
-                    "sebServerFallbackAttemptInterval": {
-                        "type": "integer",
-                        "format": "int32"
-                    },
+                    "sebServerFallbackAttempts": { "type": "integer" },
+                    "sebServerFallbackAttemptInterval": { "type": "integer" },
                     "sebServerFallbackPasswordHash": { "type": "string" },
                     "sebServerFallbackPasswordHashConfirm": {
                         "type": "string"
@@ -21725,6 +21719,13 @@
                     "error": { "type": "string" }
                 }
             },
+            "GroupInfo": {
+                "type": "object",
+                "properties": {
+                    "groupName": { "type": "string" },
+                    "numberOfSessions": { "type": "string" }
+                }
+            },
             "ScheduledDeleteReport": {
                 "type": "object",
                 "properties": {
@@ -21768,7 +21769,7 @@
                     "spsExamName": { "type": "string" },
                     "spsGroupNames": {
                         "type": "array",
-                        "items": { "type": "string" },
+                        "items": { "$ref": "#/components/schemas/GroupInfo" },
                         "writeOnly": true
                     },
                     "error": { "type": "string" },
@@ -21784,7 +21785,7 @@
                     },
                     "spsGroups": {
                         "type": "array",
-                        "items": { "type": "string" }
+                        "items": { "$ref": "#/components/schemas/GroupInfo" }
                     }
                 }
             },
@@ -22823,12 +22824,6 @@
                     "grantChecked": { "type": "boolean" },
                     "grantDenied": { "type": "boolean" },
                     "sebversionDenied": { "type": "boolean" },
-                    "id": { "type": "integer" },
-                    "nf": { "type": "integer", "format": "int32" },
-                    "iv": {
-                        "type": "object",
-                        "additionalProperties": { "type": "string" }
-                    },
                     "st": {
                         "type": "string",
                         "enum": [
@@ -22840,7 +22835,13 @@
                             "DISABLED"
                         ]
                     },
-                    "lat": { "type": "integer" }
+                    "iv": {
+                        "type": "object",
+                        "additionalProperties": { "type": "string" }
+                    },
+                    "lat": { "type": "integer" },
+                    "nf": { "type": "integer", "format": "int32" },
+                    "id": { "type": "integer" }
                 }
             },
             "MonitoringFullPageData": {

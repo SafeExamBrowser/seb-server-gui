@@ -300,8 +300,8 @@ export type Exam = {
     additionalAttributes?: {
         [key: string]: string;
     };
-    startURL?: string;
     description?: string;
+    startURL?: string;
 };
 
 export type ClientGroupTemplate = {
@@ -604,6 +604,11 @@ export type SessionInfo = {
     error?: string;
 };
 
+export type GroupInfo = {
+    groupName?: string;
+    numberOfSessions?: string;
+};
+
 export type ScheduledDeleteReport = {
     id?: number;
     spsId?: number;
@@ -625,7 +630,7 @@ export type ScheduledDeleteViewInfo = {
     spsExamName?: string;
     error?: string;
     errorType?: 'UNDEFINED' | 'SERVER_ERROR' | 'DATABASE_CONSTRAINT_ERROR' | 'DATA_INCONSISTENCY_ERROR' | 'EXCLUDED_FROM_DELETION';
-    spsGroups?: Array<string>;
+    spsGroups?: Array<GroupInfo>;
 };
 
 /**
@@ -1217,13 +1222,13 @@ export type ClientMonitoringDataView = {
     grantChecked?: boolean;
     grantDenied?: boolean;
     sebversionDenied?: boolean;
-    id?: number;
-    nf?: number;
+    st?: 'UNDEFINED' | 'CONNECTION_REQUESTED' | 'READY' | 'ACTIVE' | 'CLOSED' | 'DISABLED';
     iv?: {
         [key: string]: string;
     };
-    st?: 'UNDEFINED' | 'CONNECTION_REQUESTED' | 'READY' | 'ACTIVE' | 'CLOSED' | 'DISABLED';
     lat?: number;
+    nf?: number;
+    id?: number;
 };
 
 export type MonitoringFullPageData = {
@@ -2006,10 +2011,10 @@ export type ScheduledDeleteViewInfoWritable = {
     examStartTime?: number;
     numberOfSessions?: string;
     spsExamName?: string;
-    spsGroupNames?: Array<string>;
+    spsGroupNames?: Array<GroupInfo>;
     error?: string;
     errorType?: 'UNDEFINED' | 'SERVER_ERROR' | 'DATABASE_CONSTRAINT_ERROR' | 'DATA_INCONSISTENCY_ERROR' | 'EXCLUDED_FROM_DELETION';
-    spsGroups?: Array<string>;
+    spsGroups?: Array<GroupInfo>;
 };
 
 export type PageScheduledDeleteWritable = {
@@ -7888,16 +7893,16 @@ export type CreateScheduledDeleteResponses = {
 
 export type CreateScheduledDeleteResponse = CreateScheduledDeleteResponses[keyof CreateScheduledDeleteResponses];
 
-export type UnmarkIncludeData = {
+export type UnmarkExcludeData = {
     body?: unknown;
     path: {
         modelId: string;
     };
     query?: never;
-    url: '/admin-api/v1/scheduled-delete/unmark-exclude/{modelId}';
+    url: '/admin-api/v1/scheduled-delete/{modelId}/unmark-exclude';
 };
 
-export type UnmarkIncludeErrors = {
+export type UnmarkExcludeErrors = {
     /**
      * Bad request, e.g. field validation or an illegal argument. The body is usually a list of APIMessage, but may be absent for some illegal-argument cases.
      */
@@ -7924,16 +7929,16 @@ export type UnmarkIncludeErrors = {
     500: Array<ApiMessage>;
 };
 
-export type UnmarkIncludeError = UnmarkIncludeErrors[keyof UnmarkIncludeErrors];
+export type UnmarkExcludeError = UnmarkExcludeErrors[keyof UnmarkExcludeErrors];
 
-export type UnmarkIncludeResponses = {
+export type UnmarkExcludeResponses = {
     /**
      * OK
      */
     200: ScheduledDeleteReport;
 };
 
-export type UnmarkIncludeResponse = UnmarkIncludeResponses[keyof UnmarkIncludeResponses];
+export type UnmarkExcludeResponse = UnmarkExcludeResponses[keyof UnmarkExcludeResponses];
 
 export type MarkExcludeData = {
     body?: unknown;
@@ -7941,7 +7946,7 @@ export type MarkExcludeData = {
         modelId: string;
     };
     query?: never;
-    url: '/admin-api/v1/scheduled-delete/mark-exclude/{modelId}';
+    url: '/admin-api/v1/scheduled-delete/{modelId}/mark-exclude';
 };
 
 export type MarkExcludeErrors = {
