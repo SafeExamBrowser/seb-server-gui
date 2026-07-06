@@ -53,6 +53,7 @@ export const useToggleUserAccountStatusMutation = () => {
                 { queryKey: listKey() },
                 flipActiveInList(uuid, true),
             );
+            void queryClient.invalidateQueries({ queryKey: listKey() });
         },
     });
 
@@ -68,6 +69,7 @@ export const useToggleUserAccountStatusMutation = () => {
                 { queryKey: listKey() },
                 flipActiveInList(uuid, false),
             );
+            void queryClient.invalidateQueries({ queryKey: listKey() });
         },
     });
 

@@ -33,6 +33,7 @@ export const useDeleteAssessmentToolMutation = () => {
                           }
                         : page,
             );
+            void queryClient.invalidateQueries({ queryKey: listKey() });
         },
     });
 };

@@ -300,4 +300,71 @@ test.describe("05 Assessment Tools - ROW ACTIONS", () => {
 
         await assessmentTools.table.expectStatusText(row.id, "Inactive");
     });
+
+    test("H a deactivated row appears when switching to the Inactive filter", async ({
+        assessmentTools,
+    }) => {
+        const page = assessmentTools.page;
+        const row = mockRow();
+        const state = { rows: [row] };
+        const deactivateRequest = assessmentToolRowRequests.deactivate(row.id);
+
+        await page.route(/\/lms-setup\?/i, (route) => {
+            if (route.request().method() !== "GET") {
+                return route.continue();
+            }
+            const active = new URL(route.request().url()).searchParams.get(
+                "active",
+            );
+            const rows =
+                active === null
+                    ? state.rows
+                    : state.rows.filter((r) => String(r.active) === active);
+            return route.fulfill({
+                status: 200,
+                contentType: "application/json",
+                body: listResponse(rows),
+            });
+        });
+        await page.route(deactivateRequest, (route) => {
+            if (route.request().method() !== "POST") {
+                return route.continue();
+            }
+            state.rows = state.rows.map((r) =>
+                r.id === row.id ? { ...r, active: false } : r,
+            );
+            return route.fulfill({
+                status: 200,
+                contentType: "application/json",
+                body: report("DEACTIVATE"),
+            });
+        });
+
+        await assessmentTools.goto();
+        await assessmentTools.table.expectRowVisible(row.id);
+
+        await test.step("visit the Inactive filter first so its page is cached", async () => {
+            await assessmentTools.expectListRequestSucceeded(() =>
+                assessmentTools.toggleStatusFilter("Inactive"),
+            );
+            await assessmentTools.table.expectRowAbsent(row.id);
+        });
+
+        await test.step("back on the Active filter, deactivate the row", async () => {
+            await assessmentTools.expectListRequestSucceeded(() =>
+                assessmentTools.toggleStatusFilter("Active"),
+            );
+            await assessmentTools.table.expectStatusText(row.id, "Active");
+            await assessmentTools.confirmStatusChange(row.id, {
+                method: "POST",
+                request: deactivateRequest,
+            });
+        });
+
+        await test.step("the Inactive filter now shows the freshly deactivated row", async () => {
+            await assessmentTools.toggleStatusFilter("Inactive");
+            await assessmentTools.table.expectRowVisible(row.id);
+            await assessmentTools.table.expectStatusText(row.id, "Inactive");
+        });
+    });
 });

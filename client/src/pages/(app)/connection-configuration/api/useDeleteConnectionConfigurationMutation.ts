@@ -34,6 +34,7 @@ export const useDeleteConnectionConfigurationMutation = () => {
                           }
                         : page,
             );
+            void queryClient.invalidateQueries({ queryKey: listKey() });
         },
     });
 };
