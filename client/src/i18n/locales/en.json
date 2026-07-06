@@ -455,7 +455,7 @@
             "startTime": "Task Start Time",
             "endTime": "Task End Time",
             "failed": "Failed Deletions",
-            "examsInfoTitle": "Exams to be Deletion",
+            "examsInfoTitle": "Exams to be deleted",
             "examsDeleted": "Deleted Exams",
             "spsInfoTitle": "Screen Proctoring Data without Exam to be deleted",
             "deletedSPSInfo": "Deleted Screen Proctoring Data without Exam",
