@@ -120,7 +120,7 @@ export const useCreateExamStore = defineStore("createExam", () => {
                 return false;
             }
             if (step.componentName === "StepClientGroups") {
-                return clientGroupCount >= 2;
+                return clientGroupCount > 0;
             }
             return true;
         });
