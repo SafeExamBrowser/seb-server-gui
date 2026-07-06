@@ -7,7 +7,9 @@ import {
     CertKey,
     toCertificateUploadItem,
 } from "@/pages/(app)/certificate/types/types.ts";
-import { useCreateCertificate } from "@/pages/(app)/certificate/composables/api/useCreateCertificate.ts";
+import { useImportCertificateMutation } from "@/pages/(app)/certificate/api/useImportCertificateMutation.ts";
+import { CERTIFICATE_FIELD } from "@/pages/(app)/certificate/certificateFormConfig.ts";
+import { toAppErrorOrUndefined } from "@/services/errors/toAppError.ts";
 import { notify } from "@/services/notifications/notify.ts";
 
 export const useCertificateCreateForm = ({
@@ -15,11 +17,11 @@ export const useCertificateCreateForm = ({
 }: {
     onSuccess: (key: CertKey) => void;
 }) => {
-    const {
-        data: cert,
-        mutateData: uploadCertificate,
-        error: uploadError,
-    } = useCreateCertificate();
+    const { mutateAsync: uploadCertificate, error: uploadMutationError } =
+        useImportCertificateMutation();
+    const uploadError = computed(() =>
+        toAppErrorOrUndefined(uploadMutationError.value),
+    );
 
     const getEmptyItem = (): CertificateUploadItemTransient => ({
         file: undefined,
@@ -46,7 +48,7 @@ export const useCertificateCreateForm = ({
         return [
             {
                 type: "file" as const,
-                name: "file",
+                name: CERTIFICATE_FIELD.file,
                 model: file,
                 label: i18n.global.t(
                     "certificates.createDialog.fields.file.label",
@@ -60,7 +62,7 @@ export const useCertificateCreateForm = ({
             },
             {
                 type: "password" as const,
-                name: "password",
+                name: CERTIFICATE_FIELD.password,
                 model: password,
                 label: i18n.global.t(
                     "certificates.createDialog.fields.password.label",
@@ -74,24 +76,17 @@ export const useCertificateCreateForm = ({
     ): Promise<void> => {
         const item = toCertificateUploadItem(itemTransient);
 
-        await uploadCertificate({
-            file: item.file,
-            fileName: item.file.name,
-            password: item.password,
-        });
-
-        if (uploadError.value) {
+        try {
+            const cert = await uploadCertificate({
+                file: item.file,
+                password: item.password,
+            });
+            onSuccess({ id: cert.alias, name: cert.alias });
+        } catch {
             notify.serverError(uploadError.value, {
                 contextLabel: "certificate",
             });
-            return;
         }
-
-        const createdName =
-            cert.value?.alias || item.file.name.replace(/\.[^.]+$/i, "");
-        const createdId = cert.value?.alias || createdName;
-
-        onSuccess({ id: createdId, name: createdName });
     };
 
     return {

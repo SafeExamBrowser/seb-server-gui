@@ -73,14 +73,16 @@ test.describe("03 Certificates - READ Get All", () => {
     test("D shows error UI when the list request fails with 500", async ({
         certificates,
     }) => {
-        await certificates.page.route(/\/api\/certificate(?:\?|$)/i, (route) =>
-            route.fulfill({
-                status: 500,
-                contentType: "application/json",
-                body: JSON.stringify({
-                    message: "Internal Server Error (forced by Playwright)",
+        await certificates.page.route(
+            /\/admin-api\/v1\/certificate(?:\?|$)/i,
+            (route) =>
+                route.fulfill({
+                    status: 500,
+                    contentType: "application/json",
+                    body: JSON.stringify({
+                        message: "Internal Server Error (forced by Playwright)",
+                    }),
                 }),
-            }),
         );
 
         await certificates.page.goto(certificates.config.route);
@@ -129,12 +131,13 @@ test.describe("03 Certificates - READ Get All", () => {
         ).toBeVisible();
     });
 
-    test("H add button opens the upload dialog", async ({ certificates }) => {
+    test("H add button opens the upload dialog and cancel closes it", async ({
+        certificates,
+    }) => {
         await certificates.mockList(certificateRows(6));
         await certificates.goto();
-        await certificates.layout.addButton.click();
-        await expect(
-            certificates.page.getByTestId("certificates-create-dialog"),
-        ).toBeVisible();
+        await certificates.openUploadDialog();
+        await certificates.uploadDialog.cancel();
+        await certificates.uploadDialog.expectHidden();
     });
 });

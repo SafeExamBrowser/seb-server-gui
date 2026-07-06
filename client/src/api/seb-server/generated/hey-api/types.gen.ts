@@ -816,7 +816,7 @@ export type TableRowValues = {
 };
 
 export type CertificateInfo = {
-    alias?: string;
+    alias: string;
     validityFrom?: string;
     validityTo?: string;
     certType?: Array<'UNKNOWN' | 'DIGITAL_SIGNATURE' | 'DATA_ENCIPHERMENT' | 'DATA_ENCIPHERMENT_PRIVATE_KEY' | 'KEY_CERT_SIGN'>;
@@ -1217,16 +1217,16 @@ export type ClientNotification = {
 };
 
 export type ClientMonitoringDataView = {
-    pendingNotification?: boolean;
     missingPing?: boolean;
     grantChecked?: boolean;
     grantDenied?: boolean;
     sebversionDenied?: boolean;
+    pendingNotification?: boolean;
     nf?: number;
+    lat?: number;
     iv?: {
         [key: string]: string;
     };
-    lat?: number;
     st?: 'UNDEFINED' | 'CONNECTION_REQUESTED' | 'READY' | 'ACTIVE' | 'CLOSED' | 'DISABLED';
     id?: number;
 };
@@ -10540,12 +10540,19 @@ export type DeleteCertificateResponse = DeleteCertificateResponses[keyof DeleteC
 export type GetCertificatesData = {
     body?: never;
     path?: never;
-    query: {
+    query?: {
+        /**
+         * Filters certificates by alias.
+         */
+        alias?: string;
+        /**
+         * Filters certificates by certificate type.
+         */
+        type?: string;
         institutionId?: number;
         page_number?: number;
         page_size?: number;
         sort?: string;
-        allRequestParams: MultiValueMapStringStringWritable;
     };
     url: '/admin-api/v1/certificate';
 };
@@ -10589,13 +10596,20 @@ export type GetCertificatesResponses = {
 export type GetCertificatesResponse = GetCertificatesResponses[keyof GetCertificatesResponses];
 
 export type ImportCertificateData = {
-    body?: never;
+    body: Blob | File;
     headers: {
+        /**
+         * File name of the imported certificate; the extension selects PEM (.pem/.crt/.cer) or PKCS12 (.p12/.pfx).
+         */
         importFile: string;
+        /**
+         * Alias for the imported certificate; extracted from the certificate if omitted.
+         */
         alias?: string;
-        importFilePassword?: {
-            empty?: boolean;
-        };
+        /**
+         * Password used to unlock a PKCS12 keystore.
+         */
+        importFilePassword?: string;
     };
     path?: never;
     query?: {
@@ -19384,9 +19398,16 @@ export type GetAliasResponse = GetAliasResponses[keyof GetAliasResponses];
 export type GetCertificateNamesData = {
     body?: never;
     path?: never;
-    query: {
+    query?: {
+        /**
+         * Filters certificates by alias.
+         */
+        alias?: string;
+        /**
+         * Filters certificates by certificate type.
+         */
+        type?: string;
         institutionId?: number;
-        allRequestParams: MultiValueMapStringStringWritable;
     };
     url: '/admin-api/v1/certificate/names';
 };

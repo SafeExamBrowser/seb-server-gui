@@ -3505,9 +3505,9 @@ export const deleteCertificateMutation = (options?: Partial<Options<DeleteCertif
     return mutationOptions;
 };
 
-export const getCertificatesQueryKey = (options: Options<GetCertificatesData>) => createQueryKey('getCertificates', options, false, ['certificate-controller']);
+export const getCertificatesQueryKey = (options?: Options<GetCertificatesData>) => createQueryKey('getCertificates', options, false, ['certificate-controller']);
 
-export const getCertificatesOptions = (options: Options<GetCertificatesData>) => queryOptions<GetCertificatesResponse, AxiosError<GetCertificatesError>, GetCertificatesResponse, ReturnType<typeof getCertificatesQueryKey>>({
+export const getCertificatesOptions = (options?: Options<GetCertificatesData>) => queryOptions<GetCertificatesResponse, AxiosError<GetCertificatesError>, GetCertificatesResponse, ReturnType<typeof getCertificatesQueryKey>>({
     queryFn: async ({ queryKey, signal }) => {
         const { data } = await getCertificates({
             ...options,
@@ -3520,9 +3520,9 @@ export const getCertificatesOptions = (options: Options<GetCertificatesData>) =>
     queryKey: getCertificatesQueryKey(options)
 });
 
-export const getCertificatesGetQueryData = (queryClient: QueryClient, options: Options<GetCertificatesData>) => queryClient.getQueryData<GetCertificatesResponse>(getCertificatesOptions(options).queryKey);
+export const getCertificatesGetQueryData = (queryClient: QueryClient, options: Options<GetCertificatesData> | undefined) => queryClient.getQueryData<GetCertificatesResponse>(getCertificatesOptions(options).queryKey);
 
-export const getCertificatesSetQueryData = (queryClient: QueryClient, options: Options<GetCertificatesData>, updater: GetCertificatesResponse | undefined | ((old: GetCertificatesResponse | undefined) => GetCertificatesResponse | undefined)) => queryClient.setQueryData(getCertificatesOptions(options).queryKey, updater);
+export const getCertificatesSetQueryData = (queryClient: QueryClient, options: Options<GetCertificatesData> | undefined, updater: GetCertificatesResponse | undefined | ((old: GetCertificatesResponse | undefined) => GetCertificatesResponse | undefined)) => queryClient.setQueryData(getCertificatesOptions(options).queryKey, updater);
 
 export const importCertificateMutation = (options?: Partial<Options<ImportCertificateData>>): UseMutationOptions<ImportCertificateResponse, AxiosError<ImportCertificateError>, Options<ImportCertificateData>> => {
     const mutationOptions: UseMutationOptions<ImportCertificateResponse, AxiosError<ImportCertificateError>, Options<ImportCertificateData>> = {
@@ -8138,9 +8138,9 @@ export const getAliasGetQueryData = (queryClient: QueryClient, options: Options<
 
 export const getAliasSetQueryData = (queryClient: QueryClient, options: Options<GetAliasData>, updater: GetAliasResponse | undefined | ((old: GetAliasResponse | undefined) => GetAliasResponse | undefined)) => queryClient.setQueryData(getAliasOptions(options).queryKey, updater);
 
-export const getCertificateNamesQueryKey = (options: Options<GetCertificateNamesData>) => createQueryKey('getCertificateNames', options, false, ['certificate-controller']);
+export const getCertificateNamesQueryKey = (options?: Options<GetCertificateNamesData>) => createQueryKey('getCertificateNames', options, false, ['certificate-controller']);
 
-export const getCertificateNamesOptions = (options: Options<GetCertificateNamesData>) => queryOptions<GetCertificateNamesResponse, AxiosError<GetCertificateNamesError>, GetCertificateNamesResponse, ReturnType<typeof getCertificateNamesQueryKey>>({
+export const getCertificateNamesOptions = (options?: Options<GetCertificateNamesData>) => queryOptions<GetCertificateNamesResponse, AxiosError<GetCertificateNamesError>, GetCertificateNamesResponse, ReturnType<typeof getCertificateNamesQueryKey>>({
     queryFn: async ({ queryKey, signal }) => {
         const { data } = await getCertificateNames({
             ...options,
@@ -8153,9 +8153,9 @@ export const getCertificateNamesOptions = (options: Options<GetCertificateNamesD
     queryKey: getCertificateNamesQueryKey(options)
 });
 
-export const getCertificateNamesGetQueryData = (queryClient: QueryClient, options: Options<GetCertificateNamesData>) => queryClient.getQueryData<GetCertificateNamesResponse>(getCertificateNamesOptions(options).queryKey);
+export const getCertificateNamesGetQueryData = (queryClient: QueryClient, options: Options<GetCertificateNamesData> | undefined) => queryClient.getQueryData<GetCertificateNamesResponse>(getCertificateNamesOptions(options).queryKey);
 
-export const getCertificateNamesSetQueryData = (queryClient: QueryClient, options: Options<GetCertificateNamesData>, updater: GetCertificateNamesResponse | undefined | ((old: GetCertificateNamesResponse | undefined) => GetCertificateNamesResponse | undefined)) => queryClient.setQueryData(getCertificateNamesOptions(options).queryKey, updater);
+export const getCertificateNamesSetQueryData = (queryClient: QueryClient, options: Options<GetCertificateNamesData> | undefined, updater: GetCertificateNamesResponse | undefined | ((old: GetCertificateNamesResponse | undefined) => GetCertificateNamesResponse | undefined)) => queryClient.setQueryData(getCertificateNamesOptions(options).queryKey, updater);
 
 /**
  * Deletes a single entity (and all its dependencies) by its modelId.

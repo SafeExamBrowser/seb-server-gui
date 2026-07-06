@@ -2169,7 +2169,7 @@ export const deleteCertificate = <ThrowOnError extends boolean = true>(options?:
     }
 });
 
-export const getCertificates = <ThrowOnError extends boolean = true>(options: Options<GetCertificatesData, ThrowOnError>) => (options.client ?? client).get<GetCertificatesResponses, GetCertificatesErrors, ThrowOnError>({
+export const getCertificates = <ThrowOnError extends boolean = true>(options?: Options<GetCertificatesData, ThrowOnError>) => (options?.client ?? client).get<GetCertificatesResponses, GetCertificatesErrors, ThrowOnError>({
     responseType: 'json',
     security: [{ scheme: 'bearer', type: 'http' }],
     url: '/admin-api/v1/certificate',
@@ -2177,10 +2177,15 @@ export const getCertificates = <ThrowOnError extends boolean = true>(options: Op
 });
 
 export const importCertificate = <ThrowOnError extends boolean = true>(options: Options<ImportCertificateData, ThrowOnError>) => (options.client ?? client).post<ImportCertificateResponses, ImportCertificateErrors, ThrowOnError>({
+    bodySerializer: null,
     responseType: 'json',
     security: [{ scheme: 'bearer', type: 'http' }],
     url: '/admin-api/v1/certificate',
-    ...options
+    ...options,
+    headers: {
+        'Content-Type': 'application/octet-stream',
+        ...options.headers
+    }
 });
 
 export const archive = <ThrowOnError extends boolean = true>(options: Options<ArchiveData, ThrowOnError>) => (options.client ?? client).patch<ArchiveResponses, ArchiveErrors, ThrowOnError>({
@@ -4125,7 +4130,7 @@ export const getAlias = <ThrowOnError extends boolean = true>(options: Options<G
     ...options
 });
 
-export const getCertificateNames = <ThrowOnError extends boolean = true>(options: Options<GetCertificateNamesData, ThrowOnError>) => (options.client ?? client).get<GetCertificateNamesResponses, GetCertificateNamesErrors, ThrowOnError>({
+export const getCertificateNames = <ThrowOnError extends boolean = true>(options?: Options<GetCertificateNamesData, ThrowOnError>) => (options?.client ?? client).get<GetCertificateNamesResponses, GetCertificateNamesErrors, ThrowOnError>({
     responseType: 'json',
     security: [{ scheme: 'bearer', type: 'http' }],
     url: '/admin-api/v1/certificate/names',

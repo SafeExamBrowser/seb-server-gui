@@ -1,6 +1,7 @@
 import { computed } from "vue";
 import { translate } from "@/utils/generalUtils.ts";
 import { formatIsoToReadableDateTime } from "@/utils/timeUtils.ts";
+import { CERTIFICATE_COLUMN } from "@/pages/(app)/certificate/certificateListConfig.ts";
 import type {
     TableHeader,
     CellFormatter,
@@ -12,7 +13,7 @@ export function useCertificatesTableHeaders() {
             title: translate(
                 "certificates.certificateTableHeaders.tableHeaderAlias",
             ),
-            key: "alias",
+            key: CERTIFICATE_COLUMN.alias,
             width: "20%",
             sortable: true,
         },
@@ -20,7 +21,7 @@ export function useCertificatesTableHeaders() {
             title: translate(
                 "certificates.certificateTableHeaders.tableHeaderValidFrom",
             ),
-            key: "validityFrom",
+            key: CERTIFICATE_COLUMN.validityFrom,
             width: "20%",
             sortable: false,
         },
@@ -28,7 +29,7 @@ export function useCertificatesTableHeaders() {
             title: translate(
                 "certificates.certificateTableHeaders.tableHeaderValidTo",
             ),
-            key: "validityTo",
+            key: CERTIFICATE_COLUMN.validityTo,
             width: "20%",
             sortable: false,
         },
@@ -37,17 +38,17 @@ export function useCertificatesTableHeaders() {
                 "certificates.certificateTableHeaders.tableHeaderTypes",
             ),
             width: "25%",
-            key: "certType",
+            key: CERTIFICATE_COLUMN.certType,
             sortable: false,
         },
     ]);
 
     const cellFormatters: Record<string, CellFormatter> = {
-        validityFrom: (value) =>
+        [CERTIFICATE_COLUMN.validityFrom]: (value) =>
             value ? formatIsoToReadableDateTime(String(value)) : "",
-        validityTo: (value) =>
+        [CERTIFICATE_COLUMN.validityTo]: (value) =>
             value ? formatIsoToReadableDateTime(String(value)) : "",
-        certType: (value) => {
+        [CERTIFICATE_COLUMN.certType]: (value) => {
             if (!Array.isArray(value) || value.length === 0) return "";
             return value
                 .map((type) => translate(`certificates.types.${String(type)}`))

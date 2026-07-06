@@ -8,7 +8,6 @@ import {
     OptionalParGetExams,
     OptionalParGetMonitoringClientLogs,
 } from "@/models/seb-server/optionalParamters";
-import { OptionalParGetCertificates } from "@/models/seb-server/certificate";
 import { OptionalParSearchSessions } from "@/models/screen-proctoring/optionalParamters";
 import { BasicListParams, SortOrder } from "@/services/types";
 import router from "@/router/router";
@@ -152,28 +151,6 @@ export function assignClientLogDetailsPagingOptions(
     }
 
     return optionalParGetMonitoringClientLogs;
-}
-
-export function assignCertificateSelectPagingOptions(
-    serverTablePaging: ServerTablePaging,
-
-    alias: string | undefined,
-): OptionalParGetCertificates {
-    const opt: OptionalParGetCertificates = {};
-
-    opt.page_size = serverTablePaging.itemsPerPage;
-    opt.page_number = serverTablePaging.page;
-
-    if (serverTablePaging.sortBy?.length) {
-        let sortString = serverTablePaging.sortBy[0].key;
-        if (serverTablePaging.sortBy[0].order === "desc")
-            sortString = "-" + sortString;
-        opt.sort = sortString;
-    }
-    if (alias && alias !== "") {
-        opt.alias = alias;
-    }
-    return opt;
 }
 
 const sortOrderToSortString = (sortOrder: SortOrder): string => {

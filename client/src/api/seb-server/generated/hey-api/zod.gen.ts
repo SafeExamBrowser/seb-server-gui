@@ -970,7 +970,7 @@ export const zTableRowValues = z.object({
 });
 
 export const zCertificateInfo = z.object({
-    alias: z.string().optional(),
+    alias: z.string(),
     validityFrom: z.iso.datetime().optional(),
     validityTo: z.iso.datetime().optional(),
     certType: z.array(z.enum([
@@ -1280,14 +1280,14 @@ export const zClientNotification = z.object({
 });
 
 export const zClientMonitoringDataView = z.object({
-    pendingNotification: z.boolean().optional(),
     missingPing: z.boolean().optional(),
     grantChecked: z.boolean().optional(),
     grantDenied: z.boolean().optional(),
     sebversionDenied: z.boolean().optional(),
+    pendingNotification: z.boolean().optional(),
     nf: z.int().min(-2147483648, { error: 'Invalid value: Expected int32 to be >= -2147483648' }).max(2147483647, { error: 'Invalid value: Expected int32 to be <= 2147483647' }).optional(),
-    iv: z.record(z.string(), z.string()).optional(),
     lat: z.int().optional(),
+    iv: z.record(z.string(), z.string()).optional(),
     st: z.enum([
         'UNDEFINED',
         'CONNECTION_REQUESTED',
@@ -3700,11 +3700,12 @@ export const zDeleteCertificateBody = z.object({
 export const zDeleteCertificateResponse = z.array(zEntityKey);
 
 export const zGetCertificatesQuery = z.object({
+    alias: z.string().optional(),
+    type: z.string().optional(),
     institutionId: z.int().optional(),
     page_number: z.int().min(-2147483648, { error: 'Invalid value: Expected int32 to be >= -2147483648' }).max(2147483647, { error: 'Invalid value: Expected int32 to be <= 2147483647' }).optional(),
     page_size: z.int().min(-2147483648, { error: 'Invalid value: Expected int32 to be >= -2147483648' }).max(2147483647, { error: 'Invalid value: Expected int32 to be <= 2147483647' }).optional(),
-    sort: z.string().optional(),
-    allRequestParams: zMultiValueMapStringStringWritable
+    sort: z.string().optional()
 });
 
 /**
@@ -3712,12 +3713,12 @@ export const zGetCertificatesQuery = z.object({
  */
 export const zGetCertificatesResponse = zPageCertificateInfo;
 
+export const zImportCertificateBody = z.string();
+
 export const zImportCertificateHeaders = z.object({
     importFile: z.string(),
     alias: z.string().optional(),
-    importFilePassword: z.object({
-        empty: z.boolean().optional()
-    }).optional()
+    importFilePassword: z.string().optional()
 });
 
 export const zImportCertificateQuery = z.object({
@@ -5756,8 +5757,9 @@ export const zGetAliasQuery = z.object({
 export const zGetAliasResponse = zCertificateInfo;
 
 export const zGetCertificateNamesQuery = z.object({
-    institutionId: z.int().optional(),
-    allRequestParams: zMultiValueMapStringStringWritable
+    alias: z.string().optional(),
+    type: z.string().optional(),
+    institutionId: z.int().optional()
 });
 
 /**

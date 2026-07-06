@@ -9191,6 +9191,18 @@
                 "operationId": "getCertificates",
                 "parameters": [
                     {
+                        "name": "alias",
+                        "in": "query",
+                        "description": "Filters certificates by alias.",
+                        "schema": { "type": "string" }
+                    },
+                    {
+                        "name": "type",
+                        "in": "query",
+                        "description": "Filters certificates by certificate type.",
+                        "schema": { "type": "string" }
+                    },
+                    {
                         "name": "institutionId",
                         "in": "query",
                         "required": false,
@@ -9213,14 +9225,6 @@
                         "in": "query",
                         "required": false,
                         "schema": { "type": "string" }
-                    },
-                    {
-                        "name": "allRequestParams",
-                        "in": "query",
-                        "required": true,
-                        "schema": {
-                            "$ref": "#/components/schemas/MultiValueMapStringString"
-                        }
                     }
                 ],
                 "responses": {
@@ -9268,25 +9272,33 @@
                     {
                         "name": "importFile",
                         "in": "header",
+                        "description": "File name of the imported certificate; the extension selects PEM (.pem/.crt/.cer) or PKCS12 (.p12/.pfx).",
                         "required": true,
                         "schema": { "type": "string" }
                     },
                     {
                         "name": "alias",
                         "in": "header",
+                        "description": "Alias for the imported certificate; extracted from the certificate if omitted.",
                         "required": false,
                         "schema": { "type": "string" }
                     },
                     {
                         "name": "importFilePassword",
                         "in": "header",
+                        "description": "Password used to unlock a PKCS12 keystore.",
                         "required": false,
-                        "schema": {
-                            "type": "object",
-                            "properties": { "empty": { "type": "boolean" } }
-                        }
+                        "schema": { "type": "string" }
                     }
                 ],
+                "requestBody": {
+                    "content": {
+                        "application/octet-stream": {
+                            "schema": { "type": "string", "format": "binary" }
+                        }
+                    },
+                    "required": true
+                },
                 "responses": {
                     "200": {
                         "description": "OK",
@@ -18826,18 +18838,22 @@
                 "operationId": "getCertificateNames",
                 "parameters": [
                     {
+                        "name": "alias",
+                        "in": "query",
+                        "description": "Filters certificates by alias.",
+                        "schema": { "type": "string" }
+                    },
+                    {
+                        "name": "type",
+                        "in": "query",
+                        "description": "Filters certificates by certificate type.",
+                        "schema": { "type": "string" }
+                    },
+                    {
                         "name": "institutionId",
                         "in": "query",
                         "required": false,
                         "schema": { "type": "integer" }
-                    },
-                    {
-                        "name": "allRequestParams",
-                        "in": "query",
-                        "required": true,
-                        "schema": {
-                            "$ref": "#/components/schemas/MultiValueMapStringString"
-                        }
                     }
                 ],
                 "responses": {
@@ -22159,7 +22175,8 @@
                             ]
                         }
                     }
-                }
+                },
+                "required": ["alias"]
             },
             "TemplateAttribute": {
                 "type": "object",
@@ -22840,17 +22857,17 @@
             "ClientMonitoringDataView": {
                 "type": "object",
                 "properties": {
-                    "pendingNotification": { "type": "boolean" },
                     "missingPing": { "type": "boolean" },
                     "grantChecked": { "type": "boolean" },
                     "grantDenied": { "type": "boolean" },
                     "sebversionDenied": { "type": "boolean" },
+                    "pendingNotification": { "type": "boolean" },
                     "nf": { "type": "integer", "format": "int32" },
+                    "lat": { "type": "integer" },
                     "iv": {
                         "type": "object",
                         "additionalProperties": { "type": "string" }
                     },
-                    "lat": { "type": "integer" },
                     "st": {
                         "type": "string",
                         "enum": [

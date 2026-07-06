@@ -3,8 +3,9 @@ import { useCertificatesTableHeaders } from "./useCertificateTableHeaders.ts";
 import { useCertificatesTableActions } from "./useCertificatesTableActions.ts";
 import { useCertificateCreateForm } from "./useCertificateCreateForm.ts";
 import { useCertificatesList } from "./useCertificatesList.ts";
-import { useDeleteCertificate } from "./api/useDeleteCertificate.ts";
+import { useDeleteCertificateMutation } from "@/pages/(app)/certificate/api/useDeleteCertificateMutation.ts";
 import { useEntityDeleteFlow } from "@/components/widgets/entity-table/composables/useEntityDeleteFlow.ts";
+import { toAppErrorOrUndefined } from "@/services/errors/toAppError.ts";
 
 export const useCertificatesOverview = () => {
     const { headers, cellFormatters } = useCertificatesTableHeaders();
@@ -12,13 +13,22 @@ export const useCertificatesOverview = () => {
     const list = useCertificatesList();
 
     const {
-        removeCertificateFromItem,
-        error: deleteError,
-        loading: deleteLoading,
-    } = useDeleteCertificate();
+        mutateAsync: removeCertificate,
+        error: deleteMutationError,
+        isPending: deleteLoading,
+    } = useDeleteCertificateMutation();
+    const deleteError = computed(() =>
+        toAppErrorOrUndefined(deleteMutationError.value),
+    );
 
     const deleteFlow = useEntityDeleteFlow({
-        remove: removeCertificateFromItem,
+        remove: async (item) => {
+            try {
+                await removeCertificate(String(item.alias));
+            } catch {
+                /* empty */
+            }
+        },
         error: deleteError,
         loading: deleteLoading,
         contextLabel: "certificate",
