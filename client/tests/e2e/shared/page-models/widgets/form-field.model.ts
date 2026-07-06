@@ -7,7 +7,14 @@ export type FormFieldType =
     | "textarea"
     | "number"
     | "select"
-    | "switch";
+    | "switch"
+    | "file";
+
+export type FormFieldFile = {
+    name: string;
+    mimeType: string;
+    buffer: Buffer;
+};
 
 export class FormFieldModel {
     readonly page: Page;
@@ -37,6 +44,10 @@ export class FormFieldModel {
     async toggle() {
         // Vuetify's v-switch renders an <input type="checkbox"> (role "checkbox", not "switch").
         await this.root.getByRole("checkbox").click();
+    }
+
+    async setFile(file: FormFieldFile) {
+        await this.root.locator('input[type="file"]').setInputFiles(file);
     }
 
     async set(value: string) {
