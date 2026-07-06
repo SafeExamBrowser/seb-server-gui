@@ -32,6 +32,11 @@
                     v-model="isValid"
                     :fields="formFields"
                     :form-id="formId"
+                    :data-testid="
+                        dataTestId
+                            ? `${dataTestId}-create-dialog-form`
+                            : undefined
+                    "
                     @submit="handleFormSubmit"
                 />
                 <v-alert
@@ -54,6 +59,11 @@
                 <v-btn
                     :text="labelCancel"
                     :disabled="submitting"
+                    :data-testid="
+                        dataTestId
+                            ? `${dataTestId}-create-dialog-cancel-button`
+                            : undefined
+                    "
                     @click="handleCancelClick"
                 ></v-btn>
                 <v-btn
@@ -62,6 +72,11 @@
                     :form="formId"
                     :text="labelSubmit"
                     :disabled="!isValid || submitting"
+                    :data-testid="
+                        dataTestId
+                            ? `${dataTestId}-create-dialog-submit-button`
+                            : undefined
+                    "
                 ></v-btn>
             </template>
         </v-card>

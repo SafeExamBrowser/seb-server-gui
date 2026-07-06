@@ -1,8 +1,7 @@
-import { computed } from "vue";
-import { useFetch } from "@/composables/useFetch.ts";
-import { getCertificates } from "@/services/seb-server/certificateService.ts";
+import { computed, ref } from "vue";
 import i18n from "@/i18n";
-import type { Certificate } from "@/models/seb-server/certificate.ts";
+import { useCertificatesQuery } from "@/pages/(app)/certificate/api/useCertificatesQuery.ts";
+import type { GetCertificatesData } from "@/api/seb-server/generated/hey-api/types.gen.ts";
 
 export const useCertificates = () => {
     const uploadOption = {
@@ -10,26 +9,30 @@ export const useCertificates = () => {
         value: "__UPLOAD__",
     };
 
-    const { data, loading, error, fetchData } = useFetch(
-        () => getCertificates({ page_number: 1, page_size: 500 }),
-        { immediate: true },
-    );
+    const query = ref<GetCertificatesData["query"]>({
+        page_number: 1,
+        page_size: 500,
+    });
+    const { data, isFetching, refetch } = useCertificatesQuery(query);
 
     const certificateItems = computed(() => {
-        const certs = (data.value?.content ?? []).map((c: Certificate) => ({
-            label: c.alias,
-            value: c.alias,
+        const certs = (data.value?.content ?? []).map((cert) => ({
+            label: cert.alias,
+            value: cert.alias,
         }));
         return [uploadOption, ...certs];
     });
 
     const hasRealCerts = () => certificateItems.value.length > 1;
 
+    const loadCertificates = async () => {
+        await refetch();
+    };
+
     return {
         certificateItems,
-        loading,
-        error,
-        loadCertificates: fetchData,
+        loading: isFetching,
+        loadCertificates,
         hasRealCerts,
     };
 };
