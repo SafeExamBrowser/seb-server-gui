@@ -1,5 +1,5 @@
 import * as apiService from "@/services/apiService";
-import { type AuthData, authDataSchema } from "@/services/types";
+import { type AuthData, authDataSchema, AutoLoginData } from "@/services/types";
 
 export const authorize = async ({
     userName,
@@ -74,4 +74,20 @@ export const logout = async () => {
             options: { _authType: "sps" },
         }),
     ]);
+};
+
+export const verifyOneTimeToken = async (
+    token: string,
+): Promise<AutoLoginData> => {
+    return (
+        await apiService.postRequest({
+            url: "/oauth/jwttoken/verify",
+            options: {
+                headers: {
+                    "one-time-token-to-verify": token,
+                },
+                _skipErrorToast: true,
+            },
+        })
+    ).data;
 };

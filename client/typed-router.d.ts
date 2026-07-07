@@ -339,6 +339,7 @@ declare module 'vue-router/auto-routes' {
       Record<never, never>,
       Record<never, never>,
       | '/(public)/login/'
+      | '/(public)/login/[jwt]/'
       | '/(public)/register/'
     >,
     '/(public)/login/': RouteRecordInfo<
@@ -346,6 +347,13 @@ declare module 'vue-router/auto-routes' {
       '/login',
       Record<never, never>,
       Record<never, never>,
+      | never
+    >,
+    '/(public)/login/[jwt]/': RouteRecordInfo<
+      '/(public)/login/[jwt]/',
+      '/login/:jwt',
+      { jwt: ParamValue<true> },
+      { jwt: ParamValue<false> },
       | never
     >,
     '/(public)/register/': RouteRecordInfo<
@@ -713,6 +721,7 @@ declare module 'vue-router/auto-routes' {
       routes:
         | '/(public)'
         | '/(public)/login/'
+        | '/(public)/login/[jwt]/'
         | '/(public)/register/'
       views:
         | 'default'
@@ -722,6 +731,14 @@ declare module 'vue-router/auto-routes' {
     'src/pages/(public)/login/index.vue': {
       routes:
         | '/(public)/login/'
+      views:
+        | never
+      pathParamNames:
+        | never
+    }
+    'src/pages/(public)/login/[jwt]/index.vue': {
+      routes:
+        | '/(public)/login/[jwt]/'
       views:
         | never
       pathParamNames:

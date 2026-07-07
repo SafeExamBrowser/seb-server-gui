@@ -140,6 +140,16 @@ guiComponents.set(
     ]),
 );
 
+guiComponents.set(
+    "TEACHER",
+    new Set<GUIComponent>([
+        GUIComponent.RunningExams,
+        GUIComponent.ScreenProctoring,
+        GUIComponent.ScreenProctoringSearch,
+        GUIComponent.ScreenProctoringApplicationSearch,
+    ]),
+);
+
 // --- GUI Action Privileges -----------------------
 
 // // --- SEB_SERVER_ADMIN action privileges
@@ -218,6 +228,7 @@ guiActions.set(
         GUIAction.ApplyTestRun,
         GUIAction.DisableTestRun,
         GUIAction.ViewASKSettings,
+        GUIAction.ShowMonitoring,
     ]),
 );
 

@@ -13,7 +13,7 @@ const prepareProxyRequest = ({
   basicAuthUsername: string;
   basicAuthPassword: string;
 }) => {
-  if (req.url === "/oauth/token") {
+  if (req.url === "/oauth/token" || req.url === "/oauth/jwttoken/verify") {
     // /oauth/token requests are secured with basic auth
     req.headers.authorization = `Basic ${Buffer.from(`${basicAuthUsername}:${basicAuthPassword}`).toString("base64")}`;
     return req;

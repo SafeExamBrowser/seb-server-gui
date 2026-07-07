@@ -1,3 +1,4 @@
+import { EntityKey } from "@/api/seb-server/generated/hey-api";
 import { AxiosRequestConfig } from "axios";
 import { z } from "zod";
 
@@ -41,4 +42,15 @@ export type BasicListParams = {
     pageNumber?: number;
     pageSize?: number;
     sortOrder?: SortOrder;
+};
+
+export type AutoLoginForward = {
+    entityKey: EntityKey;
+    actionName: string;
+};
+
+export type AutoLoginData = {
+    username: string;
+    userUUID: string;
+    redirect: AutoLoginForward;
 };
