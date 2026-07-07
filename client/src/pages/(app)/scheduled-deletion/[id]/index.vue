@@ -40,9 +40,9 @@
                         </template>
 
                         <div
-                            class="pa-3"
                             v-for="(info, index) in report.deletionErrors"
                             :key="index"
+                            class="pa-3"
                         >
                             <v-row v-if="info.examName" class="ma-0">
                                 <b>
@@ -116,9 +116,9 @@
                             </template>
 
                             <div
-                                class="pa-3"
                                 v-for="(info, index) in report.examDeletions"
                                 :key="index"
+                                class="pa-3"
                             >
                                 <v-row v-if="info.examName" class="ma-0">
                                     <b>
@@ -172,9 +172,9 @@
                         </template>
 
                         <div
-                            class="pa-3"
                             v-for="(info, index) in report.spsDeletions"
                             :key="index"
+                            class="pa-3"
                         >
                             <v-row v-if="info.spsExamName" class="ma-0">
                                 <b>
