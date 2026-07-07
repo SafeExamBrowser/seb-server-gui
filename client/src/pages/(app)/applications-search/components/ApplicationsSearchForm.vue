@@ -3,7 +3,7 @@
         class="d-flex flex-column h-100"
         :data-testid="`${dataTestId}-filters-container`"
         @keyup.enter="handleSearch"
-        @keyup.esc="handleReset"
+        @keydown.esc="handleEscape"
     >
         <!------------ header ------------->
         <div
@@ -50,10 +50,14 @@
                     :color="isPeriod ? 'blue-lighten-5' : undefined"
                     :class="{ 'opacity-60': !isPeriod }"
                 >
-                    <v-radio value="period">
+                    <v-radio
+                        value="period"
+                        @pointerdown="handleRadioPointerdown"
+                        @click="handleRadioClick('period')"
+                    >
                         <template #label>
                             <span
-                                class="text-caption text-uppercase font-weight-bold text-high-emphasis"
+                                class="text-body-small text-uppercase font-weight-bold text-high-emphasis"
                             >
                                 {{ $t("searchForm.period") }}
                             </span>
@@ -61,7 +65,7 @@
                     </v-radio>
 
                     <div class="d-flex align-center ga-2 mt-2">
-                        <span class="text-body-2 font-weight-medium">
+                        <span class="text-body-small font-weight-medium">
                             {{ $t("searchForm.last") }}
                         </span>
                         <v-text-field
@@ -97,10 +101,14 @@
                     :color="isBetween ? 'blue-lighten-5' : undefined"
                     :class="{ 'opacity-60': !isBetween }"
                 >
-                    <v-radio value="between">
+                    <v-radio
+                        value="between"
+                        @pointerdown="handleRadioPointerdown"
+                        @click="handleRadioClick('between')"
+                    >
                         <template #label>
                             <span
-                                class="text-caption text-uppercase font-weight-bold text-high-emphasis"
+                                class="text-body-small text-uppercase font-weight-bold text-high-emphasis"
                             >
                                 {{ $t("searchForm.between") }}
                             </span>
@@ -109,7 +117,7 @@
 
                     <!-- From: start date + start time -->
                     <div
-                        class="d-flex align-center ga-1 text-caption text-uppercase font-weight-bold text-medium-emphasis mt-3 mb-1"
+                        class="d-flex align-center ga-1 text-body-small text-uppercase font-weight-bold text-medium-emphasis mt-3 mb-1"
                     >
                         <v-icon
                             icon="mdi-calendar-outline"
@@ -139,6 +147,7 @@
                                 >
                                     <v-date-picker
                                         v-model="fromDate"
+                                        color="primary"
                                         hide-header
                                         show-adjacent-months
                                         @update:model-value="
@@ -168,6 +177,7 @@
                                 >
                                     <v-time-picker
                                         v-model="fromTime"
+                                        color="primary"
                                         format="24hr"
                                     />
                                 </v-menu>
@@ -179,7 +189,7 @@
 
                     <!-- To: end date + end time -->
                     <div
-                        class="d-flex align-center ga-1 text-caption text-uppercase font-weight-bold text-medium-emphasis mb-1"
+                        class="d-flex align-center ga-1 text-body-small text-uppercase font-weight-bold text-medium-emphasis mb-1"
                     >
                         <v-icon
                             icon="mdi-calendar-clock"
@@ -209,6 +219,7 @@
                                 >
                                     <v-date-picker
                                         v-model="toDate"
+                                        color="primary"
                                         hide-header
                                         show-adjacent-months
                                         @update:model-value="toDateMenu = false"
@@ -236,6 +247,7 @@
                                 >
                                     <v-time-picker
                                         v-model="toTime"
+                                        color="primary"
                                         format="24hr"
                                     />
                                 </v-menu>
@@ -254,6 +266,7 @@
                 variant="flat"
                 block
                 class="text-none"
+                :disabled="!mode"
                 :data-testid="`${dataTestId}-search-button`"
                 @click="handleSearch"
             >
@@ -265,7 +278,7 @@
 </template>
 
 <script setup lang="ts">
-import { computed, onMounted, ref } from "vue";
+import { computed, ref } from "vue";
 import { useI18n } from "vue-i18n";
 import * as timeUtils from "@/utils/timeUtils";
 import type { ApplicationsSearchQuery } from "@/pages/(app)/applications-search/types";
@@ -285,7 +298,14 @@ const emit = defineEmits<{
 const { t } = useI18n();
 
 // form state (mirrors the previous Period / Between search form)
-const mode = ref<"period" | "between">("period");
+type SearchMode = "period" | "between";
+
+// No filter is selected initially; the user opts into "period" or "between".
+const mode = ref<SearchMode>();
+// The active mode captured before a radio interaction, so re-clicking the
+// selected option can de-select it (radios can't natively be cleared).
+let modeBeforeRadioClick: SearchMode | undefined;
+
 const timePeriodField = ref<number>(1);
 const timePeriodSelect = ref<number>(4);
 
@@ -303,17 +323,20 @@ const toTimeMenu = ref<boolean>(false);
 const isPeriod = computed(() => mode.value === "period");
 const isBetween = computed(() => mode.value === "between");
 
+const isPickerOpen = computed(
+    () =>
+        fromDateMenu.value ||
+        fromTimeMenu.value ||
+        toDateMenu.value ||
+        toTimeMenu.value,
+);
+
 const unitItems = computed(() => [
     { title: t("timePeriod.day"), value: 1 },
     { title: t("timePeriod.week"), value: 2 },
     { title: t("timePeriod.month"), value: 3 },
     { title: t("timePeriod.year"), value: 4 },
 ]);
-
-onMounted(() => {
-    // preserve the previous behaviour of searching immediately on load
-    handleSearch();
-});
 
 function buildSummary(fromTime: string, toTime: string): string {
     if (isPeriod.value) {
@@ -361,6 +384,10 @@ function computeBetweenRange(): [string, string] {
 }
 
 function handleSearch() {
+    if (!mode.value) {
+        return;
+    }
+
     const [fromTimestamp, toTimestamp] = isPeriod.value
         ? timeUtils.calcTimePeriod(
               timePeriodSelect.value,
@@ -375,14 +402,37 @@ function handleSearch() {
     });
 }
 
+function handleRadioPointerdown() {
+    modeBeforeRadioClick = mode.value;
+}
+
+function handleRadioClick(value: SearchMode) {
+    if (modeBeforeRadioClick === value) {
+        mode.value = undefined;
+    }
+}
+
+function handleEscape() {
+    if (isPickerOpen.value) {
+        return;
+    }
+    handleReset();
+    mode.value = undefined;
+}
+
 function handleReset() {
-    mode.value = "period";
+    mode.value = undefined;
     timePeriodField.value = 1;
-    timePeriodSelect.value = 2;
+    timePeriodSelect.value = 4;
     fromDate.value = undefined;
     fromTime.value = "00:00";
     toDate.value = undefined;
-    toTime.value = "23:59";
-    handleSearch();
+    toTime.value = "00:00";
 }
 </script>
+
+<style scoped>
+:deep(.v-field__input) {
+    font-size: 0.8125rem;
+}
+</style>
