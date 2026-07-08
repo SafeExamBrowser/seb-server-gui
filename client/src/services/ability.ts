@@ -143,6 +143,7 @@ guiComponents.set(
 guiComponents.set(
     "TEACHER",
     new Set<GUIComponent>([
+        GUIComponent.Exams,
         GUIComponent.RunningExams,
         GUIComponent.ScreenProctoring,
         GUIComponent.ScreenProctoringSearch,
