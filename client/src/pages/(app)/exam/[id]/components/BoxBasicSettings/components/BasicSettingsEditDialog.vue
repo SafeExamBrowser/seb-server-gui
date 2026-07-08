@@ -1,0 +1,144 @@
+<template>
+    <v-btn
+        class="text-none"
+        color="primary"
+        variant="text"
+        density="compact"
+        :title="$t('examDetail.boxes.basicSettings.title')"
+        :aria-label="$t('examDetail.boxes.basicSettings.title')"
+        @click="handleButtonEditClick"
+        :disabled="editDisabled.value"
+    >
+        <v-icon icon="mdi-pencil" size="x-small" />
+    </v-btn>
+
+    <v-dialog v-model="dialogOpen" :max-width="thresholds.sm">
+        <v-card>
+            <v-card-title>
+                {{ $t("examDetail.boxes.basicSettings.title") }}
+            </v-card-title>
+            <v-card-text>
+                <LoadingFallbackComponent :loading="loading" :errors="errors">
+                    <FormBuilder v-model="formReady" :fields="formFields" />
+                </LoadingFallbackComponent>
+            </v-card-text>
+            <v-card-actions>
+                <v-spacer />
+                <v-btn @click="handleButtonCancelClick">
+                    {{ $t("general.cancelButton") }}
+                </v-btn>
+                <v-btn
+                    color="primary"
+                    :disabled="!formReady"
+                    @click="handleButtonSaveClick"
+                >
+                    {{ $t("general.saveButton") }}
+                </v-btn>
+            </v-card-actions>
+        </v-card>
+    </v-dialog>
+</template>
+
+<script setup lang="ts">
+import { computed, Ref, ref } from "vue";
+import FormBuilder from "@/components/widgets/formBuilder/FormBuilder.vue";
+import LoadingFallbackComponent from "@/components/widgets/loadingFallbackComponent/LoadingFallbackComponent.vue";
+import {
+    ExamTypeEnum,
+    toApiExamType,
+    toSelectableExamType,
+} from "@/models/seb-server/examFiltersEnum.ts";
+import { useExamBasicSettingsFields } from "@/pages/(app)/exam/[id]/components/BoxBasicSettings/composables/useExamBasicSettingsFields";
+import { BasicSettings } from "@/models/seb-server/exam.ts";
+import { TimeRange } from "@/components/widgets/formBuilder/types";
+import {
+    getDateWithTimeBackendFormat,
+    getTimeRangeFromIsoToReadableDates,
+} from "@/utils/timeUtils";
+import { useDisplay } from "vuetify";
+
+const { thresholds: thresholdsRef } = useDisplay();
+const thresholds = computed(() => thresholdsRef.value);
+
+const { basicSettings, examWithURL, editDisabled } = defineProps<{
+    basicSettings: BasicSettings;
+    examWithURL: Ref<boolean>;
+    editDisabled: Ref<boolean>;
+}>();
+
+const emit = defineEmits<{
+    (e: "change", value: BasicSettings): void;
+}>();
+
+const dialogOpen = ref(false);
+const formReady = ref(false);
+
+const quizNameTransient = ref<string>();
+const descriptionTransient = ref<string>();
+const startURLTransient = ref<string>();
+const quizTimeRangeTransient = ref<TimeRange>();
+const typeTransient = ref<ExamTypeEnum>();
+
+const { formFields, loading, errors } = useExamBasicSettingsFields(
+    {
+        quizName: quizNameTransient,
+        description: descriptionTransient,
+        startURL: startURLTransient,
+        quizTimeRange: quizTimeRangeTransient,
+        type: typeTransient,
+    },
+    { examWithURL: examWithURL },
+);
+
+const handleButtonEditClick = () => {
+    quizNameTransient.value = basicSettings.quizName;
+    descriptionTransient.value = basicSettings.quiz_description;
+    startURLTransient.value = basicSettings.quiz_start_url;
+    quizTimeRangeTransient.value = getTimeRangeFromIsoToReadableDates(
+        basicSettings.quizStartTime,
+        basicSettings.quizEndTime,
+    );
+    typeTransient.value = toSelectableExamType(basicSettings.type);
+    dialogOpen.value = true;
+};
+
+const handleButtonCancelClick = () => {
+    dialogOpen.value = false;
+};
+
+const handleButtonSaveClick = () => {
+    emit("change", {
+        quizName: quizNameTransient.value ?? basicSettings.quizName,
+        quiz_description:
+            descriptionTransient.value ?? basicSettings.quiz_description,
+        quiz_start_url: startURLTransient.value ?? basicSettings.quiz_start_url,
+        quizStartTime: getQuizFromDate(),
+        quizEndTime: getQuizToDate(),
+        type: toApiExamType(typeTransient.value),
+        status: basicSettings.status,
+    });
+    dialogOpen.value = false;
+};
+
+const getQuizFromDate = (): string => {
+    if (!quizTimeRangeTransient.value) {
+        return basicSettings.quizStartTime;
+    }
+
+    return getDateWithTimeBackendFormat(
+        quizTimeRangeTransient.value.fromDate,
+        quizTimeRangeTransient.value.fromTime,
+    );
+};
+
+const getQuizToDate = (): string => {
+    if (!quizTimeRangeTransient.value) {
+        return basicSettings.quizEndTime;
+    }
+
+    return getDateWithTimeBackendFormat(
+        quizTimeRangeTransient.value.toDate,
+        quizTimeRangeTransient.value.toTime,
+    );
+};
+</script>

@@ -27,6 +27,15 @@
                             <v-col>
                                 <BoxBasicSettings
                                     :basic-settings="basicSettings"
+                                    :exam-with-u-r-l="
+                                        computed<boolean>(() => isExamWithURL())
+                                    "
+                                    :edit-disabled="
+                                        computed<boolean>(() =>
+                                            settingsEditDisabled(),
+                                        )
+                                    "
+                                    @change-basic-settings="changeBasicSettings"
                                 />
                             </v-col>
                         </v-row>
@@ -368,12 +377,7 @@
                                 <v-text-field
                                     v-model="quitPassword"
                                     density="compact"
-                                    :disabled="
-                                        !ability.canDoExamAction(
-                                            GUIAction.EditExamSettings,
-                                            examStore.selectedExam,
-                                        )
-                                    "
+                                    :disabled="settingsEditDisabled()"
                                     placeholder="Password"
                                     prepend-inner-icon="mdi-lock-outline"
                                     :type="
@@ -903,13 +907,51 @@ const examId = props.id;
 
 const basicSettings = computed<BasicSettings>(() => ({
     quizName: examStore.selectedExam?.quizName ?? "",
-    description: examStore.selectedExam?.description ?? "",
-    startURL: examStore.selectedExam?.startURL ?? "",
+    quiz_description: examStore.selectedExam?.quiz_description ?? "",
+    quiz_start_url: examStore.selectedExam?.quiz_start_url ?? "",
     quizStartTime: examStore.selectedExam?.quizStartTime ?? "",
     quizEndTime: examStore.selectedExam?.quizEndTime ?? "",
     type: examStore.selectedExam?.type ?? "",
     status: examStore.selectedExam?.status ?? "",
 }));
+
+const changeBasicSettings = (value: BasicSettings) => {
+    if (!examStore.selectedExam) {
+        return;
+    }
+
+    if (isExamWithURL()) {
+        examStore.selectedExam.quizName = value.quizName;
+        examStore.selectedExam.additionalAttributes.quiz_description =
+            value.quiz_description;
+        examStore.selectedExam.additionalAttributes.quiz_start_url =
+            value.quiz_start_url;
+        examStore.selectedExam.quizStartTime = value.quizStartTime;
+        examStore.selectedExam.quizEndTime = value.quizEndTime;
+        examStore.selectedExam.type = value.type;
+    } else {
+        examStore.selectedExam.type = value.type;
+    }
+
+    updateExam();
+};
+
+const isExamWithURL = () => {
+    if (examStore.selectedExam) {
+        return (
+            examStore.selectedExam.lmsSetupId === null ||
+            examStore.selectedExam.lmsSetupId === undefined
+        );
+    }
+    return false;
+};
+
+const settingsEditDisabled = () => {
+    return !ability.canDoExamAction(
+        GUIAction.EditExamSettings,
+        examStore.selectedExam,
+    );
+};
 
 function openMonitoringOverview() {
     void router.push({
@@ -1032,6 +1074,7 @@ async function getExam() {
     }
 
     examStore.selectedExam = examResponse;
+    filterOutTeacherUser();
     isSEBLockActive.value = await examService.checkSEBLock(examId);
     isExcludeFromDeletionActive.value =
         examStore.selectedExam.excludeFromDeletion;
@@ -1057,6 +1100,7 @@ async function updateExam(isSupervisorsManualUpdate?: boolean) {
     alertKey.value = "exam-update-successful";
 
     examStore.selectedExam = updateExamResponse;
+    filterOutTeacherUser();
     isExcludeFromDeletionActive.value =
         examStore.selectedExam.excludeFromDeletion;
 
@@ -1131,6 +1175,7 @@ async function changeSEBLock(enable: boolean) {
     }
 
     examStore.selectedExam = applySEBLockResponse;
+    filterOutTeacherUser();
 }
 
 //SEB Lock
@@ -1163,25 +1208,41 @@ async function getExamSupervisors() {
     examStore.clearSelectedSupervisors();
     for (let i = 0; i < examStore.selectedExam.supporter.length; i++) {
         try {
-            // NOTE: filter out teacher accounts here, they are not for selection
-            if (
-                !examStore.selectedExam.supporter[i].startsWith(
-                    "TEACHER_ACCOUNT__",
-                )
-            ) {
-                const userAccount: UserAccount | null =
-                    await userAccountService.getUserAccountById(
-                        examStore.selectedExam.supporter[i],
-                    );
+            const userAccount: UserAccount | null =
+                await userAccountService.getUserAccountById(
+                    examStore.selectedExam.supporter[i],
+                );
 
-                if (userAccount !== null && userAccount !== undefined) {
-                    examStore.selectedExamSupervisors.push(userAccount);
-                }
+            if (userAccount !== null && userAccount !== undefined) {
+                examStore.selectedExamSupervisors.push(userAccount);
             }
         } catch (err) {
             error.value = err instanceof Error ? err.message : "Unknown error";
         }
     }
+}
+
+// TODO @anhefti: This is a workaround since teacher accounts are not selectable and also should not be sent on save
+//                Ideally the Backend should provide only selectable supporter within the Exam when fetching but
+//                to achieve this we have to figure out when to do this ideally since in the back-end the teacher accounts are needed
+//                one solution would be to use a dedicated endpoint to fetch the Exam for the GUI
+function filterOutTeacherUser() {
+    if (!examStore.selectedExam) {
+        return;
+    }
+    if (examStore.selectedExam.supporter.length == 0) {
+        return;
+    }
+
+    const filteredSupporter: string[] = [];
+    for (let i = 0; i < examStore.selectedExam.supporter.length; i++) {
+        if (
+            !examStore.selectedExam.supporter[i].startsWith("TEACHER_ACCOUNT__")
+        ) {
+            filteredSupporter.push(examStore.selectedExam.supporter[i]);
+        }
+    }
+    examStore.selectedExam.supporter = filteredSupporter;
 }
 
 function openSupervisorsDialog() {
@@ -1329,6 +1390,7 @@ async function changeScreenProctoringSettings(enable: boolean) {
     }
 
     examStore.selectedExam = saveScreenProcResponse;
+    filterOutTeacherUser();
 }
 
 //= ==============delete exam logic====================

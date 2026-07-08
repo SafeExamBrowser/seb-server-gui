@@ -56,8 +56,8 @@ export type Exam = {
     examTemplateId: number;
     lastModified: number;
     additionalAttributes: ExamAdditionalAttributes;
-    description: string;
-    startURL: string;
+    quiz_description: string;
+    quiz_start_url: string;
     quitPassword: string;
     followupId: number;
     excludeFromDeletion: boolean;
@@ -66,8 +66,8 @@ export type Exam = {
 export type BasicSettings = Pick<
     Exam,
     | "quizName"
-    | "description"
-    | "startURL"
+    | "quiz_description"
+    | "quiz_start_url"
     | "quizStartTime"
     | "quizEndTime"
     | "type"

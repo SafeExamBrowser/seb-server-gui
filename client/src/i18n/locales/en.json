@@ -1940,8 +1940,8 @@
         "info": {
             "name": "Exam Name",
             "url": "Start Url",
-            "start": "Start",
-            "end": "End",
+            "start": "Start Time",
+            "end": "End Time",
             "description": "Description",
             "typeStatus": "Exam Type & Status",
             "type": "Exam Type",

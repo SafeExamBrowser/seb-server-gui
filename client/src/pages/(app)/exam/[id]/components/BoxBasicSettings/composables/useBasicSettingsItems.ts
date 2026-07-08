@@ -24,8 +24,8 @@ export const useBasicSettingsItems = (basicSettings: Ref<BasicSettings>) => {
         ];
 
         if (
-            basicSettings.value.description !== undefined &&
-            basicSettings.value.description !== ""
+            basicSettings.value.quiz_description !== undefined &&
+            basicSettings.value.quiz_description !== ""
         ) {
             result.push({
                 key: "description",
@@ -33,7 +33,7 @@ export const useBasicSettingsItems = (basicSettings: Ref<BasicSettings>) => {
                 label: t("examDetail.info.description"),
                 value: {
                     type: "string",
-                    value: basicSettings.value.description,
+                    value: basicSettings.value.quiz_description,
                 },
             });
         }
@@ -44,7 +44,7 @@ export const useBasicSettingsItems = (basicSettings: Ref<BasicSettings>) => {
             label: t("examDetail.info.url"),
             value: {
                 type: "string",
-                value: basicSettings.value.startURL,
+                value: basicSettings.value.quiz_start_url,
             },
         });
 
