@@ -1165,23 +1165,19 @@ async function getExamSupervisors() {
         try {
             // NOTE: filter out teacher accounts here, they are not for selection
             if (
-                examStore.selectedExam.supporter[i].startsWith(
+                !examStore.selectedExam.supporter[i].startsWith(
                     "TEACHER_ACCOUNT__",
                 )
             ) {
-                break;
+                const userAccount: UserAccount | null =
+                    await userAccountService.getUserAccountById(
+                        examStore.selectedExam.supporter[i],
+                    );
+
+                if (userAccount !== null && userAccount !== undefined) {
+                    examStore.selectedExamSupervisors.push(userAccount);
+                }
             }
-
-            const userAccount: UserAccount | null =
-                await userAccountService.getUserAccountById(
-                    examStore.selectedExam.supporter[i],
-                );
-
-            if (userAccount === null || userAccount === undefined) {
-                break;
-            }
-
-            examStore.selectedExamSupervisors.push(userAccount);
         } catch (err) {
             error.value = err instanceof Error ? err.message : "Unknown error";
         }
