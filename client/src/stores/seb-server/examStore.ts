@@ -34,6 +34,10 @@ export const useExamStore = defineStore("exam", () => {
         selectedExamSupervisors.value = [];
     }
 
+    function clearSelectedSupervisors() {
+        selectedExamSupervisors.value = [];
+    }
+
     return {
         searchField,
         startDate,
@@ -46,6 +50,7 @@ export const useExamStore = defineStore("exam", () => {
         activeTypeFilter,
         activeStatusFilter,
         clearSelectedValues,
+        clearSelectedSupervisors,
         selectedClientGroups,
     };
 });

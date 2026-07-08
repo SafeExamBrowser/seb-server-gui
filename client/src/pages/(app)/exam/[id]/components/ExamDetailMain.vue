@@ -1148,28 +1148,43 @@ async function applySEBLockService(
 }
 
 //= ==============supervisors logic====================
+// NOTE: This is just to satisfy the linter for the moment (how can we just ignore )
+const error = ref<string>();
 async function getExamSupervisors() {
     if (examStore.selectedExam?.supporter == null) {
         return;
     }
 
     if (examStore.selectedExam.supporter.length === 0) {
-        examStore.selectedExamSupervisors = [];
+        examStore.clearSelectedSupervisors();
         return;
     }
 
-    examStore.selectedExamSupervisors = [];
+    examStore.clearSelectedSupervisors();
     for (let i = 0; i < examStore.selectedExam.supporter.length; i++) {
-        const userAccount: UserAccount | null =
-            await userAccountService.getUserAccountById(
-                examStore.selectedExam.supporter[i],
-            );
+        try {
+            // NOTE: filter out teacher accounts here, they are not for selection
+            if (
+                examStore.selectedExam.supporter[i].startsWith(
+                    "TEACHER_ACCOUNT__",
+                )
+            ) {
+                break;
+            }
 
-        if (userAccount === null || userAccount === undefined) {
-            continue;
+            const userAccount: UserAccount | null =
+                await userAccountService.getUserAccountById(
+                    examStore.selectedExam.supporter[i],
+                );
+
+            if (userAccount === null || userAccount === undefined) {
+                break;
+            }
+
+            examStore.selectedExamSupervisors.push(userAccount);
+        } catch (err) {
+            error.value = err instanceof Error ? err.message : "Unknown error";
         }
-
-        examStore.selectedExamSupervisors.push(userAccount);
     }
 }
 
@@ -1191,6 +1206,7 @@ async function updateExamSupervisors(selectedExamSupervisors: UserAccount[]) {
     examStore.selectedExam.supporter = selectedExamSupervisors.map(
         (supervisor) => supervisor.uuid,
     );
+
     await updateExam(true);
     closeSupervisorsDialog();
 }
