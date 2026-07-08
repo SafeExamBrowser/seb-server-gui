@@ -1,115 +1,196 @@
 <template>
-    <v-row>
-        <v-col>
-            <v-sheet class="rounded-lg" elevation="2" title="Search">
-                <SearchForm
-                    @close-all-panels="closeAllPanels"
-                    @search-sessions="searchSessions"
+    <BasicPage
+        :title="$t('spSearch.title')"
+        :bread-crumb="[{ label: $t('spSearch.title') }]"
+        :data-test-id="dataTestId"
+        :panel-left-collapsed="!filtersOpen"
+    >
+        <template #PanelLeft>
+            <SpSearchForm
+                ref="searchForm"
+                :data-test-id="dataTestId"
+                @search="handleSearch"
+                @collapse="handleCollapseFilters"
+            />
+        </template>
+
+        <template #PanelMain>
+            <!------------ controls row ------------->
+            <div
+                class="d-flex align-center flex-wrap ga-2 px-6 pt-4 pb-1"
+                :data-testid="`${dataTestId}-controls`"
+            >
+                <v-btn
+                    :variant="filtersOpen ? 'flat' : 'outlined'"
+                    :color="filtersOpen ? 'primary' : undefined"
+                    class="text-none"
+                    :data-testid="`${dataTestId}-toggle-filters-button`"
+                    @click="handleToggleFilters"
                 >
-                </SearchForm>
-            </v-sheet>
-        </v-col>
-    </v-row>
+                    <v-icon
+                        start
+                        :icon="filtersOpen ? 'mdi-chevron-left' : 'mdi-magnify'"
+                    />
+                    {{
+                        filtersOpen
+                            ? $t("searchForm.hideSearch")
+                            : $t("searchForm.search")
+                    }}
+                </v-btn>
 
-    <v-row v-if="searchResultAvailable">
-        <v-col v-if="noResutsFound">
-            <v-sheet
-                class="rounded-lg pa-4"
-                elevation="2"
-                title="No results match your search criteria"
-            >
-                <v-row>
-                    <v-col align="left" class="text-title-large">
-                        No results match your search criteria
-                    </v-col>
-                </v-row>
-            </v-sheet>
-        </v-col>
+                <template v-if="activeChipsAvailable">
+                    <v-divider vertical class="align-self-stretch mx-1" />
 
-        <v-col v-else>
-            <v-sheet
-                class="rounded-lg pa-4"
-                elevation="2"
-                :title="$t('searchPage.title')"
-            >
-                <!------------title and buttons------------->
-                <v-row>
-                    <v-col align="left">
-                        <h2 class="text-title-large">
-                            {{ $t("searchPage.title") }}
-                        </h2>
-                    </v-col>
+                    <span
+                        class="text-body-small text-medium-emphasis text-uppercase font-weight-medium"
+                    >
+                        {{ $t("searchForm.active") }}
+                    </span>
+                    <v-chip
+                        v-if="submittedQuery?.summary"
+                        color="primary"
+                        variant="tonal"
+                        class="font-weight-medium"
+                        :data-testid="`${dataTestId}-time-pill`"
+                    >
+                        <v-icon start size="small" icon="mdi-clock-outline" />
+                        {{ submittedQuery.summary }}
+                    </v-chip>
+                    <v-chip
+                        v-for="chip in activeFilterChips"
+                        :key="chip.key"
+                        color="primary"
+                        variant="tonal"
+                        closable
+                        class="font-weight-medium"
+                        :data-testid="`${dataTestId}-filter-pill-${chip.key}`"
+                        @click:close="handleRemoveFilter(chip.key)"
+                    >
+                        {{ chip.label }}: {{ chip.value }}
+                    </v-chip>
+                </template>
 
-                    <v-col align="right" class="mb-2">
-                        <v-btn
-                            class="mr-2"
-                            :ripple="false"
-                            variant="text"
-                            @click="changeSortOrder()"
-                        >
-                            Date
-                            <template #prepend>
-                                <v-icon
-                                    :icon="
-                                        isSearchDescending
-                                            ? 'mdi-chevron-down'
-                                            : 'mdi-chevron-up'
-                                    "
-                                    size="x-large"
-                                ></v-icon>
-                            </template>
-                        </v-btn>
-                        <v-btn
-                            class="mr-2"
-                            :color="closeAllPanelsDisabled ? 'grey' : 'black'"
-                            :ripple="false"
-                            variant="text"
-                            @click="closeAllPanels()"
-                        >
-                            {{ $t("searchPage.collapse") }}
-                            <template #prepend>
-                                <v-icon
-                                    icon="mdi-unfold-less-horizontal"
-                                    size="x-large"
-                                ></v-icon>
-                            </template>
-                        </v-btn>
-                    </v-col>
-                </v-row>
-                <!----------------------------------->
+                <v-spacer />
 
-                <v-expansion-panels v-model="sessionPanels" multiple>
+                <span
+                    v-if="searchResultAvailable && !noResultsFound"
+                    class="text-body-small text-medium-emphasis font-weight-medium text-no-wrap"
+                >
+                    {{
+                        $t("spSearch.daysWithSessions", {
+                            count: sessionsDays.length,
+                        })
+                    }}
+                </span>
+                <v-btn
+                    variant="text"
+                    class="text-none"
+                    :data-testid="`${dataTestId}-sort-button`"
+                    @click="handleChangeSortOrder"
+                >
+                    <v-icon
+                        start
+                        :icon="
+                            isSearchDescending
+                                ? 'mdi-arrow-down'
+                                : 'mdi-arrow-up'
+                        "
+                    />
+                    {{ $t("spSearch.sortByDate") }}
+                </v-btn>
+                <v-btn
+                    variant="text"
+                    class="text-none"
+                    :disabled="closeAllPanelsDisabled"
+                    :data-testid="`${dataTestId}-collapse-all-button`"
+                    @click="handleCloseAllPanels"
+                >
+                    <v-icon start icon="mdi-unfold-less-horizontal" />
+                    {{ $t("spSearch.collapseAll") }}
+                </v-btn>
+            </div>
+
+            <div class="pa-6">
+                <!------------ error ------------->
+                <v-alert
+                    v-if="errorAvailable"
+                    type="error"
+                    variant="tonal"
+                    :data-testid="`${dataTestId}-error`"
+                >
+                    {{ $t("spSearch.error") }}
+                </v-alert>
+
+                <!------------ no results ------------->
+                <div
+                    v-else-if="noResultsFound"
+                    class="text-center py-10"
+                    :data-testid="`${dataTestId}-no-results`"
+                >
+                    <v-icon
+                        icon="mdi-magnify-remove-outline"
+                        size="40"
+                        class="text-disabled mb-2"
+                    />
+                    <div class="text-subtitle-1 font-weight-bold">
+                        {{ $t("spSearch.noResults") }}
+                    </div>
+                </div>
+
+                <!------------ results: one panel per day ------------->
+                <v-expansion-panels
+                    v-else-if="searchResultAvailable && searchParameters"
+                    v-model="sessionPanels"
+                    multiple
+                >
                     <v-expansion-panel
                         v-for="day in sessionsDays"
                         :key="day"
                         :value="'sessionPanel' + day"
+                        elevation="0"
+                        class="border mb-3"
+                        rounded="lg"
+                        :data-testid="`${dataTestId}-day-panel`"
                     >
-                        <v-expansion-panel-title class="font-weight-bold">
-                            {{ timeUtils.formatSqlDateToString(day) }}
+                        <v-expansion-panel-title>
+                            <v-icon
+                                icon="mdi-calendar-outline"
+                                color="primary"
+                                class="mr-3"
+                            />
+                            <span class="font-weight-bold">
+                                {{ formatDayTitle(day) }}
+                            </span>
                         </v-expansion-panel-title>
 
                         <v-expansion-panel-text>
                             <SearchSessionTable
                                 :day="day"
-                                :search-parameters="searchParameters!"
-                            >
-                            </SearchSessionTable>
+                                :search-parameters="searchParameters"
+                            />
                         </v-expansion-panel-text>
                     </v-expansion-panel>
                 </v-expansion-panels>
-            </v-sheet>
-        </v-col>
-    </v-row>
+            </div>
+        </template>
+    </BasicPage>
 </template>
 
 <script setup lang="ts">
-import { ref, watch } from "vue";
-import { useTableStore } from "@/stores/store";
-import SearchForm from "@/pages/(app)/sp-search/components/SearchForm.vue";
+import { computed, ref } from "vue";
+import { useI18n } from "vue-i18n";
+import BasicPage from "@/components/layout/pages/BasicPage.vue";
+import SpSearchForm from "@/pages/(app)/sp-search/components/SpSearchForm.vue";
 import SearchSessionTable from "@/pages/(app)/sp-search/components/SearchSessionTable.vue";
-import * as timeUtils from "@/utils/timeUtils";
+import { useTableStore } from "@/stores/store";
+import * as spConstants from "@/utils/sp-constants";
 import { OptionalParSearchSessions } from "@/models/screen-proctoring/optionalParamters";
 import { searchSessionsDay } from "@/services/screen-proctoring/searchService.ts";
+import {
+    SP_SEARCH_FILTER_KEYS,
+    SpSearchFilterKey,
+    SpSearchQuery,
+} from "@/pages/(app)/sp-search/types";
 
 definePage({
     meta: {
@@ -118,96 +199,96 @@ definePage({
     },
 });
 
+const dataTestId = "sp-search";
+
+const { t, locale } = useI18n();
+
 // error handling
 const searchResultAvailable = ref<boolean>(false);
-const noResutsFound = ref<boolean>(false);
-const errorAvailable = ref<boolean>();
+const noResultsFound = ref<boolean>(false);
+const errorAvailable = ref<boolean>(false);
 
 // main data
 const sessionsDays = ref<string[]>([]);
 
 // ui control
+const filtersOpen = ref<boolean>(true);
 const isSearchDescending = ref<boolean>(true);
 const sessionPanels = ref<string[]>([]);
-const closeAllPanelsDisabled = ref<boolean>(true);
+const closeAllPanelsDisabled = computed(() => sessionPanels.value.length === 0);
 
 // store
 const tableStore = useTableStore();
 
-// form data
+// submitted search
+const searchForm = ref<InstanceType<typeof SpSearchForm>>();
+const submittedQuery = ref<SpSearchQuery>();
 const searchParameters = ref<OptionalParSearchSessions>();
-let examNameSearch: string | null;
-let groupNameSearch: string | null;
 
-let metadataSearchApplication: string | null;
-let metadataSearchBrowserTitle: string | null;
-let metadataSearchActivityDetails: string | null;
-let metadataSearchWindowTitle: string | null;
+const filterChipLabels = computed<Record<SpSearchFilterKey, string>>(() => ({
+    examName: t("searchForm.examName"),
+    groupName: t("searchForm.groupName"),
+    loginName: t("searchForm.loginName"),
+    ipAddress: t("searchForm.ipAddress"),
+    machineName: t("searchForm.machineName"),
+    metadataApplication: spConstants.APPLICATION_METADATA,
+    metadataBrowserTitle: spConstants.SEB_BROWSER_TITLE_METADATA,
+    metadataActivityDetails: spConstants.ACTIVITY_DETAILS_METADATA,
+    metadataWindowTitle: spConstants.WINDOW_TITLE_METADATA,
+}));
 
-let loginNameSearch: string | null;
-let ipAddressSearch: string | null;
-let machineNameSearch: string | null;
-
-watch(sessionPanels, () => {
-    if (sessionPanels.value.length === 0) {
-        closeAllPanelsDisabled.value = true;
-        return;
+const activeFilterChips = computed(() => {
+    const query = submittedQuery.value;
+    if (!query) {
+        return [];
     }
 
-    closeAllPanelsDisabled.value = false;
+    return SP_SEARCH_FILTER_KEYS.filter((key) => query.filters[key] !== "").map(
+        (key) => ({
+            key,
+            label: filterChipLabels.value[key],
+            value: query.filters[key],
+        }),
+    );
 });
 
-async function searchSessions(
-    examName: string,
-    groupName: string,
-    loginName: string,
-    ipAddress: string,
-    machineName: string,
+const activeChipsAvailable = computed(
+    () =>
+        Boolean(submittedQuery.value?.summary) ||
+        activeFilterChips.value.length > 0,
+);
 
-    metadataApplication: string,
-    metadataBrowserTitle: string,
-    metadataActivityDetails: string,
-    metadataWindowTitle: string,
-
-    fromTime: string,
-    toTime: string,
-    pageNumber: number,
-) {
+async function handleSearch(query: SpSearchQuery) {
     errorAvailable.value = false;
-    noResutsFound.value = false;
-
-    examNameSearch = examName === "" ? null : examName;
-    groupNameSearch = groupName === "" ? null : groupName;
-
-    metadataSearchApplication =
-        metadataApplication === "" ? null : metadataApplication;
-    metadataSearchBrowserTitle =
-        metadataBrowserTitle === "" ? null : metadataBrowserTitle;
-    metadataSearchActivityDetails =
-        metadataActivityDetails === "" ? null : metadataActivityDetails;
-    metadataSearchWindowTitle =
-        metadataWindowTitle === "" ? null : metadataWindowTitle;
-
-    loginNameSearch = loginName === "" ? null : loginName;
-    ipAddressSearch = ipAddress === "" ? null : ipAddress;
-    machineNameSearch = machineName === "" ? null : machineName;
+    noResultsFound.value = false;
+    // every new search starts with all day panels collapsed
+    sessionPanels.value = [];
+    submittedQuery.value = query;
 
     searchParameters.value = {
-        examName: examNameSearch,
-        groupName: groupNameSearch,
-        clientName: loginNameSearch,
-        clientIp: ipAddressSearch,
-        clientMachineName: machineNameSearch,
+        examName: toSearchValue(query.filters.examName),
+        groupName: toSearchValue(query.filters.groupName),
+        clientName: toSearchValue(query.filters.loginName),
+        clientIp: toSearchValue(query.filters.ipAddress),
+        clientMachineName: toSearchValue(query.filters.machineName),
 
-        screenProctoringMetadataApplication: metadataSearchApplication,
-        screenProctoringMetadataBrowser: metadataSearchBrowserTitle,
-        screenProctoringMetadataUserAction: metadataSearchActivityDetails,
-        screenProctoringMetadataWindowTitle: metadataSearchWindowTitle,
+        screenProctoringMetadataApplication: toSearchValue(
+            query.filters.metadataApplication,
+        ),
+        screenProctoringMetadataBrowser: toSearchValue(
+            query.filters.metadataBrowserTitle,
+        ),
+        screenProctoringMetadataUserAction: toSearchValue(
+            query.filters.metadataActivityDetails,
+        ),
+        screenProctoringMetadataWindowTitle: toSearchValue(
+            query.filters.metadataWindowTitle,
+        ),
 
-        fromTime,
-        toTime,
+        fromTime: query.fromTime,
+        toTime: query.toTime,
         pageSize: 500,
-        pageNumber,
+        pageNumber: 1,
     };
 
     const sessionSearchResponse: string[] | null = await searchSessionsDay(
@@ -220,38 +301,79 @@ async function searchSessions(
     }
 
     sessionsDays.value = sessionSearchResponse;
+    searchResultAvailable.value = true;
 
     if (sessionsDays.value.length === 0) {
-        noResutsFound.value = true;
-        searchResultAvailable.value = true;
+        noResultsFound.value = true;
         return;
     }
 
-    loginNameIpToggleListFillUp();
-
-    searchResultAvailable.value = true;
+    registerIpDisplayToggles();
     isSearchDescending.value = true;
 }
 
-function loginNameIpToggleListFillUp() {
-    if (sessionsDays.value == null) {
-        return;
-    }
+// Empty inputs become undefined so they are omitted from the API request
+// ("no filter").
+function toSearchValue(value: string): string | undefined {
+    return value === "" ? undefined : value;
+}
 
-    for (let i = 0; i < sessionsDays.value.length; i++) {
-        tableStore.isIpDisplayList.push({
-            day: sessionsDays.value[i],
-            isIp: false,
-        });
+// SearchSessionTable's Login Name / IP column toggle is tracked per day in the
+// table store; make sure every day of this result set has an entry. Days seen
+// in an earlier search keep their toggle state.
+function registerIpDisplayToggles() {
+    for (const day of sessionsDays.value) {
+        if (!tableStore.isIpDisplayList.some((entry) => entry.day === day)) {
+            tableStore.isIpDisplayList.push({ day, isIp: false });
+        }
     }
 }
 
-function changeSortOrder() {
+// Removing a chip re-runs the submitted query without that filter. The form
+// only has its matching field cleared; other unsubmitted edits stay drafts.
+function handleRemoveFilter(key: SpSearchFilterKey) {
+    const query = submittedQuery.value;
+    if (!query) {
+        return;
+    }
+
+    searchForm.value?.clearFilter(key);
+    handleSearch({
+        ...query,
+        filters: { ...query.filters, [key]: "" },
+    });
+}
+
+function handleToggleFilters() {
+    filtersOpen.value = !filtersOpen.value;
+}
+
+function handleCollapseFilters() {
+    filtersOpen.value = false;
+}
+
+function handleChangeSortOrder() {
     isSearchDescending.value = !isSearchDescending.value;
     sessionsDays.value.reverse();
 }
 
-function closeAllPanels() {
+function handleCloseAllPanels() {
     sessionPanels.value = [];
+}
+
+// "2025-06-12" → "Thursday, 12 June 2025" in the active locale.
+function formatDayTitle(day: string): string {
+    const date = new Date(day);
+    if (Number.isNaN(date.getTime())) {
+        return day;
+    }
+
+    return new Intl.DateTimeFormat(locale.value, {
+        weekday: "long",
+        day: "numeric",
+        month: "long",
+        year: "numeric",
+        timeZone: "UTC",
+    }).format(date);
 }
 </script>
