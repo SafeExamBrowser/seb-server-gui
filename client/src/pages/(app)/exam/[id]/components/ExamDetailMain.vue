@@ -1052,10 +1052,6 @@ async function updateExam(isSupervisorsManualUpdate?: boolean) {
         return;
     }
 
-    if (isSupervisorsManualUpdate) {
-        getExamSupervisors();
-    }
-
     alertAvailable.value = true;
     alertColor.value = "success";
     alertKey.value = "exam-update-successful";
@@ -1063,6 +1059,10 @@ async function updateExam(isSupervisorsManualUpdate?: boolean) {
     examStore.selectedExam = updateExamResponse;
     isExcludeFromDeletionActive.value =
         examStore.selectedExam.excludeFromDeletion;
+
+    if (isSupervisorsManualUpdate) {
+        getExamSupervisors();
+    }
 }
 
 //= =============seb lock logic=================
