@@ -4,6 +4,10 @@
         data-testid="layout-nav-rail"
         elevation="1"
     >
+        <!-- This used to show either x or menu icon based on whether the navigation overview was opened or closed. Because now the nav overview is default page, this cant be the case anymore, cause after login, there is no other page to return to (used to be  home)
+         Until a home page is implemented I removed the x icon showing and itll now just be burger
+         //TODO Reimplement with Home-Page-->
+
         <v-btn
             v-if="ability.canView(GUIComponent.NavigationOverview)"
             :active="false"
@@ -13,7 +17,7 @@
             "
             :color="isNavigationOverviewRoute ? 'primary' : undefined"
             data-testid="layout-navOverview-toggle"
-            :icon="isNavigationOverviewRoute ? 'mdi-close' : 'mdi-menu'"
+            icon="mdi-menu"
             size="large"
             :to="navigationOverviewRoute"
             :variant="isNavigationOverviewRoute ? 'flat' : 'text'"

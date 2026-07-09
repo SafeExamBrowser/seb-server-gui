@@ -77,8 +77,10 @@
                                         )
                                     }}</v-row>
                                     <v-row
-                                        v-for="(group, index) in info.spsGroups"
-                                        :key="index"
+                                        v-for="(
+                                            group, groupIndex
+                                        ) in info.spsGroups"
+                                        :key="groupIndex"
                                         class="mt-0 mb-0"
                                         >{{ getGroupInfo(group) }}</v-row
                                     >
@@ -141,9 +143,9 @@
                                         }}</v-row>
                                         <v-row
                                             v-for="(
-                                                group, index
+                                                group, groupIndex
                                             ) in info.spsGroups"
-                                            :key="index"
+                                            :key="groupIndex"
                                             class="mt-0 mb-0"
                                             >{{ getGroupInfo(group) }}</v-row
                                         >
@@ -196,8 +198,10 @@
                                         )
                                     }}</v-row>
                                     <v-row
-                                        v-for="(group, index) in info.spsGroups"
-                                        :key="index"
+                                        v-for="(
+                                            group, groupIndex
+                                        ) in info.spsGroups"
+                                        :key="groupIndex"
                                         class="mt-0 mb-0"
                                         >{{ getGroupInfo(group) }}</v-row
                                     >
