@@ -59,7 +59,7 @@ export type Exam = {
     quiz_description: string;
     quiz_start_url: string;
     quitPassword: string;
-    followupId: number;
+    followupId?: number;
     excludeFromDeletion: boolean;
 };
 
@@ -72,6 +72,7 @@ export type BasicSettings = Pick<
     | "quizEndTime"
     | "type"
     | "status"
+    | "followupId"
 >;
 
 export type Exams = {

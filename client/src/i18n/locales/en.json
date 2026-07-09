@@ -1945,7 +1945,8 @@
             "description": "Description",
             "typeStatus": "Exam Type & Status",
             "type": "Exam Type",
-            "status": "Exam Status"
+            "status": "Exam Status",
+            "consecutiveExam": "Consecutive Exam"
         },
         "main": {
             "testExam": "Test Exam",

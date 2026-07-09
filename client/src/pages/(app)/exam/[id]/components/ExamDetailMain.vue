@@ -26,15 +26,20 @@
                         <v-row>
                             <v-col>
                                 <BoxBasicSettings
+                                    v-if="examStore.selectedExam"
                                     :basic-settings="basicSettings"
                                     :exam-with-u-r-l="
-                                        computed<boolean>(() => isExamWithURL())
+                                        examStore.selectedExam.lmsSetupId ===
+                                            null ||
+                                        examStore.selectedExam.lmsSetupId ===
+                                            undefined
                                     "
                                     :edit-disabled="
                                         computed<boolean>(() =>
                                             settingsEditDisabled(),
                                         )
                                     "
+                                    :exam-id="examStore.selectedExam.id"
                                     @change-basic-settings="changeBasicSettings"
                                 />
                             </v-col>
@@ -913,6 +918,7 @@ const basicSettings = computed<BasicSettings>(() => ({
     quizEndTime: examStore.selectedExam?.quizEndTime ?? "",
     type: examStore.selectedExam?.type ?? "",
     status: examStore.selectedExam?.status ?? "",
+    followupId: examStore.selectedExam?.followupId ?? undefined,
 }));
 
 const changeBasicSettings = (value: BasicSettings) => {
@@ -920,7 +926,10 @@ const changeBasicSettings = (value: BasicSettings) => {
         return;
     }
 
-    if (isExamWithURL()) {
+    if (
+        examStore.selectedExam.lmsSetupId === null ||
+        examStore.selectedExam.lmsSetupId === undefined
+    ) {
         examStore.selectedExam.quizName = value.quizName;
         examStore.selectedExam.additionalAttributes.quiz_description =
             value.quiz_description;
@@ -936,15 +945,15 @@ const changeBasicSettings = (value: BasicSettings) => {
     updateExam();
 };
 
-const isExamWithURL = () => {
-    if (examStore.selectedExam) {
-        return (
-            examStore.selectedExam.lmsSetupId === null ||
-            examStore.selectedExam.lmsSetupId === undefined
-        );
-    }
-    return false;
-};
+// const isExamWithURL = () => {
+//     if (examStore.selectedExam) {
+//         return (
+//             examStore.selectedExam.lmsSetupId === null ||
+//             examStore.selectedExam.lmsSetupId === undefined
+//         );
+//     }
+//     return false;
+// };
 
 const settingsEditDisabled = () => {
     return !ability.canDoExamAction(

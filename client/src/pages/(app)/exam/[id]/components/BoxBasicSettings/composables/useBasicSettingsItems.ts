@@ -9,9 +9,43 @@ import {
 import { BasicSettings } from "@/models/seb-server/exam.ts";
 import * as timeUtils from "@/utils/timeUtils.ts";
 import * as generalUtils from "@/utils/generalUtils.ts";
+import { useConsecutiveExamNames } from "@/pages/(app)/exam/[id]/components/BoxBasicSettings/composables/useConsecutiveExamNames";
 
-export const useBasicSettingsItems = (basicSettings: Ref<BasicSettings>) => {
+export const useBasicSettingsItems = (
+    examId: number,
+    basicSettings: Ref<BasicSettings>,
+) => {
     const { t } = useI18n();
+
+    const {
+        data: consecutiveExamNames,
+        loading: loadingConsecutiveExamNames,
+        error: errorConsecutiveExamNames,
+    } = useConsecutiveExamNames(String(examId));
+
+    const loading = computed(() => loadingConsecutiveExamNames.value);
+
+    const errors = computed(() =>
+        [errorConsecutiveExamNames.value].filter(
+            (error) => error !== undefined,
+        ),
+    );
+
+    const getSelectedConsecutiveExamName = computed<string>(() => {
+        if (!consecutiveExamNames.value) {
+            return "";
+        }
+        if (!basicSettings.value.followupId) {
+            return "";
+        }
+
+        return (
+            consecutiveExamNames.value.find(
+                (entity) =>
+                    entity.modelId === String(basicSettings.value.followupId),
+            )?.modelId ?? ""
+        );
+    });
 
     const items = computed<KeyValueItem[]>(() => {
         const result: KeyValueItem[] = [
@@ -34,6 +68,22 @@ export const useBasicSettingsItems = (basicSettings: Ref<BasicSettings>) => {
                 value: {
                     type: "string",
                     value: basicSettings.value.quiz_description,
+                },
+            });
+        }
+
+        const status = generalUtils.findEnumValue(
+            ExamStatusEnum,
+            basicSettings.value.status,
+        );
+        if (status !== null) {
+            result.push({
+                key: "clientConfiguration",
+                type: "basic",
+                label: t("examDetail.info.status"),
+                value: {
+                    type: "string",
+                    value: t(status),
                 },
             });
         }
@@ -85,24 +135,23 @@ export const useBasicSettingsItems = (basicSettings: Ref<BasicSettings>) => {
             },
         });
 
-        const status = generalUtils.findEnumValue(
-            ExamStatusEnum,
-            basicSettings.value.status,
-        );
-        if (status !== null) {
-            result.push({
-                key: "clientConfiguration",
-                type: "basic",
-                label: t("examDetail.info.status"),
-                value: {
-                    type: "string",
-                    value: t(status),
-                },
-            });
-        }
+        result.push({
+            key: "consecutiveExam",
+            type: "basic",
+            label: t("examDetail.info.consecutiveExam"),
+            value: {
+                type: "string",
+                value: getSelectedConsecutiveExamName.value,
+            },
+        });
 
         return result;
     });
 
-    return { items };
+    return {
+        items,
+        consecutiveExamNames,
+        loading,
+        errors,
+    };
 };

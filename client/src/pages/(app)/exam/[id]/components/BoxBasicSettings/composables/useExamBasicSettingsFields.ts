@@ -1,4 +1,4 @@
-import { computed, ref, Ref } from "vue";
+import { computed, Ref } from "vue";
 import { useRules } from "vuetify/labs/rules";
 import {
     FormField,
@@ -9,31 +9,28 @@ import {
     SELECTABLE_EXAM_TYPES,
 } from "@/models/seb-server/examFiltersEnum.ts";
 import i18n from "@/i18n";
-import { AppError } from "@/services/errors/types";
 import { isURL } from "@/utils/generalUtils";
+import { EntityName } from "@/api/seb-server/generated/hey-api";
 
 export const useExamBasicSettingsFields = (
+    examWithURL: boolean,
+    consecutiveExamNames: Ref<EntityName[] | undefined>,
     models: {
         quizName: Ref<string | undefined>;
         description: Ref<string | undefined>;
         startURL: Ref<string | undefined>;
         quizTimeRange: Ref<TimeRange | undefined>;
         type: Ref<ExamTypeEnum | undefined>;
-    },
-    options?: {
-        examWithURL?: Ref<boolean>;
+        consecutiveExam: Ref<string | undefined>;
     },
 ) => {
-    const loading = ref<boolean>(false);
-    const errors = ref<AppError[]>([]);
-
     const formFields = computed<FormField[]>(() => {
-        if (loading.value) {
-            return [];
+        const fields: FormField[] = [];
+        if (!consecutiveExamNames.value) {
+            return fields;
         }
 
-        const fields: FormField[] = [];
-        if (options?.examWithURL?.value) {
+        if (examWithURL) {
             fields.push({
                 type: "text" as const,
                 name: "quizName",
@@ -76,37 +73,35 @@ export const useExamBasicSettingsFields = (
                     },
                 ],
             });
-            fields.push({
-                type: "select" as const,
-                name: "type",
-                model: models.type,
-                options: SELECTABLE_EXAM_TYPES.map((enumValue) => ({
-                    value: enumValue,
-                    text: i18n.global.t(enumValue),
-                })),
-                label: i18n.global.t("examDetail.info.type"),
-            });
-        } else {
-            fields.push({
-                type: "select" as const,
-                name: "type",
-                model: models.type,
-                options: SELECTABLE_EXAM_TYPES.map((enumValue) => ({
-                    value: enumValue,
-                    text: i18n.global.t(enumValue),
-                })),
-                label: i18n.global.t("examDetail.info.type"),
-            });
         }
 
-        loading.value = false;
+        fields.push({
+            type: "select" as const,
+            name: "type",
+            model: models.type,
+            options: SELECTABLE_EXAM_TYPES.map((enumValue) => ({
+                value: enumValue,
+                text: i18n.global.t(enumValue),
+            })),
+            label: i18n.global.t("examDetail.info.type"),
+        });
+
+        fields.push({
+            type: "select" as const,
+            name: "consecutiveExam",
+            model: models.consecutiveExam,
+            options:
+                consecutiveExamNames.value.map((entity) => ({
+                    value: entity.modelId,
+                    text: entity.name,
+                })) ?? [],
+            label: i18n.global.t("examDetail.info.consecutiveExam"),
+        });
 
         return fields;
     });
 
     return {
         formFields,
-        loading,
-        errors,
     };
 };

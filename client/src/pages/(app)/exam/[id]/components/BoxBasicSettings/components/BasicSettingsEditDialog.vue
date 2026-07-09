@@ -18,9 +18,7 @@
                 {{ $t("examDetail.boxes.basicSettings.title") }}
             </v-card-title>
             <v-card-text>
-                <LoadingFallbackComponent :loading="loading" :errors="errors">
-                    <FormBuilder v-model="formReady" :fields="formFields" />
-                </LoadingFallbackComponent>
+                <FormBuilder v-model="formReady" :fields="formFields" />
             </v-card-text>
             <v-card-actions>
                 <v-spacer />
@@ -42,7 +40,6 @@
 <script setup lang="ts">
 import { computed, Ref, ref } from "vue";
 import FormBuilder from "@/components/widgets/formBuilder/FormBuilder.vue";
-import LoadingFallbackComponent from "@/components/widgets/loadingFallbackComponent/LoadingFallbackComponent.vue";
 import {
     ExamTypeEnum,
     toApiExamType,
@@ -56,15 +53,18 @@ import {
     getTimeRangeFromIsoToReadableDates,
 } from "@/utils/timeUtils";
 import { useDisplay } from "vuetify";
+import { EntityName } from "@/api/seb-server/generated/hey-api";
 
 const { thresholds: thresholdsRef } = useDisplay();
 const thresholds = computed(() => thresholdsRef.value);
 
-const { basicSettings, examWithURL, editDisabled } = defineProps<{
-    basicSettings: BasicSettings;
-    examWithURL: Ref<boolean>;
-    editDisabled: Ref<boolean>;
-}>();
+const { consecutiveExamNames, examWithURL, basicSettings, editDisabled } =
+    defineProps<{
+        consecutiveExamNames: Ref<EntityName[] | undefined>;
+        examWithURL: boolean;
+        basicSettings: BasicSettings;
+        editDisabled: Ref<boolean>;
+    }>();
 
 const emit = defineEmits<{
     (e: "change", value: BasicSettings): void;
@@ -78,16 +78,19 @@ const descriptionTransient = ref<string>();
 const startURLTransient = ref<string>();
 const quizTimeRangeTransient = ref<TimeRange>();
 const typeTransient = ref<ExamTypeEnum>();
+const consecutiveExamTransient = ref<string>();
 
-const { formFields, loading, errors } = useExamBasicSettingsFields(
+const { formFields } = useExamBasicSettingsFields(
+    examWithURL,
+    consecutiveExamNames,
     {
         quizName: quizNameTransient,
         description: descriptionTransient,
         startURL: startURLTransient,
         quizTimeRange: quizTimeRangeTransient,
         type: typeTransient,
+        consecutiveExam: consecutiveExamTransient,
     },
-    { examWithURL: examWithURL },
 );
 
 const handleButtonEditClick = () => {
