@@ -4,10 +4,10 @@
     </div>
 
     <v-data-table
+        v-model:expanded="expandedItems"
         class="elevation-2 mb-7 bg-surface-light"
-        :expanded="expandedItems"
         :headers="screenshotTableHeaders"
-        item-value="timelineScreenshotDataList[0].timestamp"
+        :item-value="getGroupItemValue"
         :items="timelineSearchResultRef?.timelineGroupDataList"
         :items-per-page="tableUtils.defaultPageItems"
         :items-per-page-options="tableUtils.itemsPerPageOptions"
@@ -159,8 +159,8 @@ import * as spConstants from "@/utils/sp-constants";
 import { SearchTimeline } from "@/models/screen-proctoring/search";
 import { openRouteInNewTab } from "@/router/openRouteInNewTab.ts";
 
-function openProctoringView(sessionId: string, timestamp?: string) {
-    const searchTimestamp = timestamp?.trim();
+function openProctoringView(sessionId: string, timestamp?: string | number) {
+    const searchTimestamp = timestamp?.toString().trim();
     openRouteInNewTab({
         name: "/(app)/sp-recording/[sessionId]/",
         params: { sessionId },
@@ -177,8 +177,16 @@ const props = defineProps<{
 
 const timelineSearchResultRef = ref<SearchTimeline | null>(null);
 
+type TimelineGroup = SearchTimeline["timelineGroupDataList"][number];
+
 // table
 const expandedItems = ref<string[]>([]);
+
+// Group rows are identified by their first screenshot's timestamp, stringified
+// to match the `expandedItems` entries.
+function getGroupItemValue(item: TimelineGroup): string {
+    return item.timelineScreenshotDataList[0].timestamp.toString();
+}
 const screenshotTableHeadersRef = ref<Clickable[] | null>(null); // ← was any[]
 const screenshotTableHeaders = ref([
     {

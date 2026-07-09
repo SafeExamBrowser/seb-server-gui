@@ -49,13 +49,10 @@ export function groupScreenshotsByMetadata(
     groups.push(currentGroup);
 
     if (isSearchView) {
-        // The search view drops each group's first screenshot (its table row
-        // already shows one). Groups left empty by this must not be returned;
-        // the view reads `timelineScreenshotDataList[0]` of every group.
-        for (const g of groups) {
-            g.timelineScreenshotDataList.shift();
-        }
-        return groups.filter((g) => g.timelineScreenshotDataList.length > 0);
+        // The search view's table row already shows the group's first
+        // screenshot, which represents the first metadata subgroup - drop
+        // that subgroup so the expanded rows list only the remaining ones.
+        groups.shift();
     }
 
     return groups;
