@@ -13,6 +13,10 @@
         "newPassword": "Neues Passwort *",
         "confirmPassword": "Passwort bestätigen *"
     },
+    "titles": {
+        "spSearch": "Suche",
+        "spApplications": "Applikationen"
+    },
     "searchForm": {
         "examName": "Prüfungsname",
         "groupName": "Gruppenname",
@@ -28,20 +32,19 @@
         "last": "Letzte",
         "between": "Während",
         "cancel": "Abbrechen",
-        "search": "Suchen"
-    },
-    "applicationsSearch": {
-        "title": "Applikationssuche",
+        "search": "Suchen",
         "resetAll": "Zurücksetzen",
         "hideSearch": "Suche ausblenden",
-        "search": "Suchen",
         "active": "Aktiv",
         "from": "Von",
         "to": "Bis",
         "startDate": "Startdatum",
         "startTime": "Startzeit",
         "endDate": "Enddatum",
-        "endTime": "Endzeit",
+        "endTime": "Endzeit"
+    },
+    "applicationsSearch": {
+        "title": "Applikationssuche",
         "examsStartedInRange": "{count} Prüfungen im Zeitraum gestartet",
         "examsSelected": "{count} Prüfungen ausgewählt",
         "selectExams": "Prüfungen zum Durchsuchen auswählen",
@@ -63,10 +66,22 @@
         "openApplicationRecording": "Applikations-Suchaufzeichnung öffnen",
         "openFullRecording": "Vollständige Aufzeichnung öffnen"
     },
-    "searchPage": {
-        "title": "Suchresultate",
-        "collapse": "Einklappen",
-        "expand": "Ausklappen"
+    "spSearch": {
+        "title": "Screen-Proctoring-Suche",
+        "daysWithSessions": "{count} Tage mit Sessions",
+        "sortByDate": "Datum",
+        "collapseAll": "Alle einklappen",
+        "noResults": "Keine Ergebnisse entsprechen Ihren Suchkriterien",
+        "error": "Die Suchergebnisse konnten nicht geladen werden. Bitte versuchen Sie es erneut.",
+        "anyExam": "Beliebige Prüfung",
+        "anyGroup": "Beliebige Gruppe",
+        "anyLogin": "Beliebiger Anmeldename",
+        "anyIp": "Beliebige IP",
+        "anyMachine": "Beliebiger Computer",
+        "anyApplication": "Beliebige Applikation",
+        "anyBrowserTitle": "Beliebiger Titel",
+        "anyActivity": "Beliebige Aktivität",
+        "anyWindow": "Beliebiges Fenster"
     },
     "searchSessionTable": {
         "startTime": "Startzeit",

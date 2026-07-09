@@ -2313,20 +2313,19 @@
         "last": "Last",
         "between": "Between",
         "cancel": "Cancel",
-        "search": "Search"
-    },
-    "applicationsSearch": {
-        "title": "Application Search",
+        "search": "Search",
         "resetAll": "Reset all",
         "hideSearch": "Hide search",
-        "search": "Search",
         "active": "Active",
         "from": "From",
         "to": "To",
         "startDate": "Start date",
         "startTime": "Start time",
         "endDate": "End date",
-        "endTime": "End time",
+        "endTime": "End time"
+    },
+    "applicationsSearch": {
+        "title": "Application Search",
         "examsStartedInRange": "{count} exams started in range",
         "examsSelected": "{count} exams selected",
         "selectExams": "Select exams to search",
@@ -2348,10 +2347,22 @@
         "openApplicationRecording": "Open application-search recording",
         "openFullRecording": "Open full recording"
     },
-    "searchPage": {
-        "title": "Search results",
-        "collapse": "Collapse",
-        "expand": "Expand"
+    "spSearch": {
+        "title": "Screen Proctoring Search",
+        "daysWithSessions": "{count} days with sessions",
+        "sortByDate": "Date",
+        "collapseAll": "Collapse all",
+        "noResults": "No results match your search criteria",
+        "error": "Could not load the search results. Please try again.",
+        "anyExam": "Any exam",
+        "anyGroup": "Any group",
+        "anyLogin": "Any login",
+        "anyIp": "Any IP",
+        "anyMachine": "Any machine",
+        "anyApplication": "Any application",
+        "anyBrowserTitle": "Any title",
+        "anyActivity": "Any activity",
+        "anyWindow": "Any window"
     },
     "timePeriod": {
         "day": "Days",

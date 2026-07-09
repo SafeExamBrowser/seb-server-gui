@@ -32,27 +32,29 @@
                     />
                     {{
                         filtersOpen
-                            ? $t("applicationsSearch.hideSearch")
-                            : $t("applicationsSearch.search")
+                            ? $t("searchForm.hideSearch")
+                            : $t("searchForm.search")
                     }}
                 </v-btn>
 
-                <v-divider vertical class="align-self-stretch mx-1" />
+                <template v-if="search.activeSummary">
+                    <v-divider vertical class="align-self-stretch mx-1" />
 
-                <span
-                    class="text-body-small text-medium-emphasis text-uppercase font-weight-medium"
-                >
-                    {{ $t("applicationsSearch.active") }}
-                </span>
-                <v-chip
-                    color="primary"
-                    variant="tonal"
-                    class="font-weight-medium"
-                    :data-testid="`${dataTestId}-time-pill`"
-                >
-                    <v-icon start size="small" icon="mdi-clock-outline" />
-                    {{ search.activeSummary }}
-                </v-chip>
+                    <span
+                        class="text-body-small text-medium-emphasis text-uppercase font-weight-medium"
+                    >
+                        {{ $t("searchForm.active") }}
+                    </span>
+                    <v-chip
+                        color="primary"
+                        variant="tonal"
+                        class="font-weight-medium"
+                        :data-testid="`${dataTestId}-time-pill`"
+                    >
+                        <v-icon start size="small" icon="mdi-clock-outline" />
+                        {{ search.activeSummary }}
+                    </v-chip>
+                </template>
                 <v-chip
                     v-if="search.metadataAvailable"
                     color="primary"

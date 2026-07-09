@@ -49,11 +49,10 @@ export function groupScreenshotsByMetadata(
     groups.push(currentGroup);
 
     if (isSearchView) {
-        for (const g of groups) {
-            if (g.timelineScreenshotDataList.length > 0) {
-                g.timelineScreenshotDataList.shift();
-            }
-        }
+        // The search view's table row already shows the group's first
+        // screenshot, which represents the first metadata subgroup - drop
+        // that subgroup so the expanded rows list only the remaining ones.
+        groups.shift();
     }
 
     return groups;
