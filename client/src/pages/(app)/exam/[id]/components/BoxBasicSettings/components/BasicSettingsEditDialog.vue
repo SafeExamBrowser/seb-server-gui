@@ -153,6 +153,6 @@ const getFollowupIdNum = (): number | undefined => {
         return Number(consecutiveExamTransient.value);
     }
 
-    return basicSettings.followupId;
+    return undefined;
 };
 </script>
