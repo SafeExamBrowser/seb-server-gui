@@ -57,7 +57,6 @@
                 variant="flat"
                 block
                 class="text-none"
-                :disabled="!timeRange.mode"
                 :data-testid="`${dataTestId}-search-button`"
                 @click="handleSearch"
             >
@@ -69,7 +68,7 @@
 </template>
 
 <script setup lang="ts">
-import { ref } from "vue";
+import { onMounted, ref } from "vue";
 import TimeRangeModeSelector from "@/components/widgets/searches/timeRange/TimeRangeModeSelector.vue";
 import {
     buildTimeRangeSummary,
@@ -90,7 +89,6 @@ const emit = defineEmits<{
     collapse: [];
 }>();
 
-// No time mode is selected initially; the user opts into "period" or "between".
 const createDefaultTimeRange = (): TimeRangeSelection => ({
     mode: undefined,
     periodAmount: 1,
@@ -104,11 +102,11 @@ const createDefaultTimeRange = (): TimeRangeSelection => ({
 const timeRange = ref<TimeRangeSelection>(createDefaultTimeRange());
 const timeRangeSelector = ref<InstanceType<typeof TimeRangeModeSelector>>();
 
-function handleSearch() {
-    if (!timeRange.value.mode) {
-        return;
-    }
+onMounted(() => {
+    handleSearch();
+});
 
+function handleSearch() {
     const [fromTime, toTime] = computeTimeRange(timeRange.value);
 
     emit("search", {
@@ -125,8 +123,11 @@ function handleEscape() {
     handleReset();
 }
 
+// Resetting re-runs the default unbounded search right away, mirroring the
+// screen proctoring search form.
 function handleReset() {
     timeRange.value = createDefaultTimeRange();
+    handleSearch();
 }
 </script>
 
