@@ -6,8 +6,8 @@
         density="compact"
         :title="$t('examDetail.boxes.basicSettings.title')"
         :aria-label="$t('examDetail.boxes.basicSettings.title')"
-        @click="handleButtonEditClick"
         :disabled="editDisabled.value"
+        @click="handleButtonEditClick"
     >
         <v-icon icon="mdi-pencil" size="x-small" />
     </v-btn>
