@@ -10,6 +10,7 @@ import {
     AppSignatureKey,
     GrantedAppSignatureKey,
 } from "@/models/seb-server/appSignatureKey";
+import { EntityName } from "@/api/seb-server/generated/hey-api";
 
 const baseUrl = "/exam" as const;
 
@@ -150,6 +151,16 @@ export const removeSEBLock = async (id: string): Promise<null> =>
     (
         await apiService.deleteRequest({
             url: `${baseUrl}/${id}/seb-restriction`,
+            options: { _authType: "seb" },
+        })
+    ).data;
+
+export const getConsecutiveExamSelection = async (
+    id: string,
+): Promise<EntityName[]> =>
+    (
+        await apiService.getRequest({
+            url: `${baseUrl}/${id}/followup`,
             options: { _authType: "seb" },
         })
     ).data;

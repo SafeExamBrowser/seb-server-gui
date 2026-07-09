@@ -233,6 +233,23 @@ export const formatIsoToReadableTimeRange = (range: TimeRange) => {
     );
 };
 
+export const getTimeRangeFromIsoToReadableDates = (
+    from: string,
+    to: string,
+): TimeRange => {
+    const fromDate = new Date(from);
+    const toDate = new Date(to);
+
+    const timeRange: TimeRange = {
+        fromDate: fromDate,
+        fromTime: `${fromDate.getHours()}:${fromDate.getMinutes()}`,
+        toDate: toDate,
+        toTime: `${toDate.getHours()}:${toDate.getMinutes()}`,
+    };
+
+    return timeRange;
+};
+
 export const getTimestampFromDateAndTime = (
     date: Date,
     time: string,
@@ -253,4 +270,20 @@ export const getDateWithTime = (date: Date, time: string): Date => {
     const timeSplit = time.split(":");
     date.setHours(Number(timeSplit[0]), Number(timeSplit[1]));
     return new Date(date);
+};
+
+export const getDateWithTimeBackendFormat = (
+    date: Date,
+    time: string,
+): string => {
+    const dateWithTime = getDateWithTime(date, time);
+    const day = ("0" + dateWithTime.getUTCDate()).slice(-2);
+    const month = ("0" + (dateWithTime.getUTCMonth() + 1)).slice(-2);
+    const year = dateWithTime.getFullYear();
+
+    const hours = ("0" + dateWithTime.getUTCHours()).slice(-2);
+    const minutes = ("0" + dateWithTime.getUTCMinutes()).slice(-2);
+    const seconds = ("0" + dateWithTime.getUTCSeconds()).slice(-2);
+
+    return `${year}-${month}-${day}T${hours}:${minutes}:${seconds}.000Z`;
 };

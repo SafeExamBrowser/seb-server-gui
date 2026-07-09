@@ -50,10 +50,12 @@
                             <!------url------->
                             <v-col class="text-decoration-underline" cols="3">
                                 <a
-                                    :href="examStore.selectedExam?.startURL"
+                                    :href="
+                                        examStore.selectedExam?.quiz_start_url
+                                    "
                                     target="_blank"
                                 >
-                                    {{ examStore.selectedExam?.startURL }}
+                                    {{ examStore.selectedExam?.quiz_start_url }}
                                 </a>
                             </v-col>
 

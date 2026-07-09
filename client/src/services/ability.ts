@@ -298,6 +298,7 @@ examStatusActions.set(
 examStatusActions.set(
     ExamStatusEnum.FINISHED,
     new Set<GUIAction>([
+        GUIAction.EditExamSettings,
         GUIAction.ArchiveExam,
         GUIAction.DeleteExam,
         GUIAction.ExportExamClientConfig,
