@@ -937,23 +937,13 @@ const changeBasicSettings = (value: BasicSettings) => {
             value.quiz_start_url;
         examStore.selectedExam.quizStartTime = value.quizStartTime;
         examStore.selectedExam.quizEndTime = value.quizEndTime;
-        examStore.selectedExam.type = value.type;
-    } else {
-        examStore.selectedExam.type = value.type;
     }
+
+    examStore.selectedExam.type = value.type;
+    examStore.selectedExam.followupId = value.followupId;
 
     updateExam();
 };
-
-// const isExamWithURL = () => {
-//     if (examStore.selectedExam) {
-//         return (
-//             examStore.selectedExam.lmsSetupId === null ||
-//             examStore.selectedExam.lmsSetupId === undefined
-//         );
-//     }
-//     return false;
-// };
 
 const settingsEditDisabled = () => {
     return !ability.canDoExamAction(

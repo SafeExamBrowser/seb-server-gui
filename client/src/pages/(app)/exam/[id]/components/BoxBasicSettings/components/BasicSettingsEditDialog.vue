@@ -78,7 +78,7 @@ const descriptionTransient = ref<string>();
 const startURLTransient = ref<string>();
 const quizTimeRangeTransient = ref<TimeRange>();
 const typeTransient = ref<ExamTypeEnum>();
-const consecutiveExamTransient = ref<string>();
+const consecutiveExamTransient = ref<string | undefined>();
 
 const { formFields } = useExamBasicSettingsFields(
     examWithURL,
@@ -102,6 +102,8 @@ const handleButtonEditClick = () => {
         basicSettings.quizEndTime,
     );
     typeTransient.value = toSelectableExamType(basicSettings.type);
+    consecutiveExamTransient.value =
+        basicSettings.followupId?.toString() ?? undefined;
     dialogOpen.value = true;
 };
 

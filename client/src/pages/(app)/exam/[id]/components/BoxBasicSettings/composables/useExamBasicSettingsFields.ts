@@ -96,6 +96,7 @@ export const useExamBasicSettingsFields = (
                     text: entity.name,
                 })) ?? [],
             label: i18n.global.t("examDetail.info.consecutiveExam"),
+            required: false,
         });
 
         return fields;
