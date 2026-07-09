@@ -43,7 +43,7 @@ export const useBasicSettingsItems = (
             consecutiveExamNames.value.find(
                 (entity) =>
                     entity.modelId === String(basicSettings.value.followupId),
-            )?.modelId ?? ""
+            )?.name ?? ""
         );
     });
 

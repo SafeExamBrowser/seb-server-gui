@@ -119,6 +119,7 @@ const handleButtonSaveClick = () => {
         quizEndTime: getQuizToDate(),
         type: toApiExamType(typeTransient.value),
         status: basicSettings.status,
+        followupId: getFollowupIdNum(),
     });
     dialogOpen.value = false;
 };
@@ -143,5 +144,13 @@ const getQuizToDate = (): string => {
         quizTimeRangeTransient.value.toDate,
         quizTimeRangeTransient.value.toTime,
     );
+};
+
+const getFollowupIdNum = (): number | undefined => {
+    if (consecutiveExamTransient.value) {
+        return Number(consecutiveExamTransient.value);
+    }
+
+    return basicSettings.followupId;
 };
 </script>
