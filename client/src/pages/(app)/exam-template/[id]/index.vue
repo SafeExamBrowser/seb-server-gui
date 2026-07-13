@@ -1,5 +1,11 @@
 <template>
+    <NotFoundPage
+        v-if="notFound"
+        :message="$t('examTemplateDetail.notFound.message')"
+        :back-link="notFoundBackLink"
+    />
     <BasicPage
+        v-else
         floating
         :title="title"
         :bread-crumb="breadCrumb"
@@ -61,9 +67,12 @@
 </template>
 
 <script setup lang="ts">
+import { useI18n } from "vue-i18n";
 import BasicPage from "@/components/layout/pages/BasicPage.vue";
 import BasicGrid from "@/components/layout/BasicGrid.vue";
 import LoadingFallbackComponent from "@/components/widgets/loadingFallbackComponent/LoadingFallbackComponent.vue";
+import NotFoundPage from "@/components/layout/pages/NotFoundPage.vue";
+import { typedTo } from "@/router/typedTo";
 import { useExamTemplateDetailPage } from "./composables/useExamTemplateDetailPage.ts";
 import BoxBasicSettings from "@/pages/(app)/exam-template/[id]/components/BoxBasicSettings/BoxBasicSettings.vue";
 import BoxSEBSettings from "@/pages/(app)/exam-template/[id]/components/BoxSEBSettings/BoxSEBSettings.vue";
@@ -81,12 +90,15 @@ definePage({
 
 const dataTestId = "examTemplateDetail";
 
+const { t } = useI18n();
+
 const {
     examTemplateId,
     title,
     breadCrumb,
     errors,
     loading,
+    notFound,
     indicators,
     availableSupervisors,
     selectedSupervisorIds,
@@ -97,6 +109,11 @@ const {
     handleScreenProctoringChange,
     handleBasicSettingsChange,
 } = useExamTemplateDetailPage();
+
+const notFoundBackLink = {
+    label: t("examTemplateDetail.notFound.backToList"),
+    to: typedTo({ name: "/(app)/exam-template/" }),
+};
 
 const handleSupervisorsChange = (ids: string[]) =>
     updateTemplate({
