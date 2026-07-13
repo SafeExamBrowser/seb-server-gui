@@ -1,7 +1,7 @@
 <template>
     <v-card elevation="2" rounded="lg" class="flex-grow-1">
         <v-card-title v-if="title" class="pb-0">
-            <div class="d-flex align-center pt-2 pb-3 border-b-md">
+            <div class="d-flex align-center ga-2 pt-2 pb-3 border-b-md">
                 <SectionSubtitle :name="title" />
                 <v-spacer />
                 <slot name="action" />

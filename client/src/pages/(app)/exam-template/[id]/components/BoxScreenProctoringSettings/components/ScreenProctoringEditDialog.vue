@@ -1,19 +1,11 @@
 <template>
-    <v-btn
-        class="text-none"
-        color="primary"
-        variant="text"
-        density="compact"
-        :title="
-            $t('examTemplateDetail.boxes.screenProctoringSettings.dialogTitle')
-        "
-        :aria-label="
+    <BoxActionButton
+        icon="mdi-pencil"
+        :label="
             $t('examTemplateDetail.boxes.screenProctoringSettings.dialogTitle')
         "
         @click="handleButtonEditClick"
-    >
-        <v-icon icon="mdi-pencil" size="x-small" />
-    </v-btn>
+    />
 
     <v-dialog v-model="dialogOpen" :max-width="thresholds.sm">
         <v-card>
@@ -48,6 +40,7 @@
 import { computed, ref } from "vue";
 import { useI18n } from "vue-i18n";
 import { useDisplay } from "vuetify";
+import BoxActionButton from "@/components/widgets/BoxActionButton.vue";
 import FormBuilder from "@/components/widgets/formBuilder/FormBuilder.vue";
 import { FormField } from "@/components/widgets/formBuilder/types.ts";
 import { useScreenProctoringStrategyField } from "@/composables/useScreenProctoringStrategyField.ts";
