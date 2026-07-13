@@ -9,7 +9,7 @@ import {
 import { BasicSettings } from "@/models/seb-server/exam.ts";
 import * as timeUtils from "@/utils/timeUtils.ts";
 import * as generalUtils from "@/utils/generalUtils.ts";
-import { useConsecutiveExamNames } from "@/pages/(app)/exam/[id]/components/BoxBasicSettings/composables/useConsecutiveExamNames";
+import { useConsecutiveExamNames } from "@/pages/(app)/exam/[id]/components/BoxBasicSettings/composables/api/useConsecutiveExamNames";
 
 export const useBasicSettingsItems = (
     examId: number,
@@ -142,6 +142,26 @@ export const useBasicSettingsItems = (
             value: {
                 type: "string",
                 value: getSelectedConsecutiveExamName.value,
+            },
+        });
+
+        result.push({
+            key: "quitPassword",
+            type: "basic",
+            label: t("examDetail.info.quitPassword"),
+            value: {
+                type: "password",
+                value: basicSettings.value.quitPassword ?? "",
+            },
+        });
+
+        result.push({
+            key: "encryptPassword",
+            type: "basic",
+            label: t("examDetail.info.encryptPassword"),
+            value: {
+                type: "password",
+                value: basicSettings.value.encryptPassword ?? "",
             },
         });
 

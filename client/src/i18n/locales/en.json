@@ -1946,7 +1946,9 @@
             "typeStatus": "Exam Type & Status",
             "type": "Exam Type",
             "status": "Exam Status",
-            "consecutiveExam": "Consecutive Exam"
+            "consecutiveExam": "Consecutive Exam",
+            "quitPassword": "Quit Password",
+            "encryptPassword": "Start/Encryption Password"
         },
         "main": {
             "testExam": "Test Exam",

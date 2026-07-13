@@ -22,6 +22,8 @@ export const useExamBasicSettingsFields = (
         quizTimeRange: Ref<TimeRange | undefined>;
         type: Ref<ExamTypeEnum | undefined>;
         consecutiveExam: Ref<string | undefined>;
+        quitPassword: Ref<string | undefined>;
+        encryptPassword: Ref<string | undefined>;
     },
 ) => {
     const formFields = computed<FormField[]>(() => {
@@ -96,6 +98,22 @@ export const useExamBasicSettingsFields = (
                     text: entity.name,
                 })) ?? [],
             label: i18n.global.t("examDetail.info.consecutiveExam"),
+            required: false,
+        });
+
+        fields.push({
+            type: "password" as const,
+            name: "type",
+            model: models.quitPassword,
+            label: i18n.global.t("examDetail.info.quitPassword"),
+            required: false,
+        });
+
+        fields.push({
+            type: "password" as const,
+            name: "type",
+            model: models.encryptPassword,
+            label: i18n.global.t("examDetail.info.encryptPassword"),
             required: false,
         });
 

@@ -58,8 +58,8 @@ export type Exam = {
     additionalAttributes: ExamAdditionalAttributes;
     quiz_description: string;
     quiz_start_url: string;
-    quitPassword: string;
-    followupId?: number;
+    quitPassword?: string;
+    followupId: number | null;
     excludeFromDeletion: boolean;
 };
 
@@ -73,7 +73,10 @@ export type BasicSettings = Pick<
     | "type"
     | "status"
     | "followupId"
->;
+    | "quitPassword"
+> & {
+    encryptPassword?: string;
+};
 
 export type Exams = {
     number_of_pages: number;

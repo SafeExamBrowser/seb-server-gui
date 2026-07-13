@@ -138,8 +138,7 @@
             <FormFieldTimeRange
                 v-else-if="field.type === 'time-range'"
                 v-model="field.model.value"
-                :label-from="field.label"
-                :label-to="field.label"
+                :label="field.label"
                 :standard-properties="getBaseProperties(field)"
             />
         </div>

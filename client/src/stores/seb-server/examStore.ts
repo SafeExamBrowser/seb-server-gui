@@ -10,6 +10,7 @@ import { Exam } from "@/models/seb-server/exam";
 import { ClientGroup } from "@/models/seb-server/clientGroup";
 import { AssessmentTool } from "@/models/seb-server/assessmentTool";
 import { ExamTemplate } from "@/models/seb-server/examTemplate";
+import { ConfigurationExamMapping } from "@/models/seb-server/configurationNode";
 
 export const useExamStore = defineStore("exam", () => {
     // exam table
@@ -21,6 +22,7 @@ export const useExamStore = defineStore("exam", () => {
 
     // exam detail page
     const selectedExam = ref<Exam | null>(null);
+    const selectedConfigMapping = ref<ConfigurationExamMapping | null>(null);
     const selectedExamTemplate = ref<ExamTemplate | null>(null);
     const templateGroupsWithSp = ref<number[]>([]);
     const selectedExamSupervisors = ref<UserAccount[]>([]);
@@ -43,6 +45,7 @@ export const useExamStore = defineStore("exam", () => {
         startDate,
         currentPagingOptions,
         selectedExam,
+        selectedConfigMapping,
         selectedExamTemplate,
         templateGroupsWithSp,
         relatedAssessmentTool,

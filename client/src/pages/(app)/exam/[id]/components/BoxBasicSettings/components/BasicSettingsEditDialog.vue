@@ -79,6 +79,8 @@ const startURLTransient = ref<string>();
 const quizTimeRangeTransient = ref<TimeRange>();
 const typeTransient = ref<ExamTypeEnum>();
 const consecutiveExamTransient = ref<string | undefined>();
+const quitPasswordTransient = ref<string | undefined>();
+const encryptPasswordTransient = ref<string | undefined>();
 
 const { formFields } = useExamBasicSettingsFields(
     examWithURL,
@@ -90,6 +92,8 @@ const { formFields } = useExamBasicSettingsFields(
         quizTimeRange: quizTimeRangeTransient,
         type: typeTransient,
         consecutiveExam: consecutiveExamTransient,
+        quitPassword: quitPasswordTransient,
+        encryptPassword: encryptPasswordTransient,
     },
 );
 
@@ -104,6 +108,9 @@ const handleButtonEditClick = () => {
     typeTransient.value = toSelectableExamType(basicSettings.type);
     consecutiveExamTransient.value =
         basicSettings.followupId?.toString() ?? undefined;
+    quitPasswordTransient.value = basicSettings.quitPassword;
+    encryptPasswordTransient.value = basicSettings.encryptPassword;
+
     dialogOpen.value = true;
 };
 
@@ -122,6 +129,8 @@ const handleButtonSaveClick = () => {
         type: toApiExamType(typeTransient.value),
         status: basicSettings.status,
         followupId: getFollowupIdNum(),
+        quitPassword: quitPasswordTransient.value,
+        encryptPassword: encryptPasswordTransient.value,
     });
     dialogOpen.value = false;
 };
@@ -148,11 +157,11 @@ const getQuizToDate = (): string => {
     );
 };
 
-const getFollowupIdNum = (): number | undefined => {
+const getFollowupIdNum = (): number | null => {
     if (consecutiveExamTransient.value) {
         return Number(consecutiveExamTransient.value);
     }
 
-    return undefined;
+    return null;
 };
 </script>

@@ -11,8 +11,10 @@ import {
     GrantedAppSignatureKey,
 } from "@/models/seb-server/appSignatureKey";
 import { EntityName } from "@/api/seb-server/generated/hey-api";
+import { ConfigurationExamMapping } from "@/models/seb-server/configurationNode";
 
 const baseUrl = "/exam" as const;
+const configMappingBaseUrl = "/exam-configuration-map" as const;
 
 export const getExam = async (id: string): Promise<Exam> =>
     (
@@ -161,6 +163,27 @@ export const getConsecutiveExamSelection = async (
     (
         await apiService.getRequest({
             url: `${baseUrl}/${id}/followup`,
+            options: { _authType: "seb" },
+        })
+    ).data;
+
+export const getExamConfigMapping = async (
+    examId: number,
+): Promise<ConfigurationExamMapping> =>
+    (
+        await apiService.getRequest({
+            url: `${baseUrl}/seb-settings/${examId}/examConfigMapping`,
+            options: { _authType: "seb" },
+        })
+    ).data;
+
+export const updateExamConfigMapping = async (
+    configMapping: ConfigurationExamMapping,
+): Promise<Exam> =>
+    (
+        await apiService.putRequest({
+            url: configMappingBaseUrl,
+            data: configMapping,
             options: { _authType: "seb" },
         })
     ).data;

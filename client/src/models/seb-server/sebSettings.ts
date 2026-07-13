@@ -3,16 +3,6 @@ export type PermittedProcessArgument = {
     argument: string;
 };
 
-export type ExamConfigMapping = {
-    id: number;
-    examId: number;
-    examName: string;
-    examDescription: string;
-    configurationNodeId: number;
-    configName: string;
-    configStatus: string;
-};
-
 export type PermittedProcess = {
     index: number;
     active: boolean;
