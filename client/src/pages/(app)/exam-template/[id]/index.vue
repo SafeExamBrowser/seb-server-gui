@@ -14,9 +14,11 @@
                             @change="handleBasicSettingsChange"
                         />
                     </template>
-                    <template #sebSettings>
+                    <template
+                        v-if="basicSettings.configurationTemplateId"
+                        #sebSettings
+                    >
                         <BoxSEBSettings
-                            v-if="basicSettings.configurationTemplateId"
                             :exam-template-name="basicSettings.name"
                             :config-template-id="
                                 basicSettings.configurationTemplateId
