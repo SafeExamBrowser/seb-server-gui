@@ -970,7 +970,6 @@ async function getExam() {
     }
 
     examStore.selectedExam = examResponse;
-    filterOutTeacherUser();
     isSEBLockActive.value = await examService.checkSEBLock(examId);
     isExcludeFromDeletionActive.value =
         examStore.selectedExam.excludeFromDeletion;
@@ -1003,7 +1002,6 @@ async function updateExam(isSupervisorsManualUpdate?: boolean) {
     alertKey.value = "exam-update-successful";
 
     examStore.selectedExam = updateExamResponse;
-    filterOutTeacherUser();
     isExcludeFromDeletionActive.value =
         examStore.selectedExam.excludeFromDeletion;
 
@@ -1146,7 +1144,6 @@ async function changeSEBLock(enable: boolean) {
     }
 
     examStore.selectedExam = applySEBLockResponse;
-    filterOutTeacherUser();
 }
 
 //SEB Lock
@@ -1164,9 +1161,6 @@ async function applySEBLockService(
 }
 
 //= ==============supervisors logic====================
-// TODO @anhefti: This is just to satisfy the linter for the moment (how can we just ignore an error after catch? )
-//                To solve this in the backend, make sure the backend only and always returns valid user UUIDs within the supporter field
-const error = ref<string>();
 async function getExamSupervisors() {
     if (examStore.selectedExam?.supporter == null) {
         return;
@@ -1179,42 +1173,15 @@ async function getExamSupervisors() {
 
     examStore.clearSelectedSupervisors();
     for (let i = 0; i < examStore.selectedExam.supporter.length; i++) {
-        try {
-            const userAccount: UserAccount | null =
-                await userAccountService.getUserAccountById(
-                    examStore.selectedExam.supporter[i],
-                );
+        const userAccount: UserAccount | null =
+            await userAccountService.getUserAccountById(
+                examStore.selectedExam.supporter[i],
+            );
 
-            if (userAccount !== null && userAccount !== undefined) {
-                examStore.selectedExamSupervisors.push(userAccount);
-            }
-        } catch (err) {
-            error.value = err instanceof Error ? err.message : "Unknown error";
+        if (userAccount !== null && userAccount !== undefined) {
+            examStore.selectedExamSupervisors.push(userAccount);
         }
     }
-}
-
-// TODO @anhefti: This is a workaround since teacher accounts are not selectable and also should not be sent on save
-//                Ideally the Backend should provide only selectable supporter within the Exam when fetching but
-//                to achieve this we have to figure out when to do this ideally since in the back-end the teacher accounts are needed
-//                one solution would be to use a dedicated endpoint to fetch the Exam for the GUI
-function filterOutTeacherUser() {
-    if (!examStore.selectedExam) {
-        return;
-    }
-    if (examStore.selectedExam.supporter.length == 0) {
-        return;
-    }
-
-    const filteredSupporter: string[] = [];
-    for (let i = 0; i < examStore.selectedExam.supporter.length; i++) {
-        if (
-            !examStore.selectedExam.supporter[i].startsWith("TEACHER_ACCOUNT__")
-        ) {
-            filteredSupporter.push(examStore.selectedExam.supporter[i]);
-        }
-    }
-    examStore.selectedExam.supporter = filteredSupporter;
 }
 
 function openSupervisorsDialog() {
@@ -1332,7 +1299,6 @@ async function changeScreenProctoringSettings(enable: boolean) {
     }
 
     examStore.selectedExam = saveScreenProcResponse;
-    filterOutTeacherUser();
 }
 
 //= ==============delete exam logic====================
