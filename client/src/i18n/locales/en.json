@@ -430,7 +430,10 @@
             "FINISHED": "Finished"
         },
         "actions": {
-            "add": "Add Scheduled Deletion"
+            "add": "Add",
+            "delete": {
+                "tooltip": "Delete Schedule Task"
+            }
         },
         "hints": {
             "create1": "Permanently removes archived exam data from a chosen date (inclusive). ",
@@ -2236,7 +2239,7 @@
         "analyze": "Analyze",
         "archive": "Archive",
         "scheduled-deletion": "Scheduled Deletion",
-        "createScheduledDelete": "Add Scheduled Deletion",
+        "createScheduledDelete": "Add",
         "scheduledDeletionReport": "Deletion Report"
     },
     "warnings": {

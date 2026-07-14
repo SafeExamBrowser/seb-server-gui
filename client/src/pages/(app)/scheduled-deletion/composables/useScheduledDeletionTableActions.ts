@@ -31,6 +31,7 @@ export function useScheduledDeletionTableActions(deps: {
             key: "delete",
             icon: "mdi-delete",
             label: t("general.deleteButton"),
+            tooltip: t("scheduledDelete.actions.delete.tooltip"),
             color: "error",
             visible: deps.canDelete,
             onClick: guardAction(deps.onDelete),
