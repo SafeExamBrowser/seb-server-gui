@@ -1,6 +1,7 @@
 <template>
     <slot name="activator" :props="{ onClick: openDialog }">
         <v-btn
+            v-if="labelActivatorVisible && labelActivator !== ''"
             class="text-none"
             :disabled="disabled"
             :color="colorActivator"
@@ -11,10 +12,18 @@
             @click="openDialog"
         >
             <v-icon :icon="iconActivator" :size="sizeActivator" />
-            <span v-if="labelActivatorVisible" class="ml-2">
+            <span class="ml-2">
                 {{ labelActivator }}
             </span>
         </v-btn>
+        <BoxActionButton
+            v-else
+            :icon="iconActivator"
+            :color="colorActivator"
+            :disabled="disabled"
+            :label="title !== '' ? title : labelActivator"
+            @click="openDialog"
+        />
     </slot>
     <v-dialog
         v-model="isDialogOpen"
@@ -88,6 +97,7 @@ import { computed, ref, watch } from "vue";
 import type { Ref, UnwrapRef } from "vue";
 import { IconValue } from "vuetify/lib/composables/icons.mjs";
 import { useDisplay } from "vuetify";
+import BoxActionButton from "@/components/widgets/BoxActionButton.vue";
 import FormBuilder from "@/components/widgets/formBuilder/FormBuilder.vue";
 import { FormField } from "@/components/widgets/formBuilder/types";
 import { errorMessageOf } from "@/services/errors/toAppError.ts";

@@ -1,19 +1,11 @@
 <template>
     <DetailBox :title="$t('examTemplateDetail.boxes.supervisors.title')">
         <template #action>
-            <v-btn
-                class="text-none"
-                color="primary"
-                variant="text"
-                density="compact"
-                :title="$t('examTemplateDetail.boxes.supervisors.dialogTitle')"
-                :aria-label="
-                    $t('examTemplateDetail.boxes.supervisors.dialogTitle')
-                "
+            <BoxActionButton
+                icon="mdi-pencil"
+                :label="$t('examTemplateDetail.boxes.supervisors.dialogTitle')"
                 @click="handleButtonEditClick"
-            >
-                <v-icon icon="mdi-pencil" size="x-small" />
-            </v-btn>
+            />
         </template>
 
         <v-data-table
@@ -64,6 +56,7 @@
 import { computed, ref } from "vue";
 import { useI18n } from "vue-i18n";
 import { useDisplay } from "vuetify";
+import BoxActionButton from "@/components/widgets/BoxActionButton.vue";
 import DetailBox from "@/components/widgets/DetailBox.vue";
 import SupervisorPicker from "@/components/widgets/supervisorPicker/SupervisorPicker.vue";
 import { UserAccountName } from "@/models/userAccount";

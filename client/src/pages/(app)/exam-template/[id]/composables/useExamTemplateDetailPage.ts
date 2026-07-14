@@ -42,6 +42,12 @@ export const useExamTemplateDetailPage = () => {
         () => examTemplateLoading.value || availableSupervisorsLoading.value,
     );
 
+    const notFound = computed(
+        () =>
+            examTemplateError.value?.kind === "backend" &&
+            examTemplateError.value.status === 404,
+    );
+
     const errors = computed(() => {
         const messages = [];
 
@@ -53,7 +59,7 @@ export const useExamTemplateDetailPage = () => {
             );
         }
 
-        if (examTemplateError.value) {
+        if (examTemplateError.value && !notFound.value) {
             messages.push(examTemplateError.value);
         }
 
@@ -185,6 +191,7 @@ export const useExamTemplateDetailPage = () => {
     return {
         examTemplateId,
         loading,
+        notFound,
         errors,
         title,
         breadCrumb,

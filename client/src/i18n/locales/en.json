@@ -600,6 +600,10 @@
         },
         "errors": {
             "invalidId": "Invalid exam template id: \"{id}\""
+        },
+        "notFound": {
+            "message": "Exam template not found",
+            "backToList": "Back to exam templates"
         }
     },
     "examTemplateList": {

@@ -1,15 +1,9 @@
 <template>
-    <v-btn
-        class="text-none"
-        color="primary"
-        variant="text"
-        density="compact"
-        :title="$t('examTemplateDetail.boxes.basicSettings.dialogTitle')"
-        :aria-label="$t('examTemplateDetail.boxes.basicSettings.dialogTitle')"
+    <BoxActionButton
+        icon="mdi-pencil"
+        :label="$t('examTemplateDetail.boxes.basicSettings.dialogTitle')"
         @click="handleButtonEditClick"
-    >
-        <v-icon icon="mdi-pencil" size="x-small" />
-    </v-btn>
+    />
 
     <v-dialog v-model="dialogOpen" :max-width="thresholds.sm">
         <v-card>
@@ -41,6 +35,7 @@
 <script setup lang="ts">
 import { computed, ref } from "vue";
 import { useDisplay } from "vuetify";
+import BoxActionButton from "@/components/widgets/BoxActionButton.vue";
 import FormBuilder from "@/components/widgets/formBuilder/FormBuilder.vue";
 import LoadingFallbackComponent from "@/components/widgets/loadingFallbackComponent/LoadingFallbackComponent.vue";
 import {
