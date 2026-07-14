@@ -12,7 +12,10 @@
         :data-test-id="dataTestId"
     >
         <template #PanelLeft>
-            <div class="h-100 d-flex flex-column pa-4"></div>
+            <ExamSidePanel
+                :status="exam?.status"
+                :exam-template-id="exam?.examTemplateId"
+            />
         </template>
         <template #PanelMain>
             <LoadingFallbackComponent :loading="loading" :errors="errors">
@@ -30,6 +33,7 @@ import LoadingFallbackComponent from "@/components/widgets/loadingFallbackCompon
 import NotFoundPage from "@/components/layout/pages/NotFoundPage.vue";
 import { typedTo } from "@/router/typedTo";
 import { useExamDetailPage } from "./composables/useExamDetailPage.ts";
+import ExamSidePanel from "./components/ExamSidePanel.vue";
 
 definePage({
     meta: {
@@ -42,7 +46,7 @@ const dataTestId = "examDetail";
 
 const { t } = useI18n();
 
-const { examId, title, breadCrumb, errors, loading, notFound } =
+const { examId, exam, title, breadCrumb, errors, loading, notFound } =
     useExamDetailPage();
 
 const notFoundBackLink = {

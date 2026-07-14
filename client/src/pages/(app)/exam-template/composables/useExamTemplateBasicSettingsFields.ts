@@ -7,7 +7,7 @@ import {
 } from "@/models/seb-server/examFiltersEnum.ts";
 import { useClientConfigurationNames } from "@/composables/useClientConfigurationNames.ts";
 import i18n from "@/i18n";
-import { useExamTemplateNames } from "./api/useExamTemplateNames.ts";
+import { useExamTemplateNames } from "@/composables/useExamTemplateNames.ts";
 
 export const useExamTemplateBasicSettingsFields = (
     models: {

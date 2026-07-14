@@ -1946,6 +1946,9 @@
             "message": "Exam not found",
             "backToList": "Back to exams"
         },
+        "sidePanel": {
+            "createdWithTemplate": "Created with exam template"
+        },
         "boxes": {
             "basicSettings": {
                 "title": "Basic Settings"
