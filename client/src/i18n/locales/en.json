@@ -656,8 +656,8 @@
             "tableHeaderStatus": "Status"
         },
         "actions": {
-            "downloadSEBLogs": "Download SEB Logs",
-            "showSPS": "Show Screen Proctoring",
+            "downloadSEBLogs": "Export SEB Logs (CSV)",
+            "showSPS": "Search Screen Proctoring",
             "archive": "Archive this Exam",
             "archiveSelected": "Archive selected"
         },
