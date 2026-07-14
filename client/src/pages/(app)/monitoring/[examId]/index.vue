@@ -43,20 +43,22 @@
         </template>
 
         <template #PanelMain>
-            <v-row class="align-stretch">
-                <v-col cols="12" :md="dashColMd">
-                    <MonitoringOverviewClients :exam-id="examId" />
-                </v-col>
-                <v-col v-if="hasNotifications" cols="12" :md="dashColMd">
-                    <MonitoringOverviewNotifications :exam-id="examId" />
-                </v-col>
-                <v-col v-if="hasIndicators" cols="12" :md="dashColMd">
-                    <MonitoringOverviewIndicators :exam-id="examId" />
-                </v-col>
-                <v-col v-if="hasGroups" cols="12">
-                    <MonitoringOverviewGroups :exam-id="examId" />
-                </v-col>
-            </v-row>
+            <LoadingFallbackComponent :loading="loading">
+                <v-row class="align-stretch">
+                    <v-col cols="12" :md="dashColMd">
+                        <MonitoringOverviewClients :exam-id="examId" />
+                    </v-col>
+                    <v-col v-if="hasNotifications" cols="12" :md="dashColMd">
+                        <MonitoringOverviewNotifications :exam-id="examId" />
+                    </v-col>
+                    <v-col v-if="hasIndicators" cols="12" :md="dashColMd">
+                        <MonitoringOverviewIndicators :exam-id="examId" />
+                    </v-col>
+                    <v-col v-if="hasGroups" cols="12">
+                        <MonitoringOverviewGroups :exam-id="examId" />
+                    </v-col>
+                </v-row>
+            </LoadingFallbackComponent>
         </template>
     </BasicPage>
 </template>
@@ -67,7 +69,7 @@ import BasicPage from "@/components/layout/pages/BasicPage.vue";
 import { useMonitoringStore } from "@/stores/seb-server/monitoringStore.ts";
 import * as indicatorService from "@/services/seb-server/indicatorService.ts";
 import { useRoute } from "vue-router";
-import { computed, onBeforeMount, onBeforeUnmount } from "vue";
+import { computed, onBeforeMount, onBeforeUnmount, ref } from "vue";
 import { MonitoringOverview } from "@/models/seb-server/monitoring.ts";
 import { Indicators } from "@/models/seb-server/indicators.ts";
 import MonitoringContextPanel from "./components/MonitoringContextPanel.vue";
@@ -84,6 +86,7 @@ import {
 import { translate } from "@/utils/generalUtils.ts";
 import { typedTo } from "@/router/typedTo.ts";
 import type { BreadCrumbItem } from "@/components/widgets/breadCrumb/types.ts";
+import LoadingFallbackComponent from "@/components/widgets/loadingFallbackComponent/LoadingFallbackComponent.vue";
 
 definePage({
     meta: {
@@ -103,12 +106,17 @@ let intervalRefresh: ReturnType<typeof setInterval> | null = null;
 let dataFetching = false;
 const REFRESH_INTERVAL = 5000;
 
+const loading = ref<boolean>(false);
+
 onBeforeMount(async () => {
+    monitoringStore.clearData();
+    loading.value = true;
     await useMonitoringData.getExamAndStore(examId);
     await getIndicatorData();
     await getOverviewData();
     await useMonitoringData.getAskAndStore(examId);
     await startIntervalRefresh();
+    loading.value = false;
 });
 
 onBeforeUnmount(() => {

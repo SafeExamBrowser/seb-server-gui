@@ -7,75 +7,77 @@
         </div>
         <v-divider />
 
-        <div class="flex-grow-1 d-flex flex-wrap align-center ga-4 pa-5">
-            <v-sheet
-                color="transparent"
-                width="132"
-                height="132"
-                class="position-relative flex-shrink-0"
-            >
-                <Doughnut
-                    v-if="chartData != null"
-                    :data="chartData"
-                    :options="chartOptions"
-                />
-                <div
-                    class="position-absolute text-center"
-                    :style="{
-                        top: '50%',
-                        left: '50%',
-                        transform: 'translate(-50%, -50%)',
-                    }"
+        <LoadingFallbackComponent :loading="loading">
+            <div class="flex-grow-1 d-flex flex-wrap align-center ga-4 pa-5">
+                <v-sheet
+                    color="transparent"
+                    width="132"
+                    height="132"
+                    class="position-relative flex-shrink-0"
                 >
-                    <div class="text-headline-small font-weight-bold">
-                        {{
-                            monitoringStore.monitoringOverviewData?.clientStates
-                                .total
-                        }}
-                    </div>
+                    <Doughnut
+                        v-if="chartData != null"
+                        :data="chartData"
+                        :options="chartOptions"
+                    />
                     <div
-                        class="text-body-small font-weight-bold text-uppercase text-medium-emphasis"
+                        class="position-absolute text-center"
+                        :style="{
+                            top: '50%',
+                            left: '50%',
+                            transform: 'translate(-50%, -50%)',
+                        }"
                     >
-                        {{ $t("monitoringOverview.clients.total") }}
-                    </div>
-                </div>
-            </v-sheet>
-
-            <div
-                class="flex-grow-1 d-flex flex-column ga-1"
-                :style="{ minWidth: '150px' }"
-            >
-                <v-hover
-                    v-for="(state, index) in clientStates"
-                    :key="index"
-                    v-slot="{ isHovering, props: hoverProps }"
-                >
-                    <div
-                        v-bind="hoverProps"
-                        class="d-flex align-center ga-2 pa-2 rounded-lg"
-                        :class="isHovering ? 'bg-background' : ''"
-                        :style="{ cursor: 'pointer' }"
-                        @click="
-                            goToMonitoring(
-                                MonitoringHeaderEnum.SHOW_STATES,
-                                state!,
-                                examId,
-                            )
-                        "
-                    >
-                        <v-avatar :color="clientColors[index]" size="11" />
-                        <span
-                            class="flex-grow-1 text-body-medium font-weight-medium"
+                        <div class="text-headline-small font-weight-bold">
+                            {{
+                                monitoringStore.monitoringOverviewData
+                                    ?.clientStates.total
+                            }}
+                        </div>
+                        <div
+                            class="text-body-small font-weight-bold text-uppercase text-medium-emphasis"
                         >
-                            {{ translate(state) }}
-                        </span>
-                        <span class="text-body-medium font-weight-bold">
-                            {{ clientData[index] }}
-                        </span>
+                            {{ $t("monitoringOverview.clients.total") }}
+                        </div>
                     </div>
-                </v-hover>
+                </v-sheet>
+
+                <div
+                    class="flex-grow-1 d-flex flex-column ga-1"
+                    :style="{ minWidth: '150px' }"
+                >
+                    <v-hover
+                        v-for="(state, index) in clientStates"
+                        :key="index"
+                        v-slot="{ isHovering, props: hoverProps }"
+                    >
+                        <div
+                            v-bind="hoverProps"
+                            class="d-flex align-center ga-2 pa-2 rounded-lg"
+                            :class="isHovering ? 'bg-background' : ''"
+                            :style="{ cursor: 'pointer' }"
+                            @click="
+                                goToMonitoring(
+                                    MonitoringHeaderEnum.SHOW_STATES,
+                                    state!,
+                                    examId,
+                                )
+                            "
+                        >
+                            <v-avatar :color="clientColors[index]" size="11" />
+                            <span
+                                class="flex-grow-1 text-body-medium font-weight-medium"
+                            >
+                                {{ translate(state) }}
+                            </span>
+                            <span class="text-body-medium font-weight-bold">
+                                {{ clientData[index] }}
+                            </span>
+                        </div>
+                    </v-hover>
+                </div>
             </div>
-        </div>
+        </LoadingFallbackComponent>
     </v-card>
 </template>
 
@@ -87,8 +89,9 @@ import { translate } from "@/utils/generalUtils.ts";
 import { ConnectionStatusEnum } from "@/models/seb-server/connectionStatusEnum.ts";
 import { MonitoringHeaderEnum } from "@/models/seb-server/monitoringEnums.ts";
 import { useI18n } from "vue-i18n";
-import { ref, watch } from "vue";
+import { computed, ref, watch } from "vue";
 import { goToMonitoring } from "../composables/useMonitoringNavigation.ts";
+import LoadingFallbackComponent from "@/components/widgets/loadingFallbackComponent/LoadingFallbackComponent.vue";
 
 const props = defineProps<{
     examId: string;
@@ -143,6 +146,10 @@ const orderedStates = (
     .sort(
         (a, b) => clientStatesListSortOrder[a] - clientStatesListSortOrder[b],
     );
+
+const loading = computed(() => {
+    return monitoringStore.monitoringOverviewData == null;
+});
 
 watch(
     () => monitoringStore.monitoringOverviewData?.clientStates,

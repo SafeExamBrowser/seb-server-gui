@@ -59,6 +59,13 @@ export const useMonitoringStore = defineStore("monitoring", () => {
         },
     );
 
+    function clearData() {
+        monitoringOverviewData.value = null;
+        clientConnectionList.value = null;
+        selectedSingleConn.value = null;
+        clearClientValues();
+    }
+
     function clearClientValues() {
         selectedMonitoringIds.value = [];
         indicators.value = null;
@@ -97,6 +104,7 @@ export const useMonitoringStore = defineStore("monitoring", () => {
         clientConnectionList,
         clientConnectionsById,
 
+        clearData,
         clearClientValues,
     };
 });
