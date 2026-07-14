@@ -14,7 +14,7 @@
         <template #PanelMain>
             <LoadingFallbackComponent :loading="loading" :errors="errors">
                 <BasicGrid v-if="examTemplateId !== undefined">
-                    <template #basicSettings>
+                    <template #01_basicSettings>
                         <BoxBasicSettings
                             :basic-settings="basicSettings"
                             @change="handleBasicSettingsChange"
@@ -22,7 +22,7 @@
                     </template>
                     <template
                         v-if="basicSettings.configurationTemplateId"
-                        #sebSettings
+                        #02_sebSettings
                     >
                         <BoxSEBSettings
                             :exam-template-name="basicSettings.name"
@@ -31,20 +31,20 @@
                             "
                         />
                     </template>
-                    <template #indicators>
+                    <template #03_indicators>
                         <BoxIndicators
                             :exam-template-id="examTemplateId"
                             :indicators="indicators"
                         />
                     </template>
-                    <template #supervisors>
+                    <template #04_supervisors>
                         <BoxSupervisors
                             :available-supervisors="availableSupervisors ?? []"
                             :selected-supervisor-ids="selectedSupervisorIds"
                             @change="handleSupervisorsChange"
                         />
                     </template>
-                    <template #screenProctoringSettings>
+                    <template #05_screenProctoringSettings>
                         <BoxScreenProctoringSettings
                             :enabled="screenProctoring.enabled.value"
                             :collection-strategy="
@@ -53,7 +53,7 @@
                             @change="handleScreenProctoringChange"
                         />
                     </template>
-                    <template #groups>
+                    <template #06_groups>
                         <BoxClientGroups
                             :exam-template-id="examTemplateId"
                             :client-groups="clientGroups"
