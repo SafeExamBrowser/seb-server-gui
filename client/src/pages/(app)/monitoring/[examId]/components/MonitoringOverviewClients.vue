@@ -16,7 +16,7 @@
                     class="position-relative flex-shrink-0"
                 >
                     <Doughnut
-                        v-if="chartData != null"
+                        v-if="chartData"
                         :data="chartData"
                         :options="chartOptions"
                     />

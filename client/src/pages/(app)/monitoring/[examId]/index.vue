@@ -206,6 +206,7 @@ async function getIndicatorData() {
 }
 
 async function startIntervalRefresh() {
+    getOverviewData();
     intervalRefresh = setInterval(async () => {
         getOverviewData();
     }, REFRESH_INTERVAL);
