@@ -36,7 +36,7 @@
                                     "
                                     :edit-disabled="
                                         computed<boolean>(() =>
-                                            settingsEditDisabled(),
+                                            disableBasicSettingsEdit(),
                                         )
                                     "
                                     :exam-id="examStore.selectedExam.id"
@@ -357,57 +357,6 @@
                                         ></v-icon>
                                     </template>
                                 </v-data-table>
-                            </v-col>
-                        </v-row>
-                        <!------------------->
-
-                        <!--------quit password------>
-                        <v-row class="mt-10">
-                            <v-col>
-                                <div class="text-primary text-title-large">
-                                    {{
-                                        translate(
-                                            "examDetail.main.quitPassword",
-                                        )
-                                    }}
-                                </div>
-                                <v-divider
-                                    class="border-opacity-25"
-                                    :thickness="2"
-                                ></v-divider>
-                            </v-col>
-                        </v-row>
-                        <v-row>
-                            <v-col>
-                                <v-text-field
-                                    v-model="quitPassword"
-                                    density="compact"
-                                    :disabled="settingsEditDisabled()"
-                                    placeholder="Password"
-                                    prepend-inner-icon="mdi-lock-outline"
-                                    :type="
-                                        passwordVisible ? 'text' : 'password'
-                                    "
-                                    variant="outlined"
-                                    @update:focused="saveNewPassword($event)"
-                                >
-                                    <template #append-inner>
-                                        <v-btn
-                                            density="compact"
-                                            :icon="
-                                                passwordVisible
-                                                    ? 'mdi-eye-off'
-                                                    : 'mdi-eye'
-                                            "
-                                            variant="text"
-                                            @click="
-                                                passwordVisible =
-                                                    !passwordVisible
-                                            "
-                                        >
-                                        </v-btn>
-                                    </template>
-                                </v-text-field>
                             </v-col>
                         </v-row>
                         <!------------------->
@@ -895,6 +844,8 @@ import * as timeUtils from "@/utils/timeUtils.ts";
 import { SEBSettingsContext } from "@/components/widgets/sebSettings/types.ts";
 import BoxBasicSettings from "@/pages/(app)/exam/[id]/components/BoxBasicSettings/BoxBasicSettings.vue";
 import { excludeFromDeletion } from "@/services/seb-server/scheduledDeletionService";
+import { ConfigurationExamMapping } from "@/models/seb-server/configurationNode";
+import { useUpdateConfigPasswordEncryption } from "@/pages/(app)/exam/[id]/components/BoxBasicSettings/composables/api/useUpdateConfigPasswordEncryption";
 
 const router = useRouter();
 const props = defineProps<{
@@ -909,59 +860,6 @@ const ability = useAbilities();
 
 // exam
 const examId = props.id;
-
-const basicSettings = computed<BasicSettings>(() => ({
-    quizName: examStore.selectedExam?.quizName ?? "",
-    quiz_description: examStore.selectedExam?.quiz_description ?? "",
-    quiz_start_url: examStore.selectedExam?.quiz_start_url ?? "",
-    quizStartTime: examStore.selectedExam?.quizStartTime ?? "",
-    quizEndTime: examStore.selectedExam?.quizEndTime ?? "",
-    type: examStore.selectedExam?.type ?? "",
-    status: examStore.selectedExam?.status ?? "",
-    followupId: examStore.selectedExam?.followupId ?? undefined,
-}));
-
-const changeBasicSettings = (value: BasicSettings) => {
-    if (!examStore.selectedExam) {
-        return;
-    }
-
-    if (
-        examStore.selectedExam.lmsSetupId === null ||
-        examStore.selectedExam.lmsSetupId === undefined
-    ) {
-        examStore.selectedExam.quizName = value.quizName;
-        examStore.selectedExam.additionalAttributes.quiz_description =
-            value.quiz_description;
-        examStore.selectedExam.additionalAttributes.quiz_start_url =
-            value.quiz_start_url;
-        examStore.selectedExam.quizStartTime = value.quizStartTime;
-        examStore.selectedExam.quizEndTime = value.quizEndTime;
-    }
-
-    examStore.selectedExam.type = value.type;
-    examStore.selectedExam.followupId = value.followupId;
-
-    updateExam();
-};
-
-const settingsEditDisabled = () => {
-    return !ability.canDoExamAction(
-        GUIAction.EditExamSettings,
-        examStore.selectedExam,
-    );
-};
-
-function openMonitoringOverview() {
-    void router.push({
-        name: "/(app)/monitoring/[examId]/",
-        params: { examId },
-    });
-}
-
-// pw field
-const passwordVisible = ref<boolean>(false);
-const quitPassword = ref<string>("");
 
 // supervisors table
 const supervisorsTableHeadersRef = ref<(HTMLElement | null)[]>([]);
@@ -1058,7 +956,6 @@ onBeforeMount(async () => {
         await sebSettingsService.getActiveSEBClients(examId);
     activeClients.value = numActiveClients ? numActiveClients : 0;
 
-    setQuitPassword();
     setScreenProctoring();
 
     isPageInitializing.value = false;
@@ -1073,10 +970,16 @@ async function getExam() {
     }
 
     examStore.selectedExam = examResponse;
-    filterOutTeacherUser();
     isSEBLockActive.value = await examService.checkSEBLock(examId);
     isExcludeFromDeletionActive.value =
         examStore.selectedExam.excludeFromDeletion;
+
+    const updateExamConfigMapResponse: ConfigurationExamMapping | null =
+        await examService.getExamConfigMapping(examStore.selectedExam.id);
+
+    if (updateExamConfigMapResponse !== null) {
+        examStore.selectedConfigMapping = updateExamConfigMapResponse;
+    }
 }
 
 async function updateExam(isSupervisorsManualUpdate?: boolean) {
@@ -1099,7 +1002,6 @@ async function updateExam(isSupervisorsManualUpdate?: boolean) {
     alertKey.value = "exam-update-successful";
 
     examStore.selectedExam = updateExamResponse;
-    filterOutTeacherUser();
     isExcludeFromDeletionActive.value =
         examStore.selectedExam.excludeFromDeletion;
 
@@ -1107,6 +1009,74 @@ async function updateExam(isSupervisorsManualUpdate?: boolean) {
         getExamSupervisors();
     }
 }
+
+//= =============Basic Settings Logic=================
+const { fetch: updateConfigPasswordEncryption } =
+    useUpdateConfigPasswordEncryption();
+
+const basicSettings = computed<BasicSettings>(() => ({
+    quizName: examStore.selectedExam?.quizName ?? "",
+    quiz_description: examStore.selectedExam?.quiz_description ?? "",
+    quiz_start_url: examStore.selectedExam?.quiz_start_url ?? "",
+    quizStartTime: examStore.selectedExam?.quizStartTime ?? "",
+    quizEndTime: examStore.selectedExam?.quizEndTime ?? "",
+    type: examStore.selectedExam?.type ?? "",
+    status: examStore.selectedExam?.status ?? "",
+    followupId: examStore.selectedExam?.followupId ?? null,
+    quitPassword: examStore.selectedExam?.quitPassword,
+    encryptPassword:
+        examStore.selectedConfigMapping?.encryptSecret ?? undefined,
+}));
+
+const changeBasicSettings = async (value: BasicSettings) => {
+    if (!examStore.selectedExam) {
+        return;
+    }
+
+    if (
+        examStore.selectedExam.lmsSetupId === null ||
+        examStore.selectedExam.lmsSetupId === undefined
+    ) {
+        examStore.selectedExam.quizName = value.quizName;
+        examStore.selectedExam.additionalAttributes.quiz_description =
+            value.quiz_description;
+        examStore.selectedExam.additionalAttributes.quiz_start_url =
+            value.quiz_start_url;
+        examStore.selectedExam.quizStartTime = value.quizStartTime;
+        examStore.selectedExam.quizEndTime = value.quizEndTime;
+    }
+
+    examStore.selectedExam.type = value.type;
+    examStore.selectedExam.followupId = value.followupId ?? null;
+    examStore.selectedExam.quitPassword = value.quitPassword;
+
+    // first update the start encryption password for exam configuration if changed
+    if (examStore.selectedConfigMapping) {
+        if (
+            examStore.selectedConfigMapping.encryptSecret !==
+            value.encryptPassword
+        ) {
+            examStore.selectedConfigMapping.encryptSecret =
+                value.encryptPassword;
+            examStore.selectedConfigMapping.confirm_encrypt_secret =
+                value.encryptPassword;
+            await updateConfigPasswordEncryption(
+                examStore.selectedConfigMapping,
+            );
+        }
+    }
+
+    // then update the exam with new exam data
+    updateExam();
+};
+
+const disableBasicSettingsEdit = () => {
+    return !ability.canDoExamAction(
+        GUIAction.EditExamSettings,
+        examStore.selectedExam,
+    );
+};
+// ......... basic settings
 
 //= =============seb lock logic=================
 async function getAssessmentTool() {
@@ -1174,7 +1144,6 @@ async function changeSEBLock(enable: boolean) {
     }
 
     examStore.selectedExam = applySEBLockResponse;
-    filterOutTeacherUser();
 }
 
 //SEB Lock
@@ -1192,8 +1161,6 @@ async function applySEBLockService(
 }
 
 //= ==============supervisors logic====================
-// NOTE: This is just to satisfy the linter for the moment (how can we just ignore )
-const error = ref<string>();
 async function getExamSupervisors() {
     if (examStore.selectedExam?.supporter == null) {
         return;
@@ -1206,42 +1173,15 @@ async function getExamSupervisors() {
 
     examStore.clearSelectedSupervisors();
     for (let i = 0; i < examStore.selectedExam.supporter.length; i++) {
-        try {
-            const userAccount: UserAccount | null =
-                await userAccountService.getUserAccountById(
-                    examStore.selectedExam.supporter[i],
-                );
+        const userAccount: UserAccount | null =
+            await userAccountService.getUserAccountById(
+                examStore.selectedExam.supporter[i],
+            );
 
-            if (userAccount !== null && userAccount !== undefined) {
-                examStore.selectedExamSupervisors.push(userAccount);
-            }
-        } catch (err) {
-            error.value = err instanceof Error ? err.message : "Unknown error";
+        if (userAccount !== null && userAccount !== undefined) {
+            examStore.selectedExamSupervisors.push(userAccount);
         }
     }
-}
-
-// TODO @anhefti: This is a workaround since teacher accounts are not selectable and also should not be sent on save
-//                Ideally the Backend should provide only selectable supporter within the Exam when fetching but
-//                to achieve this we have to figure out when to do this ideally since in the back-end the teacher accounts are needed
-//                one solution would be to use a dedicated endpoint to fetch the Exam for the GUI
-function filterOutTeacherUser() {
-    if (!examStore.selectedExam) {
-        return;
-    }
-    if (examStore.selectedExam.supporter.length == 0) {
-        return;
-    }
-
-    const filteredSupporter: string[] = [];
-    for (let i = 0; i < examStore.selectedExam.supporter.length; i++) {
-        if (
-            !examStore.selectedExam.supporter[i].startsWith("TEACHER_ACCOUNT__")
-        ) {
-            filteredSupporter.push(examStore.selectedExam.supporter[i]);
-        }
-    }
-    examStore.selectedExam.supporter = filteredSupporter;
 }
 
 function openSupervisorsDialog() {
@@ -1272,36 +1212,6 @@ function fillAlreadySelectedSupervisors() {
     for (let i = 0; i < examStore.selectedExamSupervisors.length; i++) {
         initialSupervisorsIds.push(examStore.selectedExamSupervisors[i].uuid);
     }
-}
-
-//= ==============password logic====================
-function setQuitPassword() {
-    if (
-        examStore.selectedExam?.quitPassword == null ||
-        examStore.selectedExam?.quitPassword === ""
-    ) {
-        return;
-    }
-
-    quitPassword.value = examStore.selectedExam?.quitPassword;
-}
-
-async function saveNewPassword(focusIn: boolean) {
-    if (!focusIn) {
-        updateQuitPassword();
-    }
-}
-
-async function updateQuitPassword() {
-    if (
-        examStore.selectedExam == null ||
-        quitPassword.value === examStore.selectedExam?.quitPassword
-    ) {
-        return;
-    }
-
-    examStore.selectedExam.quitPassword = quitPassword.value;
-    updateExam();
 }
 
 //= ==============exam config logic====================
@@ -1389,7 +1299,6 @@ async function changeScreenProctoringSettings(enable: boolean) {
     }
 
     examStore.selectedExam = saveScreenProcResponse;
-    filterOutTeacherUser();
 }
 
 //= ==============delete exam logic====================
@@ -1564,6 +1473,13 @@ function getExamConfigFileName(examName: string | undefined): string {
     examName = examName?.replaceAll(" ", "_");
 
     return `${examName}_${timeUtils.getCurrentDateString()}.seb`;
+}
+
+function openMonitoringOverview() {
+    void router.push({
+        name: "/(app)/monitoring/[examId]/",
+        params: { examId },
+    });
 }
 </script>
 

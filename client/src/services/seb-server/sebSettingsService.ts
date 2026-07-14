@@ -2,7 +2,6 @@ import * as apiService from "@/services/apiService";
 
 import { ViewType } from "@/models/seb-server/sebSettingsEnums";
 import {
-    ExamConfigMapping,
     SEBSettingsTableRowValues,
     SEBSettingsValue,
     SEBSettingsView,
@@ -10,16 +9,6 @@ import {
 
 const examUrlPrefix: string = "/exam/seb-settings";
 const templateUrlPrefix: string = "/config-template/seb-settings";
-
-export const getExamConfigMapping = async (
-    examId: string,
-): Promise<ExamConfigMapping[]> =>
-    (
-        await apiService.getRequest({
-            url: `${examUrlPrefix}/${examId}/examConfigMapping`,
-            options: { _authType: "seb" },
-        })
-    ).data;
 
 export const getActiveSEBClients = async (
     examId: string,
