@@ -5,9 +5,9 @@
                 <FormDialog
                     icon-activator="mdi-plus-circle-outline"
                     color-activator="primary"
-                    label-activator=""
-                    size-activator="x-small"
-                    label-activator-visible
+                    :label-activator="
+                        $t('examTemplateDetail.boxes.sebSettings.import')
+                    "
                     :title="$t('examTemplateDetail.boxes.sebSettings.import')"
                     :label-cancel="$t('general.cancelButton')"
                     :label-submit="
@@ -18,31 +18,17 @@
                     :get-item="getEmptyItem"
                     :on-submit="handleImportSEBSettings"
                 />
-                <v-btn
-                    color="primary"
-                    variant="text"
-                    density="compact"
-                    :title="$t('examTemplateDetail.boxes.sebSettings.export')"
-                    :aria-label="
-                        $t('examTemplateDetail.boxes.sebSettings.export')
-                    "
-                    @click="downloadSEBLogs(configTemplateId, examTemplateName)"
-                >
-                    <v-icon icon="mdi-download" size="x-small" />
-                </v-btn>
+                <BoxActionButton
+                    icon="mdi-download"
+                    :label="$t('examTemplateDetail.boxes.sebSettings.export')"
+                    @click="handleButtonDownloadClick"
+                />
 
-                <v-btn
-                    color="primary"
-                    variant="text"
-                    density="compact"
-                    :title="$t('examTemplateDetail.boxes.sebSettings.edit')"
-                    :aria-label="
-                        $t('examTemplateDetail.boxes.sebSettings.edit')
-                    "
+                <BoxActionButton
+                    icon="mdi-pencil"
+                    :label="$t('examTemplateDetail.boxes.sebSettings.edit')"
                     @click="editSEBSettings"
-                >
-                    <v-icon icon="mdi-pencil" size="x-small" />
-                </v-btn>
+                />
 
                 <v-dialog
                     v-model="sebSettingsDialog"
@@ -72,6 +58,7 @@
 import { useConfigurationTemplate } from "@/pages/(app)/exam-template/[id]/composables/api/useConfigurationTemplate.ts";
 import LoadingFallbackComponent from "@/components/widgets/loadingFallbackComponent/LoadingFallbackComponent.vue";
 import KeyValueList from "@/components/widgets/keyValueList/KeyValueList.vue";
+import BoxActionButton from "@/components/widgets/BoxActionButton.vue";
 import DetailBox from "@/components/widgets/DetailBox.vue";
 import { formatIsoToReadableDateTime } from "@/utils/timeUtils.ts";
 import { KeyValueItem } from "@/components/widgets/keyValueList/types.ts";
@@ -158,6 +145,10 @@ async function closeSebSettingsDialog(apply?: boolean) {
 // ---- Download SEB Settings
 
 const { downloadSEBLogs } = useDownloadSEBSettings();
+
+const handleButtonDownloadClick = () => {
+    downloadSEBLogs(configTemplateId, examTemplateName);
+};
 
 // ---- Import SEB Settings
 
