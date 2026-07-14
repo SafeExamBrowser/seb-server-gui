@@ -13,8 +13,12 @@
     >
         <template #PanelLeft>
             <ExamSidePanel
-                :status="exam?.status"
-                :exam-template-id="exam?.examTemplateId"
+                :exam="exam"
+                :seb-lock-active="sebLockActive"
+                @toggle-test-run="handleTestRunToggle"
+                @toggle-seb-lock="handleSebLockToggle"
+                @toggle-exclude-from-deletion="handleExcludeFromDeletionToggle"
+                @delete-exam="handleDeleteExam"
             />
         </template>
         <template #PanelMain>
@@ -33,7 +37,7 @@ import LoadingFallbackComponent from "@/components/widgets/loadingFallbackCompon
 import NotFoundPage from "@/components/layout/pages/NotFoundPage.vue";
 import { typedTo } from "@/router/typedTo";
 import { useExamDetailPage } from "./composables/useExamDetailPage.ts";
-import ExamSidePanel from "./components/ExamSidePanel.vue";
+import ExamSidePanel from "./components/ExamSidePanel/ExamSidePanel.vue";
 
 definePage({
     meta: {
@@ -46,8 +50,20 @@ const dataTestId = "examDetail";
 
 const { t } = useI18n();
 
-const { examId, exam, title, breadCrumb, errors, loading, notFound } =
-    useExamDetailPage();
+const {
+    examId,
+    exam,
+    title,
+    breadCrumb,
+    errors,
+    loading,
+    notFound,
+    sebLockActive,
+    handleTestRunToggle,
+    handleSebLockToggle,
+    handleExcludeFromDeletionToggle,
+    handleDeleteExam,
+} = useExamDetailPage();
 
 const notFoundBackLink = {
     label: t("examDetail.notFound.backToList"),
