@@ -1939,6 +1939,13 @@
         }
     },
     "examDetail": {
+        "errors": {
+            "invalidId": "Invalid exam id: \"{id}\""
+        },
+        "notFound": {
+            "message": "Exam not found",
+            "backToList": "Back to exams"
+        },
         "boxes": {
             "basicSettings": {
                 "title": "Basic Settings"
