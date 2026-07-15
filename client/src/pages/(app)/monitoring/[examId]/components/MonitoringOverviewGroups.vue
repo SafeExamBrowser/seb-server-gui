@@ -55,25 +55,40 @@
                         <div
                             class="d-flex flex-wrap ga-2 px-5 pt-2 pb-5 mt-auto"
                         >
-                            <v-btn
-                                v-if="clientGroupItem.spsGroupUUID"
-                                color="primary"
-                                class="text-body-small"
-                                variant="flat"
-                                size="small"
-                                prepend-icon="mdi-monitor-eye"
-                                @click="
-                                    openGalleryView(
-                                        clientGroupItem.spsGroupUUID,
-                                    )
-                                "
-                            >
-                                {{
-                                    $t(
-                                        "monitoringOverview.groups.buttons.proctor",
-                                    )
-                                }}
-                            </v-btn>
+                            <div>
+                                <v-btn
+                                    v-if="clientGroupItem.spsGroupUUID"
+                                    color="primary"
+                                    class="text-body-small"
+                                    variant="flat"
+                                    size="small"
+                                    prepend-icon="mdi-monitor-eye"
+                                    :disabled="!hasUserGalleryAccess()"
+                                    @click="
+                                        openGalleryView(
+                                            clientGroupItem.spsGroupUUID,
+                                        )
+                                    "
+                                >
+                                    {{
+                                        $t(
+                                            "monitoringOverview.groups.buttons.proctor",
+                                        )
+                                    }}
+                                </v-btn>
+                                <v-tooltip
+                                    v-if="!hasUserGalleryAccess()"
+                                    activator="parent"
+                                    location="top left"
+                                    max-width="400"
+                                >
+                                    {{
+                                        translate(
+                                            "monitoringOverview.groups.noSPSAccess",
+                                        )
+                                    }}
+                                </v-tooltip>
+                            </div>
                             <v-btn
                                 color="primary"
                                 variant="outlined"
@@ -136,26 +151,44 @@
                         <div
                             class="d-flex flex-wrap ga-2 px-5 pt-4 pb-5 mt-auto"
                         >
-                            <v-btn
-                                v-if="screenProctoringFallbackGroup !== null"
-                                color="primary"
-                                class="text-body-small"
-                                variant="flat"
-                                size="small"
-                                prepend-icon="mdi-monitor-eye"
-                                @click="
-                                    openGalleryView(
-                                        screenProctoringFallbackGroup.spsGroupUUID ??
-                                            '',
-                                    )
-                                "
-                            >
-                                {{
-                                    $t(
-                                        "monitoringOverview.groups.buttons.proctor",
-                                    )
-                                }}
-                            </v-btn>
+                            <div>
+                                <v-btn
+                                    v-if="
+                                        screenProctoringFallbackGroup !== null
+                                    "
+                                    color="primary"
+                                    class="text-body-small"
+                                    variant="flat"
+                                    size="small"
+                                    prepend-icon="mdi-monitor-eye"
+                                    :disabled="!hasUserGalleryAccess()"
+                                    @click="
+                                        openGalleryView(
+                                            screenProctoringFallbackGroup.spsGroupUUID ??
+                                                '',
+                                        )
+                                    "
+                                >
+                                    {{
+                                        $t(
+                                            "monitoringOverview.groups.buttons.proctor",
+                                        )
+                                    }}
+                                </v-btn>
+                                <v-tooltip
+                                    v-if="!hasUserGalleryAccess()"
+                                    activator="parent"
+                                    location="top left"
+                                    max-width="400"
+                                >
+                                    {{
+                                        translate(
+                                            "monitoringOverview.groups.noSPSAccess",
+                                        )
+                                    }}
+                                </v-tooltip>
+                            </div>
+
                             <v-btn
                                 color="primary"
                                 variant="outlined"
@@ -199,6 +232,7 @@ import {
     goToMonitoringOfGroup,
 } from "../composables/useMonitoringNavigation.ts";
 import { useRouter } from "vue-router";
+import { useCurrentUserQuery } from "@/composables/useCurrentUser.ts";
 
 const props = defineProps<{
     examId: string;
@@ -207,6 +241,7 @@ const props = defineProps<{
 const monitoringStore = useMonitoringStore();
 const router = useRouter();
 const examId = props.examId;
+const { data: currentUser } = useCurrentUserQuery();
 
 const overViewClientGroups: ComputedRef<OverviewClientGroup[] | null> =
     computed(() => {
@@ -280,6 +315,19 @@ const screenProctoringFallbackGroup: ComputedRef<OverviewClientGroup | null> =
         }
         return null;
     });
+
+const hasUserGalleryAccess = (): boolean => {
+    if (!monitoringStore.selectedExam) {
+        return false;
+    }
+    if (!currentUser.value) {
+        return false;
+    }
+    return (
+        monitoringStore.selectedExam.supporter.indexOf(currentUser.value.uuid) >
+        0
+    );
+};
 
 function getGroupName(group: OverviewClientGroup): string {
     if (

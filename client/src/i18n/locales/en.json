@@ -2075,7 +2075,8 @@
             "buttons": {
                 "proctor": "Proctor",
                 "viewList": "View List"
-            }
+            },
+            "noSPSAccess": "You have no access to the screen proctoring gallery view since you are not assigned as a supporter to the Exam. Please assign your user account to the Exam supporter list to get gallery access."
         },
         "notifications": {
             "notifications": "Notifications"
