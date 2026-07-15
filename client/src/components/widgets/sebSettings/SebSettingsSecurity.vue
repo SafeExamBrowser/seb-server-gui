@@ -99,6 +99,26 @@
                         :disabled="context.readonly"
                     />
                 </v-row>
+                <v-row>
+                    <SelectionSetting
+                        v-model="singleValues"
+                        name="screenProctoringAACCapturePolicy"
+                        label="sebSettings.securityView.screenProctoringAACCapturePolicy"
+                        :labels="true"
+                        :tooltip="true"
+                        :disabled="context.readonly"
+                    />
+                </v-row>
+                <v-row>
+                    <SelectionSetting
+                        v-model="singleValues"
+                        name="lockdownModePolicy"
+                        label="sebSettings.securityView.lockdownModePolicy"
+                        :labels="true"
+                        :tooltip="true"
+                        :disabled="context.readonly"
+                    />
+                </v-row>
 
                 <SettingsTitle
                     label="sebSettings.securityView.overall.title"
@@ -453,6 +473,15 @@
                         name="allowMacOSVersionNumberPatch"
                         label="sebSettings.securityView.macOS.allowMacOSVersionNumberPatch"
                         :tooltip="false"
+                        :disabled="context.readonly"
+                    />
+                </v-row>
+                <v-row>
+                    <CheckboxSetting
+                        v-model="singleValues"
+                        name="detectAccessibilityApps"
+                        label="sebSettings.securityView.macOS.detectAccessibilityApps"
+                        :tooltip="true"
                         :disabled="context.readonly"
                     />
                 </v-row>

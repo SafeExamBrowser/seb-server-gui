@@ -318,6 +318,15 @@
                 <v-row>
                     <CheckboxSetting
                         v-model="singleValues"
+                        name="hideWiFiControls"
+                        label="sebSettings.userView.task_bar.hideWiFiControls"
+                        :tooltip="true"
+                        :disabled="context.readonly"
+                    />
+                </v-row>
+                <v-row>
+                    <CheckboxSetting
+                        v-model="singleValues"
                         name="showReloadButton"
                         label="sebSettings.userView.task_bar.showReloadButton"
                         :tooltip="true"

@@ -20,6 +20,7 @@ export type PermittedProcess = {
     allowUserToChooseApp: boolean;
     allowNetworkAccess: boolean;
     strongKill: boolean;
+    allowAccessibility: boolean;
     teamIdentifier: string;
     ids: {
         active: number;
@@ -37,6 +38,7 @@ export type PermittedProcess = {
         allowUserToChooseApp: number;
         allowNetworkAccess: number;
         strongKill: number;
+        allowAccessibility: number;
         teamIdentifier: number;
     };
 };

@@ -484,6 +484,36 @@
                                 ></v-checkbox-btn>
                             </v-col>
                         </v-row>
+
+                        <!------------ allow accessibility ------------->
+                        <v-row class="align-center">
+                            <v-col class="pt-0 pb-0">
+                                <v-tooltip
+                                    activator="parent"
+                                    location="top left"
+                                    max-width="400"
+                                >
+                                    {{
+                                        translate(
+                                            "sebSettings.applicationView.permittedProcess.allowAccessibility_tooltip",
+                                        )
+                                    }}
+                                </v-tooltip>
+                                <v-checkbox-btn
+                                    v-model="
+                                        props.permittedProcess!
+                                            .allowAccessibility
+                                    "
+                                    :label="
+                                        translate(
+                                            'sebSettings.applicationView.permittedProcess.allowAccessibility',
+                                        )
+                                    "
+                                    :disabled="props.readOnly"
+                                ></v-checkbox-btn>
+                            </v-col>
+                        </v-row>
+
                         <!------------Buttons------------->
                         <v-row class="align-center">
                             <v-col align="right">
