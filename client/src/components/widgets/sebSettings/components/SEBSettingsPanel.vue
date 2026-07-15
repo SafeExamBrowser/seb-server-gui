@@ -51,7 +51,7 @@ const ability = useAbilities();
 const currentTab = ref<number>(1);
 
 const tabs: { title: string; value: number; component: Component }[] =
-    ability.canDo(GUIAction.EditFullSEBSettings)
+    ability.canDo(GUIAction.EDIT_FULL_SEB_SETTINGS)
         ? [
               {
                   title: translate("sebSettings.views.general"),
