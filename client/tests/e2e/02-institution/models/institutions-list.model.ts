@@ -6,13 +6,21 @@ import {
 } from "@/components/widgets/filters/filterContracts.ts";
 import { TableListPageModel } from "../../shared/page-models/model-pages/table-list-page.model";
 import type { TableListPageConfig } from "../../shared/types/table-list-page.types";
+import { entityRowActionRequests } from "../../utils/entityRowRequests";
+
+export const INSTITUTION_LIST_REQUEST =
+    /\/api\/admin-api\/v1\/institution(?:$|\?)/i;
+
+export const institutionRowRequests = entityRowActionRequests(
+    "/api/admin-api/v1/institution",
+);
 
 const config: TableListPageConfig = {
     route: institutionListConfig.route,
     testIdBase: institutionListConfig.testIdBase,
     listRequest: {
         method: "GET",
-        urlRegex: /\/institution\?/i,
+        urlRegex: INSTITUTION_LIST_REQUEST,
         expectedStatuses: [200, 304],
     },
 };

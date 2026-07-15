@@ -22,7 +22,8 @@ export type InstitutionCreateInput = {
     urlSuffix: string;
 };
 
-export const INSTITUTION_CREATE_REQUEST = /\/institution(?:$|\?)/i;
+export const INSTITUTION_CREATE_REQUEST =
+    /\/api\/admin-api\/v1\/institution(?:$|\?)/i;
 
 export class InstitutionCreateModel extends FormPageModel {
     constructor(page: Page) {

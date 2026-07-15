@@ -8,6 +8,7 @@ import { UserAccountProfileModel } from "../../01-user-account/models/user-accou
 import { ProfileMenuModel } from "../page-models/layout/profile-menu.model";
 import { InstitutionsListModel } from "../../02-institution/models/institutions-list.model";
 import { InstitutionCreateModel } from "../../02-institution/models/institution-create.model";
+import { InstitutionEditModel } from "../../02-institution/models/institution-edit.model";
 import { ConnectionConfigurationsListModel } from "../../04-connection-configuration/models/connection-configurations-list.model";
 import { ConnectionConfigurationCreateModel } from "../../04-connection-configuration/models/connection-configuration-create.model";
 import { ConnectionConfigurationEditModel } from "../../04-connection-configuration/models/connection-configuration-edit.model";
@@ -25,6 +26,7 @@ type Fixtures = {
     profileMenu: ProfileMenuModel;
     institutions: InstitutionsListModel;
     institutionCreate: InstitutionCreateModel;
+    institutionEdit: InstitutionEditModel;
     connectionConfigurations: ConnectionConfigurationsListModel;
     connectionConfigurationCreate: ConnectionConfigurationCreateModel;
     connectionConfigurationEdit: ConnectionConfigurationEditModel;
@@ -66,6 +68,10 @@ export const test = base.extend<Fixtures>({
     institutionCreate: async ({ page }, use) => {
         await loginAsServerAdmin(page);
         await use(new InstitutionCreateModel(page));
+    },
+    institutionEdit: async ({ page }, use) => {
+        await loginAsServerAdmin(page);
+        await use(new InstitutionEditModel(page));
     },
     connectionConfigurations: async ({ page }, use) => {
         await loginAsServerAdmin(page);
