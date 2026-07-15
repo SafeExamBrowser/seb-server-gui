@@ -40,7 +40,7 @@
                                 size="small"
                                 class="border font-weight-semibold flex-shrink-0"
                             >
-                                {{ clientGroupItem.clientAmount
+                                {{ clientGroupItem.activeClients
                                 }}{{ $t("monitoringOverview.groups.clients") }}
                             </v-chip>
                         </div>
@@ -81,8 +81,7 @@
                                 size="small"
                                 prepend-icon="mdi-format-list-bulleted"
                                 @click="
-                                    goToMonitoring(
-                                        MonitoringHeaderEnum.SHOW_CLIENT_GROUPS,
+                                    goToMonitoringOfGroup(
                                         generalUtils.createStringCommaList([
                                             clientGroupItem.id,
                                         ]),
@@ -195,7 +194,10 @@ import { computed } from "vue";
 import type { ComputedRef } from "vue";
 import { OverviewClientGroup } from "@/models/seb-server/monitoring.ts";
 import { ConnectionStatusEnum } from "@/models/seb-server/connectionStatusEnum.ts";
-import { goToMonitoring } from "../composables/useMonitoringNavigation.ts";
+import {
+    goToMonitoring,
+    goToMonitoringOfGroup,
+} from "../composables/useMonitoringNavigation.ts";
 import { useRouter } from "vue-router";
 
 const props = defineProps<{
