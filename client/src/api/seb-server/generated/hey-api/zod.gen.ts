@@ -368,8 +368,8 @@ export const zExam = z.object({
     followupId: z.int().optional(),
     excludeFromDeletion: z.boolean().optional(),
     additionalAttributes: z.record(z.string(), z.string()).optional(),
-    startURL: z.string().optional(),
-    description: z.string().optional()
+    quiz_description: z.string().optional(),
+    quiz_start_url: z.string().optional()
 });
 
 export const zClientGroupTemplate = z.object({
@@ -1080,6 +1080,53 @@ export const zPageUserInfo = z.object({
     complete: z.boolean().optional()
 });
 
+/**
+ * Effective GUI abilities of the current user, merged over the user's roles.
+ */
+export const zGuiAbilities = z.object({
+    components: z.array(z.enum([
+        'NAVIGATION_OVERVIEW',
+        'HOME',
+        'SETTINGS',
+        'INSTITUTIONS',
+        'USER_ACCOUNTS',
+        'CONNECTION_CONFIGS',
+        'LMS_SETUPS',
+        'CERTIFICATES',
+        'EXAM_TEMPLATE',
+        'PREPARE_EXAM',
+        'ADD_EXAM_WITH_URL',
+        'EXAMS',
+        'RUNNING_EXAMS',
+        'SCREEN_PROCTORING',
+        'SCREEN_PROCTORING_SEARCH',
+        'SCREEN_PROCTORING_APPLICATION_SEARCH',
+        'ANALYZE_EXAMS',
+        'ARCHIVE_EXAMS',
+        'SCHEDULED_DELETION'
+    ])),
+    actions: z.array(z.enum([
+        'EDIT_EXAM_SETTINGS',
+        'ARCHIVE_EXAM',
+        'DELETE_EXAM',
+        'APPLY_TEST_RUN',
+        'DISABLE_TEST_RUN',
+        'EXPORT_EXAM_CLIENT_CONFIG',
+        'VIEW_ASK_SETTINGS',
+        'EDIT_ASK_SETTINGS',
+        'EDIT_SCREEN_PROCTORING',
+        'EDIT_SEB_SETTINGS',
+        'EDIT_FULL_SEB_SETTINGS',
+        'EDIT_SUPERVISORS',
+        'EDIT_INDICATORS',
+        'EDIT_CLIENT_GROUPS',
+        'APPLY_SEB_RESTRICTION',
+        'SHOW_MONITORING',
+        'SHOW_FINISHED_EXAM_DATA',
+        'EXCLUDE_FROM_DELETION'
+    ]))
+});
+
 export const zPageClientEvent = z.object({
     number_of_pages: z.int().min(-2147483648, { error: 'Invalid value: Expected int32 to be >= -2147483648' }).max(2147483647, { error: 'Invalid value: Expected int32 to be <= 2147483647' }).optional(),
     page_number: z.int().gte(1).lte(2147483647).optional(),
@@ -1280,14 +1327,11 @@ export const zClientNotification = z.object({
 });
 
 export const zClientMonitoringDataView = z.object({
+    pendingNotification: z.boolean().optional(),
     missingPing: z.boolean().optional(),
     grantChecked: z.boolean().optional(),
     grantDenied: z.boolean().optional(),
     sebversionDenied: z.boolean().optional(),
-    pendingNotification: z.boolean().optional(),
-    nf: z.int().min(-2147483648, { error: 'Invalid value: Expected int32 to be >= -2147483648' }).max(2147483647, { error: 'Invalid value: Expected int32 to be <= 2147483647' }).optional(),
-    lat: z.int().optional(),
-    iv: z.record(z.string(), z.string()).optional(),
     st: z.enum([
         'UNDEFINED',
         'CONNECTION_REQUESTED',
@@ -1296,6 +1340,9 @@ export const zClientMonitoringDataView = z.object({
         'CLOSED',
         'DISABLED'
     ]).optional(),
+    lat: z.int().optional(),
+    iv: z.record(z.string(), z.string()).optional(),
+    nf: z.int().min(-2147483648, { error: 'Invalid value: Expected int32 to be >= -2147483648' }).max(2147483647, { error: 'Invalid value: Expected int32 to be <= 2147483647' }).optional(),
     id: z.int().optional()
 });
 
@@ -3933,6 +3980,11 @@ export const zGetUserAccountNamesResponse = z.array(zEntityName);
  */
 export const zGetCurrentUserAccountResponse = zUserInfo;
 
+/**
+ * The effective GUI abilities of the current user.
+ */
+export const zGetCurrentUserGuiAbilitiesResponse = zGuiAbilities;
+
 export const zGetUserAccountsByIdsQuery = z.object({
     modelIds: z.string()
 });
@@ -4974,7 +5026,7 @@ export const zGetExamConfigMappingsPath = z.object({
 /**
  * OK
  */
-export const zGetExamConfigMappingsResponse = z.array(zExamConfigurationMap);
+export const zGetExamConfigMappingsResponse = zExamConfigurationMap;
 
 export const zGetActiveSebClientsPath = z.object({
     modelId: z.int()

@@ -300,8 +300,8 @@ export type Exam = {
     additionalAttributes?: {
         [key: string]: string;
     };
-    startURL?: string;
-    description?: string;
+    quiz_description?: string;
+    quiz_start_url?: string;
 };
 
 export type ClientGroupTemplate = {
@@ -921,6 +921,14 @@ export type PageUserInfo = {
     complete?: boolean;
 };
 
+/**
+ * Effective GUI abilities of the current user, merged over the user's roles.
+ */
+export type GuiAbilities = {
+    components: Array<'NAVIGATION_OVERVIEW' | 'HOME' | 'SETTINGS' | 'INSTITUTIONS' | 'USER_ACCOUNTS' | 'CONNECTION_CONFIGS' | 'LMS_SETUPS' | 'CERTIFICATES' | 'EXAM_TEMPLATE' | 'PREPARE_EXAM' | 'ADD_EXAM_WITH_URL' | 'EXAMS' | 'RUNNING_EXAMS' | 'SCREEN_PROCTORING' | 'SCREEN_PROCTORING_SEARCH' | 'SCREEN_PROCTORING_APPLICATION_SEARCH' | 'ANALYZE_EXAMS' | 'ARCHIVE_EXAMS' | 'SCHEDULED_DELETION'>;
+    actions: Array<'EDIT_EXAM_SETTINGS' | 'ARCHIVE_EXAM' | 'DELETE_EXAM' | 'APPLY_TEST_RUN' | 'DISABLE_TEST_RUN' | 'EXPORT_EXAM_CLIENT_CONFIG' | 'VIEW_ASK_SETTINGS' | 'EDIT_ASK_SETTINGS' | 'EDIT_SCREEN_PROCTORING' | 'EDIT_SEB_SETTINGS' | 'EDIT_FULL_SEB_SETTINGS' | 'EDIT_SUPERVISORS' | 'EDIT_INDICATORS' | 'EDIT_CLIENT_GROUPS' | 'APPLY_SEB_RESTRICTION' | 'SHOW_MONITORING' | 'SHOW_FINISHED_EXAM_DATA' | 'EXCLUDE_FROM_DELETION'>;
+};
+
 export type PageClientEvent = {
     /**
      * The number of available pages for the specified page size.
@@ -1217,17 +1225,17 @@ export type ClientNotification = {
 };
 
 export type ClientMonitoringDataView = {
+    pendingNotification?: boolean;
     missingPing?: boolean;
     grantChecked?: boolean;
     grantDenied?: boolean;
     sebversionDenied?: boolean;
-    pendingNotification?: boolean;
-    nf?: number;
+    st?: 'UNDEFINED' | 'CONNECTION_REQUESTED' | 'READY' | 'ACTIVE' | 'CLOSED' | 'DISABLED';
     lat?: number;
     iv?: {
         [key: string]: string;
     };
-    st?: 'UNDEFINED' | 'CONNECTION_REQUESTED' | 'READY' | 'ACTIVE' | 'CLOSED' | 'DISABLED';
+    nf?: number;
     id?: number;
 };
 
@@ -11587,6 +11595,51 @@ export type GetCurrentUserAccountResponses = {
 
 export type GetCurrentUserAccountResponse = GetCurrentUserAccountResponses[keyof GetCurrentUserAccountResponses];
 
+export type GetCurrentUserGuiAbilitiesData = {
+    body?: never;
+    path?: never;
+    query?: never;
+    url: '/admin-api/v1/useraccount/me/gui-abilities';
+};
+
+export type GetCurrentUserGuiAbilitiesErrors = {
+    /**
+     * Bad request, e.g. field validation or an illegal argument. The body is usually a list of APIMessage, but may be absent for some illegal-argument cases.
+     */
+    400: Array<ApiMessage>;
+    /**
+     * Unauthorized. Body is an APIMessage or a list of APIMessage.
+     */
+    401: ApiMessage | Array<ApiMessage>;
+    /**
+     * Forbidden. Body is a list of APIMessage.
+     */
+    403: Array<ApiMessage>;
+    /**
+     * Resource not found. Body is a list of APIMessage.
+     */
+    404: Array<ApiMessage>;
+    /**
+     * Too many requests (rate limit). Body is the rate-limit code as plain text.
+     */
+    429: string;
+    /**
+     * Unexpected internal server error. Body is a list of APIMessage.
+     */
+    500: Array<ApiMessage>;
+};
+
+export type GetCurrentUserGuiAbilitiesError = GetCurrentUserGuiAbilitiesErrors[keyof GetCurrentUserGuiAbilitiesErrors];
+
+export type GetCurrentUserGuiAbilitiesResponses = {
+    /**
+     * The effective GUI abilities of the current user.
+     */
+    200: GuiAbilities;
+};
+
+export type GetCurrentUserGuiAbilitiesResponse = GetCurrentUserGuiAbilitiesResponses[keyof GetCurrentUserGuiAbilitiesResponses];
+
 export type GetUserAccountsByIdsData = {
     body?: never;
     path?: never;
@@ -16067,7 +16120,7 @@ export type GetExamConfigMappingsResponses = {
     /**
      * OK
      */
-    200: Array<ExamConfigurationMap>;
+    200: ExamConfigurationMap;
 };
 
 export type GetExamConfigMappingsResponse = GetExamConfigMappingsResponses[keyof GetExamConfigMappingsResponses];
