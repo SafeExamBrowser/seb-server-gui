@@ -204,8 +204,8 @@ function getConnectionTokens(instructionType: InstructionEnum): string | null {
         const row = monitoringStore.monitoringData.get(id);
         if (row) {
             switch (instructionType) {
-                case (InstructionEnum.SEB_QUIT,
-                InstructionEnum.SEB_FORCE_LOCK_SCREEN): {
+                case InstructionEnum.SEB_QUIT:
+                case InstructionEnum.SEB_FORCE_LOCK_SCREEN: {
                     if (
                         !row.missing &&
                         (row.status == ConnectionStatusEnum.ACTIVE ||
