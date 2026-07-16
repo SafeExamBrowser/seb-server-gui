@@ -80,9 +80,9 @@
             class="px-2 pt-2"
             :headers="clientEventsTableHeaders"
             :items="monitoringStore.clientLogEvents ?? []"
-            :page-count="totalItems"
+            :page-count="pageCount"
             :items-per-page="options.itemsPerPage"
-            :options="options"
+            :options="monitoringStore.currentMonitoringDetailPagingOptions"
             :loading="isLoading"
             dataTestId=""
             item-key="id"
@@ -92,32 +92,33 @@
                 <v-skeleton-loader class="mx-4" type="table" />
             </template>
             <!-- Custom cell for Event Type (icon + text) -->
-            <template #item.type="{ item }">
+            <template #cell-type="{ value }">
                 <div class="d-flex align-center">
                     <v-icon
                         class="mr-2"
-                        :color="logSeverity(item.type)?.color ?? 'grey'"
+                        :color="logSeverity(String(value))?.color ?? 'grey'"
                         :icon="
-                            logSeverity(item.type)?.icon ?? 'mdi-help-circle'
+                            logSeverity(String(value))?.icon ??
+                            'mdi-help-circle'
                         "
                     />
-                    {{ item.type }}
+                    {{ String(value) }}
                 </div>
             </template>
 
             <!-- Client Time column formatting -->
-            <template #item.timestamp="{ item }">
-                {{ formatTimeLabel(item.timestamp) }}
+            <template #cell-timestamp="{ value }">
+                {{ formatTimeLabel(Number(value)) }}
             </template>
 
             <!-- Server Time column formatting -->
-            <template #item.serverTime="{ item }">
-                {{ formatTimeLabel(item.serverTime) }}
+            <template #cell-serverTime="{ value }">
+                {{ formatTimeLabel(Number(value)) }}
             </template>
 
             <!-- Value column (show '-' if empty) -->
-            <template #item.value="{ item }">
-                {{ item.value || "-" }}
+            <template #cell-value="{ value }">
+                {{ value || "-" }}
             </template>
         </EntityTable>
     </div>
@@ -139,18 +140,18 @@ const monitoringStore = useMonitoringStore();
 // Default sort configuration
 const defaultSort = [{ key: "serverTime", order: "desc" }];
 
-// Table options (pagination, sorting)
-const options = ref({
+const getDefaultOptions = (): ServerTablePaging => ({
     page: 1,
     itemsPerPage: 10,
     sortBy: defaultSort,
 });
+const options = ref<ServerTablePaging>(getDefaultOptions());
 
 // Reactive state
 const searchQuery = ref("");
 const statusFilter = ref("all");
 const isLoading = shallowRef(false);
-const totalItems = ref(0);
+const pageCount = ref(0);
 
 // Severity mapping for icons and colors
 const severityMap: Record<string, { icon: string; color: string }> = {
@@ -215,11 +216,6 @@ function formatTimeLabel(ts: number): string {
     return date.toLocaleString();
 }
 
-// const cellFormatters: Record<string, CellFormatter> = {
-//         serverTime: (value) =>
-//             value ? formatTimeLabel(Number(value)) : "",
-//     };
-
 // Maps status filter value to backend log type
 function mapStatusFilter(status: string): string | undefined {
     switch (status) {
@@ -262,7 +258,8 @@ async function getClientEvents(serverTablePaging: ServerTablePaging) {
         );
         if (response) {
             monitoringStore.clientLogEvents = response.content;
-            totalItems.value = response.number_of_pages * response.page_size;
+            pageCount.value = response.number_of_pages;
+            serverTablePaging.page = response.page_number;
         }
     } finally {
         isLoading.value = false;
