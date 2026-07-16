@@ -76,14 +76,16 @@
         </div>
 
         <!-- Data Table of Log Entries -->
-        <v-data-table-server
-            v-model:options="options"
+        <EntityTable
+            class="px-2 pt-2"
             :headers="clientEventsTableHeaders"
             :items="monitoringStore.clientLogEvents ?? []"
-            :items-length="totalItems"
-            :items-per-page="10"
-            :items-per-page-options="[10]"
+            :page-count="totalItems"
+            :items-per-page="options.itemsPerPage"
+            :options="options"
             :loading="isLoading"
+            dataTestId=""
+            item-key="id"
             @update:options="getClientEvents"
         >
             <template #loading>
@@ -117,7 +119,7 @@
             <template #item.value="{ item }">
                 {{ item.value || "-" }}
             </template>
-        </v-data-table-server>
+        </EntityTable>
     </div>
 </template>
 
@@ -129,6 +131,7 @@ import { translate } from "@/utils/generalUtils.ts";
 import { ServerTablePaging } from "@/models/types.ts";
 import { OptionalParGetMonitoringClientLogs } from "@/models/seb-server/optionalParamters.ts";
 import { getSingleConnectionEvents } from "@/services/seb-server/monitoringService.ts";
+import EntityTable from "@/components/widgets/entity-table/EntityTable.vue";
 
 // Store instance
 const monitoringStore = useMonitoringStore();
@@ -211,6 +214,11 @@ function formatTimeLabel(ts: number): string {
     const date = new Date(ts);
     return date.toLocaleString();
 }
+
+// const cellFormatters: Record<string, CellFormatter> = {
+//         serverTime: (value) =>
+//             value ? formatTimeLabel(Number(value)) : "",
+//     };
 
 // Maps status filter value to backend log type
 function mapStatusFilter(status: string): string | undefined {
