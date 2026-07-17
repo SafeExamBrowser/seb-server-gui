@@ -59,6 +59,8 @@
                     <template #cell-active="{ item, rowTestId }">
                         <ActiveStatusChip
                             :active="!!item.active"
+                            :disabled="statusFlow.disabled(item)"
+                            :tooltip="statusFlow.tooltip(item)"
                             :data-test-id="`${rowTestId}-status-chip`"
                             @click="statusFlow.openDialog(item)"
                         />
