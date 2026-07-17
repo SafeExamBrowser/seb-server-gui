@@ -70,7 +70,7 @@
                                                 color="primary"
                                                 :disabled="
                                                     !ability.canDoExamAction(
-                                                        GUIAction.DisableTestRun,
+                                                        GUIAction.DISABLE_TEST_RUN,
                                                         examStore.selectedExam,
                                                     )
                                                 "
@@ -90,7 +90,7 @@
                                                 color="primary"
                                                 :disabled="
                                                     !ability.canDoExamAction(
-                                                        GUIAction.ApplyTestRun,
+                                                        GUIAction.APPLY_TEST_RUN,
                                                         examStore.selectedExam,
                                                     )
                                                 "
@@ -122,7 +122,7 @@
                         <v-row
                             v-if="
                                 ability.canDoExamAction(
-                                    GUIAction.ShowMonitoring,
+                                    GUIAction.SHOW_MONITORING,
                                     examStore.selectedExam,
                                 )
                             "
@@ -213,7 +213,7 @@
                                 <v-btn
                                     :disabled="
                                         !ability.canDoExamAction(
-                                            GUIAction.EditSupervisors,
+                                            GUIAction.EDIT_SUPERVISORS,
                                             examStore.selectedExam,
                                         )
                                     "
@@ -276,7 +276,7 @@
                                     density="compact"
                                     :disabled="
                                         !ability.canDoExamAction(
-                                            GUIAction.EditClientGroups,
+                                            GUIAction.EDIT_CLIENT_GROUPS,
                                             examStore.selectedExam,
                                         )
                                     "
@@ -290,7 +290,7 @@
                                     density="compact"
                                     :disabled="
                                         !ability.canDoExamAction(
-                                            GUIAction.EditClientGroups,
+                                            GUIAction.EDIT_CLIENT_GROUPS,
                                             examStore.selectedExam,
                                         )
                                     "
@@ -436,7 +436,7 @@
                                                 color="primary"
                                                 :disabled="
                                                     !ability.canDoExamAction(
-                                                        GUIAction.EditSEBSettings,
+                                                        GUIAction.EDIT_SEB_SETTINGS,
                                                         examStore.selectedExam,
                                                     )
                                                 "
@@ -485,7 +485,7 @@
                                                     <v-list-item-title
                                                         :class="[
                                                             !ability.canDoExamAction(
-                                                                GUIAction.EditScreenProctoring,
+                                                                GUIAction.EDIT_SCREEN_PROCTORING,
                                                                 examStore.selectedExam,
                                                             )
                                                                 ? 'text-disabled'
@@ -509,7 +509,7 @@
                                                                 color="primary"
                                                                 :disabled="
                                                                     !ability.canDoExamAction(
-                                                                        GUIAction.EditScreenProctoring,
+                                                                        GUIAction.EDIT_SCREEN_PROCTORING,
                                                                         examStore.selectedExam,
                                                                     )
                                                                 "
@@ -537,7 +537,7 @@
                                                         :class="[
                                                             hasSEBRestrictionFeature() &&
                                                             ability.canDoExamAction(
-                                                                GUIAction.ApplySEBRestriction,
+                                                                GUIAction.APPLY_SEB_RESTRICTION,
                                                                 examStore.selectedExam,
                                                             )
                                                                 ? ''
@@ -562,7 +562,7 @@
                                                                 :disabled="
                                                                     !hasSEBRestrictionFeature() ||
                                                                     !ability.canDoExamAction(
-                                                                        GUIAction.ApplySEBRestriction,
+                                                                        GUIAction.APPLY_SEB_RESTRICTION,
                                                                         examStore.selectedExam,
                                                                     )
                                                                 "
@@ -588,7 +588,7 @@
                                                     <v-list-item-title
                                                         :class="[
                                                             ability.canDoExamAction(
-                                                                GUIAction.ApplySEBRestriction,
+                                                                GUIAction.APPLY_SEB_RESTRICTION,
                                                                 examStore.selectedExam,
                                                             )
                                                                 ? ''
@@ -608,7 +608,7 @@
                                                             <v-icon
                                                                 :disabled="
                                                                     !ability.canDoExamAction(
-                                                                        GUIAction.ApplySEBRestriction,
+                                                                        GUIAction.APPLY_SEB_RESTRICTION,
                                                                         examStore.selectedExam,
                                                                     )
                                                                 "
@@ -643,7 +643,7 @@
                                                                 icon="mdi-delete-outline"
                                                                 :disabled="
                                                                     !ability.canDoExamAction(
-                                                                        GUIAction.DeleteExam,
+                                                                        GUIAction.DELETE_EXAM,
                                                                         examStore.selectedExam,
                                                                     ) ||
                                                                     isExcludeFromDeletionActive
@@ -665,7 +665,7 @@
                                                 <v-list-item
                                                     v-if="
                                                         ability.canDoExamAction(
-                                                            GUIAction.ExcludeFromDeletion,
+                                                            GUIAction.EXCLUDE_FROM_DELETION,
                                                             examStore.selectedExam,
                                                         )
                                                     "
@@ -1072,7 +1072,7 @@ const changeBasicSettings = async (value: BasicSettings) => {
 
 const disableBasicSettingsEdit = () => {
     return !ability.canDoExamAction(
-        GUIAction.EditExamSettings,
+        GUIAction.EDIT_EXAM_SETTINGS,
         examStore.selectedExam,
     );
 };
@@ -1372,7 +1372,7 @@ async function applyTestRun() {
 
 //= ==============SEB settings logic====================
 function getSEBSettingsTitle(): string {
-    const fullSEBSettings = ability.canDo(GUIAction.EditFullSEBSettings);
+    const fullSEBSettings = ability.canDo(GUIAction.EDIT_FULL_SEB_SETTINGS);
 
     return isSEBSettingsReadonly()
         ? fullSEBSettings
@@ -1385,13 +1385,13 @@ function getSEBSettingsTitle(): string {
 
 function isSEBSettingsReadonly(): boolean {
     return !ability.canDoExamAction(
-        GUIAction.EditSEBSettings,
+        GUIAction.EDIT_SEB_SETTINGS,
         examStore.selectedExam,
     );
 }
 
 function getSEBSettingsNameKey() {
-    const fullSEBSettings = ability.canDo(GUIAction.EditFullSEBSettings);
+    const fullSEBSettings = ability.canDo(GUIAction.EDIT_FULL_SEB_SETTINGS);
     return fullSEBSettings
         ? "examDetail.main.sebSettings"
         : "examDetail.main.appNetworkSettings";
