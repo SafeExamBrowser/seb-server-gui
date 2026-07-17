@@ -18,6 +18,15 @@
                 />
             </v-row>
             <v-row>
+                <CheckboxSetting
+                    v-model="singleValues"
+                    name="showProctoringDisclaimer"
+                    label="sebSettings.proctoring.screenProctoring.showProctoringDisclaimer"
+                    :tooltip="true"
+                    :disabled="context.readonly"
+                />
+            </v-row>
+            <v-row>
                 <NumberSetting
                     v-model="singleValues"
                     name="screenProctoringScreenshotMinInterval"
