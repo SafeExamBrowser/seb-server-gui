@@ -1,4 +1,5 @@
 import { computed, reactive } from "vue";
+import { useI18n } from "vue-i18n";
 import { useRouter, type RouteLocationAsRelative } from "vue-router";
 import type { TableItem } from "@/components/widgets/entity-table/types.ts";
 import { useUserAccountsTableHeaders } from "./useUserAccountsTableHeaders.ts";
@@ -13,6 +14,7 @@ import { isTeacherOnlyAccount } from "@/models/userAccount.ts";
 
 export const useUserAccountsOverview = () => {
     const router = useRouter();
+    const { t } = useI18n();
 
     const userAccountDetailRoute = (
         item: TableItem,
@@ -60,6 +62,13 @@ export const useUserAccountsOverview = () => {
     const statusError = computed(() =>
         toAppErrorOrUndefined(statusMutationError.value),
     );
+
+    const statusToggleDisabled = (item: TableItem): boolean =>
+        isTeacherOnlyAccount(item.userRoles);
+    const statusToggleTooltip = (item: TableItem): string | undefined =>
+        statusToggleDisabled(item)
+            ? t("userAccount.teacherNotEditable.message")
+            : undefined;
 
     const statusFlow = useEntityStatusFlow({
         toggle: async (item) => {
@@ -124,6 +133,8 @@ export const useUserAccountsOverview = () => {
             target: statusFlow.statusTarget,
             openDialog: statusFlow.openStatusDialog,
             confirm: statusFlow.confirmStatusChange,
+            disabled: statusToggleDisabled,
+            tooltip: statusToggleTooltip,
         }),
     };
 };
