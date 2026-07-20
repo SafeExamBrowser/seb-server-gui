@@ -15,7 +15,7 @@ services:
     restart: unless-stopped
 
   seb-server:
-    image: "anhefti/seb-server:sprint-testing"
+    image: "sebadmin/seb-server:sprint-testing"
     # NOTE: this is only needed for mac with amd
     platform: linux/amd64
     container_name: seb-server
@@ -67,7 +67,7 @@ services:
     restart: unless-stopped
 
   sps-webservice:
-    image: "anhefti/seb-sps:sprint-testing"
+    image: "sebadmin/seb-sps:sprint-testing"
     # NOTE: this is only needed for mac with amd
     platform: linux/amd64
     container_name: sps-webservice
