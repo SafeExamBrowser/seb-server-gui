@@ -1,5 +1,9 @@
 <template>
-    <ActionButton :disabled="!downloadConnectionEnabled" @click="handleClick">
+    <ActionButton
+        :disabled="!downloadConnectionEnabled || loading"
+        :loading="loading"
+        @click="handleClick"
+    >
         {{ $t("examDetail.sidePanel.actions.downloadExamConnection") }}
     </ActionButton>
 
@@ -31,6 +35,7 @@ const downloadConnectionEnabled = computed(() =>
 const {
     dialogOpen,
     connectionConfigurations,
+    loading,
     start: startConnectionDownload,
     download: downloadConnection,
 } = useDownloadExamConnection({

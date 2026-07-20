@@ -1980,6 +1980,10 @@
             "connectionDialog": {
                 "title": "Select Connection Configuration",
                 "text": "Please select the Connection Configuration you want to use for starting this exam and click Download to start the download."
+            },
+            "errors": {
+                "connectionConfigurationsFailed": "Failed to load the Connection Configurations",
+                "downloadExamConnectionFailed": "Failed to download the Exam Connection Configuration"
             }
         },
         "deleteDialog": {
