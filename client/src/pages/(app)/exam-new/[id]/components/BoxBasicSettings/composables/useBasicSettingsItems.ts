@@ -2,13 +2,11 @@ import { computed, Ref } from "vue";
 import { useI18n } from "vue-i18n";
 import { KeyValueItem } from "@/components/widgets/keyValueList/types.ts";
 import {
-    ExamStatusEnum,
     ExamTypeEnum,
     toSelectableExamType,
 } from "@/models/seb-server/examFiltersEnum.ts";
 import { BasicSettings } from "@/models/seb-server/exam.ts";
 import * as timeUtils from "@/utils/timeUtils.ts";
-import * as generalUtils from "@/utils/generalUtils.ts";
 import { useConsecutiveExamNames } from "./api/useConsecutiveExamNames.ts";
 
 export const useBasicSettingsItems = (
@@ -68,22 +66,6 @@ export const useBasicSettingsItems = (
                 value: {
                     type: "string",
                     value: basicSettings.value.quiz_description,
-                },
-            });
-        }
-
-        const status = generalUtils.findEnumValue(
-            ExamStatusEnum,
-            basicSettings.value.status,
-        );
-        if (status !== null) {
-            result.push({
-                key: "status",
-                type: "basic",
-                label: t("examDetail.info.status"),
-                value: {
-                    type: "string",
-                    value: t(status),
                 },
             });
         }
