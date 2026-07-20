@@ -23,7 +23,11 @@
             :variant="isNavigationOverviewRoute ? 'flat' : 'text'"
         />
 
-        <v-divider class="align-self-stretch mb-2 mx-2" :opacity="0.2" />
+        <v-divider
+            v-if="ability.canView(GUIComponent.NAVIGATION_OVERVIEW)"
+            class="align-self-stretch mb-2 mx-2"
+            :opacity="0.2"
+        />
 
         <v-btn
             v-for="link in links"
