@@ -15,10 +15,12 @@
             <ExamSidePanel
                 :exam="exam"
                 :seb-lock-active="sebLockActive"
-                @toggle-test-run="handleTestRunToggle"
-                @toggle-seb-lock="handleSebLockToggle"
-                @toggle-exclude-from-deletion="handleExcludeFromDeletionToggle"
-                @delete-exam="handleDeleteExam"
+                @toggle-test-run="actions.handleTestRunToggle"
+                @toggle-seb-lock="actions.handleSebLockToggle"
+                @toggle-exclude-from-deletion="
+                    actions.handleExcludeFromDeletionToggle
+                "
+                @delete-exam="actions.handleDeleteExam"
             />
         </template>
         <template #PanelMain>
@@ -27,7 +29,7 @@
                     <template #01_basicSettings>
                         <BoxBasicSettings
                             :exam-id="examId"
-                            :basic-settings="basicSettings"
+                            :basic-settings="basicSettingsValues"
                             :exam-with-u-r-l="examWithURL"
                             :edit-disabled="basicSettingsEditDisabled"
                             @change="handleBasicSettingsChange"
@@ -72,13 +74,14 @@ const {
     sebLockActive,
     examWithURL,
     basicSettings,
-    basicSettingsEditDisabled,
-    handleBasicSettingsChange,
-    handleTestRunToggle,
-    handleSebLockToggle,
-    handleExcludeFromDeletionToggle,
-    handleDeleteExam,
+    actions,
 } = useExamDetailPage();
+
+const {
+    settings: basicSettingsValues,
+    editDisabled: basicSettingsEditDisabled,
+    handleChange: handleBasicSettingsChange,
+} = basicSettings;
 
 const notFoundBackLink = {
     label: t("examDetail.notFound.backToList"),
