@@ -11,6 +11,7 @@ export type OverviewClientGroup = {
     id: number;
     name: string;
     clientAmount: number;
+    activeClients: number;
     spsGroupUUID?: string;
     type: string;
     typeValue: string;

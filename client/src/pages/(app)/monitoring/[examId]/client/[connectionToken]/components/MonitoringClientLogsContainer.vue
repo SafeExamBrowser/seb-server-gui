@@ -76,48 +76,51 @@
         </div>
 
         <!-- Data Table of Log Entries -->
-        <v-data-table-server
-            v-model:options="options"
+        <EntityTable
+            class="px-2 pt-2"
             :headers="clientEventsTableHeaders"
             :items="monitoringStore.clientLogEvents ?? []"
-            :items-length="totalItems"
-            :items-per-page="10"
-            :items-per-page-options="[10]"
+            :page-count="pageCount"
+            :items-per-page="options.itemsPerPage"
+            :options="monitoringStore.currentMonitoringDetailPagingOptions"
             :loading="isLoading"
+            dataTestId=""
+            item-key="id"
             @update:options="getClientEvents"
         >
             <template #loading>
                 <v-skeleton-loader class="mx-4" type="table" />
             </template>
             <!-- Custom cell for Event Type (icon + text) -->
-            <template #item.type="{ item }">
+            <template #cell-type="{ value }">
                 <div class="d-flex align-center">
                     <v-icon
                         class="mr-2"
-                        :color="logSeverity(item.type)?.color ?? 'grey'"
+                        :color="logSeverity(String(value))?.color ?? 'grey'"
                         :icon="
-                            logSeverity(item.type)?.icon ?? 'mdi-help-circle'
+                            logSeverity(String(value))?.icon ??
+                            'mdi-help-circle'
                         "
                     />
-                    {{ item.type }}
+                    {{ String(value) }}
                 </div>
             </template>
 
             <!-- Client Time column formatting -->
-            <template #item.timestamp="{ item }">
-                {{ formatTimeLabel(item.timestamp) }}
+            <template #cell-timestamp="{ value }">
+                {{ formatTimeLabel(Number(value)) }}
             </template>
 
             <!-- Server Time column formatting -->
-            <template #item.serverTime="{ item }">
-                {{ formatTimeLabel(item.serverTime) }}
+            <template #cell-serverTime="{ value }">
+                {{ formatTimeLabel(Number(value)) }}
             </template>
 
             <!-- Value column (show '-' if empty) -->
-            <template #item.value="{ item }">
-                {{ item.value || "-" }}
+            <template #cell-value="{ value }">
+                {{ value || "-" }}
             </template>
-        </v-data-table-server>
+        </EntityTable>
     </div>
 </template>
 
@@ -129,6 +132,7 @@ import { translate } from "@/utils/generalUtils.ts";
 import { ServerTablePaging } from "@/models/types.ts";
 import { OptionalParGetMonitoringClientLogs } from "@/models/seb-server/optionalParamters.ts";
 import { getSingleConnectionEvents } from "@/services/seb-server/monitoringService.ts";
+import EntityTable from "@/components/widgets/entity-table/EntityTable.vue";
 
 // Store instance
 const monitoringStore = useMonitoringStore();
@@ -136,18 +140,18 @@ const monitoringStore = useMonitoringStore();
 // Default sort configuration
 const defaultSort = [{ key: "serverTime", order: "desc" }];
 
-// Table options (pagination, sorting)
-const options = ref({
+const getDefaultOptions = (): ServerTablePaging => ({
     page: 1,
     itemsPerPage: 10,
     sortBy: defaultSort,
 });
+const options = ref<ServerTablePaging>(getDefaultOptions());
 
 // Reactive state
 const searchQuery = ref("");
 const statusFilter = ref("all");
 const isLoading = shallowRef(false);
-const totalItems = ref(0);
+const pageCount = ref(0);
 
 // Severity mapping for icons and colors
 const severityMap: Record<string, { icon: string; color: string }> = {
@@ -254,7 +258,8 @@ async function getClientEvents(serverTablePaging: ServerTablePaging) {
         );
         if (response) {
             monitoringStore.clientLogEvents = response.content;
-            totalItems.value = response.number_of_pages * response.page_size;
+            pageCount.value = response.number_of_pages;
+            serverTablePaging.page = response.page_number;
         }
     } finally {
         isLoading.value = false;

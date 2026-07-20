@@ -1254,7 +1254,9 @@
                 "showScanQRCodeButton": "Show scan QR code button (iOS)",
                 "showScanQRCodeButton_tooltip": "Shows Dock button which allows to start an exam or to reconfigure SEB by scanning a QR code with a SEB link. The button is only displayed if QR Code Config is enabled in Config File pane and if not running in secure exam mode",
                 "showNavigationButtons": "Show navigation buttons (iOS)",
-                "showNavigationButtons_tooltip": "Shows navigation buttons (back/forward) in the SEB for iOS Dock. Otherwise these buttons are displayed in the browser toolbar (if enabled), or in the side menu."
+                "showNavigationButtons_tooltip": "Shows navigation buttons (back/forward) in the SEB for iOS Dock. Otherwise these buttons are displayed in the browser toolbar (if enabled), or in the side menu.",
+                "hideWiFiControls": "Hide Wi-Fi controls (Mac)",
+                "hideWiFiControls_tooltip": "Hides the Wi-Fi control in the SEB Dock/Taskbar and from macOS 27 also the one in the menu bar in AAC Assessment Mode"
             },
             "zoom": {
                 "title": "Enable Zoom (Win/Mac)",
@@ -1588,7 +1590,9 @@
                 "allowShareSheet_tooltip": "When using AAC Assessment Mode, SEB blocks the macOS share sheet.\nUsers cannot share documents in permitted apps with AAC Multi App Mode.",
                 "allowManualStart_tooltip": "Allow user to start the additional application with its Dock icon.\nOtherwise the app can be started by downloading and opening its documents",
                 "allowNetworkAccess_tooltip": "Allow the permitted app in AAC Multi App Mode to access the network/internet",
-                "teamIdentifier_tooltip": "Team identifier of the app's code signature"
+                "teamIdentifier_tooltip": "Team identifier of the app's code signature",
+                "allowAccessibility": "Allow Accessibility",
+                "allowAccessibility_tooltip": "Allow the permitted process to have Accessibility permissions (see System Settings / Privacy & Security / Accessibility). If 'Detect apps with Accessibility Permissions' in Security Pane is enabled, then processes with Accessibility permissions (not excluded here) will be terminated"
             },
             "prohibitedProcess": {
                 "settingName": "Prohibited Processes",
@@ -1705,6 +1709,16 @@
                     "2_tooltip": "SEB runs without kiosk mode, switching to other applications is possible. Use this for debugging purposes only."
                 }
             },
+            "screenProctoringAACCapturePolicy": "Screen proctoring capture under AAC (Mac)",
+            "screenProctoringAACCapturePolicy_tooltip": "Under AAC (Assessment Mode) the system screen capture returns black, so screen proctoring captures SEB's own windows instead. Choose which windows are captured, or disable using AAC when screen proctoring is enabled.",
+            "screenProctoringAACCapturePolicy_0": "Don't use AAC (disable Assessment Mode)",
+            "screenProctoringAACCapturePolicy_1": "Capture active window only",
+            "screenProctoringAACCapturePolicy_2": "Capture all windows (composited)",
+            "lockdownModePolicy": "Lockdown/Kiosk mode (Mac)",
+            "lockdownModePolicy_tooltip": "Automatic Assessment Configuration (AAC) Assessment Mode is available from macOS Monterey 12.1 (and Catalina 10.15.4 / 10.15.6+), from macOS Big Sur 11 with restrictions. It blocks various macOS features (which cannot be allowed optionally, like screen/window capture/sharing/mirroring, Siri, Dictation, Screen Proctoring)",
+            "lockdownModePolicy_0": "Automatic (AAC when no screen/window capture/sharing enabled)",
+            "lockdownModePolicy_1": "Enforce classic kiosk mode (allows screen/window capture etc.)",
+            "lockdownModePolicy_2": "Enforce AAC Assessment Mode (more secure)",
             "overall": {
                 "title": "General Security",
                 "allowedDisplayBuiltinEnforce": "Enforce built-in display",
@@ -1792,7 +1806,9 @@
                 "allowMacOSVersionNumberMajor": "Allow major version number",
                 "allowMacOSVersionNumberMajor_tooltip": "(No tooltips; combo boxes are enabled only when allow​Mac​OSVersion​Number​Check​Full is ON)",
                 "allowMacOSVersionNumberMinor": "Allow minor version number",
-                "allowMacOSVersionNumberPatch": "Allow patch version number"
+                "allowMacOSVersionNumberPatch": "Allow patch version number",
+                "detectAccessibilityApps": "Detect apps with Accessibility Permissions",
+                "detectAccessibilityApps_tooltip": "Apps with Accessibility permissions (System Settings / Privacy & Security / Accessibility) are terminated when they are running (except if allowed in Permitted Processes). Requires 'Full Disk Access' permission"
             },
             "ios": {
                 "title": "iOS specific settings",
@@ -1897,6 +1913,8 @@
                 "title": "SEB Screen Proctoring Settings",
                 "enableScreenProctoring": "Enable Screen Proctoring",
                 "enableScreenProctoring_tooltip": "Enables the screen proctoring for SEB. Note the this cannot be used together with other proctoring features.",
+                "showProctoringDisclaimer": "Show Proctoring Disclaimer",
+                "showProctoringDisclaimer_tooltip": "When screen proctoring is enable, SEB shows a proctoring disclaimer dialog. If this is disabled, SEB do not show a proctoring disclaimer dialog",
                 "screenProctoringScreenshotMinInterval": "Minimal Screenshot Interval (ms)",
                 "screenProctoringScreenshotMinInterval_tooltip": "The screen shot interval in milliseconds. This defines the minimum screenshot interval. After a screenshot was sent, SEB waits for this interval-time to listen to trigger again. When a trigger-event happens, SEB makes a screenshot and send it, waiting again for the next interval-time to listen to trigger again.Trigger shall be any mouse, touch or key input.",
                 "screenProctoringScreenshotMaxInterval": "Maximal Screenshot Interval (ms)",
@@ -2105,7 +2123,8 @@
             "buttons": {
                 "proctor": "Proctor",
                 "viewList": "View List"
-            }
+            },
+            "noSPSAccess": "You have no access to the screen proctoring gallery view since you are not assigned as a supporter to the Exam. Please assign your user account to the Exam supporter list to get gallery access."
         },
         "notifications": {
             "notifications": "Notifications"

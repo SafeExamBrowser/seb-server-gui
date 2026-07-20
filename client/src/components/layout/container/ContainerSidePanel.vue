@@ -9,7 +9,7 @@
          //TODO Reimplement with Home-Page-->
 
         <v-btn
-            v-if="ability.canView(GUIComponent.NavigationOverview)"
+            v-if="ability.canView(GUIComponent.NAVIGATION_OVERVIEW)"
             :active="false"
             class="rounded-lg overflow-hidden"
             :class="

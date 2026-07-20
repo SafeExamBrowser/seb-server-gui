@@ -188,6 +188,11 @@ export const usePermittedProcessTable = (
                 attributes,
                 "permittedProcesses.strongKill",
             ),
+            allowAccessibility: getBooleanValue(
+                rowVals,
+                attributes,
+                "permittedProcesses.allowAccessibility",
+            ),
             teamIdentifier: getStringValue(
                 rowVals,
                 attributes,
@@ -242,6 +247,10 @@ export const usePermittedProcessTable = (
                     rowVals,
                     "permittedProcesses.strongKill",
                 ),
+                allowAccessibility: getSettingId(
+                    rowVals,
+                    "permittedProcesses.allowAccessibility",
+                ),
                 teamIdentifier: getSettingId(
                     rowVals,
                     "permittedProcesses.teamIdentifier",
@@ -269,6 +278,7 @@ export const usePermittedProcessTable = (
             allowUserToChooseApp: false,
             allowNetworkAccess: true,
             strongKill: false,
+            allowAccessibility: false,
             teamIdentifier: "",
             ids: {
                 active: -1,
@@ -286,6 +296,7 @@ export const usePermittedProcessTable = (
                 allowUserToChooseApp: -1,
                 allowNetworkAccess: -1,
                 strongKill: -1,
+                allowAccessibility: -1,
                 teamIdentifier: -1,
             },
         };

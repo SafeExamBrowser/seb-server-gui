@@ -9,6 +9,7 @@ import {
     currentUserQueryOptions,
     useCurrentUserQuery,
 } from "@/composables/useCurrentUser.ts";
+import { guiAbilitiesQueryOptions } from "@/composables/useGuiAbilities.ts";
 import type { UserAccount } from "@/models/userAccount.ts";
 
 export const useEditUserAccountMutation = () => {
@@ -36,6 +37,9 @@ export const useEditUserAccountMutation = () => {
                     currentUserQueryOptions().queryKey,
                     data,
                 );
+                queryClient.invalidateQueries({
+                    queryKey: guiAbilitiesQueryOptions().queryKey,
+                });
             }
         },
     });

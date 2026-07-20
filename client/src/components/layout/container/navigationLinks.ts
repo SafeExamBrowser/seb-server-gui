@@ -18,7 +18,7 @@ export function buildBaseNavigationLinks(
 ): BaseNavigationLink[] {
     const result: BaseNavigationLink[] = [];
 
-    if (ability.canView(GUIComponent.Exams)) {
+    if (ability.canView(GUIComponent.EXAMS)) {
         result.push({
             title: i18n.t("titles.exams"),
             route: typedTo({ name: "/(app)/exam/" }),
@@ -27,7 +27,7 @@ export function buildBaseNavigationLinks(
         });
     }
 
-    if (ability.canView(GUIComponent.RunningExams)) {
+    if (ability.canView(GUIComponent.RUNNING_EXAMS)) {
         result.push({
             title: i18n.t("titles.monitor"),
             route: typedTo({ name: "/(app)/monitoring/" }),
@@ -36,7 +36,7 @@ export function buildBaseNavigationLinks(
         });
     }
 
-    if (ability.canView(GUIComponent.AnalyzeExams)) {
+    if (ability.canView(GUIComponent.ANALYZE_EXAMS)) {
         result.push({
             title: i18n.t("titles.analyze"),
             route: typedTo({ name: "/(app)/analyze/" }),
@@ -46,7 +46,7 @@ export function buildBaseNavigationLinks(
         });
     }
 
-    if (ability.canView(GUIComponent.ArchiveExams)) {
+    if (ability.canView(GUIComponent.ARCHIVE_EXAMS)) {
         result.push({
             title: i18n.t("titles.archive"),
             route: typedTo({ name: "/(app)/archive/" }),

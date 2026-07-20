@@ -2,6 +2,7 @@ import type { Router } from "vue-router";
 import i18n from "@/i18n";
 import { useAuthStore } from "@/composables/store/useAuthStore";
 import { currentUserQueryOptions } from "@/composables/useCurrentUser";
+import { guiAbilitiesQueryOptions } from "@/composables/useGuiAbilities";
 import { queryClient } from "@/services/http/queryClient";
 
 const DEFAULT_TITLE = "SEB Server";
@@ -38,7 +39,10 @@ export function installGuards(router: Router): void {
 
 async function hydratePersonalUserAccount(): Promise<void> {
     try {
-        await queryClient.ensureQueryData(currentUserQueryOptions());
+        await Promise.all([
+            queryClient.ensureQueryData(currentUserQueryOptions()),
+            queryClient.ensureQueryData(guiAbilitiesQueryOptions()),
+        ]);
     } catch {
         return;
     }

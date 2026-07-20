@@ -6,6 +6,7 @@ import type {
     LocationQueryRaw,
     LocationQueryValueRaw,
 } from "vue-router";
+import { ConnectionStatusEnum } from "@/models/seb-server/connectionStatusEnum";
 
 function addQueryParam(query: LocationQueryRaw) {
     void router.push({
@@ -20,6 +21,21 @@ export function goToMonitoring(
 ) {
     const query: LocationQueryRaw = {
         [String(header)]: value as LocationQueryValueRaw,
+    };
+
+    void router.push({
+        name: "/(app)/monitoring/[examId]/client/",
+        params: { examId },
+        query,
+    });
+}
+
+export function goToMonitoringOfGroup(value: string | boolean, examId: string) {
+    const query: LocationQueryRaw = {
+        [MonitoringHeaderEnum.SHOW_CLIENT_GROUPS]:
+            value as LocationQueryValueRaw,
+        [MonitoringHeaderEnum.SHOW_STATES]:
+            `${ConnectionStatusEnum.ACTIVE},${ConnectionStatusEnum.READY}` as LocationQueryValueRaw,
     };
 
     void router.push({
