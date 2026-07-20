@@ -75,7 +75,7 @@ export const useBasicSettingsItems = (
             type: "basic",
             label: t("examDetail.info.url"),
             value: {
-                type: "string",
+                type: "link",
                 value: basicSettings.value.quiz_start_url,
             },
         });

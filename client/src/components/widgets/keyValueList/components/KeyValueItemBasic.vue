@@ -29,6 +29,17 @@
             <template v-else-if="item.value.type === 'string'">
                 {{ item.value.value }}
             </template>
+            <template v-else-if="item.value.type === 'link'">
+                <a
+                    v-if="item.value.value"
+                    :href="item.value.value"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    class="text-primary"
+                >
+                    {{ item.value.value }}
+                </a>
+            </template>
             <template v-else-if="item.value.type === 'thresholds'">
                 <div class="d-flex flex-wrap ga-1">
                     <template
