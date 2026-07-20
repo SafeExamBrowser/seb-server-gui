@@ -40,6 +40,6 @@ const {
 
 const handleClick = () => startConnectionDownload();
 
-const handleConnectionConfigConfirm = (connectionId: string) =>
+const handleConnectionConfigConfirm = (connectionId: number) =>
     downloadConnection(connectionId);
 </script>

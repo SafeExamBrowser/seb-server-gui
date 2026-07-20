@@ -21,8 +21,12 @@ export const useDownloadExamConnection = ({
         const configurations =
             await connectionConfigurationService.getConnectionConfigurationsActive();
 
+        if (configurations.content.length === 0) {
+            return;
+        }
+
         if (configurations.content.length === 1) {
-            await download(String(configurations.content[0].id));
+            await download(configurations.content[0].id);
             return;
         }
 
@@ -30,9 +34,7 @@ export const useDownloadExamConnection = ({
         dialogOpen.value = true;
     };
 
-    const download = async (connectionId: string) => {
-        dialogOpen.value = false;
-
+    const download = async (connectionId: number) => {
         const id = examId();
         if (id === undefined) {
             return;
@@ -40,7 +42,7 @@ export const useDownloadExamConnection = ({
 
         const blob = await connectionConfigurationService.downloadExamConfig(
             String(id),
-            connectionId,
+            String(connectionId),
         );
 
         createDownloadLink(blob);

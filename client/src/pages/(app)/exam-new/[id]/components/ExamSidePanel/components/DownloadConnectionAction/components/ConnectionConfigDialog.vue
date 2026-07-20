@@ -25,12 +25,7 @@
                     {{ $t("general.cancelButton") }}
                 </v-btn>
 
-                <v-btn
-                    color="primary"
-                    variant="text"
-                    :disabled="selectedConnectionId === undefined"
-                    @click="handleConfirm"
-                >
+                <v-btn color="primary" variant="text" @click="handleConfirm">
                     {{ $t("general.downloadButton") }}
                 </v-btn>
             </v-card-actions>
@@ -39,20 +34,30 @@
 </template>
 
 <script setup lang="ts">
-import { ref } from "vue";
+import { ref, watch } from "vue";
 import { ConnectionConfiguration } from "@/models/seb-server/connectionConfiguration.ts";
 
 const model = defineModel<boolean>({ required: true });
 
-defineProps<{
+const props = defineProps<{
     connectionConfigurations: ConnectionConfiguration[];
 }>();
 
 const emit = defineEmits<{
-    confirm: [connectionId: string];
+    confirm: [connectionId: number];
 }>();
 
 const selectedConnectionId = ref<number>();
+
+// Reseed on every open: the configurations are refetched each time, so a selection
+// kept from a previous open could point at a configuration no longer offered.
+watch(model, (open) => {
+    if (!open) {
+        return;
+    }
+
+    selectedConnectionId.value = props.connectionConfigurations[0]?.id;
+});
 
 const handleCancel = () => {
     model.value = false;
@@ -63,6 +68,7 @@ const handleConfirm = () => {
         return;
     }
 
-    emit("confirm", String(selectedConnectionId.value));
+    model.value = false;
+    emit("confirm", selectedConnectionId.value);
 };
 </script>
