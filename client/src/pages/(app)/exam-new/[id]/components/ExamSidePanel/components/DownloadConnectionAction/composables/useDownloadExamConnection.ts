@@ -2,6 +2,7 @@ import { ref } from "vue";
 import { ConnectionConfiguration } from "@/models/seb-server/connectionConfiguration.ts";
 import * as connectionConfigurationService from "@/services/seb-server/connectionConfigurationInfoService.ts";
 import * as timeUtils from "@/utils/timeUtils.ts";
+import { downloadBlob } from "@/utils/downloadUtils.ts";
 
 export const useDownloadExamConnection = ({
     examId,
@@ -45,22 +46,8 @@ export const useDownloadExamConnection = ({
             String(connectionId),
         );
 
-        createDownloadLink(blob);
-    };
-
-    const createDownloadLink = (blob: Blob) => {
         const name = (quizName() ?? "exam").replaceAll(" ", "_");
-        const fileName = `${name}_${timeUtils.getCurrentDateString()}.seb`;
-
-        const link = document.createElement("a");
-        link.href = URL.createObjectURL(blob);
-        link.setAttribute("download", fileName);
-        document.body.appendChild(link);
-
-        link.click();
-
-        document.body.removeChild(link);
-        URL.revokeObjectURL(link.href);
+        downloadBlob(blob, `${name}_${timeUtils.getCurrentDateString()}.seb`);
     };
 
     return {

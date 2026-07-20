@@ -5,6 +5,7 @@ import type {
     TableItem,
 } from "@/components/widgets/entity-table/types.ts";
 import * as timeUtils from "@/utils/timeUtils.ts";
+import { downloadBlob } from "@/utils/downloadUtils.ts";
 import { downloadSEBLogsForExam } from "@/services/seb-server/monitoringService";
 import { Exam } from "@/models/seb-server/exam";
 import { stringToBoolean } from "@/utils/generalUtils";
@@ -43,20 +44,8 @@ async function downloadSEBLogs(item: TableItem) {
             return;
         }
 
-        createDownloadLink(item, blobResponse);
+        downloadBlob(blobResponse, getExamConfigFileName(item));
     }
-}
-
-function createDownloadLink(item: TableItem, blob: Blob) {
-    const link = document.createElement("a");
-    link.href = URL.createObjectURL(blob);
-    link.setAttribute("download", getExamConfigFileName(item));
-    document.body.appendChild(link);
-
-    link.click();
-
-    document.body.removeChild(link);
-    URL.revokeObjectURL(link.href);
 }
 
 function getExamConfigFileName(item: TableItem): string {
