@@ -218,13 +218,15 @@ const testRunActive = computed(
 
 const testRunEnabled = computed(() =>
     ability.canDoExamAction(
-        testRunActive.value ? GUIAction.DisableTestRun : GUIAction.ApplyTestRun,
+        testRunActive.value
+            ? GUIAction.DISABLE_TEST_RUN
+            : GUIAction.APPLY_TEST_RUN,
         props.exam ?? null,
     ),
 );
 
 const monitorVisible = computed(() =>
-    ability.canDoExamAction(GUIAction.ShowMonitoring, props.exam ?? null),
+    ability.canDoExamAction(GUIAction.SHOW_MONITORING, props.exam ?? null),
 );
 
 const monitoringRoute = computed(() => {
@@ -239,7 +241,7 @@ const monitoringRoute = computed(() => {
 });
 
 const downloadConnectionEnabled = computed(() =>
-    ability.canDoExamAction(GUIAction.EditSEBSettings, props.exam ?? null),
+    ability.canDoExamAction(GUIAction.EDIT_SEB_SETTINGS, props.exam ?? null),
 );
 
 const { data: assessmentTool } = useAssessmentTool(
@@ -258,11 +260,17 @@ const sebLockVisible = computed(() => {
 });
 
 const sebLockEnabled = computed(() =>
-    ability.canDoExamAction(GUIAction.ApplySEBRestriction, props.exam ?? null),
+    ability.canDoExamAction(
+        GUIAction.APPLY_SEB_RESTRICTION,
+        props.exam ?? null,
+    ),
 );
 
 const excludeFromDeletionVisible = computed(() =>
-    ability.canDoExamAction(GUIAction.ExcludeFromDeletion, props.exam ?? null),
+    ability.canDoExamAction(
+        GUIAction.EXCLUDE_FROM_DELETION,
+        props.exam ?? null,
+    ),
 );
 
 const excludedFromDeletion = computed(
@@ -271,7 +279,7 @@ const excludedFromDeletion = computed(
 
 const deleteEnabled = computed(
     () =>
-        ability.canDoExamAction(GUIAction.DeleteExam, props.exam ?? null) &&
+        ability.canDoExamAction(GUIAction.DELETE_EXAM, props.exam ?? null) &&
         !excludedFromDeletion.value,
 );
 
