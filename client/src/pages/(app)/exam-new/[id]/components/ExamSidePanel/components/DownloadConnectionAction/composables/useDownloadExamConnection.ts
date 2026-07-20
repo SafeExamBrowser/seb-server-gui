@@ -1,6 +1,5 @@
 import { computed, ref } from "vue";
 import i18n from "@/i18n";
-import { ConnectionConfiguration } from "@/models/seb-server/connectionConfiguration.ts";
 import * as connectionConfigurationService from "@/services/seb-server/connectionConfigurationInfoService.ts";
 import { notify } from "@/services/notifications/notify.ts";
 import { useMutation } from "@/composables/useMutation.ts";
@@ -16,7 +15,6 @@ export const useDownloadExamConnection = ({
     quizName: () => string | undefined;
 }) => {
     const dialogOpen = ref(false);
-    const connectionConfigurations = ref<ConnectionConfiguration[]>([]);
 
     const {
         data: activeConfigurations,
@@ -24,6 +22,10 @@ export const useDownloadExamConnection = ({
         error: configurationsError,
         fetchData: fetchConfigurations,
     } = useConnectionConfigurations();
+
+    const connectionConfigurations = computed(
+        () => activeConfigurations.value?.content ?? [],
+    );
 
     const downloadMutation = useMutation((id: number, connectionId: number) =>
         connectionConfigurationService.downloadExamConfig(
@@ -54,7 +56,7 @@ export const useDownloadExamConnection = ({
             return;
         }
 
-        const configurations = activeConfigurations.value?.content ?? [];
+        const configurations = connectionConfigurations.value;
 
         if (configurations.length === 0) {
             return;
@@ -65,7 +67,6 @@ export const useDownloadExamConnection = ({
             return;
         }
 
-        connectionConfigurations.value = configurations;
         dialogOpen.value = true;
     };
 
