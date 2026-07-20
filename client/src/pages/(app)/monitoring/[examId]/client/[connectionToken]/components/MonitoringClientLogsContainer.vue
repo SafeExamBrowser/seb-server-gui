@@ -84,7 +84,7 @@
             :items-per-page="options.itemsPerPage"
             :options="monitoringStore.currentMonitoringDetailPagingOptions"
             :loading="isLoading"
-            dataTestId=""
+            data-test-id=""
             item-key="id"
             @update:options="getClientEvents"
         >

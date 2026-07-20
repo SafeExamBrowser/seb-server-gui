@@ -23,7 +23,17 @@
         </template>
         <template #PanelMain>
             <LoadingFallbackComponent :loading="loading" :errors="errors">
-                <BasicGrid v-if="examId !== undefined" />
+                <BasicGrid v-if="examId !== undefined">
+                    <template #01_basicSettings>
+                        <BoxBasicSettings
+                            :exam-id="examId"
+                            :basic-settings="basicSettings"
+                            :exam-with-u-r-l="examWithURL"
+                            :edit-disabled="basicSettingsEditDisabled"
+                            @change="handleBasicSettingsChange"
+                        />
+                    </template>
+                </BasicGrid>
             </LoadingFallbackComponent>
         </template>
     </BasicPage>
@@ -38,6 +48,7 @@ import NotFoundPage from "@/components/layout/pages/NotFoundPage.vue";
 import { typedTo } from "@/router/typedTo";
 import { useExamDetailPage } from "./composables/useExamDetailPage.ts";
 import ExamSidePanel from "./components/ExamSidePanel/ExamSidePanel.vue";
+import BoxBasicSettings from "./components/BoxBasicSettings/BoxBasicSettings.vue";
 
 definePage({
     meta: {
@@ -59,6 +70,10 @@ const {
     loading,
     notFound,
     sebLockActive,
+    examWithURL,
+    basicSettings,
+    basicSettingsEditDisabled,
+    handleBasicSettingsChange,
     handleTestRunToggle,
     handleSebLockToggle,
     handleExcludeFromDeletionToggle,
