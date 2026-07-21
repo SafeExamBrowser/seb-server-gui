@@ -37,7 +37,7 @@
                     </template>
 
                     <template #02_sebSettings>
-                        <BoxSEBSettings />
+                        <BoxSEBSettings :exam-id="examId" />
                     </template>
                 </BasicGrid>
             </LoadingFallbackComponent>
