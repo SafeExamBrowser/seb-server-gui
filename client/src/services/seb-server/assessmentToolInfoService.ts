@@ -10,12 +10,17 @@ import type {
 // generated SDK via assessmentToolService.ts.
 const baseUrl = "/lms-setup" as const;
 
+const ALL_TOOLS_PAGE_SIZE = 500;
+
 export const getAssessmentToolsActive =
     async (): Promise<AssessmentToolsResponse> =>
         (
             await apiService.getRequest({
                 url: baseUrl + "/active",
-                options: { _authType: "seb" },
+                options: {
+                    _authType: "seb",
+                    params: { page_size: ALL_TOOLS_PAGE_SIZE },
+                },
             })
         ).data;
 
