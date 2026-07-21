@@ -1,13 +1,15 @@
-import { test, expect } from "../shared/fixtures/table-list-fixtures";
-import { waitForRequest } from "../utils/networkAssertions";
-import { expectToHaveUrl } from "../utils/helpers";
+import type { Page } from "@playwright/test";
+
 import { ASSESSMENT_TOOL_FIELD } from "@/pages/(app)/assessment-tool/assessmentToolFormConfig.ts";
+
+import { expect, test } from "../shared/fixtures/table-list-fixtures";
+import { expectToHaveUrl } from "../utils/helpers";
+import { waitForRequest } from "../utils/networkAssertions";
 import {
     ASSESSMENT_TOOL_SAVE_REQUEST,
-    EDIT_TOOL_ID,
     assessmentToolByIdRequest,
+    EDIT_TOOL_ID,
 } from "./models/assessment-tool-edit.model";
-import type { Page } from "@playwright/test";
 
 // A token-auth setup: a non-empty lmsRestApiToken makes the edit page hydrate in "token" mode.
 const existingTool = {

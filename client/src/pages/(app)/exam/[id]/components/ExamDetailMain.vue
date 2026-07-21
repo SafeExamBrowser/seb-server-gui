@@ -805,47 +805,47 @@
 </template>
 
 <script setup lang="ts">
-import AlertMsg from "@/components/widgets/AlertMsg.vue";
-import { ref, onBeforeMount, ComputedRef, computed } from "vue";
-import { useExamStore } from "@/stores/seb-server/examStore.ts";
-import * as examService from "@/services/seb-server/examService.ts";
-import * as sebSettingsService from "@/services/seb-server/sebSettingsService.ts";
-import * as assessmentToolService from "@/services/seb-server/assessmentToolInfoService.ts";
-import * as examTemplateService from "@/services/seb-server/examTemplateService.ts";
-import * as monitoringService from "@/services/seb-server/monitoringService.ts";
-import * as connectionConfigurationService from "@/services/seb-server/connectionConfigurationInfoService.ts";
-
-import * as userAccountService from "@/services/seb-server/userAccountService.ts";
-import * as clientGroupService from "@/services/seb-server/clientGroupService.ts";
-import * as generalUtils from "@/utils/generalUtils.ts";
-import { ExamStatusEnum } from "@/models/seb-server/examFiltersEnum.ts";
-import DeleteConfirmDialog from "@/components/widgets/DeleteConfirmDialog.vue";
-import { ClientGroupEnum } from "@/models/seb-server/clientGroupEnum.ts";
-import TableHeaders from "@/utils/table/TableHeaders.vue";
-import { translate } from "@/utils/generalUtils.ts";
-import { LMSFeatureEnum } from "@/models/seb-server/assessmentToolEnums.ts";
-import { GUIAction, useAbilities } from "@/services/ability.ts";
+import { computed, ComputedRef, onBeforeMount, ref } from "vue";
 import { useRouter } from "vue-router";
-import { UserAccount } from "@/models/userAccount.ts";
-import { ScreenProctoringSettings } from "@/models/seb-server/screenProctoring.ts";
-import { BasicSettings, Exam } from "@/models/seb-server/exam.ts";
-import { ConnectionConfigurations } from "@/models/seb-server/connectionConfiguration.ts";
-import { ClientGroups } from "@/models/seb-server/clientGroup.ts";
-import { AssessmentTool } from "@/models/seb-server/assessmentTool.ts";
-import { ExamTemplate } from "@/models/seb-server/examTemplate.ts";
-import ExamDetailSupervisorsDialog from "@/pages/(app)/exam/[id]/components/dialogs/ExamDetailSupervisorsDialog.vue";
-import ExamDetailConfigDialog from "@/pages/(app)/exam/[id]/components/dialogs/ExamDetailConfigDialog.vue";
-import ClientGroupListDialog from "@/pages/(app)/exam/[id]/components/dialogs/client-group/ClientGroupListDialog.vue";
-import AddClientGroupDialog from "@/pages/(app)/exam/[id]/components/dialogs/client-group/AddClientGroupDialog.vue";
+
+import AlertMsg from "@/components/widgets/AlertMsg.vue";
+import DeleteConfirmDialog from "@/components/widgets/DeleteConfirmDialog.vue";
 import ExamTemplateDialog from "@/components/widgets/ExamTemplateDialog.vue";
 import SebSettingsDialog from "@/components/widgets/sebSettings/SebSettingsDialog.vue";
-import { activateScreenProctoring } from "@/services/seb-server/screenProctoringService.ts";
-import * as timeUtils from "@/utils/timeUtils.ts";
 import { SEBSettingsContext } from "@/components/widgets/sebSettings/types.ts";
-import BoxBasicSettings from "@/pages/(app)/exam/[id]/components/BoxBasicSettings/BoxBasicSettings.vue";
-import { excludeFromDeletion } from "@/services/seb-server/scheduledDeletionService";
+import { AssessmentTool } from "@/models/seb-server/assessmentTool.ts";
+import { LMSFeatureEnum } from "@/models/seb-server/assessmentToolEnums.ts";
+import { ClientGroups } from "@/models/seb-server/clientGroup.ts";
+import { ClientGroupEnum } from "@/models/seb-server/clientGroupEnum.ts";
 import { ConfigurationExamMapping } from "@/models/seb-server/configurationNode";
+import { ConnectionConfigurations } from "@/models/seb-server/connectionConfiguration.ts";
+import { BasicSettings, Exam } from "@/models/seb-server/exam.ts";
+import { ExamStatusEnum } from "@/models/seb-server/examFiltersEnum.ts";
+import { ExamTemplate } from "@/models/seb-server/examTemplate.ts";
+import { ScreenProctoringSettings } from "@/models/seb-server/screenProctoring.ts";
+import { UserAccount } from "@/models/userAccount.ts";
+import BoxBasicSettings from "@/pages/(app)/exam/[id]/components/BoxBasicSettings/BoxBasicSettings.vue";
 import { useUpdateConfigPasswordEncryption } from "@/pages/(app)/exam/[id]/components/BoxBasicSettings/composables/api/useUpdateConfigPasswordEncryption";
+import AddClientGroupDialog from "@/pages/(app)/exam/[id]/components/dialogs/client-group/AddClientGroupDialog.vue";
+import ClientGroupListDialog from "@/pages/(app)/exam/[id]/components/dialogs/client-group/ClientGroupListDialog.vue";
+import ExamDetailConfigDialog from "@/pages/(app)/exam/[id]/components/dialogs/ExamDetailConfigDialog.vue";
+import ExamDetailSupervisorsDialog from "@/pages/(app)/exam/[id]/components/dialogs/ExamDetailSupervisorsDialog.vue";
+import { GUIAction, useAbilities } from "@/services/ability.ts";
+import * as assessmentToolService from "@/services/seb-server/assessmentToolInfoService.ts";
+import * as clientGroupService from "@/services/seb-server/clientGroupService.ts";
+import * as connectionConfigurationService from "@/services/seb-server/connectionConfigurationInfoService.ts";
+import * as examService from "@/services/seb-server/examService.ts";
+import * as examTemplateService from "@/services/seb-server/examTemplateService.ts";
+import * as monitoringService from "@/services/seb-server/monitoringService.ts";
+import { excludeFromDeletion } from "@/services/seb-server/scheduledDeletionService";
+import { activateScreenProctoring } from "@/services/seb-server/screenProctoringService.ts";
+import * as sebSettingsService from "@/services/seb-server/sebSettingsService.ts";
+import * as userAccountService from "@/services/seb-server/userAccountService.ts";
+import { useExamStore } from "@/stores/seb-server/examStore.ts";
+import * as generalUtils from "@/utils/generalUtils.ts";
+import { translate } from "@/utils/generalUtils.ts";
+import TableHeaders from "@/utils/table/TableHeaders.vue";
+import * as timeUtils from "@/utils/timeUtils.ts";
 
 const router = useRouter();
 const props = defineProps<{

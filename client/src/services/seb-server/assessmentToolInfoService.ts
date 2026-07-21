@@ -1,8 +1,8 @@
-import * as apiService from "@/services/apiService";
 import type {
     AssessmentTool,
     AssessmentToolsResponse,
 } from "@/models/seb-server/assessmentTool.ts";
+import * as apiService from "@/services/apiService";
 
 // Cross-domain assessment-tool (LMS setup) lookups still consumed by the not-yet-migrated
 // exam / exam-template domains. Kept on the legacy apiService boundary until those domains

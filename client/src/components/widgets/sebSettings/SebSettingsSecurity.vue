@@ -601,22 +601,24 @@
 </template>
 
 <script setup lang="ts">
-import { translate } from "@/utils/generalUtils.ts";
-import { ViewType } from "@/models/seb-server/sebSettingsEnums.ts";
 import { useTemplateRef } from "vue";
-import SettingsTitle from "./components/SettingsTitle.vue";
+
+import LoadingFallbackComponent from "@/components/widgets/loadingFallbackComponent/LoadingFallbackComponent.vue";
+import { ViewType } from "@/models/seb-server/sebSettingsEnums.ts";
+import { translate } from "@/utils/generalUtils.ts";
+
 import CheckboxSetting from "./components/inputFields/CheckboxSetting.vue";
-import TextSetting from "./components/inputFields/TextSetting.vue";
-import SelectionSetting from "./components/inputFields/SelectionSetting.vue";
 import NumberSetting from "./components/inputFields/NumberSetting.vue";
 import RadioSetting from "./components/inputFields/RadioSetting.vue";
+import SEBVersionSetting from "./components/inputFields/SEBVersionSetting.vue";
+import SelectionSetting from "./components/inputFields/SelectionSetting.vue";
+import TextSetting from "./components/inputFields/TextSetting.vue";
+import SettingsTitle from "./components/SettingsTitle.vue";
 import {
-    useSEBSettingValues,
     ignoreSEBService,
+    useSEBSettingValues,
 } from "./composables/useSEBSettingValues.ts";
 import { SEBSettingsContext } from "./types.ts";
-import SEBVersionSetting from "./components/inputFields/SEBVersionSetting.vue";
-import LoadingFallbackComponent from "@/components/widgets/loadingFallbackComponent/LoadingFallbackComponent.vue";
 
 const props = defineProps<{
     context: SEBSettingsContext;

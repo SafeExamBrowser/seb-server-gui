@@ -54,9 +54,10 @@
 
 <script setup lang="ts">
 import { FormFieldGroup } from "@/components/widgets/formBuilder/types";
-import type { BackendFieldErrorMap } from "@/services/errors/types.ts";
-import FormFields from "./FormFields.vue";
 import SectionSubtitle from "@/components/widgets/SectionSubtitle.vue";
+import type { BackendFieldErrorMap } from "@/services/errors/types.ts";
+
+import FormFields from "./FormFields.vue";
 
 defineProps<{
     label: string;

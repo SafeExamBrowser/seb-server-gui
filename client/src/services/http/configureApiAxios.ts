@@ -1,9 +1,11 @@
+import "@/services/types";
+
 import type { AxiosInstance, AxiosRequestConfig } from "axios";
+
 import { useAuthStore } from "@/composables/store/useAuthStore";
 import { toAppError } from "@/services/errors/toAppError.ts";
 import { transportErrorDedupeKey } from "@/services/errors/transport.ts";
 import { notify } from "@/services/notifications/notify.ts";
-import "@/services/types";
 
 type AuthType = NonNullable<AxiosRequestConfig["_authType"]>;
 

@@ -26,12 +26,14 @@
 </template>
 
 <script setup lang="ts">
-import { computed } from "vue";
 import { storeToRefs } from "pinia";
-import { useDisplay } from "vuetify";
+import { computed } from "vue";
 import { useI18n } from "vue-i18n";
-import StepItem from "@/components/widgets/stepItem/StepItem.vue";
+import { useDisplay } from "vuetify";
+
 import LoadingFallbackComponent from "@/components/widgets/loadingFallbackComponent/LoadingFallbackComponent.vue";
+import StepItem from "@/components/widgets/stepItem/StepItem.vue";
+
 import { useStepAssessmentToolStore } from "./composables/store/useStepAssessmentToolStore.ts";
 
 const { t } = useI18n();

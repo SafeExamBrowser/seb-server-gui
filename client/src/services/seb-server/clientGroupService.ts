@@ -1,5 +1,5 @@
-import * as apiService from "@/services/apiService";
 import { ClientGroup, ClientGroups } from "@/models/seb-server/clientGroup";
+import * as apiService from "@/services/apiService";
 
 const baseUrl = "/client-group" as const;
 

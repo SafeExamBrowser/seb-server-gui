@@ -1,11 +1,13 @@
 import { computed, reactive } from "vue";
-import { useCertificatesTableHeaders } from "./useCertificateTableHeaders.ts";
-import { useCertificatesTableActions } from "./useCertificatesTableActions.ts";
+
+import { useEntityDeleteFlow } from "@/components/widgets/entity-table/composables/useEntityDeleteFlow.ts";
+import { useDeleteCertificateMutation } from "@/pages/(app)/certificate/api/useDeleteCertificateMutation.ts";
+import { toAppErrorOrUndefined } from "@/services/errors/toAppError.ts";
+
 import { useCertificateCreateForm } from "./useCertificateCreateForm.ts";
 import { useCertificatesList } from "./useCertificatesList.ts";
-import { useDeleteCertificateMutation } from "@/pages/(app)/certificate/api/useDeleteCertificateMutation.ts";
-import { useEntityDeleteFlow } from "@/components/widgets/entity-table/composables/useEntityDeleteFlow.ts";
-import { toAppErrorOrUndefined } from "@/services/errors/toAppError.ts";
+import { useCertificatesTableActions } from "./useCertificatesTableActions.ts";
+import { useCertificatesTableHeaders } from "./useCertificateTableHeaders.ts";
 
 export const useCertificatesOverview = () => {
     const { headers, cellFormatters } = useCertificatesTableHeaders();

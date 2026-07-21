@@ -1,11 +1,10 @@
-import * as apiService from "@/services/apiService";
-
-import { ViewType } from "@/models/seb-server/sebSettingsEnums";
 import {
     SEBSettingsTableRowValues,
     SEBSettingsValue,
     SEBSettingsView,
 } from "@/models/seb-server/sebSettings";
+import { ViewType } from "@/models/seb-server/sebSettingsEnums";
+import * as apiService from "@/services/apiService";
 
 const examUrlPrefix: string = "/exam/seb-settings";
 const templateUrlPrefix: string = "/config-template/seb-settings";

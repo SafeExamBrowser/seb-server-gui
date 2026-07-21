@@ -95,19 +95,20 @@
 
 <script setup lang="ts">
 import BasicPage from "@/components/layout/pages/BasicPage.vue";
-import SettingsNavigation from "@/components/widgets/navigation/SettingsNavigation.vue";
-import SearchBar from "@/components/widgets/searches/SearchBar.vue";
-import EntityTable from "@/components/widgets/entity-table/EntityTable.vue";
-import FilterControlsRow from "@/components/widgets/filters/FilterControlsRow.vue";
-import { useListFilterPanel } from "@/components/widgets/filters/useListFilterPanel.ts";
 import ActiveStatusChip from "@/components/widgets/ActiveStatusChip.vue";
+import AddButton from "@/components/widgets/AddButton.vue";
 import DeleteConfirmDialog from "@/components/widgets/confirmDialog/DeleteConfirmDialog.vue";
 import StatusConfirmDialog from "@/components/widgets/confirmDialog/StatusConfirmDialog.vue";
-import LoadingFallbackComponent from "@/components/widgets/loadingFallbackComponent/LoadingFallbackComponent.vue";
-import AddButton from "@/components/widgets/AddButton.vue";
+import EntityTable from "@/components/widgets/entity-table/EntityTable.vue";
 import type { TableItem } from "@/components/widgets/entity-table/types.ts";
-import { institutionListConfig } from "./institutionListConfig.ts";
+import FilterControlsRow from "@/components/widgets/filters/FilterControlsRow.vue";
+import { useListFilterPanel } from "@/components/widgets/filters/useListFilterPanel.ts";
+import LoadingFallbackComponent from "@/components/widgets/loadingFallbackComponent/LoadingFallbackComponent.vue";
+import SettingsNavigation from "@/components/widgets/navigation/SettingsNavigation.vue";
+import SearchBar from "@/components/widgets/searches/SearchBar.vue";
+
 import { useInstitutionsOverview } from "./composables/useInstitutionsOverview.ts";
+import { institutionListConfig } from "./institutionListConfig.ts";
 
 definePage({
     meta: {

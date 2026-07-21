@@ -1,7 +1,8 @@
 import { ref } from "vue";
-import * as authenticationService from "@/services/authenticationService.ts";
-import { useAuthStore } from "@/composables/store/useAuthStore.ts";
 import { RouteLocationAsRelative, useRouter } from "vue-router";
+
+import { useAuthStore } from "@/composables/store/useAuthStore.ts";
+import * as authenticationService from "@/services/authenticationService.ts";
 import { verifyOneTimeToken } from "@/services/authenticationService.ts";
 
 export const useAutoLogin = () => {

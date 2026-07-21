@@ -1,11 +1,12 @@
 import { useMutation, useQueryClient } from "@tanstack/vue-query";
+
 import { getUserAccountsQueryKey } from "@/api/seb-server/generated/hey-api/@tanstack/vue-query.gen.ts";
+import type { EntityProcessingReport } from "@/api/seb-server/generated/hey-api/types.gen.ts";
 import { heySebServerClient } from "@/api/seb-server/http/heySebServerClient.ts";
-import { deleteUserAccount } from "@/services/seb-server/userAccountService.ts";
+import type { UserAccountPage } from "@/models/userAccount.ts";
 import { entityProcessingReportToAppError } from "@/services/errors/toAppError.ts";
 import type { AppError } from "@/services/errors/types.ts";
-import type { UserAccountPage } from "@/models/userAccount.ts";
-import type { EntityProcessingReport } from "@/api/seb-server/generated/hey-api/types.gen.ts";
+import { deleteUserAccount } from "@/services/seb-server/userAccountService.ts";
 
 const listKey = () => getUserAccountsQueryKey({ client: heySebServerClient });
 

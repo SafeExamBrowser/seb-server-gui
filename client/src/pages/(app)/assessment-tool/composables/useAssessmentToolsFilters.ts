@@ -1,10 +1,11 @@
 import { computed } from "vue";
-import { translate } from "@/utils/generalUtils.ts";
+
+import { LMS_TYPE_FILTER } from "@/components/widgets/filters/filterContracts.ts";
 import type { FilterSectionDef } from "@/components/widgets/filters/filterTypes.ts";
 import { getStatusFilterSection } from "@/components/widgets/filters/statusFilterSection.ts";
 import { useInstitutionFilterSection } from "@/components/widgets/filters/useInstitutionFilterSection.ts";
-import { LMS_TYPE_FILTER } from "@/components/widgets/filters/filterContracts.ts";
 import { LMS_TYPES } from "@/models/assessmentTool.ts";
+import { translate } from "@/utils/generalUtils.ts";
 
 const TRANSLATION_PREFIX = "assessmentToolConnections.list";
 

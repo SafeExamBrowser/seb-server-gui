@@ -146,22 +146,24 @@
 </template>
 
 <script setup lang="ts">
-import { useValidationRules } from "@/composables/useValidationRules.ts";
+import { nextTick, ref, watch } from "vue";
+import { VInput } from "vuetify/components";
+
+import FormFieldDateTime from "@/components/widgets/formBuilder/components/FormFieldDateTime.vue";
+import FormFieldTimeRange from "@/components/widgets/formBuilder/components/FormFieldTimeRange.vue";
 import {
     FormField,
     FormFieldBaseProperties,
-    FormFieldTextualProperties,
     FormFieldsComponentProps,
+    FormFieldTextualProperties,
 } from "@/components/widgets/formBuilder/types";
-import { VInput } from "vuetify/components";
-import { ref, nextTick, watch } from "vue";
+import { useValidationRules } from "@/composables/useValidationRules.ts";
+
 import FormFieldCollection from "./FormFieldCollection.vue";
 import FormFieldColor from "./FormFieldColor.vue";
 import FormFieldFile from "./FormFieldFile.vue";
 import FormFieldImage from "./FormFieldImage.vue";
 import FormFieldPassword from "./FormFieldPassword.vue";
-import FormFieldDateTime from "@/components/widgets/formBuilder/components/FormFieldDateTime.vue";
-import FormFieldTimeRange from "@/components/widgets/formBuilder/components/FormFieldTimeRange.vue";
 
 const props = withDefaults(
     defineProps<FormFieldsComponentProps & { dataTestId?: string }>(),

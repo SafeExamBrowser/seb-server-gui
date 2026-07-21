@@ -4,8 +4,8 @@
 
 <script setup lang="ts">
 import CreateExamStepper from "@/pages/(app)/exam/create/components/CreateExamStepper.vue";
-import { useCreateExamStore } from "@/pages/(app)/exam/create/composables/store/useCreateExamStore";
 import { useStepAssessmentToolStore } from "@/pages/(app)/exam/create/components/stepAssessmentTool/composables/store/useStepAssessmentToolStore.ts";
+import { useCreateExamStore } from "@/pages/(app)/exam/create/composables/store/useCreateExamStore";
 
 const store = useCreateExamStore();
 

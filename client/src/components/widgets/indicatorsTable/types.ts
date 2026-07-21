@@ -1,12 +1,13 @@
 import { Ref } from "vue";
-import { IndicatorEnum } from "@/models/seb-server/monitoringEnums.ts";
+
 import {
-    Threshold,
     Indicator,
-    indicatorSchema,
     IndicatorExisting,
     indicatorExistingSchema,
+    indicatorSchema,
+    Threshold,
 } from "@/models/seb-server/examTemplate.ts";
+import { IndicatorEnum } from "@/models/seb-server/monitoringEnums.ts";
 
 export type IndicatorTransient = {
     id?: number;

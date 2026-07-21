@@ -1,9 +1,9 @@
-import * as apiService from "@/services/apiService";
 import {
     ClientGroup,
     ClientGroupExisting,
     clientGroupExistingSchema,
 } from "@/models/seb-server/examTemplate.ts";
+import * as apiService from "@/services/apiService";
 
 const baseUrl = "/exam-template" as const;
 

@@ -1,4 +1,5 @@
 import { computed, type MaybeRefOrGetter, toValue } from "vue";
+
 import type { TableHeader } from "@/components/widgets/entity-table/types.ts";
 
 export const ACTIONS_COLUMN_KEY = "_actions";

@@ -1,8 +1,9 @@
-import { useAuthStore } from "@/composables/store/useAuthStore";
 import { ref, watch } from "vue";
-import * as authenticationService from "@/services/authenticationService";
+
+import { useAuthStore } from "@/composables/store/useAuthStore";
 import { useLogout } from "@/composables/useLogout";
 import { setTokenRefreshPromise } from "@/services/apiService";
+import * as authenticationService from "@/services/authenticationService";
 
 const REFRESH_SAFETY_MARGIN_MILLISECONDS = 60 * 1000; // 60 seconds in milliseconds
 

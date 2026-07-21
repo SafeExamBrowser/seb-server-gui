@@ -1,16 +1,17 @@
-import { useStepNamingStore } from "@/pages/(app)/exam-template/create/components/stepNaming/composables/store/useStepNamingStore.ts";
-import { useStepSupervisorsStore } from "@/pages/(app)/exam-template/create/components/stepSupervisors/composables/store/useStepSupervisorsStore.ts";
-import { StepItemCreateTemplateExam } from "@/pages/(app)/exam-template/create/types/types.ts";
-import { StepItem } from "@/components/widgets/stepperVertical/types.ts";
 import { defineStore } from "pinia";
 import { computed, ref } from "vue";
-import { useStepClientGroupStore } from "@/pages/(app)/exam-template/create/components/stepClientGroup/composables/store/useStepClientGroupStore.ts";
-import { useScreenProctoringStore } from "@/pages/(app)/exam-template/create/composables/store/useScreenProctoringStore.ts";
-import { buildScreenProctoringExamAttributes } from "@/models/seb-server/screenProctoring.ts";
+
+import { StepItem } from "@/components/widgets/stepperVertical/types.ts";
 import i18n from "@/i18n";
-import { ExamTemplate } from "@/models/seb-server/examTemplate.ts";
 import { toApiClientConfigurationId } from "@/models/seb-server/connectionConfiguration.ts";
+import { ExamTemplate } from "@/models/seb-server/examTemplate.ts";
+import { buildScreenProctoringExamAttributes } from "@/models/seb-server/screenProctoring.ts";
+import { useStepClientGroupStore } from "@/pages/(app)/exam-template/create/components/stepClientGroup/composables/store/useStepClientGroupStore.ts";
 import { useStepIndicatorsStore } from "@/pages/(app)/exam-template/create/components/stepIndicators/composables/store/useStepIndicatorsStore.ts";
+import { useStepNamingStore } from "@/pages/(app)/exam-template/create/components/stepNaming/composables/store/useStepNamingStore.ts";
+import { useStepSupervisorsStore } from "@/pages/(app)/exam-template/create/components/stepSupervisors/composables/store/useStepSupervisorsStore.ts";
+import { useScreenProctoringStore } from "@/pages/(app)/exam-template/create/composables/store/useScreenProctoringStore.ts";
+import { StepItemCreateTemplateExam } from "@/pages/(app)/exam-template/create/types/types.ts";
 
 const staticStepData = [
     {

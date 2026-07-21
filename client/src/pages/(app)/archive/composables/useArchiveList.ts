@@ -1,12 +1,13 @@
 import { computed } from "vue";
-import { useUrlTableState } from "@/components/widgets/entity-table/composables/useUrlTableState.ts";
+
 import { usePagedListData } from "@/components/widgets/entity-table/composables/usePagedListData.ts";
-import {
-    TYPE_FILTER_KEY,
-    EXAM_STATUS_FILTER_KEY,
-} from "@/pages/(app)/exam/composables/useExamFilters.ts";
-import { useArchiveTableFilters } from "@/pages/(app)/archive/composables/useArchiveTableFilters.ts";
+import { useUrlTableState } from "@/components/widgets/entity-table/composables/useUrlTableState.ts";
 import { useArchiveExams } from "@/pages/(app)/archive/api/useArchiveExams.ts";
+import { useArchiveTableFilters } from "@/pages/(app)/archive/composables/useArchiveTableFilters.ts";
+import {
+    EXAM_STATUS_FILTER_KEY,
+    TYPE_FILTER_KEY,
+} from "@/pages/(app)/exam/composables/useExamFilters.ts";
 
 export const useArchiveList = () => {
     const filterSections = useArchiveTableFilters();

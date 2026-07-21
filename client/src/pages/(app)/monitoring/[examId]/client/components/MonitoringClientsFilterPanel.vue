@@ -28,17 +28,19 @@
 
 <script setup lang="ts">
 import { computed, ref, watch } from "vue";
-import { useMonitoringStore } from "@/stores/seb-server/monitoringStore.ts";
-import * as generalUtils from "@/utils/generalUtils.ts";
-import { InstructionEnum } from "@/models/seb-server/instructionEnum.ts";
-import { useErrorStore } from "@/stores/seb-server/errorStore.ts";
-import { ErrorProps } from "@/models/alertProps.ts";
-import { ConnectionStatusEnum } from "@/models/seb-server/connectionStatusEnum.ts";
+
+import type { TableFilters } from "@/components/widgets/entity-table/types.ts";
 import SearchBar from "@/components/widgets/searches/SearchBar.vue";
 import type { SearchBarAction } from "@/components/widgets/searches/types.ts";
-import type { TableFilters } from "@/components/widgets/entity-table/types.ts";
-import InstructionConfirmDialog from "./InstructionConfirmDialog.vue";
+import { ErrorProps } from "@/models/alertProps.ts";
+import { ConnectionStatusEnum } from "@/models/seb-server/connectionStatusEnum.ts";
+import { InstructionEnum } from "@/models/seb-server/instructionEnum.ts";
 import { useMonitoringClientsFilters } from "@/pages/(app)/monitoring/[examId]/client/composables/useMonitoringClientsFilters.ts";
+import { useErrorStore } from "@/stores/seb-server/errorStore.ts";
+import { useMonitoringStore } from "@/stores/seb-server/monitoringStore.ts";
+import * as generalUtils from "@/utils/generalUtils.ts";
+
+import InstructionConfirmDialog from "./InstructionConfirmDialog.vue";
 
 const props = defineProps<{
     examId: string;

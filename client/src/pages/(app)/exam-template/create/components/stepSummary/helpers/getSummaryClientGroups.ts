@@ -1,13 +1,13 @@
-import i18n from "@/i18n";
-import { ClientGroup, ExamTemplate } from "@/models/seb-server/examTemplate.ts";
-import {
-    ClientGroupEnum,
-    ClientOSLimited,
-} from "@/models/seb-server/clientGroupEnum.ts";
 import {
     SummarySectionData,
     SummarySectionItem,
 } from "@/components/widgets/wizardSummary/types.ts";
+import i18n from "@/i18n";
+import {
+    ClientGroupEnum,
+    ClientOSLimited,
+} from "@/models/seb-server/clientGroupEnum.ts";
+import { ClientGroup, ExamTemplate } from "@/models/seb-server/examTemplate.ts";
 
 export const getSummaryClientGroups = (
     examTemplate: ExamTemplate,

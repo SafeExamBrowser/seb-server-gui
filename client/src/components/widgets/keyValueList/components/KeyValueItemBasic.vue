@@ -66,8 +66,9 @@
 </template>
 <script setup lang="ts">
 import { ref } from "vue";
-import { KeyValueItem } from "@/components/widgets/keyValueList/types.ts";
+
 import ChipThreshold from "@/components/widgets/chipThreshold/ChipThreshold.vue";
+import { KeyValueItem } from "@/components/widgets/keyValueList/types.ts";
 
 defineProps<{
     item: KeyValueItem & { type: "basic" };

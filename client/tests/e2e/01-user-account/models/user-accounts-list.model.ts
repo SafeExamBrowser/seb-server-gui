@@ -1,10 +1,12 @@
 import { type Page } from "@playwright/test";
-import { userAccountListConfig } from "@/pages/(app)/user-account/userAccountListConfig.ts";
+
 import {
     INSTITUTION_FILTER,
     STATUS_FILTER,
     type StatusFilterValue,
 } from "@/components/widgets/filters/filterContracts.ts";
+import { userAccountListConfig } from "@/pages/(app)/user-account/userAccountListConfig.ts";
+
 import { TableListPageModel } from "../../shared/page-models/model-pages/table-list-page.model";
 import type { TableListPageConfig } from "../../shared/types/table-list-page.types";
 import { entityRowActionRequests } from "../../utils/entityRowRequests";

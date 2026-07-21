@@ -1,8 +1,8 @@
+import { ClientGroup } from "@/models/seb-server/clientGroup.ts";
 import {
     ClientGroupEnum,
     ClientOSEnum,
 } from "@/models/seb-server/clientGroupEnum.ts";
-import { ClientGroup } from "@/models/seb-server/clientGroup.ts";
 export function buildClientGroup(
     examId: number,
     name: string,

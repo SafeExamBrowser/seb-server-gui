@@ -1,17 +1,17 @@
-import * as apiService from "@/services/apiService";
-import { OptionalParGetExams } from "@/models/seb-server/optionalParamters";
+import { EntityName } from "@/api/seb-server/generated/hey-api";
+import {
+    AppSignatureKey,
+    GrantedAppSignatureKey,
+} from "@/models/seb-server/appSignatureKey";
+import { ConfigurationExamMapping } from "@/models/seb-server/configurationNode";
 import {
     CreateExamPar,
     CreateExamWithURLPar,
     Exam,
     Exams,
 } from "@/models/seb-server/exam";
-import {
-    AppSignatureKey,
-    GrantedAppSignatureKey,
-} from "@/models/seb-server/appSignatureKey";
-import { EntityName } from "@/api/seb-server/generated/hey-api";
-import { ConfigurationExamMapping } from "@/models/seb-server/configurationNode";
+import { OptionalParGetExams } from "@/models/seb-server/optionalParamters";
+import * as apiService from "@/services/apiService";
 
 const baseUrl = "/exam" as const;
 const configMappingBaseUrl = "/exam-configuration-map" as const;

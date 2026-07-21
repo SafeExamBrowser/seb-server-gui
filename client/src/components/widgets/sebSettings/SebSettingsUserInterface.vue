@@ -474,16 +474,18 @@
 </template>
 
 <script setup lang="ts">
-import { ViewType } from "@/models/seb-server/sebSettingsEnums.ts";
 import { useTemplateRef } from "vue";
-import SettingsTitle from "./components/SettingsTitle.vue";
+
+import LoadingFallbackComponent from "@/components/widgets/loadingFallbackComponent/LoadingFallbackComponent.vue";
+import { ViewType } from "@/models/seb-server/sebSettingsEnums.ts";
+
+import CheckboxSetting from "./components/inputFields/CheckboxSetting.vue";
+import ColorSetting from "./components/inputFields/ColorSetting.vue";
 import RadioSetting from "./components/inputFields/RadioSetting.vue";
 import SelectionSetting from "./components/inputFields/SelectionSetting.vue";
-import CheckboxSetting from "./components/inputFields/CheckboxSetting.vue";
 import SliderSetting from "./components/inputFields/SliderSetting.vue";
-import ColorSetting from "./components/inputFields/ColorSetting.vue";
+import SettingsTitle from "./components/SettingsTitle.vue";
 import { useSEBSettingValues } from "./composables/useSEBSettingValues.ts";
-import LoadingFallbackComponent from "@/components/widgets/loadingFallbackComponent/LoadingFallbackComponent.vue";
 import { SEBSettingsContext } from "./types.ts";
 
 const props = defineProps<{

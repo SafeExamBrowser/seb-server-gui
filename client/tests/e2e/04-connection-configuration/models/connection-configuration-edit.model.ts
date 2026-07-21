@@ -1,5 +1,7 @@
 import { type Page } from "@playwright/test";
+
 import { connectionConfigurationFormConfig } from "@/pages/(app)/connection-configuration/connectionConfigurationFormConfig.ts";
+
 import { ConnectionConfigurationFormModel } from "./connection-configuration-form.model";
 
 // A mocked (not seeded) id used by the hydrate/save/cancel specs, distinct from the seeded

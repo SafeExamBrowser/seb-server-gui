@@ -1,19 +1,20 @@
 import { defineStore } from "pinia";
 import { computed, ref, watchEffect } from "vue";
-import i18n from "@/i18n";
+
 import { StepItem } from "@/components/widgets/stepperVertical/types.ts";
-import { StepItemCreateExam } from "@/pages/(app)/exam/create/types/types.ts";
+import i18n from "@/i18n";
 import {
     CreateExamPar,
     CreateExamWithURLPar,
 } from "@/models/seb-server/exam.ts";
 import { useStepAssessmentToolStore } from "@/pages/(app)/exam/create/components/stepAssessmentTool/composables/store/useStepAssessmentToolStore.ts";
-import { useStepQuizStore } from "@/pages/(app)/exam/create/components/stepQuiz/composables/store/useStepQuizStore.ts";
-import { useStepExamTemplateStore } from "@/pages/(app)/exam/create/components/stepExamTemplate/composables/store/useStepExamTemplateStore.ts";
 import { useStepClientGroupsStore } from "@/pages/(app)/exam/create/components/stepClientGroups/composables/store/useStepClientGroupsStore.ts";
-import { useStepSupervisorsStore } from "@/pages/(app)/exam/create/components/stepSupervisors/composables/store/useStepSupervisorsStore.ts";
+import { useStepExamTemplateStore } from "@/pages/(app)/exam/create/components/stepExamTemplate/composables/store/useStepExamTemplateStore.ts";
 import { useStepQuitPasswordStore } from "@/pages/(app)/exam/create/components/stepQuitPassword/composables/store/useStepQuitPasswordStore.ts";
+import { useStepQuizStore } from "@/pages/(app)/exam/create/components/stepQuiz/composables/store/useStepQuizStore.ts";
+import { useStepSupervisorsStore } from "@/pages/(app)/exam/create/components/stepSupervisors/composables/store/useStepSupervisorsStore.ts";
 import { useStepWithURLStore } from "@/pages/(app)/exam/create/components/stepWithURL/composables/store/useStepWithURLStore";
+import { StepItemCreateExam } from "@/pages/(app)/exam/create/types/types.ts";
 import { getTimestampFromDateAndTime } from "@/utils/timeUtils";
 
 const staticStepData = [

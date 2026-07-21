@@ -197,15 +197,16 @@
 </template>
 
 <script setup lang="ts">
+import { ref } from "vue";
+import { useI18n } from "vue-i18n";
+
+import { ClientGroup } from "@/models/seb-server/clientGroup.ts";
 import {
     ClientGroupEnum,
     ClientOSEnum,
 } from "@/models/seb-server/clientGroupEnum.ts";
 import * as generalUtils from "@/utils/generalUtils.ts";
-import { useI18n } from "vue-i18n";
 import { translate } from "@/utils/generalUtils.ts";
-import { ref } from "vue";
-import { ClientGroup } from "@/models/seb-server/clientGroup.ts";
 
 // props
 const props = defineProps<{

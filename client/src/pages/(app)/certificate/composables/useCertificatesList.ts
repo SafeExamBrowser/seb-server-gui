@@ -1,10 +1,11 @@
 import { computed } from "vue";
-import { useUrlTableState } from "@/components/widgets/entity-table/composables/useUrlTableState.ts";
+
+import type { GetCertificatesData } from "@/api/seb-server/generated/hey-api/types.gen.ts";
 import { usePagedListData } from "@/components/widgets/entity-table/composables/usePagedListData.ts";
+import { useUrlTableState } from "@/components/widgets/entity-table/composables/useUrlTableState.ts";
 import { useCertificatesQuery } from "@/pages/(app)/certificate/api/useCertificatesQuery.ts";
 import { toAppErrorOrUndefined } from "@/services/errors/toAppError.ts";
 import { toServerPageQuery } from "@/utils/table/tableUtils.ts";
-import type { GetCertificatesData } from "@/api/seb-server/generated/hey-api/types.gen.ts";
 
 export const useCertificatesList = () => {
     const {

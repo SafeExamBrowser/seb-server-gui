@@ -1,6 +1,7 @@
-import { test, expect } from "../shared/fixtures/table-list-fixtures";
-import { certificateRows } from "./models/certificates-list.model";
 import { CERTIFICATE_COLUMN } from "@/pages/(app)/certificate/certificateListConfig.ts";
+
+import { expect, test } from "../shared/fixtures/table-list-fixtures";
+import { certificateRows } from "./models/certificates-list.model";
 
 const searchAlias = "e2e-getall-cert";
 const firstAlias = "e2e-getall-cert-01";

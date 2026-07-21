@@ -205,19 +205,20 @@
 </template>
 
 <script setup lang="ts">
-import { useRoute } from "vue-router";
-import { computed, onBeforeMount, onBeforeUnmount, ref, watch } from "vue";
-import * as timeUtils from "@/utils/timeUtils";
 import { useFullscreen } from "@vueuse/core";
-import * as spConstants from "@/utils/sp-constants";
+import { computed, onBeforeMount, onBeforeUnmount, ref, watch } from "vue";
+import { useRoute } from "vue-router";
+
 import { ScreenshotData } from "@/models/screen-proctoring/session";
 import { getTimestampListForApplicationSearch } from "@/services/screen-proctoring/applicationsSearchService.ts";
-import { getSpecificImageLink } from "@/utils/linkBuilder.ts";
 import * as screenshotDataService from "@/services/screen-proctoring/screenshotDataService";
+import { getSpecificImageLink } from "@/utils/linkBuilder.ts";
 import {
     getScreenshotMetadata,
     getSessionInfodata,
 } from "@/utils/screenshotMetadata.ts";
+import * as spConstants from "@/utils/sp-constants";
+import * as timeUtils from "@/utils/timeUtils";
 
 definePage({
     meta: {

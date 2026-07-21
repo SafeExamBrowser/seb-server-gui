@@ -115,11 +115,12 @@
 </template>
 
 <script setup lang="ts">
-import AlertMsg from "@/components/widgets/AlertMsg.vue";
 import { ref } from "vue";
-import { translate } from "@/utils/generalUtils";
-import { useLogin } from "@/pages/(public)/composables/useLogin";
 import { RouterLink } from "vue-router";
+
+import AlertMsg from "@/components/widgets/AlertMsg.vue";
+import { useLogin } from "@/pages/(public)/composables/useLogin";
+import { translate } from "@/utils/generalUtils";
 
 definePage({
     meta: {

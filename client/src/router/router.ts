@@ -1,5 +1,6 @@
 import { createRouter, createWebHistory } from "vue-router";
-import { routes as autoRoutes, handleHotUpdate } from "vue-router/auto-routes";
+import { handleHotUpdate, routes as autoRoutes } from "vue-router/auto-routes";
+
 import { installGuards } from "./guards";
 
 export const router = createRouter({

@@ -1,6 +1,6 @@
-import * as apiService from "@/services/apiService";
-import { SortOrder } from "@/models/screen-proctoring/sortOrderEnum";
 import { ScreenshotData } from "@/models/screen-proctoring/session";
+import { SortOrder } from "@/models/screen-proctoring/sortOrderEnum";
+import * as apiService from "@/services/apiService";
 
 const baseUrl = "/sps/proctoring/screenshot-data" as const;
 

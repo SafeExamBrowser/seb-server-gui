@@ -153,14 +153,15 @@
 </template>
 
 <script setup lang="ts">
+import { computed, onBeforeMount, ref } from "vue";
+
+import { UserAccount, UserAccountName } from "@/models/userAccount.ts";
 import {
     getUserAccountById,
     getUserAccountSupervisors,
 } from "@/services/seb-server/userAccountService.ts";
-import * as tableUtils from "@/utils/table/tableUtils.ts";
 import { translate } from "@/utils/generalUtils.ts";
-import { ref, onBeforeMount, computed } from "vue";
-import { UserAccount, UserAccountName } from "@/models/userAccount.ts";
+import * as tableUtils from "@/utils/table/tableUtils.ts";
 
 // main item
 const selectedExamSupervisors = ref<UserAccount[]>([]);

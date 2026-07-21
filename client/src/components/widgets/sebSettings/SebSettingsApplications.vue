@@ -266,25 +266,27 @@
 </template>
 
 <script setup lang="ts">
-import * as tableUtils from "@/utils/table/tableUtils.ts";
-import TableHeaders from "@/utils/table/TableHeaders.vue";
 import { useI18n } from "vue-i18n";
-import { translate } from "@/utils/generalUtils.ts";
+
+import LoadingFallbackComponent from "@/components/widgets/loadingFallbackComponent/LoadingFallbackComponent.vue";
 import EditPermittedProcess from "@/components/widgets/sebSettings/components/tableDialogs/EditPermittedProcess.vue";
 import EditProhibitedProcess from "@/components/widgets/sebSettings/components/tableDialogs/EditProhibitedProcess.vue";
 import { ViewType } from "@/models/seb-server/sebSettingsEnums.ts";
+import { translate } from "@/utils/generalUtils.ts";
+import TableHeaders from "@/utils/table/TableHeaders.vue";
+import * as tableUtils from "@/utils/table/tableUtils.ts";
+
 import CheckboxSetting from "./components/inputFields/CheckboxSetting.vue";
-import { useSEBSettingValues } from "./composables/useSEBSettingValues.ts";
-import LoadingFallbackComponent from "@/components/widgets/loadingFallbackComponent/LoadingFallbackComponent.vue";
-import { SEBSettingsContext } from "./types.ts";
 import {
-    usePermittedProcessTable,
     PermittedProcessTableHeaderRefs,
+    usePermittedProcessTable,
 } from "./composables/usePermittedProcessTable.ts";
 import {
-    useProhibitedProcessTable,
     ProhibitedProcessTableHeaderRefs,
+    useProhibitedProcessTable,
 } from "./composables/useProhibitedProcessTable.ts";
+import { useSEBSettingValues } from "./composables/useSEBSettingValues.ts";
+import { SEBSettingsContext } from "./types.ts";
 
 const i18n = useI18n();
 const props = defineProps<{

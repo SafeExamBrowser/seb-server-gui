@@ -1,5 +1,6 @@
-import { computed, type Ref } from "vue";
 import { useQuery } from "@tanstack/vue-query";
+import { computed, type Ref } from "vue";
+
 import { getUserAccountByIdQueryKey } from "@/api/seb-server/generated/hey-api/@tanstack/vue-query.gen.ts";
 import { heySebServerClient } from "@/api/seb-server/http/heySebServerClient.ts";
 import { getUserAccountById } from "@/services/seb-server/userAccountService.ts";

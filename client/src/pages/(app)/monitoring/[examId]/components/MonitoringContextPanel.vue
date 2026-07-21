@@ -122,14 +122,16 @@
 
 <script setup lang="ts">
 import { computed, onUnmounted, ref } from "vue";
-import { useMonitoringStore } from "@/stores/seb-server/monitoringStore.ts";
+
 import { ExamStatusEnum } from "@/models/seb-server/examFiltersEnum.ts";
+import { typedTo } from "@/router/typedTo.ts";
+import { quitAll } from "@/services/seb-server/monitoringService.ts";
+import { useMonitoringStore } from "@/stores/seb-server/monitoringStore.ts";
 import * as generalUtils from "@/utils/generalUtils.ts";
 import * as timeUtils from "@/utils/timeUtils.ts";
-import { quitAll } from "@/services/seb-server/monitoringService.ts";
-import { typedTo } from "@/router/typedTo.ts";
-import MonitoringOverviewASK from "./MonitoringOverviewASK.vue";
+
 import QuitAllDialog from "./dialogs/QuitAllDialog.vue";
+import MonitoringOverviewASK from "./MonitoringOverviewASK.vue";
 
 withDefaults(defineProps<{ refreshSeconds?: number }>(), { refreshSeconds: 5 });
 

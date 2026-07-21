@@ -1,13 +1,15 @@
 import { computed } from "vue";
-import { useUrlTableState } from "@/components/widgets/entity-table/composables/useUrlTableState.ts";
+
+import type { GetUserAccountsData } from "@/api/seb-server/generated/hey-api/types.gen.ts";
 import { usePagedListData } from "@/components/widgets/entity-table/composables/usePagedListData.ts";
+import { useUrlTableState } from "@/components/widgets/entity-table/composables/useUrlTableState.ts";
 import { STATUS_FILTER_KEY } from "@/components/widgets/filters/statusFilterSection.ts";
 import { INSTITUTION_FILTER_KEY } from "@/components/widgets/filters/useInstitutionFilterSection.ts";
-import { useUserAccountsFilters } from "./useUserAccountsFilters.ts";
 import { useUserAccountsQuery } from "@/pages/(app)/user-account/api/useUserAccountsQuery.ts";
 import { toAppErrorOrUndefined } from "@/services/errors/toAppError.ts";
 import { toServerPageQuery } from "@/utils/table/tableUtils.ts";
-import type { GetUserAccountsData } from "@/api/seb-server/generated/hey-api/types.gen.ts";
+
+import { useUserAccountsFilters } from "./useUserAccountsFilters.ts";
 
 export const useUserAccountsList = () => {
     const filterSections = useUserAccountsFilters();

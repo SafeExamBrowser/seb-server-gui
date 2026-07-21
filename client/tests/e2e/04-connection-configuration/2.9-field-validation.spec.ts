@@ -1,5 +1,6 @@
-import { test, expect } from "../shared/fixtures/table-list-fixtures";
 import { CONNECTION_CONFIG_FIELD } from "@/pages/(app)/connection-configuration/connectionConfigurationFormConfig.ts";
+
+import { expect, test } from "../shared/fixtures/table-list-fixtures";
 import { CONNECTION_CONFIG_CREATE_REQUEST } from "./models/connection-configuration-create.model";
 
 // Valid form input: every case submits a form the frontend rules accept, so the POST always

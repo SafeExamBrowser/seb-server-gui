@@ -219,14 +219,16 @@
 <script setup lang="ts">
 import { computed, ref, watch } from "vue";
 import { useI18n } from "vue-i18n";
-import { useMonitoringStore } from "@/stores/seb-server/monitoringStore.ts";
-import { ConnectionStatusEnum } from "@/models/seb-server/connectionStatusEnum.ts";
-import * as examService from "@/services/seb-server/examService.ts";
-import { getAskAndStore } from "@/pages/(app)/monitoring/[examId]/client/composables/useMonitoringData.ts";
 import { useRouter } from "vue-router";
-import AskKeyListItem from "./ask/AskKeyListItem.vue";
+
+import { ConnectionStatusEnum } from "@/models/seb-server/connectionStatusEnum.ts";
+import { getAskAndStore } from "@/pages/(app)/monitoring/[examId]/client/composables/useMonitoringData.ts";
+import * as examService from "@/services/seb-server/examService.ts";
+import { useMonitoringStore } from "@/stores/seb-server/monitoringStore.ts";
+
 import AskConnectionListItem from "./ask/AskConnectionListItem.vue";
 import AskGrantFooter from "./ask/AskGrantFooter.vue";
+import AskKeyListItem from "./ask/AskKeyListItem.vue";
 
 const store = useMonitoringStore();
 const router = useRouter();

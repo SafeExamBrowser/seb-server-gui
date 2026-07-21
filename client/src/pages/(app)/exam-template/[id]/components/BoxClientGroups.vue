@@ -5,9 +5,9 @@
 </template>
 
 <script setup lang="ts">
-import DetailBox from "@/components/widgets/DetailBox.vue";
 import ClientGroupsTable from "@/components/widgets/clientGroupsTable/ClientGroupsTable.vue";
 import { ClientGroupsTableDeps } from "@/components/widgets/clientGroupsTable/types.ts";
+import DetailBox from "@/components/widgets/DetailBox.vue";
 import { ClientGroupExisting } from "@/models/seb-server/examTemplate.ts";
 import { useClientGroups } from "@/pages/(app)/exam-template/[id]/composables/api/useClientGroups.ts";
 

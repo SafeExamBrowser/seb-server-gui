@@ -218,21 +218,22 @@
 </template>
 
 <script setup lang="ts">
-import { useMonitoringStore } from "@/stores/seb-server/monitoringStore.ts";
-import { translate } from "@/utils/generalUtils.ts";
-import { ClientGroupEnum } from "@/models/seb-server/clientGroupEnum.ts";
-import { MonitoringHeaderEnum } from "@/models/seb-server/monitoringEnums.ts";
-import * as generalUtils from "@/utils/generalUtils.ts";
-import { computed } from "vue";
 import type { ComputedRef } from "vue";
-import { OverviewClientGroup } from "@/models/seb-server/monitoring.ts";
+import { computed } from "vue";
+import { useRouter } from "vue-router";
+
+import { useCurrentUserQuery } from "@/composables/useCurrentUser.ts";
+import { ClientGroupEnum } from "@/models/seb-server/clientGroupEnum.ts";
 import { ConnectionStatusEnum } from "@/models/seb-server/connectionStatusEnum.ts";
+import { OverviewClientGroup } from "@/models/seb-server/monitoring.ts";
+import { MonitoringHeaderEnum } from "@/models/seb-server/monitoringEnums.ts";
 import {
     goToMonitoring,
     goToMonitoringOfGroup,
 } from "@/pages/(app)/monitoring/[examId]/composables/useMonitoringNavigation.ts";
-import { useRouter } from "vue-router";
-import { useCurrentUserQuery } from "@/composables/useCurrentUser.ts";
+import { useMonitoringStore } from "@/stores/seb-server/monitoringStore.ts";
+import * as generalUtils from "@/utils/generalUtils.ts";
+import { translate } from "@/utils/generalUtils.ts";
 
 const props = defineProps<{
     examId: string;

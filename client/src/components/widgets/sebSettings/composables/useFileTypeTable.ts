@@ -1,4 +1,9 @@
 import { computed, Ref, ref } from "vue";
+
+import {
+    getSettingId,
+    getStringValue,
+} from "@/components/widgets/sebSettings/helpers/settingsTable.ts";
 import {
     SEBSettingsSingeValueModel,
     SEBSettingsTableModel,
@@ -10,10 +15,6 @@ import {
     SEBSettingsValue,
 } from "@/models/seb-server/sebSettings.ts";
 import { translate } from "@/utils/generalUtils.ts";
-import {
-    getSettingId,
-    getStringValue,
-} from "@/components/widgets/sebSettings/helpers/settingsTable.ts";
 
 export const HeaderRefs = ref<(HTMLElement | null)[]>([]);
 

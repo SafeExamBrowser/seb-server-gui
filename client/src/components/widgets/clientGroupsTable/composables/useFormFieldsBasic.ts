@@ -1,10 +1,11 @@
-import { ClientGroupTransient } from "@/components/widgets/clientGroupsTable/types.ts";
 import { computed, Ref } from "vue";
+import { RuleAliases } from "vuetify/labs/rules";
+
+import { ClientGroupTransient } from "@/components/widgets/clientGroupsTable/types.ts";
 import { FormField } from "@/components/widgets/formBuilder/types.ts";
+import i18n from "@/i18n";
 import { ClientGroupEnum } from "@/models/seb-server/clientGroupEnum.ts";
 import { ClientGroupExisting } from "@/models/seb-server/examTemplate.ts";
-import i18n from "@/i18n";
-import { RuleAliases } from "vuetify/labs/rules";
 
 export const useFormFieldsBasic = (
     clientGroup: Ref<ClientGroupTransient>,

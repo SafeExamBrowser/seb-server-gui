@@ -69,6 +69,7 @@
 
 <script setup lang="ts">
 import { onMounted, ref } from "vue";
+
 import TimeRangeModeSelector from "@/components/widgets/searches/timeRange/TimeRangeModeSelector.vue";
 import {
     buildTimeRangeSummary,

@@ -39,21 +39,22 @@
 
 <script setup lang="ts">
 import { computed, Ref, ref } from "vue";
+import { useDisplay } from "vuetify";
+
+import { EntityName } from "@/api/seb-server/generated/hey-api";
 import FormBuilder from "@/components/widgets/formBuilder/FormBuilder.vue";
+import { TimeRange } from "@/components/widgets/formBuilder/types";
+import { BasicSettings } from "@/models/seb-server/exam.ts";
 import {
     ExamTypeEnum,
     toApiExamType,
     toSelectableExamType,
 } from "@/models/seb-server/examFiltersEnum.ts";
 import { useExamBasicSettingsFields } from "@/pages/(app)/exam/[id]/components/BoxBasicSettings/composables/useExamBasicSettingsFields";
-import { BasicSettings } from "@/models/seb-server/exam.ts";
-import { TimeRange } from "@/components/widgets/formBuilder/types";
 import {
     getDateWithTimeBackendFormat,
     getTimeRangeFromIsoToReadableDates,
 } from "@/utils/timeUtils";
-import { useDisplay } from "vuetify";
-import { EntityName } from "@/api/seb-server/generated/hey-api";
 
 const { thresholds: thresholdsRef } = useDisplay();
 const thresholds = computed(() => thresholdsRef.value);

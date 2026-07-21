@@ -217,18 +217,19 @@
 </template>
 
 <script setup lang="ts">
-import BasicPage from "@/components/layout/pages/BasicPage.vue";
-import LoadingFallbackComponent from "@/components/widgets/loadingFallbackComponent/LoadingFallbackComponent.vue";
-import { useScheduledDeletionReport } from "@/pages/(app)/scheduled-deletion/composables/useScheduledDeletionReport";
+import { useI18n } from "vue-i18n";
 import { useRoute } from "vue-router";
+
+import BasicPage from "@/components/layout/pages/BasicPage.vue";
 import DetailBox from "@/components/widgets/DetailBox.vue";
 import KeyValueList from "@/components/widgets/keyValueList/KeyValueList.vue";
-import { formatTimestampToFullDate } from "@/utils/timeUtils";
+import LoadingFallbackComponent from "@/components/widgets/loadingFallbackComponent/LoadingFallbackComponent.vue";
 import {
     ScheduledDeleteStatusEnum,
     SPSGroupInfo,
 } from "@/models/seb-server/scheduled-deletion";
-import { useI18n } from "vue-i18n";
+import { useScheduledDeletionReport } from "@/pages/(app)/scheduled-deletion/composables/useScheduledDeletionReport";
+import { formatTimestampToFullDate } from "@/utils/timeUtils";
 
 definePage({
     meta: {

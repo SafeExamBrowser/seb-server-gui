@@ -1,7 +1,7 @@
 import { useFetch } from "@/composables/useFetch.ts";
-import { createTemporaryConfigurationTemplate } from "@/services/seb-server/examTemplateService.ts";
-import { getConfigurationTemplate } from "@/services/seb-server/configurationNodeService.ts";
 import { useStepNamingStore } from "@/pages/(app)/exam-template/create/components/stepNaming/composables/store/useStepNamingStore.ts";
+import { getConfigurationTemplate } from "@/services/seb-server/configurationNodeService.ts";
+import { createTemporaryConfigurationTemplate } from "@/services/seb-server/examTemplateService.ts";
 
 const stepNamingStore = useStepNamingStore();
 

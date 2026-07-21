@@ -20,8 +20,8 @@
 </template>
 
 <script setup lang="ts">
-import { useRouter } from "vue-router";
 import type { RouteLocationAsRelative } from "vue-router";
+import { useRouter } from "vue-router";
 
 const router = useRouter();
 const props = withDefaults(

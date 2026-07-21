@@ -1,13 +1,15 @@
-import { test, expect } from "../shared/fixtures/table-list-fixtures";
-import { waitForRequest } from "../utils/networkAssertions";
-import { addBrowserSuffixToText, expectToHaveUrl } from "../utils/helpers";
+import type { Page } from "@playwright/test";
+
 import { USER_ACCOUNT_FIELD } from "@/pages/(app)/user-account/userAccountFormConfig.ts";
+
+import { expect, test } from "../shared/fixtures/table-list-fixtures";
+import { addBrowserSuffixToText, expectToHaveUrl } from "../utils/helpers";
+import { waitForRequest } from "../utils/networkAssertions";
 import {
     EDIT_USER_UUID,
     USER_ACCOUNT_SAVE_REQUEST,
     userAccountByIdRequest,
 } from "./models/user-account-edit.model";
-import type { Page } from "@playwright/test";
 
 const existingUser = {
     uuid: EDIT_USER_UUID,

@@ -12,15 +12,17 @@
 
 <script setup lang="ts">
 import { storeToRefs } from "pinia";
-import StepItem from "@/components/widgets/stepItem/StepItem.vue";
-import ScreenProctoringForm from "./components/ScreenProctoringForm.vue";
+
 import ClientGroupsTable from "@/components/widgets/clientGroupsTable/ClientGroupsTable.vue";
 import { ClientGroupsTableDeps } from "@/components/widgets/clientGroupsTable/types.ts";
+import StepItem from "@/components/widgets/stepItem/StepItem.vue";
 import {
     ClientGroup,
     ClientGroupExisting,
 } from "@/models/seb-server/examTemplate.ts";
 import { useScreenProctoringStore } from "@/pages/(app)/exam-template/create/composables/store/useScreenProctoringStore.ts";
+
+import ScreenProctoringForm from "./components/ScreenProctoringForm.vue";
 import { useStepClientGroupStore } from "./composables/store/useStepClientGroupStore.ts";
 
 const screenProctoringStore = useScreenProctoringStore();

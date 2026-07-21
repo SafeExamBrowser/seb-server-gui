@@ -1,9 +1,10 @@
-import {
-    ScreenProctoringCollectionStrategy,
-    isScreenProctoringAllowedForGroups,
-} from "@/models/seb-server/screenProctoring.ts";
 import { defineStore } from "pinia";
 import { computed, ref } from "vue";
+
+import {
+    isScreenProctoringAllowedForGroups,
+    ScreenProctoringCollectionStrategy,
+} from "@/models/seb-server/screenProctoring.ts";
 
 const getInitialState = () => ({
     enabled: false,

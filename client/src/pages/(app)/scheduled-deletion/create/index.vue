@@ -79,17 +79,18 @@
 <script setup lang="ts">
 import { computed, ref } from "vue";
 import { useRouter } from "vue-router";
+
 import BasicPage from "@/components/layout/pages/BasicPage.vue";
-import FormBuilder from "@/components/widgets/formBuilder/FormBuilder.vue";
 import CancelButton from "@/components/widgets/CancelButton.vue";
 import ConfirmButton from "@/components/widgets/ConfirmButton.vue";
+import GenericConfirmDialog from "@/components/widgets/confirmDialog/GenericConfirmDialog.vue";
+import FormBuilder from "@/components/widgets/formBuilder/FormBuilder.vue";
 import HintText from "@/components/widgets/HintText.vue";
+import { useCreateScheduledDeleteMutation } from "@/pages/(app)/scheduled-deletion/composables/api/useCreateScheduledDeleteMutation";
+import { useCreateScheduledDeleteFields } from "@/pages/(app)/scheduled-deletion/composables/useCrateScheduledDeleteFields";
 import { applyBackendFieldErrors } from "@/services/errors/formErrorMapping.ts";
 import { submitWithFormErrors } from "@/services/errors/submitWithFormErrors.ts";
 import { toAppErrorOrUndefined } from "@/services/errors/toAppError.ts";
-import { useCreateScheduledDeleteFields } from "@/pages/(app)/scheduled-deletion/composables/useCrateScheduledDeleteFields";
-import { useCreateScheduledDeleteMutation } from "@/pages/(app)/scheduled-deletion/composables/api/useCreateScheduledDeleteMutation";
-import GenericConfirmDialog from "@/components/widgets/confirmDialog/GenericConfirmDialog.vue";
 import { formatTimestampToDate } from "@/utils/timeUtils";
 
 definePage({

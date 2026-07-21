@@ -1,9 +1,10 @@
-import { computed, ref, watch } from "vue";
 import moment from "moment-timezone";
-import i18n from "@/i18n";
+import { computed, ref, watch } from "vue";
+
 import { FormField } from "@/components/widgets/formBuilder/types.ts";
 import { useInstitutions } from "@/composables/useInstitutions.ts";
 import { useZodFormRules } from "@/composables/useZodFormRules.ts";
+import i18n from "@/i18n";
 import { userAccountCreateSchema } from "@/models/userAccount.ts";
 
 const t = (key: string) => i18n.global.t(`userAccount.fields.${key}.label`);

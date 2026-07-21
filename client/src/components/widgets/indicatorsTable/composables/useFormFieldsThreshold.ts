@@ -1,7 +1,8 @@
-import { FormFieldGroup } from "@/components/widgets/formBuilder/types.ts";
 import { computed, Ref } from "vue";
-import { Threshold } from "@/models/seb-server/examTemplate.ts";
+
+import { FormFieldGroup } from "@/components/widgets/formBuilder/types.ts";
 import i18n from "@/i18n";
+import { Threshold } from "@/models/seb-server/examTemplate.ts";
 
 export const useFormFieldsThreshold = (
     thresholds: Ref<Threshold[]>,

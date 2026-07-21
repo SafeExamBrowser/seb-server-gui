@@ -52,9 +52,11 @@
 
 <script setup lang="ts">
 import { ref } from "vue";
-import * as timeUtils from "@/utils/timeUtils";
-import ApplicationsSearchWindowTitle from "./ApplicationsSearchWindowTitle.vue";
+
 import type { ExamMetadataObject } from "@/pages/(app)/applications-search/types";
+import * as timeUtils from "@/utils/timeUtils";
+
+import ApplicationsSearchWindowTitle from "./ApplicationsSearchWindowTitle.vue";
 
 // props
 defineProps<{

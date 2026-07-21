@@ -1,8 +1,9 @@
-import { computed } from "vue";
 import { storeToRefs } from "pinia";
+import { computed } from "vue";
+import { useRules } from "vuetify/labs/rules";
+
 import { FormField } from "@/components/widgets/formBuilder/types.ts";
 import i18n from "@/i18n";
-import { useRules } from "vuetify/labs/rules";
 import { useStepWithURLStore } from "@/pages/(app)/exam/create/components/stepWithURL/composables/store/useStepWithURLStore";
 import { isURL } from "@/utils/generalUtils";
 

@@ -1,7 +1,9 @@
-import { computed, ref, toValue, type MaybeRefOrGetter } from "vue";
+import { computed, type MaybeRefOrGetter, ref, toValue } from "vue";
+
+import type { TableFilters } from "@/components/widgets/entity-table/types.ts";
+
 import type { FilterOption, FilterSectionDef } from "./filterTypes.ts";
 import { parseFilterValues, removeFilterValue } from "./filterValues.ts";
-import type { TableFilters } from "@/components/widgets/entity-table/types.ts";
 
 export type ActiveFilterPill = {
     sectionKey: string;

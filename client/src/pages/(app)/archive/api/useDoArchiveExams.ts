@@ -1,7 +1,8 @@
+import { Ref } from "vue";
+
 import { useMutation } from "@/composables/useMutation.ts";
 import { Exam } from "@/models/seb-server/exam";
 import { archiveExam } from "@/services/seb-server/examService";
-import { Ref } from "vue";
 
 export const useDoArchiveExams = () => {
     const {

@@ -1,11 +1,11 @@
+import { SummarySectionData } from "@/components/widgets/wizardSummary/types.ts";
 import i18n from "@/i18n";
+import { ConnectionConfigurationName } from "@/models/seb-server/connectionConfiguration.ts";
 import {
     ExamTypeEnum,
     toSelectableExamType,
 } from "@/models/seb-server/examFiltersEnum.ts";
 import { ExamTemplate } from "@/models/seb-server/examTemplate.ts";
-import { SummarySectionData } from "@/components/widgets/wizardSummary/types.ts";
-import { ConnectionConfigurationName } from "@/models/seb-server/connectionConfiguration.ts";
 
 export const getSummaryNaming = (
     examTemplate: ExamTemplate,

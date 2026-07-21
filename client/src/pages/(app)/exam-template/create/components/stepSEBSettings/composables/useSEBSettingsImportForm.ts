@@ -1,11 +1,13 @@
 import { computed, Ref } from "vue";
-import i18n from "@/i18n";
+
 import { FormField } from "@/components/widgets/formBuilder/types.ts";
-import { useSEBSettingsImport } from "./api/useSEBSettingsImport";
+import i18n from "@/i18n";
 import {
     SEBSettingsImportItemTransient,
     toCSEBSettingsImportItem,
 } from "@/pages/(app)/exam-template/create/components/stepSEBSettings/types";
+
+import { useSEBSettingsImport } from "./api/useSEBSettingsImport";
 
 export const useSEBSettingsImportForm = (
     configurationTemplateId: string,

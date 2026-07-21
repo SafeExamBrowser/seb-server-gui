@@ -15,8 +15,9 @@
 
 <script setup lang="ts">
 import { computed } from "vue";
-import type { AppError } from "@/services/errors/types.ts";
+
 import { appErrorToMessage } from "@/services/errors/toAppError.ts";
+import type { AppError } from "@/services/errors/types.ts";
 
 const props = defineProps<{
     loading: boolean;

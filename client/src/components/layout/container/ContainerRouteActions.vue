@@ -107,8 +107,8 @@
 </template>
 
 <script setup lang="ts">
-import { useAppBarStore } from "@/stores/store";
 import type { GridSize } from "@/models/types";
+import { useAppBarStore } from "@/stores/store";
 
 defineProps<{
     layoutContext?: string;

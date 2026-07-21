@@ -7,9 +7,10 @@
 </template>
 
 <script setup lang="ts">
+import { useRoute } from "vue-router";
+
 import LoadingFallbackComponent from "@/components/widgets/loadingFallbackComponent/LoadingFallbackComponent.vue";
 import { useAutoLogin } from "@/pages/(public)/composables/useAutoLogin";
-import { useRoute } from "vue-router";
 
 const route = useRoute();
 const jwt = route.params.jwt;

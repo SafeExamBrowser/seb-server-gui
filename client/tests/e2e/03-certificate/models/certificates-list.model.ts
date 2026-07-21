@@ -1,13 +1,15 @@
 import { expect, type Locator, type Page } from "@playwright/test";
-import { certificateListConfig } from "@/pages/(app)/certificate/certificateListConfig.ts";
+
 import {
     CERTIFICATE_FIELD,
     certificateFormConfig,
 } from "@/pages/(app)/certificate/certificateFormConfig.ts";
+import { certificateListConfig } from "@/pages/(app)/certificate/certificateListConfig.ts";
+
 import { TableListPageModel } from "../../shared/page-models/model-pages/table-list-page.model";
 import {
-    FormFieldModel,
     type FormFieldFile,
+    FormFieldModel,
 } from "../../shared/page-models/widgets/form-field.model";
 import type { TableListPageConfig } from "../../shared/types/table-list-page.types";
 

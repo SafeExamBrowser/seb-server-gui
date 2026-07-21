@@ -1,10 +1,11 @@
 import type { Ref } from "vue";
+
 import { useFetch } from "@/composables/useFetch.ts";
 import type { Exams } from "@/models/seb-server/exam.ts";
+import { ExamStatusEnum } from "@/models/seb-server/examFiltersEnum";
+import type { ServerTablePaging } from "@/models/types.ts";
 import { getExams } from "@/services/seb-server/examService";
 import * as tableUtils from "@/utils/table/tableUtils.ts";
-import type { ServerTablePaging } from "@/models/types.ts";
-import { ExamStatusEnum } from "@/models/seb-server/examFiltersEnum";
 
 export const useArchiveExams = (
     paging: Readonly<Ref<ServerTablePaging>>,

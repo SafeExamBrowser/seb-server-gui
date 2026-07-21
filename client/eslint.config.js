@@ -1,9 +1,10 @@
 import eslint from "@eslint/js";
+import { defineConfig, globalIgnores } from "eslint/config";
 import eslintConfigPrettier from "eslint-config-prettier";
+import eslintPluginSimpleImportSort from "eslint-plugin-simple-import-sort";
 import eslintPluginVue from "eslint-plugin-vue";
 import eslintPluginVuetify from "eslint-plugin-vuetify";
 import globals from "globals";
-import { defineConfig, globalIgnores } from "eslint/config";
 import tseslint from "typescript-eslint";
 
 export default defineConfig([
@@ -56,7 +57,12 @@ export default defineConfig([
                 parser: tseslint.parser,
             },
         },
+        plugins: {
+            "simple-import-sort": eslintPluginSimpleImportSort,
+        },
         rules: {
+            "simple-import-sort/imports": "error",
+            "simple-import-sort/exports": "error",
             "no-console": "error",
             "no-debugger": "error",
             "vue/no-undef-components": [

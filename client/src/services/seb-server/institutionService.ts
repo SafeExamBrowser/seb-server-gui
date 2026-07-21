@@ -1,4 +1,3 @@
-import { heySebServerClient as client } from "@/api/seb-server/http/heySebServerClient.ts";
 import {
     activateInstitution as activateInstitutionSdk,
     createInstitution as createInstitutionSdk,
@@ -8,21 +7,22 @@ import {
     getInstitutionById as getInstitutionByIdSdk,
     getInstitutions as getInstitutionsSdk,
 } from "@/api/seb-server/generated/hey-api/sdk.gen.ts";
-import {
-    institutionCreateSchema,
-    institutionPageSchema,
-    institutionSchema,
-    type Institution,
-    type InstitutionCreateRequest,
-    type InstitutionEditRequest,
-    type InstitutionPage,
-} from "@/models/institution.ts";
-import { decodeWire, encodeWire } from "@/services/errors/wireCodec.ts";
-import { zEntityProcessingReport } from "@/api/seb-server/generated/hey-api/zod.gen.ts";
 import type {
     EntityProcessingReport,
     GetInstitutionsData,
 } from "@/api/seb-server/generated/hey-api/types.gen.ts";
+import { zEntityProcessingReport } from "@/api/seb-server/generated/hey-api/zod.gen.ts";
+import { heySebServerClient as client } from "@/api/seb-server/http/heySebServerClient.ts";
+import {
+    type Institution,
+    type InstitutionCreateRequest,
+    institutionCreateSchema,
+    type InstitutionEditRequest,
+    type InstitutionPage,
+    institutionPageSchema,
+    institutionSchema,
+} from "@/models/institution.ts";
+import { decodeWire, encodeWire } from "@/services/errors/wireCodec.ts";
 
 const RAW_LOGO_MIME = "image/png";
 

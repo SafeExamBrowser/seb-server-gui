@@ -161,26 +161,27 @@
 
 <script setup lang="ts">
 import { computed, ref } from "vue";
+import { useRouter } from "vue-router";
+
 import BasicPage from "@/components/layout/pages/BasicPage.vue";
-import SettingsNavigation from "@/components/widgets/navigation/SettingsNavigation.vue";
-import FormBuilder from "@/components/widgets/formBuilder/FormBuilder.vue";
-import { useConnectionConfigurationFormFields } from "@/pages/(app)/connection-configuration/composables/useConnectionConfigurationFormFields.ts";
-import { useCreateConnectionConfigurationMutation } from "@/pages/(app)/connection-configuration/api/useCreateConnectionConfigurationMutation.ts";
-import { submitWithFormErrors } from "@/services/errors/submitWithFormErrors.ts";
-import { toAppErrorOrUndefined } from "@/services/errors/toAppError.ts";
-import { applyBackendFieldErrors } from "@/services/errors/formErrorMapping.ts";
-import { useCertificates } from "@/pages/(app)/connection-configuration/composables/api/useCertificates.ts";
-import {
-    connectionConfigurationCreateSchema,
-    type ConnectionConfigurationCreateRequest,
-} from "@/models/connectionConfiguration.ts";
 import CancelButton from "@/components/widgets/CancelButton.vue";
 import ConfirmButton from "@/components/widgets/ConfirmButton.vue";
-import HintText from "@/components/widgets/HintText.vue";
+import FormBuilder from "@/components/widgets/formBuilder/FormBuilder.vue";
 import FormDialog from "@/components/widgets/formDialog/FormDialog.vue";
-import { useRouter } from "vue-router";
+import HintText from "@/components/widgets/HintText.vue";
+import SettingsNavigation from "@/components/widgets/navigation/SettingsNavigation.vue";
+import {
+    type ConnectionConfigurationCreateRequest,
+    connectionConfigurationCreateSchema,
+} from "@/models/connectionConfiguration.ts";
 import { useCertificateCreateForm } from "@/pages/(app)/certificate/composables/useCertificateCreateForm.ts";
 import { CertKey } from "@/pages/(app)/certificate/types/types.ts";
+import { useCreateConnectionConfigurationMutation } from "@/pages/(app)/connection-configuration/api/useCreateConnectionConfigurationMutation.ts";
+import { useCertificates } from "@/pages/(app)/connection-configuration/composables/api/useCertificates.ts";
+import { useConnectionConfigurationFormFields } from "@/pages/(app)/connection-configuration/composables/useConnectionConfigurationFormFields.ts";
+import { applyBackendFieldErrors } from "@/services/errors/formErrorMapping.ts";
+import { submitWithFormErrors } from "@/services/errors/submitWithFormErrors.ts";
+import { toAppErrorOrUndefined } from "@/services/errors/toAppError.ts";
 
 definePage({
     meta: {

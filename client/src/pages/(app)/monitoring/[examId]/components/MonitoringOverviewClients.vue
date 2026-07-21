@@ -82,16 +82,17 @@
 </template>
 
 <script setup lang="ts">
-import { Doughnut } from "vue-chartjs";
 import { ArcElement, Chart as ChartJS, Legend, Tooltip } from "chart.js";
-import { useMonitoringStore } from "@/stores/seb-server/monitoringStore.ts";
-import { translate } from "@/utils/generalUtils.ts";
+import { computed, ref, watch } from "vue";
+import { Doughnut } from "vue-chartjs";
+import { useI18n } from "vue-i18n";
+
+import LoadingFallbackComponent from "@/components/widgets/loadingFallbackComponent/LoadingFallbackComponent.vue";
 import { ConnectionStatusEnum } from "@/models/seb-server/connectionStatusEnum.ts";
 import { MonitoringHeaderEnum } from "@/models/seb-server/monitoringEnums.ts";
-import { useI18n } from "vue-i18n";
-import { computed, ref, watch } from "vue";
 import { goToMonitoring } from "@/pages/(app)/monitoring/[examId]/composables/useMonitoringNavigation.ts";
-import LoadingFallbackComponent from "@/components/widgets/loadingFallbackComponent/LoadingFallbackComponent.vue";
+import { useMonitoringStore } from "@/stores/seb-server/monitoringStore.ts";
+import { translate } from "@/utils/generalUtils.ts";
 
 const props = defineProps<{
     examId: string;

@@ -43,8 +43,8 @@
 <script setup lang="ts">
 import { UserAccountName } from "@/models/userAccount";
 import {
-    userAccountNameToUsername,
     userAccountNameToFullName,
+    userAccountNameToUsername,
 } from "@/utils/userAccount";
 
 defineProps<{

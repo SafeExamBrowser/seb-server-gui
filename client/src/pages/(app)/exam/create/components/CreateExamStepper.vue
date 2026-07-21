@@ -41,17 +41,18 @@
 </template>
 
 <script setup lang="ts">
-import BasicPage from "@/components/layout/pages/BasicPage.vue";
-import StepperSidebar from "@/components/widgets/stepperVertical/StepperSidebar.vue";
-import StepperFooterActions from "@/components/widgets/stepperVertical/StepperFooterActions.vue";
-import { stepComponents } from "@/pages/(app)/exam/create/types/types.ts";
-import { useCreateExamStore } from "@/pages/(app)/exam/create/composables/store/useCreateExamStore";
-import { useCreateExam } from "@/pages/(app)/exam/create/composables/api/useCreateExam.ts";
-import { useStepQuizStore } from "@/pages/(app)/exam/create/components/stepQuiz/composables/store/useStepQuizStore.ts";
-import SelectedQuizPreview from "@/pages/(app)/exam/create/components/stepQuiz/components/SelectedQuizPreview.vue";
 import { watch, watchEffect } from "vue";
 import { useRouter } from "vue-router";
+
+import BasicPage from "@/components/layout/pages/BasicPage.vue";
+import StepperFooterActions from "@/components/widgets/stepperVertical/StepperFooterActions.vue";
+import StepperSidebar from "@/components/widgets/stepperVertical/StepperSidebar.vue";
+import SelectedQuizPreview from "@/pages/(app)/exam/create/components/stepQuiz/components/SelectedQuizPreview.vue";
+import { useStepQuizStore } from "@/pages/(app)/exam/create/components/stepQuiz/composables/store/useStepQuizStore.ts";
+import { useCreateExam } from "@/pages/(app)/exam/create/composables/api/useCreateExam.ts";
 import { useCreateExamWithURL } from "@/pages/(app)/exam/create/composables/api/useCreateExamWithURL";
+import { useCreateExamStore } from "@/pages/(app)/exam/create/composables/store/useCreateExamStore";
+import { stepComponents } from "@/pages/(app)/exam/create/types/types.ts";
 
 defineProps<{
     createWithURL: boolean;

@@ -1,6 +1,6 @@
+import { TimeRangeSelection } from "@/components/widgets/searches/timeRange/types";
 import i18n from "@/i18n";
 import * as timeUtils from "@/utils/timeUtils";
-import { TimeRangeSelection } from "@/components/widgets/searches/timeRange/types";
 
 export function timePeriodUnits(): { title: string; value: number }[] {
     return [

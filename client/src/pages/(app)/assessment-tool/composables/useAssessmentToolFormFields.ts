@@ -1,9 +1,10 @@
 import { computed, ref, watch } from "vue";
-import i18n from "@/i18n";
+
 import type { FormField } from "@/components/widgets/formBuilder/types.ts";
-import { useInstitutions } from "@/composables/useInstitutions.ts";
 import { useCurrentUserQuery } from "@/composables/useCurrentUser.ts";
+import { useInstitutions } from "@/composables/useInstitutions.ts";
 import { useZodFormRules } from "@/composables/useZodFormRules.ts";
+import i18n from "@/i18n";
 import {
     assessmentToolCreateSchema,
     LMS_TYPES,

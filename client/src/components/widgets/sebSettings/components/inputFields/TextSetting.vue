@@ -23,8 +23,9 @@
 
 <script setup lang="ts">
 import { ref } from "vue";
-import { translate } from "@/utils/generalUtils.ts";
+
 import { SEBSettingsSingeValueModel } from "@/components/widgets/sebSettings/types.ts";
+import { translate } from "@/utils/generalUtils.ts";
 
 const props = defineProps<{
     modelValue: SEBSettingsSingeValueModel;

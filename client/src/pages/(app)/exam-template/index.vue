@@ -81,12 +81,13 @@
 <script setup lang="ts">
 import BasicPage from "@/components/layout/pages/BasicPage.vue";
 import AddButton from "@/components/widgets/AddButton.vue";
-import SearchBar from "@/components/widgets/searches/SearchBar.vue";
+import DeleteConfirmDialog from "@/components/widgets/confirmDialog/DeleteConfirmDialog.vue";
 import EntityTable from "@/components/widgets/entity-table/EntityTable.vue";
 import FilterControlsRow from "@/components/widgets/filters/FilterControlsRow.vue";
 import { useListFilterPanel } from "@/components/widgets/filters/useListFilterPanel.ts";
-import DeleteConfirmDialog from "@/components/widgets/confirmDialog/DeleteConfirmDialog.vue";
 import LoadingFallbackComponent from "@/components/widgets/loadingFallbackComponent/LoadingFallbackComponent.vue";
+import SearchBar from "@/components/widgets/searches/SearchBar.vue";
+
 import { useExamTemplateOverview } from "./composables/useExamTemplateOverview.ts";
 
 const dataTestId = "examTemplates";

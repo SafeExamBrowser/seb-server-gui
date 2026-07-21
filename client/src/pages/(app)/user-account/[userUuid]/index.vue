@@ -20,17 +20,18 @@
 
 <script setup lang="ts">
 import { computed, ref, watch } from "vue";
-import { useRoute, useRouter } from "vue-router";
 import { useI18n } from "vue-i18n";
-import UserAccountForm from "@/pages/(app)/user-account/components/UserAccountForm.vue";
-import { userAccountFormConfig } from "@/pages/(app)/user-account/userAccountFormConfig.ts";
+import { useRoute, useRouter } from "vue-router";
+
 import LoadingFallbackComponent from "@/components/widgets/loadingFallbackComponent/LoadingFallbackComponent.vue";
 import { useCurrentUserQuery } from "@/composables/useCurrentUser.ts";
 import { useLogout } from "@/composables/useLogout.ts";
-import { useUserAccountQuery } from "@/pages/(app)/user-account/api/useUserAccountQuery.ts";
-import { useUserAccountFormSubmit } from "@/pages/(app)/user-account/composables/useUserAccountFormSubmit.ts";
-import { toAppErrorOrUndefined } from "@/services/errors/toAppError.ts";
 import { isTeacherOnlyAccount } from "@/models/userAccount.ts";
+import { useUserAccountQuery } from "@/pages/(app)/user-account/api/useUserAccountQuery.ts";
+import UserAccountForm from "@/pages/(app)/user-account/components/UserAccountForm.vue";
+import { useUserAccountFormSubmit } from "@/pages/(app)/user-account/composables/useUserAccountFormSubmit.ts";
+import { userAccountFormConfig } from "@/pages/(app)/user-account/userAccountFormConfig.ts";
+import { toAppErrorOrUndefined } from "@/services/errors/toAppError.ts";
 import { notify } from "@/services/notifications/notify.ts";
 
 definePage({

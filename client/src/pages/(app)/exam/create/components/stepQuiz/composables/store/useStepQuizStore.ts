@@ -1,5 +1,6 @@
 import { defineStore } from "pinia";
 import { computed, ref } from "vue";
+
 import { Quiz } from "@/models/seb-server/quiz.ts";
 
 const getInitialState = () => ({

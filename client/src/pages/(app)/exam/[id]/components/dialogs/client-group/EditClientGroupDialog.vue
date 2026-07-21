@@ -204,19 +204,20 @@
 </template>
 
 <script setup lang="ts">
+import { onBeforeMount, ref, watch } from "vue";
+import { useI18n } from "vue-i18n";
+
 import AlertMsg from "@/components/widgets/AlertMsg.vue";
-import { useExamStore } from "@/stores/seb-server/examStore.ts";
+import { ClientGroup } from "@/models/seb-server/clientGroup.ts";
 import {
     ClientGroupEnum,
     ClientOSEnum,
 } from "@/models/seb-server/clientGroupEnum.ts";
-import * as generalUtils from "@/utils/generalUtils.ts";
-import * as clientGroupService from "@/services/seb-server/clientGroupService.ts";
-import { useI18n } from "vue-i18n";
-import { translate } from "@/utils/generalUtils.ts";
-import { ref, watch, onBeforeMount } from "vue";
-import { ClientGroup } from "@/models/seb-server/clientGroup.ts";
 import { buildClientGroup } from "@/pages/(app)/exam/[id]/components/dialogs/client-group/utils/buildClientGroup.ts";
+import * as clientGroupService from "@/services/seb-server/clientGroupService.ts";
+import { useExamStore } from "@/stores/seb-server/examStore.ts";
+import * as generalUtils from "@/utils/generalUtils.ts";
+import { translate } from "@/utils/generalUtils.ts";
 
 // i18n
 const i18n = useI18n();

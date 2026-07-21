@@ -1,7 +1,8 @@
 import type { Ref } from "vue";
+
 import { useFetch } from "@/composables/useFetch.ts";
-import type { ServerTablePaging } from "@/models/types.ts";
 import { ScheduledDeletions } from "@/models/seb-server/scheduled-deletion";
+import type { ServerTablePaging } from "@/models/types.ts";
 import { getScheduledDeletions } from "@/services/seb-server/scheduledDeletionService";
 import { SortOrder } from "@/services/types";
 

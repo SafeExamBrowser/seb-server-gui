@@ -1,6 +1,7 @@
 import { MaybeRef, Ref, UnwrapRef } from "vue";
-import { FormField } from "@/components/widgets/formBuilder/types";
 import { DataTableHeader } from "vuetify";
+
+import { FormField } from "@/components/widgets/formBuilder/types";
 
 export type CrudDeleteConfig<TItem> = {
     deleteItem: (item: TItem) => Promise<void>;

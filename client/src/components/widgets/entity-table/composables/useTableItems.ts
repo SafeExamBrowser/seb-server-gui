@@ -1,4 +1,5 @@
 import { type MaybeRefOrGetter, toValue } from "vue";
+
 import type {
     CellFormatter,
     TableItem,

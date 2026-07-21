@@ -1,7 +1,7 @@
 import { OptionalParSearchSessions } from "@/models/screen-proctoring/optionalParamters.ts";
 import { ServerTablePaging } from "@/models/types.ts";
-import * as timeUtils from "@/utils/timeUtils.ts";
 import * as tableUtils from "@/utils/table/tableUtils.ts";
+import * as timeUtils from "@/utils/timeUtils.ts";
 
 export function prepareSessionSearchParameters(
     day: string,

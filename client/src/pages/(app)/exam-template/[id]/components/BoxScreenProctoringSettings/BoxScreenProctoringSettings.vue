@@ -17,11 +17,13 @@
 <script setup lang="ts">
 import { computed } from "vue";
 import { useI18n } from "vue-i18n";
+
 import DetailBox from "@/components/widgets/DetailBox.vue";
-import ScreenProctoringEditDialog from "./components/ScreenProctoringEditDialog.vue";
 import KeyValueList from "@/components/widgets/keyValueList/KeyValueList.vue";
 import { KeyValueItem } from "@/components/widgets/keyValueList/types.ts";
 import { ScreenProctoringCollectionStrategy } from "@/models/seb-server/screenProctoring.ts";
+
+import ScreenProctoringEditDialog from "./components/ScreenProctoringEditDialog.vue";
 import { ScreenProctoringSelection } from "./types.ts";
 
 const STRATEGY_LABEL_KEYS: Record<ScreenProctoringCollectionStrategy, string> =

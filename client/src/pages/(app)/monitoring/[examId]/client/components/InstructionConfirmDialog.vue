@@ -76,11 +76,12 @@
 </template>
 
 <script setup lang="ts">
+import { ref } from "vue";
+
+import { ClientInstruction } from "@/models/seb-server/clientInstruction.ts";
 import { InstructionEnum } from "@/models/seb-server/instructionEnum.ts";
 import * as monitoringService from "@/services/seb-server/monitoringService.ts";
 import { translate } from "@/utils/generalUtils.ts";
-import { ref } from "vue";
-import { ClientInstruction } from "@/models/seb-server/clientInstruction.ts";
 
 // exam
 

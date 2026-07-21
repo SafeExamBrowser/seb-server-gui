@@ -1,16 +1,17 @@
+import { defineStore } from "pinia";
+import { ref } from "vue";
+
+import { AssessmentTool } from "@/models/seb-server/assessmentTool";
+import { ClientGroup } from "@/models/seb-server/clientGroup";
+import { ConfigurationExamMapping } from "@/models/seb-server/configurationNode";
+import { Exam } from "@/models/seb-server/exam";
 import {
     ExamStatusEnum,
     ExamTypeEnum,
 } from "@/models/seb-server/examFiltersEnum";
-import { defineStore } from "pinia";
-import { ref } from "vue";
-import { UserAccount } from "@/models/userAccount";
-import { ServerTablePaging } from "@/models/types";
-import { Exam } from "@/models/seb-server/exam";
-import { ClientGroup } from "@/models/seb-server/clientGroup";
-import { AssessmentTool } from "@/models/seb-server/assessmentTool";
 import { ExamTemplate } from "@/models/seb-server/examTemplate";
-import { ConfigurationExamMapping } from "@/models/seb-server/configurationNode";
+import { ServerTablePaging } from "@/models/types";
+import { UserAccount } from "@/models/userAccount";
 
 export const useExamStore = defineStore("exam", () => {
     // exam table

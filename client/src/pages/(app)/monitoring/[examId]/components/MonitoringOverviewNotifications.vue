@@ -92,15 +92,16 @@
 </template>
 
 <script setup lang="ts">
+import { computed } from "vue";
+
 import {
     MonitoringHeaderEnum,
     NotificationEnum,
 } from "@/models/seb-server/monitoringEnums.ts";
-import { useMonitoringStore } from "@/stores/seb-server/monitoringStore.ts";
-import { translate } from "@/utils/generalUtils.ts";
-import * as generalUtils from "@/utils/generalUtils.ts";
 import { goToMonitoring } from "@/pages/(app)/monitoring/[examId]/composables/useMonitoringNavigation.ts";
-import { computed } from "vue";
+import { useMonitoringStore } from "@/stores/seb-server/monitoringStore.ts";
+import * as generalUtils from "@/utils/generalUtils.ts";
+import { translate } from "@/utils/generalUtils.ts";
 
 const props = defineProps<{
     examId: string;

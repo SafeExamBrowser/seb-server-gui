@@ -1,6 +1,6 @@
-import * as apiService from "@/services/apiService";
-import { Quizzes } from "@/models/seb-server/quiz";
 import { OptionalParGetQuizzes } from "@/models/seb-server/optionalParamters";
+import { Quizzes } from "@/models/seb-server/quiz";
+import * as apiService from "@/services/apiService";
 
 const baseUrl = "/quiz" as const;
 

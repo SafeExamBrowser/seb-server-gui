@@ -94,20 +94,21 @@
 <script setup lang="ts">
 import BasicPage from "@/components/layout/pages/BasicPage.vue";
 import AddButton from "@/components/widgets/AddButton.vue";
-import SearchBar from "@/components/widgets/searches/SearchBar.vue";
-import EntityTable from "@/components/widgets/entity-table/EntityTable.vue";
-import EnumChip from "@/components/widgets/EnumChip.vue";
-import LoadingFallbackComponent from "@/components/widgets/loadingFallbackComponent/LoadingFallbackComponent.vue";
-import FilterControlsRow from "@/components/widgets/filters/FilterControlsRow.vue";
 import DeleteConfirmDialog from "@/components/widgets/confirmDialog/DeleteConfirmDialog.vue";
+import EntityTable from "@/components/widgets/entity-table/EntityTable.vue";
+import { TableItem } from "@/components/widgets/entity-table/types.ts";
+import EnumChip from "@/components/widgets/EnumChip.vue";
+import FilterControlsRow from "@/components/widgets/filters/FilterControlsRow.vue";
 import { useListFilterPanel } from "@/components/widgets/filters/useListFilterPanel.ts";
-import { useScheduledDeletionOverview } from "./composables/useScheduledDeletionOverview.ts";
+import LoadingFallbackComponent from "@/components/widgets/loadingFallbackComponent/LoadingFallbackComponent.vue";
+import SearchBar from "@/components/widgets/searches/SearchBar.vue";
 import {
     scheduledDeleteStatusColor,
     ScheduledDeleteStatusEnum,
 } from "@/models/seb-server/scheduled-deletion.ts";
 import { formatTimestampToDate } from "@/utils/timeUtils.ts";
-import { TableItem } from "@/components/widgets/entity-table/types.ts";
+
+import { useScheduledDeletionOverview } from "./composables/useScheduledDeletionOverview.ts";
 
 definePage({
     meta: {

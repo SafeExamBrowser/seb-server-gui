@@ -59,22 +59,23 @@
 <script setup lang="ts">
 import { computed, ref, watch } from "vue";
 import { useRoute, useRouter } from "vue-router";
+
 import BasicPage from "@/components/layout/pages/BasicPage.vue";
-import SettingsNavigation from "@/components/widgets/navigation/SettingsNavigation.vue";
-import FormBuilder from "@/components/widgets/formBuilder/FormBuilder.vue";
-import LoadingFallbackComponent from "@/components/widgets/loadingFallbackComponent/LoadingFallbackComponent.vue";
 import CancelButton from "@/components/widgets/CancelButton.vue";
 import ConfirmButton from "@/components/widgets/ConfirmButton.vue";
+import FormBuilder from "@/components/widgets/formBuilder/FormBuilder.vue";
 import HintText from "@/components/widgets/HintText.vue";
+import LoadingFallbackComponent from "@/components/widgets/loadingFallbackComponent/LoadingFallbackComponent.vue";
+import SettingsNavigation from "@/components/widgets/navigation/SettingsNavigation.vue";
+import { useCurrentUserQuery } from "@/composables/useCurrentUser.ts";
+import { useDirtyTracking } from "@/composables/useDirtyTracking.ts";
+import { useInstitutionBranding } from "@/composables/useInstitutionBranding.ts";
+import { useEditInstitutionMutation } from "@/pages/(app)/institution/api/useEditInstitutionMutation.ts";
+import { useInstitutionQuery } from "@/pages/(app)/institution/api/useInstitutionQuery.ts";
+import { useInstitutionFormFields } from "@/pages/(app)/institution/composables/useInstitutionFormFields.ts";
 import { applyBackendFieldErrors } from "@/services/errors/formErrorMapping.ts";
 import { submitWithFormErrors } from "@/services/errors/submitWithFormErrors.ts";
 import { toAppErrorOrUndefined } from "@/services/errors/toAppError.ts";
-import { useInstitutionQuery } from "@/pages/(app)/institution/api/useInstitutionQuery.ts";
-import { useEditInstitutionMutation } from "@/pages/(app)/institution/api/useEditInstitutionMutation.ts";
-import { useInstitutionFormFields } from "@/pages/(app)/institution/composables/useInstitutionFormFields.ts";
-import { useCurrentUserQuery } from "@/composables/useCurrentUser.ts";
-import { useInstitutionBranding } from "@/composables/useInstitutionBranding.ts";
-import { useDirtyTracking } from "@/composables/useDirtyTracking.ts";
 
 definePage({
     meta: {

@@ -1,18 +1,19 @@
 import { expect, type Page, type Request } from "@playwright/test";
+
 import {
     expectRequestSucceeded,
+    type HttpMethod,
     waitForRequest,
     waitForResponse,
-    type HttpMethod,
 } from "../../../utils/networkAssertions";
-import { BasicSettingsPageModel } from "../layout/basic-settings-page.model";
-import { ConfirmDialogModel } from "../widgets/confirm-dialog.model";
-import { EntityTableModel } from "../widgets/entity-table.model";
-import { SearchBarModel } from "../widgets/search-bar.model";
 import type {
     TableListPageConfig,
     UrlExpectation,
 } from "../../types/table-list-page.types";
+import { BasicSettingsPageModel } from "../layout/basic-settings-page.model";
+import { ConfirmDialogModel } from "../widgets/confirm-dialog.model";
+import { EntityTableModel } from "../widgets/entity-table.model";
+import { SearchBarModel } from "../widgets/search-bar.model";
 
 export class TableListPageModel {
     readonly page: Page;

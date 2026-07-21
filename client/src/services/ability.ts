@@ -1,12 +1,13 @@
 import { computed } from "vue";
-import { ExamStatusEnum } from "@/models/seb-server/examFiltersEnum";
+
 import { useCurrentUserQuery } from "@/composables/useCurrentUser";
 import { useGuiAbilitiesQuery } from "@/composables/useGuiAbilities";
-import { GUIAction, GUIComponent } from "@/models/guiAbilities";
-import * as generalUtils from "@/utils/generalUtils";
-import { Exam } from "@/models/seb-server/exam";
 import { FeatureEnum, featureNameMapping } from "@/models/features";
+import { GUIAction, GUIComponent } from "@/models/guiAbilities";
+import { Exam } from "@/models/seb-server/exam";
+import { ExamStatusEnum } from "@/models/seb-server/examFiltersEnum";
 import * as apiService from "@/services/apiService";
+import * as generalUtils from "@/utils/generalUtils";
 
 export { GUIAction, GUIComponent };
 

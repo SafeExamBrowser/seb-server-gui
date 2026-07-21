@@ -57,14 +57,15 @@
 </template>
 
 <script setup lang="ts">
+import { computed } from "vue";
+
 import {
     IndicatorEnum,
     MonitoringHeaderEnum,
 } from "@/models/seb-server/monitoringEnums.ts";
+import { goToMonitoring } from "@/pages/(app)/monitoring/[examId]/composables/useMonitoringNavigation.ts";
 import { useMonitoringStore } from "@/stores/seb-server/monitoringStore.ts";
 import { translate } from "@/utils/generalUtils.ts";
-import { goToMonitoring } from "@/pages/(app)/monitoring/[examId]/composables/useMonitoringNavigation.ts";
-import { computed } from "vue";
 
 const props = defineProps<{
     examId: string;

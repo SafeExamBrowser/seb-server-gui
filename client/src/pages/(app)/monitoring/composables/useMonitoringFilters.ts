@@ -1,10 +1,11 @@
 import { computed } from "vue";
-import { translate } from "@/utils/generalUtils.ts";
+
 import type { FilterSectionDef } from "@/components/widgets/filters/filterTypes.ts";
 import {
     ExamStatusEnum,
     ExamTypeEnum,
 } from "@/models/seb-server/examFiltersEnum.ts";
+import { translate } from "@/utils/generalUtils.ts";
 import { getExamStatusFilterColor } from "@/utils/generalUtils.ts";
 
 export const TYPE_FILTER_KEY = "type";

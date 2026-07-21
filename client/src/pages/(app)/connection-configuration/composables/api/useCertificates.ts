@@ -1,7 +1,8 @@
 import { computed, ref } from "vue";
+
+import type { GetCertificatesData } from "@/api/seb-server/generated/hey-api/types.gen.ts";
 import i18n from "@/i18n";
 import { useCertificatesQuery } from "@/pages/(app)/certificate/api/useCertificatesQuery.ts";
-import type { GetCertificatesData } from "@/api/seb-server/generated/hey-api/types.gen.ts";
 
 export const useCertificates = () => {
     const uploadOption = {

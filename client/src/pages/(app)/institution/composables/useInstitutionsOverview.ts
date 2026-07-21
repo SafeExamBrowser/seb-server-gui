@@ -1,14 +1,16 @@
 import { computed, reactive } from "vue";
-import { useRouter, type RouteLocationAsRelative } from "vue-router";
-import type { TableItem } from "@/components/widgets/entity-table/types.ts";
-import { useInstitutionsTableHeaders } from "./useInstitutionsTableHeaders.ts";
-import { useInstitutionsTableActions } from "./useInstitutionsTableActions.ts";
-import { useInstitutionsList } from "./useInstitutionsList.ts";
-import { useDeleteInstitutionMutation } from "@/pages/(app)/institution/api/useDeleteInstitutionMutation.ts";
-import { useToggleInstitutionStatusMutation } from "@/pages/(app)/institution/api/useToggleInstitutionStatusMutation.ts";
+import { type RouteLocationAsRelative, useRouter } from "vue-router";
+
 import { useEntityDeleteFlow } from "@/components/widgets/entity-table/composables/useEntityDeleteFlow.ts";
 import { useEntityStatusFlow } from "@/components/widgets/entity-table/composables/useEntityStatusFlow.ts";
+import type { TableItem } from "@/components/widgets/entity-table/types.ts";
+import { useDeleteInstitutionMutation } from "@/pages/(app)/institution/api/useDeleteInstitutionMutation.ts";
+import { useToggleInstitutionStatusMutation } from "@/pages/(app)/institution/api/useToggleInstitutionStatusMutation.ts";
 import { toAppErrorOrUndefined } from "@/services/errors/toAppError.ts";
+
+import { useInstitutionsList } from "./useInstitutionsList.ts";
+import { useInstitutionsTableActions } from "./useInstitutionsTableActions.ts";
+import { useInstitutionsTableHeaders } from "./useInstitutionsTableHeaders.ts";
 
 export const useInstitutionsOverview = () => {
     const router = useRouter();

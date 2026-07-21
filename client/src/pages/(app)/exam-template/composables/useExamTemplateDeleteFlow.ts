@@ -1,6 +1,8 @@
 import { computed, ref } from "vue";
-import { useDeleteExamTemplate } from "./api/useDeleteExamTemplate.ts";
+
 import type { ExamTemplateTableItem } from "@/pages/(app)/exam-template/types.ts";
+
+import { useDeleteExamTemplate } from "./api/useDeleteExamTemplate.ts";
 
 export const useExamTemplateDeleteFlow = ({
     onDeleteSuccess,

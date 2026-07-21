@@ -1,22 +1,24 @@
 import { computed } from "vue";
-import { z } from "zod";
 import { useRoute } from "vue-router";
-import i18n from "@/i18n";
+import { z } from "zod";
+
 import type { BreadCrumbItem } from "@/components/widgets/breadCrumb/types.ts";
+import { useMutation } from "@/composables/useMutation.ts";
+import { useSupervisors } from "@/composables/useSupervisors.ts";
+import i18n from "@/i18n";
 import {
     BasicSettings,
     ClientGroupExisting,
     ExamTemplate,
     IndicatorExisting,
 } from "@/models/seb-server/examTemplate.ts";
-import { updateExamTemplate } from "@/services/seb-server/examTemplateService.ts";
 import {
+    buildScreenProctoringExamAttributes,
     SCREEN_PROCTORING_COLLECTION_STRATEGY,
     ScreenProctoringCollectionStrategy,
-    buildScreenProctoringExamAttributes,
 } from "@/models/seb-server/screenProctoring.ts";
-import { useSupervisors } from "@/composables/useSupervisors.ts";
-import { useMutation } from "@/composables/useMutation.ts";
+import { updateExamTemplate } from "@/services/seb-server/examTemplateService.ts";
+
 import { useExamTemplate } from "./api/useExamTemplate.ts";
 
 const idSchema = z.coerce.number().int().positive();

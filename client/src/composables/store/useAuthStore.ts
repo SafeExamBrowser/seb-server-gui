@@ -1,5 +1,6 @@
-import { computed } from "vue";
 import { defineStore } from "pinia";
+import { computed } from "vue";
+
 import { usePersistedRef } from "@/composables/usePersistedRef";
 import { AuthData } from "@/services/types";
 

@@ -1,5 +1,6 @@
-import { test, expect } from "../shared/fixtures/table-list-fixtures";
 import { ASSESSMENT_TOOL_FIELD } from "@/pages/(app)/assessment-tool/assessmentToolFormConfig.ts";
+
+import { expect, test } from "../shared/fixtures/table-list-fixtures";
 import { ASSESSMENT_TOOL_CREATE_REQUEST } from "./models/assessment-tool-create.model";
 
 // Valid form input: every case submits a form the frontend rules accept, so the POST always

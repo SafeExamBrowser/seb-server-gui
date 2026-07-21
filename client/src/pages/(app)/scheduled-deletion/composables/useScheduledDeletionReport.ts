@@ -1,8 +1,9 @@
 import { computed, reactive, Ref } from "vue";
+import { useI18n } from "vue-i18n";
+
+import { KeyValueItem } from "@/components/widgets/keyValueList/types";
 import { DeletionInfo } from "@/models/seb-server/scheduled-deletion";
 import { useGetScheduledDeletionReport } from "@/pages/(app)/scheduled-deletion/composables/api/useGetScheduledDeletionReport";
-import { KeyValueItem } from "@/components/widgets/keyValueList/types";
-import { useI18n } from "vue-i18n";
 import {
     formatTimestampToDate,
     formatTimestampToFullDate,

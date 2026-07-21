@@ -35,20 +35,21 @@
 <script setup lang="ts">
 import { computed, ref } from "vue";
 import { useDisplay } from "vuetify";
+
 import BoxActionButton from "@/components/widgets/BoxActionButton.vue";
 import FormBuilder from "@/components/widgets/formBuilder/FormBuilder.vue";
 import LoadingFallbackComponent from "@/components/widgets/loadingFallbackComponent/LoadingFallbackComponent.vue";
+import {
+    toApiClientConfigurationId,
+    toSelectableClientConfigurationId,
+} from "@/models/seb-server/connectionConfiguration.ts";
 import {
     ExamTypeEnum,
     toApiExamType,
     toSelectableExamType,
 } from "@/models/seb-server/examFiltersEnum.ts";
-import { useExamTemplateBasicSettingsFields } from "@/pages/(app)/exam-template/composables/useExamTemplateBasicSettingsFields.ts";
 import { BasicSettings } from "@/models/seb-server/examTemplate.ts";
-import {
-    toApiClientConfigurationId,
-    toSelectableClientConfigurationId,
-} from "@/models/seb-server/connectionConfiguration.ts";
+import { useExamTemplateBasicSettingsFields } from "@/pages/(app)/exam-template/composables/useExamTemplateBasicSettingsFields.ts";
 
 const { basicSettings } = defineProps<{ basicSettings: BasicSettings }>();
 

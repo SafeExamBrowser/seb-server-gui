@@ -57,24 +57,26 @@
 </template>
 
 <script setup lang="ts">
-import { computed, ref, onBeforeMount, onBeforeUnmount } from "vue";
+import { computed, onBeforeMount, onBeforeUnmount, ref } from "vue";
 import { useRoute } from "vue-router";
+
 import BasicPage from "@/components/layout/pages/BasicPage.vue";
+import type { BreadCrumbItem } from "@/components/widgets/breadCrumb/types.ts";
+import type { TableFilters } from "@/components/widgets/entity-table/types.ts";
 import FilterControlsRow from "@/components/widgets/filters/FilterControlsRow.vue";
 import { useListFilterPanel } from "@/components/widgets/filters/useListFilterPanel.ts";
-import type { TableFilters } from "@/components/widgets/entity-table/types.ts";
-import type { BreadCrumbItem } from "@/components/widgets/breadCrumb/types.ts";
-import { useMonitoringStore } from "@/stores/seb-server/monitoringStore.ts";
-import * as monitoringService from "@/services/seb-server/monitoringService.ts";
-import * as indicatorService from "@/services/seb-server/indicatorService.ts";
-import { MonitoringOverview } from "@/models/seb-server/monitoring.ts";
 import { Indicators } from "@/models/seb-server/indicators.ts";
-import { translate } from "@/utils/generalUtils.ts";
+import { MonitoringOverview } from "@/models/seb-server/monitoring.ts";
 import { typedTo } from "@/router/typedTo.ts";
-import * as useMonitoringData from "./composables/useMonitoringData.ts";
-import { useMonitoringClientsFilters } from "./composables/useMonitoringClientsFilters.ts";
+import * as indicatorService from "@/services/seb-server/indicatorService.ts";
+import * as monitoringService from "@/services/seb-server/monitoringService.ts";
+import { useMonitoringStore } from "@/stores/seb-server/monitoringStore.ts";
+import { translate } from "@/utils/generalUtils.ts";
+
 import MonitoringClientsFilterPanel from "./components/MonitoringClientsFilterPanel.vue";
 import MonitoringClientsTable from "./components/MonitoringClientsTable.vue";
+import { useMonitoringClientsFilters } from "./composables/useMonitoringClientsFilters.ts";
+import * as useMonitoringData from "./composables/useMonitoringData.ts";
 
 definePage({
     meta: {

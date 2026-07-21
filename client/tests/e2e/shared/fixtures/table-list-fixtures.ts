@@ -1,19 +1,20 @@
 import { test as base } from "@playwright/test";
-import { loginAsServerAdmin } from "../../utils/authenticate";
-import { UserAccountsListModel } from "../../01-user-account/models/user-accounts-list.model";
+
 import { UserAccountCreateModel } from "../../01-user-account/models/user-account-create.model";
 import { UserAccountEditModel } from "../../01-user-account/models/user-account-edit.model";
-import { UserAccountRegisterModel } from "../../01-user-account/models/user-account-register.model";
 import { UserAccountProfileModel } from "../../01-user-account/models/user-account-profile.model";
-import { ProfileMenuModel } from "../page-models/layout/profile-menu.model";
+import { UserAccountRegisterModel } from "../../01-user-account/models/user-account-register.model";
+import { UserAccountsListModel } from "../../01-user-account/models/user-accounts-list.model";
 import { InstitutionsListModel } from "../../02-institution/models/institutions-list.model";
-import { ConnectionConfigurationsListModel } from "../../04-connection-configuration/models/connection-configurations-list.model";
+import { CertificatesListModel } from "../../03-certificate/models/certificates-list.model";
 import { ConnectionConfigurationCreateModel } from "../../04-connection-configuration/models/connection-configuration-create.model";
 import { ConnectionConfigurationEditModel } from "../../04-connection-configuration/models/connection-configuration-edit.model";
-import { CertificatesListModel } from "../../03-certificate/models/certificates-list.model";
-import { AssessmentToolsListModel } from "../../05-assessment-tool-connection/models/assessment-tools-list.model";
+import { ConnectionConfigurationsListModel } from "../../04-connection-configuration/models/connection-configurations-list.model";
 import { AssessmentToolCreateModel } from "../../05-assessment-tool-connection/models/assessment-tool-create.model";
 import { AssessmentToolEditModel } from "../../05-assessment-tool-connection/models/assessment-tool-edit.model";
+import { AssessmentToolsListModel } from "../../05-assessment-tool-connection/models/assessment-tools-list.model";
+import { loginAsServerAdmin } from "../../utils/authenticate";
+import { ProfileMenuModel } from "../page-models/layout/profile-menu.model";
 
 type Fixtures = {
     userAccounts: UserAccountsListModel;

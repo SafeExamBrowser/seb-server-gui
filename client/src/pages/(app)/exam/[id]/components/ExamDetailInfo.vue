@@ -141,15 +141,15 @@
 </template>
 
 <script setup lang="ts">
-import { useExamStore } from "@/stores/seb-server/examStore.ts";
-import * as timeUtils from "@/utils/timeUtils.ts";
-import * as generalUtils from "@/utils/generalUtils.ts";
+import BreadCrumb from "@/components/widgets/breadCrumb/BreadCrumb.vue";
 import {
     ExamStatusEnum,
     ExamTypeEnum,
 } from "@/models/seb-server/examFiltersEnum.ts";
+import { useExamStore } from "@/stores/seb-server/examStore.ts";
+import * as generalUtils from "@/utils/generalUtils.ts";
 import { translate } from "@/utils/generalUtils.ts";
-import BreadCrumb from "@/components/widgets/breadCrumb/BreadCrumb.vue";
+import * as timeUtils from "@/utils/timeUtils.ts";
 
 // stores
 const examStore = useExamStore();

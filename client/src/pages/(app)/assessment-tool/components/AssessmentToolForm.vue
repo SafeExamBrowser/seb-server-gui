@@ -141,31 +141,32 @@
 
 <script setup lang="ts">
 import { computed, onMounted, ref, watch } from "vue";
-import i18n from "@/i18n";
+
 import BasicPage from "@/components/layout/pages/BasicPage.vue";
-import SettingsNavigation from "@/components/widgets/navigation/SettingsNavigation.vue";
-import FormBuilder from "@/components/widgets/formBuilder/FormBuilder.vue";
-import LoadingFallbackComponent from "@/components/widgets/loadingFallbackComponent/LoadingFallbackComponent.vue";
+import type { BreadCrumbItem } from "@/components/widgets/breadCrumb/types";
 import CancelButton from "@/components/widgets/CancelButton.vue";
 import ConfirmButton from "@/components/widgets/ConfirmButton.vue";
+import FormBuilder from "@/components/widgets/formBuilder/FormBuilder.vue";
 import HintText from "@/components/widgets/HintText.vue";
+import LoadingFallbackComponent from "@/components/widgets/loadingFallbackComponent/LoadingFallbackComponent.vue";
+import SettingsNavigation from "@/components/widgets/navigation/SettingsNavigation.vue";
 import { useDirtyTracking } from "@/composables/useDirtyTracking.ts";
+import i18n from "@/i18n";
 import {
-    useAssessmentToolFormFields,
-    type AssessmentToolFormMode,
-} from "@/pages/(app)/assessment-tool/composables/useAssessmentToolFormFields.ts";
-import {
-    applyBackendFieldErrors,
-    type ApplyBackendErrorsResult,
-} from "@/services/errors/formErrorMapping.ts";
-import type { BackendFieldAliasMap } from "@/services/errors/types.ts";
-import type { BreadCrumbItem } from "@/components/widgets/breadCrumb/types";
-import {
-    assessmentToolCreateSchema,
     type AssessmentTool,
     type AssessmentToolCreateRequest,
+    assessmentToolCreateSchema,
     type AssessmentToolEditRequest,
 } from "@/models/assessmentTool.ts";
+import {
+    type AssessmentToolFormMode,
+    useAssessmentToolFormFields,
+} from "@/pages/(app)/assessment-tool/composables/useAssessmentToolFormFields.ts";
+import {
+    type ApplyBackendErrorsResult,
+    applyBackendFieldErrors,
+} from "@/services/errors/formErrorMapping.ts";
+import type { BackendFieldAliasMap } from "@/services/errors/types.ts";
 
 const ASSESSMENT_TOOL_FIELD_ALIASES = {
     lmsRestApiToken: "accessToken",

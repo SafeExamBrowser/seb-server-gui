@@ -1,8 +1,9 @@
-import { ClientGroupTransient } from "@/components/widgets/clientGroupsTable/types.ts";
 import { computed, Ref } from "vue";
-import i18n from "@/i18n";
-import { FormField } from "@/components/widgets/formBuilder/types.ts";
 import { RuleAliases } from "vuetify/labs/rules";
+
+import { ClientGroupTransient } from "@/components/widgets/clientGroupsTable/types.ts";
+import { FormField } from "@/components/widgets/formBuilder/types.ts";
+import i18n from "@/i18n";
 
 export const useFormFieldsTypeNameAlphabeticalRange = (
     clientGroup: Ref<ClientGroupTransient>,

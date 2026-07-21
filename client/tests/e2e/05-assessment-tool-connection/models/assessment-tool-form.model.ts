@@ -1,11 +1,13 @@
 import { type Locator, type Page } from "@playwright/test";
+
 import {
     ASSESSMENT_TOOL_FIELD,
     assessmentToolFormConfig,
 } from "@/pages/(app)/assessment-tool/assessmentToolFormConfig.ts";
+
 import {
-    FormPageModel,
     type FormFieldSpec,
+    FormPageModel,
 } from "../../shared/page-models/model-pages/form-page.model";
 
 export type AuthMode = "token" | "client";

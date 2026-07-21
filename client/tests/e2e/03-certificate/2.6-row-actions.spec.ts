@@ -1,4 +1,4 @@
-import { test, expect } from "../shared/fixtures/table-list-fixtures";
+import { expect, test } from "../shared/fixtures/table-list-fixtures";
 import { certificateRows } from "./models/certificates-list.model";
 
 // The delete DELETE hits the bare collection path (no query params), unlike the list GET;

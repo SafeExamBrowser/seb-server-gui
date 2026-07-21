@@ -1,5 +1,6 @@
-import { computed } from "vue";
 import { useQuery, useQueryClient } from "@tanstack/vue-query";
+import { computed } from "vue";
+
 import { useCurrentUserQuery } from "@/composables/useCurrentUser";
 import { getInstitutionById } from "@/services/seb-server/institutionService";
 

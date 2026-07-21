@@ -38,7 +38,9 @@
 
 <script setup lang="ts">
 import { computed } from "vue";
+
 import { ConnectionStatusEnum } from "@/models/seb-server/connectionStatusEnum.ts";
+
 import { AskConnectionEntry } from "./types.ts";
 
 const props = defineProps<{

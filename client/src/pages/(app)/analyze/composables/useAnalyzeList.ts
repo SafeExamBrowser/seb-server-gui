@@ -1,12 +1,13 @@
 import { computed } from "vue";
-import { useUrlTableState } from "@/components/widgets/entity-table/composables/useUrlTableState.ts";
+
 import { usePagedListData } from "@/components/widgets/entity-table/composables/usePagedListData.ts";
-import {
-    TYPE_FILTER_KEY,
-    EXAM_STATUS_FILTER_KEY,
-} from "@/pages/(app)/exam/composables/useExamFilters.ts";
-import { useAnalyzeTableFilters } from "@/pages/(app)/analyze/composables/useAnalyzeTableFilters.ts";
+import { useUrlTableState } from "@/components/widgets/entity-table/composables/useUrlTableState.ts";
 import { useAnalyzeExams } from "@/pages/(app)/analyze/api/useAnalyzeExams.ts";
+import { useAnalyzeTableFilters } from "@/pages/(app)/analyze/composables/useAnalyzeTableFilters.ts";
+import {
+    EXAM_STATUS_FILTER_KEY,
+    TYPE_FILTER_KEY,
+} from "@/pages/(app)/exam/composables/useExamFilters.ts";
 
 export const useAnalyzeList = () => {
     const filterSections = useAnalyzeTableFilters();

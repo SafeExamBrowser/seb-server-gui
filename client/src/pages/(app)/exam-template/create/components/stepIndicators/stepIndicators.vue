@@ -9,10 +9,11 @@
 
 <script setup lang="ts">
 import { storeToRefs } from "pinia";
-import StepItem from "@/components/widgets/stepItem/StepItem.vue";
+
 import IndicatorsTable from "@/components/widgets/indicatorsTable/IndicatorsTable.vue";
-import { useStepIndicatorsStore } from "@/pages/(app)/exam-template/create/components/stepIndicators/composables/store/useStepIndicatorsStore.ts";
 import { IndicatorsTableDeps } from "@/components/widgets/indicatorsTable/types.ts";
+import StepItem from "@/components/widgets/stepItem/StepItem.vue";
+import { useStepIndicatorsStore } from "@/pages/(app)/exam-template/create/components/stepIndicators/composables/store/useStepIndicatorsStore.ts";
 
 const store = useStepIndicatorsStore();
 const { indicators } = storeToRefs(store);

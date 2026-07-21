@@ -17,13 +17,14 @@
 </template>
 
 <script setup lang="ts">
-import { useI18n } from "vue-i18n";
-import CrudTable from "@/components/widgets/crudTable/CrudTable.vue";
-import ChipThreshold from "@/components/widgets/chipThreshold/ChipThreshold.vue";
-import { useTable } from "@/components/widgets/indicatorsTable/composables/useTable.ts";
-import { IndicatorExisting } from "@/models/seb-server/examTemplate.ts";
-import { IndicatorsTableDeps } from "@/components/widgets/indicatorsTable/types.ts";
 import { computed } from "vue";
+import { useI18n } from "vue-i18n";
+
+import ChipThreshold from "@/components/widgets/chipThreshold/ChipThreshold.vue";
+import CrudTable from "@/components/widgets/crudTable/CrudTable.vue";
+import { useTable } from "@/components/widgets/indicatorsTable/composables/useTable.ts";
+import { IndicatorsTableDeps } from "@/components/widgets/indicatorsTable/types.ts";
+import { IndicatorExisting } from "@/models/seb-server/examTemplate.ts";
 
 const { deps } = defineProps<{
     deps: IndicatorsTableDeps;

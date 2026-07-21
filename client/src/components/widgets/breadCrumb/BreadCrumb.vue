@@ -35,8 +35,9 @@
 </template>
 
 <script setup lang="ts">
-import type { BreadCrumbItem } from "./types";
 import { RouterLink } from "vue-router";
+
+import type { BreadCrumbItem } from "./types";
 
 defineProps<{
     items?: BreadCrumbItem[];

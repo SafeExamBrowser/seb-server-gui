@@ -16,12 +16,14 @@
 
 <script setup lang="ts">
 import { computed } from "vue";
-import { useFormFields } from "./composables/useFormFields.ts";
-import { useStepNamingStore } from "./composables/store/useStepNamingStore.ts";
 import { useDisplay } from "vuetify";
+
 import FormBuilder from "@/components/widgets/formBuilder/FormBuilder.vue";
 import LoadingFallbackComponent from "@/components/widgets/loadingFallbackComponent/LoadingFallbackComponent.vue";
 import StepItem from "@/components/widgets/stepItem/StepItem.vue";
+
+import { useStepNamingStore } from "./composables/store/useStepNamingStore.ts";
+import { useFormFields } from "./composables/useFormFields.ts";
 
 const { formFields, loading, errors } = useFormFields();
 

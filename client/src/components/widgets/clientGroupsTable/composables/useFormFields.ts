@@ -1,14 +1,16 @@
 import { Ref } from "vue";
-import { FormField } from "@/components/widgets/formBuilder/types.ts";
+import { RuleAliases } from "vuetify/labs/rules";
+
 import { ClientGroupTransient } from "@/components/widgets/clientGroupsTable/types.ts";
-import { ClientGroupExisting } from "@/models/seb-server/examTemplate.ts";
+import { FormField } from "@/components/widgets/formBuilder/types.ts";
 import { ClientGroupEnum } from "@/models/seb-server/clientGroupEnum.ts";
+import { ClientGroupExisting } from "@/models/seb-server/examTemplate.ts";
+
 import { useFormFieldsBasic } from "./useFormFieldsBasic.ts";
 import { useFormFieldsScreenProctoring } from "./useFormFieldsScreenProctoring.ts";
-import { useFormFieldsTypeIPRange } from "./useFormFieldsTypeIPRange.ts";
 import { useFormFieldsTypeClientOS } from "./useFormFieldsTypeClientOS.ts";
+import { useFormFieldsTypeIPRange } from "./useFormFieldsTypeIPRange.ts";
 import { useFormFieldsTypeNameAlphabeticalRange } from "./useFormFieldsTypeNameAlphabeticalRange.ts";
-import { RuleAliases } from "vuetify/labs/rules";
 
 export const useFormFields = (
     groups: Ref<ClientGroupExisting[]>,

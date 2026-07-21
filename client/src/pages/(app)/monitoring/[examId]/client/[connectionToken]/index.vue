@@ -32,24 +32,26 @@
 </template>
 
 <script setup lang="ts">
-import BasicPage from "@/components/layout/pages/BasicPage.vue";
-import { useMonitoringStore } from "@/stores/seb-server/monitoringStore.ts";
-import * as monitoringService from "@/services/seb-server/monitoringService.ts";
-import * as indicatorService from "@/services/seb-server/indicatorService.ts";
+import { computed, onBeforeMount, onBeforeUnmount, ref } from "vue";
 import { useRoute, useRouter } from "vue-router";
-import { computed, ref, onBeforeMount, onBeforeUnmount } from "vue";
+
+import BasicPage from "@/components/layout/pages/BasicPage.vue";
+import type { BreadCrumbItem } from "@/components/widgets/breadCrumb/types.ts";
+import { Indicators } from "@/models/seb-server/indicators.ts";
 import {
     ClientNotification,
     SingleConnection,
 } from "@/models/seb-server/monitoring.ts";
-import { Indicators } from "@/models/seb-server/indicators.ts";
-import MonitoringDetailsMain from "./components/MonitoringDetailsMain.vue";
-import MonitoringDetailsContextPanel from "./components/MonitoringDetailsContextPanel.vue";
 import * as useMonitoringData from "@/pages/(app)/monitoring/[examId]/client/composables/useMonitoringData.ts";
-import { extractClientGroupNames } from "@/utils/monitoringUtils.ts";
-import { translate } from "@/utils/generalUtils.ts";
 import { typedTo } from "@/router/typedTo.ts";
-import type { BreadCrumbItem } from "@/components/widgets/breadCrumb/types.ts";
+import * as indicatorService from "@/services/seb-server/indicatorService.ts";
+import * as monitoringService from "@/services/seb-server/monitoringService.ts";
+import { useMonitoringStore } from "@/stores/seb-server/monitoringStore.ts";
+import { translate } from "@/utils/generalUtils.ts";
+import { extractClientGroupNames } from "@/utils/monitoringUtils.ts";
+
+import MonitoringDetailsContextPanel from "./components/MonitoringDetailsContextPanel.vue";
+import MonitoringDetailsMain from "./components/MonitoringDetailsMain.vue";
 
 // route params
 const examId = useRoute().params.examId;

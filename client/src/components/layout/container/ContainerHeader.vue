@@ -69,9 +69,11 @@
 </template>
 
 <script setup lang="ts">
-import { RouterLink } from "vue-router";
 import type { RouteLocationAsRelative } from "vue-router";
+import { RouterLink } from "vue-router";
+
 import type { UserAccount } from "@/models/userAccount";
+
 import ContainerProfileMenu from "./ContainerProfileMenu.vue";
 
 defineProps<{
