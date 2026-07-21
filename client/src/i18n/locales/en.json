@@ -1957,9 +1957,49 @@
         }
     },
     "examDetail": {
+        "errors": {
+            "invalidId": "Invalid exam id: \"{id}\""
+        },
+        "notFound": {
+            "message": "Exam not found",
+            "backToList": "Back to exams"
+        },
+        "sidePanel": {
+            "createdWithTemplate": "Created with exam template",
+            "actions": {
+                "applyTestRun": "Apply Test Run",
+                "testRunApplied": "Test Run applied",
+                "monitorExam": "Monitor Exam",
+                "downloadExamConnection": "Download Exam Connection",
+                "applySebLock": "Apply SEB Lock",
+                "sebLockApplied": "SEB Lock applied",
+                "excludeFromDeletion": "Exclude from Deletion",
+                "excludedFromDeletion": "Excluded from Deletion",
+                "deleteExam": "Delete Exam"
+            },
+            "connectionDialog": {
+                "title": "Select Connection Configuration",
+                "text": "Please select the Connection Configuration you want to use for starting this exam and click Download to start the download."
+            },
+            "errors": {
+                "connectionConfigurationsFailed": "Failed to load the Connection Configurations",
+                "downloadExamConnectionFailed": "Failed to download the Exam Connection Configuration"
+            }
+        },
+        "deleteDialog": {
+            "title": "Delete Exam",
+            "text": "This deletes the exam and the local import of a course or quiz in SEB Server. Are you sure you want to delete this exam?",
+            "action": "Delete"
+        },
         "boxes": {
             "basicSettings": {
                 "title": "Basic Settings"
+            },
+            "sebSettings": {
+                "title": "SEB Settings",
+                "lastModifiedBy": "Last modified by",
+                "edit": "Edit SEB Settings",
+                "view": "View SEB Settings"
             }
         },
         "info": {

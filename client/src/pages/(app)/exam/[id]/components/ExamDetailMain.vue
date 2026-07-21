@@ -757,21 +757,14 @@
     </v-dialog>
 
     <!-----------seb settings dialog---------->
-    <v-dialog
+    <SebSettingsDialog
+        v-if="seb_settings_context"
         v-model="sebSettingsDialog"
-        persistent
-        height="80vh"
-        max-width="1200"
+        :context="seb_settings_context"
+        :active-s-e-b-client-connection="activeClients"
+        :dialog-title="getSEBSettingsTitle()"
     >
-        <SebSettingsDialog
-            v-if="seb_settings_context"
-            :context="seb_settings_context"
-            :active-s-e-b-client-connection="activeClients"
-            :dialog-title="getSEBSettingsTitle()"
-            @close-seb-settings-dialog="closeSebSettingsDialog"
-        >
-        </SebSettingsDialog>
-    </v-dialog>
+    </SebSettingsDialog>
 
     <!-----------group dialog---------->
     <v-dialog v-model="clientGroupDialog" max-width="1200">
@@ -1399,16 +1392,6 @@ function getSEBSettingsNameKey() {
 
 function openSebSettingsDialog() {
     sebSettingsDialog.value = true;
-}
-
-async function closeSebSettingsDialog(apply?: boolean) {
-    sebSettingsDialog.value = false;
-
-    if (apply) {
-        await sebSettingsService.publish(examId, true);
-    } else {
-        await sebSettingsService.undoChanges(examId, true);
-    }
 }
 
 //= ==============groups logic====================
