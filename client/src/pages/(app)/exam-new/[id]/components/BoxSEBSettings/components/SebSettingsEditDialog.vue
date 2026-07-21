@@ -9,14 +9,12 @@
         @click="handleButtonEditClick"
     />
 
-    <v-dialog v-model="dialogOpen" persistent height="80vh" max-width="1200">
-        <SebSettingsDialog
-            :context="context"
-            :active-s-e-b-client-connection="activeSebClients"
-            :dialog-title="dialogTitleKey"
-            @close-seb-settings-dialog="handleCloseSebSettingsDialog"
-        />
-    </v-dialog>
+    <SebSettingsDialog
+        v-model="dialogOpen"
+        :context="context"
+        :active-s-e-b-client-connection="activeSebClients"
+        :dialog-title="dialogTitleKey"
+    />
 </template>
 
 <script setup lang="ts">
@@ -24,7 +22,6 @@ import { computed, ref } from "vue";
 import BoxActionButton from "@/components/widgets/BoxActionButton.vue";
 import SebSettingsDialog from "@/components/widgets/sebSettings/SebSettingsDialog.vue";
 import { SEBSettingsContext } from "@/components/widgets/sebSettings/types.ts";
-import * as sebSettingsService from "@/services/seb-server/sebSettingsService.ts";
 
 const { examId, editDisabled, activeSebClients } = defineProps<{
     examId: number;
@@ -52,16 +49,5 @@ const context = computed<SEBSettingsContext>(() => ({
 
 const handleButtonEditClick = () => {
     dialogOpen.value = true;
-};
-
-const handleCloseSebSettingsDialog = async (apply: boolean) => {
-    dialogOpen.value = false;
-
-    if (apply) {
-        await sebSettingsService.publish(String(examId), true);
-        return;
-    }
-
-    await sebSettingsService.undoChanges(String(examId), true);
 };
 </script>

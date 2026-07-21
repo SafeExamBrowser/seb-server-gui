@@ -30,21 +30,13 @@
                     @click="editSEBSettings"
                 />
 
-                <v-dialog
+                <SebSettingsDialog
+                    v-if="seb_settings_context"
                     v-model="sebSettingsDialog"
-                    persistent
-                    height="80vh"
-                    max-width="1200"
-                >
-                    <SebSettingsDialog
-                        v-if="seb_settings_context"
-                        :context="seb_settings_context"
-                        :active-s-e-b-client-connection="0"
-                        dialog-title="examDetail.main.sebSettings"
-                        @close-seb-settings-dialog="closeSebSettingsDialog"
-                    >
-                    </SebSettingsDialog>
-                </v-dialog>
+                    :context="seb_settings_context"
+                    :active-s-e-b-client-connection="0"
+                    dialog-title="examDetail.main.sebSettings"
+                ></SebSettingsDialog>
             </template>
             <p v-if="configTemplateId === undefined">
                 NO CONFIG TEMPLATE APPLIED
@@ -66,7 +58,6 @@ import { computed, ComputedRef, ref } from "vue";
 import { useI18n } from "vue-i18n";
 import { SEBSettingsContext } from "@/components/widgets/sebSettings/types.ts";
 import SebSettingsDialog from "@/components/widgets/sebSettings/SebSettingsDialog.vue";
-import * as sebSettingsService from "@/services/seb-server/sebSettingsService.ts";
 import { useDownloadSEBSettings } from "@/pages/(app)/exam-template/[id]/components/BoxSEBSettings/api/useDownloadSEBSettings";
 import { useSEBSettingsImportForm } from "@/pages/(app)/exam-template/create/components/stepSEBSettings/composables/useSEBSettingsImportForm";
 import FormDialog from "@/components/widgets/formDialog/FormDialog.vue";
@@ -125,21 +116,6 @@ const info = computed<KeyValueItem[]>(() => {
 
 function editSEBSettings() {
     sebSettingsDialog.value = true;
-}
-
-async function closeSebSettingsDialog(apply?: boolean) {
-    sebSettingsDialog.value = false;
-
-    if (configTemplate.value) {
-        if (apply) {
-            await sebSettingsService.publish(configTemplate.value.id, false);
-        } else {
-            await sebSettingsService.undoChanges(
-                configTemplate.value.id,
-                false,
-            );
-        }
-    }
 }
 
 // ---- Download SEB Settings
