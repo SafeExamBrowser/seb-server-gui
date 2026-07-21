@@ -1,9 +1,11 @@
-export type ConfigurationTemplateKey = {
+export type ConfigurationNodeInfo = {
     id: string;
     name: string;
     lastUpdateTime: string;
     lastUpdateUserName: string;
 };
+
+export type ConfigurationTemplateKey = ConfigurationNodeInfo;
 
 export type SEBSettingsImport = {
     file: Blob;

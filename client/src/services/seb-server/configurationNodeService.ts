@@ -1,5 +1,6 @@
 import * as apiService from "@/services/apiService";
 import {
+    ConfigurationNodeInfo,
     ConfigurationTemplateKey,
     SEBSettingsImport,
     ConfigurationKey,
@@ -7,9 +8,9 @@ import {
 
 const baseUrl = "/configuration-node" as const;
 
-export const getConfigurationTemplate = async (
+export const getConfigurationNode = async (
     id: string,
-): Promise<ConfigurationTemplateKey> =>
+): Promise<ConfigurationNodeInfo> =>
     (
         await apiService.getRequest({
             url: `${baseUrl}/${id}`,
@@ -19,6 +20,10 @@ export const getConfigurationTemplate = async (
             },
         })
     ).data;
+
+export const getConfigurationTemplate = async (
+    id: string,
+): Promise<ConfigurationTemplateKey> => getConfigurationNode(id);
 
 export const importSEBSettings = async (
     settingsImport: SEBSettingsImport,
