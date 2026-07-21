@@ -9,19 +9,41 @@ const getInitialState = () => ({
 export const useStepAssessmentToolStore = defineStore(
     "createExam_stepAssessmentTool",
     () => {
-        const { data: assessmentTools, loading, error } = useAssessmentTools();
+        // the fetch is triggered by the create exam page on every navigation,
+        // so the list stays fresh across visits, consider invalidating once migration to openapi/tanstack is done
+        const {
+            data: assessmentTools,
+            loading,
+            error,
+            fetchData: fetchAssessmentTools,
+        } = useAssessmentTools({ immediate: false });
 
         const selectedAssessmentToolId = ref<number | undefined>(
             getInitialState().selectedAssessmentToolId,
         );
 
         watchEffect(() => {
+            const tools = assessmentTools.value?.content;
+            if (!tools) {
+                return;
+            }
+
+            // a refetch can drop the selected tool from the list (e.g. it was
+            // deactivated in the meantime) - clear the selection in that case
+            if (
+                selectedAssessmentToolId.value !== undefined &&
+                !tools.some(
+                    (tool) => tool.id === selectedAssessmentToolId.value,
+                )
+            ) {
+                selectedAssessmentToolId.value = undefined;
+            }
+
             if (
                 selectedAssessmentToolId.value === undefined &&
-                assessmentTools.value?.content.length === 1
+                tools.length === 1
             ) {
-                selectedAssessmentToolId.value =
-                    assessmentTools.value.content[0].id;
+                selectedAssessmentToolId.value = tools[0].id;
             }
         });
 
@@ -40,6 +62,7 @@ export const useStepAssessmentToolStore = defineStore(
             error,
             isReady,
             selectedAssessmentToolId,
+            fetchAssessmentTools,
             $reset,
         };
     },
