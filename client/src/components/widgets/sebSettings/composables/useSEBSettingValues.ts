@@ -1,20 +1,22 @@
-import { ViewType } from "@/models/seb-server/sebSettingsEnums.ts";
-import { useFetchViewValues } from "./api/useFetchViewValues.ts";
 import { computed, ref } from "vue";
-import { stringToBoolean } from "@/utils/generalUtils.ts";
-import { translate } from "@/utils/generalUtils.ts";
-import * as sebSettingsService from "@/services/seb-server/sebSettingsService.ts";
-import {
-    SEBSettingsValue,
-    SEBSettingAttribute,
-    SEBSettingsTableRowValues,
-    SEBSettingTableValue,
-} from "@/models/seb-server/sebSettings.ts";
+
 import {
     SEBSettingsSingeValueModel,
     SEBSettingsTableModel,
     SEBValueAttributes,
-} from "../types.ts";
+} from "@/components/widgets/sebSettings/types.ts";
+import {
+    SEBSettingAttribute,
+    SEBSettingsTableRowValues,
+    SEBSettingsValue,
+    SEBSettingTableValue,
+} from "@/models/seb-server/sebSettings.ts";
+import { ViewType } from "@/models/seb-server/sebSettingsEnums.ts";
+import * as sebSettingsService from "@/services/seb-server/sebSettingsService.ts";
+import { stringToBoolean } from "@/utils/generalUtils.ts";
+import { translate } from "@/utils/generalUtils.ts";
+
+import { useFetchViewValues } from "./api/useFetchViewValues.ts";
 
 // This is used for inter tab communication of Security tab and Registry tab.
 // The Security tab ignoreSEBService set this value on change and the Registry

@@ -1,4 +1,5 @@
 import { computed, type MaybeRefOrGetter, toValue } from "vue";
+
 import type { ServerTablePaging } from "@/models/types.ts";
 
 type SortItemForTable = { key: string; order?: boolean | "asc" | "desc" };

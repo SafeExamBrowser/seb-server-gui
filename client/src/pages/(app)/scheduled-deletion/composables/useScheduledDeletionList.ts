@@ -1,11 +1,13 @@
 import { computed } from "vue";
-import { useUrlTableState } from "@/components/widgets/entity-table/composables/useUrlTableState.ts";
+
 import { usePagedListData } from "@/components/widgets/entity-table/composables/usePagedListData.ts";
-import {
-    useScheduledDeleteFilters,
-    STATUS_FILTER_KEY,
-} from "./useScheduledDeletionFilters.ts";
+import { useUrlTableState } from "@/components/widgets/entity-table/composables/useUrlTableState.ts";
 import { fetchScheduledDeletions } from "@/pages/(app)/scheduled-deletion/composables/api/fetchScheduledDeletions.ts";
+
+import {
+    STATUS_FILTER_KEY,
+    useScheduledDeleteFilters,
+} from "./useScheduledDeletionFilters.ts";
 
 export const useScheduledDeletionList = () => {
     const filterSections = useScheduledDeleteFilters();

@@ -90,10 +90,14 @@
 </template>
 
 <script setup lang="ts">
-import { FormFieldBaseProperties, TimeRange } from "../types";
 import { ref, useTemplateRef } from "vue";
-import { getTimestampFromDateAndTime } from "@/utils/timeUtils";
+
+import {
+    FormFieldBaseProperties,
+    TimeRange,
+} from "@/components/widgets/formBuilder/types";
 import i18n from "@/i18n";
+import { getTimestampFromDateAndTime } from "@/utils/timeUtils";
 
 const model = defineModel<TimeRange>();
 const showMenuFrom = ref(false);

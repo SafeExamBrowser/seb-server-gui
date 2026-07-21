@@ -1,9 +1,10 @@
 import { reactive } from "vue";
-import { useRouter, type RouteLocationAsRelative } from "vue-router";
+import { type RouteLocationAsRelative, useRouter } from "vue-router";
+
 import type { TableItem } from "@/components/widgets/entity-table/types.ts";
-import { useExamTableHeaders } from "@/pages/(app)/exam/composables/useExamTableHeaders.ts";
-import { useAnalyzeTableActions } from "@/pages/(app)/analyze/composables/useAnalyzeTableActions.ts";
 import { useAnalyzeList } from "@/pages/(app)/analyze/composables/useAnalyzeList.ts";
+import { useAnalyzeTableActions } from "@/pages/(app)/analyze/composables/useAnalyzeTableActions.ts";
+import { useExamTableHeaders } from "@/pages/(app)/exam/composables/useExamTableHeaders.ts";
 
 export const useAnalyzeOverview = () => {
     const router = useRouter();

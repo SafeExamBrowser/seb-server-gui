@@ -1,8 +1,9 @@
 import { useMutation, useQueryClient } from "@tanstack/vue-query";
+
 import { getSebClientConfigsQueryKey } from "@/api/seb-server/generated/hey-api/@tanstack/vue-query.gen.ts";
 import { heySebServerClient } from "@/api/seb-server/http/heySebServerClient.ts";
-import { createConnectionConfiguration } from "@/services/seb-server/connectionConfigurationService.ts";
 import type { ConnectionConfigurationCreateRequest } from "@/models/connectionConfiguration.ts";
+import { createConnectionConfiguration } from "@/services/seb-server/connectionConfigurationService.ts";
 
 export const useCreateConnectionConfigurationMutation = () => {
     const queryClient = useQueryClient();

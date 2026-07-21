@@ -1,11 +1,13 @@
-import { test, expect } from "../shared/fixtures/table-list-fixtures";
-import { expectNoRequest, waitForRequest } from "../utils/networkAssertions";
+import type { Page } from "@playwright/test";
+
 import { USER_ACCOUNT_FIELD } from "@/pages/(app)/user-account/userAccountFormConfig.ts";
+
+import { expect, test } from "../shared/fixtures/table-list-fixtures";
+import { expectNoRequest, waitForRequest } from "../utils/networkAssertions";
 import {
     INSTITUTION_INFO_REQUEST,
     REGISTER_REQUEST,
 } from "./models/user-account-register.model";
-import type { Page } from "@playwright/test";
 
 const input = {
     username: "e2e-register-account",

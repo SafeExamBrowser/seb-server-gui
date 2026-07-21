@@ -18,9 +18,11 @@
 <script setup lang="ts">
 import { computed, ref, useAttrs } from "vue";
 import { VForm } from "vuetify/components";
-import { FormFieldsComponentProps } from "./types";
+
 import type { BackendFieldErrorMap } from "@/services/errors/types.ts";
+
 import FormFields from "./components/FormFields.vue";
+import { FormFieldsComponentProps } from "./types";
 
 const isValid = defineModel<boolean | null>();
 const formRef = ref<InstanceType<typeof VForm>>();

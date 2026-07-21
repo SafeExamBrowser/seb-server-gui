@@ -1,16 +1,18 @@
 import { computed } from "vue";
-import { useUrlTableState } from "@/components/widgets/entity-table/composables/useUrlTableState.ts";
+
+import type { GetLmsSetupsData } from "@/api/seb-server/generated/hey-api/types.gen.ts";
 import { usePagedListData } from "@/components/widgets/entity-table/composables/usePagedListData.ts";
+import { useUrlTableState } from "@/components/widgets/entity-table/composables/useUrlTableState.ts";
 import { STATUS_FILTER_KEY } from "@/components/widgets/filters/statusFilterSection.ts";
 import { INSTITUTION_FILTER_KEY } from "@/components/widgets/filters/useInstitutionFilterSection.ts";
-import {
-    useAssessmentToolsFilters,
-    LMS_TYPE_FILTER_KEY,
-} from "./useAssessmentToolsFilters.ts";
 import { useAssessmentToolsQuery } from "@/pages/(app)/assessment-tool/api/useAssessmentToolsQuery.ts";
 import { toAppErrorOrUndefined } from "@/services/errors/toAppError.ts";
 import { toServerPageQuery } from "@/utils/table/tableUtils.ts";
-import type { GetLmsSetupsData } from "@/api/seb-server/generated/hey-api/types.gen.ts";
+
+import {
+    LMS_TYPE_FILTER_KEY,
+    useAssessmentToolsFilters,
+} from "./useAssessmentToolsFilters.ts";
 
 export const useAssessmentToolsList = () => {
     const filterSections = useAssessmentToolsFilters();

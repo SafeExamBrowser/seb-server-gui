@@ -1,4 +1,5 @@
 import { computed, ref } from "vue";
+
 import type { InstitutionName } from "@/models/institution";
 import { getInstitutions } from "@/services/seb-server/institutionInfoService";
 

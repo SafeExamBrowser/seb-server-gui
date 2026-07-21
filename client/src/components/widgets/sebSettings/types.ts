@@ -1,10 +1,11 @@
+import { Ref } from "vue";
+
 import {
-    SEBSettingsValue,
     SEBSettingAttribute,
     SEBSettingsTableRowValues,
+    SEBSettingsValue,
     SEBSettingTableValue,
 } from "@/models/seb-server/sebSettings.ts";
-import { Ref } from "vue";
 
 export type SEBValueAttributes = {
     title: string;

@@ -1,4 +1,4 @@
-import { ref, watch, type Ref } from "vue";
+import { type Ref, ref, watch } from "vue";
 
 export const usePersistedRef = <T extends string>(
     key: T,

@@ -13,9 +13,11 @@
 
 <script setup lang="ts">
 import { computed } from "vue";
+
 import DetailBox from "@/components/widgets/DetailBox.vue";
 import KeyValueList from "@/components/widgets/keyValueList/KeyValueList.vue";
 import { BasicSettings } from "@/models/seb-server/examTemplate.ts";
+
 import BasicSettingsEditDialog from "./components/BasicSettingsEditDialog.vue";
 import { useBasicSettingsItems } from "./composables/useBasicSettingsItems.ts";
 

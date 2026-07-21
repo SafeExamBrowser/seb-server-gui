@@ -1,16 +1,17 @@
 import { computed } from "vue";
 import { useRoute } from "vue-router";
-import { useMonitoringStore } from "@/stores/seb-server/monitoringStore.ts";
-import { MonitoringHeaderEnum } from "@/models/seb-server/monitoringEnums.ts";
-import { translate } from "@/utils/generalUtils.ts";
-import { getConnectionStatusColor } from "@/utils/monitoringUtils.ts";
-import { parseFilterValues } from "@/components/widgets/filters/filterValues.ts";
+
+import type { TableFilters } from "@/components/widgets/entity-table/types.ts";
 import type {
     FilterOption,
     FilterSectionDef,
 } from "@/components/widgets/filters/filterTypes.ts";
-import type { TableFilters } from "@/components/widgets/entity-table/types.ts";
+import { parseFilterValues } from "@/components/widgets/filters/filterValues.ts";
+import { MonitoringHeaderEnum } from "@/models/seb-server/monitoringEnums.ts";
 import * as useMonitoringNavigation from "@/pages/(app)/monitoring/[examId]/composables/useMonitoringNavigation.ts";
+import { useMonitoringStore } from "@/stores/seb-server/monitoringStore.ts";
+import { translate } from "@/utils/generalUtils.ts";
+import { getConnectionStatusColor } from "@/utils/monitoringUtils.ts";
 
 const FILTER_KEYS = [
     MonitoringHeaderEnum.SHOW_CLIENT_GROUPS,

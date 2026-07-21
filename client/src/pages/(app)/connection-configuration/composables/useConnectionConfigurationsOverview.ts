@@ -1,14 +1,16 @@
 import { computed, reactive } from "vue";
-import { useRouter, type RouteLocationAsRelative } from "vue-router";
-import type { TableItem } from "@/components/widgets/entity-table/types.ts";
-import { useConnectionConfigurationsTableHeaders } from "./useConnectionConfigurationsTableHeaders.ts";
-import { useConnectionConfigurationsTableActions } from "./useConnectionConfigurationsTableActions.ts";
-import { useConnectionConfigurationsList } from "./useConnectionConfigurationsList.ts";
-import { useDeleteConnectionConfigurationMutation } from "@/pages/(app)/connection-configuration/api/useDeleteConnectionConfigurationMutation.ts";
-import { useToggleConnectionConfigurationStatusMutation } from "@/pages/(app)/connection-configuration/api/useToggleConnectionConfigurationStatusMutation.ts";
+import { type RouteLocationAsRelative, useRouter } from "vue-router";
+
 import { useEntityDeleteFlow } from "@/components/widgets/entity-table/composables/useEntityDeleteFlow.ts";
 import { useEntityStatusFlow } from "@/components/widgets/entity-table/composables/useEntityStatusFlow.ts";
+import type { TableItem } from "@/components/widgets/entity-table/types.ts";
+import { useDeleteConnectionConfigurationMutation } from "@/pages/(app)/connection-configuration/api/useDeleteConnectionConfigurationMutation.ts";
+import { useToggleConnectionConfigurationStatusMutation } from "@/pages/(app)/connection-configuration/api/useToggleConnectionConfigurationStatusMutation.ts";
 import { toAppErrorOrUndefined } from "@/services/errors/toAppError.ts";
+
+import { useConnectionConfigurationsList } from "./useConnectionConfigurationsList.ts";
+import { useConnectionConfigurationsTableActions } from "./useConnectionConfigurationsTableActions.ts";
+import { useConnectionConfigurationsTableHeaders } from "./useConnectionConfigurationsTableHeaders.ts";
 
 export const useConnectionConfigurationsOverview = () => {
     const router = useRouter();

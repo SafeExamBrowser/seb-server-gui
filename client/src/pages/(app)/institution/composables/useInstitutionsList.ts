@@ -1,12 +1,14 @@
 import { computed } from "vue";
-import { useUrlTableState } from "@/components/widgets/entity-table/composables/useUrlTableState.ts";
+
+import type { GetInstitutionsData } from "@/api/seb-server/generated/hey-api/types.gen.ts";
 import { usePagedListData } from "@/components/widgets/entity-table/composables/usePagedListData.ts";
+import { useUrlTableState } from "@/components/widgets/entity-table/composables/useUrlTableState.ts";
 import { STATUS_FILTER_KEY } from "@/components/widgets/filters/statusFilterSection.ts";
-import { useInstitutionsFilters } from "./useInstitutionsFilters.ts";
 import { useInstitutionsQuery } from "@/pages/(app)/institution/api/useInstitutionsQuery.ts";
 import { toAppErrorOrUndefined } from "@/services/errors/toAppError.ts";
 import { toServerPageQuery } from "@/utils/table/tableUtils.ts";
-import type { GetInstitutionsData } from "@/api/seb-server/generated/hey-api/types.gen.ts";
+
+import { useInstitutionsFilters } from "./useInstitutionsFilters.ts";
 
 export const useInstitutionsList = () => {
     const filterSections = useInstitutionsFilters();

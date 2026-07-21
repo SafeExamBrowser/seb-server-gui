@@ -1,13 +1,14 @@
 import { computed } from "vue";
 import { useI18n } from "vue-i18n";
+
 import type {
     TableAction,
     TableItem,
 } from "@/components/widgets/entity-table/types.ts";
-import * as timeUtils from "@/utils/timeUtils.ts";
-import { downloadSEBLogsForExam } from "@/services/seb-server/monitoringService";
 import { Exam } from "@/models/seb-server/exam";
+import { downloadSEBLogsForExam } from "@/services/seb-server/monitoringService";
 import { stringToBoolean } from "@/utils/generalUtils";
+import * as timeUtils from "@/utils/timeUtils.ts";
 
 export function useAnalyzeTableActions(deps: {
     onShowSPS: (item: TableItem) => void;

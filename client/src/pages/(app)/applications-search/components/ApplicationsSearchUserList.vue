@@ -43,10 +43,11 @@
 
 <script setup lang="ts">
 import { onBeforeMount, ref } from "vue";
-import * as generalUtils from "@/utils/generalUtils";
+
 import { UserListForApplicationSearchRecord } from "@/models/screen-proctoring/applicationSearch";
-import { getUserListForApplicationSearch } from "@/services/screen-proctoring/applicationsSearchService.ts";
 import { openRouteInNewTab } from "@/router/openRouteInNewTab.ts";
+import { getUserListForApplicationSearch } from "@/services/screen-proctoring/applicationsSearchService.ts";
+import * as generalUtils from "@/utils/generalUtils";
 
 // props
 const props = defineProps<{

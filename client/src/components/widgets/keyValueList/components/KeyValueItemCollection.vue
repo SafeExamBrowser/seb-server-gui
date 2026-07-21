@@ -6,8 +6,9 @@
     </div>
 </template>
 <script setup lang="ts">
-import KeyValueItemBasic from "./KeyValueItemBasic.vue";
 import { KeyValueItem } from "@/components/widgets/keyValueList/types.ts";
+
+import KeyValueItemBasic from "./KeyValueItemBasic.vue";
 
 defineProps<{
     item: KeyValueItem & { type: "collection" };

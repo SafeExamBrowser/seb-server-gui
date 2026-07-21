@@ -1,4 +1,5 @@
 import type { RouteLocationAsRelative } from "vue-router";
+
 import { typedTo } from "@/router/typedTo";
 import { AbilityLike, GUIComponent } from "@/services/ability";
 

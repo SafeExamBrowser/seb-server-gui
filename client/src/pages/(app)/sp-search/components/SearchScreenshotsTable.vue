@@ -151,13 +151,14 @@
 
 <script setup lang="ts">
 import { onBeforeMount, ref, watch } from "vue";
-import * as timeUtils from "@/utils/timeUtils";
-import * as tableUtils from "@/utils/table/tableUtils";
-import * as groupingUtils from "@/utils/groupingUtils";
-import TableHeaders from "@/utils/table/TableHeaders.vue";
-import * as spConstants from "@/utils/sp-constants";
+
 import { SearchTimeline } from "@/models/screen-proctoring/search";
 import { openRouteInNewTab } from "@/router/openRouteInNewTab.ts";
+import * as groupingUtils from "@/utils/groupingUtils";
+import * as spConstants from "@/utils/sp-constants";
+import TableHeaders from "@/utils/table/TableHeaders.vue";
+import * as tableUtils from "@/utils/table/tableUtils";
+import * as timeUtils from "@/utils/timeUtils";
 
 function openProctoringView(sessionId: string, timestamp?: string | number) {
     const searchTimestamp = timestamp?.toString().trim();

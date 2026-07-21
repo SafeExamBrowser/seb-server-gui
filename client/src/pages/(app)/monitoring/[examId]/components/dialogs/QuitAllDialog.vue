@@ -63,8 +63,9 @@
 </template>
 
 <script setup lang="ts">
-import { translate } from "@/utils/generalUtils.ts";
 import { ref } from "vue";
+
+import { translate } from "@/utils/generalUtils.ts";
 
 const emit = defineEmits<{
     (e: "closeQuitAllDialog", value: string): void;

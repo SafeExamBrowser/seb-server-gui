@@ -1,5 +1,5 @@
-import i18n from "@/i18n";
 import { SummarySectionData } from "@/components/widgets/wizardSummary/types.ts";
+import i18n from "@/i18n";
 import { ExamTemplate } from "@/models/seb-server/examTemplate.ts";
 
 export const getSummaryExamTemplate = (

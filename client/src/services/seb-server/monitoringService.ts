@@ -1,5 +1,5 @@
-import * as apiService from "@/services/apiService";
-import { OptionalParGetMonitoringClientLogs } from "@/models/seb-server/optionalParamters";
+import { ClientInstruction } from "@/models/seb-server/clientInstruction";
+import { Exam, Exams } from "@/models/seb-server/exam";
 import {
     ClientEventResponse,
     ClientNotification,
@@ -8,11 +8,11 @@ import {
     MonitoringStaticClientData,
     SingleConnection,
 } from "@/models/seb-server/monitoring";
-import { Exam, Exams } from "@/models/seb-server/exam";
-import { ClientInstruction } from "@/models/seb-server/clientInstruction";
-import { OptionalParGetExams } from "@/models/seb-server/optionalParamters";
-import { MonitoringHeaderEnum } from "@/models/seb-server/monitoringEnums";
 import { MonitoringConnectionHeaders } from "@/models/seb-server/monitoring";
+import { MonitoringHeaderEnum } from "@/models/seb-server/monitoringEnums";
+import { OptionalParGetMonitoringClientLogs } from "@/models/seb-server/optionalParamters";
+import { OptionalParGetExams } from "@/models/seb-server/optionalParamters";
+import * as apiService from "@/services/apiService";
 
 const baseUrl: string = "/monitoring";
 const clientEventUrl: string = "/seb-client-event";

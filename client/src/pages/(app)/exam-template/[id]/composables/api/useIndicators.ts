@@ -1,16 +1,17 @@
 import { computed, ref } from "vue";
+
 import { useMutation } from "@/composables/useMutation.ts";
-import { notify } from "@/services/notifications/notify.ts";
 import i18n from "@/i18n";
+import {
+    Indicator,
+    IndicatorExisting,
+} from "@/models/seb-server/examTemplate.ts";
+import { notify } from "@/services/notifications/notify.ts";
 import {
     createIndicator,
     deleteIndicator,
     updateIndicator,
 } from "@/services/seb-server/examTemplateIndicatorService.ts";
-import {
-    Indicator,
-    IndicatorExisting,
-} from "@/models/seb-server/examTemplate.ts";
 
 export const useIndicators = (
     examTemplateId: number,

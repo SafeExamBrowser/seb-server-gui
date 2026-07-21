@@ -1,7 +1,8 @@
 import { computed } from "vue";
-import { translate } from "@/utils/generalUtils.ts";
-import { INSTITUTION_COLUMN } from "@/pages/(app)/institution/institutionListConfig.ts";
+
 import type { TableHeader } from "@/components/widgets/entity-table/types.ts";
+import { INSTITUTION_COLUMN } from "@/pages/(app)/institution/institutionListConfig.ts";
+import { translate } from "@/utils/generalUtils.ts";
 
 export function useInstitutionsTableHeaders() {
     const headers = computed<TableHeader[]>(() => [

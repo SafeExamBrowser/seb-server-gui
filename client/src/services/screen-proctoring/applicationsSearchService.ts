@@ -1,10 +1,10 @@
-import * as apiService from "@/services/apiService";
-import { OptionalParGetExamsStarted } from "@/models/screen-proctoring/optionalParamters";
-import { SPExam } from "@/models/screen-proctoring/exam";
 import {
     DistinctMetadataWindowForExamRecord,
     UserListForApplicationSearchRecord,
 } from "@/models/screen-proctoring/applicationSearch";
+import { SPExam } from "@/models/screen-proctoring/exam";
+import { OptionalParGetExamsStarted } from "@/models/screen-proctoring/optionalParamters";
+import * as apiService from "@/services/apiService";
 
 const baseUrl = "/sps/proctoring/search/applications" as const;
 

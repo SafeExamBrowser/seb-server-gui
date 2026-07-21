@@ -1,12 +1,13 @@
 import { z } from "zod";
-import * as apiService from "@/services/apiService";
+
 import {
     colorCodec,
-    indicatorExistingSchema,
-    thresholdSchema,
     type Indicator,
     type IndicatorExisting,
+    indicatorExistingSchema,
+    thresholdSchema,
 } from "@/models/seb-server/examTemplate.ts";
+import * as apiService from "@/services/apiService";
 
 const baseUrl = "/exam-template" as const;
 

@@ -218,6 +218,7 @@
 
 <script setup lang="ts">
 import { computed, ref } from "vue";
+
 import { timePeriodUnits } from "@/components/widgets/searches/timeRange/timeRangeUtils";
 import type {
     SearchTimeMode,

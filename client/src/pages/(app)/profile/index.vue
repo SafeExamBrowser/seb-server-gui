@@ -18,13 +18,14 @@
 <script setup lang="ts">
 import { computed, ref } from "vue";
 import { useRouter } from "vue-router";
-import UserAccountForm from "@/pages/(app)/user-account/components/UserAccountForm.vue";
-import { userAccountFormConfig } from "@/pages/(app)/user-account/userAccountFormConfig.ts";
+
 import LoadingFallbackComponent from "@/components/widgets/loadingFallbackComponent/LoadingFallbackComponent.vue";
 import { useCurrentUserQuery } from "@/composables/useCurrentUser.ts";
-import { toAppErrorOrUndefined } from "@/services/errors/toAppError.ts";
 import { useLogout } from "@/composables/useLogout.ts";
+import UserAccountForm from "@/pages/(app)/user-account/components/UserAccountForm.vue";
 import { useUserAccountFormSubmit } from "@/pages/(app)/user-account/composables/useUserAccountFormSubmit.ts";
+import { userAccountFormConfig } from "@/pages/(app)/user-account/userAccountFormConfig.ts";
+import { toAppErrorOrUndefined } from "@/services/errors/toAppError.ts";
 
 definePage({
     meta: {

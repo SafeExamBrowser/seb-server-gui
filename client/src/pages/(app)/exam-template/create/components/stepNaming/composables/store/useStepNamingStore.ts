@@ -1,6 +1,7 @@
-import { ExamTypeEnum } from "@/models/seb-server/examFiltersEnum.ts";
 import { defineStore } from "pinia";
 import { ref } from "vue";
+
+import { ExamTypeEnum } from "@/models/seb-server/examFiltersEnum.ts";
 
 const getInitialState = () => ({
     isReady: false,

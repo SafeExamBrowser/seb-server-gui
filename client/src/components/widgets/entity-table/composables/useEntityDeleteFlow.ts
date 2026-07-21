@@ -1,7 +1,8 @@
-import { computed, ref, type Ref } from "vue";
-import { notify } from "@/services/notifications/notify.ts";
-import type { AppError } from "@/services/errors/types.ts";
+import { computed, type Ref, ref } from "vue";
+
 import type { TableItem } from "@/components/widgets/entity-table/types.ts";
+import type { AppError } from "@/services/errors/types.ts";
+import { notify } from "@/services/notifications/notify.ts";
 
 export const useEntityDeleteFlow = (config: {
     remove: (item: TableItem) => Promise<void>;

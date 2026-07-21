@@ -1,8 +1,8 @@
-import i18n from "@/i18n";
 import {
     SummarySectionData,
     SummarySectionItem,
 } from "@/components/widgets/wizardSummary/types.ts";
+import i18n from "@/i18n";
 import { UserAccountName } from "@/models/userAccount.ts";
 
 export const getSummarySupervisors = (

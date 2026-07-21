@@ -14,8 +14,10 @@
 <script setup lang="ts">
 import { computed } from "vue";
 import { useDisplay } from "vuetify";
+
 import LoadingFallbackComponent from "@/components/widgets/loadingFallbackComponent/LoadingFallbackComponent.vue";
 import StepItem from "@/components/widgets/stepItem/StepItem.vue";
+
 import SEBSettings from "./components/SEBSettings.vue";
 import { useSEBSettings } from "./composables/useSEBSettings.ts";
 

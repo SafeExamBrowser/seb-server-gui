@@ -1,9 +1,9 @@
+import {
+    type InstitutionName,
+    institutionNameSchema,
+} from "@/models/institution.ts";
 import * as apiService from "@/services/apiService";
 import { decodeWire } from "@/services/errors/wireCodec.ts";
-import {
-    institutionNameSchema,
-    type InstitutionName,
-} from "@/models/institution.ts";
 
 // /info/* is on the unmigrated InfoController and backs the PUBLIC register
 // dropdown, so it stays on the legacy apiService (reachable unauthenticated).

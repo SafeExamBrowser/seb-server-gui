@@ -1,4 +1,3 @@
-import { heySebServerClient as client } from "@/api/seb-server/http/heySebServerClient.ts";
 import {
     activateUserAccount as activateUserAccountSdk,
     changeUserAccountPassword as changeUserAccountPasswordSdk,
@@ -8,32 +7,33 @@ import {
     editUserAccount as editUserAccountSdk,
     getCurrentUserAccount as getCurrentUserAccountSdk,
     getUserAccountById as getUserAccountByIdSdk,
-    getUserAccountSupervisors as getUserAccountSupervisorsSdk,
     getUserAccounts as getUserAccountsSdk,
+    getUserAccountSupervisors as getUserAccountSupervisorsSdk,
     registerUserAccount as registerUserAccountSdk,
 } from "@/api/seb-server/generated/hey-api/sdk.gen.ts";
-import {
-    userAccountCreateSchema,
-    userAccountNameSchema,
-    userAccountPageSchema,
-    userAccountPasswordChangeSchema,
-    userAccountRegisterSchema,
-    userAccountSchema,
-    type UserAccount,
-    type UserAccountCreateRequest,
-    type UserAccountName,
-    type UserAccountPage,
-    type UserAccountPasswordChange,
-    type UserAccountRegisterRequest,
-} from "@/models/userAccount.ts";
-import { decodeWire, encodeWire } from "@/services/errors/wireCodec.ts";
-import { zEntityProcessingReport } from "@/api/seb-server/generated/hey-api/zod.gen.ts";
 import type {
     EntityProcessingReport,
-    GetUserAccountSupervisorsData,
     GetUserAccountsData,
+    GetUserAccountSupervisorsData,
     UserMod,
 } from "@/api/seb-server/generated/hey-api/types.gen.ts";
+import { zEntityProcessingReport } from "@/api/seb-server/generated/hey-api/zod.gen.ts";
+import { heySebServerClient as client } from "@/api/seb-server/http/heySebServerClient.ts";
+import {
+    type UserAccount,
+    type UserAccountCreateRequest,
+    userAccountCreateSchema,
+    type UserAccountName,
+    userAccountNameSchema,
+    type UserAccountPage,
+    userAccountPageSchema,
+    type UserAccountPasswordChange,
+    userAccountPasswordChangeSchema,
+    type UserAccountRegisterRequest,
+    userAccountRegisterSchema,
+    userAccountSchema,
+} from "@/models/userAccount.ts";
+import { decodeWire, encodeWire } from "@/services/errors/wireCodec.ts";
 
 // TODO(backend): userRoles should not be mandatory on the register schema. The /register
 // endpoint already assigns EXAM_SUPPORTER server-side; it is sent here only because the shared

@@ -1,14 +1,15 @@
 import { useMutation, useQueryClient } from "@tanstack/vue-query";
+
 import {
     getLmsSetupByIdQueryKey,
     getLmsSetupsQueryKey,
 } from "@/api/seb-server/generated/hey-api/@tanstack/vue-query.gen.ts";
 import { heySebServerClient } from "@/api/seb-server/http/heySebServerClient.ts";
-import { editAssessmentTool } from "@/services/seb-server/assessmentToolService.ts";
 import type {
     AssessmentTool,
     AssessmentToolEditRequest,
 } from "@/models/assessmentTool.ts";
+import { editAssessmentTool } from "@/services/seb-server/assessmentToolService.ts";
 
 export const useEditAssessmentToolMutation = () => {
     const queryClient = useQueryClient();

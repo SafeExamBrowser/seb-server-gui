@@ -1,7 +1,8 @@
-import { test, expect } from "../shared/fixtures/table-list-fixtures";
-import { expectNoRequest, waitForRequest } from "../utils/networkAssertions";
-import { expectToHaveUrl } from "../utils/helpers";
 import { CONNECTION_CONFIG_FIELD } from "@/pages/(app)/connection-configuration/connectionConfigurationFormConfig.ts";
+
+import { expect, test } from "../shared/fixtures/table-list-fixtures";
+import { expectToHaveUrl } from "../utils/helpers";
+import { expectNoRequest, waitForRequest } from "../utils/networkAssertions";
 import { CONNECTION_CONFIG_CREATE_REQUEST } from "./models/connection-configuration-create.model";
 
 const mainInput = {

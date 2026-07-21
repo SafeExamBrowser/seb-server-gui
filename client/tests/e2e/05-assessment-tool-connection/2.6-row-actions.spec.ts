@@ -1,7 +1,8 @@
-import { test, expect } from "../shared/fixtures/table-list-fixtures";
+import type { Page } from "@playwright/test";
+
+import { expect, test } from "../shared/fixtures/table-list-fixtures";
 import type { HttpMethod } from "../utils/networkAssertions";
 import { assessmentToolRowRequests } from "./models/assessment-tools-list.model";
-import type { Page } from "@playwright/test";
 
 // Fixed shared seed rows (no browser suffix); the read spec relies on the same ids.
 const searchName = "e2e-getall-assessment-tool";

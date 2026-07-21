@@ -24,8 +24,9 @@
 
 <script setup lang="ts">
 import { ref } from "vue";
-import { translate } from "@/utils/generalUtils";
+
 import { AlertProps } from "@/models/alertProps";
+import { translate } from "@/utils/generalUtils";
 
 const snackbar = ref<boolean>(true);
 

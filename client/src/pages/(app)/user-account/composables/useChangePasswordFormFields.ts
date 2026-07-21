@@ -1,7 +1,8 @@
 import { computed, ref } from "vue";
-import i18n from "@/i18n";
+
 import { FormField } from "@/components/widgets/formBuilder/types.ts";
 import { useZodFormRules } from "@/composables/useZodFormRules.ts";
+import i18n from "@/i18n";
 import { userAccountPasswordChangeSchema } from "@/models/userAccount.ts";
 
 const t = (key: string) => i18n.global.t(`userAccount.changePassword.${key}`);

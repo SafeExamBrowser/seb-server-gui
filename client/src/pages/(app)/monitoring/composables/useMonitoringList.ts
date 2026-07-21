@@ -1,12 +1,14 @@
 import { computed } from "vue";
-import { useUrlTableState } from "@/components/widgets/entity-table/composables/useUrlTableState.ts";
+
 import { usePagedListData } from "@/components/widgets/entity-table/composables/usePagedListData.ts";
-import {
-    useMonitoringFilters,
-    TYPE_FILTER_KEY,
-    MONITORING_STATUS_FILTER_KEY,
-} from "./useMonitoringFilters.ts";
+import { useUrlTableState } from "@/components/widgets/entity-table/composables/useUrlTableState.ts";
 import { useMonitoringExams } from "@/pages/(app)/monitoring/api/useMonitoringExams.ts";
+
+import {
+    MONITORING_STATUS_FILTER_KEY,
+    TYPE_FILTER_KEY,
+    useMonitoringFilters,
+} from "./useMonitoringFilters.ts";
 
 export const useMonitoringList = () => {
     const filterSections = useMonitoringFilters();

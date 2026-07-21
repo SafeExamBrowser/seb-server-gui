@@ -1,5 +1,7 @@
 import { type Page } from "@playwright/test";
+
 import { connectionConfigurationFormConfig } from "@/pages/(app)/connection-configuration/connectionConfigurationFormConfig.ts";
+
 import {
     ConnectionConfigurationFormModel,
     type ConnectionConfigurationMainInput,

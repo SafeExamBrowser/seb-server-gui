@@ -24,10 +24,12 @@
 <script setup lang="ts">
 import { computed } from "vue";
 import { useDisplay } from "vuetify";
-import StepItem from "@/components/widgets/stepItem/StepItem.vue";
+
 import FormBuilder from "@/components/widgets/formBuilder/FormBuilder.vue";
-import { useFormFields } from "./composables/useFormFields.ts";
+import StepItem from "@/components/widgets/stepItem/StepItem.vue";
+
 import { useStepQuitPasswordStore } from "./composables/store/useStepQuitPasswordStore.ts";
+import { useFormFields } from "./composables/useFormFields.ts";
 
 const { thresholds: thresholdsRef } = useDisplay();
 const thresholds = computed(() => thresholdsRef.value);

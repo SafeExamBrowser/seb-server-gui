@@ -1,11 +1,11 @@
-import * as apiService from "@/services/apiService";
-import { normaliseBasicListParams } from "@/utils/table/tableUtils";
 import {
     ScheduledDelete,
     ScheduledDeleteReport,
     ScheduledDeletions,
 } from "@/models/seb-server/scheduled-deletion";
+import * as apiService from "@/services/apiService";
 import { BasicListParams } from "@/services/types";
+import { normaliseBasicListParams } from "@/utils/table/tableUtils";
 
 const baseUrl = "/scheduled-delete" as const;
 

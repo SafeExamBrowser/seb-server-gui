@@ -192,21 +192,22 @@
 
 <script setup lang="ts">
 import { ref } from "vue";
-import * as timeUtils from "@/utils/timeUtils";
-import * as tableUtils from "@/utils/table/tableUtils";
-import SearchScreenshotsTable from "@/pages/(app)/sp-search/components/SearchScreenshotsTable.vue";
-import TableHeaders from "@/utils/table/TableHeaders.vue";
-import { useTableStore } from "@/stores/store";
+
 import { useCurrentUserQuery } from "@/composables/useCurrentUser";
-import { ServerTablePaging } from "@/models/types";
+import { OptionalParSearchSessions } from "@/models/screen-proctoring/optionalParamters";
 import {
     SearchSessions,
     SearchTimeline,
 } from "@/models/screen-proctoring/search";
-import { OptionalParSearchSessions } from "@/models/screen-proctoring/optionalParamters";
-import * as searchService from "@/services/screen-proctoring/searchService";
+import { ServerTablePaging } from "@/models/types";
+import SearchScreenshotsTable from "@/pages/(app)/sp-search/components/SearchScreenshotsTable.vue";
 import { prepareSessionSearchParameters } from "@/pages/(app)/sp-search/utils/searchUtils.ts";
 import { openRouteInNewTab } from "@/router/openRouteInNewTab.ts";
+import * as searchService from "@/services/screen-proctoring/searchService";
+import { useTableStore } from "@/stores/store";
+import TableHeaders from "@/utils/table/TableHeaders.vue";
+import * as tableUtils from "@/utils/table/tableUtils";
+import * as timeUtils from "@/utils/timeUtils";
 
 // store
 const tableStore = useTableStore();

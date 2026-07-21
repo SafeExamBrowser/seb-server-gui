@@ -1,6 +1,5 @@
-import * as apiService from "@/services/apiService";
-
 import { Exam } from "@/models/seb-server/exam";
+import * as apiService from "@/services/apiService";
 
 export const applyScreenProctoringGroups = async (
     id: string,

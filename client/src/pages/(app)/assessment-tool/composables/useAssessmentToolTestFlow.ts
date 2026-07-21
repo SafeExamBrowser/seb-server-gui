@@ -1,9 +1,10 @@
 import { type Ref } from "vue";
-import { notify } from "@/services/notifications/notify.ts";
-import type { AppError } from "@/services/errors/types.ts";
-import type { TableItem } from "@/components/widgets/entity-table/types.ts";
 import { useI18n } from "vue-i18n";
+
+import type { TableItem } from "@/components/widgets/entity-table/types.ts";
 import type { AssessmentToolTestResult } from "@/models/assessmentTool.ts";
+import type { AppError } from "@/services/errors/types.ts";
+import { notify } from "@/services/notifications/notify.ts";
 
 // Static per-errorType message keys: the directive forbids programmatically assembled i18n
 // keys, and errorType is optional on the wire, so an unmapped/absent value must fall back to

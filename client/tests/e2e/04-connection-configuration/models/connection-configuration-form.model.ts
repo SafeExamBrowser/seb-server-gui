@@ -1,11 +1,13 @@
 import { type Locator, type Page } from "@playwright/test";
+
 import {
     CONNECTION_CONFIG_FIELD,
     connectionConfigurationFormConfig,
 } from "@/pages/(app)/connection-configuration/connectionConfigurationFormConfig.ts";
+
 import {
-    FormPageModel,
     type FormFieldSpec,
+    FormPageModel,
 } from "../../shared/page-models/model-pages/form-page.model";
 import { selectVuetifyOptionByName } from "../../utils/helpers";
 

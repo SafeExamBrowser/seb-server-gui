@@ -1,13 +1,15 @@
-import { test, expect } from "../shared/fixtures/table-list-fixtures";
-import { waitForRequest } from "../utils/networkAssertions";
-import { expectToHaveUrl } from "../utils/helpers";
+import type { Page } from "@playwright/test";
+
 import { CONNECTION_CONFIG_FIELD } from "@/pages/(app)/connection-configuration/connectionConfigurationFormConfig.ts";
+
+import { expect, test } from "../shared/fixtures/table-list-fixtures";
+import { expectToHaveUrl } from "../utils/helpers";
+import { waitForRequest } from "../utils/networkAssertions";
 import {
     CONNECTION_CONFIG_SAVE_REQUEST,
-    EDIT_CONFIG_ID,
     connectionConfigurationByIdRequest,
+    EDIT_CONFIG_ID,
 } from "./models/connection-configuration-edit.model";
-import type { Page } from "@playwright/test";
 
 // Wire values (ms) that the edit page back-converts to seconds on hydration.
 const existingConfig = {

@@ -250,13 +250,14 @@
 
 <script setup lang="ts">
 import { computed, onBeforeMount, ref } from "vue";
-import { useAppBarStore, useGalleryStore } from "@/stores/store";
 import { useI18n } from "vue-i18n";
-import { translate } from "@/utils/generalUtils";
 import { useRoute } from "vue-router";
+
 import { ScreenshotData } from "@/models/screen-proctoring/session";
 import { navigateToProctoringView } from "@/pages/(app)/gallery_[uuid]_[examId]/utils/galleryNavigation.ts";
 import * as galleryUtils from "@/pages/(app)/gallery_[uuid]_[examId]/utils/galleryUtils.ts";
+import { useAppBarStore, useGalleryStore } from "@/stores/store";
+import { translate } from "@/utils/generalUtils";
 import { getLatestImageLink } from "@/utils/linkBuilder.ts";
 
 // props

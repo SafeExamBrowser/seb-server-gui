@@ -1,7 +1,8 @@
 import axios, { isAxiosError } from "axios";
 import { z } from "zod";
-import { zApiMessage } from "@/api/seb-server/generated/hey-api/zod.gen.ts";
+
 import type { EntityProcessingReport } from "@/api/seb-server/generated/hey-api/types.gen.ts";
+import { zApiMessage } from "@/api/seb-server/generated/hey-api/zod.gen.ts";
 import { FIELD_VALIDATION_CODE } from "@/services/errors/apiMessage.ts";
 import type {
     APIMessage,

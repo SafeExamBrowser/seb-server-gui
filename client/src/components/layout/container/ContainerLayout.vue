@@ -49,15 +49,17 @@
 import { computed } from "vue";
 import { useI18n } from "vue-i18n";
 import { RouterView, useRoute } from "vue-router";
-import { useLogout } from "@/composables/useLogout";
-import { typedTo } from "@/router/typedTo";
-import ContainerHeader from "./ContainerHeader.vue";
-import ContainerSidePanel from "./ContainerSidePanel.vue";
-import ContainerRouteActions from "./ContainerRouteActions.vue";
-import { buildBaseNavigationLinks } from "./navigationLinks";
+
 import { useCurrentUserQuery } from "@/composables/useCurrentUser";
 import { useInstitutionBranding } from "@/composables/useInstitutionBranding";
+import { useLogout } from "@/composables/useLogout";
+import { typedTo } from "@/router/typedTo";
 import { useAbilities } from "@/services/ability";
+
+import ContainerHeader from "./ContainerHeader.vue";
+import ContainerRouteActions from "./ContainerRouteActions.vue";
+import ContainerSidePanel from "./ContainerSidePanel.vue";
+import { buildBaseNavigationLinks } from "./navigationLinks";
 
 const route = useRoute();
 const { t } = useI18n();

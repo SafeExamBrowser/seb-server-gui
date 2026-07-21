@@ -1,11 +1,12 @@
 import { computed, nextTick, ref, watch } from "vue";
-import { useRoute, useRouter } from "vue-router";
 import type { LocationQueryRaw } from "vue-router";
-import type { ServerTablePaging } from "@/models/types.ts";
+import { useRoute, useRouter } from "vue-router";
+
 import type {
-    TableFilters,
     LoadItemsFn,
+    TableFilters,
 } from "@/components/widgets/entity-table/types.ts";
+import type { ServerTablePaging } from "@/models/types.ts";
 
 //standard options foer all Tables, @TODO Andrei consider using some sort of local storage for itemsPerPage???? Talk with team. Would make sense. // Additional Feature that users can configure their UI's in the future
 const getDefaultOptions = (): ServerTablePaging => ({

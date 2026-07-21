@@ -14,8 +14,8 @@
 </template>
 <script setup lang="ts">
 import KeyValueList from "@/components/widgets/keyValueList/KeyValueList.vue";
-import { SummarySectionData } from "@/components/widgets/wizardSummary/types";
 import SectionSubtitle from "@/components/widgets/SectionSubtitle.vue";
+import { SummarySectionData } from "@/components/widgets/wizardSummary/types";
 
 defineProps<{
     section: SummarySectionData;

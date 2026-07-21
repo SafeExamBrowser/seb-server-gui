@@ -53,8 +53,7 @@
 
 <script setup lang="ts">
 import { computed } from "vue";
-import { translate } from "@/utils/generalUtils";
-import { useAbilities } from "@/services/ability";
+
 import NavigationSection from "@/components/widgets/navigationWidgets/NavigationSection.vue";
 import {
     buildFollowUpNavigationItems,
@@ -62,6 +61,8 @@ import {
     buildPreparationNavigationItems,
     buildSettingsNavigationItems,
 } from "@/components/widgets/navigationWidgets/navigationSections";
+import { useAbilities } from "@/services/ability";
+import { translate } from "@/utils/generalUtils";
 
 definePage({
     meta: {

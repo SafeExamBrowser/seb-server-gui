@@ -1,17 +1,18 @@
-import { computed, ref, watch } from "vue";
 import moment from "moment-timezone";
-import i18n from "@/i18n";
+import { computed, ref, watch } from "vue";
+
 import { FormField } from "@/components/widgets/formBuilder/types.ts";
-import { useInstitutions } from "@/composables/useInstitutions.ts";
 import { useCurrentUserQuery } from "@/composables/useCurrentUser.ts";
+import { useInstitutions } from "@/composables/useInstitutions.ts";
 import { useZodFormRules } from "@/composables/useZodFormRules.ts";
-import { USER_ACCOUNT_FIELD } from "@/pages/(app)/user-account/userAccountFormConfig.ts";
+import i18n from "@/i18n";
 import {
     USER_ROLES,
     userAccountCreateSchema,
     userAccountSchema,
     type UserRole,
 } from "@/models/userAccount.ts";
+import { USER_ACCOUNT_FIELD } from "@/pages/(app)/user-account/userAccountFormConfig.ts";
 
 const ADMIN_VISIBLE_ROLES: ReadonlySet<UserRole> = new Set<UserRole>([
     "SEB_SERVER_ADMIN",

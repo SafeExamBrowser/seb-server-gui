@@ -58,17 +58,19 @@
 
 <script setup lang="ts">
 import { computed, ref } from "vue";
-import StepItem from "@/components/widgets/stepItem/StepItem.vue";
-import LoadingFallbackComponent from "@/components/widgets/loadingFallbackComponent/LoadingFallbackComponent.vue";
+
 import ExamTemplateDialog from "@/components/widgets/ExamTemplateDialog.vue";
-import { useStepExamTemplateStore } from "./composables/store/useStepExamTemplateStore.ts";
-import { useStepSupervisorsStore } from "@/pages/(app)/exam/create/components/stepSupervisors/composables/store/useStepSupervisorsStore.ts";
-import { useStepClientGroupsStore } from "@/pages/(app)/exam/create/components/stepClientGroups/composables/store/useStepClientGroupsStore.ts";
-import { useStepQuitPasswordStore } from "@/pages/(app)/exam/create/components/stepQuitPassword/composables/store/useStepQuitPasswordStore.ts";
-import { useExamTemplates } from "./composables/api/useExamTemplates.ts";
-import { useExamTemplateDetail } from "./composables/api/useExamTemplateDetail.ts";
+import LoadingFallbackComponent from "@/components/widgets/loadingFallbackComponent/LoadingFallbackComponent.vue";
+import StepItem from "@/components/widgets/stepItem/StepItem.vue";
 import { useSupervisors } from "@/composables/useSupervisors.ts";
 import { ExamTemplate } from "@/models/seb-server/examTemplate.ts";
+import { useStepClientGroupsStore } from "@/pages/(app)/exam/create/components/stepClientGroups/composables/store/useStepClientGroupsStore.ts";
+import { useStepQuitPasswordStore } from "@/pages/(app)/exam/create/components/stepQuitPassword/composables/store/useStepQuitPasswordStore.ts";
+import { useStepSupervisorsStore } from "@/pages/(app)/exam/create/components/stepSupervisors/composables/store/useStepSupervisorsStore.ts";
+
+import { useExamTemplateDetail } from "./composables/api/useExamTemplateDetail.ts";
+import { useExamTemplates } from "./composables/api/useExamTemplates.ts";
+import { useStepExamTemplateStore } from "./composables/store/useStepExamTemplateStore.ts";
 
 const infoDialogOpen = ref(false);
 const infoDialogTemplate = ref<ExamTemplate | null>(null);

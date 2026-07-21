@@ -31,8 +31,9 @@
 
 <script setup lang="ts">
 import { computed } from "vue";
-import FilterSection from "./FilterSection.vue";
+
 import FilterOptionItem from "./FilterOptionItem.vue";
+import FilterSection from "./FilterSection.vue";
 import type { FilterSectionDef } from "./filterTypes.ts";
 import { isFilterValueSelected, toggleFilterValue } from "./filterValues.ts";
 

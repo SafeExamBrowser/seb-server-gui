@@ -199,45 +199,47 @@
 </template>
 
 <script setup lang="ts">
-import { useMonitoringStore } from "@/stores/seb-server/monitoringStore.ts";
-import { useTableStore } from "@/stores/store.ts";
-import { translate } from "@/utils/generalUtils.ts";
-import * as generalUtils from "@/utils/generalUtils.ts";
-import * as monitoringService from "@/services/seb-server/monitoringService.ts";
-import TableHeaders from "@/utils/table/TableHeaders.vue";
-import EnumChip from "@/components/widgets/EnumChip.vue";
-import {
-    IndicatorEnum,
-    IndicatorObject,
-    MonitoringHeaderEnum,
-} from "@/models/seb-server/monitoringEnums.ts";
-import { MonitoringRow } from "@/models/seb-server/monitoringClients.ts";
-import { ConnectionStatusEnum } from "@/models/seb-server/connectionStatusEnum.ts";
-import { useI18n } from "vue-i18n";
-import { LocationQueryValue, useRoute } from "vue-router";
 import {
     computed,
-    ref,
-    onMounted,
-    watch,
-    onUnmounted,
     onBeforeUnmount,
+    onMounted,
+    onUnmounted,
+    ref,
+    watch,
 } from "vue";
+import { useI18n } from "vue-i18n";
+import { LocationQueryValue, useRoute } from "vue-router";
+
+import EnumChip from "@/components/widgets/EnumChip.vue";
+import LoadingFallbackComponent from "@/components/widgets/loadingFallbackComponent/LoadingFallbackComponent.vue";
+import { ClientGroup } from "@/models/seb-server/clientGroup.ts";
+import { ConnectionStatusEnum } from "@/models/seb-server/connectionStatusEnum.ts";
+import { Indicator } from "@/models/seb-server/indicators.ts";
 import {
     MonitoringClientConnection,
     MonitoringConnections,
     MonitoringStaticClientData,
     StaticClientConnectionData,
 } from "@/models/seb-server/monitoring.ts";
-import { Indicator } from "@/models/seb-server/indicators.ts";
-import { ClientGroup } from "@/models/seb-server/clientGroup.ts";
-import ClientGroupInfoDialog from "./ClientGroupInfoDialog.vue";
+import { MonitoringRow } from "@/models/seb-server/monitoringClients.ts";
+import {
+    IndicatorEnum,
+    IndicatorObject,
+    MonitoringHeaderEnum,
+} from "@/models/seb-server/monitoringEnums.ts";
 import { goToMonitoringDetails } from "@/pages/(app)/monitoring/[examId]/composables/useMonitoringNavigation.ts";
+import * as monitoringService from "@/services/seb-server/monitoringService.ts";
+import { useMonitoringStore } from "@/stores/seb-server/monitoringStore.ts";
+import { useTableStore } from "@/stores/store.ts";
+import * as generalUtils from "@/utils/generalUtils.ts";
+import { translate } from "@/utils/generalUtils.ts";
 import {
     extractClientGroupNames,
     getConnectionStatusColor,
 } from "@/utils/monitoringUtils.ts";
-import LoadingFallbackComponent from "@/components/widgets/loadingFallbackComponent/LoadingFallbackComponent.vue";
+import TableHeaders from "@/utils/table/TableHeaders.vue";
+
+import ClientGroupInfoDialog from "./ClientGroupInfoDialog.vue";
 
 const props = defineProps<{
     examId: string;

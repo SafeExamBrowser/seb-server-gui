@@ -24,6 +24,7 @@
 
 <script setup lang="ts" generic="T">
 import { ref } from "vue";
+
 import DeleteConfirmDialog from "@/components/widgets/confirmDialog/DeleteConfirmDialog.vue";
 import { CrudDeleteConfig } from "@/components/widgets/crudTable/types";
 

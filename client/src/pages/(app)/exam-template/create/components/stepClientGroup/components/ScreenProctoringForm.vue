@@ -25,14 +25,15 @@
 </template>
 
 <script setup lang="ts">
-import { computed } from "vue";
 import { storeToRefs } from "pinia";
+import { computed } from "vue";
 import { useDisplay } from "vuetify";
-import { useStepClientGroupStore } from "@/pages/(app)/exam-template/create/components/stepClientGroup/composables/store/useStepClientGroupStore.ts";
-import { useScreenProctoringStore } from "@/pages/(app)/exam-template/create/composables/store/useScreenProctoringStore.ts";
-import { useScreenProctoringStrategyField } from "@/composables/useScreenProctoringStrategyField.ts";
+
 import FormBuilder from "@/components/widgets/formBuilder/FormBuilder.vue";
 import SectionSubtitle from "@/components/widgets/SectionSubtitle.vue";
+import { useScreenProctoringStrategyField } from "@/composables/useScreenProctoringStrategyField.ts";
+import { useStepClientGroupStore } from "@/pages/(app)/exam-template/create/components/stepClientGroup/composables/store/useStepClientGroupStore.ts";
+import { useScreenProctoringStore } from "@/pages/(app)/exam-template/create/composables/store/useScreenProctoringStore.ts";
 
 const { thresholds: thresholdsRef } = useDisplay();
 const thresholds = computed(() => thresholdsRef.value);

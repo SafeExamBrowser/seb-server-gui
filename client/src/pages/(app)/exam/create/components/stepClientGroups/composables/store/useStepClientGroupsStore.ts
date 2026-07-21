@@ -1,5 +1,6 @@
 import { defineStore } from "pinia";
 import { ref } from "vue";
+
 import { ClientGroup } from "@/models/seb-server/clientGroup.ts";
 
 const getInitialState = () => ({

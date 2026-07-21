@@ -12,12 +12,13 @@
 <script setup lang="ts">
 import { computed, ref } from "vue";
 import { useRouter } from "vue-router";
+
+import type { UserAccountCreateRequest } from "@/models/userAccount.ts";
+import { useCreateUserAccountMutation } from "@/pages/(app)/user-account/api/useCreateUserAccountMutation.ts";
 import UserAccountForm from "@/pages/(app)/user-account/components/UserAccountForm.vue";
 import { userAccountFormConfig } from "@/pages/(app)/user-account/userAccountFormConfig.ts";
-import { useCreateUserAccountMutation } from "@/pages/(app)/user-account/api/useCreateUserAccountMutation.ts";
 import { submitWithFormErrors } from "@/services/errors/submitWithFormErrors.ts";
 import { toAppErrorOrUndefined } from "@/services/errors/toAppError.ts";
-import type { UserAccountCreateRequest } from "@/models/userAccount.ts";
 
 definePage({
     meta: {

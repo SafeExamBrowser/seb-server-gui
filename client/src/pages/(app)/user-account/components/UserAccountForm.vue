@@ -104,34 +104,36 @@
 </template>
 
 <script setup lang="ts">
-import { computed, onMounted, ref, watch } from "vue";
 import moment from "moment-timezone";
-import i18n from "@/i18n";
+import { computed, onMounted, ref, watch } from "vue";
+
 import BasicPage from "@/components/layout/pages/BasicPage.vue";
-import SettingsNavigation from "@/components/widgets/navigation/SettingsNavigation.vue";
-import FormBuilder from "@/components/widgets/formBuilder/FormBuilder.vue";
-import LoadingFallbackComponent from "@/components/widgets/loadingFallbackComponent/LoadingFallbackComponent.vue";
+import UserAccountPreviewCard from "@/components/layout/pages/widgets/UserAccountPreviewCard.vue";
+import type { BreadCrumbItem } from "@/components/widgets/breadCrumb/types";
 import CancelButton from "@/components/widgets/CancelButton.vue";
 import ConfirmButton from "@/components/widgets/ConfirmButton.vue";
+import FormBuilder from "@/components/widgets/formBuilder/FormBuilder.vue";
 import HintText from "@/components/widgets/HintText.vue";
-import UserAccountPreviewCard from "@/components/layout/pages/widgets/UserAccountPreviewCard.vue";
-import ChangePasswordDialog from "./ChangePasswordDialog.vue";
+import LoadingFallbackComponent from "@/components/widgets/loadingFallbackComponent/LoadingFallbackComponent.vue";
+import SettingsNavigation from "@/components/widgets/navigation/SettingsNavigation.vue";
 import { useDirtyTracking } from "@/composables/useDirtyTracking.ts";
-import {
-    useUserAccountFormFields,
-    type UserAccountFormMode,
-} from "@/pages/(app)/user-account/composables/useUserAccountFormFields.ts";
-import type { BackendFieldAliasMap } from "@/services/errors/types.ts";
-import type { BreadCrumbItem } from "@/components/widgets/breadCrumb/types";
-import {
-    applyBackendFieldErrors,
-    type ApplyBackendErrorsResult,
-} from "@/services/errors/formErrorMapping.ts";
+import i18n from "@/i18n";
 import {
     type UserAccount,
     type UserAccountCreateRequest,
     type UserRole,
 } from "@/models/userAccount.ts";
+import {
+    type UserAccountFormMode,
+    useUserAccountFormFields,
+} from "@/pages/(app)/user-account/composables/useUserAccountFormFields.ts";
+import {
+    type ApplyBackendErrorsResult,
+    applyBackendFieldErrors,
+} from "@/services/errors/formErrorMapping.ts";
+import type { BackendFieldAliasMap } from "@/services/errors/types.ts";
+
+import ChangePasswordDialog from "./ChangePasswordDialog.vue";
 
 const USER_ACCOUNT_FIELD_ALIASES = {
     timeZone: "timezone",

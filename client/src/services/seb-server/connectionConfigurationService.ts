@@ -1,4 +1,3 @@
-import { heySebServerClient as client } from "@/api/seb-server/http/heySebServerClient.ts";
 import {
     activateSebClientConfig as activateSebClientConfigSdk,
     createSebClientConfig as createSebClientConfigSdk,
@@ -8,22 +7,23 @@ import {
     getSebClientConfigById as getSebClientConfigByIdSdk,
     getSebClientConfigs as getSebClientConfigsSdk,
 } from "@/api/seb-server/generated/hey-api/sdk.gen.ts";
-import {
-    connectionConfigurationCreateSchema,
-    connectionConfigurationEditSchema,
-    connectionConfigurationPageSchema,
-    connectionConfigurationSchema,
-    type ConnectionConfiguration,
-    type ConnectionConfigurationCreateRequest,
-    type ConnectionConfigurationEditRequest,
-    type ConnectionConfigurationPage,
-} from "@/models/connectionConfiguration.ts";
-import { decodeWire, encodeWire } from "@/services/errors/wireCodec.ts";
-import { zEntityProcessingReport } from "@/api/seb-server/generated/hey-api/zod.gen.ts";
 import type {
     EntityProcessingReport,
     GetSebClientConfigsData,
 } from "@/api/seb-server/generated/hey-api/types.gen.ts";
+import { zEntityProcessingReport } from "@/api/seb-server/generated/hey-api/zod.gen.ts";
+import { heySebServerClient as client } from "@/api/seb-server/http/heySebServerClient.ts";
+import {
+    type ConnectionConfiguration,
+    type ConnectionConfigurationCreateRequest,
+    connectionConfigurationCreateSchema,
+    type ConnectionConfigurationEditRequest,
+    connectionConfigurationEditSchema,
+    type ConnectionConfigurationPage,
+    connectionConfigurationPageSchema,
+    connectionConfigurationSchema,
+} from "@/models/connectionConfiguration.ts";
+import { decodeWire, encodeWire } from "@/services/errors/wireCodec.ts";
 
 export const getConnectionConfigurations = (
     query?: GetSebClientConfigsData["query"],

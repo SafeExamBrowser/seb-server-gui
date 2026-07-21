@@ -19,14 +19,15 @@
 <script setup lang="ts">
 import { computed, ref } from "vue";
 import { useRoute, useRouter } from "vue-router";
-import AssessmentToolForm from "@/pages/(app)/assessment-tool/components/AssessmentToolForm.vue";
-import { assessmentToolFormConfig } from "@/pages/(app)/assessment-tool/assessmentToolFormConfig.ts";
+
 import LoadingFallbackComponent from "@/components/widgets/loadingFallbackComponent/LoadingFallbackComponent.vue";
+import type { AssessmentToolEditRequest } from "@/models/assessmentTool.ts";
 import { useAssessmentToolQuery } from "@/pages/(app)/assessment-tool/api/useAssessmentToolQuery.ts";
 import { useEditAssessmentToolMutation } from "@/pages/(app)/assessment-tool/api/useEditAssessmentToolMutation.ts";
+import { assessmentToolFormConfig } from "@/pages/(app)/assessment-tool/assessmentToolFormConfig.ts";
+import AssessmentToolForm from "@/pages/(app)/assessment-tool/components/AssessmentToolForm.vue";
 import { submitWithFormErrors } from "@/services/errors/submitWithFormErrors.ts";
 import { toAppErrorOrUndefined } from "@/services/errors/toAppError.ts";
-import type { AssessmentToolEditRequest } from "@/models/assessmentTool.ts";
 
 definePage({
     meta: {

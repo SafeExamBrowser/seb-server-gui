@@ -56,13 +56,14 @@
 import { computed, ref } from "vue";
 import { useI18n } from "vue-i18n";
 import { useDisplay } from "vuetify";
+
 import BoxActionButton from "@/components/widgets/BoxActionButton.vue";
 import DetailBox from "@/components/widgets/DetailBox.vue";
 import SupervisorPicker from "@/components/widgets/supervisorPicker/SupervisorPicker.vue";
 import { UserAccountName } from "@/models/userAccount";
 import {
-    userAccountNameToUsername,
     userAccountNameToFullName,
+    userAccountNameToUsername,
 } from "@/utils/userAccount";
 
 const { availableSupervisors, selectedSupervisorIds } = defineProps<{

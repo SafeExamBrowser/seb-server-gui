@@ -14,8 +14,8 @@
 </template>
 
 <script setup lang="ts" generic="TItem, TTransient">
-import FormDialog from "@/components/widgets/formDialog/FormDialog.vue";
 import { CrudTableConfig } from "@/components/widgets/crudTable/types";
+import FormDialog from "@/components/widgets/formDialog/FormDialog.vue";
 
 const props = defineProps<{
     label: string;

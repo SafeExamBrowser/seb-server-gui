@@ -76,18 +76,20 @@
 import { computed, onMounted, ref, watch } from "vue";
 import { useI18n } from "vue-i18n";
 import { VDateInput } from "vuetify/components";
-import StepItem from "@/components/widgets/stepItem/StepItem.vue";
-import LoadingFallbackComponent from "@/components/widgets/loadingFallbackComponent/LoadingFallbackComponent.vue";
+
 import EntityTable from "@/components/widgets/entity-table/EntityTable.vue";
 import type { TableItem } from "@/components/widgets/entity-table/types.ts";
+import LoadingFallbackComponent from "@/components/widgets/loadingFallbackComponent/LoadingFallbackComponent.vue";
+import StepItem from "@/components/widgets/stepItem/StepItem.vue";
 import type { ServerTablePaging } from "@/models/types.ts";
-import { useStepQuizStore } from "./composables/store/useStepQuizStore.ts";
 import { useStepAssessmentToolStore } from "@/pages/(app)/exam/create/components/stepAssessmentTool/composables/store/useStepAssessmentToolStore.ts";
-import { useQuizzes } from "./composables/api/useQuizzes.ts";
 import {
     calendarDateToUtcMillis,
     formatIsoToReadableDateTime,
 } from "@/utils/timeUtils.ts";
+
+import { useQuizzes } from "./composables/api/useQuizzes.ts";
+import { useStepQuizStore } from "./composables/store/useStepQuizStore.ts";
 
 const { t } = useI18n();
 const store = useStepQuizStore();

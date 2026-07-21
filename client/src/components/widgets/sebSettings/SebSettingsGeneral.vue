@@ -87,13 +87,14 @@
 </template>
 
 <script setup lang="ts">
-import { ViewType } from "@/models/seb-server/sebSettingsEnums.ts";
 import LoadingFallbackComponent from "@/components/widgets/loadingFallbackComponent/LoadingFallbackComponent.vue";
+import { ViewType } from "@/models/seb-server/sebSettingsEnums.ts";
+
 import CheckboxSetting from "./components/inputFields/CheckboxSetting.vue";
 import PasswordSetting from "./components/inputFields/PasswordSetting.vue";
+import SettingsTitle from "./components/SettingsTitle.vue";
 import { useSEBSettingValues } from "./composables/useSEBSettingValues.ts";
 import { SEBSettingsContext } from "./types.ts";
-import SettingsTitle from "./components/SettingsTitle.vue";
 
 const props = defineProps<{
     context: SEBSettingsContext;

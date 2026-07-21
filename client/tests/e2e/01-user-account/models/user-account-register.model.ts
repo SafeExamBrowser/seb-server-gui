@@ -1,8 +1,10 @@
 import { type Page } from "@playwright/test";
+
 import { USER_ACCOUNT_FIELD } from "@/pages/(app)/user-account/userAccountFormConfig.ts";
+
 import {
-    FormPageModel,
     type FormFieldSpec,
+    FormPageModel,
 } from "../../shared/page-models/model-pages/form-page.model";
 
 const ROUTE = "/register";

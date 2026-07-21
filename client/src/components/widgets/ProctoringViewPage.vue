@@ -247,25 +247,26 @@
 </template>
 
 <script setup lang="ts">
-import { useRoute } from "vue-router";
-import { computed, onBeforeMount, onBeforeUnmount, ref, watch } from "vue";
-import * as screenshotDataService from "@/services/screen-proctoring/screenshotDataService";
-import * as timeUtils from "@/utils/timeUtils";
-import * as groupingUtils from "@/utils/groupingUtils";
-import * as searchService from "@/services/screen-proctoring/searchService";
 import { useFullscreen } from "@vueuse/core";
-import { SortOrder } from "@/models/screen-proctoring/sortOrderEnum";
 import { throttle } from "lodash";
-import { ScreenshotData } from "@/models/screen-proctoring/session";
+import { computed, onBeforeMount, onBeforeUnmount, ref, watch } from "vue";
+import { useRoute } from "vue-router";
+
 import {
     ScreenshotsGrouped,
     SearchTimeline,
 } from "@/models/screen-proctoring/search";
+import { ScreenshotData } from "@/models/screen-proctoring/session";
+import { SortOrder } from "@/models/screen-proctoring/sortOrderEnum";
+import * as screenshotDataService from "@/services/screen-proctoring/screenshotDataService";
+import * as searchService from "@/services/screen-proctoring/searchService";
+import * as groupingUtils from "@/utils/groupingUtils";
 import { getSpecificImageLink } from "@/utils/linkBuilder.ts";
 import {
     getScreenshotMetadata,
     getSessionInfodata,
 } from "@/utils/screenshotMetadata.ts";
+import * as timeUtils from "@/utils/timeUtils";
 
 //TODO REFACTOR @Andrei This page is used as both component and page, really not great
 

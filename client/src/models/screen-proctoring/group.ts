@@ -1,5 +1,5 @@
-import { ScreenshotData } from "@/models/screen-proctoring/session";
 import { SPExamView } from "@/models/screen-proctoring/exam";
+import { ScreenshotData } from "@/models/screen-proctoring/session";
 
 export type EntityPrivilege = {
     id: number;

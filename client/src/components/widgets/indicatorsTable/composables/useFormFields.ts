@@ -1,13 +1,15 @@
 import { computed, Ref } from "vue";
+import { useRules } from "vuetify/labs/rules";
+
 import {
     FormField,
     FormFieldCollection,
 } from "@/components/widgets/formBuilder/types.ts";
-import { useRules } from "vuetify/labs/rules";
-import { IndicatorExisting } from "@/models/seb-server/examTemplate.ts";
 import { IndicatorTransient } from "@/components/widgets/indicatorsTable/types.ts";
 import i18n from "@/i18n";
+import { IndicatorExisting } from "@/models/seb-server/examTemplate.ts";
 import { IndicatorEnum } from "@/models/seb-server/monitoringEnums.ts";
+
 import { useFormFieldsThreshold } from "./useFormFieldsThreshold.ts";
 
 export const useFormFields = (indicators: Ref<IndicatorExisting[]>) => {

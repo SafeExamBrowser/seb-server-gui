@@ -29,6 +29,7 @@
 
 <script setup lang="ts">
 import { computed } from "vue";
+
 import StepperVertical from "./StepperVertical.vue";
 import { StepItem } from "./types";
 

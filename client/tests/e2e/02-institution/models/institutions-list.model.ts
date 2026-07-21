@@ -1,9 +1,11 @@
 import { type Page } from "@playwright/test";
-import { institutionListConfig } from "@/pages/(app)/institution/institutionListConfig.ts";
+
 import {
     STATUS_FILTER,
     type StatusFilterValue,
 } from "@/components/widgets/filters/filterContracts.ts";
+import { institutionListConfig } from "@/pages/(app)/institution/institutionListConfig.ts";
+
 import { TableListPageModel } from "../../shared/page-models/model-pages/table-list-page.model";
 import type { TableListPageConfig } from "../../shared/types/table-list-page.types";
 

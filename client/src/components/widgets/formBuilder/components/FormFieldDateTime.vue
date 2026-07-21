@@ -39,8 +39,12 @@
 </template>
 
 <script setup lang="ts">
-import { DateTime, FormFieldBaseProperties } from "../types";
 import { ref } from "vue";
+
+import {
+    DateTime,
+    FormFieldBaseProperties,
+} from "@/components/widgets/formBuilder/types";
 
 const model = defineModel<DateTime>();
 const showMenu = ref(false);

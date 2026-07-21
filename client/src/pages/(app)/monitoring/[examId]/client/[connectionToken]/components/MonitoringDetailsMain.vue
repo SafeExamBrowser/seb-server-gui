@@ -27,10 +27,11 @@
 </template>
 
 <script setup lang="ts">
-import { useMonitoringStore } from "@/stores/seb-server/monitoringStore.ts";
-import { ref, computed, watch } from "vue";
+import { computed, ref, watch } from "vue";
+
 import ProctoringViewPage from "@/components/widgets/ProctoringViewPage.vue";
 import MonitoringClientLogsContainer from "@/pages/(app)/monitoring/[examId]/client/[connectionToken]/components/MonitoringClientLogsContainer.vue";
+import { useMonitoringStore } from "@/stores/seb-server/monitoringStore.ts";
 
 const props = defineProps<{
     connectionToken: string;

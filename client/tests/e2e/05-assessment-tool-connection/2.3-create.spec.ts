@@ -1,7 +1,8 @@
-import { test, expect } from "../shared/fixtures/table-list-fixtures";
-import { expectNoRequest, waitForRequest } from "../utils/networkAssertions";
-import { expectToHaveUrl } from "../utils/helpers";
 import { ASSESSMENT_TOOL_FIELD } from "@/pages/(app)/assessment-tool/assessmentToolFormConfig.ts";
+
+import { expect, test } from "../shared/fixtures/table-list-fixtures";
+import { expectToHaveUrl } from "../utils/helpers";
+import { expectNoRequest, waitForRequest } from "../utils/networkAssertions";
 import { ASSESSMENT_TOOL_CREATE_REQUEST } from "./models/assessment-tool-create.model";
 
 const mainInput = {

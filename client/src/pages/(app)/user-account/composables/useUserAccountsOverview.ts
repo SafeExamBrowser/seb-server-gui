@@ -1,16 +1,18 @@
 import { computed, reactive } from "vue";
 import { useI18n } from "vue-i18n";
-import { useRouter, type RouteLocationAsRelative } from "vue-router";
-import type { TableItem } from "@/components/widgets/entity-table/types.ts";
-import { useUserAccountsTableHeaders } from "./useUserAccountsTableHeaders.ts";
-import { useUserAccountsTableActions } from "./useUserAccountsTableActions.ts";
-import { useUserAccountsList } from "./useUserAccountsList.ts";
-import { useDeleteUserAccountMutation } from "@/pages/(app)/user-account/api/useDeleteUserAccountMutation.ts";
-import { useToggleUserAccountStatusMutation } from "@/pages/(app)/user-account/api/useToggleUserAccountStatusMutation.ts";
+import { type RouteLocationAsRelative, useRouter } from "vue-router";
+
 import { useEntityDeleteFlow } from "@/components/widgets/entity-table/composables/useEntityDeleteFlow.ts";
 import { useEntityStatusFlow } from "@/components/widgets/entity-table/composables/useEntityStatusFlow.ts";
-import { toAppErrorOrUndefined } from "@/services/errors/toAppError.ts";
+import type { TableItem } from "@/components/widgets/entity-table/types.ts";
 import { isTeacherOnlyAccount } from "@/models/userAccount.ts";
+import { useDeleteUserAccountMutation } from "@/pages/(app)/user-account/api/useDeleteUserAccountMutation.ts";
+import { useToggleUserAccountStatusMutation } from "@/pages/(app)/user-account/api/useToggleUserAccountStatusMutation.ts";
+import { toAppErrorOrUndefined } from "@/services/errors/toAppError.ts";
+
+import { useUserAccountsList } from "./useUserAccountsList.ts";
+import { useUserAccountsTableActions } from "./useUserAccountsTableActions.ts";
+import { useUserAccountsTableHeaders } from "./useUserAccountsTableHeaders.ts";
 
 export const useUserAccountsOverview = () => {
     const router = useRouter();

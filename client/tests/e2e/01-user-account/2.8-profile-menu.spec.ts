@@ -1,4 +1,4 @@
-import { test, expect } from "../shared/fixtures/table-list-fixtures";
+import { expect, test } from "../shared/fixtures/table-list-fixtures";
 
 // The header chip reflects the logged-in admin (testmain / Server Administrator).
 const currentUser = {

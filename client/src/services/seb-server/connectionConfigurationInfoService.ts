@@ -1,9 +1,8 @@
-import * as apiService from "@/services/apiService";
-
 import {
     ConnectionConfigurationName,
     ConnectionConfigurations,
 } from "@/models/seb-server/connectionConfiguration";
+import * as apiService from "@/services/apiService";
 
 const baseUrl = "/client_configuration" as const;
 

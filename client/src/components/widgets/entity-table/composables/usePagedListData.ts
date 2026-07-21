@@ -1,6 +1,7 @@
 import { computed, type Ref } from "vue";
-import type { AppError } from "@/services/errors/types.ts";
+
 import type { ServerTablePaging } from "@/models/types.ts";
+import type { AppError } from "@/services/errors/types.ts";
 
 type PagedResponse<T> = {
     content?: T[];

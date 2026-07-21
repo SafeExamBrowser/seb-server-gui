@@ -66,10 +66,11 @@
 </template>
 
 <script setup lang="ts">
-import { useI18n } from "vue-i18n";
 import { ref } from "vue";
-import { translate } from "@/utils/generalUtils.ts";
+import { useI18n } from "vue-i18n";
+
 import { SEBSettingsSingeValueModel } from "@/components/widgets/sebSettings/types.ts";
+import { translate } from "@/utils/generalUtils.ts";
 
 const i18n = useI18n();
 

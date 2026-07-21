@@ -1,5 +1,6 @@
-import { useRules } from "vuetify/labs/rules";
 import type { VInput } from "vuetify/components";
+import { useRules } from "vuetify/labs/rules";
+
 import i18n from "@/i18n";
 
 type VInputProps = InstanceType<typeof VInput>["$props"];

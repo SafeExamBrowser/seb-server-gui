@@ -1,5 +1,5 @@
-import i18n from "@/i18n";
 import { ErrorCode } from "@/api/seb-server/generated/hey-api/types.gen.ts";
+import i18n from "@/i18n";
 import { parseBackendFieldError } from "@/services/errors/toAppError.ts";
 import type {
     APIMessage,

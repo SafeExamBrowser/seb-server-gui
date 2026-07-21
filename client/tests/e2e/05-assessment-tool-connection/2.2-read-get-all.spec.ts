@@ -1,5 +1,6 @@
-import { test, expect } from "../shared/fixtures/table-list-fixtures";
 import { ASSESSMENT_TOOL_COLUMN } from "@/pages/(app)/assessment-tool/assessmentToolListConfig.ts";
+
+import { expect, test } from "../shared/fixtures/table-list-fixtures";
 
 const searchName = "e2e-getall-assessment-tool";
 const activeId = 9101;

@@ -1,9 +1,9 @@
-import * as apiService from "@/services/apiService";
 import {
+    ConfigurationKey,
     ConfigurationTemplateKey,
     SEBSettingsImport,
-    ConfigurationKey,
 } from "@/models/seb-server/configurationNode";
+import * as apiService from "@/services/apiService";
 
 const baseUrl = "/configuration-node" as const;
 

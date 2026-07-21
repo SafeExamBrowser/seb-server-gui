@@ -57,6 +57,7 @@
 
 <script setup lang="ts">
 import { translate } from "@/utils/generalUtils.ts";
+
 import SEBSettingsPanel from "./components/SEBSettingsPanel.vue";
 import { SEBSettingsContext } from "./types.ts";
 

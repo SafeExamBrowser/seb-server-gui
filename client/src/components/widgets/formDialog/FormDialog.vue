@@ -93,10 +93,11 @@
 </template>
 
 <script setup lang="ts" generic="TTransient">
-import { computed, ref, watch } from "vue";
 import type { Ref, UnwrapRef } from "vue";
-import { IconValue } from "vuetify/lib/composables/icons.mjs";
+import { computed, ref, watch } from "vue";
 import { useDisplay } from "vuetify";
+import { IconValue } from "vuetify/lib/composables/icons.mjs";
+
 import BoxActionButton from "@/components/widgets/BoxActionButton.vue";
 import FormBuilder from "@/components/widgets/formBuilder/FormBuilder.vue";
 import { FormField } from "@/components/widgets/formBuilder/types";

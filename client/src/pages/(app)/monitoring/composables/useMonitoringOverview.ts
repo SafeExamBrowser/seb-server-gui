@@ -1,9 +1,11 @@
 import { reactive } from "vue";
-import { useRouter, type RouteLocationAsRelative } from "vue-router";
+import { type RouteLocationAsRelative, useRouter } from "vue-router";
+
 import type { TableItem } from "@/components/widgets/entity-table/types.ts";
-import { useMonitoringTableHeaders } from "./useMonitoringTableHeaders.ts";
-import { useMonitoringTableActions } from "./useMonitoringTableActions.ts";
+
 import { useMonitoringList } from "./useMonitoringList.ts";
+import { useMonitoringTableActions } from "./useMonitoringTableActions.ts";
+import { useMonitoringTableHeaders } from "./useMonitoringTableHeaders.ts";
 
 export const useMonitoringOverview = () => {
     const router = useRouter();

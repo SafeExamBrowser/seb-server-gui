@@ -1,6 +1,7 @@
-import { ref, computed } from "vue";
-import type { AppError } from "@/services/errors/types.ts";
+import { computed, ref } from "vue";
+
 import { appErrorToMessage, toAppError } from "@/services/errors/toAppError.ts";
+import type { AppError } from "@/services/errors/types.ts";
 
 // TODO @alain: consider using https://tanstack.com/query/latest/docs/framework/vue/overview for this
 export const useMutation = <TArgs extends unknown[], TResult = void>(

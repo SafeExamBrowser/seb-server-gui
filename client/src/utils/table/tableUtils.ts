@@ -1,17 +1,18 @@
+import type { RouteLocationAsRelative } from "vue-router";
+
+import { OptionalParSearchSessions } from "@/models/screen-proctoring/optionalParamters";
 import {
     ExamStatusEnum,
     ExamTypeEnum,
 } from "@/models/seb-server/examFiltersEnum";
-import { useTableStore } from "@/stores/store";
-import { ServerTablePaging } from "@/models/types";
 import {
     OptionalParGetExams,
     OptionalParGetMonitoringClientLogs,
 } from "@/models/seb-server/optionalParamters";
-import { OptionalParSearchSessions } from "@/models/screen-proctoring/optionalParamters";
-import { BasicListParams, SortOrder } from "@/services/types";
+import { ServerTablePaging } from "@/models/types";
 import router from "@/router/router";
-import type { RouteLocationAsRelative } from "vue-router";
+import { BasicListParams, SortOrder } from "@/services/types";
+import { useTableStore } from "@/stores/store";
 
 //type ItemsLike = number | { length: number } | null | undefined;
 type ItemsPerPageOption = { value: number; title: string };

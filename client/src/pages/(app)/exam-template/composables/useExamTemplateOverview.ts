@@ -1,15 +1,17 @@
 import { computed, reactive } from "vue";
-import { useRouter, type RouteLocationAsRelative } from "vue-router";
+import { type RouteLocationAsRelative, useRouter } from "vue-router";
+
 import type { TableItem } from "@/components/widgets/entity-table/types.ts";
-import { useExamTemplateTableHeaders } from "./useExamTemplateTableHeaders.ts";
-import { useExamTemplateTableActions } from "./useExamTemplateTableActions.ts";
-import { useExamTemplateList } from "./useExamTemplateList.ts";
-import { useExamTemplateDeleteFlow } from "./useExamTemplateDeleteFlow.ts";
-import { useExamTemplateCopyFlow } from "./useExamTemplateCopyFlow.ts";
 import {
-    isExamTemplateTableItem,
     type ExamTemplateTableItem,
+    isExamTemplateTableItem,
 } from "@/pages/(app)/exam-template/types.ts";
+
+import { useExamTemplateCopyFlow } from "./useExamTemplateCopyFlow.ts";
+import { useExamTemplateDeleteFlow } from "./useExamTemplateDeleteFlow.ts";
+import { useExamTemplateList } from "./useExamTemplateList.ts";
+import { useExamTemplateTableActions } from "./useExamTemplateTableActions.ts";
+import { useExamTemplateTableHeaders } from "./useExamTemplateTableHeaders.ts";
 
 export const useExamTemplateOverview = () => {
     const router = useRouter();

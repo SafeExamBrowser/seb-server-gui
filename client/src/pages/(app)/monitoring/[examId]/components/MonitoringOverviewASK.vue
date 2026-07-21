@@ -46,11 +46,13 @@
 </template>
 
 <script setup lang="ts">
-import { useMonitoringStore } from "@/stores/seb-server/monitoringStore.ts";
-import AskDialog from "./dialogs/AskDialog.vue";
-import { ref, computed, type ComponentPublicInstance } from "vue";
+import { type ComponentPublicInstance, computed, ref } from "vue";
 import { useI18n } from "vue-i18n";
+
 import { AppSignatureKeysWithGrantValues } from "@/models/seb-server/appSignatureKey.ts";
+import { useMonitoringStore } from "@/stores/seb-server/monitoringStore.ts";
+
+import AskDialog from "./dialogs/AskDialog.vue";
 
 const monitoringStore = useMonitoringStore();
 const { t } = useI18n();

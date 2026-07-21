@@ -1,12 +1,13 @@
 import { computed, watch } from "vue";
-import { translate } from "@/utils/generalUtils.ts";
-import { useShowInstitutionColumn } from "@/composables/useShowInstitutionColumn.ts";
-import { useInstitutionNameMap } from "@/composables/useInstitutionNameMap.ts";
-import { ASSESSMENT_TOOL_COLUMN } from "@/pages/(app)/assessment-tool/assessmentToolListConfig.ts";
+
 import type {
-    TableHeader,
     CellFormatter,
+    TableHeader,
 } from "@/components/widgets/entity-table/types.ts";
+import { useInstitutionNameMap } from "@/composables/useInstitutionNameMap.ts";
+import { useShowInstitutionColumn } from "@/composables/useShowInstitutionColumn.ts";
+import { ASSESSMENT_TOOL_COLUMN } from "@/pages/(app)/assessment-tool/assessmentToolListConfig.ts";
+import { translate } from "@/utils/generalUtils.ts";
 
 export function useAssessmentToolsTableHeaders() {
     const showInstitutionColumn = useShowInstitutionColumn();

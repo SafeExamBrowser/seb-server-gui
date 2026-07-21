@@ -1,6 +1,7 @@
 import type { RouteLocationAsRelative } from "vue-router";
-import { typedTo } from "@/router/typedTo.ts";
+
 import type { UserRole } from "@/models/userAccount.ts";
+import { typedTo } from "@/router/typedTo.ts";
 
 // Role-based landing after login. Highest role wins:
 // admins land on the navigation overview, exam admins on the exams list,

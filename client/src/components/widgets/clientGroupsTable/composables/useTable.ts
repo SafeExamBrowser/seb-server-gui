@@ -1,3 +1,6 @@
+import { computed, Ref } from "vue";
+import { RuleAliases } from "vuetify/labs/rules";
+
 import {
     ClientGroupForTable,
     ClientGroupsTableDeps,
@@ -7,11 +10,10 @@ import {
     isFallbackGroup,
     SCREEN_PROCTORING_FALLBACK_ROW_ID,
 } from "@/components/widgets/clientGroupsTable/types.ts";
-import { computed, Ref } from "vue";
-import i18n from "@/i18n";
-import { RuleAliases } from "vuetify/labs/rules";
-import { useFormFields } from "./useFormFields.ts";
 import { CrudTableConfig } from "@/components/widgets/crudTable/types.ts";
+import i18n from "@/i18n";
+
+import { useFormFields } from "./useFormFields.ts";
 
 const getEmptyClientGroup = (): ClientGroupTransient => ({
     screenProctoringEnabled: false,

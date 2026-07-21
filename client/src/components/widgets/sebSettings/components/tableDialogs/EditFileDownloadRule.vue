@@ -110,8 +110,8 @@
 </template>
 
 <script setup lang="ts">
-import { translate } from "@/utils/generalUtils.ts";
 import { FileExtensionEntry } from "@/models/seb-server/sebSettings.ts";
+import { translate } from "@/utils/generalUtils.ts";
 
 // emits
 const emit = defineEmits<{

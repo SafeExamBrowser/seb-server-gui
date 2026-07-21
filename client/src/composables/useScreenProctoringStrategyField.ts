@@ -1,10 +1,11 @@
 import { computed, Ref } from "vue";
+
 import { FormField } from "@/components/widgets/formBuilder/types.ts";
+import i18n from "@/i18n";
 import {
     SCREEN_PROCTORING_COLLECTION_STRATEGY,
     ScreenProctoringCollectionStrategy,
 } from "@/models/seb-server/screenProctoring.ts";
-import i18n from "@/i18n";
 
 export const useScreenProctoringStrategyField = (
     model: Ref<ScreenProctoringCollectionStrategy | undefined>,

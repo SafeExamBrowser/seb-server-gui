@@ -1,5 +1,6 @@
-import { test, expect } from "../shared/fixtures/table-list-fixtures";
 import { USER_ACCOUNT_FIELD } from "@/pages/(app)/user-account/userAccountFormConfig.ts";
+
+import { expect, test } from "../shared/fixtures/table-list-fixtures";
 import { USER_ACCOUNT_CREATE_REQUEST } from "./models/user-account-create.model";
 
 // Valid form input: every case submits a form the frontend rules accept, so the POST always

@@ -147,9 +147,10 @@
 <script setup lang="ts">
 import { computed, ref } from "vue";
 import { useI18n } from "vue-i18n";
+
+import UserAvatar from "@/components/widgets/UserAvatar.vue";
 import { isTeacherOnlyAccount, type UserAccount } from "@/models/userAccount";
 import { typedTo } from "@/router/typedTo";
-import UserAvatar from "@/components/widgets/UserAvatar.vue";
 
 const props = defineProps<{
     userAccount?: UserAccount;

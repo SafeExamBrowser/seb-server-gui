@@ -1,5 +1,6 @@
-import { test, expect } from "../shared/fixtures/table-list-fixtures";
 import { INSTITUTION_COLUMN } from "@/pages/(app)/institution/institutionListConfig.ts";
+
+import { expect, test } from "../shared/fixtures/table-list-fixtures";
 
 const searchName = "Test";
 const inactiveInstitutionId = 12;

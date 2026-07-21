@@ -1,5 +1,6 @@
 import { computed, Ref } from "vue";
 import { useI18n } from "vue-i18n";
+
 import { KeyValueItem } from "@/components/widgets/keyValueList/types.ts";
 import { useClientConfigurationNames } from "@/composables/useClientConfigurationNames.ts";
 import {

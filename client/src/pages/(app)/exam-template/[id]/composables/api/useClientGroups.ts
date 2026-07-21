@@ -1,16 +1,17 @@
 import { computed, ref } from "vue";
+
 import { useMutation } from "@/composables/useMutation.ts";
-import { notify } from "@/services/notifications/notify.ts";
 import i18n from "@/i18n";
+import {
+    ClientGroup,
+    ClientGroupExisting,
+} from "@/models/seb-server/examTemplate.ts";
+import { notify } from "@/services/notifications/notify.ts";
 import {
     createClientGroup,
     deleteClientGroup,
     updateClientGroup,
 } from "@/services/seb-server/examTemplateClientGroupService.ts";
-import {
-    ClientGroup,
-    ClientGroupExisting,
-} from "@/models/seb-server/examTemplate.ts";
 
 export const useClientGroups = (
     examTemplateId: number,

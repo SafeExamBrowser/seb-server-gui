@@ -1,11 +1,12 @@
 import { ref } from "vue";
-import type { APIMessage, AppError } from "@/services/errors/types.ts";
-import { toAppError } from "@/services/errors/toAppError.ts";
-import { transportErrorDedupeKey } from "@/services/errors/transport.ts";
+
 import {
     getBackendMessageLines,
     getBackendMessageTitle,
 } from "@/services/errors/backendErrorText.ts";
+import { toAppError } from "@/services/errors/toAppError.ts";
+import { transportErrorDedupeKey } from "@/services/errors/transport.ts";
+import type { APIMessage, AppError } from "@/services/errors/types.ts";
 
 export type NotificationKind =
     | "success"

@@ -1,14 +1,14 @@
 import { computed, Ref } from "vue";
-import i18n from "@/i18n";
 
 import { FormField } from "@/components/widgets/formBuilder/types.ts";
+import i18n from "@/i18n";
+import { useImportCertificateMutation } from "@/pages/(app)/certificate/api/useImportCertificateMutation.ts";
+import { CERTIFICATE_FIELD } from "@/pages/(app)/certificate/certificateFormConfig.ts";
 import {
     CertificateUploadItemTransient,
     CertKey,
     toCertificateUploadItem,
 } from "@/pages/(app)/certificate/types/types.ts";
-import { useImportCertificateMutation } from "@/pages/(app)/certificate/api/useImportCertificateMutation.ts";
-import { CERTIFICATE_FIELD } from "@/pages/(app)/certificate/certificateFormConfig.ts";
 import { toAppErrorOrUndefined } from "@/services/errors/toAppError.ts";
 import { notify } from "@/services/notifications/notify.ts";
 

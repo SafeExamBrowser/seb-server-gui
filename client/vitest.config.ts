@@ -1,5 +1,5 @@
-import { defineConfig, mergeConfig } from "vitest/config";
 import type { ConfigEnv, UserConfig } from "vite";
+import { defineConfig, mergeConfig } from "vitest/config";
 
 const testConfigEnv: ConfigEnv = {
     command: "build",

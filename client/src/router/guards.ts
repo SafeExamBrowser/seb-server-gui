@@ -1,8 +1,9 @@
 import type { Router } from "vue-router";
-import i18n from "@/i18n";
+
 import { useAuthStore } from "@/composables/store/useAuthStore";
 import { currentUserQueryOptions } from "@/composables/useCurrentUser";
 import { guiAbilitiesQueryOptions } from "@/composables/useGuiAbilities";
+import i18n from "@/i18n";
 import { queryClient } from "@/services/http/queryClient";
 
 const DEFAULT_TITLE = "SEB Server";

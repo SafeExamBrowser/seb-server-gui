@@ -61,22 +61,22 @@
 </template>
 
 <script setup lang="ts">
-import AlertMsg from "@/components/widgets/AlertMsg.vue";
+import { storeToRefs } from "pinia";
 import { computed, onBeforeMount, onBeforeUnmount, ref, watch } from "vue";
 import { useRoute } from "vue-router";
-import { useAppBarStore } from "@/stores/store";
-import { storeToRefs } from "pinia";
-import GalleryImage from "@/pages/(app)/gallery_[uuid]_[examId]/components/GalleryImage.vue";
-import { SortOrder } from "@/models/screen-proctoring/sortOrderEnum";
-import { MetaData, ScreenshotData } from "@/models/screen-proctoring/session";
-import { GroupUuid } from "@/models/screen-proctoring/group";
-import { translate } from "@/utils/generalUtils";
-import { getGroupByUuid } from "@/services/screen-proctoring/groupService";
-import * as galleryUtils from "@/pages/(app)/gallery_[uuid]_[examId]/utils/galleryUtils.ts";
+
+import AlertMsg from "@/components/widgets/AlertMsg.vue";
 import BreadCrumb from "@/components/widgets/breadCrumb/BreadCrumb.vue";
 import type { BreadCrumbItem } from "@/components/widgets/breadCrumb/types.ts";
-
+import { GroupUuid } from "@/models/screen-proctoring/group";
+import { MetaData, ScreenshotData } from "@/models/screen-proctoring/session";
+import { SortOrder } from "@/models/screen-proctoring/sortOrderEnum";
+import GalleryImage from "@/pages/(app)/gallery_[uuid]_[examId]/components/GalleryImage.vue";
+import * as galleryUtils from "@/pages/(app)/gallery_[uuid]_[examId]/utils/galleryUtils.ts";
+import { getGroupByUuid } from "@/services/screen-proctoring/groupService";
 import { getScreenshotDataByTimestamp } from "@/services/screen-proctoring/screenshotDataService.ts";
+import { useAppBarStore } from "@/stores/store";
+import { translate } from "@/utils/generalUtils";
 
 definePage({
     meta: {

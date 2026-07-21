@@ -92,8 +92,9 @@
 
 <script setup lang="ts">
 import { computed, onBeforeUnmount, ref, watch } from "vue";
+
+import { FormFieldBaseProperties } from "@/components/widgets/formBuilder/types";
 import i18n from "@/i18n";
-import { FormFieldBaseProperties } from "../types";
 
 const props = withDefaults(
     defineProps<{

@@ -1,9 +1,9 @@
-import * as apiService from "@/services/apiService";
+import { GroupObject, GroupUuid } from "@/models/screen-proctoring/group";
 import {
     OptionalParGroupByUuid,
     OptionalParGroups,
 } from "@/models/screen-proctoring/optionalParamters";
-import { GroupObject, GroupUuid } from "@/models/screen-proctoring/group";
+import * as apiService from "@/services/apiService";
 
 const baseUrl = "/sps/proctoring/group" as const;
 

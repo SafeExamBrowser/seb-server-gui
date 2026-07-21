@@ -128,14 +128,15 @@
 </template>
 
 <script setup lang="ts">
-import SettingsTitle from "./components/SettingsTitle.vue";
-import CheckboxSetting from "./components/inputFields/CheckboxSetting.vue";
-import SelectionSetting from "./components/inputFields/SelectionSetting.vue";
-import NumberSetting from "./components/inputFields/NumberSetting.vue";
-import { useSEBSettingValues } from "./composables/useSEBSettingValues.ts";
 import LoadingFallbackComponent from "@/components/widgets/loadingFallbackComponent/LoadingFallbackComponent.vue";
-import { SEBSettingsContext } from "./types.ts";
 import { ViewType } from "@/models/seb-server/sebSettingsEnums.ts";
+
+import CheckboxSetting from "./components/inputFields/CheckboxSetting.vue";
+import NumberSetting from "./components/inputFields/NumberSetting.vue";
+import SelectionSetting from "./components/inputFields/SelectionSetting.vue";
+import SettingsTitle from "./components/SettingsTitle.vue";
+import { useSEBSettingValues } from "./composables/useSEBSettingValues.ts";
+import { SEBSettingsContext } from "./types.ts";
 
 const props = defineProps<{
     context: SEBSettingsContext;
