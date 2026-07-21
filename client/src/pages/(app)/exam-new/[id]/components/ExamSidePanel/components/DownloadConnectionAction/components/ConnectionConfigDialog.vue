@@ -25,7 +25,12 @@
                     {{ $t("general.cancelButton") }}
                 </v-btn>
 
-                <v-btn color="primary" variant="text" @click="handleConfirm">
+                <v-btn
+                    color="primary"
+                    :disabled="selectedConnectionId === undefined"
+                    variant="text"
+                    @click="handleConfirm"
+                >
                     {{ $t("general.downloadButton") }}
                 </v-btn>
             </v-card-actions>
@@ -49,15 +54,13 @@ const emit = defineEmits<{
 
 const selectedConnectionId = ref<number>();
 
-// Reseed on every open: the configurations are refetched each time, so a selection
-// kept from a previous open could point at a configuration no longer offered.
-watch(model, (open) => {
-    if (!open) {
-        return;
-    }
-
-    selectedConnectionId.value = props.connectionConfigurations[0]?.id;
-});
+watch(
+    () => props.connectionConfigurations,
+    (configurations) => {
+        selectedConnectionId.value = configurations[0]?.id;
+    },
+    { immediate: true },
+);
 
 const handleCancel = () => {
     model.value = false;

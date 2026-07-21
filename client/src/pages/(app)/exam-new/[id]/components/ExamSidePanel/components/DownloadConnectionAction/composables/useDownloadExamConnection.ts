@@ -5,27 +5,25 @@ import { notify } from "@/services/notifications/notify.ts";
 import { useMutation } from "@/composables/useMutation.ts";
 import * as timeUtils from "@/utils/timeUtils.ts";
 import { downloadBlob } from "@/utils/downloadUtils.ts";
+import { Exam } from "@/models/seb-server/exam.ts";
 import { useConnectionConfigurations } from "./api/useConnectionConfigurations.ts";
 
 export const useDownloadExamConnection = ({
-    examId,
-    quizName,
+    exam,
+    enabled,
 }: {
-    examId: () => number | undefined;
-    quizName: () => string | undefined;
+    exam: () => Exam | undefined;
+    enabled: () => boolean;
 }) => {
     const dialogOpen = ref(false);
 
-    const {
-        data: activeConfigurations,
-        loading: configurationsLoading,
-        error: configurationsError,
-        fetchData: fetchConfigurations,
-    } = useConnectionConfigurations();
+    const { data: activeConfigurations } = useConnectionConfigurations(enabled);
 
     const connectionConfigurations = computed(
         () => activeConfigurations.value?.content ?? [],
     );
+
+    const available = computed(() => connectionConfigurations.value.length > 0);
 
     const downloadMutation = useMutation((id: number, connectionId: number) =>
         connectionConfigurationService.downloadExamConfig(
@@ -34,49 +32,17 @@ export const useDownloadExamConnection = ({
         ),
     );
 
-    const loading = computed(
-        () => configurationsLoading.value || downloadMutation.loading.value,
-    );
-
-    const start = async () => {
-        if (examId() === undefined) {
-            return;
-        }
-
-        await fetchConfigurations();
-
-        // Must be checked before reading the data: useFetch keeps the previously
-        // fetched configurations when a later fetch fails.
-        if (configurationsError.value) {
-            notify.serverError(configurationsError.value, {
-                titleOverride: i18n.global.t(
-                    "examDetail.sidePanel.errors.connectionConfigurationsFailed",
-                ),
-            });
-            return;
-        }
-
-        const configurations = connectionConfigurations.value;
-
-        if (configurations.length === 0) {
-            return;
-        }
-
-        if (configurations.length === 1) {
-            await download(configurations[0].id);
-            return;
-        }
-
-        dialogOpen.value = true;
-    };
-
     const download = async (connectionId: number) => {
-        const id = examId();
-        if (id === undefined) {
+        const currentExam = exam();
+
+        if (currentExam === undefined) {
             return;
         }
 
-        const blob = await downloadMutation.mutateData(id, connectionId);
+        const blob = await downloadMutation.mutateData(
+            currentExam.id,
+            connectionId,
+        );
 
         if (!blob) {
             notify.serverError(downloadMutation.error.value, {
@@ -87,14 +53,26 @@ export const useDownloadExamConnection = ({
             return;
         }
 
-        const name = (quizName() ?? "exam").replaceAll(" ", "_");
+        const name = currentExam.quizName.replaceAll(" ", "_");
         downloadBlob(blob, `${name}_${timeUtils.getCurrentDateString()}.seb`);
+    };
+
+    const start = () => {
+        const configurations = connectionConfigurations.value;
+
+        if (configurations.length === 1) {
+            void download(configurations[0].id);
+            return;
+        }
+
+        dialogOpen.value = true;
     };
 
     return {
         dialogOpen,
         connectionConfigurations,
-        loading,
+        available,
+        loading: downloadMutation.loading,
         start,
         download,
     };

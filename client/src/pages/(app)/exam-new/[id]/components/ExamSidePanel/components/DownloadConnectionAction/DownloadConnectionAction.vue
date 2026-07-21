@@ -1,6 +1,6 @@
 <template>
     <ActionButton
-        :disabled="!downloadConnectionEnabled || loading"
+        :disabled="!downloadConnectionEnabled || !available || loading"
         :loading="loading"
         @click="handleClick"
     >
@@ -35,12 +35,13 @@ const downloadConnectionEnabled = computed(() =>
 const {
     dialogOpen,
     connectionConfigurations,
+    available,
     loading,
     start: startConnectionDownload,
     download: downloadConnection,
 } = useDownloadExamConnection({
-    examId: () => props.exam?.id,
-    quizName: () => props.exam?.quizName,
+    exam: () => props.exam,
+    enabled: () => downloadConnectionEnabled.value,
 });
 
 const handleClick = () => startConnectionDownload();
