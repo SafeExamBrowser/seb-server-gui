@@ -19,6 +19,8 @@ export default defineConfig([
         "src/api/seb-server/generated/",
     ]),
     eslint.configs.recommended,
+    // TODO @alain: upgrade to tseslint.configs.strictTypeChecked (+ stylisticTypeChecked) for type-aware linting.
+    // - Needs parserOptions.projectService and extra setup for .vue files, so it's not a quickfix.
     tseslint.configs.strict,
     eslintPluginVue.configs["flat/recommended"],
     eslintPluginVuetify.configs["flat/base"],
