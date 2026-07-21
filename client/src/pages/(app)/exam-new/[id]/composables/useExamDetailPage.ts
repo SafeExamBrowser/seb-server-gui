@@ -5,6 +5,7 @@ import i18n from "@/i18n";
 import type { BreadCrumbItem } from "@/components/widgets/breadCrumb/types.ts";
 import { useExam } from "./api/useExam.ts";
 import { useBasicSettings } from "./useBasicSettings.ts";
+import { useSebSettings } from "./useSebSettings.ts";
 import { useTestRunAction } from "./actions/useTestRunAction.ts";
 import { useSebLockAction } from "./actions/useSebLockAction.ts";
 import { useExcludeFromDeletionAction } from "./actions/useExcludeFromDeletionAction.ts";
@@ -31,6 +32,7 @@ export const useExamDetailPage = () => {
     );
 
     const basicSettings = useBasicSettings(exam, examWithURL, examId);
+    const sebSettings = useSebSettings(exam);
 
     const loading = computed(
         () => examLoading.value || basicSettings.loading.value,
@@ -99,6 +101,7 @@ export const useExamDetailPage = () => {
         sebLockActive,
         examWithURL,
         basicSettings,
+        sebSettings,
         actions: {
             handleTestRunToggle,
             handleSebLockToggle,

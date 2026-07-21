@@ -1,15 +1,19 @@
 <template>
     <BoxActionButton
-        icon="mdi-pencil"
-        :label="$t('examDetail.boxes.sebSettings.edit')"
+        :icon="actionIcon"
+        :label="
+            readonly
+                ? $t('examDetail.boxes.sebSettings.view')
+                : $t('examDetail.boxes.sebSettings.edit')
+        "
         @click="handleButtonEditClick"
     />
 
     <v-dialog v-model="dialogOpen" persistent height="80vh" max-width="1200">
         <SebSettingsDialog
             :context="context"
-            :active-s-e-b-client-connection="0"
-            dialog-title="examDetail.boxes.sebSettings.edit"
+            :active-s-e-b-client-connection="activeSebClients"
+            :dialog-title="dialogTitleKey"
             @close-seb-settings-dialog="handleCloseSebSettingsDialog"
         />
     </v-dialog>
@@ -22,16 +26,28 @@ import SebSettingsDialog from "@/components/widgets/sebSettings/SebSettingsDialo
 import { SEBSettingsContext } from "@/components/widgets/sebSettings/types.ts";
 import * as sebSettingsService from "@/services/seb-server/sebSettingsService.ts";
 
-const { examId } = defineProps<{
+const { examId, editDisabled, activeSebClients } = defineProps<{
     examId: number;
+    editDisabled: boolean;
+    activeSebClients: number;
 }>();
 
 const dialogOpen = ref(false);
 
+const readonly = computed(() => editDisabled || activeSebClients > 0);
+
+const actionIcon = computed(() => (readonly.value ? "mdi-eye" : "mdi-pencil"));
+
+const dialogTitleKey = computed(() =>
+    readonly.value
+        ? "examDetail.boxes.sebSettings.view"
+        : "examDetail.boxes.sebSettings.edit",
+);
+
 const context = computed<SEBSettingsContext>(() => ({
     isExam: true,
     containerId: String(examId),
-    readonly: false,
+    readonly: readonly.value,
 }));
 
 const handleButtonEditClick = () => {

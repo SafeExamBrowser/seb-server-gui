@@ -37,7 +37,10 @@
                     </template>
 
                     <template #02_sebSettings>
-                        <BoxSEBSettings :exam-id="examId" />
+                        <BoxSEBSettings
+                            :exam-id="examId"
+                            :edit-disabled="sebSettingsEditDisabled"
+                        />
                     </template>
                 </BasicGrid>
             </LoadingFallbackComponent>
@@ -79,6 +82,7 @@ const {
     sebLockActive,
     examWithURL,
     basicSettings,
+    sebSettings,
     actions,
 } = useExamDetailPage();
 
@@ -87,6 +91,8 @@ const {
     editDisabled: basicSettingsEditDisabled,
     handleChange: handleBasicSettingsChange,
 } = basicSettings;
+
+const { editDisabled: sebSettingsEditDisabled } = sebSettings;
 
 const notFoundBackLink = {
     label: t("examDetail.notFound.backToList"),
