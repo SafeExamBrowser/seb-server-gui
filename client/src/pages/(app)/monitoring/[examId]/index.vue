@@ -1,66 +1,78 @@
 <template>
-    <AlertMsg
-        v-if="isMonitoringDisabled()"
-        :alert-props="{
-            title: getMonitoringDisabledWarningText(),
-            color: 'warning',
-            type: 'alert',
-            customText: '',
-        }"
-    >
-    </AlertMsg>
+    <!-- while the exam is being fetched, neither the warning nor the page can
+    be decided yet - the fallback covers that window instead of a false alert -->
+    <LoadingFallbackComponent :loading="loadingExam">
+        <AlertMsg
+            v-if="isMonitoringDisabled()"
+            :alert-props="{
+                title: getMonitoringDisabledWarningText(),
+                color: 'warning',
+                type: 'alert',
+                customText: '',
+            }"
+        >
+        </AlertMsg>
 
-    <BasicPage
-        v-else
-        floating
-        :title="monitoringStore.selectedExam?.quizName ?? ''"
-        :bread-crumb="breadCrumb"
-        data-test-id="monitoring-detail-page"
-    >
-        <template #PanelLeft>
-            <MonitoringContextPanel
-                :refresh-seconds="REFRESH_INTERVAL / 1000"
-            />
-        </template>
+        <BasicPage
+            v-else
+            floating
+            :title="monitoringStore.selectedExam?.quizName ?? ''"
+            :bread-crumb="breadCrumb"
+            data-test-id="monitoring-detail-page"
+        >
+            <template #PanelLeft>
+                <MonitoringContextPanel
+                    :refresh-seconds="REFRESH_INTERVAL / 1000"
+                />
+            </template>
 
-        <template v-if="connectionsTotal != null" #ActionButton>
-            <v-sheet
-                border
-                color="surface"
-                rounded="lg"
-                class="d-inline-flex align-center ga-2 px-4 py-2"
-            >
-                <v-icon color="primary" size="18">
-                    mdi-account-multiple-outline
-                </v-icon>
-                <span class="text-title-medium font-weight-bold text-primary">
-                    {{ connectionsTotal }}
-                </span>
-                <span class="text-body-medium font-weight-bold">
-                    {{ $t("monitoringOverview.infos.connections") }}
-                </span>
-            </v-sheet>
-        </template>
+            <template v-if="connectionsTotal != null" #ActionButton>
+                <v-sheet
+                    border
+                    color="surface"
+                    rounded="lg"
+                    class="d-inline-flex align-center ga-2 px-4 py-2"
+                >
+                    <v-icon color="primary" size="18">
+                        mdi-account-multiple-outline
+                    </v-icon>
+                    <span
+                        class="text-title-medium font-weight-bold text-primary"
+                    >
+                        {{ connectionsTotal }}
+                    </span>
+                    <span class="text-body-medium font-weight-bold">
+                        {{ $t("monitoringOverview.infos.connections") }}
+                    </span>
+                </v-sheet>
+            </template>
 
-        <template #PanelMain>
-            <LoadingFallbackComponent :loading="loading">
-                <v-row class="align-stretch">
-                    <v-col cols="12" :md="dashColMd">
-                        <MonitoringOverviewClients :exam-id="examId" />
-                    </v-col>
-                    <v-col v-if="hasNotifications" cols="12" :md="dashColMd">
-                        <MonitoringOverviewNotifications :exam-id="examId" />
-                    </v-col>
-                    <v-col v-if="hasIndicators" cols="12" :md="dashColMd">
-                        <MonitoringOverviewIndicators :exam-id="examId" />
-                    </v-col>
-                    <v-col v-if="hasGroups" cols="12">
-                        <MonitoringOverviewGroups :exam-id="examId" />
-                    </v-col>
-                </v-row>
-            </LoadingFallbackComponent>
-        </template>
-    </BasicPage>
+            <template #PanelMain>
+                <LoadingFallbackComponent :loading="loading">
+                    <v-row class="align-stretch">
+                        <v-col cols="12" :md="dashColMd">
+                            <MonitoringOverviewClients :exam-id="examId" />
+                        </v-col>
+                        <v-col
+                            v-if="hasNotifications"
+                            cols="12"
+                            :md="dashColMd"
+                        >
+                            <MonitoringOverviewNotifications
+                                :exam-id="examId"
+                            />
+                        </v-col>
+                        <v-col v-if="hasIndicators" cols="12" :md="dashColMd">
+                            <MonitoringOverviewIndicators :exam-id="examId" />
+                        </v-col>
+                        <v-col v-if="hasGroups" cols="12">
+                            <MonitoringOverviewGroups :exam-id="examId" />
+                        </v-col>
+                    </v-row>
+                </LoadingFallbackComponent>
+            </template>
+        </BasicPage>
+    </LoadingFallbackComponent>
 </template>
 
 <script setup lang="ts">
@@ -122,6 +134,12 @@ onBeforeMount(async () => {
 onBeforeUnmount(() => {
     stopIntervalRefresh();
 });
+
+// true only during the initial exam fetch: once the exam landed in the store
+// (or the load settled without one), the alert / page split takes over
+const loadingExam = computed(
+    () => loading.value && monitoringStore.selectedExam == null,
+);
 
 const breadCrumb = computed<BreadCrumbItem[]>(() => [
     {

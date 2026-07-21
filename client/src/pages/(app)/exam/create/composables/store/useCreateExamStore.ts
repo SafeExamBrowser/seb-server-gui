@@ -1,5 +1,5 @@
 import { defineStore } from "pinia";
-import { computed, ref } from "vue";
+import { computed, ref, watchEffect } from "vue";
 import i18n from "@/i18n";
 import { StepItem } from "@/components/widgets/stepperVertical/types.ts";
 import { StepItemCreateExam } from "@/pages/(app)/exam/create/types/types.ts";
@@ -124,6 +124,16 @@ export const useCreateExamStore = defineStore("createExam", () => {
             }
             return true;
         });
+    });
+
+    // a refetch of the assessment tools can shrink the visible steps while a
+    // draft from a previous visit still points past the end - clamp the index
+    // so the currentStep computed below cannot throw
+    watchEffect(() => {
+        const maxStepIndex = visibleStepData.value.length - 1;
+        if (currentStepIndex.value > maxStepIndex) {
+            currentStepIndex.value = maxStepIndex;
+        }
     });
 
     const stepperModel = computed<StepItem[]>(() =>
