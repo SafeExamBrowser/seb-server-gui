@@ -35,6 +35,10 @@
                             @change="handleBasicSettingsChange"
                         />
                     </template>
+
+                    <template #02_sebSettings>
+                        <BoxSEBSettings />
+                    </template>
                 </BasicGrid>
             </LoadingFallbackComponent>
         </template>
@@ -51,6 +55,7 @@ import { typedTo } from "@/router/typedTo";
 import { useExamDetailPage } from "./composables/useExamDetailPage.ts";
 import ExamSidePanel from "./components/ExamSidePanel/ExamSidePanel.vue";
 import BoxBasicSettings from "./components/BoxBasicSettings/BoxBasicSettings.vue";
+import BoxSEBSettings from "./components/BoxSEBSettings/BoxSEBSettings.vue";
 
 definePage({
     meta: {
