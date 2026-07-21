@@ -1997,6 +1997,7 @@
             },
             "sebSettings": {
                 "title": "SEB Settings",
+                "lastModifiedBy": "Last modified by",
                 "edit": "Edit SEB Settings",
                 "view": "View SEB Settings"
             }
