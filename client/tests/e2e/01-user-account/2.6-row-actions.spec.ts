@@ -1,8 +1,9 @@
-import { test, expect } from "../shared/fixtures/table-list-fixtures";
+import type { Page } from "@playwright/test";
+
+import { expect, test } from "../shared/fixtures/table-list-fixtures";
 import { addBrowserSuffixToText } from "../utils/helpers";
 import type { HttpMethod } from "../utils/networkAssertions";
 import { userAccountRowRequests } from "./models/user-accounts-list.model";
-import type { Page } from "@playwright/test";
 
 const searchSurname = "000-testgetall";
 const activeUserUuid = "seb-user-account-getall-active";

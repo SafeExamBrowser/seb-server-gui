@@ -1,9 +1,10 @@
 import eslint from "@eslint/js";
+import { defineConfig, globalIgnores } from "eslint/config";
 import eslintConfigPrettier from "eslint-config-prettier";
+import eslintPluginSimpleImportSort from "eslint-plugin-simple-import-sort";
 import eslintPluginVue from "eslint-plugin-vue";
 import eslintPluginVuetify from "eslint-plugin-vuetify";
 import globals from "globals";
-import { defineConfig, globalIgnores } from "eslint/config";
 import tseslint from "typescript-eslint";
 
 export default defineConfig([
@@ -19,9 +20,20 @@ export default defineConfig([
         "src/api/seb-server/generated/",
     ]),
     eslint.configs.recommended,
+    // TODO @alain/@andrei: upgrade to tseslint.configs.strictTypeChecked (+ stylisticTypeChecked) for type-aware linting.
+    // - Needs parserOptions.projectService and extra setup for .vue files, so it's not a quickfix.
     tseslint.configs.strict,
     eslintPluginVue.configs["flat/recommended"],
     eslintPluginVuetify.configs["flat/base"],
+
+    // TODO @alain/@andrei: enable this and clean up all useages
+    // {
+    //     files: ["**/*.{js,ts,vue}"],
+    //     rules: {
+    //         eqeqeq: "error",
+    //         "vue/eqeqeq": "error",
+    //     },
+    // },
 
     // config for files that run in node
     {
@@ -45,7 +57,12 @@ export default defineConfig([
                 parser: tseslint.parser,
             },
         },
+        plugins: {
+            "simple-import-sort": eslintPluginSimpleImportSort,
+        },
         rules: {
+            "simple-import-sort/imports": "error",
+            "simple-import-sort/exports": "error",
             "no-console": "error",
             "no-debugger": "error",
             "vue/no-undef-components": [
@@ -55,20 +72,27 @@ export default defineConfig([
                 "error",
                 { ignorePatterns: ["^V[A-Z]"] },
             ],
+        },
+    },
 
-            // TODO @alain: activate this rule once we have migrated all imports to the @/... alias (then the respectiveclaude rule can be removed)
-            // "no-restricted-imports": [
-            //     "error",
-            //     {
-            //         patterns: [
-            //             {
-            //                 group: ["../*", "..", "../**"],
-            //                 message:
-            //                     "Don't import from a parent directory with '../'. Use the '@/...' alias instead. Same-folder ('./x') and subfolder ('./sub/x') relative imports are fine.",
-            //             },
-            //         ],
-            //     },
-            // ],
+    // Restrict parent relative imports:
+    // * Scoped to "src/**", as tests are use "../" for local helpers
+    // * TODO @Andrei: broaden this so tests are also included
+    {
+        files: ["src/**/*.{js,ts,vue}"],
+        rules: {
+            "no-restricted-imports": [
+                "error",
+                {
+                    patterns: [
+                        {
+                            group: ["../*", "..", "../**"],
+                            message:
+                                "Don't import from a parent directory with '../'. Use the '@/...' alias instead. Same-folder ('./x') and subfolder ('./sub/x') relative imports are fine.",
+                        },
+                    ],
+                },
+            ],
         },
     },
 

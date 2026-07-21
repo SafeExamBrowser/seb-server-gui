@@ -1,11 +1,12 @@
 import { computed, type Ref } from "vue";
-import { useEditUserAccountMutation } from "@/pages/(app)/user-account/api/useEditUserAccountMutation.ts";
+
+import type { UserAccount } from "@/models/userAccount.ts";
 import { useChangePasswordMutation } from "@/pages/(app)/user-account/api/useChangePasswordMutation.ts";
+import { useEditUserAccountMutation } from "@/pages/(app)/user-account/api/useEditUserAccountMutation.ts";
+import type { ChangePasswordPayload } from "@/pages/(app)/user-account/components/UserAccountForm.vue";
+import type { ApplyBackendErrorsResult } from "@/services/errors/formErrorMapping.ts";
 import { submitWithFormErrors } from "@/services/errors/submitWithFormErrors.ts";
 import { toAppErrorOrUndefined } from "@/services/errors/toAppError.ts";
-import type { ApplyBackendErrorsResult } from "@/services/errors/formErrorMapping.ts";
-import type { UserAccount } from "@/models/userAccount.ts";
-import type { ChangePasswordPayload } from "@/pages/(app)/user-account/components/UserAccountForm.vue";
 
 type ApplyErrors = (error: unknown) => ApplyBackendErrorsResult | undefined;
 

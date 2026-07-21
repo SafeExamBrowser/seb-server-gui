@@ -1,12 +1,13 @@
 import { computed, watch } from "vue";
-import { translate } from "@/utils/generalUtils.ts";
-import { useShowInstitutionColumn } from "@/composables/useShowInstitutionColumn.ts";
-import { useInstitutionNameMap } from "@/composables/useInstitutionNameMap.ts";
-import { USER_ACCOUNT_COLUMN } from "@/pages/(app)/user-account/userAccountListConfig.ts";
+
 import type {
-    TableHeader,
     CellFormatter,
+    TableHeader,
 } from "@/components/widgets/entity-table/types.ts";
+import { useInstitutionNameMap } from "@/composables/useInstitutionNameMap.ts";
+import { useShowInstitutionColumn } from "@/composables/useShowInstitutionColumn.ts";
+import { USER_ACCOUNT_COLUMN } from "@/pages/(app)/user-account/userAccountListConfig.ts";
+import { translate } from "@/utils/generalUtils.ts";
 
 export function useUserAccountsTableHeaders() {
     const showInstitutionColumn = useShowInstitutionColumn();

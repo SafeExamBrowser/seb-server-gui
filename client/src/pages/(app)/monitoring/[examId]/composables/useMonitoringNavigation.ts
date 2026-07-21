@@ -1,12 +1,13 @@
-import router from "@/router/router.ts";
-import { MonitoringHeaderEnum } from "@/models/seb-server/monitoringEnums.ts";
-import { useMonitoringStore } from "@/stores/seb-server/monitoringStore.ts";
 import type {
     LocationQuery,
     LocationQueryRaw,
     LocationQueryValueRaw,
 } from "vue-router";
+
 import { ConnectionStatusEnum } from "@/models/seb-server/connectionStatusEnum";
+import { MonitoringHeaderEnum } from "@/models/seb-server/monitoringEnums.ts";
+import router from "@/router/router.ts";
+import { useMonitoringStore } from "@/stores/seb-server/monitoringStore.ts";
 
 function addQueryParam(query: LocationQueryRaw) {
     void router.push({

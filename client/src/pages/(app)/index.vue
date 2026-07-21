@@ -5,6 +5,7 @@
 <script setup lang="ts">
 import { onBeforeMount } from "vue";
 import { useRouter } from "vue-router";
+
 import { useCurrentUserQuery } from "@/composables/useCurrentUser.ts";
 import { getLandingRoute } from "@/router/getLandingRoute.ts";
 

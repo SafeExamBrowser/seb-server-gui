@@ -36,13 +36,14 @@
 
 <script setup lang="ts">
 import { Exam } from "@/models/seb-server/exam.ts";
-import ExamSidePanelInfo from "./components/ExamSidePanelInfo.vue";
-import TestRunAction from "./components/TestRunAction.vue";
-import MonitorExamAction from "./components/MonitorExamAction.vue";
-import DownloadConnectionAction from "./components/DownloadConnectionAction/DownloadConnectionAction.vue";
-import SebLockAction from "./components/SebLockAction/SebLockAction.vue";
-import ExcludeFromDeletionAction from "./components/ExcludeFromDeletionAction.vue";
+
 import DeleteExamAction from "./components/DeleteExamAction.vue";
+import DownloadConnectionAction from "./components/DownloadConnectionAction/DownloadConnectionAction.vue";
+import ExamSidePanelInfo from "./components/ExamSidePanelInfo.vue";
+import ExcludeFromDeletionAction from "./components/ExcludeFromDeletionAction.vue";
+import MonitorExamAction from "./components/MonitorExamAction.vue";
+import SebLockAction from "./components/SebLockAction/SebLockAction.vue";
+import TestRunAction from "./components/TestRunAction.vue";
 
 defineProps<{
     exam?: Exam;

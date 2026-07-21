@@ -1,14 +1,14 @@
-import { ClientGroupEnum } from "@/models/seb-server/clientGroupEnum";
-import {
-    ExamStatusEnum,
-    examStatusColor,
-} from "@/models/seb-server/examFiltersEnum";
+import i18n from "@/i18n";
 import {
     LMSFeatureEnum,
     LMSTypeEnum,
     LMSTypeFeatureMappig,
 } from "@/models/seb-server/assessmentToolEnums";
-import i18n from "@/i18n";
+import { ClientGroupEnum } from "@/models/seb-server/clientGroupEnum";
+import {
+    examStatusColor,
+    ExamStatusEnum,
+} from "@/models/seb-server/examFiltersEnum";
 import {
     scheduledDeleteStatusColor,
     ScheduledDeleteStatusEnum,

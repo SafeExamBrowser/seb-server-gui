@@ -1,5 +1,6 @@
 import { computed } from "vue";
 import { useI18n } from "vue-i18n";
+
 import type { FilterSectionDef } from "@/components/widgets/filters/filterTypes.ts";
 import { ExamTypeEnum } from "@/models/seb-server/examFiltersEnum.ts";
 

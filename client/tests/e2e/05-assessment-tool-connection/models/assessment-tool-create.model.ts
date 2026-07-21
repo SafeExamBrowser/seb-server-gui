@@ -1,5 +1,7 @@
 import { type Page } from "@playwright/test";
+
 import { assessmentToolFormConfig } from "@/pages/(app)/assessment-tool/assessmentToolFormConfig.ts";
+
 import {
     AssessmentToolFormModel,
     type AssessmentToolMainInput,

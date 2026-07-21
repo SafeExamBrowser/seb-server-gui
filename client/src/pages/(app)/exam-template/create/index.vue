@@ -47,15 +47,17 @@
 </template>
 
 <script setup lang="ts">
-import BasicPage from "@/components/layout/pages/BasicPage.vue";
-import StepperSidebar from "@/components/widgets/stepperVertical/StepperSidebar.vue";
-import StepperFooterActions from "@/components/widgets/stepperVertical/StepperFooterActions.vue";
-import { stepComponents } from "@/pages/(app)/exam-template/create/types/types.ts";
-import { useCreateExamTemplateStore } from "./composables/store/useCreateExamTemplateStore.ts";
-import { useCreateExamTemplate } from "./composables/api/useCreateExamTemplate.ts";
-import LoadingFallbackComponent from "@/components/widgets/loadingFallbackComponent/LoadingFallbackComponent.vue";
 import { watchEffect } from "vue";
 import { useRouter } from "vue-router";
+
+import BasicPage from "@/components/layout/pages/BasicPage.vue";
+import LoadingFallbackComponent from "@/components/widgets/loadingFallbackComponent/LoadingFallbackComponent.vue";
+import StepperFooterActions from "@/components/widgets/stepperVertical/StepperFooterActions.vue";
+import StepperSidebar from "@/components/widgets/stepperVertical/StepperSidebar.vue";
+import { stepComponents } from "@/pages/(app)/exam-template/create/types/types.ts";
+
+import { useCreateExamTemplate } from "./composables/api/useCreateExamTemplate.ts";
+import { useCreateExamTemplateStore } from "./composables/store/useCreateExamTemplateStore.ts";
 
 const {
     create: createExamTemplate,

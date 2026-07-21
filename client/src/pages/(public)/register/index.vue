@@ -103,16 +103,18 @@
 <script setup lang="ts">
 import { computed, ref } from "vue";
 import { RouterLink, useRouter } from "vue-router";
-import { translate } from "@/utils/generalUtils";
+
+import AlertMsg from "@/components/widgets/AlertMsg.vue";
 import FormBuilder from "@/components/widgets/formBuilder/FormBuilder.vue";
 import LoadingFallbackComponent from "@/components/widgets/loadingFallbackComponent/LoadingFallbackComponent.vue";
-import AlertMsg from "@/components/widgets/AlertMsg.vue";
-import { useRegisterFormFields } from "./composables/useRegisterFormFields.ts";
 import { useRegisterUserAccountMutation } from "@/pages/(app)/user-account/api/useRegisterUserAccountMutation.ts";
-import { submitWithFormErrors } from "@/services/errors/submitWithFormErrors.ts";
 import { applyBackendFieldErrors } from "@/services/errors/formErrorMapping.ts";
+import { submitWithFormErrors } from "@/services/errors/submitWithFormErrors.ts";
 import { toAppErrorOrUndefined } from "@/services/errors/toAppError.ts";
 import type { BackendFieldAliasMap } from "@/services/errors/types.ts";
+import { translate } from "@/utils/generalUtils";
+
+import { useRegisterFormFields } from "./composables/useRegisterFormFields.ts";
 
 definePage({
     meta: {

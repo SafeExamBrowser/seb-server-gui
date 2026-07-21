@@ -1,12 +1,13 @@
-import { SummarySectionData } from "@/components/widgets/wizardSummary/types.ts";
 import { computed } from "vue";
-import { useCreateExamTemplateStore } from "@/pages/(app)/exam-template/create/composables/store/useCreateExamTemplateStore.ts";
-import { getSummaryClientGroups } from "@/pages/(app)/exam-template/create/components/stepSummary/helpers/getSummaryClientGroups.ts";
-import { getSummaryNaming } from "@/pages/(app)/exam-template/create/components/stepSummary/helpers/getSummaryNaming.ts";
-import { getSummaryIndicators } from "@/pages/(app)/exam-template/create/components/stepSummary/helpers/getSummaryIndicators.ts";
-import { getSummarySupervisors } from "@/pages/(app)/exam-template/create/components/stepSummary/helpers/getSummarySupervisors.ts";
-import { useSupervisors } from "@/composables/useSupervisors.ts";
+
+import { SummarySectionData } from "@/components/widgets/wizardSummary/types.ts";
 import { useClientConfigurationNames } from "@/composables/useClientConfigurationNames.ts";
+import { useSupervisors } from "@/composables/useSupervisors.ts";
+import { getSummaryClientGroups } from "@/pages/(app)/exam-template/create/components/stepSummary/helpers/getSummaryClientGroups.ts";
+import { getSummaryIndicators } from "@/pages/(app)/exam-template/create/components/stepSummary/helpers/getSummaryIndicators.ts";
+import { getSummaryNaming } from "@/pages/(app)/exam-template/create/components/stepSummary/helpers/getSummaryNaming.ts";
+import { getSummarySupervisors } from "@/pages/(app)/exam-template/create/components/stepSummary/helpers/getSummarySupervisors.ts";
+import { useCreateExamTemplateStore } from "@/pages/(app)/exam-template/create/composables/store/useCreateExamTemplateStore.ts";
 
 export const useSummary = () => {
     const examTemplate = useCreateExamTemplateStore().examTemplate;

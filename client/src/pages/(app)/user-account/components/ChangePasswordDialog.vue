@@ -47,13 +47,14 @@
 
 <script setup lang="ts">
 import { ref, watch } from "vue";
+
 import FormBuilder from "@/components/widgets/formBuilder/FormBuilder.vue";
 import { useChangePasswordFormFields } from "@/pages/(app)/user-account/composables/useChangePasswordFormFields.ts";
-import type { BackendFieldAliasMap } from "@/services/errors/types.ts";
 import {
-    applyBackendFieldErrors,
     type ApplyBackendErrorsResult,
+    applyBackendFieldErrors,
 } from "@/services/errors/formErrorMapping.ts";
+import type { BackendFieldAliasMap } from "@/services/errors/types.ts";
 
 const CHANGE_PASSWORD_FIELD_ALIASES = {
     password: "adminPassword",

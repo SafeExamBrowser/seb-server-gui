@@ -1,10 +1,11 @@
 import { computed } from "vue";
+
+import type {
+    CellFormatter,
+    TableHeader,
+} from "@/components/widgets/entity-table/types.ts";
 import { translate } from "@/utils/generalUtils.ts";
 import { formatIsoToReadableDateTime } from "@/utils/timeUtils.ts";
-import type {
-    TableHeader,
-    CellFormatter,
-} from "@/components/widgets/entity-table/types.ts";
 
 const TRANSLATION_PREFIX = "examList.main";
 

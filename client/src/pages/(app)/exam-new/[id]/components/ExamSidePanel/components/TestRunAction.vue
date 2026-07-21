@@ -16,10 +16,12 @@
 
 <script setup lang="ts">
 import { computed } from "vue";
-import * as generalUtils from "@/utils/generalUtils.ts";
+
+import { Exam } from "@/models/seb-server/exam.ts";
 import { ExamStatusEnum } from "@/models/seb-server/examFiltersEnum.ts";
 import { GUIAction, useAbilities } from "@/services/ability.ts";
-import { Exam } from "@/models/seb-server/exam.ts";
+import * as generalUtils from "@/utils/generalUtils.ts";
+
 import ActionButton from "./ActionButton.vue";
 
 const props = defineProps<{

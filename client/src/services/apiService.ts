@@ -1,9 +1,11 @@
 import axios, { AxiosRequestConfig } from "axios";
 import { merge } from "lodash";
+
 import {
     configureApiAxios,
     setTokenRefreshPromise,
 } from "@/services/http/configureApiAxios.ts";
+
 import { ApiRequest } from "./types";
 
 export { setTokenRefreshPromise };

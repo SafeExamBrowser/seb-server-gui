@@ -1,12 +1,13 @@
 import { computed } from "vue";
 import { useI18n } from "vue-i18n";
+
 import type {
     TableAction,
     TableItem,
 } from "@/components/widgets/entity-table/types.ts";
 import {
-    isExamTemplateTableItem,
     type ExamTemplateTableItem,
+    isExamTemplateTableItem,
 } from "@/pages/(app)/exam-template/types.ts";
 
 export function useExamTemplateTableActions(deps: {

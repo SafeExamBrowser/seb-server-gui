@@ -1,7 +1,8 @@
 import type { Ref } from "vue";
+
+import { useMutation } from "@/composables/useMutation.ts";
 import { Exam } from "@/models/seb-server/exam.ts";
 import { excludeFromDeletion } from "@/services/seb-server/scheduledDeletionService.ts";
-import { useMutation } from "@/composables/useMutation.ts";
 
 export const useExcludeFromDeletionAction = (
     exam: Ref<Exam | undefined>,

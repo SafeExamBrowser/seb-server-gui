@@ -550,13 +550,14 @@
 </template>
 
 <script setup lang="ts">
-import { translate } from "@/utils/generalUtils.ts";
-import TableHeaders from "@/utils/table/TableHeaders.vue";
-import { ref, onBeforeMount } from "vue";
+import { onBeforeMount, ref } from "vue";
+
 import {
     PermittedProcess,
     PermittedProcessArgument,
 } from "@/models/seb-server/sebSettings.ts";
+import { translate } from "@/utils/generalUtils.ts";
+import TableHeaders from "@/utils/table/TableHeaders.vue";
 
 const argumentsHeadersRef = ref<(HTMLElement | null)[]>([]);
 const argumentsTable = ref<PermittedProcessArgument[]>([]);

@@ -1,13 +1,14 @@
 import { z } from "zod";
-import * as apiService from "@/services/apiService";
-import { ScreenProctoringSettings } from "@/models/seb-server/screenProctoring";
+
+import { ConfigurationTemplateKey } from "@/models/seb-server/configurationNode";
 import {
+    clientGroupTemplatesSchema,
     ExamTemplate,
     ExamTemplates,
-    clientGroupTemplatesSchema,
     indicatorTemplatesSchema,
 } from "@/models/seb-server/examTemplate";
-import { ConfigurationTemplateKey } from "@/models/seb-server/configurationNode";
+import { ScreenProctoringSettings } from "@/models/seb-server/screenProctoring";
+import * as apiService from "@/services/apiService";
 import { BasicListParams } from "@/services/types";
 import { normaliseBasicListParams } from "@/utils/table/tableUtils";
 

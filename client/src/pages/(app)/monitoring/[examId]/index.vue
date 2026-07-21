@@ -76,29 +76,31 @@
 </template>
 
 <script setup lang="ts">
-import AlertMsg from "@/components/widgets/AlertMsg.vue";
-import BasicPage from "@/components/layout/pages/BasicPage.vue";
-import { useMonitoringStore } from "@/stores/seb-server/monitoringStore.ts";
-import * as indicatorService from "@/services/seb-server/indicatorService.ts";
-import { useRoute } from "vue-router";
 import { computed, onBeforeMount, onBeforeUnmount, ref } from "vue";
-import { MonitoringOverview } from "@/models/seb-server/monitoring.ts";
+import { useRoute } from "vue-router";
+
+import BasicPage from "@/components/layout/pages/BasicPage.vue";
+import AlertMsg from "@/components/widgets/AlertMsg.vue";
+import type { BreadCrumbItem } from "@/components/widgets/breadCrumb/types.ts";
+import LoadingFallbackComponent from "@/components/widgets/loadingFallbackComponent/LoadingFallbackComponent.vue";
 import { Indicators } from "@/models/seb-server/indicators.ts";
-import MonitoringContextPanel from "./components/MonitoringContextPanel.vue";
-import MonitoringOverviewClients from "./components/MonitoringOverviewClients.vue";
-import MonitoringOverviewNotifications from "./components/MonitoringOverviewNotifications.vue";
-import MonitoringOverviewIndicators from "./components/MonitoringOverviewIndicators.vue";
-import MonitoringOverviewGroups from "./components/MonitoringOverviewGroups.vue";
+import { MonitoringOverview } from "@/models/seb-server/monitoring.ts";
+import { typedTo } from "@/router/typedTo.ts";
+import * as indicatorService from "@/services/seb-server/indicatorService.ts";
 import * as monitoringService from "@/services/seb-server/monitoringService.ts";
-import * as useMonitoringData from "./client/composables/useMonitoringData.ts";
+import { useMonitoringStore } from "@/stores/seb-server/monitoringStore.ts";
+import { translate } from "@/utils/generalUtils.ts";
 import {
     getMonitoringDisabledWarningText,
     isMonitoringDisabled,
 } from "@/utils/monitoringUtils.ts";
-import { translate } from "@/utils/generalUtils.ts";
-import { typedTo } from "@/router/typedTo.ts";
-import type { BreadCrumbItem } from "@/components/widgets/breadCrumb/types.ts";
-import LoadingFallbackComponent from "@/components/widgets/loadingFallbackComponent/LoadingFallbackComponent.vue";
+
+import * as useMonitoringData from "./client/composables/useMonitoringData.ts";
+import MonitoringContextPanel from "./components/MonitoringContextPanel.vue";
+import MonitoringOverviewClients from "./components/MonitoringOverviewClients.vue";
+import MonitoringOverviewGroups from "./components/MonitoringOverviewGroups.vue";
+import MonitoringOverviewIndicators from "./components/MonitoringOverviewIndicators.vue";
+import MonitoringOverviewNotifications from "./components/MonitoringOverviewNotifications.vue";
 
 definePage({
     meta: {

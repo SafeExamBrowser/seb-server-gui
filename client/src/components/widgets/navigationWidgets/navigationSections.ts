@@ -1,7 +1,7 @@
-import { translate } from "@/utils/generalUtils";
-import { AbilityLike, GUIAction, GUIComponent } from "@/services/ability";
-import { typedTo } from "@/router/typedTo";
 import type { NavigationSectionItem } from "@/components/widgets/navigationWidgets/types.ts";
+import { typedTo } from "@/router/typedTo";
+import { AbilityLike, GUIAction, GUIComponent } from "@/services/ability";
+import { translate } from "@/utils/generalUtils";
 
 export function buildSettingsNavigationItems(
     ability: AbilityLike,

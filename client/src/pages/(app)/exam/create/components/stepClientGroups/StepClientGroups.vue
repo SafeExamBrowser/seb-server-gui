@@ -65,12 +65,14 @@
 
 <script setup lang="ts">
 import { computed, ref, watchEffect } from "vue";
+
 import StepItem from "@/components/widgets/stepItem/StepItem.vue";
-import { useStepExamTemplateStore } from "@/pages/(app)/exam/create/components/stepExamTemplate/composables/store/useStepExamTemplateStore.ts";
-import { useStepClientGroupsStore } from "./composables/store/useStepClientGroupsStore.ts";
-import { useExamTemplateScreenProctoring } from "./composables/api/useExamTemplateScreenProctoring.ts";
 import { ClientGroup } from "@/models/seb-server/clientGroup.ts";
+import { useStepExamTemplateStore } from "@/pages/(app)/exam/create/components/stepExamTemplate/composables/store/useStepExamTemplateStore.ts";
 import { createNumberIdList } from "@/utils/generalUtils.ts";
+
+import { useExamTemplateScreenProctoring } from "./composables/api/useExamTemplateScreenProctoring.ts";
+import { useStepClientGroupsStore } from "./composables/store/useStepClientGroupsStore.ts";
 
 const examTemplateStore = useStepExamTemplateStore();
 const store = useStepClientGroupsStore();

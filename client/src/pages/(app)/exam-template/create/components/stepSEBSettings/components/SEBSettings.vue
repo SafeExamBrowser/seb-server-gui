@@ -43,13 +43,14 @@
 
 <script setup lang="ts">
 import { computed, ComputedRef, ref } from "vue";
-import { ConfigurationTemplateKey } from "@/models/seb-server/configurationNode.ts";
-import { useStepNamingStore } from "@/pages/(app)/exam-template/create/components/stepNaming/composables/store/useStepNamingStore.ts";
-import SectionSubtitle from "@/components/widgets/SectionSubtitle.vue";
+
+import FormDialog from "@/components/widgets/formDialog/FormDialog.vue";
 import SEBSettingsPanel from "@/components/widgets/sebSettings/components/SEBSettingsPanel.vue";
 import { SEBSettingsContext } from "@/components/widgets/sebSettings/types.ts";
-import { useSEBSettingsImportForm } from "../composables/useSEBSettingsImportForm";
-import FormDialog from "@/components/widgets/formDialog/FormDialog.vue";
+import SectionSubtitle from "@/components/widgets/SectionSubtitle.vue";
+import { ConfigurationTemplateKey } from "@/models/seb-server/configurationNode.ts";
+import { useStepNamingStore } from "@/pages/(app)/exam-template/create/components/stepNaming/composables/store/useStepNamingStore.ts";
+import { useSEBSettingsImportForm } from "@/pages/(app)/exam-template/create/components/stepSEBSettings/composables/useSEBSettingsImportForm";
 
 const configKey = defineModel<ConfigurationTemplateKey | undefined>({
     required: true,

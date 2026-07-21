@@ -1,4 +1,5 @@
 import { computed } from "vue";
+
 import { getTemporaryConfigTemplate } from "./api/useGetTemporaryConfigTemplate.ts";
 
 export const useSEBSettings = () => {

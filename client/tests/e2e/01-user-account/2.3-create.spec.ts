@@ -1,7 +1,8 @@
-import { test, expect } from "../shared/fixtures/table-list-fixtures";
-import { expectNoRequest, waitForRequest } from "../utils/networkAssertions";
-import { expectToHaveUrl } from "../utils/helpers";
 import { USER_ACCOUNT_FIELD } from "@/pages/(app)/user-account/userAccountFormConfig.ts";
+
+import { expect, test } from "../shared/fixtures/table-list-fixtures";
+import { expectToHaveUrl } from "../utils/helpers";
+import { expectNoRequest, waitForRequest } from "../utils/networkAssertions";
 import { USER_ACCOUNT_CREATE_REQUEST } from "./models/user-account-create.model";
 
 const input = {

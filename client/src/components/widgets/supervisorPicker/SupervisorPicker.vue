@@ -35,11 +35,12 @@
 </template>
 
 <script setup lang="ts">
-import ListHeader from "./components/ListHeader.vue";
-import ListBody from "./components/ListBody.vue";
-import { UserAccountName } from "@/models/userAccount";
-import { usePicker } from "@/components/widgets/supervisorPicker/composables/usePicker";
 import SearchField from "@/components/widgets/supervisorPicker/components/SearchField.vue";
+import { usePicker } from "@/components/widgets/supervisorPicker/composables/usePicker";
+import { UserAccountName } from "@/models/userAccount";
+
+import ListBody from "./components/ListBody.vue";
+import ListHeader from "./components/ListHeader.vue";
 
 const props = defineProps<{
     supervisors: UserAccountName[];

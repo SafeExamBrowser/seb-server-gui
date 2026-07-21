@@ -1,7 +1,12 @@
 import { defineStore } from "pinia";
-import { ref, computed } from "vue";
-import { MonitoringRow } from "@/models/seb-server/monitoringClients";
-import { ServerTablePaging } from "@/models/types";
+import { computed, ref } from "vue";
+import { LocationQueryRaw } from "vue-router";
+
+import { AppSignatureKeysWithGrantValues } from "@/models/seb-server/appSignatureKey";
+import { SebClientConnection } from "@/models/seb-server/clientConnectionList";
+import { ClientGroup, ClientGroups } from "@/models/seb-server/clientGroup";
+import { Exam } from "@/models/seb-server/exam";
+import { Indicators } from "@/models/seb-server/indicators";
 import {
     ClientEvent,
     ClientNotification,
@@ -9,12 +14,8 @@ import {
     MonitoringStaticClientData,
     SingleConnection,
 } from "@/models/seb-server/monitoring";
-import { Indicators } from "@/models/seb-server/indicators";
-import { Exam } from "@/models/seb-server/exam";
-import { ClientGroup, ClientGroups } from "@/models/seb-server/clientGroup";
-import { SebClientConnection } from "@/models/seb-server/clientConnectionList";
-import { AppSignatureKeysWithGrantValues } from "@/models/seb-server/appSignatureKey";
-import { LocationQueryRaw } from "vue-router";
+import { MonitoringRow } from "@/models/seb-server/monitoringClients";
+import { ServerTablePaging } from "@/models/types";
 
 export const useMonitoringStore = defineStore("monitoring", () => {
     // monitoring overview

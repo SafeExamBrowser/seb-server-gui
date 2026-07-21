@@ -1,8 +1,8 @@
-import { test, expect } from "../shared/fixtures/table-list-fixtures";
+import { expect, test } from "../shared/fixtures/table-list-fixtures";
 import { waitForRequest } from "../utils/networkAssertions";
 import {
-    certificateRows,
     type CertificateRow,
+    certificateRows,
 } from "./models/certificates-list.model";
 
 // The upload POST hits the bare collection path (no query params), unlike the list GET;

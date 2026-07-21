@@ -136,13 +136,14 @@
 </template>
 <script setup lang="ts">
 import { onBeforeMount, onBeforeUnmount, ref } from "vue";
-import * as tableUtils from "@/utils/table/tableUtils";
-import { useTableStore } from "@/stores/store";
-import { useMonitoringStore } from "@/stores/seb-server/monitoringStore";
 import {
     HeadersSlotProps,
     VDataTableHeaderCellColumnSlotProps,
 } from "vuetify/lib/components/VDataTable/VDataTableHeaders.mjs";
+
+import { useMonitoringStore } from "@/stores/seb-server/monitoringStore";
+import { useTableStore } from "@/stores/store";
+import * as tableUtils from "@/utils/table/tableUtils";
 
 type Clickable = { click: () => void };
 

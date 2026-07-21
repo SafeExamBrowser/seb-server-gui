@@ -1,4 +1,5 @@
 import { watch } from "vue";
+
 import { useFetch } from "@/composables/useFetch.ts";
 import { getAssessmentTool } from "@/services/seb-server/assessmentToolInfoService.ts";
 

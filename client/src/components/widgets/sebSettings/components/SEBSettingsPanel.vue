@@ -26,22 +26,23 @@
 </template>
 
 <script setup lang="ts">
-import { translate } from "@/utils/generalUtils.ts";
-import SebSettingsApplications from "@/components/widgets/sebSettings/SebSettingsApplications.vue";
-import SebSettingsNetwork from "@/components/widgets/sebSettings/SebSettingsNetwork.vue";
-import { GUIAction, useAbilities } from "@/services/ability.ts";
-import SebSettingsGeneral from "../SebSettingsGeneral.vue";
-import SebSettingsUserInterface from "../SebSettingsUserInterface.vue";
-import SebSettingsBrowser from "../SebSettingsBrowser.vue";
-import SebSettingsDownUploads from "../SebSettingsDownUploads.vue";
-import SebSettingsExam from "../SebSettingsExam.vue";
-import SebSettingsSecurity from "../SebSettingsSecurity.vue";
-import SebSettingsRegistry from "../SebSettingsRegistry.vue";
-import SebSettingsHookedKeys from "../SebSettingsHookedKeys.vue";
-import SebSettingsProctoring from "../SebSettingsProctoring.vue";
-import { ref, markRaw } from "vue";
 import type { Component } from "vue";
-import { SEBSettingsContext } from "../types.ts";
+import { markRaw, ref } from "vue";
+
+import SebSettingsApplications from "@/components/widgets/sebSettings/SebSettingsApplications.vue";
+import SebSettingsBrowser from "@/components/widgets/sebSettings/SebSettingsBrowser.vue";
+import SebSettingsDownUploads from "@/components/widgets/sebSettings/SebSettingsDownUploads.vue";
+import SebSettingsExam from "@/components/widgets/sebSettings/SebSettingsExam.vue";
+import SebSettingsGeneral from "@/components/widgets/sebSettings/SebSettingsGeneral.vue";
+import SebSettingsHookedKeys from "@/components/widgets/sebSettings/SebSettingsHookedKeys.vue";
+import SebSettingsNetwork from "@/components/widgets/sebSettings/SebSettingsNetwork.vue";
+import SebSettingsProctoring from "@/components/widgets/sebSettings/SebSettingsProctoring.vue";
+import SebSettingsRegistry from "@/components/widgets/sebSettings/SebSettingsRegistry.vue";
+import SebSettingsSecurity from "@/components/widgets/sebSettings/SebSettingsSecurity.vue";
+import SebSettingsUserInterface from "@/components/widgets/sebSettings/SebSettingsUserInterface.vue";
+import { SEBSettingsContext } from "@/components/widgets/sebSettings/types.ts";
+import { GUIAction, useAbilities } from "@/services/ability.ts";
+import { translate } from "@/utils/generalUtils.ts";
 
 const props = defineProps<{
     context: SEBSettingsContext;

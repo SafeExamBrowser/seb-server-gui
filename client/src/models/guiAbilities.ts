@@ -1,4 +1,5 @@
 import { z } from "zod";
+
 import { zGuiAbilities } from "@/api/seb-server/generated/hey-api/zod.gen.ts";
 
 export const guiAbilitiesSchema = zGuiAbilities.pick({

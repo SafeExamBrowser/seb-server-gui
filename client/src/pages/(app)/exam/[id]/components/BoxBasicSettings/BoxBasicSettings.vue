@@ -20,12 +20,14 @@
 
 <script setup lang="ts">
 import { computed, Ref } from "vue";
+
 import DetailBox from "@/components/widgets/DetailBox.vue";
 import KeyValueList from "@/components/widgets/keyValueList/KeyValueList.vue";
-import { BasicSettings } from "@/models/seb-server/exam.ts";
-import { useBasicSettingsItems } from "./composables/useBasicSettingsItems.ts";
-import BasicSettingsEditDialog from "./components/BasicSettingsEditDialog.vue";
 import LoadingFallbackComponent from "@/components/widgets/loadingFallbackComponent/LoadingFallbackComponent.vue";
+import { BasicSettings } from "@/models/seb-server/exam.ts";
+
+import BasicSettingsEditDialog from "./components/BasicSettingsEditDialog.vue";
+import { useBasicSettingsItems } from "./composables/useBasicSettingsItems.ts";
 
 const { examId, basicSettings, examWithURL, editDisabled } = defineProps<{
     examId: number;

@@ -1,20 +1,21 @@
 import { computed, Ref, ref } from "vue";
+
+import {
+    getBooleanValue,
+    getSettingId,
+    getStringValue,
+} from "@/components/widgets/sebSettings/helpers/settingsTable.ts";
 import {
     SEBSettingsSingeValueModel,
     SEBSettingsTableModel,
     SettingsTable,
-} from "../types.ts";
+} from "@/components/widgets/sebSettings/types.ts";
 import {
     SEBSettingsTableRowValues,
     SEBSettingsValue,
     URLFilterRule,
 } from "@/models/seb-server/sebSettings.ts";
 import { translate } from "@/utils/generalUtils.ts";
-import {
-    getBooleanValue,
-    getSettingId,
-    getStringValue,
-} from "../helpers/settingsTable.ts";
 
 export const HeaderRefs = ref<(HTMLElement | null)[]>([]);
 

@@ -40,6 +40,7 @@
 
 <script setup lang="ts">
 import { ref, watch } from "vue";
+
 import { ConnectionConfiguration } from "@/models/seb-server/connectionConfiguration.ts";
 
 const model = defineModel<boolean>({ required: true });

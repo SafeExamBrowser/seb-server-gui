@@ -11,7 +11,11 @@
 
 <script setup lang="ts">
 import { ref } from "vue";
-import { FormFieldBaseProperties, FormFieldTextualProperties } from "../types";
+
+import {
+    FormFieldBaseProperties,
+    FormFieldTextualProperties,
+} from "@/components/widgets/formBuilder/types";
 
 const model = defineModel<string | undefined>();
 

@@ -1,16 +1,17 @@
 import { computed, Ref } from "vue";
 import { useRules } from "vuetify/labs/rules";
+
+import { EntityName } from "@/api/seb-server/generated/hey-api";
 import {
     FormField,
     TimeRange,
 } from "@/components/widgets/formBuilder/types.ts";
+import i18n from "@/i18n";
 import {
     ExamTypeEnum,
     SELECTABLE_EXAM_TYPES,
 } from "@/models/seb-server/examFiltersEnum.ts";
-import i18n from "@/i18n";
 import { isURL } from "@/utils/generalUtils";
-import { EntityName } from "@/api/seb-server/generated/hey-api";
 
 export const useExamBasicSettingsFields = (
     examWithURL: boolean,

@@ -1,7 +1,8 @@
-import { ref, type Ref } from "vue";
-import { notify } from "@/services/notifications/notify.ts";
-import type { AppError } from "@/services/errors/types.ts";
+import { type Ref, ref } from "vue";
+
 import type { TableItem } from "@/components/widgets/entity-table/types.ts";
+import type { AppError } from "@/services/errors/types.ts";
+import { notify } from "@/services/notifications/notify.ts";
 
 export const useEntityStatusFlow = (config: {
     toggle: (item: TableItem) => Promise<void>;

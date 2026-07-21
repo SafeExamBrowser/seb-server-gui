@@ -17,11 +17,13 @@
 
 <script setup lang="ts">
 import { computed } from "vue";
-import * as generalUtils from "@/utils/generalUtils.ts";
+
 import { LMSFeatureEnum } from "@/models/seb-server/assessmentToolEnums.ts";
-import { GUIAction, useAbilities } from "@/services/ability.ts";
 import { Exam } from "@/models/seb-server/exam.ts";
 import ActionButton from "@/pages/(app)/exam-new/[id]/components/ExamSidePanel/components/ActionButton.vue";
+import { GUIAction, useAbilities } from "@/services/ability.ts";
+import * as generalUtils from "@/utils/generalUtils.ts";
+
 import { useAssessmentTool } from "./composables/api/useAssessmentTool.ts";
 
 const props = defineProps<{

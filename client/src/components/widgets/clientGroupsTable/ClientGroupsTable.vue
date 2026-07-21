@@ -15,7 +15,8 @@
 <script setup lang="ts">
 import { computed } from "vue";
 import { useI18n } from "vue-i18n";
-import CrudTable from "@/components/widgets/crudTable/CrudTable.vue";
+import { useRules } from "vuetify/labs/rules";
+
 import FieldScreenProctoringEnabled from "@/components/widgets/clientGroupsTable/components/FieldScreenProctoringEnabled.vue";
 import { useTable } from "@/components/widgets/clientGroupsTable/composables/useTable.ts";
 import {
@@ -23,8 +24,8 @@ import {
     ClientGroupsTableDeps,
     isFallbackGroup,
 } from "@/components/widgets/clientGroupsTable/types.ts";
+import CrudTable from "@/components/widgets/crudTable/CrudTable.vue";
 import { isScreenProctoringAllowedForGroups } from "@/models/seb-server/screenProctoring.ts";
-import { useRules } from "vuetify/labs/rules";
 
 const { deps } = defineProps<{
     deps: ClientGroupsTableDeps;

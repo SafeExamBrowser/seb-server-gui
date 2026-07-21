@@ -50,17 +50,18 @@
 <script setup lang="ts">
 import { computed, ref } from "vue";
 import { useRouter } from "vue-router";
+
 import BasicPage from "@/components/layout/pages/BasicPage.vue";
-import SettingsNavigation from "@/components/widgets/navigation/SettingsNavigation.vue";
-import FormBuilder from "@/components/widgets/formBuilder/FormBuilder.vue";
 import CancelButton from "@/components/widgets/CancelButton.vue";
 import ConfirmButton from "@/components/widgets/ConfirmButton.vue";
+import FormBuilder from "@/components/widgets/formBuilder/FormBuilder.vue";
 import HintText from "@/components/widgets/HintText.vue";
+import SettingsNavigation from "@/components/widgets/navigation/SettingsNavigation.vue";
+import { useCreateInstitutionMutation } from "@/pages/(app)/institution/api/useCreateInstitutionMutation.ts";
+import { useInstitutionFormFields } from "@/pages/(app)/institution/composables/useInstitutionFormFields.ts";
 import { applyBackendFieldErrors } from "@/services/errors/formErrorMapping.ts";
 import { submitWithFormErrors } from "@/services/errors/submitWithFormErrors.ts";
 import { toAppErrorOrUndefined } from "@/services/errors/toAppError.ts";
-import { useCreateInstitutionMutation } from "@/pages/(app)/institution/api/useCreateInstitutionMutation.ts";
-import { useInstitutionFormFields } from "@/pages/(app)/institution/composables/useInstitutionFormFields.ts";
 
 definePage({
     meta: {

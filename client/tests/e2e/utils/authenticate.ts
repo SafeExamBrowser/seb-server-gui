@@ -1,6 +1,7 @@
 import { Page } from "@playwright/test";
-import { expectToHaveUrl } from "./helpers";
+
 import { LoginPageModel } from "../shared/page-models/layout/login-page.model";
+import { expectToHaveUrl } from "./helpers";
 
 const SEB_SERVER_ADMIN_USERNAME = "testmain";
 const SEB_SERVER_ADMIN_PASSWORD = "testmain";

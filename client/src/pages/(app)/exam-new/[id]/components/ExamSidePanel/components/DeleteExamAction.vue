@@ -19,9 +19,11 @@
 
 <script setup lang="ts">
 import { computed, ref } from "vue";
-import { GUIAction, useAbilities } from "@/services/ability.ts";
-import { Exam } from "@/models/seb-server/exam.ts";
+
 import DeleteConfirmDialog from "@/components/widgets/confirmDialog/DeleteConfirmDialog.vue";
+import { Exam } from "@/models/seb-server/exam.ts";
+import { GUIAction, useAbilities } from "@/services/ability.ts";
+
 import ActionButton from "./ActionButton.vue";
 
 const props = defineProps<{

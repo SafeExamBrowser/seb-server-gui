@@ -15,6 +15,7 @@
 
 <script setup lang="ts">
 import { computed } from "vue";
+
 import { StepItem } from "./types";
 
 const props = defineProps<{

@@ -1,11 +1,13 @@
 import { computed, ref } from "vue";
-import i18n from "@/i18n";
-import * as connectionConfigurationService from "@/services/seb-server/connectionConfigurationInfoService.ts";
-import { notify } from "@/services/notifications/notify.ts";
+
 import { useMutation } from "@/composables/useMutation.ts";
-import * as timeUtils from "@/utils/timeUtils.ts";
-import { downloadBlob } from "@/utils/downloadUtils.ts";
+import i18n from "@/i18n";
 import { Exam } from "@/models/seb-server/exam.ts";
+import { notify } from "@/services/notifications/notify.ts";
+import * as connectionConfigurationService from "@/services/seb-server/connectionConfigurationInfoService.ts";
+import { downloadBlob } from "@/utils/downloadUtils.ts";
+import * as timeUtils from "@/utils/timeUtils.ts";
+
 import { useConnectionConfigurations } from "./api/useConnectionConfigurations.ts";
 
 export const useDownloadExamConnection = ({

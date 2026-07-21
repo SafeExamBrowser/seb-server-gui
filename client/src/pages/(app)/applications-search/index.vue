@@ -244,8 +244,10 @@
 
 <script setup lang="ts">
 import { ref } from "vue";
+
 import BasicPage from "@/components/layout/pages/BasicPage.vue";
 import EntityTable from "@/components/widgets/entity-table/EntityTable.vue";
+
 import ApplicationsSearchForm from "./components/ApplicationsSearchForm.vue";
 import ApplicationsSearchMetadata from "./components/ApplicationsSearchMetadata.vue";
 import { useApplicationsSearch } from "./composables/useApplicationsSearch";

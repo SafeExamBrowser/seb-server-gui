@@ -22,8 +22,9 @@
 </template>
 
 <script setup lang="ts">
-import type { NavigationSectionTarget } from "@/components/widgets/navigationWidgets/types.ts";
 import { RouterLink } from "vue-router";
+
+import type { NavigationSectionTarget } from "@/components/widgets/navigationWidgets/types.ts";
 
 withDefaults(
     defineProps<{

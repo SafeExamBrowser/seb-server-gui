@@ -1,7 +1,9 @@
-import { computed } from "vue";
 import { storeToRefs } from "pinia";
+import { computed } from "vue";
+
 import { FormField } from "@/components/widgets/formBuilder/types.ts";
 import i18n from "@/i18n";
+
 import { useStepQuitPasswordStore } from "./store/useStepQuitPasswordStore.ts";
 
 export const useFormFields = () => {

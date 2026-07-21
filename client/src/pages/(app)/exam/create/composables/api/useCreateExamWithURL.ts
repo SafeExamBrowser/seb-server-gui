@@ -1,4 +1,3 @@
-import { createExamWithURL } from "@/services/seb-server/examService.ts";
 import { useMutation } from "@/composables/useMutation.ts";
 import {
     CreateExamResult,
@@ -6,6 +5,7 @@ import {
     Exam,
 } from "@/models/seb-server/exam.ts";
 import type { APIMessage } from "@/services/errors/types.ts";
+import { createExamWithURL } from "@/services/seb-server/examService.ts";
 
 // The `/api/exam` POST returns one of two shapes:
 // - 200 OK   → `Exam` object with `id`

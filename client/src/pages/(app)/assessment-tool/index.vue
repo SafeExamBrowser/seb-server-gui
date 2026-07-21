@@ -87,16 +87,17 @@
 
 <script setup lang="ts">
 import BasicPage from "@/components/layout/pages/BasicPage.vue";
-import SettingsNavigation from "@/components/widgets/navigation/SettingsNavigation.vue";
-import SearchBar from "@/components/widgets/searches/SearchBar.vue";
+import ActiveStatusChip from "@/components/widgets/ActiveStatusChip.vue";
+import AddButton from "@/components/widgets/AddButton.vue";
+import DeleteConfirmDialog from "@/components/widgets/confirmDialog/DeleteConfirmDialog.vue";
+import StatusConfirmDialog from "@/components/widgets/confirmDialog/StatusConfirmDialog.vue";
 import EntityTable from "@/components/widgets/entity-table/EntityTable.vue";
 import FilterControlsRow from "@/components/widgets/filters/FilterControlsRow.vue";
 import { useListFilterPanel } from "@/components/widgets/filters/useListFilterPanel.ts";
-import ActiveStatusChip from "@/components/widgets/ActiveStatusChip.vue";
-import DeleteConfirmDialog from "@/components/widgets/confirmDialog/DeleteConfirmDialog.vue";
-import StatusConfirmDialog from "@/components/widgets/confirmDialog/StatusConfirmDialog.vue";
 import LoadingFallbackComponent from "@/components/widgets/loadingFallbackComponent/LoadingFallbackComponent.vue";
-import AddButton from "@/components/widgets/AddButton.vue";
+import SettingsNavigation from "@/components/widgets/navigation/SettingsNavigation.vue";
+import SearchBar from "@/components/widgets/searches/SearchBar.vue";
+
 import { assessmentToolListConfig } from "./assessmentToolListConfig.ts";
 import { useAssessmentToolsOverview } from "./composables/useAssessmentToolsOverview.ts";
 

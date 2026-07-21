@@ -1,8 +1,9 @@
 import type { Ref } from "vue";
+
 import { useFetch } from "@/composables/useFetch.ts";
 import type { ServerTablePaging } from "@/models/types.ts";
-import type { SortOrder } from "@/services/types.ts";
 import { getExamTemplates } from "@/services/seb-server/examTemplateService.ts";
+import type { SortOrder } from "@/services/types.ts";
 
 // TODO @andrei: this function won't be needed anymore, once ServerTablePaging uses the SortOrder type
 const toSortOrder = (

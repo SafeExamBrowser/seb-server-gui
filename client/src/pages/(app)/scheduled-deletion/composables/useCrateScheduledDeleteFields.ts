@@ -1,6 +1,7 @@
 import { computed, ref } from "vue";
-import i18n from "@/i18n";
+
 import { FormField } from "@/components/widgets/formBuilder/types.ts";
+import i18n from "@/i18n";
 
 export const useCreateScheduledDeleteFields = () => {
     const deleteDueTime = ref<Date>(new Date());

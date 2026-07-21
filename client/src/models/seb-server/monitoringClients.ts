@@ -1,5 +1,5 @@
-import { IndicatorObject } from "@/models/seb-server/monitoringEnums";
 import { ClientGroup } from "@/models/seb-server/clientGroup";
+import { IndicatorObject } from "@/models/seb-server/monitoringEnums";
 
 export type MonitoringRow = {
     id: number;

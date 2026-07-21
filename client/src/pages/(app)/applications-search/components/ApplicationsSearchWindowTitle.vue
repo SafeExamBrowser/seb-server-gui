@@ -101,10 +101,12 @@
 
 <script setup lang="ts">
 import { onBeforeMount, ref } from "vue";
-import * as generalUtils from "@/utils/generalUtils";
-import ApplicationsSearchUserList from "./ApplicationsSearchUserList.vue";
+
 import { DistinctMetadataWindowForExamRecord } from "@/models/screen-proctoring/applicationSearch";
 import { getDistinctMetadataWindowForExam } from "@/services/screen-proctoring/applicationsSearchService.ts";
+import * as generalUtils from "@/utils/generalUtils";
+
+import ApplicationsSearchUserList from "./ApplicationsSearchUserList.vue";
 
 // props
 const props = defineProps<{

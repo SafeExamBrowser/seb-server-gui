@@ -1,8 +1,10 @@
 import { computed, type ComputedRef, type Ref } from "vue";
+
+import { useMutation } from "@/composables/useMutation.ts";
 import { BasicSettings, Exam } from "@/models/seb-server/exam.ts";
 import { GUIAction, useAbilities } from "@/services/ability.ts";
 import * as examService from "@/services/seb-server/examService.ts";
-import { useMutation } from "@/composables/useMutation.ts";
+
 import { useExamConfigMapping } from "./api/useExamConfigMapping.ts";
 
 export const useBasicSettings = (

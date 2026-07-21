@@ -1,5 +1,5 @@
-import { SortOrder } from "@/models/screen-proctoring/sortOrderEnum";
 import { MetaData } from "@/models/screen-proctoring/session.ts";
+import { SortOrder } from "@/models/screen-proctoring/sortOrderEnum";
 import * as spConstants from "@/utils/sp-constants.ts";
 
 export function buildGroupQueryParams(

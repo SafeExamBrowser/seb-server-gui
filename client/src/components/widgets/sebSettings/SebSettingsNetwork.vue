@@ -594,25 +594,27 @@
 </template>
 
 <script setup lang="ts">
-import * as tableUtils from "@/utils/table/tableUtils.ts";
-import TableHeaders from "@/utils/table/TableHeaders.vue";
-import { translate } from "@/utils/generalUtils.ts";
+import { useTemplateRef } from "vue";
 import { useI18n } from "vue-i18n";
-import { ViewType } from "@/models/seb-server/sebSettingsEnums.ts";
+
 import LoadingFallbackComponent from "@/components/widgets/loadingFallbackComponent/LoadingFallbackComponent.vue";
+import { ViewType } from "@/models/seb-server/sebSettingsEnums.ts";
+import { translate } from "@/utils/generalUtils.ts";
+import TableHeaders from "@/utils/table/TableHeaders.vue";
+import * as tableUtils from "@/utils/table/tableUtils.ts";
+
 import CheckboxSetting from "./components/inputFields/CheckboxSetting.vue";
-import RadioSetting from "./components/inputFields/RadioSetting.vue";
-import TextSetting from "./components/inputFields/TextSetting.vue";
 import NumberSetting from "./components/inputFields/NumberSetting.vue";
+import RadioSetting from "./components/inputFields/RadioSetting.vue";
 import SelectionSetting from "./components/inputFields/SelectionSetting.vue";
-import { useSEBSettingValues } from "./composables/useSEBSettingValues.ts";
-import { SEBSettingsContext } from "./types.ts";
+import TextSetting from "./components/inputFields/TextSetting.vue";
 import EditURLFilterRule from "./components/tableDialogs/EditURLFilterRule.vue";
+import { useSEBSettingValues } from "./composables/useSEBSettingValues.ts";
 import {
     HeaderRefs,
     useURLFilterRuleTable,
 } from "./composables/useURLFilterTable.ts";
-import { useTemplateRef } from "vue";
+import { SEBSettingsContext } from "./types.ts";
 
 const i18n = useI18n();
 

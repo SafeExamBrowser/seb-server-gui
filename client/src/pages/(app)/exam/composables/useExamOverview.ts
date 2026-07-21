@@ -1,9 +1,11 @@
 import { reactive } from "vue";
-import { useRouter, type RouteLocationAsRelative } from "vue-router";
+import { type RouteLocationAsRelative, useRouter } from "vue-router";
+
 import type { TableItem } from "@/components/widgets/entity-table/types.ts";
-import { useExamTableHeaders } from "./useExamTableHeaders.ts";
-import { useExamTableActions } from "./useExamTableActions.ts";
+
 import { useExamList } from "./useExamList.ts";
+import { useExamTableActions } from "./useExamTableActions.ts";
+import { useExamTableHeaders } from "./useExamTableHeaders.ts";
 
 export const useExamOverview = () => {
     const router = useRouter();

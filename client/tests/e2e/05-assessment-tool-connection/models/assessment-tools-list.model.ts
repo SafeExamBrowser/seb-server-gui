@@ -1,11 +1,13 @@
 import { type Page } from "@playwright/test";
-import { assessmentToolListConfig } from "@/pages/(app)/assessment-tool/assessmentToolListConfig.ts";
+
 import {
     INSTITUTION_FILTER,
     LMS_TYPE_FILTER,
     STATUS_FILTER,
     type StatusFilterValue,
 } from "@/components/widgets/filters/filterContracts.ts";
+import { assessmentToolListConfig } from "@/pages/(app)/assessment-tool/assessmentToolListConfig.ts";
+
 import { TableListPageModel } from "../../shared/page-models/model-pages/table-list-page.model";
 import type { TableListPageConfig } from "../../shared/types/table-list-page.types";
 import { entityRowActionRequests } from "../../utils/entityRowRequests";

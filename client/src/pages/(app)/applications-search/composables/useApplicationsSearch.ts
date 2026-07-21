@@ -1,19 +1,20 @@
 import { computed, reactive, ref } from "vue";
-import i18n from "@/i18n";
-import * as applicationsSearchService from "@/services/screen-proctoring/applicationsSearchService";
-import * as generalUtils from "@/utils/generalUtils";
-import * as timeUtils from "@/utils/timeUtils";
+
 import { useMultiRowSelection } from "@/components/widgets/entity-table/composables/useMultiRowSelection";
 import type {
     CellFormatter,
     TableHeader,
 } from "@/components/widgets/entity-table/types";
-import type { ServerTablePaging } from "@/models/types";
+import i18n from "@/i18n";
 import { SPExam } from "@/models/screen-proctoring/exam";
+import type { ServerTablePaging } from "@/models/types";
 import type {
     ApplicationsSearchQuery,
     ExamMetadataObject,
 } from "@/pages/(app)/applications-search/types";
+import * as applicationsSearchService from "@/services/screen-proctoring/applicationsSearchService";
+import * as generalUtils from "@/utils/generalUtils";
+import * as timeUtils from "@/utils/timeUtils";
 
 const DEFAULT_ITEMS_PER_PAGE = 5;
 

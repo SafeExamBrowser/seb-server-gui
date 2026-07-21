@@ -1,9 +1,10 @@
 import { z } from "zod";
-import { IndicatorEnum } from "@/models/seb-server/monitoringEnums.ts";
+
 import {
     ClientGroupEnum,
     clientOSLimitedValues,
 } from "@/models/seb-server/clientGroupEnum.ts";
+import { IndicatorEnum } from "@/models/seb-server/monitoringEnums.ts";
 
 // RGB hash translation:
 // - the API delivers/expects colors without a "#", the app works with a "#"

@@ -86,6 +86,7 @@
 
 <script setup lang="ts">
 import { computed, type CSSProperties } from "vue";
+
 import PageHeader from "@/components/layout/pages/components/PageHeader.vue";
 import { BreadCrumbItem } from "@/components/widgets/breadCrumb/types";
 

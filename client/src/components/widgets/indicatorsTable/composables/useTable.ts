@@ -1,13 +1,13 @@
-import i18n from "@/i18n";
-import { IndicatorExisting } from "@/models/seb-server/examTemplate.ts";
+import { CrudTableConfig } from "@/components/widgets/crudTable/types.ts";
+import { useFormFields } from "@/components/widgets/indicatorsTable/composables/useFormFields.ts";
 import {
     IndicatorsTableDeps,
     IndicatorTransient,
     indicatorTransientToIndicator,
     indicatorTransientToIndicatorExisting,
 } from "@/components/widgets/indicatorsTable/types.ts";
-import { useFormFields } from "@/components/widgets/indicatorsTable/composables/useFormFields.ts";
-import { CrudTableConfig } from "@/components/widgets/crudTable/types.ts";
+import i18n from "@/i18n";
+import { IndicatorExisting } from "@/models/seb-server/examTemplate.ts";
 
 export const getEmptyIndicator = (): IndicatorTransient => ({
     thresholds: [],

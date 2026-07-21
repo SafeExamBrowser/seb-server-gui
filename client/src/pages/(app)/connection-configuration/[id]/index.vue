@@ -182,31 +182,32 @@
 </template>
 
 <script setup lang="ts">
-import { toAppErrorOrUndefined } from "@/services/errors/toAppError.ts";
+import moment from "moment-timezone";
 import { computed, ref, watch } from "vue";
 import { useRoute, useRouter } from "vue-router";
-import moment from "moment-timezone";
+
 import BasicPage from "@/components/layout/pages/BasicPage.vue";
-import SettingsNavigation from "@/components/widgets/navigation/SettingsNavigation.vue";
-import FormBuilder from "@/components/widgets/formBuilder/FormBuilder.vue";
-import LoadingFallbackComponent from "@/components/widgets/loadingFallbackComponent/LoadingFallbackComponent.vue";
 import CancelButton from "@/components/widgets/CancelButton.vue";
 import ConfirmButton from "@/components/widgets/ConfirmButton.vue";
-import HintText from "@/components/widgets/HintText.vue";
+import FormBuilder from "@/components/widgets/formBuilder/FormBuilder.vue";
 import FormDialog from "@/components/widgets/formDialog/FormDialog.vue";
-import { applyBackendFieldErrors } from "@/services/errors/formErrorMapping.ts";
-import { submitWithFormErrors } from "@/services/errors/submitWithFormErrors.ts";
+import HintText from "@/components/widgets/HintText.vue";
+import LoadingFallbackComponent from "@/components/widgets/loadingFallbackComponent/LoadingFallbackComponent.vue";
+import SettingsNavigation from "@/components/widgets/navigation/SettingsNavigation.vue";
 import { useDirtyTracking } from "@/composables/useDirtyTracking.ts";
-import { useConnectionConfigurationFormFields } from "@/pages/(app)/connection-configuration/composables/useConnectionConfigurationFormFields.ts";
-import { useCertificates } from "@/pages/(app)/connection-configuration/composables/api/useCertificates.ts";
-import { useConnectionConfigurationQuery } from "@/pages/(app)/connection-configuration/api/useConnectionConfigurationQuery.ts";
-import { useEditConnectionConfigurationMutation } from "@/pages/(app)/connection-configuration/api/useEditConnectionConfigurationMutation.ts";
 import {
     connectionConfigurationCreateSchema,
     type ConnectionConfigurationEditRequest,
 } from "@/models/connectionConfiguration.ts";
 import { useCertificateCreateForm } from "@/pages/(app)/certificate/composables/useCertificateCreateForm.ts";
 import { CertKey } from "@/pages/(app)/certificate/types/types.ts";
+import { useConnectionConfigurationQuery } from "@/pages/(app)/connection-configuration/api/useConnectionConfigurationQuery.ts";
+import { useEditConnectionConfigurationMutation } from "@/pages/(app)/connection-configuration/api/useEditConnectionConfigurationMutation.ts";
+import { useCertificates } from "@/pages/(app)/connection-configuration/composables/api/useCertificates.ts";
+import { useConnectionConfigurationFormFields } from "@/pages/(app)/connection-configuration/composables/useConnectionConfigurationFormFields.ts";
+import { applyBackendFieldErrors } from "@/services/errors/formErrorMapping.ts";
+import { submitWithFormErrors } from "@/services/errors/submitWithFormErrors.ts";
+import { toAppErrorOrUndefined } from "@/services/errors/toAppError.ts";
 
 definePage({
     meta: {

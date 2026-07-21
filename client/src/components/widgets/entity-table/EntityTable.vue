@@ -113,24 +113,25 @@
 
 <script setup lang="ts">
 import { computed } from "vue";
-import type {
-    TableHeader,
-    TableItem,
-    TableAction,
-    CellFormatter,
-    TableRowSelect,
-    TableSingleSelect,
-} from "@/components/widgets/entity-table/types.ts";
+import { type RouteLocationAsRelative, useRouter } from "vue-router";
+
+import TableFooter from "@/components/widgets/entity-table/components/TableFooter.vue";
+import TableRowActions from "@/components/widgets/entity-table/components/TableRowActions.vue";
 import {
-    useTableHeaders,
     ACTIONS_COLUMN_KEY,
+    useTableHeaders,
 } from "@/components/widgets/entity-table/composables/useTableHeaders.ts";
 import { useTableItems } from "@/components/widgets/entity-table/composables/useTableItems.ts";
 import { useTablePagination } from "@/components/widgets/entity-table/composables/useTablePagination.ts";
-import TableRowActions from "@/components/widgets/entity-table/components/TableRowActions.vue";
-import TableFooter from "@/components/widgets/entity-table/components/TableFooter.vue";
+import type {
+    CellFormatter,
+    TableAction,
+    TableHeader,
+    TableItem,
+    TableRowSelect,
+    TableSingleSelect,
+} from "@/components/widgets/entity-table/types.ts";
 import type { ServerTablePaging } from "@/models/types.ts";
-import { useRouter, type RouteLocationAsRelative } from "vue-router";
 
 const props = withDefaults(
     defineProps<{

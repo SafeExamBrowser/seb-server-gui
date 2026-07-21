@@ -50,15 +50,17 @@
 
 <script setup lang="ts">
 import { useI18n } from "vue-i18n";
-import BasicPage from "@/components/layout/pages/BasicPage.vue";
+
 import BasicGrid from "@/components/layout/BasicGrid.vue";
-import LoadingFallbackComponent from "@/components/widgets/loadingFallbackComponent/LoadingFallbackComponent.vue";
+import BasicPage from "@/components/layout/pages/BasicPage.vue";
 import NotFoundPage from "@/components/layout/pages/NotFoundPage.vue";
+import LoadingFallbackComponent from "@/components/widgets/loadingFallbackComponent/LoadingFallbackComponent.vue";
 import { typedTo } from "@/router/typedTo";
-import { useExamDetailPage } from "./composables/useExamDetailPage.ts";
-import ExamSidePanel from "./components/ExamSidePanel/ExamSidePanel.vue";
+
 import BoxBasicSettings from "./components/BoxBasicSettings/BoxBasicSettings.vue";
 import BoxSEBSettings from "./components/BoxSEBSettings/BoxSEBSettings.vue";
+import ExamSidePanel from "./components/ExamSidePanel/ExamSidePanel.vue";
+import { useExamDetailPage } from "./composables/useExamDetailPage.ts";
 
 definePage({
     meta: {

@@ -248,19 +248,20 @@
 </template>
 
 <script setup lang="ts">
-import { computed, nextTick, ref, watch, type CSSProperties } from "vue";
-import { useMonitoringStore } from "@/stores/seb-server/monitoringStore.ts";
-import * as monitoringService from "@/services/seb-server/monitoringService.ts";
-import * as generalUtils from "@/utils/generalUtils.ts";
-import { getConnectionStatusColor } from "@/utils/monitoringUtils.ts";
+import { computed, type CSSProperties, nextTick, ref, watch } from "vue";
+
 import { ConnectionStatusEnum } from "@/models/seb-server/connectionStatusEnum.ts";
 import { InstructionEnum } from "@/models/seb-server/instructionEnum.ts";
+import { ClientNotification } from "@/models/seb-server/monitoring.ts";
 import {
     IndicatorEnum,
     NotificationEnum,
 } from "@/models/seb-server/monitoringEnums.ts";
-import { ClientNotification } from "@/models/seb-server/monitoring.ts";
 import InstructionConfirmDialog from "@/pages/(app)/monitoring/[examId]/client/components/InstructionConfirmDialog.vue";
+import * as monitoringService from "@/services/seb-server/monitoringService.ts";
+import { useMonitoringStore } from "@/stores/seb-server/monitoringStore.ts";
+import * as generalUtils from "@/utils/generalUtils.ts";
+import { getConnectionStatusColor } from "@/utils/monitoringUtils.ts";
 
 const props = defineProps<{
     examId: string;

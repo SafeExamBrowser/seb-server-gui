@@ -1,8 +1,8 @@
 import { useAuthStore } from "@/composables/store/useAuthStore";
 import { clearCurrentUser } from "@/composables/useCurrentUser";
 import { clearGuiAbilities } from "@/composables/useGuiAbilities";
-import * as authenticationService from "@/services/authenticationService";
 import router from "@/router/router";
+import * as authenticationService from "@/services/authenticationService";
 
 export const useLogout = () => {
     const authStore = useAuthStore();

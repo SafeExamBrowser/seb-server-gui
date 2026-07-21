@@ -47,20 +47,21 @@
 </template>
 
 <script setup lang="ts">
-import { useConfigurationTemplate } from "@/pages/(app)/exam-template/[id]/composables/api/useConfigurationTemplate.ts";
-import LoadingFallbackComponent from "@/components/widgets/loadingFallbackComponent/LoadingFallbackComponent.vue";
-import KeyValueList from "@/components/widgets/keyValueList/KeyValueList.vue";
-import BoxActionButton from "@/components/widgets/BoxActionButton.vue";
-import DetailBox from "@/components/widgets/DetailBox.vue";
-import { formatIsoToReadableDateTime } from "@/utils/timeUtils.ts";
-import { KeyValueItem } from "@/components/widgets/keyValueList/types.ts";
 import { computed, ComputedRef, ref } from "vue";
 import { useI18n } from "vue-i18n";
-import { SEBSettingsContext } from "@/components/widgets/sebSettings/types.ts";
-import SebSettingsDialog from "@/components/widgets/sebSettings/SebSettingsDialog.vue";
-import { useDownloadSEBSettings } from "@/pages/(app)/exam-template/[id]/components/BoxSEBSettings/api/useDownloadSEBSettings";
-import { useSEBSettingsImportForm } from "@/pages/(app)/exam-template/create/components/stepSEBSettings/composables/useSEBSettingsImportForm";
+
+import BoxActionButton from "@/components/widgets/BoxActionButton.vue";
+import DetailBox from "@/components/widgets/DetailBox.vue";
 import FormDialog from "@/components/widgets/formDialog/FormDialog.vue";
+import KeyValueList from "@/components/widgets/keyValueList/KeyValueList.vue";
+import { KeyValueItem } from "@/components/widgets/keyValueList/types.ts";
+import LoadingFallbackComponent from "@/components/widgets/loadingFallbackComponent/LoadingFallbackComponent.vue";
+import SebSettingsDialog from "@/components/widgets/sebSettings/SebSettingsDialog.vue";
+import { SEBSettingsContext } from "@/components/widgets/sebSettings/types.ts";
+import { useDownloadSEBSettings } from "@/pages/(app)/exam-template/[id]/components/BoxSEBSettings/api/useDownloadSEBSettings";
+import { useConfigurationTemplate } from "@/pages/(app)/exam-template/[id]/composables/api/useConfigurationTemplate.ts";
+import { useSEBSettingsImportForm } from "@/pages/(app)/exam-template/create/components/stepSEBSettings/composables/useSEBSettingsImportForm";
+import { formatIsoToReadableDateTime } from "@/utils/timeUtils.ts";
 
 const { t } = useI18n();
 

@@ -259,22 +259,24 @@
 
 <script setup lang="ts">
 import { useI18n } from "vue-i18n";
-import { translate } from "@/utils/generalUtils.ts";
-import { ViewType } from "@/models/seb-server/sebSettingsEnums.ts";
-import * as tableUtils from "@/utils/table/tableUtils.ts";
-import TableHeaders from "@/utils/table/TableHeaders.vue";
-import EditFileDownloadRule from "./components/tableDialogs/EditFileDownloadRule.vue";
-import SettingsTitle from "./components/SettingsTitle.vue";
-import RadioSetting from "./components/inputFields/RadioSetting.vue";
-import CheckboxSetting from "./components/inputFields/CheckboxSetting.vue";
-import TextSetting from "./components/inputFields/TextSetting.vue";
-import { useSEBSettingValues } from "./composables/useSEBSettingValues.ts";
+
 import LoadingFallbackComponent from "@/components/widgets/loadingFallbackComponent/LoadingFallbackComponent.vue";
-import { SEBSettingsContext } from "./types.ts";
+import { ViewType } from "@/models/seb-server/sebSettingsEnums.ts";
+import { translate } from "@/utils/generalUtils.ts";
+import TableHeaders from "@/utils/table/TableHeaders.vue";
+import * as tableUtils from "@/utils/table/tableUtils.ts";
+
+import CheckboxSetting from "./components/inputFields/CheckboxSetting.vue";
+import RadioSetting from "./components/inputFields/RadioSetting.vue";
+import TextSetting from "./components/inputFields/TextSetting.vue";
+import SettingsTitle from "./components/SettingsTitle.vue";
+import EditFileDownloadRule from "./components/tableDialogs/EditFileDownloadRule.vue";
 import {
     HeaderRefs,
     useFileTypeTable,
 } from "./composables/useFileTypeTable.ts";
+import { useSEBSettingValues } from "./composables/useSEBSettingValues.ts";
+import { SEBSettingsContext } from "./types.ts";
 
 const i18n = useI18n();
 

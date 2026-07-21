@@ -1,11 +1,12 @@
 import { useMutation, useQueryClient } from "@tanstack/vue-query";
+
 import { getLmsSetupsQueryKey } from "@/api/seb-server/generated/hey-api/@tanstack/vue-query.gen.ts";
+import type { EntityProcessingReport } from "@/api/seb-server/generated/hey-api/types.gen.ts";
 import { heySebServerClient } from "@/api/seb-server/http/heySebServerClient.ts";
-import { deleteAssessmentTool } from "@/services/seb-server/assessmentToolService.ts";
+import type { AssessmentToolPage } from "@/models/assessmentTool.ts";
 import { entityProcessingReportToAppError } from "@/services/errors/toAppError.ts";
 import type { AppError } from "@/services/errors/types.ts";
-import type { AssessmentToolPage } from "@/models/assessmentTool.ts";
-import type { EntityProcessingReport } from "@/api/seb-server/generated/hey-api/types.gen.ts";
+import { deleteAssessmentTool } from "@/services/seb-server/assessmentToolService.ts";
 
 const listKey = () => getLmsSetupsQueryKey({ client: heySebServerClient });
 

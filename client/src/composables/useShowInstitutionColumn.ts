@@ -1,4 +1,5 @@
 import { computed } from "vue";
+
 import { useCurrentUserQuery } from "@/composables/useCurrentUser.ts";
 
 export const useShowInstitutionColumn = () => {

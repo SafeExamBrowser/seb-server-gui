@@ -1,9 +1,10 @@
 import { z } from "zod";
-import { createExam } from "@/services/seb-server/examService.ts";
+
+import type { ApiMessage } from "@/api/seb-server/generated/hey-api/types.gen.ts";
+import { zApiMessage } from "@/api/seb-server/generated/hey-api/zod.gen.ts";
 import { useMutation } from "@/composables/useMutation.ts";
 import { CreateExamPar } from "@/models/seb-server/exam.ts";
-import { zApiMessage } from "@/api/seb-server/generated/hey-api/zod.gen.ts";
-import type { ApiMessage } from "@/api/seb-server/generated/hey-api/types.gen.ts";
+import { createExam } from "@/services/seb-server/examService.ts";
 
 export type CreateExamResult = {
     examId: string;

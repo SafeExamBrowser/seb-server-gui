@@ -1,9 +1,10 @@
 import { ref } from "vue";
-import { getQuizzes } from "@/services/seb-server/quizService.ts";
+
 import { Quizzes } from "@/models/seb-server/quiz.ts";
+import type { ServerTablePaging } from "@/models/types.ts";
+import { getQuizzes } from "@/services/seb-server/quizService.ts";
 import { wait } from "@/utils/generalUtils.ts";
 import { toServerPageQuery } from "@/utils/table/tableUtils.ts";
-import type { ServerTablePaging } from "@/models/types.ts";
 
 const POLL_INTERVAL_MS = 3000;
 const POLL_MAX_ATTEMPTS = 30;

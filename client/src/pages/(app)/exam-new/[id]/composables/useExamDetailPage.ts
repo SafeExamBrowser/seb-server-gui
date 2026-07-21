@@ -1,15 +1,17 @@
 import { computed } from "vue";
-import { z } from "zod";
 import { useRoute } from "vue-router";
-import i18n from "@/i18n";
+import { z } from "zod";
+
 import type { BreadCrumbItem } from "@/components/widgets/breadCrumb/types.ts";
+import i18n from "@/i18n";
+
+import { useDeleteExamAction } from "./actions/useDeleteExamAction.ts";
+import { useExcludeFromDeletionAction } from "./actions/useExcludeFromDeletionAction.ts";
+import { useSebLockAction } from "./actions/useSebLockAction.ts";
+import { useTestRunAction } from "./actions/useTestRunAction.ts";
 import { useExam } from "./api/useExam.ts";
 import { useBasicSettings } from "./useBasicSettings.ts";
 import { useSebSettings } from "./useSebSettings.ts";
-import { useTestRunAction } from "./actions/useTestRunAction.ts";
-import { useSebLockAction } from "./actions/useSebLockAction.ts";
-import { useExcludeFromDeletionAction } from "./actions/useExcludeFromDeletionAction.ts";
-import { useDeleteExamAction } from "./actions/useDeleteExamAction.ts";
 
 const idSchema = z.coerce.number().int().positive();
 

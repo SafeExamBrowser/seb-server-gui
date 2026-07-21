@@ -90,15 +90,16 @@
 
 <script setup lang="ts">
 import BasicPage from "@/components/layout/pages/BasicPage.vue";
-import SettingsNavigation from "@/components/widgets/navigation/SettingsNavigation.vue";
-import SearchBar from "@/components/widgets/searches/SearchBar.vue";
+import AddButton from "@/components/widgets/AddButton.vue";
+import DeleteConfirmDialog from "@/components/widgets/confirmDialog/DeleteConfirmDialog.vue";
 import EntityTable from "@/components/widgets/entity-table/EntityTable.vue";
 import FilterControlsRow from "@/components/widgets/filters/FilterControlsRow.vue";
 import { useListFilterPanel } from "@/components/widgets/filters/useListFilterPanel.ts";
-import LoadingFallbackComponent from "@/components/widgets/loadingFallbackComponent/LoadingFallbackComponent.vue";
-import DeleteConfirmDialog from "@/components/widgets/confirmDialog/DeleteConfirmDialog.vue";
 import FormDialog from "@/components/widgets/formDialog/FormDialog.vue";
-import AddButton from "@/components/widgets/AddButton.vue";
+import LoadingFallbackComponent from "@/components/widgets/loadingFallbackComponent/LoadingFallbackComponent.vue";
+import SettingsNavigation from "@/components/widgets/navigation/SettingsNavigation.vue";
+import SearchBar from "@/components/widgets/searches/SearchBar.vue";
+
 import { certificateListConfig } from "./certificateListConfig.ts";
 import { useCertificatesOverview } from "./composables/useCertificatesOverview.ts";
 

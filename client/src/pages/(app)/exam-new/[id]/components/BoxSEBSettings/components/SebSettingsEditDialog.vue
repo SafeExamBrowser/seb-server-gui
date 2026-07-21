@@ -19,6 +19,7 @@
 
 <script setup lang="ts">
 import { computed, ref } from "vue";
+
 import BoxActionButton from "@/components/widgets/BoxActionButton.vue";
 import SebSettingsDialog from "@/components/widgets/sebSettings/SebSettingsDialog.vue";
 import { SEBSettingsContext } from "@/components/widgets/sebSettings/types.ts";

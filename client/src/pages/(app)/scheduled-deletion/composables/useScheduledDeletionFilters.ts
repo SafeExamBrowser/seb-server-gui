@@ -1,9 +1,9 @@
 import { computed } from "vue";
-import { translate } from "@/utils/generalUtils.ts";
-import type { FilterSectionDef } from "@/components/widgets/filters/filterTypes.ts";
 
-import { getScheduledDeleteStatusFilterColor } from "@/utils/generalUtils.ts";
+import type { FilterSectionDef } from "@/components/widgets/filters/filterTypes.ts";
 import { ScheduledDeleteStatusEnum } from "@/models/seb-server/scheduled-deletion";
+import { translate } from "@/utils/generalUtils.ts";
+import { getScheduledDeleteStatusFilterColor } from "@/utils/generalUtils.ts";
 
 export const TRANSLATION_PREFIX = "scheduledDelete.list";
 const STATUS_PREFIX = "scheduledDelete.status.";

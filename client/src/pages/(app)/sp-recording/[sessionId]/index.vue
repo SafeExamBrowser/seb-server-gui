@@ -3,8 +3,9 @@
 </template>
 
 <script setup lang="ts">
-import ProctoringViewPage from "@/components/widgets/ProctoringViewPage.vue";
 import { useRoute } from "vue-router";
+
+import ProctoringViewPage from "@/components/widgets/ProctoringViewPage.vue";
 definePage({
     meta: {
         titleKey: "titles.screenProctoring",

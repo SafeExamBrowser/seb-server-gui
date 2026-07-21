@@ -1,8 +1,9 @@
 import { ref } from "vue";
-import * as authenticationService from "@/services/authenticationService.ts";
-import { useAuthStore } from "@/composables/store/useAuthStore.ts";
-import { toAppError } from "@/services/errors/toAppError.ts";
 import { useRouter } from "vue-router";
+
+import { useAuthStore } from "@/composables/store/useAuthStore.ts";
+import * as authenticationService from "@/services/authenticationService.ts";
+import { toAppError } from "@/services/errors/toAppError.ts";
 
 export const useLogin = () => {
     const errorI18nKey = ref<string>();

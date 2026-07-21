@@ -126,13 +126,14 @@
 
 <script setup lang="ts">
 import { ref, shallowRef, watch } from "vue";
-import { useMonitoringStore } from "@/stores/seb-server/monitoringStore.ts";
-import * as tableUtils from "@/utils/table/tableUtils.ts";
-import { translate } from "@/utils/generalUtils.ts";
-import { ServerTablePaging } from "@/models/types.ts";
-import { OptionalParGetMonitoringClientLogs } from "@/models/seb-server/optionalParamters.ts";
-import { getSingleConnectionEvents } from "@/services/seb-server/monitoringService.ts";
+
 import EntityTable from "@/components/widgets/entity-table/EntityTable.vue";
+import { OptionalParGetMonitoringClientLogs } from "@/models/seb-server/optionalParamters.ts";
+import { ServerTablePaging } from "@/models/types.ts";
+import { getSingleConnectionEvents } from "@/services/seb-server/monitoringService.ts";
+import { useMonitoringStore } from "@/stores/seb-server/monitoringStore.ts";
+import { translate } from "@/utils/generalUtils.ts";
+import * as tableUtils from "@/utils/table/tableUtils.ts";
 
 // Store instance
 const monitoringStore = useMonitoringStore();

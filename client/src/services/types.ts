@@ -1,6 +1,7 @@
-import { EntityKey } from "@/api/seb-server/generated/hey-api";
 import { AxiosRequestConfig } from "axios";
 import { z } from "zod";
+
+import { EntityKey } from "@/api/seb-server/generated/hey-api";
 
 declare module "axios" {
     interface AxiosRequestConfig {

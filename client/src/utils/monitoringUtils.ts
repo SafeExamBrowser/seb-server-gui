@@ -1,9 +1,9 @@
+import { ClientGroup } from "@/models/seb-server/clientGroup.ts";
+import { ConnectionStatusEnum } from "@/models/seb-server/connectionStatusEnum.ts";
 import { Exam } from "@/models/seb-server/exam.ts";
 import { ExamStatusEnum } from "@/models/seb-server/examFiltersEnum.ts";
-import { ConnectionStatusEnum } from "@/models/seb-server/connectionStatusEnum.ts";
 import { useMonitoringStore } from "@/stores/seb-server/monitoringStore.ts";
 import * as generalUtils from "@/utils/generalUtils.ts";
-import { ClientGroup } from "@/models/seb-server/clientGroup.ts";
 
 const connectionStatusColors: Record<ConnectionStatusEnum, string> = {
     [ConnectionStatusEnum.UNDEFINED]: "#9e9e9e",

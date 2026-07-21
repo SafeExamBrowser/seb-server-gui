@@ -1,5 +1,5 @@
-import * as apiService from "@/services/apiService";
 import { Indicators } from "@/models/seb-server/indicators";
+import * as apiService from "@/services/apiService";
 
 const baseUrl: string = "/indicator";
 

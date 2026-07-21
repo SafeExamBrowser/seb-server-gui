@@ -63,8 +63,10 @@
 
 <script setup lang="ts">
 import { watch } from "vue";
-import { translate } from "@/utils/generalUtils.ts";
+
 import * as sebSettingsService from "@/services/seb-server/sebSettingsService.ts";
+import { translate } from "@/utils/generalUtils.ts";
+
 import SEBSettingsPanel from "./components/SEBSettingsPanel.vue";
 import { SEBSettingsContext } from "./types.ts";
 

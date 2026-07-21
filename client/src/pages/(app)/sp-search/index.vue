@@ -179,18 +179,19 @@
 <script setup lang="ts">
 import { computed, ref } from "vue";
 import { useI18n } from "vue-i18n";
+
 import BasicPage from "@/components/layout/pages/BasicPage.vue";
-import SpSearchForm from "@/pages/(app)/sp-search/components/SpSearchForm.vue";
-import SearchSessionTable from "@/pages/(app)/sp-search/components/SearchSessionTable.vue";
-import { useTableStore } from "@/stores/store";
-import * as spConstants from "@/utils/sp-constants";
 import { OptionalParSearchSessions } from "@/models/screen-proctoring/optionalParamters";
-import { searchSessionsDay } from "@/services/screen-proctoring/searchService.ts";
+import SearchSessionTable from "@/pages/(app)/sp-search/components/SearchSessionTable.vue";
+import SpSearchForm from "@/pages/(app)/sp-search/components/SpSearchForm.vue";
 import {
     SP_SEARCH_FILTER_KEYS,
     SpSearchFilterKey,
     SpSearchQuery,
 } from "@/pages/(app)/sp-search/types";
+import { searchSessionsDay } from "@/services/screen-proctoring/searchService.ts";
+import { useTableStore } from "@/stores/store";
+import * as spConstants from "@/utils/sp-constants";
 
 definePage({
     meta: {

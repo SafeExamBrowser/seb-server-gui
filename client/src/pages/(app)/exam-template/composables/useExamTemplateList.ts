@@ -1,9 +1,11 @@
 import { computed } from "vue";
+
 import { useUrlTableState } from "@/components/widgets/entity-table/composables/useUrlTableState.ts";
+
 import { useExamTemplates } from "./api/useExamTemplates.ts";
 import {
-    useExamTemplateFilters,
     EXAM_TYPE_FILTER_KEY,
+    useExamTemplateFilters,
 } from "./useExamTemplateFilters.ts";
 
 export const useExamTemplateList = () => {

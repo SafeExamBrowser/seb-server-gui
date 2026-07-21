@@ -1,6 +1,7 @@
 import { useRouter } from "vue-router";
-import * as examService from "@/services/seb-server/examService.ts";
+
 import { useMutation } from "@/composables/useMutation.ts";
+import * as examService from "@/services/seb-server/examService.ts";
 
 export const useDeleteExamAction = (examId?: number) => {
     const router = useRouter();

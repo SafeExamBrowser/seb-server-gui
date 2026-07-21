@@ -90,16 +90,17 @@
 <script setup lang="ts">
 import BasicPage from "@/components/layout/pages/BasicPage.vue";
 import AddButton from "@/components/widgets/AddButton.vue";
-import SearchBar from "@/components/widgets/searches/SearchBar.vue";
 import EntityTable from "@/components/widgets/entity-table/EntityTable.vue";
 import EnumChip from "@/components/widgets/EnumChip.vue";
-import LoadingFallbackComponent from "@/components/widgets/loadingFallbackComponent/LoadingFallbackComponent.vue";
 import FilterControlsRow from "@/components/widgets/filters/FilterControlsRow.vue";
 import { useListFilterPanel } from "@/components/widgets/filters/useListFilterPanel.ts";
+import LoadingFallbackComponent from "@/components/widgets/loadingFallbackComponent/LoadingFallbackComponent.vue";
+import SearchBar from "@/components/widgets/searches/SearchBar.vue";
 import {
-    ExamStatusEnum,
     examStatusColor,
+    ExamStatusEnum,
 } from "@/models/seb-server/examFiltersEnum.ts";
+
 import { useExamOverview } from "./composables/useExamOverview.ts";
 
 definePage({

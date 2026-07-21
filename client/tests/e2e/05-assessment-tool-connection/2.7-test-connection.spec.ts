@@ -1,6 +1,7 @@
-import { test, expect } from "../shared/fixtures/table-list-fixtures";
-import { waitForRequest } from "../utils/networkAssertions";
 import type { Page } from "@playwright/test";
+
+import { expect, test } from "../shared/fixtures/table-list-fixtures";
+import { waitForRequest } from "../utils/networkAssertions";
 
 // Seeded active row shared with the read spec.
 const searchName = "e2e-getall-assessment-tool";

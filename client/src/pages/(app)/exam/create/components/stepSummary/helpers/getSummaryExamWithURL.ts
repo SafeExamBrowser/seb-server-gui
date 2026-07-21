@@ -1,5 +1,5 @@
-import i18n from "@/i18n";
 import { SummarySectionData } from "@/components/widgets/wizardSummary/types.ts";
+import i18n from "@/i18n";
 import { useStepWithURLStore } from "@/pages/(app)/exam/create/components/stepWithURL/composables/store/useStepWithURLStore";
 import { formatIsoToReadableTimeRange } from "@/utils/timeUtils";
 

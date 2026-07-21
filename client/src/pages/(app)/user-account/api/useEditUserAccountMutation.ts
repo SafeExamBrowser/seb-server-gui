@@ -1,16 +1,17 @@
 import { useMutation, useQueryClient } from "@tanstack/vue-query";
+
 import {
     getUserAccountByIdQueryKey,
     getUserAccountsQueryKey,
 } from "@/api/seb-server/generated/hey-api/@tanstack/vue-query.gen.ts";
 import { heySebServerClient } from "@/api/seb-server/http/heySebServerClient.ts";
-import { editUserAccount } from "@/services/seb-server/userAccountService.ts";
 import {
     currentUserQueryOptions,
     useCurrentUserQuery,
 } from "@/composables/useCurrentUser.ts";
 import { guiAbilitiesQueryOptions } from "@/composables/useGuiAbilities.ts";
 import type { UserAccount } from "@/models/userAccount.ts";
+import { editUserAccount } from "@/services/seb-server/userAccountService.ts";
 
 export const useEditUserAccountMutation = () => {
     const queryClient = useQueryClient();

@@ -1,4 +1,3 @@
-import { heySebServerClient as client } from "@/api/seb-server/http/heySebServerClient.ts";
 import {
     activateLmsSetup as activateLmsSetupSdk,
     createLmsSetup as createLmsSetupSdk,
@@ -9,24 +8,25 @@ import {
     getLmsSetups as getLmsSetupsSdk,
     testLms as testLmsSdk,
 } from "@/api/seb-server/generated/hey-api/sdk.gen.ts";
-import {
-    assessmentToolCreateSchema,
-    assessmentToolEditSchema,
-    assessmentToolPageSchema,
-    assessmentToolSchema,
-    assessmentToolTestResultSchema,
-    type AssessmentTool,
-    type AssessmentToolCreateRequest,
-    type AssessmentToolEditRequest,
-    type AssessmentToolPage,
-    type AssessmentToolTestResult,
-} from "@/models/assessmentTool.ts";
-import { decodeWire, encodeWire } from "@/services/errors/wireCodec.ts";
-import { zEntityProcessingReport } from "@/api/seb-server/generated/hey-api/zod.gen.ts";
 import type {
     EntityProcessingReport,
     GetLmsSetupsData,
 } from "@/api/seb-server/generated/hey-api/types.gen.ts";
+import { zEntityProcessingReport } from "@/api/seb-server/generated/hey-api/zod.gen.ts";
+import { heySebServerClient as client } from "@/api/seb-server/http/heySebServerClient.ts";
+import {
+    type AssessmentTool,
+    type AssessmentToolCreateRequest,
+    assessmentToolCreateSchema,
+    type AssessmentToolEditRequest,
+    assessmentToolEditSchema,
+    type AssessmentToolPage,
+    assessmentToolPageSchema,
+    assessmentToolSchema,
+    type AssessmentToolTestResult,
+    assessmentToolTestResultSchema,
+} from "@/models/assessmentTool.ts";
+import { decodeWire, encodeWire } from "@/services/errors/wireCodec.ts";
 
 export const getAssessmentTools = (
     query?: GetLmsSetupsData["query"],

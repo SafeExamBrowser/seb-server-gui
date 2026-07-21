@@ -1,4 +1,5 @@
 import type { RouteLocationAsRelative } from "vue-router";
+
 import router from "@/router/router.ts";
 
 export function openRouteInNewTab(to: RouteLocationAsRelative): void {

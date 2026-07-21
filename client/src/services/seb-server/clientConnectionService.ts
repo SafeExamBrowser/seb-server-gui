@@ -1,5 +1,5 @@
-import * as apiService from "@/services/apiService";
 import { SebClientConnection } from "@/models/seb-server/clientConnectionList";
+import * as apiService from "@/services/apiService";
 
 const baseUrl = "/seb-client-connection" as const;
 const chunkSize = 200;

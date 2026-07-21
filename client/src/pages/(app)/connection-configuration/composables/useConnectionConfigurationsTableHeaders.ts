@@ -1,13 +1,14 @@
 import { computed, watch } from "vue";
+
+import type {
+    CellFormatter,
+    TableHeader,
+} from "@/components/widgets/entity-table/types.ts";
+import { useInstitutionNameMap } from "@/composables/useInstitutionNameMap.ts";
+import { useShowInstitutionColumn } from "@/composables/useShowInstitutionColumn.ts";
+import { CONNECTION_CONFIGURATION_COLUMN } from "@/pages/(app)/connection-configuration/connectionConfigurationListConfig.ts";
 import { translate } from "@/utils/generalUtils.ts";
 import { formatIsoToReadableDateTime } from "@/utils/timeUtils.ts";
-import { useShowInstitutionColumn } from "@/composables/useShowInstitutionColumn.ts";
-import { useInstitutionNameMap } from "@/composables/useInstitutionNameMap.ts";
-import { CONNECTION_CONFIGURATION_COLUMN } from "@/pages/(app)/connection-configuration/connectionConfigurationListConfig.ts";
-import type {
-    TableHeader,
-    CellFormatter,
-} from "@/components/widgets/entity-table/types.ts";
 
 export function useConnectionConfigurationsTableHeaders() {
     const showInstitutionColumn = useShowInstitutionColumn();

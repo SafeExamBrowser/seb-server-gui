@@ -12,12 +12,13 @@
 <script setup lang="ts">
 import { computed, ref } from "vue";
 import { useRouter } from "vue-router";
-import AssessmentToolForm from "@/pages/(app)/assessment-tool/components/AssessmentToolForm.vue";
-import { assessmentToolFormConfig } from "@/pages/(app)/assessment-tool/assessmentToolFormConfig.ts";
+
+import type { AssessmentToolCreateRequest } from "@/models/assessmentTool.ts";
 import { useCreateAssessmentToolMutation } from "@/pages/(app)/assessment-tool/api/useCreateAssessmentToolMutation.ts";
+import { assessmentToolFormConfig } from "@/pages/(app)/assessment-tool/assessmentToolFormConfig.ts";
+import AssessmentToolForm from "@/pages/(app)/assessment-tool/components/AssessmentToolForm.vue";
 import { submitWithFormErrors } from "@/services/errors/submitWithFormErrors.ts";
 import { toAppErrorOrUndefined } from "@/services/errors/toAppError.ts";
-import type { AssessmentToolCreateRequest } from "@/models/assessmentTool.ts";
 
 definePage({
     meta: {

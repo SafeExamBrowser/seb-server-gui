@@ -1,11 +1,12 @@
 import { computed } from "vue";
+
+import type {
+    CellFormatter,
+    TableHeader,
+} from "@/components/widgets/entity-table/types.ts";
+import { CERTIFICATE_COLUMN } from "@/pages/(app)/certificate/certificateListConfig.ts";
 import { translate } from "@/utils/generalUtils.ts";
 import { formatIsoToReadableDateTime } from "@/utils/timeUtils.ts";
-import { CERTIFICATE_COLUMN } from "@/pages/(app)/certificate/certificateListConfig.ts";
-import type {
-    TableHeader,
-    CellFormatter,
-} from "@/components/widgets/entity-table/types.ts";
 
 export function useCertificatesTableHeaders() {
     const headers = computed<TableHeader[]>(() => [

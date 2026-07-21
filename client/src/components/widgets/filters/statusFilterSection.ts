@@ -1,5 +1,6 @@
-import { translate } from "@/utils/generalUtils.ts";
 import { STATUS_FILTER } from "@/components/widgets/filters/filterContracts.ts";
+import { translate } from "@/utils/generalUtils.ts";
+
 import type { FilterSectionDef } from "./filterTypes.ts";
 
 export const STATUS_FILTER_KEY = STATUS_FILTER.key;

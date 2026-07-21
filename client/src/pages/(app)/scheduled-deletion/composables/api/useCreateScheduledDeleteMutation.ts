@@ -1,4 +1,5 @@
 import { useMutation, useQueryClient } from "@tanstack/vue-query";
+
 import { getUserAccountsQueryKey } from "@/api/seb-server/generated/hey-api/@tanstack/vue-query.gen.ts";
 import { heySebServerClient } from "@/api/seb-server/http/heySebServerClient.ts";
 import { createScheduledDelete } from "@/services/seb-server/scheduledDeletionService";

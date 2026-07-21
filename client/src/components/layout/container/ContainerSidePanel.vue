@@ -55,9 +55,11 @@
 </template>
 
 <script setup lang="ts">
-import { useRoute, type RouteLocationAsRelative } from "vue-router";
+import { type RouteLocationAsRelative, useRoute } from "vue-router";
+
+import { AbilityLike, GUIComponent } from "@/services/ability";
+
 import type { BaseNavigationLink } from "./navigationLinks";
-import { GUIComponent, AbilityLike } from "@/services/ability";
 
 defineProps<{
     links: BaseNavigationLink[];

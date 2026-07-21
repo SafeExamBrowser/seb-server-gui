@@ -171,19 +171,21 @@
 <script setup lang="ts">
 import { onMounted, reactive, ref } from "vue";
 import { useRoute } from "vue-router";
-import * as spConstants from "@/utils/sp-constants";
+
 import TimeRangeModeSelector from "@/components/widgets/searches/timeRange/TimeRangeModeSelector.vue";
 import {
     buildTimeRangeSummary,
     computeTimeRange,
 } from "@/components/widgets/searches/timeRange/timeRangeUtils";
 import type { TimeRangeSelection } from "@/components/widgets/searches/timeRange/types";
-import SpSearchField from "./SpSearchField.vue";
 import type {
     SpSearchFilterKey,
     SpSearchFilters,
     SpSearchQuery,
 } from "@/pages/(app)/sp-search/types";
+import * as spConstants from "@/utils/sp-constants";
+
+import SpSearchField from "./SpSearchField.vue";
 
 withDefaults(
     defineProps<{

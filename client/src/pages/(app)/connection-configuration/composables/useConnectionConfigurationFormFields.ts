@@ -1,7 +1,8 @@
 import { computed, ref } from "vue";
-import i18n from "@/i18n";
+
 import type { FormField } from "@/components/widgets/formBuilder/types.ts";
 import { useZodFormRules } from "@/composables/useZodFormRules.ts";
+import i18n from "@/i18n";
 import {
     connectionConfigurationCreateSchema,
     SEB_CONFIG_PURPOSES,

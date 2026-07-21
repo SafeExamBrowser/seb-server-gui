@@ -1,12 +1,14 @@
 import { computed, Ref } from "vue";
 import { useI18n } from "vue-i18n";
+
 import { KeyValueItem } from "@/components/widgets/keyValueList/types.ts";
+import { BasicSettings } from "@/models/seb-server/exam.ts";
 import {
     ExamTypeEnum,
     toSelectableExamType,
 } from "@/models/seb-server/examFiltersEnum.ts";
-import { BasicSettings } from "@/models/seb-server/exam.ts";
 import * as timeUtils from "@/utils/timeUtils.ts";
+
 import { useConsecutiveExamNames } from "./api/useConsecutiveExamNames.ts";
 
 export const useBasicSettingsItems = (

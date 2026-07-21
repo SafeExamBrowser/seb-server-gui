@@ -16,9 +16,11 @@
 
 <script setup lang="ts">
 import { computed } from "vue";
-import { GUIAction, useAbilities } from "@/services/ability.ts";
+
 import { Exam } from "@/models/seb-server/exam.ts";
 import ActionButton from "@/pages/(app)/exam-new/[id]/components/ExamSidePanel/components/ActionButton.vue";
+import { GUIAction, useAbilities } from "@/services/ability.ts";
+
 import ConnectionConfigDialog from "./components/ConnectionConfigDialog.vue";
 import { useDownloadExamConnection } from "./composables/useDownloadExamConnection.ts";
 

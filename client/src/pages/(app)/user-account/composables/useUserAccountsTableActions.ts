@@ -1,5 +1,6 @@
 import { computed } from "vue";
 import { useI18n } from "vue-i18n";
+
 import { ROW_ACTION } from "@/components/widgets/entity-table/rowActions.ts";
 import type {
     TableAction,

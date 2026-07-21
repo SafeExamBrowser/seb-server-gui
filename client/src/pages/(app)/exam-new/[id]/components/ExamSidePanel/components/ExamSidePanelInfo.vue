@@ -36,11 +36,12 @@
 <script setup lang="ts">
 import { computed } from "vue";
 import { RouterLink } from "vue-router";
-import * as generalUtils from "@/utils/generalUtils.ts";
-import { ExamStatusEnum } from "@/models/seb-server/examFiltersEnum.ts";
-import { Exam } from "@/models/seb-server/exam.ts";
-import { typedTo } from "@/router/typedTo.ts";
+
 import { useExamTemplateNames } from "@/composables/useExamTemplateNames.ts";
+import { Exam } from "@/models/seb-server/exam.ts";
+import { ExamStatusEnum } from "@/models/seb-server/examFiltersEnum.ts";
+import { typedTo } from "@/router/typedTo.ts";
+import * as generalUtils from "@/utils/generalUtils.ts";
 
 const props = defineProps<{
     exam?: Exam;

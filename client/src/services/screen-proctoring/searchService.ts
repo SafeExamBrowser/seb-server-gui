@@ -1,13 +1,14 @@
-import * as apiService from "@/services/apiService";
-import {
-    SearchSessions,
-    SearchTimeline,
-} from "@/models/screen-proctoring/search";
+import { AxiosResponse } from "axios";
+
 import {
     OptionalParSearchSessions,
     OptionalParSearchTimeline,
 } from "@/models/screen-proctoring/optionalParamters";
-import { AxiosResponse } from "axios";
+import {
+    SearchSessions,
+    SearchTimeline,
+} from "@/models/screen-proctoring/search";
+import * as apiService from "@/services/apiService";
 
 const baseUrl = "/sps/proctoring/search" as const;
 

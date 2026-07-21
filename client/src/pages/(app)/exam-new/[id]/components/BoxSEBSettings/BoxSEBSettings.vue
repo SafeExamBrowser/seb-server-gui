@@ -17,11 +17,13 @@
 <script setup lang="ts">
 import { computed } from "vue";
 import { useI18n } from "vue-i18n";
+
 import DetailBox from "@/components/widgets/DetailBox.vue";
 import KeyValueList from "@/components/widgets/keyValueList/KeyValueList.vue";
-import LoadingFallbackComponent from "@/components/widgets/loadingFallbackComponent/LoadingFallbackComponent.vue";
 import { KeyValueItem } from "@/components/widgets/keyValueList/types.ts";
+import LoadingFallbackComponent from "@/components/widgets/loadingFallbackComponent/LoadingFallbackComponent.vue";
 import { formatIsoToReadableDateTime } from "@/utils/timeUtils.ts";
+
 import SebSettingsEditDialog from "./components/SebSettingsEditDialog.vue";
 import { useActiveSebClients } from "./composables/api/useActiveSebClients.ts";
 import { useSebSettingsConfigNode } from "./composables/api/useSebSettingsConfigNode.ts";

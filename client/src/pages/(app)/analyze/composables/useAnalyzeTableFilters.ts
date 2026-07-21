@@ -1,14 +1,15 @@
 import { computed } from "vue";
-import { translate } from "@/utils/generalUtils.ts";
+
 import type { FilterSectionDef } from "@/components/widgets/filters/filterTypes.ts";
 import { ExamStatusEnum } from "@/models/seb-server/examFiltersEnum.ts";
-import { getExamStatusFilterColor } from "@/utils/generalUtils.ts";
 import {
-    TYPE_FILTER_KEY,
-    EXAM_TYPE_OPTIONS,
     EXAM_STATUS_FILTER_KEY,
+    EXAM_TYPE_OPTIONS,
     TRANSLATION_PREFIX,
+    TYPE_FILTER_KEY,
 } from "@/pages/(app)/exam/composables/useExamFilters";
+import { translate } from "@/utils/generalUtils.ts";
+import { getExamStatusFilterColor } from "@/utils/generalUtils.ts";
 
 export function useAnalyzeTableFilters() {
     return computed<FilterSectionDef[]>(() => [

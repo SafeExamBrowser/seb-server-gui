@@ -1,11 +1,13 @@
 import { computed, reactive } from "vue";
-import { useRouter, type RouteLocationAsRelative } from "vue-router";
+import { type RouteLocationAsRelative, useRouter } from "vue-router";
+
 import type { TableItem } from "@/components/widgets/entity-table/types.ts";
-import { useScheduledDeleteTableHeaders } from "./useScheduledDeleteTableHeaders.ts";
-import { useScheduledDeletionTableActions } from "./useScheduledDeletionTableActions.ts";
-import { useScheduledDeletionList } from "./useScheduledDeletionList.ts";
-import { useScheduledDeleteDeleteFlow } from "./useScheduledDeletionDeleteFlow.ts";
 import { ScheduledDeleteStatusEnum } from "@/models/seb-server/scheduled-deletion.ts";
+
+import { useScheduledDeleteTableHeaders } from "./useScheduledDeleteTableHeaders.ts";
+import { useScheduledDeleteDeleteFlow } from "./useScheduledDeletionDeleteFlow.ts";
+import { useScheduledDeletionList } from "./useScheduledDeletionList.ts";
+import { useScheduledDeletionTableActions } from "./useScheduledDeletionTableActions.ts";
 
 export const useScheduledDeletionOverview = () => {
     const router = useRouter();

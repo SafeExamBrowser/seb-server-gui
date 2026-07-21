@@ -1,5 +1,6 @@
-import { test, expect } from "../shared/fixtures/table-list-fixtures";
 import { CONNECTION_CONFIGURATION_COLUMN } from "@/pages/(app)/connection-configuration/connectionConfigurationListConfig.ts";
+
+import { expect, test } from "../shared/fixtures/table-list-fixtures";
 
 const searchName = "e2e-getall-connection-config";
 const activeId = 9001;

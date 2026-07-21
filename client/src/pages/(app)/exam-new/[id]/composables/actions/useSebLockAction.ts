@@ -1,6 +1,6 @@
-import * as examService from "@/services/seb-server/examService.ts";
 import { useMutation } from "@/composables/useMutation.ts";
 import { useSebLockCheck } from "@/pages/(app)/exam-new/[id]/composables/api/useSebLockCheck.ts";
+import * as examService from "@/services/seb-server/examService.ts";
 
 export const useSebLockAction = (examId?: number) => {
     const { data: sebLockActive, fetchData: refreshSebLockActive } =
