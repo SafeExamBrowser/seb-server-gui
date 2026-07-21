@@ -28,9 +28,6 @@ on the filesystem if they clash:
   - Avoid inline event handlers like `@change="(id) => fooBar(id)" in the template`. Prefer a named event handler like `const handleChange = ...`
     in the component setup.
   - Event handlers should always be prefixed with `handle`, e.g. `handleChange`
-- Imports:
-  - Never use `../`. If you'd reach into a parent directory, use `@/...` instead.
-  - Relative imports into the same folder (`./sibling.ts`) or a subfolder (`./subfolder/foo.ts`) are fine.
 - Don't start component names with `V`. This is reserved for Vuetify by convention.
 - Prefer the "Vue composition API" over the "Vue options API".
 - Routing: when generating urls for Vuetify components with a `to` property (e.g. `v-list-item`, `v-btn`, ...), you

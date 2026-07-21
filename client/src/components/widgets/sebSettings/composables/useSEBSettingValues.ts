@@ -14,7 +14,7 @@ import {
     SEBSettingsSingeValueModel,
     SEBSettingsTableModel,
     SEBValueAttributes,
-} from "../types.ts";
+} from "@/components/widgets/sebSettings/types.ts";
 
 // This is used for inter tab communication of Security tab and Registry tab.
 // The Security tab ignoreSEBService set this value on change and the Registry

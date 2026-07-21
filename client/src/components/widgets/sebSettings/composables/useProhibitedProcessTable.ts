@@ -3,7 +3,7 @@ import {
     SEBSettingsSingeValueModel,
     SEBSettingsTableModel,
     SettingsTable,
-} from "../types.ts";
+} from "@/components/widgets/sebSettings/types.ts";
 import {
     ProhibitedProcess,
     SEBSettingsTableRowValues,
@@ -14,7 +14,7 @@ import {
     getBooleanValue,
     getSettingId,
     getStringValue,
-} from "../helpers/settingsTable.ts";
+} from "@/components/widgets/sebSettings/helpers/settingsTable.ts";
 
 export const ProhibitedProcessTableHeaderRefs = ref<(HTMLElement | null)[]>([]);
 

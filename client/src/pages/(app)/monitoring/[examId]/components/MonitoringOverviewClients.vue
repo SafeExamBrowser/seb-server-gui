@@ -90,7 +90,7 @@ import { ConnectionStatusEnum } from "@/models/seb-server/connectionStatusEnum.t
 import { MonitoringHeaderEnum } from "@/models/seb-server/monitoringEnums.ts";
 import { useI18n } from "vue-i18n";
 import { computed, ref, watch } from "vue";
-import { goToMonitoring } from "../composables/useMonitoringNavigation.ts";
+import { goToMonitoring } from "@/pages/(app)/monitoring/[examId]/composables/useMonitoringNavigation.ts";
 import LoadingFallbackComponent from "@/components/widgets/loadingFallbackComponent/LoadingFallbackComponent.vue";
 
 const props = defineProps<{

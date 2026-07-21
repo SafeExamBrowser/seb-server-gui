@@ -90,7 +90,10 @@
 </template>
 
 <script setup lang="ts">
-import { FormFieldBaseProperties, TimeRange } from "../types";
+import {
+    FormFieldBaseProperties,
+    TimeRange,
+} from "@/components/widgets/formBuilder/types";
 import { ref, useTemplateRef } from "vue";
 import { getTimestampFromDateAndTime } from "@/utils/timeUtils";
 import i18n from "@/i18n";

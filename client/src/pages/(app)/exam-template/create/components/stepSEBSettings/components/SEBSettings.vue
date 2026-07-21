@@ -48,7 +48,7 @@ import { useStepNamingStore } from "@/pages/(app)/exam-template/create/component
 import SectionSubtitle from "@/components/widgets/SectionSubtitle.vue";
 import SEBSettingsPanel from "@/components/widgets/sebSettings/components/SEBSettingsPanel.vue";
 import { SEBSettingsContext } from "@/components/widgets/sebSettings/types.ts";
-import { useSEBSettingsImportForm } from "../composables/useSEBSettingsImportForm";
+import { useSEBSettingsImportForm } from "@/pages/(app)/exam-template/create/components/stepSEBSettings/composables/useSEBSettingsImportForm";
 import FormDialog from "@/components/widgets/formDialog/FormDialog.vue";
 
 const configKey = defineModel<ConfigurationTemplateKey | undefined>({

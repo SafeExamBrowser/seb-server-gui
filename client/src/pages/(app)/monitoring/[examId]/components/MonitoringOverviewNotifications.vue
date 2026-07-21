@@ -99,7 +99,7 @@ import {
 import { useMonitoringStore } from "@/stores/seb-server/monitoringStore.ts";
 import { translate } from "@/utils/generalUtils.ts";
 import * as generalUtils from "@/utils/generalUtils.ts";
-import { goToMonitoring } from "../composables/useMonitoringNavigation.ts";
+import { goToMonitoring } from "@/pages/(app)/monitoring/[examId]/composables/useMonitoringNavigation.ts";
 import { computed } from "vue";
 
 const props = defineProps<{

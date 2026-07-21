@@ -3,14 +3,17 @@ import {
     SEBSettingsSingeValueModel,
     SEBSettingsTableModel,
     SettingsTable,
-} from "../types.ts";
+} from "@/components/widgets/sebSettings/types.ts";
 import {
     FileExtensionEntry,
     SEBSettingsTableRowValues,
     SEBSettingsValue,
 } from "@/models/seb-server/sebSettings.ts";
 import { translate } from "@/utils/generalUtils.ts";
-import { getSettingId, getStringValue } from "../helpers/settingsTable.ts";
+import {
+    getSettingId,
+    getStringValue,
+} from "@/components/widgets/sebSettings/helpers/settingsTable.ts";
 
 export const HeaderRefs = ref<(HTMLElement | null)[]>([]);
 

@@ -118,7 +118,7 @@
 import AlertMsg from "@/components/widgets/AlertMsg.vue";
 import { ref } from "vue";
 import { translate } from "@/utils/generalUtils";
-import { useLogin } from "../composables/useLogin";
+import { useLogin } from "@/pages/(public)/composables/useLogin";
 import { RouterLink } from "vue-router";
 
 definePage({

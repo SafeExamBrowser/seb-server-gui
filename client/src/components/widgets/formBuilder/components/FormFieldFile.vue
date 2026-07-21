@@ -13,7 +13,7 @@
 </template>
 
 <script setup lang="ts">
-import { FormFieldBaseProperties } from "../types";
+import { FormFieldBaseProperties } from "@/components/widgets/formBuilder/types";
 import { computed } from "vue";
 import { useRules } from "vuetify/labs/rules";
 import i18n from "@/i18n";

@@ -230,7 +230,7 @@ import { ConnectionStatusEnum } from "@/models/seb-server/connectionStatusEnum.t
 import {
     goToMonitoring,
     goToMonitoringOfGroup,
-} from "../composables/useMonitoringNavigation.ts";
+} from "@/pages/(app)/monitoring/[examId]/composables/useMonitoringNavigation.ts";
 import { useRouter } from "vue-router";
 import { useCurrentUserQuery } from "@/composables/useCurrentUser.ts";
 

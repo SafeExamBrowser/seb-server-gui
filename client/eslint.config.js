@@ -55,20 +55,27 @@ export default defineConfig([
                 "error",
                 { ignorePatterns: ["^V[A-Z]"] },
             ],
+        },
+    },
 
-            // TODO @alain: activate this rule once we have migrated all imports to the @/... alias (then the respectiveclaude rule can be removed)
-            // "no-restricted-imports": [
-            //     "error",
-            //     {
-            //         patterns: [
-            //             {
-            //                 group: ["../*", "..", "../**"],
-            //                 message:
-            //                     "Don't import from a parent directory with '../'. Use the '@/...' alias instead. Same-folder ('./x') and subfolder ('./sub/x') relative imports are fine.",
-            //             },
-            //         ],
-            //     },
-            // ],
+    // Restrict parent relative imports:
+    // * Scoped to "src/**", as tests are use "../" for local helpers
+    // * TODO @Andrei: broaden this so tests are also included
+    {
+        files: ["src/**/*.{js,ts,vue}"],
+        rules: {
+            "no-restricted-imports": [
+                "error",
+                {
+                    patterns: [
+                        {
+                            group: ["../*", "..", "../**"],
+                            message:
+                                "Don't import from a parent directory with '../'. Use the '@/...' alias instead. Same-folder ('./x') and subfolder ('./sub/x') relative imports are fine.",
+                        },
+                    ],
+                },
+            ],
         },
     },
 

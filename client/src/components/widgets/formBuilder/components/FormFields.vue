@@ -152,7 +152,7 @@ import {
     FormFieldBaseProperties,
     FormFieldTextualProperties,
     FormFieldsComponentProps,
-} from "../types";
+} from "@/components/widgets/formBuilder/types";
 import { VInput } from "vuetify/components";
 import { ref, nextTick, watch } from "vue";
 import FormFieldCollection from "./FormFieldCollection.vue";

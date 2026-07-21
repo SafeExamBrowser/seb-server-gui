@@ -5,7 +5,7 @@ import { useSEBSettingsImport } from "./api/useSEBSettingsImport";
 import {
     SEBSettingsImportItemTransient,
     toCSEBSettingsImportItem,
-} from "../types";
+} from "@/pages/(app)/exam-template/create/components/stepSEBSettings/types";
 
 export const useSEBSettingsImportForm = (
     configurationTemplateId: string,
