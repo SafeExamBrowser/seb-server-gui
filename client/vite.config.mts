@@ -68,6 +68,8 @@ export default ({ mode, command }: ConfigEnv) => {
         },
 
         server: {
+            // this allows us to connect to the dev server from containers/VMs that connect over IPv4.
+            host: true,
             port: 8082,
             ...(command === "serve"
                 ? {
