@@ -49,26 +49,45 @@
 
             <template #PanelMain>
                 <LoadingFallbackComponent :loading="loading">
-                    <v-row class="align-stretch">
-                        <v-col cols="12" :md="dashColMd">
-                            <MonitoringOverviewClients :exam-id="examId" />
-                        </v-col>
-                        <v-col
-                            v-if="hasNotifications"
-                            cols="12"
-                            :md="dashColMd"
+                    <!-- the last visible section absorbs leftover viewport
+                    height; once the content overflows, everything scrolls
+                    normally because flex-grow has nothing left to distribute -->
+                    <div class="d-flex flex-column flex-grow-1 flex-shrink-0">
+                        <v-row
+                            class="align-stretch"
+                            :class="{ 'flex-grow-1': !hasGroups }"
                         >
-                            <MonitoringOverviewNotifications
-                                :exam-id="examId"
-                            />
-                        </v-col>
-                        <v-col v-if="hasIndicators" cols="12" :md="dashColMd">
-                            <MonitoringOverviewIndicators :exam-id="examId" />
-                        </v-col>
-                        <v-col v-if="hasGroups" cols="12">
-                            <MonitoringOverviewGroups :exam-id="examId" />
-                        </v-col>
-                    </v-row>
+                            <v-col cols="12" :md="dashColMd">
+                                <MonitoringOverviewClients :exam-id="examId" />
+                            </v-col>
+                            <v-col
+                                v-if="hasNotifications"
+                                cols="12"
+                                :md="dashColMd"
+                            >
+                                <MonitoringOverviewNotifications
+                                    :exam-id="examId"
+                                />
+                            </v-col>
+                            <v-col
+                                v-if="hasIndicators"
+                                cols="12"
+                                :md="dashColMd"
+                            >
+                                <MonitoringOverviewIndicators
+                                    :exam-id="examId"
+                                />
+                            </v-col>
+                        </v-row>
+                        <v-row
+                            v-if="hasGroups"
+                            class="align-stretch flex-grow-1 mt-3"
+                        >
+                            <v-col cols="12">
+                                <MonitoringOverviewGroups :exam-id="examId" />
+                            </v-col>
+                        </v-row>
+                    </div>
                 </LoadingFallbackComponent>
             </template>
         </BasicPage>

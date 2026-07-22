@@ -25,14 +25,14 @@
 
             <div
                 v-if="floating"
-                class="flex-grow-1 h-100 overflow-y-auto overflow-x-hidden pa-3 ma-n3"
+                class="flex-grow-1 h-100 overflow-y-auto overflow-x-hidden pa-3 ma-n3 d-flex flex-column"
                 :style="{ minWidth: 0, minHeight: 0 }"
             >
                 <v-card
                     border
                     elevation="1"
                     rounded="lg"
-                    class="bg-surface-tint mb-6 pb-4"
+                    class="bg-surface-tint mb-6 pb-4 flex-shrink-0"
                 >
                     <PageHeader
                         :title="title"
