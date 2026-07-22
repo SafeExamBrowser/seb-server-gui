@@ -130,7 +130,7 @@ test.describe("04 Connection Configurations - BACKEND FIELD VALIDATION", () => {
                 CONNECTION_CONFIG_CREATE_REQUEST,
                 async (route) => {
                     if (route.request().method() !== "POST") {
-                        return route.continue();
+                        return route.fallback();
                     }
                     await route.fulfill({
                         status: 400,

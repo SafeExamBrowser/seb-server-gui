@@ -39,7 +39,7 @@ async function mockConfigLoad(page: Page) {
         connectionConfigurationByIdRequest(EDIT_CONFIG_ID),
         (route) => {
             if (route.request().method() !== "GET") {
-                return route.continue();
+                return route.fallback();
             }
             return route.fulfill({
                 status: 200,
@@ -107,7 +107,7 @@ test.describe("04 Connection Configurations - EDIT", () => {
         await mockConfigLoad(page);
         await page.route(CONNECTION_CONFIG_SAVE_REQUEST, async (route) => {
             if (route.request().method() !== "PUT") {
-                return route.continue();
+                return route.fallback();
             }
             await route.fulfill({
                 status: 200,

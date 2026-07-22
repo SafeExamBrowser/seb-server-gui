@@ -141,7 +141,7 @@ test.describe("01 User Accounts - BACKEND FIELD VALIDATION", () => {
 
             await page.route(USER_ACCOUNT_CREATE_REQUEST, async (route) => {
                 if (route.request().method() !== "POST") {
-                    return route.continue();
+                    return route.fallback();
                 }
                 await route.fulfill({
                     status: 400,

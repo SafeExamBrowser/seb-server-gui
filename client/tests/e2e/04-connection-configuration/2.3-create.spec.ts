@@ -42,7 +42,7 @@ test.describe("04 Connection Configurations - CREATE", () => {
 
         await page.route(CONNECTION_CONFIG_CREATE_REQUEST, async (route) => {
             if (route.request().method() !== "POST") {
-                return route.continue();
+                return route.fallback();
             }
             await route.fulfill({
                 status: 200,
@@ -134,7 +134,7 @@ test.describe("04 Connection Configurations - CREATE", () => {
 
         await page.route(CONNECTION_CONFIG_CREATE_REQUEST, async (route) => {
             if (route.request().method() !== "POST") {
-                return route.continue();
+                return route.fallback();
             }
             await route.fulfill({
                 status: 400,

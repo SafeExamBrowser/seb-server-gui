@@ -31,7 +31,7 @@ const seededActiveId = 9101;
 async function mockToolLoad(page: Page) {
     await page.route(assessmentToolByIdRequest(EDIT_TOOL_ID), (route) => {
         if (route.request().method() !== "GET") {
-            return route.continue();
+            return route.fallback();
         }
         return route.fulfill({
             status: 200,
@@ -87,7 +87,7 @@ test.describe("05 Assessment Tools - EDIT", () => {
         await mockToolLoad(page);
         await page.route(ASSESSMENT_TOOL_SAVE_REQUEST, async (route) => {
             if (route.request().method() !== "PUT") {
-                return route.continue();
+                return route.fallback();
             }
             await route.fulfill({
                 status: 200,
