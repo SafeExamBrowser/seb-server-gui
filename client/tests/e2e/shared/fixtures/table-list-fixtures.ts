@@ -14,6 +14,7 @@ import { AssessmentToolCreateModel } from "../../05-assessment-tool-connection/m
 import { AssessmentToolEditModel } from "../../05-assessment-tool-connection/models/assessment-tool-edit.model";
 import { AssessmentToolsListModel } from "../../05-assessment-tool-connection/models/assessment-tools-list.model";
 import { loginAsServerAdmin } from "../../utils/authenticate";
+import { installMockBackend } from "../mocks/mock-backend";
 import { ProfileMenuModel } from "../page-models/layout/profile-menu.model";
 
 type Fixtures = {
@@ -34,59 +35,73 @@ type Fixtures = {
 };
 
 export const test = base.extend<Fixtures>({
-    userAccounts: async ({ page }, use) => {
+    userAccounts: async ({ page }, use, testInfo) => {
+        await installMockBackend(page, testInfo.project.name);
         await loginAsServerAdmin(page);
         await use(new UserAccountsListModel(page));
     },
-    userAccountCreate: async ({ page }, use) => {
+    userAccountCreate: async ({ page }, use, testInfo) => {
+        await installMockBackend(page, testInfo.project.name);
         await loginAsServerAdmin(page);
         await use(new UserAccountCreateModel(page));
     },
-    userAccountEdit: async ({ page }, use) => {
+    userAccountEdit: async ({ page }, use, testInfo) => {
+        await installMockBackend(page, testInfo.project.name);
         await loginAsServerAdmin(page);
         await use(new UserAccountEditModel(page));
     },
-    userAccountRegister: async ({ page }, use) => {
+    userAccountRegister: async ({ page }, use, testInfo) => {
         // Register is a public page; it must work without authentication.
+        await installMockBackend(page, testInfo.project.name);
         await use(new UserAccountRegisterModel(page));
     },
-    userAccountProfile: async ({ page }, use) => {
+    userAccountProfile: async ({ page }, use, testInfo) => {
+        await installMockBackend(page, testInfo.project.name);
         await loginAsServerAdmin(page);
         await use(new UserAccountProfileModel(page));
     },
-    profileMenu: async ({ page }, use) => {
+    profileMenu: async ({ page }, use, testInfo) => {
+        await installMockBackend(page, testInfo.project.name);
         await loginAsServerAdmin(page);
         await use(new ProfileMenuModel(page));
     },
-    institutions: async ({ page }, use) => {
+    institutions: async ({ page }, use, testInfo) => {
+        await installMockBackend(page, testInfo.project.name);
         await loginAsServerAdmin(page);
         await use(new InstitutionsListModel(page));
     },
-    connectionConfigurations: async ({ page }, use) => {
+    connectionConfigurations: async ({ page }, use, testInfo) => {
+        await installMockBackend(page, testInfo.project.name);
         await loginAsServerAdmin(page);
         await use(new ConnectionConfigurationsListModel(page));
     },
-    connectionConfigurationCreate: async ({ page }, use) => {
+    connectionConfigurationCreate: async ({ page }, use, testInfo) => {
+        await installMockBackend(page, testInfo.project.name);
         await loginAsServerAdmin(page);
         await use(new ConnectionConfigurationCreateModel(page));
     },
-    connectionConfigurationEdit: async ({ page }, use) => {
+    connectionConfigurationEdit: async ({ page }, use, testInfo) => {
+        await installMockBackend(page, testInfo.project.name);
         await loginAsServerAdmin(page);
         await use(new ConnectionConfigurationEditModel(page));
     },
-    certificates: async ({ page }, use) => {
+    certificates: async ({ page }, use, testInfo) => {
+        await installMockBackend(page, testInfo.project.name);
         await loginAsServerAdmin(page);
         await use(new CertificatesListModel(page));
     },
-    assessmentTools: async ({ page }, use) => {
+    assessmentTools: async ({ page }, use, testInfo) => {
+        await installMockBackend(page, testInfo.project.name);
         await loginAsServerAdmin(page);
         await use(new AssessmentToolsListModel(page));
     },
-    assessmentToolCreate: async ({ page }, use) => {
+    assessmentToolCreate: async ({ page }, use, testInfo) => {
+        await installMockBackend(page, testInfo.project.name);
         await loginAsServerAdmin(page);
         await use(new AssessmentToolCreateModel(page));
     },
-    assessmentToolEdit: async ({ page }, use) => {
+    assessmentToolEdit: async ({ page }, use, testInfo) => {
+        await installMockBackend(page, testInfo.project.name);
         await loginAsServerAdmin(page);
         await use(new AssessmentToolEditModel(page));
     },

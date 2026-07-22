@@ -44,7 +44,7 @@ async function mockOk(
 ) {
     await page.route(urlRegex, (route) => {
         if (route.request().method() !== method) {
-            return route.continue();
+            return route.fallback();
         }
         return route.fulfill({
             status: 200,
@@ -91,7 +91,7 @@ function mockConnectionConfigurationList(
 ) {
     return page.route(/\/client_configuration\?/i, (route) => {
         if (route.request().method() !== "GET") {
-            return route.continue();
+            return route.fallback();
         }
         return route.fulfill({
             status: 200,
@@ -197,7 +197,7 @@ test.describe("04 Connection Configurations - ROW ACTIONS", () => {
         await mockConnectionConfigurationList(page, state);
         await page.route(deleteRequest, (route) => {
             if (route.request().method() !== "DELETE") {
-                return route.continue();
+                return route.fallback();
             }
             return route.fulfill({
                 status: 200,
@@ -233,7 +233,7 @@ test.describe("04 Connection Configurations - ROW ACTIONS", () => {
         await mockConnectionConfigurationList(page, state);
         await page.route(deactivateRequest, (route) => {
             if (route.request().method() !== "POST") {
-                return route.continue();
+                return route.fallback();
             }
             return route.fulfill({
                 status: 200,
@@ -268,7 +268,7 @@ test.describe("04 Connection Configurations - ROW ACTIONS", () => {
         await mockConnectionConfigurationList(page, state);
         await page.route(deleteRequest, (route) => {
             if (route.request().method() !== "DELETE") {
-                return route.continue();
+                return route.fallback();
             }
             state.rows = state.rows.filter((r) => r.id !== row.id);
             return route.fulfill({
@@ -301,7 +301,7 @@ test.describe("04 Connection Configurations - ROW ACTIONS", () => {
         await mockConnectionConfigurationList(page, state);
         await page.route(deactivateRequest, (route) => {
             if (route.request().method() !== "POST") {
-                return route.continue();
+                return route.fallback();
             }
             state.rows = state.rows.map((r) =>
                 r.id === row.id ? { ...r, active: false } : r,
@@ -339,7 +339,7 @@ test.describe("04 Connection Configurations - ROW ACTIONS", () => {
 
         await page.route(/\/client_configuration\?/i, (route) => {
             if (route.request().method() !== "GET") {
-                return route.continue();
+                return route.fallback();
             }
             const active = new URL(route.request().url()).searchParams.get(
                 "active",
@@ -356,7 +356,7 @@ test.describe("04 Connection Configurations - ROW ACTIONS", () => {
         });
         await page.route(deactivateRequest, (route) => {
             if (route.request().method() !== "POST") {
-                return route.continue();
+                return route.fallback();
             }
             state.rows = state.rows.map((r) =>
                 r.id === row.id ? { ...r, active: false } : r,

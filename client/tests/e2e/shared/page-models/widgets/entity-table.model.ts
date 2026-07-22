@@ -84,6 +84,14 @@ export class EntityTableModel {
         return (await this.pageButton(pageNumber).count()) > 0;
     }
 
+    async currentItemsPerPage(): Promise<number> {
+        const text = await this.itemsPerPage
+            .locator(".v-select__selection-text")
+            .first()
+            .innerText();
+        return Number(text.trim());
+    }
+
     async expectRowVisible(id: string | number) {
         await expect(this.row(id)).toBeVisible();
     }

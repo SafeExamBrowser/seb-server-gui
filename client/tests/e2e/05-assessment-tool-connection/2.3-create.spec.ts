@@ -40,7 +40,7 @@ test.describe("05 Assessment Tools - CREATE", () => {
 
         await page.route(ASSESSMENT_TOOL_CREATE_REQUEST, async (route) => {
             if (route.request().method() !== "POST") {
-                return route.continue();
+                return route.fallback();
             }
             await route.fulfill({
                 status: 200,
@@ -130,7 +130,7 @@ test.describe("05 Assessment Tools - CREATE", () => {
 
         await page.route(ASSESSMENT_TOOL_CREATE_REQUEST, async (route) => {
             if (route.request().method() !== "POST") {
-                return route.continue();
+                return route.fallback();
             }
             await route.fulfill({
                 status: 400,
@@ -163,7 +163,7 @@ test.describe("05 Assessment Tools - CREATE", () => {
 
         await page.route(ASSESSMENT_TOOL_CREATE_REQUEST, async (route) => {
             if (route.request().method() !== "POST") {
-                return route.continue();
+                return route.fallback();
             }
             await route.fulfill({
                 status: 200,

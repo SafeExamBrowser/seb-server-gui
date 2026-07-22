@@ -36,7 +36,7 @@ const savedUser = {
 async function mockProfileSave(page: Page) {
     await page.route(PROFILE_SAVE_REQUEST, async (route) => {
         if (route.request().method() !== "PUT") {
-            return route.continue();
+            return route.fallback();
         }
         await route.fulfill({
             status: 200,

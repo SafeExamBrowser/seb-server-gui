@@ -33,7 +33,7 @@ const activeUserUuid = "seb-user-account-getall-active";
 async function mockUserLoad(page: Page) {
     await page.route(userAccountByIdRequest(EDIT_USER_UUID), (route) => {
         if (route.request().method() !== "GET") {
-            return route.continue();
+            return route.fallback();
         }
         return route.fulfill({
             status: 200,
@@ -93,7 +93,7 @@ test.describe("01 User Accounts - EDIT", () => {
         await mockUserLoad(page);
         await page.route(USER_ACCOUNT_SAVE_REQUEST, async (route) => {
             if (route.request().method() !== "PUT") {
-                return route.continue();
+                return route.fallback();
             }
             await route.fulfill({
                 status: 200,
