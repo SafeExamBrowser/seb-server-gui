@@ -62,7 +62,12 @@ test.describe("03 Certificates - UPLOAD", () => {
 
         await test.step("the request carries the raw file bytes and the file name header", async () => {
             const request = await uploadRequest;
-            expect(request.postData()).toBe("e2e-pem-file-bytes");
+            // WebKit does not expose Blob/File request bodies to Playwright
+            // (postData() is null there, see playwright#6479), so the byte
+            // assertion runs on the other engines only.
+            if (test.info().project.name !== "webkit") {
+                expect(request.postData()).toBe("e2e-pem-file-bytes");
+            }
             expect(request.headers()["importfile"]).toBe(pemFile.name);
             expect(request.headers()["importfilepassword"]).toBeUndefined();
         });
