@@ -32,11 +32,10 @@ import { computed, ref, watch } from "vue";
 import type { TableFilters } from "@/components/widgets/entity-table/types.ts";
 import SearchBar from "@/components/widgets/searches/SearchBar.vue";
 import type { SearchBarAction } from "@/components/widgets/searches/types.ts";
-import { ErrorProps } from "@/models/alertProps.ts";
 import { ConnectionStatusEnum } from "@/models/seb-server/connectionStatusEnum.ts";
 import { InstructionEnum } from "@/models/seb-server/instructionEnum.ts";
 import { useMonitoringClientsFilters } from "@/pages/(app)/monitoring/[examId]/client/composables/useMonitoringClientsFilters.ts";
-import { useErrorStore } from "@/stores/seb-server/errorStore.ts";
+import { notify } from "@/services/notifications/notify.ts";
 import { useMonitoringStore } from "@/stores/seb-server/monitoringStore.ts";
 import * as generalUtils from "@/utils/generalUtils.ts";
 
@@ -52,7 +51,6 @@ const emit = defineEmits<{
 
 // stores
 const monitoringStore = useMonitoringStore();
-const errorStore = useErrorStore();
 
 // exam
 const examId = props.examId;
@@ -174,13 +172,7 @@ function openInstructionConfirmDialog(
     const connectionTokens: string | null =
         getConnectionTokens(instructionType);
     if (connectionTokens == null) {
-        const errorProps: ErrorProps = {
-            color: "error",
-            textKey: "no-data",
-            timeout: 5000,
-        };
-
-        errorStore.showError(errorProps);
+        notify.clientError(generalUtils.translate("warnings.no-data"));
         return;
     }
 
