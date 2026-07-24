@@ -21,6 +21,14 @@
             :select-strategy="selection ? 'page' : undefined"
             @update:options="emit('update:options', $event)"
         >
+            <!-- Render a skeleton the height of a full page of rows so the
+            table keeps its size during the initial load instead of collapsing
+            to a thin bar. Vuetify only shows this slot while loading with no
+            rows yet; paging over existing rows keeps the inline progress bar. -->
+            <template #loading>
+                <v-skeleton-loader :type="loadingSkeletonType" />
+            </template>
+
             <template
                 #item="{ item, isSelected, toggleSelect, index, internalItem }"
             >
@@ -215,6 +223,12 @@ const {
     itemsLength: () => props.itemsLength,
     emit: (options) => emit("update:options", options),
 });
+
+// One skeleton row per requested page item, so the placeholder matches the
+// height of the loaded table and there is no layout shift when data arrives.
+const loadingSkeletonType = computed(
+    () => `table-row@${requestedItemsPerPage.value}`,
+);
 
 function rowTestId(item: TableItem, index: number): string {
     const id = item[props.itemKey];
