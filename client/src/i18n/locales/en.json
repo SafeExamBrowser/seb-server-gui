@@ -1049,10 +1049,10 @@
             "tableHeaderValidTo": "Valid To",
             "tableHeaderTypes": "Types"
         },
-        "deleteCertificateContext": {
+        "deleteDialog": {
             "title": "Confirm Deletion",
-            "informationPart1": "Delete Certificate: ",
-            "informationPart3": " ?"
+            "text": "Are you sure you want to delete this certificate?",
+            "action": "Delete"
         },
         "createDialog": {
             "addButtonTitle": "Add Certificate",
@@ -1065,9 +1065,6 @@
                 "password": {
                     "label": "Password"
                 }
-            },
-            "errors": {
-                "generic": "Failed to upload certificate, please contact a system administrator"
             }
         },
         "types": {
