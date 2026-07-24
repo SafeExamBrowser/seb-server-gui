@@ -9,12 +9,19 @@
         :items-per-page="tableUtils.defaultPageItems"
         :items-per-page-options="tableUtils.itemsPerPageOptions"
         :loading="isLoading"
-        loading-text="Loading... Please wait"
+        :loading-text="$t('general.loading')"
+        :no-data-text="$t('general.noData')"
         select-strategy="page"
         show-expand
         :show-select="isUserAdmin"
         @update:options="loadItems"
     >
+        <template #loading>
+            <v-skeleton-loader
+                :type="`table-row@${tableUtils.defaultPageItems}`"
+            />
+        </template>
+
         <template
             #headers="{
                 columns,
