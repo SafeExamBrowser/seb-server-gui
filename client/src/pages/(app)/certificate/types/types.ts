@@ -5,7 +5,7 @@ export type CertificateUploadItemTransient = {
     password?: string;
 };
 
-const certificateUploadItemSchema = z.object({
+export const certificateUploadItemSchema = z.object({
     file: z.instanceof(File),
     password: z
         .string()

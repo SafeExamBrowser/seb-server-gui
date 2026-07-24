@@ -38,6 +38,7 @@
         >
             <template #text>
                 <FormBuilder
+                    ref="formBuilderRef"
                     v-model="isValid"
                     :fields="formFields"
                     :form-id="formId"
@@ -101,6 +102,7 @@ import { IconValue } from "vuetify/lib/composables/icons.mjs";
 import BoxActionButton from "@/components/widgets/BoxActionButton.vue";
 import FormBuilder from "@/components/widgets/formBuilder/FormBuilder.vue";
 import { FormField } from "@/components/widgets/formBuilder/types";
+import { FormDialogSubmitHandler } from "@/components/widgets/formDialog/types.ts";
 import { errorMessageOf } from "@/services/errors/toAppError.ts";
 
 const props = withDefaults(
@@ -119,7 +121,7 @@ const props = withDefaults(
             item: Ref<UnwrapRef<TTransient>> | Ref<TTransient>,
         ) => FormField[];
         getItem: () => TTransient;
-        onSubmit: (item: TTransient) => void | Promise<void>;
+        onSubmit: FormDialogSubmitHandler<TTransient>;
         dataTestId?: string;
     }>(),
     {
@@ -139,6 +141,7 @@ const item = ref<TTransient>(props.getItem());
 const isValid = ref<boolean>(false);
 const submitting = ref<boolean>(false);
 const errorMessage = ref<string>("");
+const formBuilderRef = ref<InstanceType<typeof FormBuilder>>();
 const formFields = computed<FormField[]>(() => props.getFormFields(item));
 
 watch(isDialogOpen, (newValue) => {
@@ -147,6 +150,7 @@ watch(isDialogOpen, (newValue) => {
         isValid.value = false;
         submitting.value = false;
         errorMessage.value = "";
+        formBuilderRef.value?.clearBackendErrors();
     }
 });
 
@@ -167,8 +171,10 @@ const handleFormSubmit = async () => {
     errorMessage.value = "";
 
     try {
-        await props.onSubmit(item.value);
-        isDialogOpen.value = false;
+        const outcome = await props.onSubmit(item.value, formBuilderRef.value);
+        if (outcome !== false) {
+            isDialogOpen.value = false;
+        }
     } catch (err) {
         errorMessage.value = errorMessageOf(err);
     } finally {
