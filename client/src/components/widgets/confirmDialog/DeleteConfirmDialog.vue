@@ -1,52 +1,22 @@
 <template>
-    <v-dialog v-model="model" max-width="500" :persistent="loading">
-        <v-card :data-testid="rootTestId">
-            <v-card-title
-                class="text-title-large font-weight-bold"
-                :data-testid="titleTestId"
-            >
-                {{ $t(`${translationKeyPrefix}.deleteDialog.title`) }}
-            </v-card-title>
-
-            <v-card-text :data-testid="textTestId">
-                {{ $t(`${translationKeyPrefix}.deleteDialog.text`) }}
-
-                <div
-                    v-if="detailText"
-                    class="mt-4 text-primary font-weight-medium"
-                >
-                    {{ detailText }}
-                </div>
-            </v-card-text>
-
-            <v-card-actions class="justify-end">
-                <v-btn
-                    variant="text"
-                    :data-testid="cancelTestId"
-                    :disabled="loading"
-                    @click="model = false"
-                >
-                    {{ $t("general.cancelButton") }}
-                </v-btn>
-
-                <v-btn
-                    color="error"
-                    variant="text"
-                    :data-testid="confirmTestId"
-                    :loading="loading"
-                    @click="emit('confirm')"
-                >
-                    {{ $t(`${translationKeyPrefix}.deleteDialog.action`) }}
-                </v-btn>
-            </v-card-actions>
-        </v-card>
-    </v-dialog>
+    <ConfirmDialog
+        v-model="model"
+        :title="$t(`${translationKeyPrefix}.deleteDialog.title`)"
+        :text="$t(`${translationKeyPrefix}.deleteDialog.text`)"
+        :detail-text="detailText"
+        :confirm-label="$t(`${translationKeyPrefix}.deleteDialog.action`)"
+        confirm-color="error"
+        :loading="loading"
+        :test-ids="testIds"
+        @confirm="emit('confirm')"
+    />
 </template>
 
 <script setup lang="ts">
 import { computed } from "vue";
 
-//@Todo Andrei : CreateConfirmActionDialog
+import ConfirmDialog from "@/components/widgets/confirmDialog/ConfirmDialog.vue";
+
 const model = defineModel<boolean>({ required: true });
 
 const props = withDefaults(
@@ -67,19 +37,15 @@ const emit = defineEmits<{
     confirm: [];
 }>();
 
-const rootTestId = computed(() =>
-    props.dataTestId ? `${props.dataTestId}-delete-dialog` : undefined,
-);
-const titleTestId = computed(() =>
-    props.dataTestId ? `${props.dataTestId}-delete-dialog-title` : undefined,
-);
-const textTestId = computed(() =>
-    props.dataTestId ? `${props.dataTestId}-delete-dialog-text` : undefined,
-);
-const cancelTestId = computed(() =>
-    props.dataTestId ? `${props.dataTestId}-delete-cancel-button` : undefined,
-);
-const confirmTestId = computed(() =>
-    props.dataTestId ? `${props.dataTestId}-delete-confirm-button` : undefined,
+const testIds = computed(() =>
+    props.dataTestId
+        ? {
+              root: `${props.dataTestId}-delete-dialog`,
+              title: `${props.dataTestId}-delete-dialog-title`,
+              text: `${props.dataTestId}-delete-dialog-text`,
+              cancel: `${props.dataTestId}-delete-cancel-button`,
+              confirm: `${props.dataTestId}-delete-confirm-button`,
+          }
+        : undefined,
 );
 </script>
