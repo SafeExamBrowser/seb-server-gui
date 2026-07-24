@@ -2,7 +2,7 @@
     <v-row v-if="!showError">
         <!-----------video player---------->
         <v-col>
-            <v-sheet class="rounded-lg pt-4 pl-4 pr-4" elevation="2">
+            <v-sheet border class="rounded-lg pt-4 pl-4 pr-4" elevation="1">
                 <v-img
                     ref="videoPlayer"
                     :aspect-ratio="16 / 9"
@@ -119,7 +119,7 @@
 
         <!-----------info box---------->
         <v-col v-if="isMetadataInfo" cols="4">
-            <v-card class="mx-auto">
+            <v-card border elevation="1" rounded="lg" class="mx-auto">
                 <template #title>
                     <v-btn
                         :aria-expanded="isMetadataInfo"
@@ -187,7 +187,7 @@
             </v-card>
         </v-col>
         <v-col v-else align="center" cols="1">
-            <v-card>
+            <v-card border elevation="1" rounded="lg">
                 <v-btn
                     :aria-expanded="isMetadataInfo"
                     aria-label="Details"

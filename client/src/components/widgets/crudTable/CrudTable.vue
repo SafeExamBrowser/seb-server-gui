@@ -2,6 +2,7 @@
     <v-data-table
         :headers="config.headers"
         :items="unref(config.items)"
+        :no-data-text="$t('general.noData')"
         hide-default-footer
     >
         <template #top>

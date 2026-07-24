@@ -11,6 +11,7 @@
         :items="timelineSearchResultRef?.timelineGroupDataList"
         :items-per-page="tableUtils.defaultPageItems"
         :items-per-page-options="tableUtils.itemsPerPageOptions"
+        :no-data-text="$t('general.noData')"
         show-expand
         :sort-by="[{ key: 'timestamp', order: 'asc' }]"
     >
