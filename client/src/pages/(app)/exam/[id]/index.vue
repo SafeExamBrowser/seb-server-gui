@@ -40,11 +40,16 @@
                         <BoxSEBSettings
                             :exam-id="examId"
                             :edit-disabled="sebSettingsEditDisabled"
+                            :last-modified-items="lastModifiedItems"
+                            :last-modified-loading="lastModifiedLoading"
                         />
                     </template>
 
                     <template #03_sebKeys>
-                        <BoxSEBKeys :exam-id="examId" />
+                        <BoxSEBKeys
+                            :last-modified-items="lastModifiedItems"
+                            :last-modified-loading="lastModifiedLoading"
+                        />
                     </template>
 
                     <template #04_supervisors>
@@ -110,7 +115,11 @@ const {
     handleChange: handleBasicSettingsChange,
 } = basicSettings;
 
-const { editDisabled: sebSettingsEditDisabled } = sebSettings;
+const {
+    editDisabled: sebSettingsEditDisabled,
+    lastModifiedItems,
+    lastModifiedLoading,
+} = sebSettings;
 
 const {
     availableSupervisors,

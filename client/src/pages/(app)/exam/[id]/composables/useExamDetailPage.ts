@@ -64,7 +64,7 @@ export const useExamDetailPage = () => {
         updateExam,
         examId,
     );
-    const sebSettings = useSebSettings(exam);
+    const sebSettings = useSebSettings(exam, examId);
     const supervisors = useSupervisorsBox(exam, updateExam);
 
     const loading = computed(

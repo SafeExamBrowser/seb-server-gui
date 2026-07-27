@@ -4,12 +4,16 @@ import { getExamConfigMapping } from "@/services/seb-server/examService.ts";
 
 // The exam config mapping carries no timestamps itself, but it points to the
 // configuration node that holds the "last modified" information.
-export const useSebSettingsConfigNode = (examId: number) =>
+export const useSebSettingsConfigNode = (examId?: number) =>
     useFetch(
         async () => {
+            if (examId === undefined) {
+                return null;
+            }
+
             const mapping = await getExamConfigMapping(examId);
 
             return getConfigurationNode(String(mapping.configurationNodeId));
         },
-        { immediate: true },
+        { immediate: examId !== undefined },
     );
