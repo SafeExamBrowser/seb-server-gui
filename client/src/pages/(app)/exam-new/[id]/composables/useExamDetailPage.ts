@@ -3,7 +3,10 @@ import { useRoute } from "vue-router";
 import { z } from "zod";
 
 import type { BreadCrumbItem } from "@/components/widgets/breadCrumb/types.ts";
+import { useMutation } from "@/composables/useMutation.ts";
 import i18n from "@/i18n";
+import { Exam } from "@/models/seb-server/exam.ts";
+import * as examService from "@/services/seb-server/examService.ts";
 
 import { useDeleteExamAction } from "./actions/useDeleteExamAction.ts";
 import { useExcludeFromDeletionAction } from "./actions/useExcludeFromDeletionAction.ts";
@@ -12,6 +15,7 @@ import { useTestRunAction } from "./actions/useTestRunAction.ts";
 import { useExam } from "./api/useExam.ts";
 import { useBasicSettings } from "./useBasicSettings.ts";
 import { useSebSettings } from "./useSebSettings.ts";
+import { useSupervisorsBox } from "./useSupervisorsBox.ts";
 
 const idSchema = z.coerce.number().int().positive();
 
@@ -33,11 +37,41 @@ export const useExamDetailPage = () => {
             exam.value?.lmsSetupId === undefined,
     );
 
-    const basicSettings = useBasicSettings(exam, examWithURL, examId);
+    const updateExamMutation = useMutation((updated: Exam) =>
+        examService.updateExam(updated),
+    );
+
+    const updateExam = async (patch: Partial<Exam>) => {
+        if (!exam.value) {
+            return;
+        }
+
+        const examUpdated = await updateExamMutation.mutateData({
+            ...exam.value,
+            ...patch,
+        });
+
+        if (!examUpdated) {
+            return;
+        }
+
+        exam.value = examUpdated;
+    };
+
+    const basicSettings = useBasicSettings(
+        exam,
+        examWithURL,
+        updateExam,
+        examId,
+    );
     const sebSettings = useSebSettings(exam);
+    const supervisors = useSupervisorsBox(exam, updateExam);
 
     const loading = computed(
-        () => examLoading.value || basicSettings.loading.value,
+        () =>
+            examLoading.value ||
+            basicSettings.loading.value ||
+            supervisors.loading.value,
     );
 
     const notFound = computed(
@@ -59,6 +93,10 @@ export const useExamDetailPage = () => {
 
         if (examError.value && !notFound.value) {
             messages.push(examError.value);
+        }
+
+        if (supervisors.error.value) {
+            messages.push(supervisors.error.value);
         }
 
         return messages;
@@ -104,6 +142,7 @@ export const useExamDetailPage = () => {
         examWithURL,
         basicSettings,
         sebSettings,
+        supervisors,
         actions: {
             handleTestRunToggle,
             handleSebLockToggle,

@@ -46,6 +46,15 @@
                     <template #03_sebKeys>
                         <BoxSEBKeys :exam-id="examId" />
                     </template>
+
+                    <template #04_supervisors>
+                        <BoxSupervisors
+                            :available-supervisors="availableSupervisors"
+                            :selected-supervisor-ids="selectedSupervisorIds"
+                            :edit-disabled="supervisorsEditDisabled"
+                            @change="handleSupervisorsChange"
+                        />
+                    </template>
                 </BasicGrid>
             </LoadingFallbackComponent>
         </template>
@@ -58,6 +67,7 @@ import { useI18n } from "vue-i18n";
 import BasicGrid from "@/components/layout/BasicGrid.vue";
 import BasicPage from "@/components/layout/pages/BasicPage.vue";
 import NotFoundPage from "@/components/layout/pages/NotFoundPage.vue";
+import BoxSupervisors from "@/components/widgets/BoxSupervisors.vue";
 import LoadingFallbackComponent from "@/components/widgets/loadingFallbackComponent/LoadingFallbackComponent.vue";
 import { typedTo } from "@/router/typedTo";
 
@@ -90,6 +100,7 @@ const {
     examWithURL,
     basicSettings,
     sebSettings,
+    supervisors,
     actions,
 } = useExamDetailPage();
 
@@ -100,6 +111,13 @@ const {
 } = basicSettings;
 
 const { editDisabled: sebSettingsEditDisabled } = sebSettings;
+
+const {
+    availableSupervisors,
+    selectedSupervisorIds,
+    editDisabled: supervisorsEditDisabled,
+    handleChange: handleSupervisorsChange,
+} = supervisors;
 
 const notFoundBackLink = {
     label: t("examDetail.notFound.backToList"),

@@ -580,14 +580,6 @@
                     "deleteFailed": "Failed to delete indicator"
                 }
             },
-            "supervisors": {
-                "title": "Exam Supervisors",
-                "dialogTitle": "Edit Exam Supervisors",
-                "headers": {
-                    "username": "Username",
-                    "name": "Name"
-                }
-            },
             "screenProctoringSettings": {
                 "title": "Screen Proctoring Settings",
                 "dialogTitle": "Edit Screen Proctoring Settings"
@@ -1122,6 +1114,14 @@
         "hints": {
             "create": "Fill the form to create a new institution.",
             "edit": "Edit the institution details."
+        }
+    },
+    "boxSupervisors": {
+        "title": "Exam Supervisors",
+        "dialogTitle": "Edit Exam Supervisors",
+        "headers": {
+            "username": "Username",
+            "name": "Name"
         }
     },
     "sebSettings": {

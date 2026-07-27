@@ -1,9 +1,10 @@
 <template>
-    <DetailBox :title="$t('examTemplateDetail.boxes.supervisors.title')">
+    <DetailBox :title="$t('boxSupervisors.title')">
         <template #action>
             <BoxActionButton
                 icon="mdi-pencil"
-                :label="$t('examTemplateDetail.boxes.supervisors.dialogTitle')"
+                :label="$t('boxSupervisors.dialogTitle')"
+                :disabled="editDisabled"
                 @click="handleButtonEditClick"
             />
         </template>
@@ -30,7 +31,7 @@
                 :height="`min(${thresholds.sm}px, 90vh)`"
             >
                 <v-card-title>
-                    {{ $t("examTemplateDetail.boxes.supervisors.dialogTitle") }}
+                    {{ $t("boxSupervisors.dialogTitle") }}
                 </v-card-title>
                 <v-card-text class="flex-grow-1 overflow-hidden">
                     <SupervisorPicker
@@ -66,9 +67,14 @@ import {
     userAccountNameToUsername,
 } from "@/utils/userAccount";
 
-const { availableSupervisors, selectedSupervisorIds } = defineProps<{
+const {
+    availableSupervisors,
+    selectedSupervisorIds,
+    editDisabled = false,
+} = defineProps<{
     availableSupervisors: UserAccountName[];
     selectedSupervisorIds: string[];
+    editDisabled?: boolean;
 }>();
 
 const emit = defineEmits<{
@@ -82,12 +88,12 @@ const thresholds = computed(() => thresholdsRef.value);
 
 const headers = computed(() => [
     {
-        title: t("examTemplateDetail.boxes.supervisors.headers.username"),
+        title: t("boxSupervisors.headers.username"),
         key: "username",
         sortable: false,
     },
     {
-        title: t("examTemplateDetail.boxes.supervisors.headers.name"),
+        title: t("boxSupervisors.headers.name"),
         key: "name",
         sortable: false,
     },

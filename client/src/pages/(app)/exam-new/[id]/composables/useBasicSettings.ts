@@ -10,6 +10,7 @@ import { useExamConfigMapping } from "./api/useExamConfigMapping.ts";
 export const useBasicSettings = (
     exam: Ref<Exam | undefined>,
     examWithURL: ComputedRef<boolean>,
+    updateExam: (patch: Partial<Exam>) => Promise<void>,
     examId?: number,
 ) => {
     const ability = useAbilities();
@@ -36,27 +37,6 @@ export const useBasicSettings = (
                 exam.value ?? null,
             ),
     );
-
-    const updateExamMutation = useMutation((updated: Exam) =>
-        examService.updateExam(updated),
-    );
-
-    const updateExam = async (patch: Partial<Exam>) => {
-        if (!exam.value) {
-            return;
-        }
-
-        const examUpdated = await updateExamMutation.mutateData({
-            ...exam.value,
-            ...patch,
-        });
-
-        if (!examUpdated) {
-            return;
-        }
-
-        exam.value = examUpdated;
-    };
 
     const configMappingMutation = useMutation(
         examService.updateExamConfigMapping,
