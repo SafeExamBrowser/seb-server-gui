@@ -44,6 +44,7 @@ on the filesystem if they clash:
 - When writing Pinia Stores, prefer "Setup Stores" over "Option Stores".
   `client/src/components/views/seb-server/exam-template/wizard/composables/store/useScreenProctoringStore.ts` is a good example.
 - i18n:
-  - When dealing with i18n translation keys use `i18n.global.t`, unless you are in a setup function. In templates, always use `$t`
+  - When dealing with i18n translation keys use `i18n.global.t`. Only a component's literal setup function (`<script setup>`) may use `useI18n()`;
+    composables always use `i18n.global.t`. In templates, always use `$t`
   - Avoid generating i18n keys programmatically (i.e. `$t(${translationKeyPrefix}.title))`. Instead, pass static strings to the translation function:
     `$t(supervisors.title)`
