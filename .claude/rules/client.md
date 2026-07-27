@@ -20,6 +20,8 @@ on the filesystem if they clash:
   - Avoid manual typecasts like `as FooBar`. Properly cast the types and fulfill their requirements.
   - Don't use `any`.
   - Use `undefined`. Do not use `null`.
+  - Prefer the optional shorthand `param?: T` over `param: T | undefined` (for function parameters and object fields).
+    Order function parameters so optional ones come last, instead of widening an optional to `| undefined`.
   - Avoid explicitly stating types (e.g. when defining a variable, as return values of functions or when using generics),
     if they can be automatically derived.
 - Coding Style:
