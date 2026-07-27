@@ -1,11 +1,7 @@
 <template>
-    <DetailBox :title="$t('examDetail.boxes.sebSettings.title')">
+    <DetailBox :title="$t('examDetail.boxes.sebKeys.title')">
         <template #action>
-            <SebSettingsEditDialog
-                :exam-id="examId"
-                :edit-disabled="editDisabled"
-                :active-seb-clients="activeSebClients ?? 0"
-            />
+            <SebKeysEditDialog />
         </template>
 
         <LoadingFallbackComponent :loading="loading">
@@ -25,17 +21,14 @@ import LoadingFallbackComponent from "@/components/widgets/loadingFallbackCompon
 import { useSebSettingsConfigNode } from "@/pages/(app)/exam-new/[id]/composables/api/useSebSettingsConfigNode.ts";
 import { formatIsoToReadableDateTime } from "@/utils/timeUtils.ts";
 
-import SebSettingsEditDialog from "./components/SebSettingsEditDialog.vue";
-import { useActiveSebClients } from "./composables/api/useActiveSebClients.ts";
+import SebKeysEditDialog from "./components/SebKeysEditDialog.vue";
 
 const { examId } = defineProps<{
     examId: number;
-    editDisabled: boolean;
 }>();
 
 const { t } = useI18n();
 
-const { data: activeSebClients } = useActiveSebClients(examId);
 const { data: configNode, loading } = useSebSettingsConfigNode(examId);
 
 const items = computed<KeyValueItem[]>(() => {
@@ -50,7 +43,7 @@ const items = computed<KeyValueItem[]>(() => {
         {
             key: "lastModified",
             type: "basic",
-            label: t("examDetail.boxes.sebSettings.lastModifiedBy"),
+            label: t("examDetail.boxes.sebKeys.lastModifiedBy"),
             value: {
                 type: "string",
                 value: `${lastUpdateUserName} - ${formatIsoToReadableDateTime(lastUpdateTime)}`,

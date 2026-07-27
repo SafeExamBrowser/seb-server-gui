@@ -2000,6 +2000,11 @@
                 "lastModifiedBy": "Last modified by",
                 "edit": "Edit SEB Settings",
                 "view": "View SEB Settings"
+            },
+            "sebKeys": {
+                "title": "SEB Keys",
+                "edit": "Edit SEB Keys",
+                "lastModifiedBy": "Last modified by"
             }
         },
         "info": {

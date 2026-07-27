@@ -42,6 +42,10 @@
                             :edit-disabled="sebSettingsEditDisabled"
                         />
                     </template>
+
+                    <template #03_sebKeys>
+                        <BoxSEBKeys :exam-id="examId" />
+                    </template>
                 </BasicGrid>
             </LoadingFallbackComponent>
         </template>
@@ -58,6 +62,7 @@ import LoadingFallbackComponent from "@/components/widgets/loadingFallbackCompon
 import { typedTo } from "@/router/typedTo";
 
 import BoxBasicSettings from "./components/BoxBasicSettings/BoxBasicSettings.vue";
+import BoxSEBKeys from "./components/BoxSEBKeys/BoxSEBKeys.vue";
 import BoxSEBSettings from "./components/BoxSEBSettings/BoxSEBSettings.vue";
 import ExamSidePanel from "./components/ExamSidePanel/ExamSidePanel.vue";
 import { useExamDetailPage } from "./composables/useExamDetailPage.ts";
