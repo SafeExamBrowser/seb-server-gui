@@ -1,5 +1,5 @@
 <template>
-    <v-card border elevation="1" rounded="lg">
+    <v-card border elevation="1" rounded="lg" class="h-100">
         <div class="d-flex align-center ga-2 px-5 py-4 bg-background">
             <span class="text-body-medium font-weight-bold">
                 {{ $t("monitoringOverview.groups.groups") }}

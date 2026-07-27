@@ -105,11 +105,11 @@ export class CertificatesListModel extends TableListPageModel {
 
     // Certificates are stored as parsed keystore blobs, so the list is mocked:
     // GET /certificate is fulfilled with controlled rows while every other
-    // method (e.g. the delete) falls through to the real backend.
+    // method (e.g. the delete) falls back to spec routes or the mock backend.
     async mockList(content: CertificateRow[], opts: { pages?: number } = {}) {
         await this.page.route(CERTIFICATE_API_REQUEST, async (route) => {
             if (route.request().method() !== "GET") {
-                return route.continue();
+                return route.fallback();
             }
             await route.fulfill({
                 status: 200,
@@ -130,7 +130,7 @@ export class CertificatesListModel extends TableListPageModel {
     async mockListFromState(state: { rows: CertificateRow[] }) {
         await this.page.route(CERTIFICATE_API_REQUEST, async (route) => {
             if (route.request().method() !== "GET") {
-                return route.continue();
+                return route.fallback();
             }
             await route.fulfill({
                 status: 200,

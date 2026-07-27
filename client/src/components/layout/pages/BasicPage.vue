@@ -4,7 +4,7 @@
             <slot name="SubNav"></slot>
         </div>
         <div v-if="$slots.PanelTop" class="flex-shrink-0 mb-4">
-            <v-card elevation="2" rounded="lg">
+            <v-card border elevation="1" rounded="lg">
                 <slot name="PanelTop"></slot>
             </v-card>
         </div>
@@ -12,7 +12,8 @@
         <div class="flex-grow-1 d-flex" :style="{ minHeight: 0 }">
             <v-card
                 v-if="$slots.PanelLeft"
-                elevation="2"
+                border
+                elevation="1"
                 rounded="lg"
                 class="flex-shrink-0 h-100 overflow-hidden"
                 :style="panelLeftStyle"
@@ -24,14 +25,14 @@
 
             <div
                 v-if="floating"
-                class="flex-grow-1 h-100 overflow-y-auto overflow-x-hidden pa-3 ma-n3"
+                class="flex-grow-1 h-100 overflow-y-auto overflow-x-hidden pa-3 ma-n3 d-flex flex-column"
                 :style="{ minWidth: 0, minHeight: 0 }"
             >
                 <v-card
                     border
                     elevation="1"
                     rounded="lg"
-                    class="bg-surface-tint mb-6 pb-4"
+                    class="bg-surface-tint mb-6 pb-4 flex-shrink-0"
                 >
                     <PageHeader
                         :title="title"
@@ -49,7 +50,8 @@
 
             <div v-else class="flex-grow-1 h-100" :style="{ minWidth: 0 }">
                 <v-card
-                    elevation="2"
+                    border
+                    elevation="1"
                     rounded="lg"
                     class="h-100 d-flex flex-column overflow-hidden"
                 >

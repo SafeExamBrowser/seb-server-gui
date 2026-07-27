@@ -13,7 +13,7 @@ const testRequest = new RegExp(`/lms-setup/test/${activeId}(?:$|\\?)`, "i");
 async function mockTestResult(page: Page, body: unknown) {
     await page.route(testRequest, (route) => {
         if (route.request().method() !== "GET") {
-            return route.continue();
+            return route.fallback();
         }
         return route.fulfill({
             status: 200,

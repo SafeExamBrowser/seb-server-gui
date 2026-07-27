@@ -44,7 +44,7 @@ async function mockOk(
 ) {
     await page.route(urlRegex, (route) => {
         if (route.request().method() !== method) {
-            return route.continue();
+            return route.fallback();
         }
         return route.fulfill({
             status: 200,
@@ -86,7 +86,7 @@ const listResponse = (rows: MockRow[]) =>
 function mockAssessmentToolList(page: Page, state: { rows: MockRow[] }) {
     return page.route(/\/lms-setup\?/i, (route) => {
         if (route.request().method() !== "GET") {
-            return route.continue();
+            return route.fallback();
         }
         return route.fulfill({
             status: 200,
@@ -179,7 +179,7 @@ test.describe("05 Assessment Tools - ROW ACTIONS", () => {
         await mockAssessmentToolList(page, state);
         await page.route(deleteRequest, (route) => {
             if (route.request().method() !== "DELETE") {
-                return route.continue();
+                return route.fallback();
             }
             return route.fulfill({
                 status: 200,
@@ -213,7 +213,7 @@ test.describe("05 Assessment Tools - ROW ACTIONS", () => {
         await mockAssessmentToolList(page, state);
         await page.route(deactivateRequest, (route) => {
             if (route.request().method() !== "POST") {
-                return route.continue();
+                return route.fallback();
             }
             return route.fulfill({
                 status: 200,
@@ -248,7 +248,7 @@ test.describe("05 Assessment Tools - ROW ACTIONS", () => {
         await mockAssessmentToolList(page, state);
         await page.route(deleteRequest, (route) => {
             if (route.request().method() !== "DELETE") {
-                return route.continue();
+                return route.fallback();
             }
             state.rows = state.rows.filter((r) => r.id !== row.id);
             return route.fulfill({
@@ -279,7 +279,7 @@ test.describe("05 Assessment Tools - ROW ACTIONS", () => {
         await mockAssessmentToolList(page, state);
         await page.route(deactivateRequest, (route) => {
             if (route.request().method() !== "POST") {
-                return route.continue();
+                return route.fallback();
             }
             state.rows = state.rows.map((r) =>
                 r.id === row.id ? { ...r, active: false } : r,
@@ -312,7 +312,7 @@ test.describe("05 Assessment Tools - ROW ACTIONS", () => {
 
         await page.route(/\/lms-setup\?/i, (route) => {
             if (route.request().method() !== "GET") {
-                return route.continue();
+                return route.fallback();
             }
             const active = new URL(route.request().url()).searchParams.get(
                 "active",
@@ -329,7 +329,7 @@ test.describe("05 Assessment Tools - ROW ACTIONS", () => {
         });
         await page.route(deactivateRequest, (route) => {
             if (route.request().method() !== "POST") {
-                return route.continue();
+                return route.fallback();
             }
             state.rows = state.rows.map((r) =>
                 r.id === row.id ? { ...r, active: false } : r,

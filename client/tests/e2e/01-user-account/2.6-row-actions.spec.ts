@@ -44,7 +44,7 @@ async function mockOk(
 ) {
     await page.route(urlRegex, (route) => {
         if (route.request().method() !== method) {
-            return route.continue();
+            return route.fallback();
         }
         return route.fulfill({
             status: 200,
@@ -96,7 +96,7 @@ const listResponse = (rows: MockRow[]) =>
 function mockUserAccountList(page: Page, state: { rows: MockRow[] }) {
     return page.route(/\/useraccount\?/i, (route) => {
         if (route.request().method() !== "GET") {
-            return route.continue();
+            return route.fallback();
         }
         return route.fulfill({
             status: 200,
@@ -189,7 +189,7 @@ test.describe("01 User Accounts - ROW ACTIONS", () => {
         await mockUserAccountList(page, state);
         await page.route(deleteRequest, (route) => {
             if (route.request().method() !== "DELETE") {
-                return route.continue();
+                return route.fallback();
             }
             return route.fulfill({
                 status: 200,
@@ -221,7 +221,7 @@ test.describe("01 User Accounts - ROW ACTIONS", () => {
         await mockUserAccountList(page, state);
         await page.route(deactivateRequest, (route) => {
             if (route.request().method() !== "POST") {
-                return route.continue();
+                return route.fallback();
             }
             return route.fulfill({
                 status: 200,
@@ -256,7 +256,7 @@ test.describe("01 User Accounts - ROW ACTIONS", () => {
         await mockUserAccountList(page, state);
         await page.route(deleteRequest, (route) => {
             if (route.request().method() !== "DELETE") {
-                return route.continue();
+                return route.fallback();
             }
             state.rows = state.rows.filter((r) => r.uuid !== row.uuid);
             return route.fulfill({
@@ -285,7 +285,7 @@ test.describe("01 User Accounts - ROW ACTIONS", () => {
         await mockUserAccountList(page, state);
         await page.route(deactivateRequest, (route) => {
             if (route.request().method() !== "POST") {
-                return route.continue();
+                return route.fallback();
             }
             state.rows = state.rows.map((r) =>
                 r.uuid === row.uuid ? { ...r, active: false } : r,
@@ -318,7 +318,7 @@ test.describe("01 User Accounts - ROW ACTIONS", () => {
 
         await page.route(/\/useraccount\?/i, (route) => {
             if (route.request().method() !== "GET") {
-                return route.continue();
+                return route.fallback();
             }
             const active = new URL(route.request().url()).searchParams.get(
                 "active",
@@ -335,7 +335,7 @@ test.describe("01 User Accounts - ROW ACTIONS", () => {
         });
         await page.route(deactivateRequest, (route) => {
             if (route.request().method() !== "POST") {
-                return route.continue();
+                return route.fallback();
             }
             state.rows = state.rows.map((r) =>
                 r.uuid === row.uuid ? { ...r, active: false } : r,
