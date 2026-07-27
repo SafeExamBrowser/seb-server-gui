@@ -22,7 +22,7 @@ import DetailBox from "@/components/widgets/DetailBox.vue";
 import KeyValueList from "@/components/widgets/keyValueList/KeyValueList.vue";
 import { KeyValueItem } from "@/components/widgets/keyValueList/types.ts";
 import LoadingFallbackComponent from "@/components/widgets/loadingFallbackComponent/LoadingFallbackComponent.vue";
-import { useSebSettingsConfigNode } from "@/pages/(app)/exam-new/[id]/composables/api/useSebSettingsConfigNode.ts";
+import { useSebSettingsConfigNode } from "@/pages/(app)/exam/[id]/composables/api/useSebSettingsConfigNode.ts";
 import { formatIsoToReadableDateTime } from "@/utils/timeUtils.ts";
 
 import SebSettingsEditDialog from "./components/SebSettingsEditDialog.vue";

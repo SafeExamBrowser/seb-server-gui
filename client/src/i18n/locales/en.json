@@ -1982,7 +1982,6 @@
                 "text": "Please select the Connection Configuration you want to use for starting this exam and click Download to start the download."
             },
             "errors": {
-                "connectionConfigurationsFailed": "Failed to load the Connection Configurations",
                 "downloadExamConnectionFailed": "Failed to download the Exam Connection Configuration"
             }
         },
@@ -2013,7 +2012,6 @@
             "start": "Start Time",
             "end": "End Time",
             "description": "Description",
-            "typeStatus": "Exam Type & Status",
             "type": "Exam Type",
             "status": "Exam Status",
             "consecutiveExam": "Consecutive Exam",
@@ -2021,40 +2019,8 @@
             "encryptPassword": "Start/Encryption Password"
         },
         "main": {
-            "testExam": "Test Exam",
-            "testRunDisable": "Disable Test Run",
-            "testRunApply": "Apply Test Run",
-            "testTooltip": "Test run is only activated when exam is Up Coming",
-            "monitorExam": "Monitor Exam",
-            "monitorStart": "Monitor",
-            "monitorTooltip": "Monitoring is only activated when exam is running",
-            "showFinishedExamData": "Show Finished Exam Data",
-            "show": "Show Data",
-            "examTemplate": "Exam Template",
-            "examSupervisors": "Exam Supervisors",
-            "supervisorUsername": "Username",
-            "supervisorName": "Name",
-            "supervisorSurname": "Surname",
-            "groups": "Groups",
-            "tableHeadersGroupName": "Name",
-            "tableHeadersGroupType": "Type",
-            "tableHeadersScreenProctoring": "Screen Proctoring",
-            "quitPassword": "Quit Password",
             "sebSettings": "SEB Settings",
-            "appNetworkSettings": "Application and Network Settings",
-            "editSEBSettings": "Edit SEB Settings",
-            "editAppNetworkSettings": "Edit Application and Network Settings",
-            "noSEBSettings": "This Exam has no SEB settings attached yet.\nPlease attach an Exam Configuration with SEB settings first.",
-            "activeSEBClientsNote": "There are currently active SEB clients connected to this exam. Therefore it is not possible to change the SEB Settings. Please make sure there are no active SEB clients connected to the Exam before edit the SEB Setting.",
-            "downloadExamConfig": "Exam Connection Configuration",
-            "moreExamOptions": "More Exam Options",
-            "applySP": "Apply Screen Proctoring",
-            "applySebLock": "Apply SEB Lock",
-            "sebKeys": "SEB Keys",
-            "archiveExam": "Archiv Exam",
-            "archiveTooltip": "Archiving is only activated when exam is finished",
-            "deleteExam": "Delete Exam",
-            "excludeFromDeletion": "Exclude Exam from Deletion"
+            "activeSEBClientsNote": "There are currently active SEB clients connected to this exam. Therefore it is not possible to change the SEB Settings. Please make sure there are no active SEB clients connected to the Exam before edit the SEB Setting."
         }
     },
     "monitoringExams": {

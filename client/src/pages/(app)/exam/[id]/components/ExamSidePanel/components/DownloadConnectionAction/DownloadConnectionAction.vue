@@ -18,7 +18,7 @@
 import { computed } from "vue";
 
 import { Exam } from "@/models/seb-server/exam.ts";
-import ActionButton from "@/pages/(app)/exam-new/[id]/components/ExamSidePanel/components/ActionButton.vue";
+import ActionButton from "@/pages/(app)/exam/[id]/components/ExamSidePanel/components/ActionButton.vue";
 import { GUIAction, useAbilities } from "@/services/ability.ts";
 
 import ConnectionConfigDialog from "./components/ConnectionConfigDialog.vue";

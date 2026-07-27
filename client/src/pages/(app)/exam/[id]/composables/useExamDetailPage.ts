@@ -20,7 +20,7 @@ import { useSupervisorsBox } from "./useSupervisorsBox.ts";
 const idSchema = z.coerce.number().int().positive();
 
 export const useExamDetailPage = () => {
-    const route = useRoute("/(app)/exam-new/[id]/");
+    const route = useRoute("/(app)/exam/[id]/");
     const parseResult = idSchema.safeParse(route.params.id);
     const examId = parseResult.success ? parseResult.data : undefined;
 

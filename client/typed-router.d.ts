@@ -47,7 +47,6 @@ declare module 'vue-router/auto-routes' {
       | '/(app)/connection-configuration/'
       | '/(app)/connection-configuration/[id]/'
       | '/(app)/connection-configuration/create/'
-      | '/(app)/exam-new/[id]/'
       | '/(app)/exam-template/'
       | '/(app)/exam-template/[id]/'
       | '/(app)/exam-template/create/'
@@ -178,13 +177,6 @@ declare module 'vue-router/auto-routes' {
       '/exam/create/withURL',
       Record<never, never>,
       Record<never, never>,
-      | never
-    >,
-    '/(app)/exam-new/[id]/': RouteRecordInfo<
-      '/(app)/exam-new/[id]/',
-      '/exam-new/:id',
-      { id: ParamValue<true> },
-      { id: ParamValue<false> },
       | never
     >,
     '/(app)/exam-template/': RouteRecordInfo<
@@ -398,7 +390,6 @@ declare module 'vue-router/auto-routes' {
         | '/(app)/connection-configuration/'
         | '/(app)/connection-configuration/[id]/'
         | '/(app)/connection-configuration/create/'
-        | '/(app)/exam-new/[id]/'
         | '/(app)/exam-template/'
         | '/(app)/exam-template/[id]/'
         | '/(app)/exam-template/create/'
@@ -545,14 +536,6 @@ declare module 'vue-router/auto-routes' {
     'src/pages/(app)/exam/create/withURL/index.vue': {
       routes:
         | '/(app)/exam/create/withURL/'
-      views:
-        | never
-      pathParamNames:
-        | never
-    }
-    'src/pages/(app)/exam-new/[id]/index.vue': {
-      routes:
-        | '/(app)/exam-new/[id]/'
       views:
         | never
       pathParamNames:

@@ -4,13 +4,12 @@ import { useI18n } from "vue-i18n";
 import { KeyValueItem } from "@/components/widgets/keyValueList/types.ts";
 import { BasicSettings } from "@/models/seb-server/exam.ts";
 import {
-    ExamStatusEnum,
     ExamTypeEnum,
     toSelectableExamType,
 } from "@/models/seb-server/examFiltersEnum.ts";
-import { useConsecutiveExamNames } from "@/pages/(app)/exam/[id]/components/BoxBasicSettings/composables/api/useConsecutiveExamNames";
-import * as generalUtils from "@/utils/generalUtils.ts";
 import * as timeUtils from "@/utils/timeUtils.ts";
+
+import { useConsecutiveExamNames } from "./api/useConsecutiveExamNames.ts";
 
 export const useBasicSettingsItems = (
     examId: number,
@@ -73,28 +72,12 @@ export const useBasicSettingsItems = (
             });
         }
 
-        const status = generalUtils.findEnumValue(
-            ExamStatusEnum,
-            basicSettings.value.status,
-        );
-        if (status !== null) {
-            result.push({
-                key: "clientConfiguration",
-                type: "basic",
-                label: t("examDetail.info.status"),
-                value: {
-                    type: "string",
-                    value: t(status),
-                },
-            });
-        }
-
         result.push({
             key: "startURL",
             type: "basic",
             label: t("examDetail.info.url"),
             value: {
-                type: "string",
+                type: "link",
                 value: basicSettings.value.quiz_start_url,
             },
         });

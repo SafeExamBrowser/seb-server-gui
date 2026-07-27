@@ -6,9 +6,7 @@
                     :basic-settings="basicSettings"
                     :exam-with-u-r-l="examWithURL"
                     :edit-disabled="editDisabled"
-                    :consecutive-exam-names="
-                        computed(() => consecutiveExamNames)
-                    "
+                    :consecutive-exam-names="consecutiveExamNames"
                     @change="handleChange"
                 />
             </template>
@@ -19,7 +17,7 @@
 </template>
 
 <script setup lang="ts">
-import { computed, Ref } from "vue";
+import { computed } from "vue";
 
 import DetailBox from "@/components/widgets/DetailBox.vue";
 import KeyValueList from "@/components/widgets/keyValueList/KeyValueList.vue";
@@ -33,11 +31,11 @@ const { examId, basicSettings, examWithURL, editDisabled } = defineProps<{
     examId: number;
     basicSettings: BasicSettings;
     examWithURL: boolean;
-    editDisabled: Ref<boolean>;
+    editDisabled: boolean;
 }>();
 
 const emit = defineEmits<{
-    (e: "changeBasicSettings", value: BasicSettings): void;
+    (e: "change", value: BasicSettings): void;
 }>();
 
 const { items, consecutiveExamNames, loading, errors } = useBasicSettingsItems(
@@ -45,6 +43,5 @@ const { items, consecutiveExamNames, loading, errors } = useBasicSettingsItems(
     computed(() => basicSettings),
 );
 
-const handleChange = (value: BasicSettings) =>
-    emit("changeBasicSettings", value);
+const handleChange = (value: BasicSettings) => emit("change", value);
 </script>
