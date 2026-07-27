@@ -1,17 +1,14 @@
-import { computed, type Ref } from "vue";
+import { type Ref } from "vue";
 
 import { Exam } from "@/models/seb-server/exam.ts";
-import { GUIAction, useAbilities } from "@/services/ability.ts";
+import { GUIAction } from "@/services/ability.ts";
+
+import { useExamActionDisabled } from "./useExamActionDisabled.ts";
 
 export const useSebSettings = (exam: Ref<Exam | undefined>) => {
-    const ability = useAbilities();
-
-    const editDisabled = computed(
-        () =>
-            !ability.canDoExamAction(
-                GUIAction.EDIT_SEB_SETTINGS,
-                exam.value ?? null,
-            ),
+    const editDisabled = useExamActionDisabled(
+        exam,
+        GUIAction.EDIT_SEB_SETTINGS,
     );
 
     return {

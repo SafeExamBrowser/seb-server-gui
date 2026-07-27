@@ -2,10 +2,11 @@ import { computed, type ComputedRef, type Ref } from "vue";
 
 import { useMutation } from "@/composables/useMutation.ts";
 import { BasicSettings, Exam } from "@/models/seb-server/exam.ts";
-import { GUIAction, useAbilities } from "@/services/ability.ts";
+import { GUIAction } from "@/services/ability.ts";
 import * as examService from "@/services/seb-server/examService.ts";
 
 import { useExamConfigMapping } from "./api/useExamConfigMapping.ts";
+import { useExamActionDisabled } from "./useExamActionDisabled.ts";
 
 export const useBasicSettings = (
     exam: Ref<Exam | undefined>,
@@ -13,8 +14,6 @@ export const useBasicSettings = (
     updateExam: (patch: Partial<Exam>) => Promise<void>,
     examId?: number,
 ) => {
-    const ability = useAbilities();
-
     const { data: configMapping, loading } = useExamConfigMapping(examId);
 
     const settings = computed<BasicSettings>(() => ({
@@ -30,12 +29,9 @@ export const useBasicSettings = (
         encryptPassword: configMapping.value?.encryptSecret,
     }));
 
-    const editDisabled = computed(
-        () =>
-            !ability.canDoExamAction(
-                GUIAction.EDIT_EXAM_SETTINGS,
-                exam.value ?? null,
-            ),
+    const editDisabled = useExamActionDisabled(
+        exam,
+        GUIAction.EDIT_EXAM_SETTINGS,
     );
 
     const configMappingMutation = useMutation(
