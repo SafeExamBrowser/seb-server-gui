@@ -13,6 +13,7 @@ import { useExcludeFromDeletionAction } from "./actions/useExcludeFromDeletionAc
 import { useSebLockAction } from "./actions/useSebLockAction.ts";
 import { useTestRunAction } from "./actions/useTestRunAction.ts";
 import { useExam } from "./api/useExam.ts";
+import { useExamConfigMapping } from "./api/useExamConfigMapping.ts";
 import { useBasicSettings } from "./useBasicSettings.ts";
 import { useSebSettings } from "./useSebSettings.ts";
 import { useSupervisorsBox } from "./useSupervisorsBox.ts";
@@ -29,6 +30,12 @@ export const useExamDetailPage = () => {
         loading: examLoading,
         error: examError,
     } = useExam(examId);
+
+    const {
+        data: configMapping,
+        loading: configMappingLoading,
+        error: configMappingError,
+    } = useExamConfigMapping(examId);
 
     // Exams created "with URL" have no assessment tool attached and allow editing quiz data
     const examWithURL = computed(
@@ -62,15 +69,15 @@ export const useExamDetailPage = () => {
         exam,
         examWithURL,
         updateExam,
-        examId,
+        configMapping,
     );
-    const sebSettings = useSebSettings(exam, examId);
+    const sebSettings = useSebSettings(exam, configMapping);
     const supervisors = useSupervisorsBox(exam, updateExam);
 
     const loading = computed(
         () =>
             examLoading.value ||
-            basicSettings.loading.value ||
+            configMappingLoading.value ||
             supervisors.loading.value,
     );
 
@@ -93,6 +100,14 @@ export const useExamDetailPage = () => {
 
         if (examError.value && !notFound.value) {
             messages.push(examError.value);
+        }
+
+        if (configMappingError.value) {
+            messages.push(configMappingError.value);
+        }
+
+        if (sebSettings.error.value) {
+            messages.push(sebSettings.error.value);
         }
 
         if (supervisors.error.value) {
