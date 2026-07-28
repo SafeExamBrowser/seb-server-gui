@@ -8,8 +8,6 @@ import { institutionCreateSchema } from "@/models/institution.ts";
 const URL_SUFFIX_PATTERN = /^$|^.{3,45}$/;
 const LOGO_ACCEPT_EXTENSIONS = [".png", ".jpg", ".jpeg", ".svg"];
 
-const t = (key: string) => i18n.global.t(`institutions.${key}`);
-
 export const useInstitutionFormFields = () => {
     const name = ref<string | undefined>(undefined);
     const urlSuffix = ref<string | undefined>(undefined);
@@ -21,14 +19,14 @@ export const useInstitutionFormFields = () => {
     const urlSuffixRule = (value: string | undefined) =>
         !value ||
         URL_SUFFIX_PATTERN.test(value) ||
-        t("fields.urlSuffix.validation");
+        i18n.global.t("institutions.fields.urlSuffix.validation");
 
     const formFields = computed<FormField[]>(() => [
         {
             type: "image",
             name: "logoImage",
             model: logoImage,
-            label: t("fields.logoImage.label"),
+            label: i18n.global.t("institutions.fields.logoImage.label"),
             dropTitle: i18n.global.t("general.formFields.image.dropTitle"),
             hint: i18n.global.t("general.formFields.image.hint", {
                 types: LOGO_ACCEPT_EXTENSIONS.join(", "),
@@ -39,7 +37,7 @@ export const useInstitutionFormFields = () => {
             type: "text",
             name: "name",
             model: name,
-            label: t("fields.name.label"),
+            label: i18n.global.t("institutions.fields.name.label"),
             required: isRequired(institutionCreateSchema.shape.name),
             rules: fieldRules(institutionCreateSchema.shape.name),
         },
@@ -47,7 +45,7 @@ export const useInstitutionFormFields = () => {
             type: "text",
             name: "urlSuffix",
             model: urlSuffix,
-            label: t("fields.urlSuffix.label"),
+            label: i18n.global.t("institutions.fields.urlSuffix.label"),
             required: isRequired(institutionCreateSchema.shape.urlSuffix),
             rules: [
                 ...fieldRules(institutionCreateSchema.shape.urlSuffix),

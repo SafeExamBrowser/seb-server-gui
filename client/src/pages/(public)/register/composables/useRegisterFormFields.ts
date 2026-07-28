@@ -7,8 +7,6 @@ import { useZodFormRules } from "@/composables/useZodFormRules.ts";
 import i18n from "@/i18n";
 import { userAccountCreateSchema } from "@/models/userAccount.ts";
 
-const t = (key: string) => i18n.global.t(`userAccount.fields.${key}.label`);
-
 const timezoneOptions = moment.tz
     .names()
     .map((tz) => ({ value: tz, text: tz }));
@@ -88,7 +86,7 @@ export const useRegisterFormFields = () => {
             type: "select" as const,
             name: "institutionId",
             model: institutionId,
-            label: t("institution"),
+            label: i18n.global.t("userAccount.fields.institution.label"),
             options: institutionOptions.value,
             required: fieldValidation.institutionId.required,
             disabled: institutionSelectDisabled.value,
@@ -97,7 +95,7 @@ export const useRegisterFormFields = () => {
             type: "text" as const,
             name: "username",
             model: username,
-            label: t("username"),
+            label: i18n.global.t("userAccount.fields.username.label"),
             required: fieldValidation.username.required,
             rules: fieldValidation.username.rules,
         },
@@ -105,7 +103,7 @@ export const useRegisterFormFields = () => {
             type: "text" as const,
             name: "name",
             model: name,
-            label: t("name"),
+            label: i18n.global.t("userAccount.fields.name.label"),
             required: fieldValidation.name.required,
             rules: fieldValidation.name.rules,
         },
@@ -113,7 +111,7 @@ export const useRegisterFormFields = () => {
             type: "text" as const,
             name: "surname",
             model: surname,
-            label: t("surname"),
+            label: i18n.global.t("userAccount.fields.surname.label"),
             required: fieldValidation.surname.required,
             rules: fieldValidation.surname.rules,
         },
@@ -121,7 +119,7 @@ export const useRegisterFormFields = () => {
             type: "text" as const,
             name: "email",
             model: email,
-            label: t("email"),
+            label: i18n.global.t("userAccount.fields.email.label"),
             required: fieldValidation.email.required,
             rules: fieldValidation.email.rules,
         },
@@ -129,7 +127,7 @@ export const useRegisterFormFields = () => {
             type: "select" as const,
             name: "timezone",
             model: timezone,
-            label: t("timezone"),
+            label: i18n.global.t("userAccount.fields.timezone.label"),
             options: timezoneOptions,
             required: fieldValidation.timezone.required,
         },
@@ -137,7 +135,7 @@ export const useRegisterFormFields = () => {
             type: "password" as const,
             name: "password",
             model: password,
-            label: t("password"),
+            label: i18n.global.t("userAccount.fields.password.label"),
             required: fieldValidation.newPassword.required,
             rules: fieldValidation.newPassword.rules,
         },
@@ -145,7 +143,7 @@ export const useRegisterFormFields = () => {
             type: "password" as const,
             name: "confirmPassword",
             model: confirmPassword,
-            label: t("confirmPassword"),
+            label: i18n.global.t("userAccount.fields.confirmPassword.label"),
             required: fieldValidation.confirmNewPassword.required,
             rules: [
                 ...fieldValidation.confirmNewPassword.rules,

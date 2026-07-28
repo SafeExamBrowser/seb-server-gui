@@ -15,8 +15,6 @@ export type AuthMode = "client" | "token";
 
 export type AssessmentToolFormMode = "create" | "edit";
 
-const t = (key: string) => i18n.global.t(`assessmentToolConnections.${key}`);
-
 export const useAssessmentToolFormFields = (
     mode: AssessmentToolFormMode = "create",
 ) => {
@@ -82,7 +80,7 @@ export const useAssessmentToolFormFields = (
     // the labels use the domain's established per-type i18n keys.
     const lmsTypeOptions = LMS_TYPES.map((value) => ({
         value,
-        text: t(`lmsTypes.${value}`),
+        text: i18n.global.t(`assessmentToolConnections.lmsTypes.${value}`),
     }));
 
     const loading = computed(() => loadingInstitutions.value);
@@ -97,7 +95,9 @@ export const useAssessmentToolFormFields = (
                 type: "select" as const,
                 name: ASSESSMENT_TOOL_FIELD.institutionId,
                 model: institutionId,
-                label: t("fields.institution.label"),
+                label: i18n.global.t(
+                    "assessmentToolConnections.fields.institution.label",
+                ),
                 options: institutionOptions.value,
                 required: true,
                 disabled: true,
@@ -106,7 +106,9 @@ export const useAssessmentToolFormFields = (
                 type: "text" as const,
                 name: ASSESSMENT_TOOL_FIELD.name,
                 model: name,
-                label: t("fields.name.label"),
+                label: i18n.global.t(
+                    "assessmentToolConnections.fields.name.label",
+                ),
                 required: isRequired(assessmentToolCreateSchema.shape.name),
                 rules: fieldRules(assessmentToolCreateSchema.shape.name),
             },
@@ -114,7 +116,9 @@ export const useAssessmentToolFormFields = (
                 type: "select" as const,
                 name: ASSESSMENT_TOOL_FIELD.lmsType,
                 model: lmsType,
-                label: t("fields.type.label"),
+                label: i18n.global.t(
+                    "assessmentToolConnections.fields.type.label",
+                ),
                 options: lmsTypeOptions,
                 required: isRequired(assessmentToolCreateSchema.shape.lmsType),
                 disabled: mode === "edit",
@@ -123,13 +127,17 @@ export const useAssessmentToolFormFields = (
                 type: "text" as const,
                 name: ASSESSMENT_TOOL_FIELD.lmsUrl,
                 model: lmsUrl,
-                label: t("fields.serverAddress.label"),
+                label: i18n.global.t(
+                    "assessmentToolConnections.fields.serverAddress.label",
+                ),
                 required: true,
                 rules: [
                     (v: string | undefined) =>
                         !v ||
                         /^https?:\/\//i.test(v) ||
-                        t("fields.serverAddress.validation"),
+                        i18n.global.t(
+                            "assessmentToolConnections.fields.serverAddress.validation",
+                        ),
                 ],
             },
         ];
@@ -142,14 +150,18 @@ export const useAssessmentToolFormFields = (
                     type: "text" as const,
                     name: ASSESSMENT_TOOL_FIELD.lmsClientname,
                     model: lmsClientname,
-                    label: t("fields.clientUsername.label"),
+                    label: i18n.global.t(
+                        "assessmentToolConnections.fields.clientUsername.label",
+                    ),
                     required: true,
                 },
                 {
                     type: "password" as const,
                     name: ASSESSMENT_TOOL_FIELD.lmsClientsecret,
                     model: lmsClientsecret,
-                    label: t("fields.clientPassword.label"),
+                    label: i18n.global.t(
+                        "assessmentToolConnections.fields.clientPassword.label",
+                    ),
                     required: true,
                 },
             ];
@@ -159,7 +171,9 @@ export const useAssessmentToolFormFields = (
                 type: "password" as const,
                 name: ASSESSMENT_TOOL_FIELD.accessToken,
                 model: accessToken,
-                label: t("fields.accessToken.label"),
+                label: i18n.global.t(
+                    "assessmentToolConnections.fields.accessToken.label",
+                ),
                 required: true,
             },
         ];
@@ -170,24 +184,38 @@ export const useAssessmentToolFormFields = (
             type: "text" as const,
             name: ASSESSMENT_TOOL_FIELD.proxyHost,
             model: proxyHost,
-            label: t("fields.proxyHost.label"),
-            placeholder: t("fields.proxyHost.placeholder"),
+            label: i18n.global.t(
+                "assessmentToolConnections.fields.proxyHost.label",
+            ),
+            placeholder: i18n.global.t(
+                "assessmentToolConnections.fields.proxyHost.placeholder",
+            ),
             required: true,
         },
         {
             type: "text" as const,
             name: ASSESSMENT_TOOL_FIELD.proxyPort,
             model: proxyPort,
-            label: t("fields.proxyPort.label"),
-            placeholder: t("fields.proxyPort.placeholder"),
+            label: i18n.global.t(
+                "assessmentToolConnections.fields.proxyPort.label",
+            ),
+            placeholder: i18n.global.t(
+                "assessmentToolConnections.fields.proxyPort.placeholder",
+            ),
             required: true,
             rules: [
                 (v: string | undefined) => {
-                    if (!v) return t("validation.required");
+                    if (!v) {
+                        return i18n.global.t(
+                            "assessmentToolConnections.validation.required",
+                        );
+                    }
                     const n = Number(v);
                     return (
                         (Number.isInteger(n) && n >= 1 && n <= 65535) ||
-                        t("fields.proxyPort.validation")
+                        i18n.global.t(
+                            "assessmentToolConnections.fields.proxyPort.validation",
+                        )
                     );
                 },
             ],
@@ -196,16 +224,24 @@ export const useAssessmentToolFormFields = (
             type: "text" as const,
             name: ASSESSMENT_TOOL_FIELD.proxyUsername,
             model: proxyUsername,
-            label: t("fields.proxyUsername.label"),
-            placeholder: t("fields.proxyUsername.placeholder"),
+            label: i18n.global.t(
+                "assessmentToolConnections.fields.proxyUsername.label",
+            ),
+            placeholder: i18n.global.t(
+                "assessmentToolConnections.fields.proxyUsername.placeholder",
+            ),
             required: true,
         },
         {
             type: "password" as const,
             name: ASSESSMENT_TOOL_FIELD.proxyPassword,
             model: proxyPassword,
-            label: t("fields.proxyPassword.label"),
-            placeholder: t("fields.proxyPassword.placeholder"),
+            label: i18n.global.t(
+                "assessmentToolConnections.fields.proxyPassword.label",
+            ),
+            placeholder: i18n.global.t(
+                "assessmentToolConnections.fields.proxyPassword.placeholder",
+            ),
             required: true,
         },
     ]);
