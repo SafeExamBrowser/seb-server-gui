@@ -1,21 +1,9 @@
 <template>
     <ConfirmDialog
         v-model="model"
-        :title="
-            active
-                ? $t(`${translationKeyPrefix}.statusDialog.deactivateTitle`)
-                : $t(`${translationKeyPrefix}.statusDialog.activateTitle`)
-        "
-        :text="
-            active
-                ? $t(`${translationKeyPrefix}.statusDialog.deactivateText`)
-                : $t(`${translationKeyPrefix}.statusDialog.activateText`)
-        "
-        :confirm-label="
-            active
-                ? $t(`${translationKeyPrefix}.statusDialog.deactivateAction`)
-                : $t(`${translationKeyPrefix}.statusDialog.activateAction`)
-        "
+        :title="active ? deactivate.title : activate.title"
+        :text="active ? deactivate.text : activate.text"
+        :confirm-label="active ? deactivate.action : activate.action"
         :confirm-color="active ? 'error' : 'success'"
         :test-ids="testIds"
         @confirm="emit('confirm')"
@@ -27,12 +15,19 @@ import { computed } from "vue";
 
 import ConfirmDialog from "@/components/widgets/confirmDialog/ConfirmDialog.vue";
 
+export type StatusDialogTexts = {
+    title: string;
+    text: string;
+    action: string;
+};
+
 const model = defineModel<boolean>({ required: true });
 
 const props = withDefaults(
     defineProps<{
         active: boolean;
-        translationKeyPrefix: string;
+        activate: StatusDialogTexts;
+        deactivate: StatusDialogTexts;
         dataTestId?: string;
     }>(),
     { dataTestId: undefined },

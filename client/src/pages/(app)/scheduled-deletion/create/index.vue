@@ -63,13 +63,16 @@
                     @click="confirmCreate()"
                 />
             </div>
-            <GenericConfirmDialog
+            <ConfirmDialog
                 v-model="confirmDialogOpen"
-                translation-key-prefix="scheduledDelete"
+                :title="$t('scheduledDelete.confirm.title')"
+                :text="
+                    $t('scheduledDelete.confirm.text', {
+                        date: formatTimestampToDate(deleteDueTime.getTime()),
+                    })
+                "
+                :confirm-label="$t('scheduledDelete.confirm.action')"
                 icon="mdi-information-outline"
-                :text-props="{
-                    date: formatTimestampToDate(deleteDueTime.getTime()),
-                }"
                 @confirm="submit"
             />
         </template>
@@ -83,7 +86,7 @@ import { useRouter } from "vue-router";
 import BasicPage from "@/components/layout/pages/BasicPage.vue";
 import CancelButton from "@/components/widgets/CancelButton.vue";
 import ConfirmButton from "@/components/widgets/ConfirmButton.vue";
-import GenericConfirmDialog from "@/components/widgets/confirmDialog/GenericConfirmDialog.vue";
+import ConfirmDialog from "@/components/widgets/confirmDialog/ConfirmDialog.vue";
 import FormBuilder from "@/components/widgets/formBuilder/FormBuilder.vue";
 import HintText from "@/components/widgets/HintText.vue";
 import { useCreateScheduledDeleteMutation } from "@/pages/(app)/scheduled-deletion/composables/api/useCreateScheduledDeleteMutation";

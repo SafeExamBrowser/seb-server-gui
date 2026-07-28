@@ -78,8 +78,10 @@
 
     <DeleteConfirmDialog
         v-model="deleteFlow.dialogOpen"
+        :title="$t('institutions.list.deleteDialog.title')"
+        :text="$t('institutions.list.deleteDialog.text')"
+        :confirm-label="$t('institutions.list.deleteDialog.action')"
         :detail-text="deleteFlow.detailText"
-        translation-key-prefix="institutions.list"
         :data-test-id="dataTestId"
         @confirm="deleteFlow.confirm"
     />
@@ -87,7 +89,16 @@
     <StatusConfirmDialog
         v-model="statusFlow.dialogOpen"
         :active="!!statusFlow.target?.active"
-        translation-key-prefix="institutions.list"
+        :activate="{
+            title: $t('institutions.list.statusDialog.activateTitle'),
+            text: $t('institutions.list.statusDialog.activateText'),
+            action: $t('institutions.list.statusDialog.activateAction'),
+        }"
+        :deactivate="{
+            title: $t('institutions.list.statusDialog.deactivateTitle'),
+            text: $t('institutions.list.statusDialog.deactivateText'),
+            action: $t('institutions.list.statusDialog.deactivateAction'),
+        }"
         :data-test-id="dataTestId"
         @confirm="statusFlow.confirm"
     />

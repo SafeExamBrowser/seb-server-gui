@@ -113,6 +113,8 @@ export type FormFieldSimple = FormFieldBase &
               type: "time-range";
               required?: boolean;
               model: Ref<TimeRange | undefined>;
+              labelFrom: string;
+              labelTo: string;
           }
     );
 

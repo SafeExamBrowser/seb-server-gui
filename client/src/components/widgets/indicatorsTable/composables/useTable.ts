@@ -73,7 +73,11 @@ export const useTable = (
             deleteItem: deps.deleteItem,
             confirm: deps.confirmDelete
                 ? {
-                      translationKeyPrefix: "indicators",
+                      title: i18n.global.t("indicators.deleteDialog.title"),
+                      text: i18n.global.t("indicators.deleteDialog.text"),
+                      confirmLabel: i18n.global.t(
+                          "indicators.deleteDialog.action",
+                      ),
                       getDetailText: (item: IndicatorExisting) => item.name,
                   }
                 : undefined,

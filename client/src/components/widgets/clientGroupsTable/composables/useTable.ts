@@ -160,7 +160,11 @@ export const useTable = (
             deleteItem,
             confirm: deps.confirmDelete
                 ? {
-                      translationKeyPrefix: "clientGroups",
+                      title: i18n.global.t("clientGroups.deleteDialog.title"),
+                      text: i18n.global.t("clientGroups.deleteDialog.text"),
+                      confirmLabel: i18n.global.t(
+                          "clientGroups.deleteDialog.action",
+                      ),
                       getDetailText: (item: ClientGroupForTable) => item.name,
                   }
                 : undefined,

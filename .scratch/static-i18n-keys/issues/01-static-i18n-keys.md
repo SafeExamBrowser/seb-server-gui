@@ -1,6 +1,6 @@
 # Enforce the static-i18n-keys rule across the codebase
 
-Status: ready-for-agent
+Status: done
 
 ## Problem
 
@@ -82,3 +82,54 @@ covers only the four Class 1 prefix-passing widgets; fix shape as proposed
 above (full static key props at call sites). Runs after
 `.scratch/i18n-in-composables/issues/02-static-i18n-keys-in-form-fields.md`.
 Status → `ready-for-agent`.
+
+**2026-07-28: Implemented** *(by AI agent; awaiting review/commit)*
+
+All four Class 1 widgets converted to resolved translated strings (no key
+props, no prefixes):
+
+- `DeleteConfirmDialog` now takes `title`/`text`/`confirmLabel`; the
+  `TODO @andrei` comment is resolved and removed. 8 page call sites plus
+  `CrudDelete.vue` updated; `CrudDeleteConfig.confirm` carries the three
+  strings (indicators/clientGroups `useTable.ts` resolve them via
+  `i18n.global.t`).
+- `StatusConfirmDialog` takes two object props `activate`/`deactivate`
+  (`{ title, text, action }`, exported as `StatusDialogTexts`; bundled per
+  maintainer decision after review flagged the six flat strings as a data
+  clump) and keeps only the `active` switch + colors + test-id conventions.
+  4 call sites bind object literals with static `$t` keys.
+- `GenericConfirmDialog` **deleted** — with resolved strings it was a pure
+  pass-through (its `confirm-color="primary"` is `ConfirmDialog`'s default);
+  `archive/index.vue` and `scheduled-deletion/create/index.vue` use
+  `ConfirmDialog` directly. The stray undeclared `:active` prop on the
+  archive call site was dropped.
+- `FormFieldTimeRange` takes `labelFrom`/`labelTo` (new fields on the
+  `time-range` variant in `formBuilder/types.ts`); both field composables
+  resolve `createExam.steps.withURL.fields.timeRange.{label,labelFrom,labelTo}`.
+  Note: `useExamBasicSettingsFields.ts` previously translated the object key
+  `...fields.timeRange` (returned the raw key, accidentally re-prefixing) —
+  now points at `.label`.
+- Bug found & fixed en route: `certificates.deleteDialog.{title,text,action}`
+  did not exist in `en.json`, so the certificate delete dialog rendered raw
+  keys — exactly this issue's failure mode. Keys added (copy modeled on the
+  other delete dialogs).
+
+Verification:
+
+- `grep -rE '\$?t\(`' client/src` → only the 7 Class 2 enum/value-driven
+  sites remain (out of scope, issue 02). No `translationKeyPrefix` left.
+- `vue-tsc --noEmit` and `eslint .` pass.
+- Browser (Playwright, dev server): delete dialogs on user-account,
+  certificate, exam-template, exam detail (`examDetail.deleteDialog.*` — the
+  SEBSERV-958 dialog), indicators crud table; status dialog on user-account;
+  archive single dialog; scheduled-deletion create dialog incl. `{date}`
+  interpolation; time-range labels on exam-create-withURL and exam detail
+  Basic Settings. All render translated text; no missing-key warnings.
+- Two-axis code review: no standards violations; spec review found no
+  missing/wrong requirements (flagged the two defensible scope notes above:
+  new certificate copy, time-range `.label` retarget).
+
+**2026-07-28:** Maintainer reviewed the implementation and accepted it
+(certificate dialog copy confirmed; `StatusConfirmDialog` props bundled into
+`activate`/`deactivate` objects per review follow-up). Status → `done`,
+committed alongside this change.

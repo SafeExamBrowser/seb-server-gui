@@ -37,7 +37,15 @@ export const useFormFields = () => {
             type: "time-range" as const,
             name: "timeRange",
             model: timeRange,
-            label: "createExam.steps.withURL.fields.timeRange",
+            label: i18n.global.t(
+                "createExam.steps.withURL.fields.timeRange.label",
+            ),
+            labelFrom: i18n.global.t(
+                "createExam.steps.withURL.fields.timeRange.labelFrom",
+            ),
+            labelTo: i18n.global.t(
+                "createExam.steps.withURL.fields.timeRange.labelTo",
+            ),
             required: true,
         },
         {

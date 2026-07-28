@@ -6,7 +6,7 @@
                 v-bind="props.standardProperties"
                 ref="fromDate"
                 v-model="model.fromDate"
-                :label="$t(`${props.label}.labelFrom`)"
+                :label="props.labelFrom"
                 :rules="[checkValidDateRange]"
                 append-inner-icon="mdi-calendar"
                 density="compact"
@@ -50,7 +50,7 @@
                 v-bind="props.standardProperties"
                 ref="toDate"
                 v-model="model.toDate"
-                :label="$t(`${props.label}.labelTo`)"
+                :label="props.labelTo"
                 :rules="[checkValidDateRange]"
                 append-inner-icon="mdi-calendar"
                 density="compact"
@@ -104,7 +104,8 @@ const showMenuFrom = ref(false);
 const showMenuTo = ref(false);
 
 const props = defineProps<{
-    label: string;
+    labelFrom: string;
+    labelTo: string;
     standardProperties: FormFieldBaseProperties;
 }>();
 

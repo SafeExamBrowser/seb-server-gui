@@ -1046,6 +1046,11 @@
             "informationPart1": "Delete Certificate: ",
             "informationPart3": " ?"
         },
+        "deleteDialog": {
+            "title": "Confirm Deletion",
+            "text": "Are you sure you want to delete this certificate?",
+            "action": "Delete"
+        },
         "createDialog": {
             "addButtonTitle": "Add Certificate",
             "confirmButtonTitle": "Import",
