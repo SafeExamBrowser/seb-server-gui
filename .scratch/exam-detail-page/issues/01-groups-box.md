@@ -1,6 +1,6 @@
 # Groups box for the exam detail page
 
-Status: ready-for-agent
+Status: needs-info
 Parent: `.scratch/exam-detail-page/PRD.md` (deferred there under "Out of scope")
 Depends on: SEBSERV-958 swap branch merged (`/exam/:id` serves the box-based page)
 
@@ -80,3 +80,8 @@ If NO, delete this section and the `isSPSGroup` field's last GUI relevance.
   finished; see PRD "Dev environment").
 
 ## Comments
+
+- 2026-07-28 (Alain): Requirements changed since this was specced; the ticket
+  needs revision before implementation. Set back to `needs-info` so no agent
+  picks it up. Do not implement as written — wait for Alain to update the spec
+  and restore `ready-for-agent`.

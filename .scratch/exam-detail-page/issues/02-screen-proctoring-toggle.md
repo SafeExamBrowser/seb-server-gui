@@ -1,6 +1,6 @@
 # Exam-level screen proctoring toggle (side panel)
 
-Status: ready-for-agent
+Status: needs-info
 Parent: `.scratch/exam-detail-page/PRD.md` (deferred there under "Out of scope")
 Depends on: SEBSERV-958 swap branch merged. Independent of issue 01.
 
@@ -55,3 +55,8 @@ page's side-panel action stack.
   "Dev environment").
 
 ## Comments
+
+- 2026-07-28 (Alain): Requirements changed since this was specced; the ticket
+  needs revision before implementation. Set back to `needs-info` so no agent
+  picks it up. Do not implement as written — wait for Alain to update the spec
+  and restore `ready-for-agent`.
