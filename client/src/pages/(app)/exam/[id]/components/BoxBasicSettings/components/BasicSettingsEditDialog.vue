@@ -1,16 +1,10 @@
 <template>
-    <v-btn
-        class="text-none"
-        color="primary"
-        variant="text"
-        density="compact"
-        :title="$t('examDetail.boxes.basicSettings.title')"
-        :aria-label="$t('examDetail.boxes.basicSettings.title')"
+    <BoxActionButton
+        icon="mdi-pencil"
+        :label="$t('examDetail.boxes.basicSettings.title')"
         :disabled="editDisabled"
         @click="handleButtonEditClick"
-    >
-        <v-icon icon="mdi-pencil" size="x-small" />
-    </v-btn>
+    />
 
     <v-dialog v-model="dialogOpen" :max-width="thresholds.sm">
         <v-card>
@@ -42,6 +36,7 @@ import { computed, ref } from "vue";
 import { useDisplay } from "vuetify";
 
 import { EntityName } from "@/api/seb-server/generated/hey-api";
+import BoxActionButton from "@/components/widgets/BoxActionButton.vue";
 import FormBuilder from "@/components/widgets/formBuilder/FormBuilder.vue";
 import { TimeRange } from "@/components/widgets/formBuilder/types";
 import { BasicSettings } from "@/models/seb-server/exam.ts";
