@@ -1,6 +1,6 @@
 # Sweep: composables must use `i18n.global.t`, not `useI18n()`
 
-Status: ready-for-agent
+Status: done
 
 ## Problem
 

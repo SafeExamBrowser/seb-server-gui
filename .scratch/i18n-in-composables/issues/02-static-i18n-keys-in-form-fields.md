@@ -1,6 +1,6 @@
 # Sweep: form-field composables must pass static i18n keys, not prefix helpers
 
-Status: ready-for-agent
+Status: done
 Category: enhancement
 
 ## Problem
