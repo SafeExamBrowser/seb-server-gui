@@ -72,6 +72,7 @@ import { useI18n } from "vue-i18n";
 import BasicGrid from "@/components/layout/BasicGrid.vue";
 import BasicPage from "@/components/layout/pages/BasicPage.vue";
 import NotFoundPage from "@/components/layout/pages/NotFoundPage.vue";
+import BoxSupervisors from "@/components/widgets/BoxSupervisors.vue";
 import LoadingFallbackComponent from "@/components/widgets/loadingFallbackComponent/LoadingFallbackComponent.vue";
 import BoxBasicSettings from "@/pages/(app)/exam-template/[id]/components/BoxBasicSettings/BoxBasicSettings.vue";
 import BoxSEBSettings from "@/pages/(app)/exam-template/[id]/components/BoxSEBSettings/BoxSEBSettings.vue";
@@ -80,7 +81,6 @@ import { typedTo } from "@/router/typedTo";
 import BoxClientGroups from "./components/BoxClientGroups.vue";
 import BoxIndicators from "./components/BoxIndicators.vue";
 import BoxScreenProctoringSettings from "./components/BoxScreenProctoringSettings/BoxScreenProctoringSettings.vue";
-import BoxSupervisors from "./components/BoxSupervisors.vue";
 import { useExamTemplateDetailPage } from "./composables/useExamTemplateDetailPage.ts";
 
 definePage({

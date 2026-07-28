@@ -16,6 +16,10 @@ export type KeyValueItemValue =
     | {
           type: "password";
           value: string;
+      }
+    | {
+          type: "link";
+          value: string;
       };
 
 export type KeyValueItem = {

@@ -580,14 +580,6 @@
                     "deleteFailed": "Failed to delete indicator"
                 }
             },
-            "supervisors": {
-                "title": "Exam Supervisors",
-                "dialogTitle": "Edit Exam Supervisors",
-                "headers": {
-                    "username": "Username",
-                    "name": "Name"
-                }
-            },
             "screenProctoringSettings": {
                 "title": "Screen Proctoring Settings",
                 "dialogTitle": "Edit Screen Proctoring Settings"
@@ -1122,6 +1114,14 @@
         "hints": {
             "create": "Fill the form to create a new institution.",
             "edit": "Edit the institution details."
+        }
+    },
+    "boxSupervisors": {
+        "title": "Exam Supervisors",
+        "dialogTitle": "Edit Exam Supervisors",
+        "headers": {
+            "username": "Username",
+            "name": "Name"
         }
     },
     "sebSettings": {
@@ -1957,9 +1957,52 @@
         }
     },
     "examDetail": {
+        "errors": {
+            "invalidId": "Invalid exam id: \"{id}\""
+        },
+        "notFound": {
+            "message": "Exam not found",
+            "backToList": "Back to exams"
+        },
+        "sidePanel": {
+            "createdWithTemplate": "Created with exam template",
+            "actions": {
+                "applyTestRun": "Apply Test Run",
+                "testRunApplied": "Test Run applied",
+                "monitorExam": "Monitor Exam",
+                "downloadExamConnection": "Download Exam Connection",
+                "applySebLock": "Apply SEB Lock",
+                "sebLockApplied": "SEB Lock applied",
+                "excludeFromDeletion": "Exclude from Deletion",
+                "excludedFromDeletion": "Excluded from Deletion",
+                "deleteExam": "Delete Exam"
+            },
+            "connectionDialog": {
+                "title": "Select Connection Configuration",
+                "text": "Please select the Connection Configuration you want to use for starting this exam and click Download to start the download."
+            },
+            "errors": {
+                "downloadExamConnectionFailed": "Failed to download the Exam Connection Configuration"
+            }
+        },
+        "deleteDialog": {
+            "title": "Delete Exam",
+            "text": "This deletes the exam and the local import of a course or quiz in SEB Server. Are you sure you want to delete this exam?",
+            "action": "Delete"
+        },
         "boxes": {
+            "lastModifiedBy": "Last modified by",
             "basicSettings": {
                 "title": "Basic Settings"
+            },
+            "sebSettings": {
+                "title": "SEB Settings",
+                "edit": "Edit SEB Settings",
+                "view": "View SEB Settings"
+            },
+            "sebKeys": {
+                "title": "SEB Keys",
+                "edit": "Edit SEB Keys"
             }
         },
         "info": {
@@ -1968,7 +2011,6 @@
             "start": "Start Time",
             "end": "End Time",
             "description": "Description",
-            "typeStatus": "Exam Type & Status",
             "type": "Exam Type",
             "status": "Exam Status",
             "consecutiveExam": "Consecutive Exam",
@@ -1976,40 +2018,8 @@
             "encryptPassword": "Start/Encryption Password"
         },
         "main": {
-            "testExam": "Test Exam",
-            "testRunDisable": "Disable Test Run",
-            "testRunApply": "Apply Test Run",
-            "testTooltip": "Test run is only activated when exam is Up Coming",
-            "monitorExam": "Monitor Exam",
-            "monitorStart": "Monitor",
-            "monitorTooltip": "Monitoring is only activated when exam is running",
-            "showFinishedExamData": "Show Finished Exam Data",
-            "show": "Show Data",
-            "examTemplate": "Exam Template",
-            "examSupervisors": "Exam Supervisors",
-            "supervisorUsername": "Username",
-            "supervisorName": "Name",
-            "supervisorSurname": "Surname",
-            "groups": "Groups",
-            "tableHeadersGroupName": "Name",
-            "tableHeadersGroupType": "Type",
-            "tableHeadersScreenProctoring": "Screen Proctoring",
-            "quitPassword": "Quit Password",
             "sebSettings": "SEB Settings",
-            "appNetworkSettings": "Application and Network Settings",
-            "editSEBSettings": "Edit SEB Settings",
-            "editAppNetworkSettings": "Edit Application and Network Settings",
-            "noSEBSettings": "This Exam has no SEB settings attached yet.\nPlease attach an Exam Configuration with SEB settings first.",
-            "activeSEBClientsNote": "There are currently active SEB clients connected to this exam. Therefore it is not possible to change the SEB Settings. Please make sure there are no active SEB clients connected to the Exam before edit the SEB Setting.",
-            "downloadExamConfig": "Exam Connection Configuration",
-            "moreExamOptions": "More Exam Options",
-            "applySP": "Apply Screen Proctoring",
-            "applySebLock": "Apply SEB Lock",
-            "sebKeys": "SEB Keys",
-            "archiveExam": "Archiv Exam",
-            "archiveTooltip": "Archiving is only activated when exam is finished",
-            "deleteExam": "Delete Exam",
-            "excludeFromDeletion": "Exclude Exam from Deletion"
+            "activeSEBClientsNote": "There are currently active SEB clients connected to this exam. Therefore it is not possible to change the SEB Settings. Please make sure there are no active SEB clients connected to the Exam before edit the SEB Setting."
         }
     },
     "monitoringExams": {

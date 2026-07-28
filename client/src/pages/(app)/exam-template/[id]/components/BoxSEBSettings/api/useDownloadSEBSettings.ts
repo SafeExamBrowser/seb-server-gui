@@ -1,4 +1,5 @@
 import { exportSEBSettings } from "@/services/seb-server/configurationNodeService";
+import { downloadBlob } from "@/utils/downloadUtils.ts";
 
 export function useDownloadSEBSettings() {
     async function downloadSEBLogs(
@@ -12,20 +13,7 @@ export function useDownloadSEBSettings() {
             return;
         }
 
-        createDownloadLink(examTemplateName, blobResponse);
-    }
-
-    function createDownloadLink(examTemplateName: string, blob: Blob) {
-        const filName = `SEBSettings_${examTemplateName}.seb`;
-        const link = document.createElement("a");
-        link.href = URL.createObjectURL(blob);
-        link.setAttribute("download", filName);
-        document.body.appendChild(link);
-
-        link.click();
-
-        document.body.removeChild(link);
-        URL.revokeObjectURL(link.href);
+        downloadBlob(blobResponse, `SEBSettings_${examTemplateName}.seb`);
     }
 
     return {

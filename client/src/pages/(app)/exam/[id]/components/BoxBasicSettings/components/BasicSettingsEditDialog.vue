@@ -1,16 +1,10 @@
 <template>
-    <v-btn
-        class="text-none"
-        color="primary"
-        variant="text"
-        density="compact"
-        :title="$t('examDetail.boxes.basicSettings.title')"
-        :aria-label="$t('examDetail.boxes.basicSettings.title')"
-        :disabled="editDisabled.value"
+    <BoxActionButton
+        icon="mdi-pencil"
+        :label="$t('examDetail.boxes.basicSettings.title')"
+        :disabled="editDisabled"
         @click="handleButtonEditClick"
-    >
-        <v-icon icon="mdi-pencil" size="x-small" />
-    </v-btn>
+    />
 
     <v-dialog v-model="dialogOpen" :max-width="thresholds.sm">
         <v-card>
@@ -38,10 +32,11 @@
 </template>
 
 <script setup lang="ts">
-import { computed, Ref, ref } from "vue";
+import { computed, ref } from "vue";
 import { useDisplay } from "vuetify";
 
 import { EntityName } from "@/api/seb-server/generated/hey-api";
+import BoxActionButton from "@/components/widgets/BoxActionButton.vue";
 import FormBuilder from "@/components/widgets/formBuilder/FormBuilder.vue";
 import { TimeRange } from "@/components/widgets/formBuilder/types";
 import { BasicSettings } from "@/models/seb-server/exam.ts";
@@ -50,7 +45,7 @@ import {
     toApiExamType,
     toSelectableExamType,
 } from "@/models/seb-server/examFiltersEnum.ts";
-import { useExamBasicSettingsFields } from "@/pages/(app)/exam/[id]/components/BoxBasicSettings/composables/useExamBasicSettingsFields";
+import { useExamBasicSettingsFields } from "@/pages/(app)/exam/[id]/components/BoxBasicSettings/composables/useExamBasicSettingsFields.ts";
 import {
     getDateWithTimeBackendFormat,
     getTimeRangeFromIsoToReadableDates,
@@ -59,13 +54,17 @@ import {
 const { thresholds: thresholdsRef } = useDisplay();
 const thresholds = computed(() => thresholdsRef.value);
 
-const { consecutiveExamNames, examWithURL, basicSettings, editDisabled } =
-    defineProps<{
-        consecutiveExamNames: Ref<EntityName[] | undefined>;
-        examWithURL: boolean;
-        basicSettings: BasicSettings;
-        editDisabled: Ref<boolean>;
-    }>();
+const {
+    consecutiveExamNames = undefined,
+    examWithURL,
+    basicSettings,
+    editDisabled,
+} = defineProps<{
+    consecutiveExamNames?: EntityName[];
+    examWithURL: boolean;
+    basicSettings: BasicSettings;
+    editDisabled: boolean;
+}>();
 
 const emit = defineEmits<{
     (e: "change", value: BasicSettings): void;
@@ -79,13 +78,13 @@ const descriptionTransient = ref<string>();
 const startURLTransient = ref<string>();
 const quizTimeRangeTransient = ref<TimeRange>();
 const typeTransient = ref<ExamTypeEnum>();
-const consecutiveExamTransient = ref<string | undefined>();
-const quitPasswordTransient = ref<string | undefined>();
-const encryptPasswordTransient = ref<string | undefined>();
+const consecutiveExamTransient = ref<string>();
+const quitPasswordTransient = ref<string>();
+const encryptPasswordTransient = ref<string>();
 
 const { formFields } = useExamBasicSettingsFields(
     examWithURL,
-    consecutiveExamNames,
+    computed(() => consecutiveExamNames),
     {
         quizName: quizNameTransient,
         description: descriptionTransient,

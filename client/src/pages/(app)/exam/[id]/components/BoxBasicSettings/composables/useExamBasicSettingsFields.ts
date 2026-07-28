@@ -104,7 +104,7 @@ export const useExamBasicSettingsFields = (
 
         fields.push({
             type: "password" as const,
-            name: "type",
+            name: "quitPassword",
             model: models.quitPassword,
             label: i18n.global.t("examDetail.info.quitPassword"),
             required: false,
@@ -112,7 +112,7 @@ export const useExamBasicSettingsFields = (
 
         fields.push({
             type: "password" as const,
-            name: "type",
+            name: "encryptPassword",
             model: models.encryptPassword,
             label: i18n.global.t("examDetail.info.encryptPassword"),
             required: false,

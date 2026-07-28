@@ -20,6 +20,8 @@ on the filesystem if they clash:
   - Avoid manual typecasts like `as FooBar`. Properly cast the types and fulfill their requirements.
   - Don't use `any`.
   - Use `undefined`. Do not use `null`.
+  - Prefer the optional shorthand `param?: T` over `param: T | undefined` (for function parameters and object fields).
+    Order function parameters so optional ones come last, instead of widening an optional to `| undefined`.
   - Avoid explicitly stating types (e.g. when defining a variable, as return values of functions or when using generics),
     if they can be automatically derived.
 - Coding Style:
@@ -42,6 +44,7 @@ on the filesystem if they clash:
 - When writing Pinia Stores, prefer "Setup Stores" over "Option Stores".
   `client/src/components/views/seb-server/exam-template/wizard/composables/store/useScreenProctoringStore.ts` is a good example.
 - i18n:
-  - When dealing with i18n translation keys use `i18n.global.t`, unless you are in a setup function. In templates, always use `$t`
+  - When dealing with i18n translation keys use `i18n.global.t`. Only a component's literal setup function (`<script setup>`) may use `useI18n()`;
+    composables always use `i18n.global.t`. In templates, always use `$t`
   - Avoid generating i18n keys programmatically (i.e. `$t(${translationKeyPrefix}.title))`. Instead, pass static strings to the translation function:
     `$t(supervisors.title)`

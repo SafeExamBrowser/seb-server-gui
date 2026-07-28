@@ -3,13 +3,12 @@ import { useRules } from "vuetify/labs/rules";
 
 import { FormField } from "@/components/widgets/formBuilder/types.ts";
 import { useClientConfigurationNames } from "@/composables/useClientConfigurationNames.ts";
+import { useExamTemplateNames } from "@/composables/useExamTemplateNames.ts";
 import i18n from "@/i18n";
 import {
     ExamTypeEnum,
     SELECTABLE_EXAM_TYPES,
 } from "@/models/seb-server/examFiltersEnum.ts";
-
-import { useExamTemplateNames } from "./api/useExamTemplateNames.ts";
 
 export const useExamTemplateBasicSettingsFields = (
     models: {

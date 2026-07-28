@@ -1,23 +1,20 @@
 import { computed, Ref } from "vue";
-import { useI18n } from "vue-i18n";
 
 import { KeyValueItem } from "@/components/widgets/keyValueList/types.ts";
+import i18n from "@/i18n";
 import { BasicSettings } from "@/models/seb-server/exam.ts";
 import {
-    ExamStatusEnum,
     ExamTypeEnum,
     toSelectableExamType,
 } from "@/models/seb-server/examFiltersEnum.ts";
-import { useConsecutiveExamNames } from "@/pages/(app)/exam/[id]/components/BoxBasicSettings/composables/api/useConsecutiveExamNames";
-import * as generalUtils from "@/utils/generalUtils.ts";
 import * as timeUtils from "@/utils/timeUtils.ts";
+
+import { useConsecutiveExamNames } from "./api/useConsecutiveExamNames.ts";
 
 export const useBasicSettingsItems = (
     examId: number,
     basicSettings: Ref<BasicSettings>,
 ) => {
-    const { t } = useI18n();
-
     const {
         data: consecutiveExamNames,
         loading: loadingConsecutiveExamNames,
@@ -53,7 +50,7 @@ export const useBasicSettingsItems = (
             {
                 key: "name",
                 type: "basic",
-                label: t("examDetail.info.name"),
+                label: i18n.global.t("examDetail.info.name"),
                 value: { type: "string", value: basicSettings.value.quizName },
             },
         ];
@@ -65,7 +62,7 @@ export const useBasicSettingsItems = (
             result.push({
                 key: "description",
                 type: "basic",
-                label: t("examDetail.info.description"),
+                label: i18n.global.t("examDetail.info.description"),
                 value: {
                     type: "string",
                     value: basicSettings.value.quiz_description,
@@ -73,28 +70,12 @@ export const useBasicSettingsItems = (
             });
         }
 
-        const status = generalUtils.findEnumValue(
-            ExamStatusEnum,
-            basicSettings.value.status,
-        );
-        if (status !== null) {
-            result.push({
-                key: "clientConfiguration",
-                type: "basic",
-                label: t("examDetail.info.status"),
-                value: {
-                    type: "string",
-                    value: t(status),
-                },
-            });
-        }
-
         result.push({
             key: "startURL",
             type: "basic",
-            label: t("examDetail.info.url"),
+            label: i18n.global.t("examDetail.info.url"),
             value: {
-                type: "string",
+                type: "link",
                 value: basicSettings.value.quiz_start_url,
             },
         });
@@ -102,7 +83,7 @@ export const useBasicSettingsItems = (
         result.push({
             key: "quizStartTime",
             type: "basic",
-            label: t("examDetail.info.start"),
+            label: i18n.global.t("examDetail.info.start"),
             value: {
                 type: "string",
                 value: timeUtils.formatIsoToReadableDateTime(
@@ -114,7 +95,7 @@ export const useBasicSettingsItems = (
         result.push({
             key: "quizEndTime",
             type: "basic",
-            label: t("examDetail.info.end"),
+            label: i18n.global.t("examDetail.info.end"),
             value: {
                 type: "string",
                 value: timeUtils.formatIsoToReadableDateTime(
@@ -126,10 +107,10 @@ export const useBasicSettingsItems = (
         result.push({
             key: "examType",
             type: "basic",
-            label: t("examDetail.info.type"),
+            label: i18n.global.t("examDetail.info.type"),
             value: {
                 type: "string",
-                value: t(
+                value: i18n.global.t(
                     toSelectableExamType(basicSettings.value.type) ??
                         ExamTypeEnum.UNDEFINED,
                 ),
@@ -139,7 +120,7 @@ export const useBasicSettingsItems = (
         result.push({
             key: "consecutiveExam",
             type: "basic",
-            label: t("examDetail.info.consecutiveExam"),
+            label: i18n.global.t("examDetail.info.consecutiveExam"),
             value: {
                 type: "string",
                 value: getSelectedConsecutiveExamName.value,
@@ -149,7 +130,7 @@ export const useBasicSettingsItems = (
         result.push({
             key: "quitPassword",
             type: "basic",
-            label: t("examDetail.info.quitPassword"),
+            label: i18n.global.t("examDetail.info.quitPassword"),
             value: {
                 type: "password",
                 value: basicSettings.value.quitPassword ?? "",
@@ -159,7 +140,7 @@ export const useBasicSettingsItems = (
         result.push({
             key: "encryptPassword",
             type: "basic",
-            label: t("examDetail.info.encryptPassword"),
+            label: i18n.global.t("examDetail.info.encryptPassword"),
             value: {
                 type: "password",
                 value: basicSettings.value.encryptPassword ?? "",
