@@ -27,13 +27,19 @@ const INSTITUTIONAL_VISIBLE_ROLES: ReadonlySet<UserRole> = new Set<UserRole>([
     "EXAM_SUPPORTER",
 ]);
 
+const ROLE_LABEL_I18N_KEYS: Record<UserRole, string> = {
+    SEB_SERVER_ADMIN: "general.userRoles.SEB_SERVER_ADMIN",
+    INSTITUTIONAL_ADMIN: "general.userRoles.INSTITUTIONAL_ADMIN",
+    EXAM_ADMIN: "general.userRoles.EXAM_ADMIN",
+    EXAM_SUPPORTER: "general.userRoles.EXAM_SUPPORTER",
+    TEACHER: "general.userRoles.TEACHER",
+};
+
 const timezoneOptions = moment.tz
     .names()
     .map((tz) => ({ value: tz, text: tz }));
 
 export type UserAccountFormMode = "create" | "edit" | "profile";
-
-const t = (key: string) => i18n.global.t(`userAccount.${key}`);
 
 export const useUserAccountFormFields = (mode: UserAccountFormMode) => {
     const institutionId = ref<string | undefined>(undefined);
@@ -103,7 +109,7 @@ export const useUserAccountFormFields = (mode: UserAccountFormMode) => {
     const availableRoles = computed(() => {
         const allRoles = USER_ROLES.map((value) => ({
             value,
-            text: i18n.global.t(`general.userRoles.${value}`),
+            text: i18n.global.t(ROLE_LABEL_I18N_KEYS[value]),
         }));
 
         if (hasSebServerAdmin.value) {
@@ -166,7 +172,7 @@ export const useUserAccountFormFields = (mode: UserAccountFormMode) => {
                 type: "select" as const,
                 name: USER_ACCOUNT_FIELD.institutionId,
                 model: institutionId,
-                label: t("fields.institution.label"),
+                label: i18n.global.t("userAccount.fields.institution.label"),
                 options: institutionOptions.value,
                 required: fieldValidation.institutionId.required,
                 disabled: institutionSelectDisabled.value,
@@ -175,7 +181,7 @@ export const useUserAccountFormFields = (mode: UserAccountFormMode) => {
                 type: "text" as const,
                 name: USER_ACCOUNT_FIELD.username,
                 model: username,
-                label: t("fields.username.label"),
+                label: i18n.global.t("userAccount.fields.username.label"),
                 required: fieldValidation.username.required,
                 rules: fieldValidation.username.rules,
             },
@@ -183,7 +189,7 @@ export const useUserAccountFormFields = (mode: UserAccountFormMode) => {
                 type: "text" as const,
                 name: USER_ACCOUNT_FIELD.name,
                 model: name,
-                label: t("fields.name.label"),
+                label: i18n.global.t("userAccount.fields.name.label"),
                 required: fieldValidation.name.required,
                 rules: fieldValidation.name.rules,
             },
@@ -191,7 +197,7 @@ export const useUserAccountFormFields = (mode: UserAccountFormMode) => {
                 type: "text" as const,
                 name: USER_ACCOUNT_FIELD.surname,
                 model: surname,
-                label: t("fields.surname.label"),
+                label: i18n.global.t("userAccount.fields.surname.label"),
                 required: fieldValidation.surname.required,
                 rules: fieldValidation.surname.rules,
             },
@@ -199,7 +205,7 @@ export const useUserAccountFormFields = (mode: UserAccountFormMode) => {
                 type: "text" as const,
                 name: USER_ACCOUNT_FIELD.email,
                 model: email,
-                label: t("fields.email.label"),
+                label: i18n.global.t("userAccount.fields.email.label"),
                 required: fieldValidation.email.required,
                 rules: fieldValidation.email.rules,
             },
@@ -207,7 +213,7 @@ export const useUserAccountFormFields = (mode: UserAccountFormMode) => {
                 type: "select" as const,
                 name: USER_ACCOUNT_FIELD.timezone,
                 model: timezone,
-                label: t("fields.timezone.label"),
+                label: i18n.global.t("userAccount.fields.timezone.label"),
                 options: timezoneOptions,
                 required: fieldValidation.timezone.required,
             },
@@ -219,7 +225,7 @@ export const useUserAccountFormFields = (mode: UserAccountFormMode) => {
                     type: "password" as const,
                     name: USER_ACCOUNT_FIELD.password,
                     model: password,
-                    label: t("fields.password.label"),
+                    label: i18n.global.t("userAccount.fields.password.label"),
                     required: fieldValidation.newPassword.required,
                     rules: fieldValidation.newPassword.rules,
                 },
@@ -227,7 +233,9 @@ export const useUserAccountFormFields = (mode: UserAccountFormMode) => {
                     type: "password" as const,
                     name: USER_ACCOUNT_FIELD.confirmPassword,
                     model: confirmPassword,
-                    label: t("fields.confirmPassword.label"),
+                    label: i18n.global.t(
+                        "userAccount.fields.confirmPassword.label",
+                    ),
                     required: fieldValidation.confirmNewPassword.required,
                     rules: [
                         ...fieldValidation.confirmNewPassword.rules,
@@ -246,7 +254,7 @@ export const useUserAccountFormFields = (mode: UserAccountFormMode) => {
             type: "select" as const,
             name: USER_ACCOUNT_FIELD.role,
             model: role,
-            label: t("fields.role.label"),
+            label: i18n.global.t("userAccount.fields.role.label"),
             options: availableRoles.value,
             required: fieldValidation.userRoles.required,
             disabled: mode === "profile",

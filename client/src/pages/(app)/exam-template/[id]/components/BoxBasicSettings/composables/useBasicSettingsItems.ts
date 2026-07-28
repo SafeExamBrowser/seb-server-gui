@@ -1,8 +1,8 @@
 import { computed, Ref } from "vue";
-import { useI18n } from "vue-i18n";
 
 import { KeyValueItem } from "@/components/widgets/keyValueList/types.ts";
 import { useClientConfigurationNames } from "@/composables/useClientConfigurationNames.ts";
+import i18n from "@/i18n";
 import {
     ExamTypeEnum,
     toSelectableExamType,
@@ -10,8 +10,6 @@ import {
 import { BasicSettings } from "@/models/seb-server/examTemplate.ts";
 
 export const useBasicSettingsItems = (basicSettings: Ref<BasicSettings>) => {
-    const { t } = useI18n();
-
     const {
         data: clientConfigurationNames,
         loading: loadingClientConfigurationNames,
@@ -19,7 +17,7 @@ export const useBasicSettingsItems = (basicSettings: Ref<BasicSettings>) => {
 
     const clientConfigurationValue = computed(() => {
         if (!basicSettings.value.clientConfigurationId) {
-            return t("general.noData");
+            return i18n.global.t("general.noData");
         }
 
         // avoid flickering by waiting for the names request to resolve
@@ -32,7 +30,7 @@ export const useBasicSettingsItems = (basicSettings: Ref<BasicSettings>) => {
                 (clientConfiguration) =>
                     clientConfiguration.modelId ===
                     String(basicSettings.value.clientConfigurationId),
-            )?.name ?? t("general.noData")
+            )?.name ?? i18n.global.t("general.noData")
         );
     });
 
@@ -41,7 +39,7 @@ export const useBasicSettingsItems = (basicSettings: Ref<BasicSettings>) => {
             {
                 key: "name",
                 type: "basic",
-                label: t("examTemplate.fields.name.label"),
+                label: i18n.global.t("examTemplate.fields.name.label"),
                 value: { type: "string", value: basicSettings.value.name },
             },
         ];
@@ -53,7 +51,7 @@ export const useBasicSettingsItems = (basicSettings: Ref<BasicSettings>) => {
             result.push({
                 key: "description",
                 type: "basic",
-                label: t("examTemplate.fields.description.label"),
+                label: i18n.global.t("examTemplate.fields.description.label"),
                 value: {
                     type: "string",
                     value: basicSettings.value.description,
@@ -64,10 +62,10 @@ export const useBasicSettingsItems = (basicSettings: Ref<BasicSettings>) => {
         result.push({
             key: "examType",
             type: "basic",
-            label: t("examTemplate.fields.examType.label"),
+            label: i18n.global.t("examTemplate.fields.examType.label"),
             value: {
                 type: "string",
-                value: t(
+                value: i18n.global.t(
                     toSelectableExamType(basicSettings.value.examType) ??
                         ExamTypeEnum.UNDEFINED,
                 ),
@@ -77,7 +75,9 @@ export const useBasicSettingsItems = (basicSettings: Ref<BasicSettings>) => {
         result.push({
             key: "clientConfiguration",
             type: "basic",
-            label: t("examTemplate.fields.clientConfiguration.label"),
+            label: i18n.global.t(
+                "examTemplate.fields.clientConfiguration.label",
+            ),
             value: {
                 type: "string",
                 value: clientConfigurationValue.value,
@@ -88,7 +88,9 @@ export const useBasicSettingsItems = (basicSettings: Ref<BasicSettings>) => {
             {
                 key: "lmsIntegration",
                 type: "basic",
-                label: t("examTemplate.fields.lmsIntegration.label"),
+                label: i18n.global.t(
+                    "examTemplate.fields.lmsIntegration.label",
+                ),
                 value: {
                     type: "boolean",
                     value: basicSettings.value.lmsIntegration,
@@ -97,7 +99,9 @@ export const useBasicSettingsItems = (basicSettings: Ref<BasicSettings>) => {
             {
                 key: "institutionalDefault",
                 type: "basic",
-                label: t("examTemplate.fields.institutionalDefault.label"),
+                label: i18n.global.t(
+                    "examTemplate.fields.institutionalDefault.label",
+                ),
                 value: {
                     type: "boolean",
                     value: basicSettings.value.institutionalDefault,

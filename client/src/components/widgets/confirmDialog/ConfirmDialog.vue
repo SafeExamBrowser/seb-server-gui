@@ -63,8 +63,8 @@
 // Single reusable confirm dialog. All confirmation flows (delete, status
 // toggle, generic action) render through this so width, corner radius and the
 // button hierarchy (text Cancel + flat coloured Confirm) stay consistent.
-// Callers pass fully translated strings; the thin Delete/Status/Generic
-// wrappers map their translation-key conventions onto these props.
+// Callers pass fully translated strings; the thin Delete/Status wrappers add
+// their confirm colours and test-id conventions on top of these props.
 export type ConfirmDialogTestIds = {
     root?: string;
     title?: string;

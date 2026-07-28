@@ -1,10 +1,10 @@
 import { computed } from "vue";
-import { useI18n } from "vue-i18n";
 
 import type {
     TableAction,
     TableItem,
 } from "@/components/widgets/entity-table/types.ts";
+import i18n from "@/i18n";
 import { Exam } from "@/models/seb-server/exam";
 import { downloadSEBLogsForExam } from "@/services/seb-server/monitoringService";
 import { downloadBlob } from "@/utils/downloadUtils.ts";
@@ -14,14 +14,12 @@ import * as timeUtils from "@/utils/timeUtils.ts";
 export function useAnalyzeTableActions(deps: {
     onShowSPS: (item: TableItem) => void;
 }) {
-    const { t } = useI18n();
-
     return computed<TableAction[]>(() => [
         {
             key: "showScreenProctoring",
             icon: "mdi-monitor-eye",
-            label: t("examList.actions.showSPS"),
-            tooltip: t("examList.actions.showSPS"),
+            label: i18n.global.t("examList.actions.showSPS"),
+            tooltip: i18n.global.t("examList.actions.showSPS"),
             bgcolor: "primary",
             color: "grey",
             onClick: deps.onShowSPS,
@@ -30,8 +28,8 @@ export function useAnalyzeTableActions(deps: {
         {
             key: "downloadSEBLogs",
             icon: "mdi-download",
-            label: t("examList.actions.downloadSEBLogs"),
-            tooltip: t("examList.actions.downloadSEBLogs"),
+            label: i18n.global.t("examList.actions.downloadSEBLogs"),
+            tooltip: i18n.global.t("examList.actions.downloadSEBLogs"),
             onClick: downloadSEBLogs,
         },
     ]);

@@ -72,8 +72,10 @@
 
     <DeleteConfirmDialog
         v-model="deleteFlow.dialogOpen"
+        :title="$t('userAccount.list.deleteDialog.title')"
+        :text="$t('userAccount.list.deleteDialog.text')"
+        :confirm-label="$t('userAccount.list.deleteDialog.action')"
         :detail-text="deleteFlow.detailText"
-        translation-key-prefix="userAccount.list"
         :data-test-id="dataTestId"
         @confirm="deleteFlow.confirm"
     />
@@ -81,7 +83,16 @@
     <StatusConfirmDialog
         v-model="statusFlow.dialogOpen"
         :active="!!statusFlow.target?.active"
-        translation-key-prefix="userAccount.list"
+        :activate="{
+            title: $t('userAccount.list.statusDialog.activateTitle'),
+            text: $t('userAccount.list.statusDialog.activateText'),
+            action: $t('userAccount.list.statusDialog.activateAction'),
+        }"
+        :deactivate="{
+            title: $t('userAccount.list.statusDialog.deactivateTitle'),
+            text: $t('userAccount.list.statusDialog.deactivateText'),
+            action: $t('userAccount.list.statusDialog.deactivateAction'),
+        }"
         :data-test-id="dataTestId"
         @confirm="statusFlow.confirm"
     />

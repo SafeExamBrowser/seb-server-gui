@@ -11,8 +11,10 @@
 
     <DeleteConfirmDialog
         v-model="deleteDialogOpen"
+        :title="$t('examDetail.deleteDialog.title')"
+        :text="$t('examDetail.deleteDialog.text')"
+        :confirm-label="$t('examDetail.deleteDialog.action')"
         :detail-text="exam?.quizName"
-        translation-key-prefix="examDetail"
         @confirm="handleConfirm"
     />
 </template>

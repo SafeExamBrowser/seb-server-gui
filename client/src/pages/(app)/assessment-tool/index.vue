@@ -70,8 +70,12 @@
 
     <DeleteConfirmDialog
         v-model="deleteFlow.dialogOpen"
+        :title="$t('assessmentToolConnections.list.deleteDialog.title')"
+        :text="$t('assessmentToolConnections.list.deleteDialog.text')"
+        :confirm-label="
+            $t('assessmentToolConnections.list.deleteDialog.action')
+        "
         :detail-text="deleteFlow.detailText"
-        translation-key-prefix="assessmentToolConnections.list"
         :data-test-id="dataTestId"
         @confirm="deleteFlow.confirm"
     />
@@ -79,7 +83,28 @@
     <StatusConfirmDialog
         v-model="statusFlow.dialogOpen"
         :active="!!statusFlow.target?.active"
-        translation-key-prefix="assessmentToolConnections.list"
+        :activate="{
+            title: $t(
+                'assessmentToolConnections.list.statusDialog.activateTitle',
+            ),
+            text: $t(
+                'assessmentToolConnections.list.statusDialog.activateText',
+            ),
+            action: $t(
+                'assessmentToolConnections.list.statusDialog.activateAction',
+            ),
+        }"
+        :deactivate="{
+            title: $t(
+                'assessmentToolConnections.list.statusDialog.deactivateTitle',
+            ),
+            text: $t(
+                'assessmentToolConnections.list.statusDialog.deactivateText',
+            ),
+            action: $t(
+                'assessmentToolConnections.list.statusDialog.deactivateAction',
+            ),
+        }"
         :data-test-id="dataTestId"
         @confirm="statusFlow.confirm"
     />

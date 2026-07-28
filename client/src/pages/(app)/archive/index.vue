@@ -88,17 +88,20 @@
         </template>
     </BasicPage>
 
-    <GenericConfirmDialog
+    <ConfirmDialog
         v-model="archiveFlow.dialogOpen"
-        :active="!!archiveFlow.target?.active"
-        translation-key-prefix="examList.archive"
+        :title="$t('examList.archive.confirm.title')"
+        :text="$t('examList.archive.confirm.text')"
+        :confirm-label="$t('examList.archive.confirm.action')"
         :sub-title="archiveFlow.target?.quizName as string"
         icon="mdi-archive"
         @confirm="archiveFlow.confirm"
     />
-    <GenericConfirmDialog
+    <ConfirmDialog
         v-model="archiveMultiFlow.dialogOpen"
-        translation-key-prefix="examList.archiveAll"
+        :title="$t('examList.archiveAll.confirm.title')"
+        :text="$t('examList.archiveAll.confirm.text')"
+        :confirm-label="$t('examList.archiveAll.confirm.action')"
         :sub-title="`${list.selection.selectionModel.value.length} exams selected`"
         icon="mdi-archive"
         @confirm="archiveMultiFlow.confirm"
@@ -107,7 +110,7 @@
 
 <script setup lang="ts">
 import BasicPage from "@/components/layout/pages/BasicPage.vue";
-import GenericConfirmDialog from "@/components/widgets/confirmDialog/GenericConfirmDialog.vue";
+import ConfirmDialog from "@/components/widgets/confirmDialog/ConfirmDialog.vue";
 import TableMultiSelectionControl from "@/components/widgets/entity-table/components/TableMultiSelectionControl.vue";
 import EntityTable from "@/components/widgets/entity-table/EntityTable.vue";
 import EnumChip from "@/components/widgets/EnumChip.vue";

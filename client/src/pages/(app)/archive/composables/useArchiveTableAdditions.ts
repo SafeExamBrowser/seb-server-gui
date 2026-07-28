@@ -1,24 +1,22 @@
 import { computed } from "vue";
-import { useI18n } from "vue-i18n";
 
 import type {
     TableAction,
     TableItem,
 } from "@/components/widgets/entity-table/types.ts";
+import i18n from "@/i18n";
 
 export function useArchiveTableActions(deps: {
     onArchiveExam: (item: TableItem) => void;
     canArchiveExam: (item: TableItem) => boolean;
     onNavigate: (item: TableItem) => void;
 }) {
-    const { t } = useI18n();
-
     return computed<TableAction[]>(() => [
         {
             key: "archiveExam",
             icon: "mdi-archive",
-            label: t("examList.actions.archive"),
-            tooltip: t("examList.actions.archive"),
+            label: i18n.global.t("examList.actions.archive"),
+            tooltip: i18n.global.t("examList.actions.archive"),
             onClick: deps.onArchiveExam,
             visible: deps.canArchiveExam,
         },
@@ -26,7 +24,7 @@ export function useArchiveTableActions(deps: {
         // {
         //     key: "navigate",
         //     icon: "mdi-chevron-right",
-        //     label: t("general.viewButton"),
+        //     label: i18n.global.t("general.viewButton"),
         //     onClick: deps.onNavigate,
         // },
     ]);

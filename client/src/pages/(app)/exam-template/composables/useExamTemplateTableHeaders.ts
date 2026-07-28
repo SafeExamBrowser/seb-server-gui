@@ -1,29 +1,27 @@
 import { computed } from "vue";
-import { useI18n } from "vue-i18n";
 
 import type {
     CellFormatter,
     TableHeader,
 } from "@/components/widgets/entity-table/types.ts";
+import i18n from "@/i18n";
 
 export function useExamTemplateTableHeaders() {
-    const { t } = useI18n();
-
     const headers = computed<TableHeader[]>(() => [
         {
-            title: t("examTemplateList.headers.name"),
+            title: i18n.global.t("examTemplateList.headers.name"),
             key: "name",
             width: "30%",
             sortable: true,
         },
         {
-            title: t("examTemplateList.headers.description"),
+            title: i18n.global.t("examTemplateList.headers.description"),
             key: "description",
             width: "30%",
             sortable: true,
         },
         {
-            title: t("examTemplateList.headers.examType"),
+            title: i18n.global.t("examTemplateList.headers.examType"),
             key: "examType",
             width: "30%",
             sortable: true,
@@ -32,7 +30,9 @@ export function useExamTemplateTableHeaders() {
 
     const cellFormatters: Record<string, CellFormatter> = {
         examType: (value) =>
-            typeof value === "string" && value !== "" ? t(value) : "",
+            typeof value === "string" && value !== ""
+                ? i18n.global.t(value)
+                : "",
     };
 
     return { headers, cellFormatters };

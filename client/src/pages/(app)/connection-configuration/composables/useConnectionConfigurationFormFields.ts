@@ -9,8 +9,6 @@ import {
 } from "@/models/connectionConfiguration.ts";
 import { CONNECTION_CONFIG_FIELD } from "@/pages/(app)/connection-configuration/connectionConfigurationFormConfig.ts";
 
-const t = (key: string) => i18n.global.t(`connectionConfigurations.${key}`);
-
 export const useConnectionConfigurationFormFields = () => {
     const { isRequired, fieldRules } = useZodFormRules();
 
@@ -38,8 +36,12 @@ export const useConnectionConfigurationFormFields = () => {
         (typeof SEB_CONFIG_PURPOSES)[number],
         string
     > = {
-        START_EXAM: t("selectValues.start_exam"),
-        CONFIGURE_CLIENT: t("selectValues.configure_client"),
+        START_EXAM: i18n.global.t(
+            "connectionConfigurations.selectValues.start_exam",
+        ),
+        CONFIGURE_CLIENT: i18n.global.t(
+            "connectionConfigurations.selectValues.configure_client",
+        ),
     };
     const configurationPurposeOptions = SEB_CONFIG_PURPOSES.map((value) => ({
         value,
@@ -50,13 +52,25 @@ export const useConnectionConfigurationFormFields = () => {
         const av = (a ?? "").trim();
         const bv = (b ?? "").trim();
         if (!av && !bv) return true;
-        if (!av || !bv) return t("validation.noMatch");
-        return av === bv || t("validation.noMatch");
+        if (!av || !bv) {
+            return i18n.global.t("connectionConfigurations.validation.noMatch");
+        }
+        return (
+            av === bv ||
+            i18n.global.t("connectionConfigurations.validation.noMatch")
+        );
     };
 
     const numberRule = (v: number | undefined): true | string => {
-        if (v === undefined) return t("validation.required");
-        return !Number.isNaN(Number(v)) || t("validation.mustBeNumber");
+        if (v === undefined) {
+            return i18n.global.t(
+                "connectionConfigurations.validation.required",
+            );
+        }
+        return (
+            !Number.isNaN(Number(v)) ||
+            i18n.global.t("connectionConfigurations.validation.mustBeNumber")
+        );
     };
 
     const mainFormFields = computed<FormField[]>(() => [
@@ -64,7 +78,7 @@ export const useConnectionConfigurationFormFields = () => {
             type: "text" as const,
             name: CONNECTION_CONFIG_FIELD.name,
             model: name,
-            label: t("fields.name.label"),
+            label: i18n.global.t("connectionConfigurations.fields.name.label"),
             required: isRequired(
                 connectionConfigurationCreateSchema.shape.name,
             ),
@@ -74,7 +88,9 @@ export const useConnectionConfigurationFormFields = () => {
             type: "select" as const,
             name: CONNECTION_CONFIG_FIELD.configurationPurpose,
             model: configurationPurpose,
-            label: t("fields.configurationPurpose.label"),
+            label: i18n.global.t(
+                "connectionConfigurations.fields.configurationPurpose.label",
+            ),
             options: configurationPurposeOptions,
             required: isRequired(
                 connectionConfigurationCreateSchema.shape.sebConfigPurpose,
@@ -84,13 +100,17 @@ export const useConnectionConfigurationFormFields = () => {
             type: "password" as const,
             name: CONNECTION_CONFIG_FIELD.configurationPassword,
             model: configurationPassword,
-            label: t("fields.configurationPassword.label"),
+            label: i18n.global.t(
+                "connectionConfigurations.fields.configurationPassword.label",
+            ),
         },
         {
             type: "password" as const,
             name: CONNECTION_CONFIG_FIELD.confirmConfigurationPassword,
             model: confirmConfigurationPassword,
-            label: t("fields.confirmConfigurationPassword.label"),
+            label: i18n.global.t(
+                "connectionConfigurations.fields.confirmConfigurationPassword.label",
+            ),
             validationDependsOn: ["configurationPassword"],
             rules: [
                 () =>
@@ -104,7 +124,9 @@ export const useConnectionConfigurationFormFields = () => {
             type: "number" as const,
             name: CONNECTION_CONFIG_FIELD.pingInterval,
             model: pingInterval,
-            label: t("fields.pingInterval.label"),
+            label: i18n.global.t(
+                "connectionConfigurations.fields.pingInterval.label",
+            ),
             required: true,
             rules: [numberRule],
         },
@@ -112,7 +134,9 @@ export const useConnectionConfigurationFormFields = () => {
             type: "switch" as const,
             name: CONNECTION_CONFIG_FIELD.asymmetricOnlyEncryption,
             model: asymmetricOnlyEncryption,
-            label: t("fields.useAsymmetricOnlyEncryption.label"),
+            label: i18n.global.t(
+                "connectionConfigurations.fields.useAsymmetricOnlyEncryption.label",
+            ),
         },
     ]);
 
@@ -121,16 +145,24 @@ export const useConnectionConfigurationFormFields = () => {
             type: "text" as const,
             name: CONNECTION_CONFIG_FIELD.fallbackStartUrl,
             model: fallbackStartUrl,
-            label: t("fields.fallbackStartUrl.label"),
+            label: i18n.global.t(
+                "connectionConfigurations.fields.fallbackStartUrl.label",
+            ),
             required: true,
             rules: [
                 (v: string | undefined) => {
-                    if (!v || !v.trim()) return t("validation.required");
+                    if (!v || !v.trim()) {
+                        return i18n.global.t(
+                            "connectionConfigurations.validation.required",
+                        );
+                    }
                     const lower = v.trim().toLowerCase();
                     return (
                         lower.startsWith("http://") ||
                         lower.startsWith("https://") ||
-                        t("validation.mustBeWithUrl")
+                        i18n.global.t(
+                            "connectionConfigurations.validation.mustBeWithUrl",
+                        )
                     );
                 },
             ],
@@ -139,7 +171,9 @@ export const useConnectionConfigurationFormFields = () => {
             type: "number" as const,
             name: CONNECTION_CONFIG_FIELD.connectionAttempts,
             model: connectionAttempts,
-            label: t("fields.connectionAttempts.label"),
+            label: i18n.global.t(
+                "connectionConfigurations.fields.connectionAttempts.label",
+            ),
             required: true,
             rules: [numberRule],
         },
@@ -147,7 +181,9 @@ export const useConnectionConfigurationFormFields = () => {
             type: "number" as const,
             name: CONNECTION_CONFIG_FIELD.interval,
             model: interval,
-            label: t("fields.interval.label"),
+            label: i18n.global.t(
+                "connectionConfigurations.fields.interval.label",
+            ),
             required: true,
             rules: [numberRule],
         },
@@ -155,7 +191,9 @@ export const useConnectionConfigurationFormFields = () => {
             type: "number" as const,
             name: CONNECTION_CONFIG_FIELD.connectionTimeout,
             model: connectionTimeout,
-            label: t("fields.connectionTimeout.label"),
+            label: i18n.global.t(
+                "connectionConfigurations.fields.connectionTimeout.label",
+            ),
             required: true,
             rules: [numberRule],
         },
@@ -163,13 +201,17 @@ export const useConnectionConfigurationFormFields = () => {
             type: "password" as const,
             name: CONNECTION_CONFIG_FIELD.fallbackPassword,
             model: fallbackPassword,
-            label: t("fields.fallbackPassword.label"),
+            label: i18n.global.t(
+                "connectionConfigurations.fields.fallbackPassword.label",
+            ),
         },
         {
             type: "password" as const,
             name: CONNECTION_CONFIG_FIELD.confirmFallbackPassword,
             model: confirmFallbackPassword,
-            label: t("fields.confirmFallbackPassword.label"),
+            label: i18n.global.t(
+                "connectionConfigurations.fields.confirmFallbackPassword.label",
+            ),
             validationDependsOn: ["fallbackPassword"],
             rules: [
                 () =>
@@ -183,13 +225,17 @@ export const useConnectionConfigurationFormFields = () => {
             type: "password" as const,
             name: CONNECTION_CONFIG_FIELD.quitPassword,
             model: quitPassword,
-            label: t("fields.quitPassword.label"),
+            label: i18n.global.t(
+                "connectionConfigurations.fields.quitPassword.label",
+            ),
         },
         {
             type: "password" as const,
             name: CONNECTION_CONFIG_FIELD.confirmQuitPassword,
             model: confirmQuitPassword,
-            label: t("fields.confirmQuitPassword.label"),
+            label: i18n.global.t(
+                "connectionConfigurations.fields.confirmQuitPassword.label",
+            ),
             validationDependsOn: ["quitPassword"],
             rules: [
                 () =>

@@ -1,10 +1,10 @@
 <template>
     <ConfirmDialog
         v-model="model"
-        :title="$t(`${translationKeyPrefix}.deleteDialog.title`)"
-        :text="$t(`${translationKeyPrefix}.deleteDialog.text`)"
+        :title="title"
+        :text="text"
         :detail-text="detailText"
-        :confirm-label="$t(`${translationKeyPrefix}.deleteDialog.action`)"
+        :confirm-label="confirmLabel"
         confirm-color="error"
         :loading="loading"
         :test-ids="testIds"
@@ -21,12 +21,10 @@ const model = defineModel<boolean>({ required: true });
 
 const props = withDefaults(
     defineProps<{
+        title: string;
+        text: string;
+        confirmLabel: string;
         detailText?: string;
-        // TODO @andrei: avoid programmatic translation key generation:
-        // - this is inflexible (translations need to have a certain shape)
-        // - this mmakes it very hard to refactor translation keys (search and replace is impossible)
-        // => accept fully translated strings instead
-        translationKeyPrefix: string;
         dataTestId?: string;
         loading?: boolean;
     }>(),

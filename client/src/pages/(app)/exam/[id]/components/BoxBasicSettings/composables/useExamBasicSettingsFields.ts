@@ -55,7 +55,13 @@ export const useExamBasicSettingsFields = (
                 name: "quizTimeRange",
                 model: models.quizTimeRange,
                 label: i18n.global.t(
-                    "createExam.steps.withURL.fields.timeRange",
+                    "createExam.steps.withURL.fields.timeRange.label",
+                ),
+                labelFrom: i18n.global.t(
+                    "createExam.steps.withURL.fields.timeRange.labelFrom",
+                ),
+                labelTo: i18n.global.t(
+                    "createExam.steps.withURL.fields.timeRange.labelTo",
                 ),
                 required: true,
             });

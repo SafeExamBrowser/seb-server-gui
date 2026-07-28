@@ -72,8 +72,10 @@
 
     <DeleteConfirmDialog
         v-model="deleteFlow.dialogOpen"
+        :title="$t('examTemplateList.deleteDialog.title')"
+        :text="$t('examTemplateList.deleteDialog.text')"
+        :confirm-label="$t('examTemplateList.deleteDialog.action')"
         :detail-text="deleteFlow.detailText"
-        translation-key-prefix="examTemplateList"
         @confirm="deleteFlow.confirm"
     />
 </template>

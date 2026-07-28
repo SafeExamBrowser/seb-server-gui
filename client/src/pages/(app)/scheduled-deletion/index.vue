@@ -85,8 +85,10 @@
 
     <DeleteConfirmDialog
         v-model="deleteFlow.dialogOpen"
+        :title="$t('scheduledDelete.list.deleteDialog.title')"
+        :text="$t('scheduledDelete.list.deleteDialog.text')"
+        :confirm-label="$t('scheduledDelete.list.deleteDialog.action')"
         :detail-text="deleteFlow.detailText"
-        translation-key-prefix="scheduledDelete.list"
         @confirm="deleteFlow.confirm"
     />
 </template>

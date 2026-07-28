@@ -6,7 +6,9 @@ import { FormField } from "@/components/widgets/formBuilder/types";
 export type CrudDeleteConfig<TItem> = {
     deleteItem: (item: TItem) => Promise<void>;
     confirm?: {
-        translationKeyPrefix: string;
+        title: string;
+        text: string;
+        confirmLabel: string;
         getDetailText?: (item: TItem) => string | undefined;
     };
 };

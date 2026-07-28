@@ -5,8 +5,6 @@ import { useZodFormRules } from "@/composables/useZodFormRules.ts";
 import i18n from "@/i18n";
 import { userAccountPasswordChangeSchema } from "@/models/userAccount.ts";
 
-const t = (key: string) => i18n.global.t(`userAccount.changePassword.${key}`);
-
 export const useChangePasswordFormFields = () => {
     const adminPassword = ref<string | undefined>(undefined);
     const newPassword = ref<string | undefined>(undefined);
@@ -22,7 +20,9 @@ export const useChangePasswordFormFields = () => {
             type: "password" as const,
             name: "adminPassword",
             model: adminPassword,
-            label: t("fields.adminPassword.label"),
+            label: i18n.global.t(
+                "userAccount.changePassword.fields.adminPassword.label",
+            ),
             required: isRequired(
                 userAccountPasswordChangeSchema.shape.password,
             ),
@@ -32,7 +32,9 @@ export const useChangePasswordFormFields = () => {
             type: "password" as const,
             name: "newPassword",
             model: newPassword,
-            label: t("fields.newPassword.label"),
+            label: i18n.global.t(
+                "userAccount.changePassword.fields.newPassword.label",
+            ),
             required: isRequired(
                 userAccountPasswordChangeSchema.shape.newPassword,
             ),
@@ -44,7 +46,9 @@ export const useChangePasswordFormFields = () => {
             type: "password" as const,
             name: "confirmNewPassword",
             model: confirmNewPassword,
-            label: t("fields.confirmNewPassword.label"),
+            label: i18n.global.t(
+                "userAccount.changePassword.fields.confirmNewPassword.label",
+            ),
             required: isRequired(
                 userAccountPasswordChangeSchema.shape.confirmNewPassword,
             ),

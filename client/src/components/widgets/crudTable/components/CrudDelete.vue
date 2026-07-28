@@ -15,7 +15,9 @@
     <DeleteConfirmDialog
         v-if="confirm"
         v-model="dialogOpen"
-        :translation-key-prefix="confirm.translationKeyPrefix"
+        :title="confirm.title"
+        :text="confirm.text"
+        :confirm-label="confirm.confirmLabel"
         :detail-text="confirm.getDetailText?.(item)"
         :loading="submitting"
         @confirm="confirmDelete"

@@ -70,8 +70,10 @@
 
     <DeleteConfirmDialog
         v-model="deleteFlow.dialogOpen"
+        :title="$t('connectionConfigurations.list.deleteDialog.title')"
+        :text="$t('connectionConfigurations.list.deleteDialog.text')"
+        :confirm-label="$t('connectionConfigurations.list.deleteDialog.action')"
         :detail-text="deleteFlow.detailText"
-        translation-key-prefix="connectionConfigurations.list"
         :data-test-id="dataTestId"
         @confirm="deleteFlow.confirm"
     />
@@ -79,7 +81,26 @@
     <StatusConfirmDialog
         v-model="statusFlow.dialogOpen"
         :active="!!statusFlow.target?.active"
-        translation-key-prefix="connectionConfigurations.list"
+        :activate="{
+            title: $t(
+                'connectionConfigurations.list.statusDialog.activateTitle',
+            ),
+            text: $t('connectionConfigurations.list.statusDialog.activateText'),
+            action: $t(
+                'connectionConfigurations.list.statusDialog.activateAction',
+            ),
+        }"
+        :deactivate="{
+            title: $t(
+                'connectionConfigurations.list.statusDialog.deactivateTitle',
+            ),
+            text: $t(
+                'connectionConfigurations.list.statusDialog.deactivateText',
+            ),
+            action: $t(
+                'connectionConfigurations.list.statusDialog.deactivateAction',
+            ),
+        }"
         :data-test-id="dataTestId"
         @confirm="statusFlow.confirm"
     />

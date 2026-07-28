@@ -1,10 +1,10 @@
 import { computed, reactive } from "vue";
-import { useI18n } from "vue-i18n";
 import { type RouteLocationAsRelative, useRouter } from "vue-router";
 
 import { useEntityDeleteFlow } from "@/components/widgets/entity-table/composables/useEntityDeleteFlow.ts";
 import { useEntityStatusFlow } from "@/components/widgets/entity-table/composables/useEntityStatusFlow.ts";
 import type { TableItem } from "@/components/widgets/entity-table/types.ts";
+import i18n from "@/i18n";
 import { isTeacherOnlyAccount } from "@/models/userAccount.ts";
 import { useDeleteUserAccountMutation } from "@/pages/(app)/user-account/api/useDeleteUserAccountMutation.ts";
 import { useToggleUserAccountStatusMutation } from "@/pages/(app)/user-account/api/useToggleUserAccountStatusMutation.ts";
@@ -16,8 +16,6 @@ import { useUserAccountsTableHeaders } from "./useUserAccountsTableHeaders.ts";
 
 export const useUserAccountsOverview = () => {
     const router = useRouter();
-    const { t } = useI18n();
-
     const userAccountDetailRoute = (
         item: TableItem,
     ): RouteLocationAsRelative | undefined =>
@@ -69,7 +67,7 @@ export const useUserAccountsOverview = () => {
         isTeacherOnlyAccount(item.userRoles);
     const statusToggleTooltip = (item: TableItem): string | undefined =>
         statusToggleDisabled(item)
-            ? t("userAccount.teacherNotEditable.message")
+            ? i18n.global.t("userAccount.teacherNotEditable.message")
             : undefined;
 
     const statusFlow = useEntityStatusFlow({
