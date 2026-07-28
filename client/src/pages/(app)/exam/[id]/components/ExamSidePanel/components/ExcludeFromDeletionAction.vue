@@ -4,7 +4,6 @@
         :active="excludedFromDeletion"
         @click="handleClick"
     >
-        <v-icon start>mdi-delete-off-outline</v-icon>
         {{
             $t(
                 excludedFromDeletion
