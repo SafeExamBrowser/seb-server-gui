@@ -1,7 +1,10 @@
 import { computed, Ref } from "vue";
 import { RuleAliases } from "vuetify/labs/rules";
 
-import { ClientGroupTransient } from "@/components/widgets/clientGroupsTable/types.ts";
+import {
+    ClientGroupTransient,
+    TYPE_LABEL_I18N_KEYS,
+} from "@/components/widgets/clientGroupsTable/types.ts";
 import { FormField } from "@/components/widgets/formBuilder/types.ts";
 import i18n from "@/i18n";
 import { ClientGroupEnum } from "@/models/seb-server/clientGroupEnum.ts";
@@ -60,13 +63,15 @@ export const useFormFieldsBasic = (
             type: "select" as const,
             name: "type",
             model: type,
-            options: [
-                ClientGroupEnum.IP_V4_RANGE,
-                ClientGroupEnum.CLIENT_OS,
-                ClientGroupEnum.NAME_ALPHABETICAL_RANGE,
-            ].map((value) => ({
+            options: (
+                [
+                    ClientGroupEnum.IP_V4_RANGE,
+                    ClientGroupEnum.CLIENT_OS,
+                    ClientGroupEnum.NAME_ALPHABETICAL_RANGE,
+                ] as const
+            ).map((value) => ({
                 value,
-                text: i18n.global.t(`clientGroups.fields.type.types.${value}`),
+                text: i18n.global.t(TYPE_LABEL_I18N_KEYS[value]),
             })),
             label: i18n.global.t("clientGroups.fields.type.label"),
             placeholder: i18n.global.t("clientGroups.fields.type.placeholder"),

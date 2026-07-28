@@ -27,6 +27,14 @@ const INSTITUTIONAL_VISIBLE_ROLES: ReadonlySet<UserRole> = new Set<UserRole>([
     "EXAM_SUPPORTER",
 ]);
 
+const ROLE_LABEL_I18N_KEYS: Record<UserRole, string> = {
+    SEB_SERVER_ADMIN: "general.userRoles.SEB_SERVER_ADMIN",
+    INSTITUTIONAL_ADMIN: "general.userRoles.INSTITUTIONAL_ADMIN",
+    EXAM_ADMIN: "general.userRoles.EXAM_ADMIN",
+    EXAM_SUPPORTER: "general.userRoles.EXAM_SUPPORTER",
+    TEACHER: "general.userRoles.TEACHER",
+};
+
 const timezoneOptions = moment.tz
     .names()
     .map((tz) => ({ value: tz, text: tz }));
@@ -101,7 +109,7 @@ export const useUserAccountFormFields = (mode: UserAccountFormMode) => {
     const availableRoles = computed(() => {
         const allRoles = USER_ROLES.map((value) => ({
             value,
-            text: i18n.global.t(`general.userRoles.${value}`),
+            text: i18n.global.t(ROLE_LABEL_I18N_KEYS[value]),
         }));
 
         if (hasSebServerAdmin.value) {

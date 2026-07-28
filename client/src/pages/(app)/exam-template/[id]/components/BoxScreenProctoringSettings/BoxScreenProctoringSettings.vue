@@ -26,12 +26,14 @@ import { ScreenProctoringCollectionStrategy } from "@/models/seb-server/screenPr
 import ScreenProctoringEditDialog from "./components/ScreenProctoringEditDialog.vue";
 import { ScreenProctoringSelection } from "./types.ts";
 
-const STRATEGY_LABEL_KEYS: Record<ScreenProctoringCollectionStrategy, string> =
-    {
-        EXAM: "screenProctoring.collectionStrategy.strategies.EXAM",
-        APPLY_SEB_GROUPS:
-            "screenProctoring.collectionStrategy.strategies.APPLY_SEB_GROUPS",
-    };
+const STRATEGY_LABEL_I18N_KEYS: Record<
+    ScreenProctoringCollectionStrategy,
+    string
+> = {
+    EXAM: "screenProctoring.collectionStrategy.strategies.EXAM",
+    APPLY_SEB_GROUPS:
+        "screenProctoring.collectionStrategy.strategies.APPLY_SEB_GROUPS",
+};
 
 const { enabled, collectionStrategy } =
     defineProps<ScreenProctoringSelection>();
@@ -43,7 +45,9 @@ const emit = defineEmits<{
 const { t } = useI18n();
 
 const strategyLabel = computed<string | undefined>(() =>
-    collectionStrategy ? t(STRATEGY_LABEL_KEYS[collectionStrategy]) : undefined,
+    collectionStrategy
+        ? t(STRATEGY_LABEL_I18N_KEYS[collectionStrategy])
+        : undefined,
 );
 
 const items = computed<KeyValueItem[]>(() => {

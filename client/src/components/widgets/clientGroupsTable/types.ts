@@ -54,6 +54,18 @@ export const isFallbackGroup = (
     item.type === "SCREEN_PROCTORING_FALLBACK" ||
     item.type === "SCREEN_PROCTORING_SINGLE";
 
+export const TYPE_LABEL_I18N_KEYS: Record<ClientGroupForTable["type"], string> =
+    {
+        IP_V4_RANGE: "clientGroups.fields.type.types.IP_V4_RANGE",
+        CLIENT_OS: "clientGroups.fields.type.types.CLIENT_OS",
+        NAME_ALPHABETICAL_RANGE:
+            "clientGroups.fields.type.types.NAME_ALPHABETICAL_RANGE",
+        SCREEN_PROCTORING_SINGLE:
+            "clientGroups.fields.type.types.SCREEN_PROCTORING_SINGLE",
+        SCREEN_PROCTORING_FALLBACK:
+            "clientGroups.fields.type.types.SCREEN_PROCTORING_FALLBACK",
+    };
+
 // zod.parse does two things in both converters below:
 // 1. validate the schema (throws if the transient is not a valid client group;
 //    should never happen given form validation, but catches form-validation gaps)

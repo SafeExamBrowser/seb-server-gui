@@ -187,11 +187,19 @@ const {
 
 const showSettingsNavigation = computed(() => props.mode !== "profile");
 
+const ROLE_INFO_I18N_KEYS: Record<UserRole, string> = {
+    SEB_SERVER_ADMIN: "userAccount.general.role.info.SEB_SERVER_ADMIN",
+    INSTITUTIONAL_ADMIN: "userAccount.general.role.info.INSTITUTIONAL_ADMIN",
+    EXAM_ADMIN: "userAccount.general.role.info.EXAM_ADMIN",
+    EXAM_SUPPORTER: "userAccount.general.role.info.EXAM_SUPPORTER",
+    TEACHER: "userAccount.general.role.info.TEACHER",
+};
+
 const roleDescription = computed(() => {
     if (!role.value) {
         return i18n.global.t("userAccount.general.role.pleaseselect");
     }
-    return i18n.global.t(`userAccount.general.role.info.${role.value}`);
+    return i18n.global.t(ROLE_INFO_I18N_KEYS[role.value]);
 });
 
 const breadCrumb = computed<BreadCrumbItem[]>(() => {

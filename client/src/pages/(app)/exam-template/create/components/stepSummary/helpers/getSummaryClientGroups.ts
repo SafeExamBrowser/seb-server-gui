@@ -9,19 +9,17 @@ import {
 } from "@/models/seb-server/clientGroupEnum.ts";
 import { ClientGroup, ExamTemplate } from "@/models/seb-server/examTemplate.ts";
 
+const CLIENT_OS_LABEL_I18N_KEYS: Record<ClientOSLimited, string> = {
+    WINDOWS: "clientGroups.fields.clientOS.types.WINDOWS",
+    MAC_OS: "clientGroups.fields.clientOS.types.MAC_OS",
+    I_OS: "clientGroups.fields.clientOS.types.I_OS",
+    IPAD_OS: "clientGroups.fields.clientOS.types.IPAD_OS",
+    I_OS_OR_IPAD_OS: "clientGroups.fields.clientOS.types.I_OS_OR_IPAD_OS",
+};
+
 export const getSummaryClientGroups = (
     examTemplate: ExamTemplate,
 ): SummarySectionData => {
-    const clientOSLabels: Record<ClientOSLimited, string> = {
-        WINDOWS: i18n.global.t("clientGroups.fields.clientOS.types.WINDOWS"),
-        MAC_OS: i18n.global.t("clientGroups.fields.clientOS.types.MAC_OS"),
-        I_OS: i18n.global.t("clientGroups.fields.clientOS.types.I_OS"),
-        IPAD_OS: i18n.global.t("clientGroups.fields.clientOS.types.IPAD_OS"),
-        I_OS_OR_IPAD_OS: i18n.global.t(
-            "clientGroups.fields.clientOS.types.I_OS_OR_IPAD_OS",
-        ),
-    };
-
     const getTypeDetails = (clientGroup: ClientGroup): string => {
         switch (clientGroup.type) {
             case ClientGroupEnum.IP_V4_RANGE:
@@ -31,7 +29,9 @@ export const getSummaryClientGroups = (
             case ClientGroupEnum.CLIENT_OS:
                 return `${i18n.global.t(
                     "clientGroups.fields.type.types.CLIENT_OS",
-                )} (${clientOSLabels[clientGroup.clientOS]})`;
+                )} (${i18n.global.t(
+                    CLIENT_OS_LABEL_I18N_KEYS[clientGroup.clientOS],
+                )})`;
             case ClientGroupEnum.NAME_ALPHABETICAL_RANGE:
                 return `${i18n.global.t(
                     "clientGroups.fields.type.types.NAME_ALPHABETICAL_RANGE",

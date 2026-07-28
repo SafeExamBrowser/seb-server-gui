@@ -343,8 +343,26 @@ function onGrantKey() {
     getAskAndStore(examId);
 }
 
+const STATUS_LABEL_I18N_KEYS: Record<"ALL" | ConnectionStatusEnum, string> = {
+    ALL: "monitoringDetails.monitoringASKDialog.statuses.ALL",
+    [ConnectionStatusEnum.UNDEFINED]:
+        "monitoringDetails.monitoringASKDialog.statuses.UNDEFINED",
+    [ConnectionStatusEnum.CONNECTION_REQUESTED]:
+        "monitoringDetails.monitoringASKDialog.statuses.CONNECTION_REQUESTED",
+    [ConnectionStatusEnum.READY]:
+        "monitoringDetails.monitoringASKDialog.statuses.READY",
+    [ConnectionStatusEnum.ACTIVE]:
+        "monitoringDetails.monitoringASKDialog.statuses.ACTIVE",
+    [ConnectionStatusEnum.DISABLED]:
+        "monitoringDetails.monitoringASKDialog.statuses.DISABLED",
+    [ConnectionStatusEnum.MISSING]:
+        "monitoringDetails.monitoringASKDialog.statuses.MISSING",
+    [ConnectionStatusEnum.CLOSED]:
+        "monitoringDetails.monitoringASKDialog.statuses.CLOSED",
+};
+
 function trStatus(value: "ALL" | ConnectionStatusEnum) {
-    return i18n.t(`monitoringDetails.monitoringASKDialog.statuses.${value}`);
+    return i18n.t(STATUS_LABEL_I18N_KEYS[value]);
 }
 
 watch(selectedAskIdx, () => {

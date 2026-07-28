@@ -32,8 +32,13 @@ const { deps } = defineProps<{
 
 const { t } = useI18n();
 
+const TYPE_LABEL_I18N_KEYS: Record<IndicatorExisting["type"], string> = {
+    BATTERY_STATUS: "indicators.fields.type.types.BATTERY_STATUS",
+    WLAN_STATUS: "indicators.fields.type.types.WLAN_STATUS",
+};
+
 const tableConfig = computed(() => useTable(deps));
 
 const getTranslatedType = (item: IndicatorExisting) =>
-    t(`indicators.fields.type.types.${item.type}`);
+    t(TYPE_LABEL_I18N_KEYS[item.type]);
 </script>

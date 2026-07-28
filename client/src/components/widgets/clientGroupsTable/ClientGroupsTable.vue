@@ -23,6 +23,7 @@ import {
     ClientGroupForTable,
     ClientGroupsTableDeps,
     isFallbackGroup,
+    TYPE_LABEL_I18N_KEYS,
 } from "@/components/widgets/clientGroupsTable/types.ts";
 import CrudTable from "@/components/widgets/crudTable/CrudTable.vue";
 import { isScreenProctoringAllowedForGroups } from "@/models/seb-server/screenProctoring.ts";
@@ -46,7 +47,7 @@ const tableConfig = computed(() =>
 );
 
 const getTranslatedType = (item: ClientGroupForTable) =>
-    t(`clientGroups.fields.type.types.${item.type}`);
+    t(TYPE_LABEL_I18N_KEYS[item.type]);
 
 const showScreenProctoring = (item: ClientGroupForTable) =>
     screenProctoringAllowedForGroups.value || isFallbackGroup(item);

@@ -13,6 +13,15 @@ import { ASSESSMENT_TOOL_FIELD } from "@/pages/(app)/assessment-tool/assessmentT
 
 export type AuthMode = "client" | "token";
 
+const LMS_TYPE_LABEL_I18N_KEYS: Record<(typeof LMS_TYPES)[number], string> = {
+    MOCKUP: "assessmentToolConnections.lmsTypes.MOCKUP",
+    OPEN_EDX: "assessmentToolConnections.lmsTypes.OPEN_EDX",
+    MOODLE: "assessmentToolConnections.lmsTypes.MOODLE",
+    MOODLE_PLUGIN: "assessmentToolConnections.lmsTypes.MOODLE_PLUGIN",
+    ANS_DELFT: "assessmentToolConnections.lmsTypes.ANS_DELFT",
+    OPEN_OLAT: "assessmentToolConnections.lmsTypes.OPEN_OLAT",
+};
+
 export type AssessmentToolFormMode = "create" | "edit";
 
 export const useAssessmentToolFormFields = (
@@ -77,10 +86,10 @@ export const useAssessmentToolFormFields = (
     );
 
     // The value set is derived from the schema enum so it can't drift from the backend;
-    // the labels use the domain's established per-type i18n keys.
+    // the label-key record is keyed by the same enum, so the compiler flags drift there.
     const lmsTypeOptions = LMS_TYPES.map((value) => ({
         value,
-        text: i18n.global.t(`assessmentToolConnections.lmsTypes.${value}`),
+        text: i18n.global.t(LMS_TYPE_LABEL_I18N_KEYS[value]),
     }));
 
     const loading = computed(() => loadingInstitutions.value);
