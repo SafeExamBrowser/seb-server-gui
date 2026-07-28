@@ -44,7 +44,9 @@ on the filesystem if they clash:
 - When writing Pinia Stores, prefer "Setup Stores" over "Option Stores".
   `client/src/components/views/seb-server/exam-template/wizard/composables/store/useScreenProctoringStore.ts` is a good example.
 - i18n:
-  - When dealing with i18n translation keys use `i18n.global.t`. Only a component's literal setup function (`<script setup>`) may use `useI18n()`;
-    composables always use `i18n.global.t`. In templates, always use `$t`
-  - Avoid generating i18n keys programmatically (i.e. `$t(${translationKeyPrefix}.title))`. Instead, pass static strings to the translation function:
-    `$t(supervisors.title)`
+  - Use `i18n.global.t`; only `<script setup>` may use `useI18n()`; templates use `$t`.
+  - Every en.json key must appear verbatim in `client/src` — grep-based unused-key sweeps delete
+    keys they can't find. So: no template-literal keys (`$t("supervisors.title")`, never
+    `$t(`${prefix}.title`)`), no prefix props or prefix-baking `t` wrappers (components take full
+    keys or translated strings), and for runtime values use a `Record<Value, string>` of full
+    static keys (see `STRATEGY_LABEL_KEYS` in `BoxScreenProctoringSettings.vue`).
