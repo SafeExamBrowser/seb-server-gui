@@ -1,10 +1,10 @@
 import { computed } from "vue";
-import { useI18n } from "vue-i18n";
 
 import type {
     TableAction,
     TableItem,
 } from "@/components/widgets/entity-table/types.ts";
+import i18n from "@/i18n";
 import {
     type ExamTemplateTableItem,
     isExamTemplateTableItem,
@@ -15,8 +15,6 @@ export function useExamTemplateTableActions(deps: {
     onCopy: (item: ExamTemplateTableItem) => void;
     onDelete: (item: ExamTemplateTableItem) => void;
 }) {
-    const { t } = useI18n();
-
     // TODO @andrei: this type guard can be removed, once the EntityTable uses a generic type for the item
     const guardAction =
         (handler: (item: ExamTemplateTableItem) => void) =>
@@ -32,19 +30,19 @@ export function useExamTemplateTableActions(deps: {
         {
             key: "edit",
             icon: "mdi-pencil",
-            label: t("general.editButton"),
+            label: i18n.global.t("general.editButton"),
             onClick: guardAction(deps.onEdit),
         },
         {
             key: "copy",
             icon: "mdi-content-copy",
-            label: t("general.copyButton"),
+            label: i18n.global.t("general.copyButton"),
             onClick: guardAction(deps.onCopy),
         },
         {
             key: "delete",
             icon: "mdi-delete",
-            label: t("general.deleteButton"),
+            label: i18n.global.t("general.deleteButton"),
             color: "error",
             onClick: guardAction(deps.onDelete),
         },

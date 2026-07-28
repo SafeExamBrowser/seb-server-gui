@@ -48,3 +48,17 @@ The reference conversion is `exam/[id]/components/BoxBasicSettings/composables/u
 - `vue-tsc --noEmit`, ESLint, and Prettier pass.
 - Spot-check a few affected pages (exam list actions, monitoring table,
   user accounts) in the browser: labels/tooltips still render translated.
+
+## Comments
+
+**2026-07-28 (agent):** Implemented. All 17 composables converted to
+`i18n.global.t` following the reference pattern. Verification:
+
+- `grep -rl "useI18n" client/src --include=*.ts` returns nothing
+- `vue-tsc --noEmit`, `eslint .`, and Prettier all pass
+- Browser spot-check (exam list "View" action, monitoring table,
+  user-accounts "Edit"/"Delete" actions): labels render translated
+
+Note: six `use*FormFields.ts` composables define a local
+`const t = (key) => i18n.global.t(...)` prefix helper — already
+rule-compliant, left untouched.

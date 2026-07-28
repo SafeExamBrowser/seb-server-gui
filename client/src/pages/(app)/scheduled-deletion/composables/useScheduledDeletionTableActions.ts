@@ -1,10 +1,10 @@
 import { computed } from "vue";
-import { useI18n } from "vue-i18n";
 
 import type {
     TableAction,
     TableItem,
 } from "@/components/widgets/entity-table/types.ts";
+import i18n from "@/i18n";
 import {
     isScheduledDeleteItem,
     ScheduledDeleteItem,
@@ -15,8 +15,6 @@ export function useScheduledDeletionTableActions(deps: {
     canDelete: (item: TableItem) => boolean;
     onDelete: (item: ScheduledDeleteItem) => void;
 }) {
-    const { t } = useI18n();
-
     // TODO @andrei: this type guard can be removed, once the EntityTable uses a generic type for the item
     const guardAction =
         (handler: (item: ScheduledDeleteItem) => void) => (item: TableItem) => {
@@ -31,8 +29,8 @@ export function useScheduledDeletionTableActions(deps: {
         {
             key: "delete",
             icon: "mdi-delete",
-            label: t("general.deleteButton"),
-            tooltip: t("scheduledDelete.actions.delete.tooltip"),
+            label: i18n.global.t("general.deleteButton"),
+            tooltip: i18n.global.t("scheduledDelete.actions.delete.tooltip"),
             color: "error",
             visible: deps.canDelete,
             onClick: guardAction(deps.onDelete),
@@ -40,7 +38,7 @@ export function useScheduledDeletionTableActions(deps: {
         {
             key: "navigate",
             icon: "mdi-chevron-right",
-            label: t("general.viewButton"),
+            label: i18n.global.t("general.viewButton"),
             onClick: guardAction(deps.onNavigate),
         },
     ]);

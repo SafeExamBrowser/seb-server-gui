@@ -1,7 +1,7 @@
 import { computed, reactive, Ref } from "vue";
-import { useI18n } from "vue-i18n";
 
 import { KeyValueItem } from "@/components/widgets/keyValueList/types";
+import i18n from "@/i18n";
 import { DeletionInfo } from "@/models/seb-server/scheduled-deletion";
 import { useGetScheduledDeletionReport } from "@/pages/(app)/scheduled-deletion/composables/api/useGetScheduledDeletionReport";
 import {
@@ -10,8 +10,6 @@ import {
 } from "@/utils/timeUtils";
 
 export const useScheduledDeletionReport = (id: string) => {
-    const { t } = useI18n();
-
     const {
         data: scheduledDelete,
         loading,
@@ -24,7 +22,7 @@ export const useScheduledDeletionReport = (id: string) => {
                 {
                     key: "name",
                     type: "basic",
-                    label: t("scheduledDelete.report.name"),
+                    label: i18n.global.t("scheduledDelete.report.name"),
                     value: {
                         type: "string",
                         value: `Scheduled Deletion ${formatTimestampToDate(scheduledDelete.value.scheduleTime)}`,
@@ -33,10 +31,10 @@ export const useScheduledDeletionReport = (id: string) => {
                 {
                     key: "state",
                     type: "basic",
-                    label: t("scheduledDelete.report.state"),
+                    label: i18n.global.t("scheduledDelete.report.state"),
                     value: {
                         type: "string",
-                        value: t(
+                        value: i18n.global.t(
                             `scheduledDelete.status.${String(scheduledDelete.value.state)}`,
                         ),
                     },
@@ -44,7 +42,7 @@ export const useScheduledDeletionReport = (id: string) => {
                 {
                     key: "dueTime",
                     type: "basic",
-                    label: t("scheduledDelete.report.dueTime"),
+                    label: i18n.global.t("scheduledDelete.report.dueTime"),
                     value: {
                         type: "string",
                         value: formatTimestampToDate(
@@ -55,7 +53,9 @@ export const useScheduledDeletionReport = (id: string) => {
                 {
                     key: "scheduledTime",
                     type: "basic",
-                    label: t("scheduledDelete.report.scheduledTime"),
+                    label: i18n.global.t(
+                        "scheduledDelete.report.scheduledTime",
+                    ),
                     value: {
                         type: "string",
                         value: formatTimestampToFullDate(
@@ -66,7 +66,7 @@ export const useScheduledDeletionReport = (id: string) => {
                 {
                     key: "startTime",
                     type: "basic",
-                    label: t("scheduledDelete.report.startTime"),
+                    label: i18n.global.t("scheduledDelete.report.startTime"),
                     value: {
                         type: "string",
                         value: formatTimestampToFullDate(
@@ -77,7 +77,7 @@ export const useScheduledDeletionReport = (id: string) => {
                 {
                     key: "endTime",
                     type: "basic",
-                    label: t("scheduledDelete.report.endTime"),
+                    label: i18n.global.t("scheduledDelete.report.endTime"),
                     value: {
                         type: "string",
                         value: formatTimestampToFullDate(

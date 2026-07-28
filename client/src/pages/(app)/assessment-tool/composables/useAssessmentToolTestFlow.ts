@@ -1,7 +1,7 @@
 import { type Ref } from "vue";
-import { useI18n } from "vue-i18n";
 
 import type { TableItem } from "@/components/widgets/entity-table/types.ts";
+import i18n from "@/i18n";
 import type { AssessmentToolTestResult } from "@/models/assessmentTool.ts";
 import type { AppError } from "@/services/errors/types.ts";
 import { notify } from "@/services/notifications/notify.ts";
@@ -32,18 +32,17 @@ export const useAssessmentToolTestFlow = (config: {
     error: Ref<AppError | undefined>;
     contextLabel: string;
 }) => {
-    const { t } = useI18n();
-
     const errorBody = (err: TestError): string => {
         const key = err.errorType
             ? TEST_ERROR_MESSAGE_KEYS[err.errorType]
             : undefined;
         if (key) {
-            return t(key);
+            return i18n.global.t(key);
         }
         // Unknown/absent errorType: surface the backend message rather than a raw key.
         return (
-            err.errorMessage || t("assessmentToolConnections.test.error.title")
+            err.errorMessage ||
+            i18n.global.t("assessmentToolConnections.test.error.title")
         );
     };
 
@@ -54,7 +53,9 @@ export const useAssessmentToolTestFlow = (config: {
             if (result.errors && result.errors.length > 0) {
                 result.errors.forEach((err) =>
                     notify.warning(
-                        t("assessmentToolConnections.test.error.title"),
+                        i18n.global.t(
+                            "assessmentToolConnections.test.error.title",
+                        ),
                         errorBody(err),
                     ),
                 );
@@ -62,8 +63,8 @@ export const useAssessmentToolTestFlow = (config: {
             }
 
             notify.success(
-                t("assessmentToolConnections.test.success.title"),
-                t("assessmentToolConnections.test.success.message"),
+                i18n.global.t("assessmentToolConnections.test.success.title"),
+                i18n.global.t("assessmentToolConnections.test.success.message"),
             );
         } catch {
             notify.serverError(config.error.value, {
