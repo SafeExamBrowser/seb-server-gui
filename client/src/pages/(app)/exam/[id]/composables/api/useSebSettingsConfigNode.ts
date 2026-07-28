@@ -1,19 +1,37 @@
+import { type Ref, watch } from "vue";
+
 import { useFetch } from "@/composables/useFetch.ts";
+import { ConfigurationExamMapping } from "@/models/seb-server/configurationNode";
 import { getConfigurationNode } from "@/services/seb-server/configurationNodeService.ts";
-import { getExamConfigMapping } from "@/services/seb-server/examService.ts";
 
 // The exam config mapping carries no timestamps itself, but it points to the
 // configuration node that holds the "last modified" information.
-export const useSebSettingsConfigNode = (examId?: number) =>
-    useFetch(
-        async () => {
-            if (examId === undefined) {
-                return null;
+export const useSebSettingsConfigNode = (
+    configMapping: Ref<ConfigurationExamMapping | undefined>,
+) => {
+    const fetch = useFetch(async () => {
+        const mapping = configMapping.value;
+
+        if (!mapping) {
+            return null;
+        }
+
+        return getConfigurationNode(String(mapping.configurationNodeId));
+    });
+
+    // Watching the node id (not the mapping object) avoids a re-fetch when the
+    // mapping is reassigned after saving the encryption password.
+    watch(
+        () => configMapping.value?.configurationNodeId,
+        (nodeId) => {
+            if (nodeId === undefined) {
+                return;
             }
 
-            const mapping = await getExamConfigMapping(examId);
-
-            return getConfigurationNode(String(mapping.configurationNodeId));
+            fetch.fetchData();
         },
-        { immediate: examId !== undefined },
+        { immediate: true },
     );
+
+    return fetch;
+};
