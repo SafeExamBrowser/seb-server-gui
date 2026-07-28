@@ -1,21 +1,19 @@
 import { computed, type ComputedRef, type Ref } from "vue";
 
 import { useMutation } from "@/composables/useMutation.ts";
+import { ConfigurationExamMapping } from "@/models/seb-server/configurationNode";
 import { BasicSettings, Exam } from "@/models/seb-server/exam.ts";
 import { GUIAction } from "@/services/ability.ts";
 import * as examService from "@/services/seb-server/examService.ts";
 
-import { useExamConfigMapping } from "./api/useExamConfigMapping.ts";
 import { useExamActionDisabled } from "./useExamActionDisabled.ts";
 
 export const useBasicSettings = (
     exam: Ref<Exam | undefined>,
     examWithURL: ComputedRef<boolean>,
     updateExam: (patch: Partial<Exam>) => Promise<void>,
-    examId?: number,
+    configMapping: Ref<ConfigurationExamMapping | undefined>,
 ) => {
-    const { data: configMapping, loading } = useExamConfigMapping(examId);
-
     const settings = computed<BasicSettings>(() => ({
         quizName: exam.value?.quizName ?? "",
         quiz_description: exam.value?.quiz_description ?? "",
@@ -85,6 +83,5 @@ export const useBasicSettings = (
         settings,
         editDisabled,
         handleChange,
-        loading,
     };
 };

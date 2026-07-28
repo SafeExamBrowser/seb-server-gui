@@ -2,6 +2,7 @@ import { computed, type Ref } from "vue";
 
 import { KeyValueItem } from "@/components/widgets/keyValueList/types.ts";
 import i18n from "@/i18n";
+import { ConfigurationExamMapping } from "@/models/seb-server/configurationNode";
 import { Exam } from "@/models/seb-server/exam.ts";
 import { GUIAction } from "@/services/ability.ts";
 import { formatIsoToReadableDateTime } from "@/utils/timeUtils.ts";
@@ -11,15 +12,18 @@ import { useExamActionDisabled } from "./useExamActionDisabled.ts";
 
 export const useSebSettings = (
     exam: Ref<Exam | undefined>,
-    examId?: number,
+    configMapping: Ref<ConfigurationExamMapping | undefined>,
 ) => {
     const editDisabled = useExamActionDisabled(
         exam,
         GUIAction.EDIT_SEB_SETTINGS,
     );
 
-    const { data: configNode, loading: lastModifiedLoading } =
-        useSebSettingsConfigNode(examId);
+    const {
+        data: configNode,
+        loading: lastModifiedLoading,
+        error,
+    } = useSebSettingsConfigNode(configMapping);
 
     const lastModifiedItems = computed<KeyValueItem[]>(() => {
         const node = configNode.value;
@@ -45,5 +49,6 @@ export const useSebSettings = (
         editDisabled,
         lastModifiedItems,
         lastModifiedLoading,
+        error,
     };
 };
