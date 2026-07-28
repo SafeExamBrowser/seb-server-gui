@@ -1,6 +1,6 @@
 # Enforce the static-i18n-keys rule across the codebase
 
-Status: needs-triage
+Status: ready-for-agent
 
 ## Problem
 
@@ -22,13 +22,13 @@ This issue is implemented **after**
 That issue exclusively owns the six local
 `const t = (key) => i18n.global.t(\`<prefix>.${key}\`)` wrappers in the
 `use*FormFields.ts` composables — they are **out of scope here** and have been
-struck from the Class 1 inventory below to prevent overlap. Everything else —
-the prefix-passing widgets and the enum/value-driven lookups (including the
-dynamic tails that issue 02 leaves behind) — is owned here.
+struck from the Class 1 inventory below to prevent overlap.
+
+The enum/value-driven lookups (Class 2) were split out during triage into
+`02-enum-value-driven-i18n-keys.md` — also out of scope here. This issue owns
+only the prefix-passing widget APIs below.
 
 ## Inventory (as of 2026-07-27)
-
-Two classes of offenders — decide during triage whether both are in scope.
 
 ### Class 1: prefix-passing APIs (the class that bit us)
 
@@ -48,25 +48,16 @@ instead of a prefix; call sites each pass their own static keys.
 
 ### Class 2: enum/value-driven lookups
 
-Keys built from a runtime enum value (`t(\`...types.${item.type}\`)`):
-
-- `components/widgets/indicatorsTable/IndicatorsTable.vue`
-- `components/widgets/clientGroupsTable/ClientGroupsTable.vue` + `composables/useFormFieldsBasic.ts`
-- `pages/(app)/user-account/composables/useUserAccountFormFields.ts` (`general.userRoles.${value}`)
-- `pages/(app)/assessment-tool/composables/useAssessmentToolFormFields.ts`
-  (`lmsTypes.${value}` from the `LMS_TYPES` enum; after issue 02 inlines the
-  prefix this reads `assessmentToolConnections.lmsTypes.${value}`)
-- `pages/(app)/user-account/components/UserAccountForm.vue` (`role.info.${role.value}`)
-- `pages/(app)/monitoring/[examId]/components/dialogs/AskDialog.vue` (`statuses.${value}`)
-
-The value domain is a finite enum, so these are less dangerous, but still
-grep-invisible. If in scope, replace with an explicit value→static-key record.
+Split out during triage into `02-enum-value-driven-i18n-keys.md` — not in
+scope here.
 
 ## Acceptance
 
-- No `$t(\`...${...}...\`)` / `i18n.global.t(\`...${...}...\`)` remains for the
-  agreed scope (verify with `grep -rE '\$?t\(`' client/src`).
-- Every en.json key is findable by grepping its full string in `client/src`.
+- No `$t(\`...${...}...\`)` / `i18n.global.t(\`...${...}...\`)` remains at the
+  Class 1 sites above (verify with `grep -rE '\$?t\(`' client/src`; hits at
+  the issue-02 sites are expected and out of scope).
+- Every en.json key consumed by the Class 1 widgets is findable by grepping
+  its full string in `client/src`.
 - No visible translation regressions (missing-key console warnings) on the
   affected pages/dialogs.
 
@@ -84,3 +75,10 @@ dialog/widget APIs and all enum/value-driven lookups, including the
 `assessmentToolConnections.lmsTypes.${value}` tail that issue 02 deliberately
 leaves in place (added to Class 2). Status stays `needs-triage` — the Class 2
 in/out decision is still open.
+
+**2026-07-28:** Triage decision: Class 2 split out into
+`02-enum-value-driven-i18n-keys.md` (own triage pending). This issue now
+covers only the four Class 1 prefix-passing widgets; fix shape as proposed
+above (full static key props at call sites). Runs after
+`.scratch/i18n-in-composables/issues/02-static-i18n-keys-in-form-fields.md`.
+Status → `ready-for-agent`.
