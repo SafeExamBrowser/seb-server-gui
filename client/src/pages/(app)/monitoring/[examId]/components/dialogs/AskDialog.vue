@@ -239,7 +239,7 @@ const emit = defineEmits<{
 }>();
 
 const examId = useMonitoringStore().selectedExam?.id.toString();
-const i18n = useI18n();
+const { t } = useI18n();
 
 const selectedAskIdx = ref<number>(-1);
 const page = ref(1);
@@ -362,7 +362,7 @@ const STATUS_LABEL_I18N_KEYS: Record<"ALL" | ConnectionStatusEnum, string> = {
 };
 
 function trStatus(value: "ALL" | ConnectionStatusEnum) {
-    return i18n.t(STATUS_LABEL_I18N_KEYS[value]);
+    return t(STATUS_LABEL_I18N_KEYS[value]);
 }
 
 watch(selectedAskIdx, () => {
