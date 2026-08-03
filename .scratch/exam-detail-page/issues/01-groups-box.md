@@ -1,6 +1,6 @@
 # Groups box for the exam detail page
 
-Status: ready-for-agent
+Status: ready-for-human
 Parent: `.scratch/exam-detail-page/PRD.md` (deferred there under "Out of scope")
 Branch: `SEBSERV-958_groups`
 
@@ -116,3 +116,33 @@ field's last GUI relevance.
   New model: copy-from-template only (blueprint semantics, detached copies),
   no editing, local table instead of extending the shared widget. All
   decisions above re-settled; `ready-for-agent` restored.
+- 2026-08-03 (agent): Implemented. New self-contained
+  `pages/(app)/exam/[id]/components/BoxClientGroups/` (component +
+  `useClientGroupsBox` composable + pure `templateGroupToClientGroup` mapping
+  with a vitest unit test), wired as slot `#05_clientGroups` after
+  Supervisors; i18n under `examDetail.boxes.clientGroups.*` (en.json only).
+  One shared-widget touch beyond the ticket: `BoxActionButton` now forwards
+  the native `MouseEvent` on its `click` emit — required for the `v-menu`
+  activator (`stopPropagation`), backward-compatible for existing callers.
+  The `clientGroupsTable` widget is untouched. Verification: `npx vue-tsc
+  --noEmit`, eslint, prettier, vitest all pass; browser-verified via
+  Playwright on the dev server — exam 5 (Running, template 71): popover
+  empty state, then after adding "Lab IP Range" (IP) + "Windows Clients"
+  (OS) to template 71 via the template page, copied IP group twice
+  (duplicates OK, popover stayed open, POST payload =
+  `examId,name,type,criteria` only) and OS group once; row delete with
+  confirm removed only the exam copy (template still has both groups + SP
+  row); exam 9 (Finished): header button + row delete disabled
+  (`v-icon-btn--disabled`, pointer-events none), table stays visible with
+  its existing group. Dev-data side effects left in place: template 71 now
+  has the two groups above, exam 5 has one "Lab IP Range" + one "Windows
+  Clients" copy. Note: exam 7 is meanwhile Archived and its detail grid
+  doesn't render (pre-existing `examConfigMapping` 404), so the
+  enabled-state check used exam 5 instead. Post-review fix: template groups
+  are ignored when the template fetch errors, so a template deleted after a
+  successful fetch shows the empty state instead of stale groups.
+- 2026-08-03 (Alain): The box header button is an add button, not a pencil —
+  `mdi-plus-circle-outline` with label "Add client groups from template"
+  (i18n key `addButton`), matching the template page's "Add Group" button.
+  Supersedes the "pencil" wording in decisions 5/6; implemented and
+  browser-verified on exam 5.

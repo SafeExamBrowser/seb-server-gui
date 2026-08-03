@@ -60,6 +60,10 @@
                             @change="handleSupervisorsChange"
                         />
                     </template>
+
+                    <template #05_clientGroups>
+                        <BoxClientGroups :exam-id="examId" :exam="exam" />
+                    </template>
                 </BasicGrid>
             </LoadingFallbackComponent>
         </template>
@@ -77,6 +81,7 @@ import LoadingFallbackComponent from "@/components/widgets/loadingFallbackCompon
 import { typedTo } from "@/router/typedTo";
 
 import BoxBasicSettings from "./components/BoxBasicSettings/BoxBasicSettings.vue";
+import BoxClientGroups from "./components/BoxClientGroups/BoxClientGroups.vue";
 import BoxSEBKeys from "./components/BoxSEBKeys/BoxSEBKeys.vue";
 import BoxSEBSettings from "./components/BoxSEBSettings/BoxSEBSettings.vue";
 import ExamSidePanel from "./components/ExamSidePanel/ExamSidePanel.vue";

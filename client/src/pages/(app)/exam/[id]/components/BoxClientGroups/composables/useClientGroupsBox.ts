@@ -1,0 +1,125 @@
+import { computed, type Ref } from "vue";
+
+import { useFetch } from "@/composables/useFetch.ts";
+import { useMutation } from "@/composables/useMutation.ts";
+import i18n from "@/i18n";
+import { ClientGroup } from "@/models/seb-server/clientGroup.ts";
+import { Exam } from "@/models/seb-server/exam.ts";
+import { ClientGroupExisting } from "@/models/seb-server/examTemplate.ts";
+import { templateGroupToClientGroup } from "@/pages/(app)/exam/[id]/components/BoxClientGroups/utils/templateGroupToClientGroup.ts";
+import { useExamActionDisabled } from "@/pages/(app)/exam/[id]/composables/useExamActionDisabled.ts";
+import { GUIAction } from "@/services/ability.ts";
+import { notify } from "@/services/notifications/notify.ts";
+import * as clientGroupService from "@/services/seb-server/clientGroupService.ts";
+import * as examTemplateService from "@/services/seb-server/examTemplateService.ts";
+
+export const useClientGroupsBox = (
+    examId: number,
+    exam: Ref<Exam | undefined>,
+) => {
+    const groupsFetch = useFetch(
+        () => clientGroupService.getClientGroups(String(examId)),
+        { immediate: true },
+    );
+
+    const clientGroups = computed(() => groupsFetch.data.value?.content ?? []);
+
+    const editDisabled = useExamActionDisabled(
+        exam,
+        GUIAction.EDIT_CLIENT_GROUPS,
+    );
+
+    const templateFetch = useFetch(() =>
+        examTemplateService.getExamTemplate(String(exam.value?.examTemplateId)),
+    );
+
+    // useFetch keeps stale data on error; ignore it so a template deleted
+    // after a successful fetch shows the empty state, not its old groups
+    const templateGroups = computed(() => {
+        if (templateFetch.error.value) {
+            return [];
+        }
+
+        return templateFetch.data.value?.CLIENT_GROUP_TEMPLATES ?? [];
+    });
+
+    // A deleted template (404) is a regular empty state, not an error
+    const templateNotFound = computed(
+        () =>
+            templateFetch.error.value?.kind === "backend" &&
+            templateFetch.error.value.status === 404,
+    );
+
+    const templateErrorMessage = computed(() =>
+        templateNotFound.value ? undefined : templateFetch.errorMessage.value,
+    );
+
+    const loadTemplateGroups = () => {
+        if (exam.value?.examTemplateId === undefined) {
+            return;
+        }
+
+        templateFetch.fetchData();
+    };
+
+    const copyMutation = useMutation((templateGroup: ClientGroupExisting) =>
+        clientGroupService.createClientGroup(
+            templateGroupToClientGroup(examId, templateGroup),
+        ),
+    );
+
+    const copyTemplateGroup = async (templateGroup: ClientGroupExisting) => {
+        await copyMutation.mutateData(templateGroup);
+
+        if (copyMutation.error.value) {
+            notify.serverError(copyMutation.error.value, {
+                titleOverride: i18n.global.t(
+                    "examDetail.boxes.clientGroups.errors.copyFailed",
+                ),
+            });
+
+            return;
+        }
+
+        await groupsFetch.fetchData();
+    };
+
+    const deleteMutation = useMutation((clientGroupId: number) =>
+        clientGroupService.deleteClientGroup(String(clientGroupId)),
+    );
+
+    const deleteGroup = async (group: ClientGroup) => {
+        if (group.id === undefined) {
+            return;
+        }
+
+        await deleteMutation.mutateData(group.id);
+
+        if (deleteMutation.error.value) {
+            notify.serverError(deleteMutation.error.value, {
+                titleOverride: i18n.global.t(
+                    "examDetail.boxes.clientGroups.errors.deleteFailed",
+                ),
+            });
+
+            return;
+        }
+
+        await groupsFetch.fetchData();
+    };
+
+    return {
+        clientGroups,
+        loading: groupsFetch.loading,
+        error: groupsFetch.error,
+        editDisabled,
+        templateGroups,
+        templateLoading: templateFetch.loading,
+        templateErrorMessage,
+        loadTemplateGroups,
+        copyTemplateGroup,
+        copyLoading: copyMutation.loading,
+        deleteGroup,
+        deleteLoading: deleteMutation.loading,
+    };
+};
