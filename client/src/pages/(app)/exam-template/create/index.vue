@@ -74,7 +74,17 @@ watchEffect(() => {
         return;
     }
     store.$reset();
-    router.push({ name: "/(app)/exam-template/" });
+    const createdId = createdExamTemplate.value.id;
+
+    if (createdId === undefined) {
+        // TODO @alain: once ExamTemplate and ExamTemplateExisting types are split, checks like these won't be required anymore
+        throw "existing exam template has no id";
+    }
+
+    router.push({
+        name: "/(app)/exam-template/[id]/",
+        params: { id: createdId },
+    });
 });
 
 const handleStepperNext = () => {
