@@ -146,3 +146,8 @@ field's last GUI relevance.
   (i18n key `addButton`), matching the template page's "Add Group" button.
   Supersedes the "pencil" wording in decisions 5/6; implemented and
   browser-verified on exam 5.
+- 2026-08-03 (Alain, via grilling session): Follow-up issue
+  `03-groups-type-details.md` supersedes decision 3 (the copy now carries the
+  template's SP flag as `isSPSGroup`) and replaces the plain-type column and
+  popover subtitle with a combined type-with-details string. See 03 for the
+  settled decisions.

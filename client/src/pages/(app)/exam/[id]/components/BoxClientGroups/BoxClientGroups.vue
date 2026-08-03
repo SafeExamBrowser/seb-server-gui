@@ -24,7 +24,7 @@
                             v-for="templateGroup in templateGroups"
                             :key="templateGroup.id"
                             :title="templateGroup.name"
-                            :subtitle="typeLabel(templateGroup.type)"
+                            :subtitle="getClientGroupTypeDetails(templateGroup)"
                             :disabled="copyLoading"
                             @click="handleCopyClick(templateGroup)"
                         />
@@ -43,7 +43,7 @@
                 :no-data-text="$t('general.noData')"
             >
                 <template #item.type="{ item }">
-                    {{ typeLabel(item.type) }}
+                    {{ getExamClientGroupTypeDetails(item) }}
                 </template>
                 <template #item.actions="{ item }">
                     <v-btn
@@ -85,6 +85,10 @@ import LoadingFallbackComponent from "@/components/widgets/loadingFallbackCompon
 import { ClientGroup } from "@/models/seb-server/clientGroup.ts";
 import { Exam } from "@/models/seb-server/exam.ts";
 import { ClientGroupExisting } from "@/models/seb-server/examTemplate.ts";
+import {
+    getClientGroupTypeDetails,
+    getExamClientGroupTypeDetails,
+} from "@/utils/clientGroup.ts";
 
 import { useClientGroupsBox } from "./composables/useClientGroupsBox.ts";
 
@@ -132,23 +136,6 @@ const headers = computed(() => [
         align: "end" as const,
     },
 ]);
-
-const TYPE_LABEL_I18N_KEYS: Partial<Record<string, string>> = {
-    IP_V4_RANGE: "clientGroups.fields.type.types.IP_V4_RANGE",
-    CLIENT_OS: "clientGroups.fields.type.types.CLIENT_OS",
-    NAME_ALPHABETICAL_RANGE:
-        "clientGroups.fields.type.types.NAME_ALPHABETICAL_RANGE",
-};
-
-const typeLabel = (type: string) => {
-    const key = TYPE_LABEL_I18N_KEYS[type];
-
-    if (key === undefined) {
-        return type;
-    }
-
-    return t(key);
-};
 
 const handleMenuToggle = (open: boolean) => {
     if (open) {
