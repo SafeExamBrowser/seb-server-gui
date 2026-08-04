@@ -10,8 +10,19 @@ See the PRD (`.scratch/explicit-vuetify-imports/PRD.md`) for the full rationale 
 
 **Status:** ready-for-agent
 
-- [ ] Codemod exists under the feature's `.scratch` directory and validates names against real `vuetify/components` exports
-- [ ] All Vuetify-using SFCs outside `pages/` have explicit `vuetify/components` imports covering every Vuetify tag in their template
-- [ ] Templates unchanged (kebab-case tags kept); only script blocks touched
-- [ ] Full lint run green; `vue-tsc --noEmit` green
-- [ ] No behavior change expected or observed (auto-import still on)
+- [x] Codemod exists under the feature's `.scratch` directory and validates names against real `vuetify/components` exports
+- [x] All Vuetify-using SFCs outside `pages/` have explicit `vuetify/components` imports covering every Vuetify tag in their template
+- [x] Templates unchanged (kebab-case tags kept); only script blocks touched
+- [x] Full lint run green; `vue-tsc --noEmit` green
+- [x] No behavior change expected or observed (auto-import still on)
+
+---
+
+**Implemented** (2026-08-04)
+
+- Codemod at `.scratch/explicit-vuetify-imports/codemod.mjs`; run from `client/` with the target paths as args (`node ../.scratch/explicit-vuetify-imports/codemod.mjs src/components src/utils src/App.vue`). Idempotent — a re-run reports 0 changes.
+- Valid names are collected from `node_modules/vuetify/lib/components/*/index.d.ts`, covering both `export { VBtn }` re-exports and the `export declare const VFabTransition` shape used by the transitions folder. Unknown `v-*`/`V*` tags fail the run.
+- 89 SFCs changed (components/, utils/, App.vue); 62+ distinct components. Only script blocks touched — the diff's single deleted line is `FormFields.vue`'s old one-name import that got extended.
+- Template-only `BasicGrid.vue` uses no Vuetify tags, so no script block needed to be added outside `pages/`.
+- Pitfall found and fixed: the script-open regex must tolerate `>` inside `generic="TItem extends Record<string, any>, …"` attribute values (`CrudTable.vue`).
+- Verification: `lint:check:all` exit 0, `vue-tsc --noEmit` exit 0, after `lint:fix:all` + `prettier:fix:all` for import sorting/wrapping.
