@@ -20,20 +20,11 @@ export default defineConfig([
         "src/api/seb-server/generated/",
     ]),
     eslint.configs.recommended,
-    // TODO @alain/@andrei: upgrade to tseslint.configs.strictTypeChecked (+ stylisticTypeChecked) for type-aware linting.
+    // TODO @andrei: upgrade to tseslint.configs.strictTypeChecked (+ stylisticTypeChecked) for type-aware linting.
     // - Needs parserOptions.projectService and extra setup for .vue files, so it's not a quickfix.
     tseslint.configs.strict,
     eslintPluginVue.configs["flat/recommended"],
     eslintPluginVuetify.configs["flat/base"],
-
-    // TODO @alain/@andrei: enable this and clean up all useages
-    // {
-    //     files: ["**/*.{js,ts,vue}"],
-    //     rules: {
-    //         eqeqeq: "error",
-    //         "vue/eqeqeq": "error",
-    //     },
-    // },
 
     // config for files that run in node
     {
@@ -66,12 +57,15 @@ export default defineConfig([
             "no-console": "error",
             "no-debugger": "error",
             "vue/no-undef-components": "error",
+            // TODO @andrei: enable this and clean up all useages (loose comparisons are a potential source of bugs)
+            // eqeqeq: "error",
+            // "vue/eqeqeq": "error",
         },
     },
 
     // Restrict parent relative imports:
     // * Scoped to "src/**", as tests are use "../" for local helpers
-    // * TODO @Andrei: broaden this so tests are also included
+    // * TODO @Andrei: broaden this, so tests are also included
     {
         files: ["src/**/*.{js,ts,vue}"],
         rules: {
