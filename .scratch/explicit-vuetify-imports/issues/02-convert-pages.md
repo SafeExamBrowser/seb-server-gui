@@ -8,7 +8,16 @@ After this ticket, every Vuetify tag in the entire codebase has an explicit impo
 
 **Status:** ready-for-agent
 
-- [ ] All Vuetify-using SFCs under `pages/` have explicit `vuetify/components` imports covering every Vuetify tag in their template
-- [ ] Templates unchanged (kebab-case tags kept); only script blocks touched
-- [ ] Full lint run green; `vue-tsc --noEmit` green
-- [ ] No behavior change expected or observed (auto-import still on)
+- [x] All Vuetify-using SFCs under `pages/` have explicit `vuetify/components` imports covering every Vuetify tag in their template
+- [x] Templates unchanged (kebab-case tags kept); only script blocks touched
+- [x] Full lint run green; `vue-tsc --noEmit` green
+- [x] No behavior change expected or observed (auto-import still on)
+
+---
+
+**Implemented** (2026-08-04)
+
+- Reused `.scratch/explicit-vuetify-imports/codemod.mjs`: `node ../.scratch/explicit-vuetify-imports/codemod.mjs src/pages` from `client/`, then `lint:fix:all` + `prettier:fix:all`.
+- 76 of 116 SFCs under `pages/` changed, 55 distinct components, no unknown tags. The diff's single deleted line is `StepQuiz.vue`'s old one-name import that got extended; no page needed a script block added.
+- Completeness probe: re-running the codemod over the whole codebase (`src/pages src/components src/utils src/App.vue`) reports 0 changes — every Vuetify tag in the client now has an explicit import.
+- Verification: `lint:check:all` exit 0, `vue-tsc --noEmit` exit 0.
