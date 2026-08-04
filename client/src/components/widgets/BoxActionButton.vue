@@ -29,10 +29,10 @@ withDefaults(
 );
 
 const emit = defineEmits<{
-    (e: "click"): void;
+    (e: "click", event: MouseEvent): void;
 }>();
 
-const handleClick = () => {
-    emit("click");
+const handleClick = (event: MouseEvent) => {
+    emit("click", event);
 };
 </script>

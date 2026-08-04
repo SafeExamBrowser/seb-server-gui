@@ -4,6 +4,7 @@ import {
 } from "@/components/widgets/wizardSummary/types.ts";
 import i18n from "@/i18n";
 import { ClientGroup } from "@/models/seb-server/clientGroup.ts";
+import { getExamClientGroupTypeDetails } from "@/utils/clientGroup.ts";
 
 export const getSummaryClientGroups = (
     clientGroups: ClientGroup[],
@@ -24,7 +25,10 @@ export const getSummaryClientGroups = (
                 label: i18n.global.t(
                     "createExam.steps.summary.sections.clientGroups.fields.type.label",
                 ),
-                value: { type: "string", value: i18n.global.t(group.type) },
+                value: {
+                    type: "string",
+                    value: getExamClientGroupTypeDetails(group),
+                },
             },
         ] satisfies SummarySectionItem[];
 
