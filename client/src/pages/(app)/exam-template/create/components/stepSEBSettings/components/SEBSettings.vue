@@ -43,6 +43,7 @@
 
 <script setup lang="ts">
 import { computed, ComputedRef, ref } from "vue";
+import { VCard, VCol, VContainer, VRow } from "vuetify/components";
 
 import FormDialog from "@/components/widgets/formDialog/FormDialog.vue";
 import SEBSettingsPanel from "@/components/widgets/sebSettings/components/SEBSettingsPanel.vue";

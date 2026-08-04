@@ -179,6 +179,18 @@
 <script setup lang="ts">
 import { computed, ref } from "vue";
 import { useI18n } from "vue-i18n";
+import {
+    VAlert,
+    VBtn,
+    VChip,
+    VDivider,
+    VExpansionPanel,
+    VExpansionPanels,
+    VExpansionPanelText,
+    VExpansionPanelTitle,
+    VIcon,
+    VSpacer,
+} from "vuetify/components";
 
 import BasicPage from "@/components/layout/pages/BasicPage.vue";
 import { OptionalParSearchSessions } from "@/models/screen-proctoring/optionalParamters";

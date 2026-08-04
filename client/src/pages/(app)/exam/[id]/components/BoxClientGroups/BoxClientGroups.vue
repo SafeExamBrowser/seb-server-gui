@@ -77,6 +77,16 @@
 <script setup lang="ts">
 import { computed, ref } from "vue";
 import { useI18n } from "vue-i18n";
+import {
+    VBtn,
+    VCard,
+    VCardText,
+    VDataTable,
+    VList,
+    VListItem,
+    VMenu,
+    VProgressLinear,
+} from "vuetify/components";
 
 import BoxActionButton from "@/components/widgets/BoxActionButton.vue";
 import DeleteConfirmDialog from "@/components/widgets/confirmDialog/DeleteConfirmDialog.vue";

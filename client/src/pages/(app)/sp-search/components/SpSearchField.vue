@@ -19,6 +19,7 @@
 </template>
 
 <script setup lang="ts">
+import { VTextField } from "vuetify/components";
 withDefaults(
     defineProps<{
         label: string;

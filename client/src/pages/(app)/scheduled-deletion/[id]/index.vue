@@ -219,6 +219,7 @@
 <script setup lang="ts">
 import { useI18n } from "vue-i18n";
 import { useRoute } from "vue-router";
+import { VChip, VCol, VDivider, VRow, VTooltip } from "vuetify/components";
 
 import BasicPage from "@/components/layout/pages/BasicPage.vue";
 import DetailBox from "@/components/widgets/DetailBox.vue";

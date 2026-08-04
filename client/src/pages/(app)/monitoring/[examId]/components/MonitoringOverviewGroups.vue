@@ -221,6 +221,17 @@
 import type { ComputedRef } from "vue";
 import { computed } from "vue";
 import { useRouter } from "vue-router";
+import {
+    VBtn,
+    VCard,
+    VChip,
+    VCol,
+    VDivider,
+    VRow,
+    VSheet,
+    VSpacer,
+    VTooltip,
+} from "vuetify/components";
 
 import { useCurrentUserQuery } from "@/composables/useCurrentUser.ts";
 import { ClientGroupEnum } from "@/models/seb-server/clientGroupEnum.ts";

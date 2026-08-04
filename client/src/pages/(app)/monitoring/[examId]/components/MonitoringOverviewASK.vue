@@ -48,6 +48,7 @@
 <script setup lang="ts">
 import { type ComponentPublicInstance, computed, ref } from "vue";
 import { useI18n } from "vue-i18n";
+import { VAvatar, VCard, VDialog, VIcon } from "vuetify/components";
 
 import { AppSignatureKeysWithGrantValues } from "@/models/seb-server/appSignatureKey.ts";
 import { useMonitoringStore } from "@/stores/seb-server/monitoringStore.ts";

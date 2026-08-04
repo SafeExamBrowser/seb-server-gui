@@ -26,6 +26,7 @@
 
 <script setup lang="ts">
 import { computed } from "vue";
+import { VDivider, VIcon } from "vuetify/components";
 
 const props = defineProps<{
     sebVersion?: string;

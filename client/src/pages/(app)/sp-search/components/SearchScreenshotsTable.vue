@@ -152,6 +152,7 @@
 
 <script setup lang="ts">
 import { onBeforeMount, ref, watch } from "vue";
+import { VBtn, VDataTable } from "vuetify/components";
 
 import { SearchTimeline } from "@/models/screen-proctoring/search";
 import { openRouteInNewTab } from "@/router/openRouteInNewTab.ts";

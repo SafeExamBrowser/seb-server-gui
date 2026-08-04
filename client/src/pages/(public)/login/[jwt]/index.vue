@@ -8,6 +8,7 @@
 
 <script setup lang="ts">
 import { useRoute } from "vue-router";
+import { VMain } from "vuetify/components";
 
 import LoadingFallbackComponent from "@/components/widgets/loadingFallbackComponent/LoadingFallbackComponent.vue";
 import { useAutoLogin } from "@/pages/(public)/composables/useAutoLogin";

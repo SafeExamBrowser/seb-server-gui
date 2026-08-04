@@ -34,6 +34,7 @@
 <script setup lang="ts">
 import { computed, onBeforeMount, onBeforeUnmount, ref } from "vue";
 import { useRoute, useRouter } from "vue-router";
+import { VBtn } from "vuetify/components";
 
 import BasicPage from "@/components/layout/pages/BasicPage.vue";
 import type { BreadCrumbItem } from "@/components/widgets/breadCrumb/types.ts";

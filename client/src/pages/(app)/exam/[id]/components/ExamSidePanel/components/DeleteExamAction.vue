@@ -21,6 +21,7 @@
 
 <script setup lang="ts">
 import { computed, ref } from "vue";
+import { VIcon } from "vuetify/components";
 
 import DeleteConfirmDialog from "@/components/widgets/confirmDialog/DeleteConfirmDialog.vue";
 import { Exam } from "@/models/seb-server/exam.ts";

@@ -101,6 +101,16 @@
 
 <script setup lang="ts">
 import { onBeforeMount, ref } from "vue";
+import {
+    VBtn,
+    VDataIterator,
+    VExpansionPanel,
+    VExpansionPanels,
+    VExpansionPanelText,
+    VExpansionPanelTitle,
+    VIcon,
+    VTextField,
+} from "vuetify/components";
 
 import { DistinctMetadataWindowForExamRecord } from "@/models/screen-proctoring/applicationSearch";
 import { getDistinctMetadataWindowForExam } from "@/services/screen-proctoring/applicationsSearchService.ts";

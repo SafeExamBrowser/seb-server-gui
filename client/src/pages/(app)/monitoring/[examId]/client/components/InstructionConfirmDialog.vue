@@ -77,6 +77,16 @@
 
 <script setup lang="ts">
 import { ref } from "vue";
+import {
+    VBtn,
+    VCard,
+    VCardText,
+    VCol,
+    VRow,
+    VTextarea,
+    VToolbar,
+    VToolbarTitle,
+} from "vuetify/components";
 
 import { ClientInstruction } from "@/models/seb-server/clientInstruction.ts";
 import { InstructionEnum } from "@/models/seb-server/instructionEnum.ts";

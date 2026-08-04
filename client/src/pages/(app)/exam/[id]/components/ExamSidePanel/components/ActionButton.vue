@@ -6,6 +6,7 @@
 
 <script setup lang="ts">
 import { computed } from "vue";
+import { VBtn } from "vuetify/components";
 
 const props = withDefaults(
     defineProps<{

@@ -36,6 +36,7 @@
 <script setup lang="ts">
 import { computed } from "vue";
 import { RouterLink } from "vue-router";
+import { VChip } from "vuetify/components";
 
 import { useExamTemplateNames } from "@/composables/useExamTemplateNames.ts";
 import { Exam } from "@/models/seb-server/exam.ts";

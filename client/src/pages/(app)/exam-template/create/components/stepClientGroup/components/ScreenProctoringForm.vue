@@ -28,6 +28,7 @@
 import { storeToRefs } from "pinia";
 import { computed } from "vue";
 import { useDisplay } from "vuetify";
+import { VCol, VContainer, VRow } from "vuetify/components";
 
 import FormBuilder from "@/components/widgets/formBuilder/FormBuilder.vue";
 import SectionSubtitle from "@/components/widgets/SectionSubtitle.vue";

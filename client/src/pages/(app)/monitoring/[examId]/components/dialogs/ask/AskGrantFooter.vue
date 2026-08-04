@@ -45,6 +45,8 @@
 </template>
 
 <script setup lang="ts">
+import { VBtn, VSheet, VTextField } from "vuetify/components";
+
 import { EnrichedAsk } from "./types.ts";
 
 defineProps<{

@@ -93,6 +93,7 @@
 
 <script setup lang="ts">
 import { computed } from "vue";
+import { VAvatar, VCard, VDivider, VHover, VIcon } from "vuetify/components";
 
 import {
     MonitoringHeaderEnum,

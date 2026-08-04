@@ -35,6 +35,8 @@
 </template>
 
 <script setup lang="ts">
+import { VDivider } from "vuetify/components";
+
 import { Exam } from "@/models/seb-server/exam.ts";
 
 import DeleteExamAction from "./components/DeleteExamAction.vue";

@@ -126,6 +126,14 @@
 
 <script setup lang="ts">
 import { ref, shallowRef, watch } from "vue";
+import {
+    VBtn,
+    VIcon,
+    VSkeletonLoader,
+    VTab,
+    VTabs,
+    VTextField,
+} from "vuetify/components";
 
 import EntityTable from "@/components/widgets/entity-table/EntityTable.vue";
 import { OptionalParGetMonitoringClientLogs } from "@/models/seb-server/optionalParamters.ts";

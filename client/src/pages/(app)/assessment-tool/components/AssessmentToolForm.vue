@@ -141,6 +141,15 @@
 
 <script setup lang="ts">
 import { computed, onMounted, ref, watch } from "vue";
+import {
+    VBtn,
+    VBtnToggle,
+    VCol,
+    VDivider,
+    VExpandTransition,
+    VRow,
+    VSwitch,
+} from "vuetify/components";
 
 import BasicPage from "@/components/layout/pages/BasicPage.vue";
 import type { BreadCrumbItem } from "@/components/widgets/breadCrumb/types";

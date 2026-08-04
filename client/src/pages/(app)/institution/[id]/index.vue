@@ -59,6 +59,7 @@
 <script setup lang="ts">
 import { computed, ref, watch } from "vue";
 import { useRoute, useRouter } from "vue-router";
+import { VCol, VRow } from "vuetify/components";
 
 import BasicPage from "@/components/layout/pages/BasicPage.vue";
 import CancelButton from "@/components/widgets/CancelButton.vue";

@@ -105,6 +105,8 @@
 </template>
 
 <script setup lang="ts">
+import { VImg } from "vuetify/components";
+
 import BasicPage from "@/components/layout/pages/BasicPage.vue";
 import ActiveStatusChip from "@/components/widgets/ActiveStatusChip.vue";
 import AddButton from "@/components/widgets/AddButton.vue";

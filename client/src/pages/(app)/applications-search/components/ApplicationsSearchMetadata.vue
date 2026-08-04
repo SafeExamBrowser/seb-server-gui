@@ -52,6 +52,16 @@
 
 <script setup lang="ts">
 import { ref } from "vue";
+import {
+    VCard,
+    VDivider,
+    VExpansionPanel,
+    VExpansionPanels,
+    VExpansionPanelText,
+    VExpansionPanelTitle,
+    VIcon,
+    VSpacer,
+} from "vuetify/components";
 
 import type { ExamMetadataObject } from "@/pages/(app)/applications-search/types";
 import * as timeUtils from "@/utils/timeUtils";

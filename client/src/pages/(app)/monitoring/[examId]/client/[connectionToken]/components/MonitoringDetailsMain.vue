@@ -28,6 +28,7 @@
 
 <script setup lang="ts">
 import { computed, ref, watch } from "vue";
+import { VCard, VDivider, VTab, VTabs } from "vuetify/components";
 
 import ProctoringViewPage from "@/components/widgets/ProctoringViewPage.vue";
 import MonitoringClientLogsContainer from "@/pages/(app)/monitoring/[examId]/client/[connectionToken]/components/MonitoringClientLogsContainer.vue";

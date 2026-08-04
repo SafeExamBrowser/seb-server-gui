@@ -249,6 +249,15 @@
 
 <script setup lang="ts">
 import { computed, type CSSProperties, nextTick, ref, watch } from "vue";
+import {
+    VBtn,
+    VCard,
+    VChip,
+    VDialog,
+    VDivider,
+    VIcon,
+    VSheet,
+} from "vuetify/components";
 
 import { ConnectionStatusEnum } from "@/models/seb-server/connectionStatusEnum.ts";
 import { InstructionEnum } from "@/models/seb-server/instructionEnum.ts";

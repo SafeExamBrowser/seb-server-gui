@@ -53,6 +53,13 @@
 
 <script setup lang="ts">
 import { computed } from "vue";
+import {
+    VAppBarTitle,
+    VCol,
+    VContainer,
+    VRow,
+    VSheet,
+} from "vuetify/components";
 
 import NavigationSection from "@/components/widgets/navigationWidgets/NavigationSection.vue";
 import {

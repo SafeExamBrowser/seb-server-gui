@@ -65,6 +65,16 @@
 
 <script setup lang="ts">
 import { computed, ref, watchEffect } from "vue";
+import {
+    VAlert,
+    VCheckboxBtn,
+    VChip,
+    VList,
+    VListItem,
+    VListItemSubtitle,
+    VListItemTitle,
+    VTextField,
+} from "vuetify/components";
 
 import StepItem from "@/components/widgets/stepItem/StepItem.vue";
 import { ClientGroup } from "@/models/seb-server/clientGroup.ts";

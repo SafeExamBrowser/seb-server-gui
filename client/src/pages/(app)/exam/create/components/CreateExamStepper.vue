@@ -43,6 +43,7 @@
 <script setup lang="ts">
 import { watch, watchEffect } from "vue";
 import { useRouter } from "vue-router";
+import { VCard } from "vuetify/components";
 
 import BasicPage from "@/components/layout/pages/BasicPage.vue";
 import StepperFooterActions from "@/components/widgets/stepperVertical/StepperFooterActions.vue";

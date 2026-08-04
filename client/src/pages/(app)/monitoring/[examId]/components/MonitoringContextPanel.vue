@@ -122,6 +122,7 @@
 
 <script setup lang="ts">
 import { computed, onUnmounted, ref } from "vue";
+import { VAvatar, VBtn, VDialog, VDivider } from "vuetify/components";
 
 import { ExamStatusEnum } from "@/models/seb-server/examFiltersEnum.ts";
 import { typedTo } from "@/router/typedTo.ts";

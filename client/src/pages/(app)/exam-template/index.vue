@@ -81,6 +81,8 @@
 </template>
 
 <script setup lang="ts">
+import { VChip } from "vuetify/components";
+
 import BasicPage from "@/components/layout/pages/BasicPage.vue";
 import AddButton from "@/components/widgets/AddButton.vue";
 import DeleteConfirmDialog from "@/components/widgets/confirmDialog/DeleteConfirmDialog.vue";

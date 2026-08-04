@@ -109,6 +109,8 @@
 </template>
 
 <script setup lang="ts">
+import { VIcon, VTooltip } from "vuetify/components";
+
 import BasicPage from "@/components/layout/pages/BasicPage.vue";
 import ConfirmDialog from "@/components/widgets/confirmDialog/ConfirmDialog.vue";
 import TableMultiSelectionControl from "@/components/widgets/entity-table/components/TableMultiSelectionControl.vue";
