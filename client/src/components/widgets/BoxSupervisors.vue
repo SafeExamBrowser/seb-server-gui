@@ -57,6 +57,16 @@
 import { computed, ref } from "vue";
 import { useI18n } from "vue-i18n";
 import { useDisplay } from "vuetify";
+import {
+    VBtn,
+    VCard,
+    VCardActions,
+    VCardText,
+    VCardTitle,
+    VDataTable,
+    VDialog,
+    VSpacer,
+} from "vuetify/components";
 
 import BoxActionButton from "@/components/widgets/BoxActionButton.vue";
 import DetailBox from "@/components/widgets/DetailBox.vue";

@@ -162,6 +162,16 @@
 <script setup lang="ts">
 import { computed, ref } from "vue";
 import { useRouter } from "vue-router";
+import {
+    VCol,
+    VDivider,
+    VExpandTransition,
+    VIcon,
+    VListItem,
+    VRow,
+    VSelect,
+    VSwitch,
+} from "vuetify/components";
 
 import BasicPage from "@/components/layout/pages/BasicPage.vue";
 import CancelButton from "@/components/widgets/CancelButton.vue";

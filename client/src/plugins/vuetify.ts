@@ -2,22 +2,8 @@ import "@mdi/font/css/materialdesignicons.css";
 import "vuetify/styles/main.css";
 
 import { createVuetify } from "vuetify";
-import {
-    VColorInput,
-    VFileUpload,
-    VStepperVertical,
-    VStepperVerticalActions,
-    VStepperVerticalItem,
-} from "vuetify/components";
 
 export const vuetify = createVuetify({
-    components: {
-        VStepperVertical,
-        VStepperVerticalItem,
-        VStepperVerticalActions,
-        VColorInput,
-        VFileUpload,
-    },
     theme: {
         defaultTheme: "light",
         themes: {

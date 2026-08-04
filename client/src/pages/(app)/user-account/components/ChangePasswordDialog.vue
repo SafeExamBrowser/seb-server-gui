@@ -47,6 +47,16 @@
 
 <script setup lang="ts">
 import { ref, watch } from "vue";
+import {
+    VBtn,
+    VCard,
+    VCardActions,
+    VCardSubtitle,
+    VCardText,
+    VCardTitle,
+    VDialog,
+    VDivider,
+} from "vuetify/components";
 
 import FormBuilder from "@/components/widgets/formBuilder/FormBuilder.vue";
 import { useChangePasswordFormFields } from "@/pages/(app)/user-account/composables/useChangePasswordFormFields.ts";

@@ -14,6 +14,7 @@
 <script setup lang="ts">
 import { computed } from "vue";
 import { useDisplay } from "vuetify";
+import { VContainer } from "vuetify/components";
 
 import LoadingFallbackComponent from "@/components/widgets/loadingFallbackComponent/LoadingFallbackComponent.vue";
 import StepItem from "@/components/widgets/stepItem/StepItem.vue";

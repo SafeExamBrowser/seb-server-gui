@@ -17,6 +17,7 @@
 </template>
 
 <script setup lang="ts">
+import { VTextField } from "vuetify/components";
 const searchText = defineModel<string | undefined>();
 
 const handleKeyDownEsc = () => {

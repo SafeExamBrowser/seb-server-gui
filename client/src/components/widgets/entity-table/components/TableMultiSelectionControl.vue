@@ -42,6 +42,8 @@
 </template>
 
 <script setup lang="ts">
+import { VBtn, VCard, VChip, VCol, VRow } from "vuetify/components";
+
 import { TableRowSelect } from "@/components/widgets/entity-table/types";
 
 const props = withDefaults(

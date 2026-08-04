@@ -97,6 +97,7 @@
 <script setup lang="ts">
 import { computed, onBeforeMount, onBeforeUnmount, ref } from "vue";
 import { useRoute } from "vue-router";
+import { VCol, VIcon, VRow, VSheet } from "vuetify/components";
 
 import BasicPage from "@/components/layout/pages/BasicPage.vue";
 import AlertMsg from "@/components/widgets/AlertMsg.vue";

@@ -30,6 +30,7 @@
 
 <script setup lang="ts">
 import { ref } from "vue";
+import { VExpandTransition, VIcon, VListItem } from "vuetify/components";
 
 withDefaults(
     defineProps<{

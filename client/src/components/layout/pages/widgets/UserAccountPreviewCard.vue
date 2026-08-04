@@ -24,6 +24,8 @@
 </template>
 
 <script setup lang="ts">
+import { VCard } from "vuetify/components";
+
 import UserAvatar from "@/components/widgets/UserAvatar.vue";
 
 withDefaults(

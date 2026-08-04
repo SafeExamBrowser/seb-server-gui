@@ -185,6 +185,16 @@
 import moment from "moment-timezone";
 import { computed, ref, watch } from "vue";
 import { useRoute, useRouter } from "vue-router";
+import {
+    VCol,
+    VDivider,
+    VExpandTransition,
+    VIcon,
+    VListItem,
+    VRow,
+    VSelect,
+    VSwitch,
+} from "vuetify/components";
 
 import BasicPage from "@/components/layout/pages/BasicPage.vue";
 import CancelButton from "@/components/widgets/CancelButton.vue";

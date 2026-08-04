@@ -40,6 +40,15 @@
 
 <script setup lang="ts">
 import { ref, watch } from "vue";
+import {
+    VBtn,
+    VCard,
+    VCardActions,
+    VCardText,
+    VCardTitle,
+    VDialog,
+    VSelect,
+} from "vuetify/components";
 
 import { ConnectionConfiguration } from "@/models/seb-server/connectionConfiguration.ts";
 

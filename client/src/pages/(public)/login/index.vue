@@ -117,6 +117,18 @@
 <script setup lang="ts">
 import { ref } from "vue";
 import { RouterLink } from "vue-router";
+import {
+    VBtn,
+    VCard,
+    VCardSubtitle,
+    VCardText,
+    VCardTitle,
+    VContainer,
+    VForm,
+    VMain,
+    VProgressLinear,
+    VTextField,
+} from "vuetify/components";
 
 import AlertMsg from "@/components/widgets/AlertMsg.vue";
 import { useLogin } from "@/pages/(public)/composables/useLogin";

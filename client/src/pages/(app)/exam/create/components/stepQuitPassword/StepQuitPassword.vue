@@ -24,6 +24,7 @@
 <script setup lang="ts">
 import { computed } from "vue";
 import { useDisplay } from "vuetify";
+import { VAlert, VContainer } from "vuetify/components";
 
 import FormBuilder from "@/components/widgets/formBuilder/FormBuilder.vue";
 import StepItem from "@/components/widgets/stepItem/StepItem.vue";

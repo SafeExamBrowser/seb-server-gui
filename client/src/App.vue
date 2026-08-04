@@ -10,6 +10,7 @@ import "@vuepic/vue-datepicker/dist/main.css";
 
 import { onMounted } from "vue";
 import { RouterView } from "vue-router";
+import { VApp } from "vuetify/components";
 
 import NotificationQueue from "@/components/widgets/notifications/NotificationQueue.vue";
 import { useTokenRefresh } from "@/composables/useTokenRefresh";

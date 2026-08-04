@@ -199,6 +199,17 @@
 
 <script setup lang="ts">
 import { ref } from "vue";
+import {
+    VBtn,
+    VCol,
+    VDataTableServer,
+    VDialog,
+    VList,
+    VListItem,
+    VRow,
+    VSheet,
+    VSkeletonLoader,
+} from "vuetify/components";
 
 import { useCurrentUserQuery } from "@/composables/useCurrentUser";
 import { OptionalParSearchSessions } from "@/models/screen-proctoring/optionalParamters";

@@ -596,6 +596,17 @@
 <script setup lang="ts">
 import { useTemplateRef } from "vue";
 import { useI18n } from "vue-i18n";
+import {
+    VBtn,
+    VCol,
+    VDataTable,
+    VDialog,
+    VDivider,
+    VExpansionPanel,
+    VExpansionPanels,
+    VExpansionPanelText,
+    VRow,
+} from "vuetify/components";
 
 import LoadingFallbackComponent from "@/components/widgets/loadingFallbackComponent/LoadingFallbackComponent.vue";
 import { ViewType } from "@/models/seb-server/sebSettingsEnums.ts";

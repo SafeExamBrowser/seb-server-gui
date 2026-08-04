@@ -29,6 +29,7 @@
 
 <script setup lang="ts">
 import { computed } from "vue";
+import { VDivider, VProgressLinear } from "vuetify/components";
 
 import StepperVertical from "./StepperVertical.vue";
 import { StepItem } from "./types";

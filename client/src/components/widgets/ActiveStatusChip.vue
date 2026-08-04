@@ -22,6 +22,7 @@
 </template>
 
 <script setup lang="ts">
+import { VChip, VTooltip } from "vuetify/components";
 const props = withDefaults(
     defineProps<{
         active: boolean;

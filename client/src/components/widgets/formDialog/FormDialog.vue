@@ -96,6 +96,14 @@
 import type { Ref, UnwrapRef } from "vue";
 import { computed, ref, watch } from "vue";
 import { useDisplay } from "vuetify";
+import {
+    VAlert,
+    VBtn,
+    VCard,
+    VDialog,
+    VIcon,
+    VProgressLinear,
+} from "vuetify/components";
 import { IconValue } from "vuetify/lib/composables/icons.mjs";
 
 import BoxActionButton from "@/components/widgets/BoxActionButton.vue";

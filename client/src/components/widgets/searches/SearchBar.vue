@@ -97,6 +97,7 @@
 
 <script setup lang="ts">
 import { computed } from "vue";
+import { VBtn, VDivider, VIcon } from "vuetify/components";
 
 import ConfirmButton from "@/components/widgets/ConfirmButton.vue";
 import DatePicker from "@/components/widgets/DatePicker.vue";

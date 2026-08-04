@@ -40,6 +40,7 @@
 
 <script setup lang="ts">
 import { ref } from "vue";
+import { VCol, VRadio, VRadioGroup, VTooltip } from "vuetify/components";
 
 import {
     SEBSettingsSingeValueModel,

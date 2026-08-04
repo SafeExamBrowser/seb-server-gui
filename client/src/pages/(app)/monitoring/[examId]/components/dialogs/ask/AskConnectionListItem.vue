@@ -38,6 +38,7 @@
 
 <script setup lang="ts">
 import { computed } from "vue";
+import { VCard, VChip } from "vuetify/components";
 
 import { ConnectionStatusEnum } from "@/models/seb-server/connectionStatusEnum.ts";
 

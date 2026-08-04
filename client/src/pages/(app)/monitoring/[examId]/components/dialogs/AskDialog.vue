@@ -220,6 +220,24 @@
 import { computed, ref, watch } from "vue";
 import { useI18n } from "vue-i18n";
 import { useRouter } from "vue-router";
+import {
+    VBtn,
+    VCard,
+    VCardText,
+    VChip,
+    VCol,
+    VDivider,
+    VIcon,
+    VItem,
+    VItemGroup,
+    VListItem,
+    VRow,
+    VSelect,
+    VSpacer,
+    VTextField,
+    VToolbar,
+    VToolbarTitle,
+} from "vuetify/components";
 
 import { ConnectionStatusEnum } from "@/models/seb-server/connectionStatusEnum.ts";
 import { getAskAndStore } from "@/pages/(app)/monitoring/[examId]/client/composables/useMonitoringData.ts";

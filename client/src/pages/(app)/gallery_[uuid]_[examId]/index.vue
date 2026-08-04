@@ -64,6 +64,7 @@
 import { storeToRefs } from "pinia";
 import { computed, onBeforeMount, onBeforeUnmount, ref, watch } from "vue";
 import { useRoute } from "vue-router";
+import { VCol, VRow, VWindow, VWindowItem } from "vuetify/components";
 
 import AlertMsg from "@/components/widgets/AlertMsg.vue";
 import BreadCrumb from "@/components/widgets/breadCrumb/BreadCrumb.vue";

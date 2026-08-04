@@ -252,6 +252,23 @@
 import { computed, onBeforeMount, ref } from "vue";
 import { useI18n } from "vue-i18n";
 import { useRoute } from "vue-router";
+import {
+    VBtn,
+    VCard,
+    VCol,
+    VDialog,
+    VExpansionPanel,
+    VExpansionPanels,
+    VExpansionPanelText,
+    VExpansionPanelTitle,
+    VHover,
+    VIcon,
+    VImg,
+    VRow,
+    VSheet,
+    VSpacer,
+    VTable,
+} from "vuetify/components";
 
 import { ScreenshotData } from "@/models/screen-proctoring/session";
 import { navigateToProctoringView } from "@/pages/(app)/gallery_[uuid]_[examId]/utils/galleryNavigation.ts";

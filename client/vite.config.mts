@@ -45,8 +45,9 @@ export default ({ mode, command }: ConfigEnv) => {
                 template: { transformAssetUrls },
             }),
 
+            // components are imported explicitly; the plugin stays for styles handling and transformAssetUrls
             Vuetify({
-                autoImport: true,
+                autoImport: false,
             }),
 
             Fonts({

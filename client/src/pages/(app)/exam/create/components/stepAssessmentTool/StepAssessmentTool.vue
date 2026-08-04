@@ -30,6 +30,7 @@ import { storeToRefs } from "pinia";
 import { computed } from "vue";
 import { useI18n } from "vue-i18n";
 import { useDisplay } from "vuetify";
+import { VContainer, VSelect } from "vuetify/components";
 
 import LoadingFallbackComponent from "@/components/widgets/loadingFallbackComponent/LoadingFallbackComponent.vue";
 import StepItem from "@/components/widgets/stepItem/StepItem.vue";

@@ -86,6 +86,7 @@ import { ArcElement, Chart as ChartJS, Legend, Tooltip } from "chart.js";
 import { computed, ref, watch } from "vue";
 import { Doughnut } from "vue-chartjs";
 import { useI18n } from "vue-i18n";
+import { VAvatar, VCard, VDivider, VHover, VSheet } from "vuetify/components";
 
 import LoadingFallbackComponent from "@/components/widgets/loadingFallbackComponent/LoadingFallbackComponent.vue";
 import { ConnectionStatusEnum } from "@/models/seb-server/connectionStatusEnum.ts";

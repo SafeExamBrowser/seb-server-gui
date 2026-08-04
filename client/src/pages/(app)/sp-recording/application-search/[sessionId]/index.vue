@@ -208,6 +208,23 @@
 import { useFullscreen } from "@vueuse/core";
 import { computed, onBeforeMount, onBeforeUnmount, ref, watch } from "vue";
 import { useRoute } from "vue-router";
+import {
+    VBtn,
+    VCard,
+    VCardText,
+    VChip,
+    VCol,
+    VDivider,
+    VIcon,
+    VImg,
+    VList,
+    VListItem,
+    VMenu,
+    VRow,
+    VSheet,
+    VSlider,
+    VTable,
+} from "vuetify/components";
 
 import { ScreenshotData } from "@/models/screen-proctoring/session";
 import { getTimestampListForApplicationSearch } from "@/services/screen-proctoring/applicationsSearchService.ts";

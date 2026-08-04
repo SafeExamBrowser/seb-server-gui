@@ -13,6 +13,7 @@
 
 <script setup lang="ts">
 import { computed } from "vue";
+import { VAvatar } from "vuetify/components";
 
 const props = withDefaults(
     defineProps<{

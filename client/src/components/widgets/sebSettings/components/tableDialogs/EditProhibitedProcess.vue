@@ -284,6 +284,21 @@
 </template>
 
 <script setup lang="ts">
+import {
+    VBtn,
+    VCard,
+    VCardText,
+    VCheckboxBtn,
+    VCol,
+    VForm,
+    VRow,
+    VSelect,
+    VTextField,
+    VToolbar,
+    VToolbarTitle,
+    VTooltip,
+} from "vuetify/components";
+
 import { ProhibitedProcess } from "@/models/seb-server/sebSettings.ts";
 import { translate } from "@/utils/generalUtils.ts";
 

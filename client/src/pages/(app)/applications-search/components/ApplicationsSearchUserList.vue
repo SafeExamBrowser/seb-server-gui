@@ -43,6 +43,7 @@
 
 <script setup lang="ts">
 import { onBeforeMount, ref } from "vue";
+import { VAvatar, VBtn, VSheet } from "vuetify/components";
 
 import { UserListForApplicationSearchRecord } from "@/models/screen-proctoring/applicationSearch";
 import { openRouteInNewTab } from "@/router/openRouteInNewTab.ts";

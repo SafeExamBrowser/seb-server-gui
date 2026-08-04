@@ -28,6 +28,7 @@
 
 <script setup lang="ts">
 import { computed } from "vue";
+import { VIcon, VListItem } from "vuetify/components";
 
 const props = withDefaults(
     defineProps<{

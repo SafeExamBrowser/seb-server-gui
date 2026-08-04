@@ -32,6 +32,14 @@
 </template>
 
 <script setup lang="ts">
+import {
+    VBtn,
+    VCard,
+    VCardText,
+    VToolbar,
+    VToolbarTitle,
+} from "vuetify/components";
+
 import { ExamTemplate } from "@/models/seb-server/examTemplate";
 
 defineProps<{

@@ -29,6 +29,7 @@
 <script setup lang="ts">
 import { computed } from "vue";
 import { useRoute } from "vue-router";
+import { VBtn } from "vuetify/components";
 
 import { buildSettingsNavigationItems } from "@/components/widgets/navigationWidgets/navigationSections.ts";
 import type { NavigationSectionItem } from "@/components/widgets/navigationWidgets/types.ts";

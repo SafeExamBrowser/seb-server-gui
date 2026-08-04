@@ -35,6 +35,15 @@
 <script setup lang="ts">
 import { computed, ref } from "vue";
 import { useDisplay } from "vuetify";
+import {
+    VBtn,
+    VCard,
+    VCardActions,
+    VCardText,
+    VCardTitle,
+    VDialog,
+    VSpacer,
+} from "vuetify/components";
 
 import BoxActionButton from "@/components/widgets/BoxActionButton.vue";
 import FormBuilder from "@/components/widgets/formBuilder/FormBuilder.vue";

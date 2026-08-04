@@ -53,6 +53,15 @@
 </template>
 
 <script setup lang="ts">
+import {
+    VBtn,
+    VCard,
+    VCardText,
+    VCol,
+    VRow,
+    VToolbar,
+    VToolbarTitle,
+} from "vuetify/components";
 // emits
 const emit = defineEmits<{
     (e: "closeArchiveDialog" | "archiveExam"): void;

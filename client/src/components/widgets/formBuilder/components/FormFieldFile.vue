@@ -14,6 +14,7 @@
 
 <script setup lang="ts">
 import { computed } from "vue";
+import { VFileInput } from "vuetify/components";
 import { useRules } from "vuetify/labs/rules";
 
 import { FormFieldBaseProperties } from "@/components/widgets/formBuilder/types";

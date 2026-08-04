@@ -110,6 +110,19 @@
 </template>
 
 <script setup lang="ts">
+import {
+    VBtn,
+    VCard,
+    VCardText,
+    VCol,
+    VForm,
+    VRow,
+    VSelect,
+    VTextField,
+    VToolbar,
+    VToolbarTitle,
+} from "vuetify/components";
+
 import { FileExtensionEntry } from "@/models/seb-server/sebSettings.ts";
 import { translate } from "@/utils/generalUtils.ts";
 

@@ -49,6 +49,7 @@
 import { computed } from "vue";
 import { useI18n } from "vue-i18n";
 import { RouterView, useRoute } from "vue-router";
+import { VCard } from "vuetify/components";
 
 import { useCurrentUserQuery } from "@/composables/useCurrentUser";
 import { useInstitutionBranding } from "@/composables/useInstitutionBranding";

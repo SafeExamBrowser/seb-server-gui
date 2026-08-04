@@ -11,6 +11,7 @@
 
 <script setup lang="ts">
 import { ref } from "vue";
+import { VTextField } from "vuetify/components";
 
 import {
     FormFieldBaseProperties,

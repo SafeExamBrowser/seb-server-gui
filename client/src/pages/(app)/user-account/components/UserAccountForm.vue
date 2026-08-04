@@ -106,6 +106,7 @@
 <script setup lang="ts">
 import moment from "moment-timezone";
 import { computed, onMounted, ref, watch } from "vue";
+import { VCol, VRow, VTextField } from "vuetify/components";
 
 import BasicPage from "@/components/layout/pages/BasicPage.vue";
 import UserAccountPreviewCard from "@/components/layout/pages/widgets/UserAccountPreviewCard.vue";

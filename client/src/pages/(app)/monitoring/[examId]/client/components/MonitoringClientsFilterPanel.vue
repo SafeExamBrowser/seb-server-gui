@@ -28,6 +28,7 @@
 
 <script setup lang="ts">
 import { computed, ref, watch } from "vue";
+import { VDialog } from "vuetify/components";
 
 import type { TableFilters } from "@/components/widgets/entity-table/types.ts";
 import SearchBar from "@/components/widgets/searches/SearchBar.vue";

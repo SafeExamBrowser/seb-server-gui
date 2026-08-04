@@ -56,6 +56,7 @@
 
 <script setup lang="ts">
 import { type RouteLocationAsRelative, useRoute } from "vue-router";
+import { VBtn, VCard, VDivider, VIcon } from "vuetify/components";
 
 import { AbilityLike, GUIComponent } from "@/services/ability";
 

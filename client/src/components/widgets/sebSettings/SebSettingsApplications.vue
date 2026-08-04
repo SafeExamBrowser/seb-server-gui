@@ -267,6 +267,14 @@
 
 <script setup lang="ts">
 import { useI18n } from "vue-i18n";
+import {
+    VBtn,
+    VCol,
+    VDataTable,
+    VDialog,
+    VDivider,
+    VRow,
+} from "vuetify/components";
 
 import LoadingFallbackComponent from "@/components/widgets/loadingFallbackComponent/LoadingFallbackComponent.vue";
 import EditPermittedProcess from "@/components/widgets/sebSettings/components/tableDialogs/EditPermittedProcess.vue";

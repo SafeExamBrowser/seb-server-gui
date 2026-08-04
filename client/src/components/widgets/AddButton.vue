@@ -22,6 +22,7 @@
 <script setup lang="ts">
 import type { RouteLocationAsRelative } from "vue-router";
 import { useRouter } from "vue-router";
+import { VBtn, VIcon } from "vuetify/components";
 
 const router = useRouter();
 const props = withDefaults(

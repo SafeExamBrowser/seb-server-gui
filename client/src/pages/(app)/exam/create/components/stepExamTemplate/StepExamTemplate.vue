@@ -58,6 +58,15 @@
 
 <script setup lang="ts">
 import { computed, ref } from "vue";
+import {
+    VBtn,
+    VDialog,
+    VIcon,
+    VList,
+    VListItem,
+    VListItemSubtitle,
+    VListItemTitle,
+} from "vuetify/components";
 
 import ExamTemplateDialog from "@/components/widgets/ExamTemplateDialog.vue";
 import LoadingFallbackComponent from "@/components/widgets/loadingFallbackComponent/LoadingFallbackComponent.vue";

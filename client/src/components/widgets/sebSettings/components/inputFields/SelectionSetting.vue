@@ -25,6 +25,7 @@
 
 <script setup lang="ts">
 import { ref } from "vue";
+import { VCol, VSelect, VTooltip } from "vuetify/components";
 
 import {
     SEBSettingsSingeValueModel,

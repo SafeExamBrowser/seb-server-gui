@@ -88,6 +88,8 @@
 </template>
 
 <script setup lang="ts">
+import { VIcon, VTooltip } from "vuetify/components";
+
 import BasicPage from "@/components/layout/pages/BasicPage.vue";
 import AddButton from "@/components/widgets/AddButton.vue";
 import EntityTable from "@/components/widgets/entity-table/EntityTable.vue";

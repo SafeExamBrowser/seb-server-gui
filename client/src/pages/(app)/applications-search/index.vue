@@ -244,6 +244,15 @@
 
 <script setup lang="ts">
 import { ref } from "vue";
+import {
+    VAlert,
+    VBtn,
+    VCard,
+    VChip,
+    VDivider,
+    VIcon,
+    VSpacer,
+} from "vuetify/components";
 
 import BasicPage from "@/components/layout/pages/BasicPage.vue";
 import EntityTable from "@/components/widgets/entity-table/EntityTable.vue";

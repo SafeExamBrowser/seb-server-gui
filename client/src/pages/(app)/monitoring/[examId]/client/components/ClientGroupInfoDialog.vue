@@ -199,6 +199,18 @@
 <script setup lang="ts">
 import { ref } from "vue";
 import { useI18n } from "vue-i18n";
+import {
+    VBtn,
+    VCard,
+    VCardText,
+    VCol,
+    VForm,
+    VRow,
+    VSelect,
+    VTextField,
+    VToolbar,
+    VToolbarTitle,
+} from "vuetify/components";
 
 import { ClientGroup } from "@/models/seb-server/clientGroup.ts";
 import {

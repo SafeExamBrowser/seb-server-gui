@@ -24,6 +24,8 @@
 </template>
 
 <script setup lang="ts">
+import { VIcon, VTextField } from "vuetify/components";
+
 import { translate } from "@/utils/generalUtils.ts";
 
 withDefaults(

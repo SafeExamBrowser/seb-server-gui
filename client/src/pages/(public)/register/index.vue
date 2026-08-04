@@ -103,6 +103,18 @@
 <script setup lang="ts">
 import { computed, ref } from "vue";
 import { RouterLink, useRouter } from "vue-router";
+import {
+    VBtn,
+    VCard,
+    VCardSubtitle,
+    VCardText,
+    VCardTitle,
+    VCol,
+    VContainer,
+    VImg,
+    VMain,
+    VRow,
+} from "vuetify/components";
 
 import AlertMsg from "@/components/widgets/AlertMsg.vue";
 import FormBuilder from "@/components/widgets/formBuilder/FormBuilder.vue";

@@ -64,6 +64,16 @@
 
 <script setup lang="ts">
 import { ref } from "vue";
+import {
+    VBtn,
+    VCard,
+    VCardText,
+    VCol,
+    VRow,
+    VTextField,
+    VToolbar,
+    VToolbarTitle,
+} from "vuetify/components";
 
 import { translate } from "@/utils/generalUtils.ts";
 

@@ -17,6 +17,7 @@
 <script setup lang="ts">
 import { computed } from "vue";
 import { useDisplay } from "vuetify";
+import { VContainer } from "vuetify/components";
 
 import FormBuilder from "@/components/widgets/formBuilder/FormBuilder.vue";
 import LoadingFallbackComponent from "@/components/widgets/loadingFallbackComponent/LoadingFallbackComponent.vue";

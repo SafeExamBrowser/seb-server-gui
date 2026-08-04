@@ -148,7 +148,15 @@
 
 <script setup lang="ts">
 import { nextTick, ref, watch } from "vue";
-import { VInput } from "vuetify/components";
+import {
+    VDateInput,
+    VInput,
+    VNumberInput,
+    VSelect,
+    VSwitch,
+    VTextarea,
+    VTextField,
+} from "vuetify/components";
 
 import FormFieldDateTime from "@/components/widgets/formBuilder/components/FormFieldDateTime.vue";
 import FormFieldTimeRange from "@/components/widgets/formBuilder/components/FormFieldTimeRange.vue";

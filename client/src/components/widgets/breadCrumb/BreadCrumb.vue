@@ -36,6 +36,7 @@
 
 <script setup lang="ts">
 import { RouterLink } from "vue-router";
+import { VHover } from "vuetify/components";
 
 import type { BreadCrumbItem } from "./types";
 

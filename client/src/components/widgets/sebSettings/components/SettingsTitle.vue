@@ -16,6 +16,8 @@
 </template>
 
 <script setup lang="ts">
+import { VCol, VDivider, VRow, VTooltip } from "vuetify/components";
+
 import { translate } from "@/utils/generalUtils.ts";
 
 const props = defineProps<{

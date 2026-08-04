@@ -71,6 +71,7 @@
 <script setup lang="ts">
 import type { RouteLocationAsRelative } from "vue-router";
 import { RouterLink } from "vue-router";
+import { VAvatar, VCard, VDivider, VImg, VSpacer } from "vuetify/components";
 
 import type { UserAccount } from "@/models/userAccount";
 

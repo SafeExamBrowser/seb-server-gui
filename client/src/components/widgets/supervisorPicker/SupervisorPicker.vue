@@ -35,6 +35,8 @@
 </template>
 
 <script setup lang="ts">
+import { VCol, VIcon, VRow } from "vuetify/components";
+
 import SearchField from "@/components/widgets/supervisorPicker/components/SearchField.vue";
 import { usePicker } from "@/components/widgets/supervisorPicker/composables/usePicker";
 import { UserAccountName } from "@/models/userAccount";

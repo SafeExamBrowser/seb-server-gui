@@ -213,6 +213,16 @@ import {
 } from "vue";
 import { useI18n } from "vue-i18n";
 import { LocationQueryValue, useRoute } from "vue-router";
+import {
+    VCheckboxBtn,
+    VChip,
+    VDataTable,
+    VDialog,
+    VDivider,
+    VIcon,
+    VSkeletonLoader,
+    VSpacer,
+} from "vuetify/components";
 
 import EnumChip from "@/components/widgets/EnumChip.vue";
 import { ClientGroup } from "@/models/seb-server/clientGroup.ts";

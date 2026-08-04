@@ -22,6 +22,7 @@
 
 <script setup lang="ts">
 import type { RouteLocationAsRelative } from "vue-router";
+import { VBtn, VEmptyState } from "vuetify/components";
 
 defineProps<{
     message: string;

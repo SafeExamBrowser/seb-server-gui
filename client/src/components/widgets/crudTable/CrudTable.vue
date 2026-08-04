@@ -44,6 +44,7 @@
 
 <script setup lang="ts" generic="TItem extends Record<string, any>, TTransient">
 import { unref } from "vue";
+import { VDataTable } from "vuetify/components";
 
 import CrudActions from "@/components/widgets/crudTable/components/CrudActions.vue";
 import CrudCreate from "@/components/widgets/crudTable/components/CrudCreate.vue";

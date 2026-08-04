@@ -60,6 +60,7 @@
 </template>
 
 <script setup lang="ts">
+import { VCol, VDivider, VPagination, VRow, VSelect } from "vuetify/components";
 defineProps<{
     page: number;
     itemsPerPage: number;

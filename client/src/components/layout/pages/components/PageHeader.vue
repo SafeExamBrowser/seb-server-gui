@@ -15,6 +15,8 @@
 </template>
 
 <script setup lang="ts">
+import { VSpacer } from "vuetify/components";
+
 import BreadCrumb from "@/components/widgets/breadCrumb/BreadCrumb.vue";
 import { BreadCrumbItem } from "@/components/widgets/breadCrumb/types";
 import PageTitle from "@/components/widgets/PageTitle.vue";

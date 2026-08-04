@@ -551,6 +551,22 @@
 
 <script setup lang="ts">
 import { onBeforeMount, ref } from "vue";
+import {
+    VBtn,
+    VCard,
+    VCardText,
+    VCheckboxBtn,
+    VCol,
+    VDataTable,
+    VDivider,
+    VForm,
+    VRow,
+    VSelect,
+    VTextField,
+    VToolbar,
+    VToolbarTitle,
+    VTooltip,
+} from "vuetify/components";
 
 import {
     PermittedProcess,
