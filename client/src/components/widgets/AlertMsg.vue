@@ -24,6 +24,7 @@
 
 <script setup lang="ts">
 import { ref } from "vue";
+import { VAlert, VBtn, VSnackbar } from "vuetify/components";
 
 import { AlertProps } from "@/models/alertProps";
 import { translate } from "@/utils/generalUtils";

@@ -12,6 +12,8 @@
 </template>
 
 <script setup lang="ts">
+import { VCol, VContainer, VRow } from "vuetify/components";
+
 import SectionSubtitle from "@/components/widgets/SectionSubtitle.vue";
 
 defineProps<{

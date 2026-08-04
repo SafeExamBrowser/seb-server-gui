@@ -14,6 +14,8 @@
 </template>
 
 <script setup lang="ts">
+import { VCard, VCardText, VCardTitle, VSpacer } from "vuetify/components";
+
 import SectionSubtitle from "@/components/widgets/SectionSubtitle.vue";
 
 defineProps<{

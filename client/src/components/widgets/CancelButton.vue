@@ -11,6 +11,8 @@
 </template>
 
 <script setup lang="ts">
+import { VBtn } from "vuetify/components";
+
 import { translate } from "@/utils/generalUtils.ts";
 
 defineProps<{

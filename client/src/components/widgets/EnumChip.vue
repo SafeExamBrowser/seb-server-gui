@@ -5,6 +5,7 @@
 </template>
 
 <script setup lang="ts">
+import { VChip } from "vuetify/components";
 defineProps<{
     label: string;
     color?: string;

@@ -19,6 +19,8 @@
 </template>
 
 <script setup lang="ts">
+import { VIcon } from "vuetify/components";
+
 import { ClientGroupForTable } from "@/components/widgets/clientGroupsTable/types.ts";
 
 defineProps<{

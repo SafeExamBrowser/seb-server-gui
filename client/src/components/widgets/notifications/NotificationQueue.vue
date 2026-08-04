@@ -37,5 +37,7 @@
 </template>
 
 <script setup lang="ts">
+import { VBtn, VSnackbarQueue } from "vuetify/components";
+
 import { notificationQueue } from "@/services/notifications/notify.ts";
 </script>

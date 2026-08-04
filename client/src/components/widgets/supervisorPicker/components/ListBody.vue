@@ -41,6 +41,8 @@
 </template>
 
 <script setup lang="ts">
+import { VDataTable } from "vuetify/components";
+
 import { UserAccountName } from "@/models/userAccount";
 import {
     userAccountNameToFullName,

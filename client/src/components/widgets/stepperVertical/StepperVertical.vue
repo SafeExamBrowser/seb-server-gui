@@ -15,6 +15,8 @@
 </template>
 
 <script setup lang="ts">
+import { VStepperVertical, VStepperVerticalItem } from "vuetify/components";
+
 import { StepItem } from "./types";
 
 defineProps<{

@@ -13,6 +13,7 @@
 </template>
 
 <script setup lang="ts">
+import { VIconBtn } from "vuetify/components";
 import { IconValue } from "vuetify/lib/composables/icons.mjs";
 
 withDefaults(

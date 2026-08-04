@@ -32,6 +32,7 @@
 
 <script setup lang="ts">
 import { computed } from "vue";
+import { VBtn, VHover, VTooltip } from "vuetify/components";
 
 import type {
     TableAction,

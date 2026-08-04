@@ -23,6 +23,7 @@
 
 <script setup lang="ts">
 import { RouterLink } from "vue-router";
+import { VDivider, VListItem } from "vuetify/components";
 
 import type { NavigationSectionTarget } from "@/components/widgets/navigationWidgets/types.ts";
 

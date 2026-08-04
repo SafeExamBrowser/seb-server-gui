@@ -28,6 +28,15 @@
 <script setup lang="ts">
 import type { Component } from "vue";
 import { markRaw, ref } from "vue";
+import {
+    VCard,
+    VCol,
+    VRow,
+    VTab,
+    VTabs,
+    VTabsWindow,
+    VTabsWindowItem,
+} from "vuetify/components";
 
 import SebSettingsApplications from "@/components/widgets/sebSettings/SebSettingsApplications.vue";
 import SebSettingsBrowser from "@/components/widgets/sebSettings/SebSettingsBrowser.vue";

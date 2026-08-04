@@ -136,6 +136,7 @@
 </template>
 <script setup lang="ts">
 import { onBeforeMount, onBeforeUnmount, ref } from "vue";
+import { VBtn, VCheckboxBtn, VIcon } from "vuetify/components";
 import {
     HeadersSlotProps,
     VDataTableHeaderCellColumnSlotProps,

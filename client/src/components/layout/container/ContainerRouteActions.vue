@@ -107,6 +107,19 @@
 </template>
 
 <script setup lang="ts">
+import {
+    VBtn,
+    VChip,
+    VDivider,
+    VIcon,
+    VList,
+    VListItem,
+    VListItemTitle,
+    VMenu,
+    VSwitch,
+    VTooltip,
+} from "vuetify/components";
+
 import type { GridSize } from "@/models/types";
 import { useAppBarStore } from "@/stores/store";
 

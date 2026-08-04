@@ -122,6 +122,11 @@
 <script setup lang="ts">
 import { computed } from "vue";
 import { type RouteLocationAsRelative, useRouter } from "vue-router";
+import {
+    VCheckboxBtn,
+    VDataTableServer,
+    VSkeletonLoader,
+} from "vuetify/components";
 
 import TableFooter from "@/components/widgets/entity-table/components/TableFooter.vue";
 import TableRowActions from "@/components/widgets/entity-table/components/TableRowActions.vue";

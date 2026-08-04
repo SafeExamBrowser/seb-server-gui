@@ -92,6 +92,14 @@
 
 <script setup lang="ts">
 import { computed, onBeforeUnmount, ref, watch } from "vue";
+import {
+    VBtn,
+    VDivider,
+    VFileUpload,
+    VIcon,
+    VImg,
+    VSheet,
+} from "vuetify/components";
 
 import { FormFieldBaseProperties } from "@/components/widgets/formBuilder/types";
 import i18n from "@/i18n";

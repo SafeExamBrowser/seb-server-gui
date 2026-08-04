@@ -68,6 +68,7 @@
 <script setup lang="ts">
 import { ref } from "vue";
 import { useI18n } from "vue-i18n";
+import { VBtn, VCol, VRow, VTextField } from "vuetify/components";
 
 import { SEBSettingsSingeValueModel } from "@/components/widgets/sebSettings/types.ts";
 import { translate } from "@/utils/generalUtils.ts";

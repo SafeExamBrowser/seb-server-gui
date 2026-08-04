@@ -147,6 +147,15 @@
 <script setup lang="ts">
 import { computed, ref } from "vue";
 import { useI18n } from "vue-i18n";
+import {
+    VAvatar,
+    VBtn,
+    VCard,
+    VChip,
+    VDivider,
+    VIcon,
+    VMenu,
+} from "vuetify/components";
 
 import UserAvatar from "@/components/widgets/UserAvatar.vue";
 import { isTeacherOnlyAccount, type UserAccount } from "@/models/userAccount";

@@ -63,6 +63,15 @@
 
 <script setup lang="ts">
 import { watch } from "vue";
+import {
+    VBtn,
+    VCard,
+    VCol,
+    VDialog,
+    VRow,
+    VToolbar,
+    VToolbarTitle,
+} from "vuetify/components";
 
 import * as sebSettingsService from "@/services/seb-server/sebSettingsService.ts";
 import { translate } from "@/utils/generalUtils.ts";

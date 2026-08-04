@@ -67,6 +67,8 @@
 </template>
 
 <script setup lang="ts">
+import { VBtn, VChip, VDivider, VIcon } from "vuetify/components";
+
 import type { ActiveFilterPill } from "./useListFilterPanel.ts";
 
 withDefaults(

@@ -5,6 +5,8 @@
 </template>
 
 <script setup lang="ts">
+import { VChip } from "vuetify/components";
+
 import { Threshold } from "@/models/seb-server/examTemplate";
 
 defineProps<{

@@ -31,6 +31,7 @@
 
 <script setup lang="ts">
 import { computed } from "vue";
+import { VDivider } from "vuetify/components";
 
 import FilterOptionItem from "./FilterOptionItem.vue";
 import FilterSection from "./FilterSection.vue";

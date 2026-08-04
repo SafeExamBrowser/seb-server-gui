@@ -40,6 +40,14 @@
 
 <script setup lang="ts">
 import { ref } from "vue";
+import {
+    VCol,
+    VDateInput,
+    VMenu,
+    VRow,
+    VTextField,
+    VTimePicker,
+} from "vuetify/components";
 
 import {
     DateTime,

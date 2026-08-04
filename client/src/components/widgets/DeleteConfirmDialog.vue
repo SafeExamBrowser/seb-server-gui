@@ -52,6 +52,15 @@
 </template>
 
 <script setup lang="ts">
+import {
+    VBtn,
+    VCard,
+    VCardText,
+    VCol,
+    VRow,
+    VToolbar,
+    VToolbarTitle,
+} from "vuetify/components";
 // emits
 //@Todo Andrei : CreateConfirmActionDialog
 

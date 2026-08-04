@@ -53,6 +53,8 @@
 </template>
 
 <script setup lang="ts">
+import { VBtn, VCol, VContainer, VRow } from "vuetify/components";
+
 import { FormFieldGroup } from "@/components/widgets/formBuilder/types";
 import SectionSubtitle from "@/components/widgets/SectionSubtitle.vue";
 import type { BackendFieldErrorMap } from "@/services/errors/types.ts";

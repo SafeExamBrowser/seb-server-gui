@@ -251,6 +251,20 @@ import { useFullscreen } from "@vueuse/core";
 import { throttle } from "lodash";
 import { computed, onBeforeMount, onBeforeUnmount, ref, watch } from "vue";
 import { useRoute } from "vue-router";
+import {
+    VBadge,
+    VBtn,
+    VChip,
+    VCol,
+    VDivider,
+    VIcon,
+    VImg,
+    VList,
+    VListItem,
+    VMenu,
+    VRow,
+    VSlider,
+} from "vuetify/components";
 
 import {
     ScreenshotsGrouped,

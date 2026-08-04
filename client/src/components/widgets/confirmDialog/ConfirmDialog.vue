@@ -60,6 +60,15 @@
 </template>
 
 <script setup lang="ts">
+import {
+    VBtn,
+    VCard,
+    VCardActions,
+    VCardText,
+    VCardTitle,
+    VDialog,
+    VIcon,
+} from "vuetify/components";
 // Single reusable confirm dialog. All confirmation flows (delete, status
 // toggle, generic action) render through this so width, corner radius and the
 // button hierarchy (text Cancel + flat coloured Confirm) stay consistent.

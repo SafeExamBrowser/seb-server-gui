@@ -124,6 +124,20 @@
 </template>
 
 <script setup lang="ts">
+import {
+    VBtn,
+    VCard,
+    VCardText,
+    VCheckboxBtn,
+    VCol,
+    VForm,
+    VRow,
+    VSelect,
+    VTextField,
+    VToolbar,
+    VToolbarTitle,
+} from "vuetify/components";
+
 import { URLFilterRule } from "@/models/seb-server/sebSettings.ts";
 import { translate } from "@/utils/generalUtils.ts";
 
