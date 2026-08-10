@@ -54,10 +54,11 @@ export const useStepClientGroupStore = defineStore("stepClientGroup", () => {
             return true;
         }
 
-        if (screenProctoringStore.collectionStrategy === "APPLY_SEB_GROUPS") {
-            // if the collection strategy is APPLY_SEB_GROUPS, there must be at least one group with screen proctoring enabled
-            return groups.value.some((group) => group.screenProctoringEnabled);
-        }
+        // TODO @alain: this is temporary. Either make it permanent or reenable it, depending on Kristina's feedback.
+        // if (screenProctoringStore.collectionStrategy === "APPLY_SEB_GROUPS") {
+        //     // if the collection strategy is APPLY_SEB_GROUPS, there must be at least one group with screen proctoring enabled
+        //     return groups.value.some((group) => group.screenProctoringEnabled);
+        // }
 
         // in any other case, it depends on the form being ready
         return isScreenProctoringFormReady.value;
