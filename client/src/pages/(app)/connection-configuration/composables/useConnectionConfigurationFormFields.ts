@@ -13,7 +13,7 @@ export const useConnectionConfigurationFormFields = () => {
     const { isRequired, fieldRules } = useZodFormRules();
 
     const name = ref<string | undefined>(undefined);
-    const configurationPurpose = ref<string | undefined>(undefined);
+    const configurationPurpose = ref<string | undefined>("START_EXAM");
     const configurationPassword = ref<string | undefined>(undefined);
     const confirmConfigurationPassword = ref<string | undefined>(undefined);
     const encryptWithCertificate = ref<string | undefined>(undefined);
