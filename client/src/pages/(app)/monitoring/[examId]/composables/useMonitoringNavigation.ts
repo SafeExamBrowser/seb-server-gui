@@ -36,7 +36,7 @@ export function goToMonitoringOfGroup(value: string | boolean, examId: string) {
         [MonitoringHeaderEnum.SHOW_CLIENT_GROUPS]:
             value as LocationQueryValueRaw,
         [MonitoringHeaderEnum.SHOW_STATES]:
-            `${ConnectionStatusEnum.ACTIVE},${ConnectionStatusEnum.READY}` as LocationQueryValueRaw,
+            getScreenProctoringState() as LocationQueryValueRaw,
     };
 
     void router.push({
@@ -44,6 +44,19 @@ export function goToMonitoringOfGroup(value: string | boolean, examId: string) {
         params: { examId },
         query,
     });
+}
+
+function getScreenProctoringState(): string {
+    const monitoringStore = useMonitoringStore();
+    if (monitoringStore.selectedExam == null) {
+        return ConnectionStatusEnum.ACTIVE;
+    }
+
+    if (!monitoringStore.selectedExam.lmsSetupId) {
+        return ConnectionStatusEnum.READY + "," + ConnectionStatusEnum.ACTIVE;
+    }
+
+    return ConnectionStatusEnum.ACTIVE;
 }
 
 export function goToMonitoringDetails(

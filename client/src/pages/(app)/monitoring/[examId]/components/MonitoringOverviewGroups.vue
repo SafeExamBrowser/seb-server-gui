@@ -196,9 +196,8 @@
                                 prepend-icon="mdi-format-list-bulleted"
                                 class="text-body-small"
                                 @click="
-                                    goToMonitoring(
-                                        MonitoringHeaderEnum.SHOW_STATES,
-                                        getScreenProctoringState(),
+                                    goToMonitoringOfGroup(
+                                        generalUtils.createStringCommaList([1]),
                                         examId,
                                     )
                                 "
@@ -235,13 +234,8 @@ import {
 
 import { useCurrentUserQuery } from "@/composables/useCurrentUser.ts";
 import { ClientGroupEnum } from "@/models/seb-server/clientGroupEnum.ts";
-import { ConnectionStatusEnum } from "@/models/seb-server/connectionStatusEnum.ts";
 import { OverviewClientGroup } from "@/models/seb-server/monitoring.ts";
-import { MonitoringHeaderEnum } from "@/models/seb-server/monitoringEnums.ts";
-import {
-    goToMonitoring,
-    goToMonitoringOfGroup,
-} from "@/pages/(app)/monitoring/[examId]/composables/useMonitoringNavigation.ts";
+import { goToMonitoringOfGroup } from "@/pages/(app)/monitoring/[examId]/composables/useMonitoringNavigation.ts";
 import { useMonitoringStore } from "@/stores/seb-server/monitoringStore.ts";
 import * as generalUtils from "@/utils/generalUtils.ts";
 import { translate } from "@/utils/generalUtils.ts";
@@ -336,8 +330,9 @@ const hasUserGalleryAccess = (): boolean => {
         return false;
     }
     return (
-        monitoringStore.selectedExam.supporter.indexOf(currentUser.value.uuid) >
-        0
+        monitoringStore.selectedExam.supporter.indexOf(
+            currentUser.value.uuid,
+        ) >= 0
     );
 };
 
@@ -366,18 +361,6 @@ function getGroupValue(group: OverviewClientGroup): string {
         return translate("monitoringOverview.groups.spsFallback");
     }
     return translate(group.typeValue);
-}
-
-function getScreenProctoringState(): string {
-    if (monitoringStore.selectedExam == null) {
-        return ConnectionStatusEnum.ACTIVE;
-    }
-
-    if (!monitoringStore.selectedExam.lmsSetupId) {
-        return ConnectionStatusEnum.READY + "," + ConnectionStatusEnum.ACTIVE;
-    }
-
-    return ConnectionStatusEnum.ACTIVE;
 }
 
 function openGalleryView(groupUuid: string) {
