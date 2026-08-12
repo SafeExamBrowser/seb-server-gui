@@ -1,5 +1,11 @@
-import { useFetch } from "@/composables/useFetch.ts";
+import { useQuery } from "@tanstack/vue-query";
+
+import { getExamTemplateNamesQueryKey } from "@/api/seb-server/generated/hey-api/@tanstack/vue-query.gen.ts";
+import { heySebServerClient } from "@/api/seb-server/http/heySebServerClient.ts";
 import { getExamTemplateNames } from "@/services/seb-server/examTemplateService.ts";
 
 export const useExamTemplateNames = () =>
-    useFetch(() => getExamTemplateNames(), { immediate: true });
+    useQuery({
+        queryKey: getExamTemplateNamesQueryKey({ client: heySebServerClient }),
+        queryFn: () => getExamTemplateNames(),
+    });

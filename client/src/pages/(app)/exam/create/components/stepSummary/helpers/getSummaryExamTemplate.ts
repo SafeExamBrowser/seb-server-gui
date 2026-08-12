@@ -1,9 +1,9 @@
 import { SummarySectionData } from "@/components/widgets/wizardSummary/types.ts";
 import i18n from "@/i18n";
-import { ExamTemplate } from "@/models/seb-server/examTemplate.ts";
+import { ExamTemplateSelection } from "@/models/examTemplate.ts";
 
 export const getSummaryExamTemplate = (
-    examTemplate: ExamTemplate | undefined,
+    examTemplate: ExamTemplateSelection | undefined,
 ): SummarySectionData => {
     const emptyValue = i18n.global.t("createExam.steps.summary.emptyValue");
 

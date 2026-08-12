@@ -11,6 +11,7 @@ import {
     ExamTypeEnum,
     SELECTABLE_EXAM_TYPES,
 } from "@/models/seb-server/examFiltersEnum.ts";
+import { toAppErrorOrUndefined } from "@/services/errors/toAppError.ts";
 
 export const useExamTemplateBasicSettingsFields = (
     models: {
@@ -29,9 +30,12 @@ export const useExamTemplateBasicSettingsFields = (
 ) => {
     const {
         data: examTemplateNames,
-        loading: loadingExamTemplateNames,
-        error: errorExamTemplateNames,
+        isLoading: loadingExamTemplateNames,
+        error: examTemplateNamesQueryError,
     } = useExamTemplateNames();
+    const errorExamTemplateNames = computed(() =>
+        toAppErrorOrUndefined(examTemplateNamesQueryError.value),
+    );
 
     const {
         data: clientConfigurationNames,
