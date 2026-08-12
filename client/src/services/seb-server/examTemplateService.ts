@@ -1,5 +1,3 @@
-import { z } from "zod";
-
 import {
     copyExamTemplate as copyExamTemplateSdk,
     createIndicatorTemplate as createIndicatorTemplateSdk,
@@ -9,7 +7,9 @@ import {
     editExamTemplate as editExamTemplateSdk,
     fullCreateExamTemplate as fullCreateExamTemplateSdk,
     getExamTemplateById as getExamTemplateByIdSdk,
+    getExamTemplateNames as getExamTemplateNamesSdk,
     getExamTemplates as getExamTemplatesSdk,
+    getExamTemplateScreenProctoringSettings as getExamTemplateScreenProctoringSettingsSdk,
     saveIndicatorTemplate as saveIndicatorTemplateSdk,
 } from "@/api/seb-server/generated/hey-api/sdk.gen.ts";
 import type {
@@ -29,25 +29,23 @@ import {
     examTemplateCreateSchema,
     type ExamTemplateListItem,
     examTemplateListItemSchema,
+    type ExamTemplateName,
+    examTemplateNameSchema,
     type ExamTemplatePage,
     examTemplatePageSchema,
     examTemplateSchema,
+    type ExamTemplateScreenProctoring,
+    examTemplateScreenProctoringSchema,
+    type ExamTemplateSelection,
+    type ExamTemplateSelectionPage,
+    examTemplateSelectionPageSchema,
+    examTemplateSelectionSchema,
     type Indicator,
     type IndicatorExisting,
     indicatorExistingSchema,
     indicatorSchema,
 } from "@/models/examTemplate.ts";
-import {
-    clientGroupTemplatesSchema,
-    ExamTemplate as LegacyExamTemplate,
-    ExamTemplates as LegacyExamTemplates,
-    indicatorTemplatesSchema,
-} from "@/models/seb-server/examTemplate.ts";
-import { ScreenProctoringSettings } from "@/models/seb-server/screenProctoring.ts";
-import * as apiService from "@/services/apiService";
 import { decodeWire, encodeWire } from "@/services/errors/wireCodec.ts";
-import { BasicListParams } from "@/services/types";
-import { normaliseBasicListParams } from "@/utils/table/tableUtils";
 
 export const getExamTemplatePage = (
     query?: GetExamTemplatesData["query"],
@@ -156,78 +154,32 @@ export const deleteIndicatorTemplate = async (
     });
 };
 
-// Everything below stays on the legacy apiService stack for the exam pages
-// (exam detail, exam create wizard). It moves to the generated client when the
-// Exam domain is migrated.
+// The selection views decode without indicator templates, so the exam creation
+// flow keeps working for templates whose indicators the new GUI cannot edit.
 
-const baseUrl = "/exam-template" as const;
+export const getExamTemplateSelectionPage = (
+    query?: GetExamTemplatesData["query"],
+): Promise<ExamTemplateSelectionPage> =>
+    getExamTemplatesSdk({ client, query }).then(({ data }) =>
+        decodeWire(examTemplateSelectionPageSchema, data),
+    );
 
-export const getExamTemplates = async ({
-    basicListParams,
-    name,
-    examType,
-}: {
-    basicListParams?: BasicListParams;
-    name?: string;
-    examType?: string;
-}): Promise<LegacyExamTemplates> =>
-    (
-        await apiService.getRequest({
-            url: baseUrl,
-            options: {
-                _authType: "seb",
-                params: {
-                    ...normaliseBasicListParams(basicListParams),
-                    name,
-                    examType,
-                },
-            },
-        })
-    ).data;
+export const getExamTemplateSelectionById = (
+    modelId: string,
+): Promise<ExamTemplateSelection> =>
+    getExamTemplateByIdSdk({ client, path: { modelId } }).then(({ data }) =>
+        decodeWire(examTemplateSelectionSchema, data),
+    );
 
-export const getExamTemplate = async (
-    id: string,
-): Promise<LegacyExamTemplate> => {
-    const template: LegacyExamTemplate = (
-        await apiService.getRequest({
-            url: `${baseUrl}/${id}`,
-            options: { _authType: "seb" },
-        })
-    ).data;
+export const getExamTemplateNames = (): Promise<ExamTemplateName[]> =>
+    getExamTemplateNamesSdk({ client }).then(({ data }) =>
+        (data ?? []).map((name) => decodeWire(examTemplateNameSchema, name)),
+    );
 
-    return {
-        ...template,
-        indicatorTemplates: z.decode(
-            indicatorTemplatesSchema,
-            template.indicatorTemplates,
-        ),
-        CLIENT_GROUP_TEMPLATES: z.decode(
-            clientGroupTemplatesSchema,
-            template.CLIENT_GROUP_TEMPLATES,
-        ),
-    };
-};
-
-export const getExamTemplateNames = async (): Promise<
-    {
-        modelId: string;
-        entityType: "EXAM_TEMPLATE";
-        name: string;
-    }[]
-> =>
-    (
-        await apiService.getRequest({
-            url: `${baseUrl}/names`,
-            options: { _authType: "seb" },
-        })
-    ).data;
-
-export const getExamTemplateSp = async (
-    id: string,
-): Promise<ScreenProctoringSettings> =>
-    (
-        await apiService.getRequest({
-            url: `${baseUrl}/${id}/screen-proctoring`,
-            options: { _authType: "seb" },
-        })
-    ).data;
+export const getExamTemplateScreenProctoringSettings = (
+    modelId: number,
+): Promise<ExamTemplateScreenProctoring> =>
+    getExamTemplateScreenProctoringSettingsSdk({
+        client,
+        path: { modelId },
+    }).then(({ data }) => decodeWire(examTemplateScreenProctoringSchema, data));

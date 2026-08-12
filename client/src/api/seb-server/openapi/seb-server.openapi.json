@@ -15349,6 +15349,58 @@
                 "security": [{ "oauth": [] }]
             }
         },
+        "/admin-api/v1/exam-template/{modelId}/screen-proctoring": {
+            "get": {
+                "tags": ["ExamTemplate"],
+                "summary": "Gets the screen proctoring settings of the given exam template.",
+                "operationId": "getExamTemplateScreenProctoringSettings",
+                "parameters": [
+                    {
+                        "name": "institutionId",
+                        "in": "query",
+                        "required": false,
+                        "schema": { "type": "integer" }
+                    },
+                    {
+                        "name": "modelId",
+                        "in": "path",
+                        "required": true,
+                        "schema": { "type": "integer" }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/ScreenProctoringSettings"
+                                }
+                            }
+                        }
+                    },
+                    "400": {
+                        "$ref": "#/components/responses/Error400BadRequest"
+                    },
+                    "401": {
+                        "$ref": "#/components/responses/Error401Unauthorized"
+                    },
+                    "403": {
+                        "$ref": "#/components/responses/Error403Forbidden"
+                    },
+                    "404": {
+                        "$ref": "#/components/responses/Error404NotFound"
+                    },
+                    "429": {
+                        "$ref": "#/components/responses/Error429TooManyRequests"
+                    },
+                    "500": {
+                        "$ref": "#/components/responses/Error500InternalServerError"
+                    }
+                },
+                "security": [{ "oauth": [] }]
+            }
+        },
         "/admin-api/v1/exam-template/{modelId}/dependency": {
             "get": {
                 "tags": ["ExamTemplate"],
@@ -20603,8 +20655,8 @@
                         "type": "object",
                         "additionalProperties": { "type": "string" }
                     },
-                    "quiz_description": { "type": "string" },
-                    "quiz_start_url": { "type": "string" }
+                    "quiz_start_url": { "type": "string" },
+                    "quiz_description": { "type": "string" }
                 },
                 "required": ["externalId", "institutionId", "type"]
             },
@@ -22484,12 +22536,16 @@
             "ClientMonitoringDataView": {
                 "type": "object",
                 "properties": {
-                    "pendingNotification": { "type": "boolean" },
                     "missingPing": { "type": "boolean" },
                     "grantChecked": { "type": "boolean" },
                     "grantDenied": { "type": "boolean" },
                     "sebversionDenied": { "type": "boolean" },
-                    "id": { "type": "integer" },
+                    "pendingNotification": { "type": "boolean" },
+                    "lat": { "type": "integer" },
+                    "iv": {
+                        "type": "object",
+                        "additionalProperties": { "type": "string" }
+                    },
                     "st": {
                         "type": "string",
                         "enum": [
@@ -22501,12 +22557,8 @@
                             "DISABLED"
                         ]
                     },
-                    "lat": { "type": "integer" },
-                    "iv": {
-                        "type": "object",
-                        "additionalProperties": { "type": "string" }
-                    },
-                    "nf": { "type": "integer", "format": "int32" }
+                    "nf": { "type": "integer", "format": "int32" },
+                    "id": { "type": "integer" }
                 }
             },
             "MonitoringFullPageData": {

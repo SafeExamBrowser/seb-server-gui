@@ -312,8 +312,8 @@ export type Exam = {
     additionalAttributes?: {
         [key: string]: string;
     };
-    quiz_description?: string;
     quiz_start_url?: string;
+    quiz_description?: string;
 };
 
 export type ClientGroupTemplate = {
@@ -1295,18 +1295,18 @@ export type ClientNotification = {
 };
 
 export type ClientMonitoringDataView = {
-    pendingNotification?: boolean;
     missingPing?: boolean;
     grantChecked?: boolean;
     grantDenied?: boolean;
     sebversionDenied?: boolean;
-    id?: number;
-    st?: 'UNDEFINED' | 'CONNECTION_REQUESTED' | 'READY' | 'ACTIVE' | 'CLOSED' | 'DISABLED';
+    pendingNotification?: boolean;
     lat?: number;
     iv?: {
         [key: string]: string;
     };
+    st?: 'UNDEFINED' | 'CONNECTION_REQUESTED' | 'READY' | 'ACTIVE' | 'CLOSED' | 'DISABLED';
     nf?: number;
+    id?: number;
 };
 
 export type MonitoringFullPageData = {
@@ -16225,6 +16225,55 @@ export type GetExamTemplateByIdResponses = {
 };
 
 export type GetExamTemplateByIdResponse = GetExamTemplateByIdResponses[keyof GetExamTemplateByIdResponses];
+
+export type GetExamTemplateScreenProctoringSettingsData = {
+    body?: never;
+    path: {
+        modelId: number;
+    };
+    query?: {
+        institutionId?: number;
+    };
+    url: '/admin-api/v1/exam-template/{modelId}/screen-proctoring';
+};
+
+export type GetExamTemplateScreenProctoringSettingsErrors = {
+    /**
+     * Bad request, e.g. field validation or an illegal argument. The body is usually a list of APIMessage, but may be absent for some illegal-argument cases.
+     */
+    400: Array<ApiMessage>;
+    /**
+     * Unauthorized. Body is an APIMessage or a list of APIMessage.
+     */
+    401: ApiMessage | Array<ApiMessage>;
+    /**
+     * Forbidden. Body is a list of APIMessage.
+     */
+    403: Array<ApiMessage>;
+    /**
+     * Resource not found. Body is a list of APIMessage.
+     */
+    404: Array<ApiMessage>;
+    /**
+     * Too many requests (rate limit). Body is the rate-limit code as plain text.
+     */
+    429: string;
+    /**
+     * Unexpected internal server error. Body is a list of APIMessage.
+     */
+    500: Array<ApiMessage>;
+};
+
+export type GetExamTemplateScreenProctoringSettingsError = GetExamTemplateScreenProctoringSettingsErrors[keyof GetExamTemplateScreenProctoringSettingsErrors];
+
+export type GetExamTemplateScreenProctoringSettingsResponses = {
+    /**
+     * OK
+     */
+    200: ScreenProctoringSettings;
+};
+
+export type GetExamTemplateScreenProctoringSettingsResponse = GetExamTemplateScreenProctoringSettingsResponses[keyof GetExamTemplateScreenProctoringSettingsResponses];
 
 export type GetExamTemplateDependenciesData = {
     body?: never;

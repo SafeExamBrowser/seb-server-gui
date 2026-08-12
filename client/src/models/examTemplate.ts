@@ -2,9 +2,11 @@ import { z } from "zod";
 
 import {
     zConfigurationNode,
+    zEntityName,
     zExamTemplate,
     zIndicatorTemplate,
     zPageExamTemplate,
+    zScreenProctoringSettings,
     zThreshold,
 } from "@/api/seb-server/generated/hey-api/zod.gen.ts";
 import { ExamTypeEnum } from "@/models/seb-server/examFiltersEnum.ts";
@@ -234,6 +236,43 @@ export const examTemplatePageSchema = zPageExamTemplate
     });
 
 export type ExamTemplatePage = z.infer<typeof examTemplatePageSchema>;
+
+export const examTemplateSelectionSchema = examTemplateListItemSchema.extend({
+    supporter: supporterCodec,
+    CLIENT_GROUP_TEMPLATES: clientGroupTemplatesCodec,
+    EXAM_ATTRIBUTES: examAttributesCodec,
+});
+
+export type ExamTemplateSelection = z.infer<typeof examTemplateSelectionSchema>;
+
+export const examTemplateSelectionPageSchema = zPageExamTemplate
+    .pick({
+        number_of_pages: true,
+        page_number: true,
+        page_size: true,
+        sort: true,
+    })
+    .extend({
+        content: z.array(examTemplateSelectionSchema).optional(),
+    });
+
+export type ExamTemplateSelectionPage = z.infer<
+    typeof examTemplateSelectionPageSchema
+>;
+
+export const examTemplateNameSchema = zEntityName.pick({
+    modelId: true,
+    name: true,
+});
+
+export type ExamTemplateName = z.infer<typeof examTemplateNameSchema>;
+
+export const examTemplateScreenProctoringSchema =
+    zScreenProctoringSettings.pick({ spsSEBGroupsSelection: true });
+
+export type ExamTemplateScreenProctoring = z.infer<
+    typeof examTemplateScreenProctoringSchema
+>;
 
 export const configurationTemplateKeySchema = zConfigurationNode
     .pick({ name: true })
