@@ -49,7 +49,7 @@ import FormDialog from "@/components/widgets/formDialog/FormDialog.vue";
 import SEBSettingsPanel from "@/components/widgets/sebSettings/components/SEBSettingsPanel.vue";
 import { SEBSettingsContext } from "@/components/widgets/sebSettings/types.ts";
 import SectionSubtitle from "@/components/widgets/SectionSubtitle.vue";
-import { ConfigurationTemplateKey } from "@/models/seb-server/configurationNode.ts";
+import { ConfigurationTemplateKey } from "@/models/examTemplate.ts";
 import { useStepNamingStore } from "@/pages/(app)/exam-template/create/components/stepNaming/composables/store/useStepNamingStore.ts";
 import { useSEBSettingsImportForm } from "@/pages/(app)/exam-template/create/components/stepSEBSettings/composables/useSEBSettingsImportForm";
 
@@ -70,10 +70,10 @@ const seb_settings_context: ComputedRef<SEBSettingsContext> = computed(() => {
     if (configKey.value) {
         const stepNamingStore = useStepNamingStore();
         if (configKey.value.id) {
-            stepNamingStore.configurationTemplate = configKey.value.id;
+            stepNamingStore.configurationTemplate = String(configKey.value.id);
             return {
                 isExam: false,
-                containerId: configKey.value.id,
+                containerId: String(configKey.value.id),
                 readonly: false,
                 ignoreSEBService: ref<boolean>(false),
             };

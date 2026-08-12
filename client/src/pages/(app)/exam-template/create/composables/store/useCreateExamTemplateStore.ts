@@ -3,8 +3,8 @@ import { computed, ref } from "vue";
 
 import { StepItem } from "@/components/widgets/stepperVertical/types.ts";
 import i18n from "@/i18n";
+import { ExamTemplateCreate } from "@/models/examTemplate.ts";
 import { toApiClientConfigurationId } from "@/models/seb-server/connectionConfiguration.ts";
-import { ExamTemplate } from "@/models/seb-server/examTemplate.ts";
 import { buildScreenProctoringExamAttributes } from "@/models/seb-server/screenProctoring.ts";
 import { useStepClientGroupStore } from "@/pages/(app)/exam-template/create/components/stepClientGroup/composables/store/useStepClientGroupStore.ts";
 import { useStepIndicatorsStore } from "@/pages/(app)/exam-template/create/components/stepIndicators/composables/store/useStepIndicatorsStore.ts";
@@ -109,7 +109,7 @@ export const useCreateExamTemplateStore = defineStore(
             };
         });
 
-        const examTemplate = computed<ExamTemplate>(() => ({
+        const examTemplate = computed<ExamTemplateCreate>(() => ({
             name: stepNamingStore.name ?? "",
             description: stepNamingStore.description,
             examType: stepNamingStore.examType,
