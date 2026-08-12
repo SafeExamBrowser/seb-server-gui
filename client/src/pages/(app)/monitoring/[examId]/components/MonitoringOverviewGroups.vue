@@ -197,7 +197,7 @@
                                 class="text-body-small"
                                 @click="
                                     goToMonitoringOfGroup(
-                                        generalUtils.createStringCommaList([1]),
+                                        generalUtils.createStringCommaList([0]),
                                         examId,
                                     )
                                 "
