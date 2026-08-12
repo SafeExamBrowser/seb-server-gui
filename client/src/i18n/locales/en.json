@@ -2484,6 +2484,11 @@
                     "put": "Error updating certificate",
                     "delete": "Error deleting certificate"
                 },
+                "examtemplate": {
+                    "post": "Error creating exam template",
+                    "put": "Error updating exam template",
+                    "delete": "Error deleting exam template"
+                },
                 "exam": {
                     "archive": {
                         "patch": "Error archiving exam"

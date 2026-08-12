@@ -1,6 +1,8 @@
-import type { ExamTemplateTableItem } from "@/pages/(app)/exam-template/types.ts";
+import { computed } from "vue";
 
-import { useCopyExamTemplate } from "./api/useCopyExamTemplate.ts";
+import { useCopyExamTemplateMutation } from "@/pages/(app)/exam-template/api/useCopyExamTemplateMutation.ts";
+import type { ExamTemplateTableItem } from "@/pages/(app)/exam-template/types.ts";
+import { toAppErrorOrUndefined } from "@/services/errors/toAppError.ts";
 
 export const useExamTemplateCopyFlow = ({
     onCopySuccess,
@@ -8,15 +10,19 @@ export const useExamTemplateCopyFlow = ({
     onCopySuccess: () => void;
 }) => {
     const {
-        mutateData: copyTemplate,
-        loading: copyLoading,
-        error: copyError,
-    } = useCopyExamTemplate();
+        mutateAsync: copyTemplate,
+        error: copyMutationError,
+        isPending: copyLoading,
+    } = useCopyExamTemplateMutation();
+
+    const copyError = computed(() =>
+        toAppErrorOrUndefined(copyMutationError.value),
+    );
 
     const copy = async (item: ExamTemplateTableItem) => {
-        await copyTemplate(item.id);
-
-        if (copyError.value !== undefined) {
+        try {
+            await copyTemplate(String(item.id));
+        } catch {
             return;
         }
 

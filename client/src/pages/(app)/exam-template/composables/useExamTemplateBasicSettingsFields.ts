@@ -4,7 +4,9 @@ import { useRules } from "vuetify/labs/rules";
 import { FormField } from "@/components/widgets/formBuilder/types.ts";
 import { useClientConfigurationNames } from "@/composables/useClientConfigurationNames.ts";
 import { useExamTemplateNames } from "@/composables/useExamTemplateNames.ts";
+import { useZodFormRules } from "@/composables/useZodFormRules.ts";
 import i18n from "@/i18n";
+import { examTemplateCreateSchema } from "@/models/examTemplate.ts";
 import {
     ExamTypeEnum,
     SELECTABLE_EXAM_TYPES,
@@ -63,6 +65,8 @@ export const useExamTemplateBasicSettingsFields = (
         return names;
     });
 
+    const { isRequired, fieldRules } = useZodFormRules();
+
     const formFields = computed<FormField[]>(() => {
         if (loading.value) {
             return [];
@@ -77,10 +81,9 @@ export const useExamTemplateBasicSettingsFields = (
                 placeholder: i18n.global.t(
                     "examTemplate.fields.name.placeholder",
                 ),
-                required: true,
+                required: isRequired(examTemplateCreateSchema.shape.name),
                 rules: [
-                    useRules().minLength(3),
-                    useRules().maxLength(255),
+                    ...fieldRules(examTemplateCreateSchema.shape.name),
                     useRules().blacklisted(
                         blacklistedNames.value,
                         i18n.global.t(
@@ -97,7 +100,9 @@ export const useExamTemplateBasicSettingsFields = (
                 placeholder: i18n.global.t(
                     "examTemplate.fields.description.placeholder",
                 ),
-                rules: [useRules().maxLength(4000)],
+                rules: [
+                    ...fieldRules(examTemplateCreateSchema.shape.description),
+                ],
             },
             {
                 type: "select" as const,
