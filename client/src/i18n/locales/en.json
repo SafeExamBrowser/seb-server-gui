@@ -1043,6 +1043,8 @@
             "tableHeaderTypes": "Types"
         },
         "deleteCertificateContext": {
+            "tooltip": "Delete Certificate",
+            "tooltip_noDeletion": "Certificate is in use and cannot be deleted",
             "title": "Confirm Deletion",
             "informationPart1": "Delete Certificate: ",
             "informationPart3": " ?"

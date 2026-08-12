@@ -16,6 +16,7 @@ export const certificateSchema = zCertificateInfo
     .extend({
         validityFrom: isoDateTimeCodec.optional(),
         validityTo: isoDateTimeCodec.optional(),
+        inUse: z.boolean().optional(),
     });
 export type Certificate = z.infer<typeof certificateSchema>;
 
