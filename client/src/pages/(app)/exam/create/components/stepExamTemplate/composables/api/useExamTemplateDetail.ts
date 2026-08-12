@@ -1,15 +1,18 @@
-import { useMutation } from "@/composables/useMutation.ts";
-import { getExamTemplate } from "@/services/seb-server/examTemplateService.ts";
+import { useMutation } from "@tanstack/vue-query";
+import { computed } from "vue";
+
+import { toAppErrorOrUndefined } from "@/services/errors/toAppError.ts";
+import { getExamTemplateSelectionById } from "@/services/seb-server/examTemplateService.ts";
 
 export const useExamTemplateDetail = () => {
-    const { data, loading, error, mutateData } = useMutation((id: string) =>
-        getExamTemplate(id),
-    );
+    const { data, isPending, error, mutateAsync } = useMutation({
+        mutationFn: (id: string) => getExamTemplateSelectionById(id),
+    });
 
     return {
         data,
-        loading,
-        error,
-        fetch: mutateData,
+        loading: isPending,
+        error: computed(() => toAppErrorOrUndefined(error.value)),
+        fetch: (id: string) => mutateAsync(id).catch(() => undefined),
     };
 };

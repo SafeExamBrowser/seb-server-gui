@@ -3,23 +3,23 @@ import { useRoute } from "vue-router";
 import { z } from "zod";
 
 import type { BreadCrumbItem } from "@/components/widgets/breadCrumb/types.ts";
-import { useMutation } from "@/composables/useMutation.ts";
 import { useSupervisors } from "@/composables/useSupervisors.ts";
 import i18n from "@/i18n";
 import {
-    BasicSettings,
-    ClientGroupExisting,
-    ExamTemplate,
-    IndicatorExisting,
-} from "@/models/seb-server/examTemplate.ts";
+    type BasicSettings,
+    type ExamTemplate,
+    type IndicatorExisting,
+} from "@/models/examTemplate.ts";
+import { ClientGroupExisting } from "@/models/seb-server/examTemplate.ts";
 import {
     buildScreenProctoringExamAttributes,
     SCREEN_PROCTORING_COLLECTION_STRATEGY,
     ScreenProctoringCollectionStrategy,
 } from "@/models/seb-server/screenProctoring.ts";
-import { updateExamTemplate } from "@/services/seb-server/examTemplateService.ts";
-
-import { useExamTemplate } from "./api/useExamTemplate.ts";
+import { useEditExamTemplateMutation } from "@/pages/(app)/exam-template/api/useEditExamTemplateMutation.ts";
+import { useExamTemplateQuery } from "@/pages/(app)/exam-template/api/useExamTemplateQuery.ts";
+import { toAppErrorOrUndefined } from "@/services/errors/toAppError.ts";
+import { notify } from "@/services/notifications/notify.ts";
 
 const idSchema = z.coerce.number().int().positive();
 
@@ -30,9 +30,16 @@ export const useExamTemplateDetailPage = () => {
 
     const {
         data: examTemplate,
-        loading: examTemplateLoading,
-        error: examTemplateError,
-    } = useExamTemplate(examTemplateId);
+        isLoading: examTemplateLoading,
+        error: examTemplateQueryError,
+    } = useExamTemplateQuery(
+        computed(() =>
+            examTemplateId !== undefined ? String(examTemplateId) : undefined,
+        ),
+    );
+    const examTemplateError = computed(() =>
+        toAppErrorOrUndefined(examTemplateQueryError.value),
+    );
 
     const {
         data: availableSupervisors,
@@ -132,9 +139,7 @@ export const useExamTemplateDetailPage = () => {
         ),
     };
 
-    const updateMutation = useMutation((template: ExamTemplate) =>
-        updateExamTemplate(template),
-    );
+    const updateMutation = useEditExamTemplateMutation();
 
     const updateTemplate = async (
         patch: Partial<
@@ -145,23 +150,20 @@ export const useExamTemplateDetailPage = () => {
             return;
         }
 
-        // indicatorTemplates and CLIENT_GROUP_TEMPLATES have their own endpoints. The API
-        // ignores them on the examTemplate update endpoint, so we need to send empty arrays.
-        const examTemplateUpdated = await updateMutation.mutateData({
-            ...examTemplate.value,
-            ...patch,
-            indicatorTemplates: [],
-            CLIENT_GROUP_TEMPLATES: [],
-        });
-
-        if (!examTemplateUpdated) {
-            // TODO andrei: proper error handling
-            // eslint-disable-next-line no-console
-            console.error(updateMutation.error.value);
-            return;
+        try {
+            // indicatorTemplates and CLIENT_GROUP_TEMPLATES have their own endpoints. The API
+            // ignores them on the examTemplate update endpoint, so we need to send empty arrays.
+            await updateMutation.mutateAsync({
+                ...examTemplate.value,
+                ...patch,
+                indicatorTemplates: [],
+                CLIENT_GROUP_TEMPLATES: [],
+            });
+        } catch (error) {
+            notify.serverError(error, {
+                contextLabel: "examtemplate",
+            });
         }
-
-        examTemplate.value = examTemplateUpdated;
     };
 
     const handleBasicSettingsChange = (patch: BasicSettings) =>

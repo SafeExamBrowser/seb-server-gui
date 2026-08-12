@@ -5,20 +5,22 @@
 </template>
 
 <script setup lang="ts">
+import { computed } from "vue";
+
 import DetailBox from "@/components/widgets/DetailBox.vue";
 import IndicatorsTable from "@/components/widgets/indicatorsTable/IndicatorsTable.vue";
 import { IndicatorsTableDeps } from "@/components/widgets/indicatorsTable/types.ts";
-import { IndicatorExisting } from "@/models/seb-server/examTemplate.ts";
+import { IndicatorExisting } from "@/models/examTemplate.ts";
 import { useIndicators } from "@/pages/(app)/exam-template/[id]/composables/api/useIndicators.ts";
 
-const { examTemplateId, indicators: initialIndicators } = defineProps<{
+const props = defineProps<{
     examTemplateId: number;
     indicators: IndicatorExisting[];
 }>();
 
 const { indicators, createItem, updateItem, deleteItem } = useIndicators(
-    examTemplateId,
-    initialIndicators,
+    props.examTemplateId,
+    computed(() => props.indicators),
 );
 
 const tableDeps: IndicatorsTableDeps = {

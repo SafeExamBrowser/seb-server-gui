@@ -40,10 +40,10 @@ import {
     VToolbarTitle,
 } from "vuetify/components";
 
-import { ExamTemplate } from "@/models/seb-server/examTemplate";
+import { ExamTemplateSelection } from "@/models/examTemplate.ts";
 
 defineProps<{
-    examTemplate: ExamTemplate | null;
+    examTemplate: ExamTemplateSelection | null;
 }>();
 
 const emit = defineEmits<{

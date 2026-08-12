@@ -48,6 +48,7 @@ import {
 import BoxActionButton from "@/components/widgets/BoxActionButton.vue";
 import FormBuilder from "@/components/widgets/formBuilder/FormBuilder.vue";
 import LoadingFallbackComponent from "@/components/widgets/loadingFallbackComponent/LoadingFallbackComponent.vue";
+import { BasicSettings } from "@/models/examTemplate.ts";
 import {
     toApiClientConfigurationId,
     toSelectableClientConfigurationId,
@@ -57,7 +58,6 @@ import {
     toApiExamType,
     toSelectableExamType,
 } from "@/models/seb-server/examFiltersEnum.ts";
-import { BasicSettings } from "@/models/seb-server/examTemplate.ts";
 import { useExamTemplateBasicSettingsFields } from "@/pages/(app)/exam-template/composables/useExamTemplateBasicSettingsFields.ts";
 
 const { basicSettings } = defineProps<{ basicSettings: BasicSettings }>();

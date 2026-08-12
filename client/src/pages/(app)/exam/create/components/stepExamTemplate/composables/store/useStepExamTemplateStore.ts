@@ -1,7 +1,7 @@
 import { defineStore } from "pinia";
 import { computed, ref } from "vue";
 
-import { ExamTemplate } from "@/models/seb-server/examTemplate.ts";
+import { ExamTemplateSelection } from "@/models/examTemplate.ts";
 
 const getInitialState = () => ({
     selectedExamTemplate: undefined,
@@ -10,7 +10,7 @@ const getInitialState = () => ({
 export const useStepExamTemplateStore = defineStore(
     "createExam_stepExamTemplate",
     () => {
-        const selectedExamTemplate = ref<ExamTemplate | undefined>(
+        const selectedExamTemplate = ref<ExamTemplateSelection | undefined>(
             getInitialState().selectedExamTemplate,
         );
 

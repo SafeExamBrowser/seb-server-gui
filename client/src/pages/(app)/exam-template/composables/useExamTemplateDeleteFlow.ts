@@ -1,8 +1,8 @@
 import { computed, ref } from "vue";
 
+import { useDeleteExamTemplateMutation } from "@/pages/(app)/exam-template/api/useDeleteExamTemplateMutation.ts";
 import type { ExamTemplateTableItem } from "@/pages/(app)/exam-template/types.ts";
-
-import { useDeleteExamTemplate } from "./api/useDeleteExamTemplate.ts";
+import { toAppErrorOrUndefined } from "@/services/errors/toAppError.ts";
 
 export const useExamTemplateDeleteFlow = ({
     onDeleteSuccess,
@@ -10,10 +10,14 @@ export const useExamTemplateDeleteFlow = ({
     onDeleteSuccess: () => void;
 }) => {
     const {
-        mutateData: deleteTemplate,
-        loading: deleteLoading,
-        error: deleteError,
-    } = useDeleteExamTemplate();
+        mutateAsync: deleteTemplate,
+        error: deleteMutationError,
+        isPending: deleteLoading,
+    } = useDeleteExamTemplateMutation();
+
+    const deleteError = computed(() =>
+        toAppErrorOrUndefined(deleteMutationError.value),
+    );
 
     const deleteTarget = ref<ExamTemplateTableItem | undefined>(undefined);
     const deleteDialogOpen = ref(false);
@@ -29,16 +33,15 @@ export const useExamTemplateDeleteFlow = ({
 
     const confirmDelete = async () => {
         const target = deleteTarget.value;
+        deleteDialogOpen.value = false;
 
         if (!target) {
-            deleteDialogOpen.value = false;
             return;
         }
 
-        await deleteTemplate(target.id);
-        deleteDialogOpen.value = false;
-
-        if (deleteError.value !== undefined) {
+        try {
+            await deleteTemplate(String(target.id));
+        } catch {
             return;
         }
 

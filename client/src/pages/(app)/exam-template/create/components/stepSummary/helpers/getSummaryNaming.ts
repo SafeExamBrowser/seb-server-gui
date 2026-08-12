@@ -1,14 +1,14 @@
 import { SummarySectionData } from "@/components/widgets/wizardSummary/types.ts";
 import i18n from "@/i18n";
+import { ExamTemplateCreate } from "@/models/examTemplate.ts";
 import { ConnectionConfigurationName } from "@/models/seb-server/connectionConfiguration.ts";
 import {
     ExamTypeEnum,
     toSelectableExamType,
 } from "@/models/seb-server/examFiltersEnum.ts";
-import { ExamTemplate } from "@/models/seb-server/examTemplate.ts";
 
 export const getSummaryNaming = (
-    examTemplate: ExamTemplate,
+    examTemplate: ExamTemplateCreate,
     clientConfigurationNames: ConnectionConfigurationName[],
 ): SummarySectionData => {
     const getClientConfigurationValue = (clientConfigurationId?: number) => {

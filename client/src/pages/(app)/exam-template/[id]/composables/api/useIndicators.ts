@@ -1,62 +1,45 @@
-import { computed, ref } from "vue";
+import { computed, type Ref } from "vue";
 
-import { useMutation } from "@/composables/useMutation.ts";
 import i18n from "@/i18n";
-import {
-    Indicator,
-    IndicatorExisting,
-} from "@/models/seb-server/examTemplate.ts";
+import type { Indicator, IndicatorExisting } from "@/models/examTemplate.ts";
+import { useCreateIndicatorTemplateMutation } from "@/pages/(app)/exam-template/api/useCreateIndicatorTemplateMutation.ts";
+import { useDeleteIndicatorTemplateMutation } from "@/pages/(app)/exam-template/api/useDeleteIndicatorTemplateMutation.ts";
+import { useSaveIndicatorTemplateMutation } from "@/pages/(app)/exam-template/api/useSaveIndicatorTemplateMutation.ts";
 import { notify } from "@/services/notifications/notify.ts";
-import {
-    createIndicator,
-    deleteIndicator,
-    updateIndicator,
-} from "@/services/seb-server/examTemplateIndicatorService.ts";
 
 export const useIndicators = (
     examTemplateId: number,
-    initialIndicators: IndicatorExisting[],
+    indicators: Readonly<Ref<IndicatorExisting[]>>,
 ) => {
-    const data = ref<IndicatorExisting[]>([...initialIndicators]);
-
-    const deleteMutation = useMutation((indicatorId: number) =>
-        deleteIndicator(examTemplateId, indicatorId),
-    );
-
-    const indicators = computed<IndicatorExisting[]>(() => data.value);
+    const createMutation = useCreateIndicatorTemplateMutation();
+    const saveMutation = useSaveIndicatorTemplateMutation();
+    const deleteMutation = useDeleteIndicatorTemplateMutation();
 
     const createItem = async (indicator: Indicator) => {
-        const created = await createIndicator(examTemplateId, indicator);
-        data.value = [...data.value, created];
+        await createMutation.mutateAsync({ examTemplateId, indicator });
     };
 
     const updateItem = async (indicator: IndicatorExisting) => {
-        const updated = await updateIndicator(examTemplateId, indicator);
-
-        data.value = data.value.map((existing) =>
-            existing.id === updated.id ? updated : existing,
-        );
+        await saveMutation.mutateAsync({ examTemplateId, indicator });
     };
 
     const deleteItem = async (indicator: IndicatorExisting) => {
-        await deleteMutation.mutateData(indicator.id);
-
-        if (deleteMutation.error.value) {
-            notify.serverError(deleteMutation.error.value, {
+        try {
+            await deleteMutation.mutateAsync({
+                examTemplateId,
+                indicatorId: indicator.id,
+            });
+        } catch (error) {
+            notify.serverError(error, {
                 titleOverride: i18n.global.t(
                     "examTemplateDetail.boxes.indicators.errors.deleteFailed",
                 ),
             });
-            return;
         }
-
-        data.value = data.value.filter(
-            (existing) => existing.id !== indicator.id,
-        );
     };
 
     return {
-        indicators,
+        indicators: computed(() => indicators.value),
         createItem,
         updateItem,
         deleteItem,

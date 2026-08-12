@@ -72,19 +72,20 @@ import ExamTemplateDialog from "@/components/widgets/ExamTemplateDialog.vue";
 import LoadingFallbackComponent from "@/components/widgets/loadingFallbackComponent/LoadingFallbackComponent.vue";
 import StepItem from "@/components/widgets/stepItem/StepItem.vue";
 import { useSupervisors } from "@/composables/useSupervisors.ts";
-import { ExamTemplate } from "@/models/seb-server/examTemplate.ts";
+import { ExamTemplateSelection } from "@/models/examTemplate.ts";
 import { useStepClientGroupsStore } from "@/pages/(app)/exam/create/components/stepClientGroups/composables/store/useStepClientGroupsStore.ts";
 import { useStepQuitPasswordStore } from "@/pages/(app)/exam/create/components/stepQuitPassword/composables/store/useStepQuitPasswordStore.ts";
 import { useStepSupervisorsStore } from "@/pages/(app)/exam/create/components/stepSupervisors/composables/store/useStepSupervisorsStore.ts";
+import { toAppErrorOrUndefined } from "@/services/errors/toAppError.ts";
 
 import { useExamTemplateDetail } from "./composables/api/useExamTemplateDetail.ts";
 import { useExamTemplates } from "./composables/api/useExamTemplates.ts";
 import { useStepExamTemplateStore } from "./composables/store/useStepExamTemplateStore.ts";
 
 const infoDialogOpen = ref(false);
-const infoDialogTemplate = ref<ExamTemplate | null>(null);
+const infoDialogTemplate = ref<ExamTemplateSelection | null>(null);
 
-const openInfoDialog = (template: ExamTemplate) => {
+const openInfoDialog = (template: ExamTemplateSelection) => {
     infoDialogTemplate.value = template;
     infoDialogOpen.value = true;
 };
@@ -96,9 +97,12 @@ const stepQuitPasswordStore = useStepQuitPasswordStore();
 
 const {
     data: examTemplates,
-    loading,
-    error: errorLoading,
+    isLoading: loading,
+    error: examTemplatesQueryError,
 } = useExamTemplates();
+const errorLoading = computed(() =>
+    toAppErrorOrUndefined(examTemplatesQueryError.value),
+);
 
 const { fetch: fetchTemplateDetail } = useExamTemplateDetail();
 
@@ -113,7 +117,7 @@ const errors = computed(() =>
     [errorLoading.value].filter((error) => error !== undefined),
 );
 
-const handleSelect = async (template: ExamTemplate) => {
+const handleSelect = async (template: ExamTemplateSelection) => {
     if (store.selectedExamTemplate?.id === template.id) {
         return;
     }

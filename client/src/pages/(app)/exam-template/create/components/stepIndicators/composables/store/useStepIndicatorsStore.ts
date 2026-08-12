@@ -5,7 +5,7 @@ import {
     Indicator,
     IndicatorExisting,
     indicatorExistingSchema,
-} from "@/models/seb-server/examTemplate.ts";
+} from "@/models/examTemplate.ts";
 
 const getInitialState = () => ({
     indicators: [],

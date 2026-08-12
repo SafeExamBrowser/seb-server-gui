@@ -309,6 +309,9 @@ export const zInstitution = z.object({
     active: z.boolean().optional()
 });
 
+/**
+ * Indicator threshold with value and display color.
+ */
 export const zThreshold = z.object({
     value: z.number(),
     color: z.string().optional(),
@@ -368,8 +371,8 @@ export const zExam = z.object({
     followupId: z.int().optional(),
     excludeFromDeletion: z.boolean().optional(),
     additionalAttributes: z.record(z.string(), z.string()).optional(),
-    quiz_description: z.string().optional(),
-    quiz_start_url: z.string().optional()
+    quiz_start_url: z.string().optional(),
+    quiz_description: z.string().optional()
 });
 
 export const zClientGroupTemplate = z.object({
@@ -399,6 +402,9 @@ export const zClientGroupTemplate = z.object({
     examTemplateId: z.int().optional()
 });
 
+/**
+ * Indicator template of an exam template.
+ */
 export const zIndicatorTemplate = z.object({
     id: z.int().optional(),
     examTemplateId: z.int().optional(),
@@ -415,12 +421,15 @@ export const zIndicatorTemplate = z.object({
     color: z.string().optional(),
     icon: z.string().optional(),
     tags: z.string().optional(),
-    thresholds: z.array(zThreshold).optional()
+    thresholds: z.array(zThreshold)
 });
 
+/**
+ * Exam template read, create and update model.
+ */
 export const zExamTemplate = z.object({
     id: z.int().optional(),
-    institutionId: z.int(),
+    institutionId: z.int().optional(),
     name: z.string().min(3).max(255),
     description: z.string().min(0).max(4000).optional(),
     examType: z.enum([
@@ -431,12 +440,12 @@ export const zExamTemplate = z.object({
     ]).optional(),
     supporter: z.array(z.string()).optional(),
     configurationTemplateId: z.int().optional(),
-    institutionalDefault: z.boolean().optional(),
-    lmsIntegration: z.boolean().optional(),
+    institutionalDefault: z.boolean(),
+    lmsIntegration: z.boolean(),
     clientConfigurationId: z.int().optional(),
-    indicatorTemplates: z.array(zIndicatorTemplate).optional(),
-    CLIENT_GROUP_TEMPLATES: z.array(zClientGroupTemplate).optional(),
-    EXAM_ATTRIBUTES: z.record(z.string(), z.string()).optional()
+    indicatorTemplates: z.array(zIndicatorTemplate),
+    CLIENT_GROUP_TEMPLATES: z.array(zClientGroupTemplate),
+    EXAM_ATTRIBUTES: z.record(z.string(), z.string())
 });
 
 export const zExamConfigurationMap = z.object({
@@ -979,7 +988,8 @@ export const zCertificateInfo = z.object({
         'DATA_ENCIPHERMENT',
         'DATA_ENCIPHERMENT_PRIVATE_KEY',
         'KEY_CERT_SIGN'
-    ])).optional()
+    ])).optional(),
+    inUse: z.boolean().optional()
 });
 
 export const zTemplateAttribute = z.object({
@@ -1327,11 +1337,13 @@ export const zClientNotification = z.object({
 });
 
 export const zClientMonitoringDataView = z.object({
-    pendingNotification: z.boolean().optional(),
     missingPing: z.boolean().optional(),
     grantChecked: z.boolean().optional(),
     grantDenied: z.boolean().optional(),
     sebversionDenied: z.boolean().optional(),
+    pendingNotification: z.boolean().optional(),
+    lat: z.int().optional(),
+    iv: z.record(z.string(), z.string()).optional(),
     st: z.enum([
         'UNDEFINED',
         'CONNECTION_REQUESTED',
@@ -1340,8 +1352,6 @@ export const zClientMonitoringDataView = z.object({
         'CLOSED',
         'DISABLED'
     ]).optional(),
-    lat: z.int().optional(),
-    iv: z.record(z.string(), z.string()).optional(),
     nf: z.int().min(-2147483648, { error: 'Invalid value: Expected int32 to be >= -2147483648' }).max(2147483647, { error: 'Invalid value: Expected int32 to be <= 2147483647' }).optional(),
     id: z.int().optional()
 });
@@ -1575,24 +1585,6 @@ export const zPageExamTemplate = z.object({
     complete: z.boolean().optional()
 });
 
-export const zPageIndicatorTemplate = z.object({
-    number_of_pages: z.int().min(-2147483648, { error: 'Invalid value: Expected int32 to be >= -2147483648' }).max(2147483647, { error: 'Invalid value: Expected int32 to be <= 2147483647' }).optional(),
-    page_number: z.int().gte(1).lte(2147483647).optional(),
-    page_size: z.int().gte(1).lte(2147483647).optional(),
-    sort: z.string().optional(),
-    content: z.array(zIndicatorTemplate).optional(),
-    complete: z.boolean().optional()
-});
-
-export const zPageClientGroupTemplate = z.object({
-    number_of_pages: z.int().min(-2147483648, { error: 'Invalid value: Expected int32 to be >= -2147483648' }).max(2147483647, { error: 'Invalid value: Expected int32 to be <= 2147483647' }).optional(),
-    page_number: z.int().gte(1).lte(2147483647).optional(),
-    page_size: z.int().gte(1).lte(2147483647).optional(),
-    sort: z.string().optional(),
-    content: z.array(zClientGroupTemplate).optional(),
-    complete: z.boolean().optional()
-});
-
 export const zPageExamConfigurationMap = z.object({
     number_of_pages: z.int().min(-2147483648, { error: 'Invalid value: Expected int32 to be >= -2147483648' }).max(2147483647, { error: 'Invalid value: Expected int32 to be <= 2147483647' }).optional(),
     page_number: z.int().gte(1).lte(2147483647).optional(),
@@ -1736,9 +1728,12 @@ export const zClientGroupTemplateWritable = z.object({
     examTemplateId: z.int().optional()
 });
 
+/**
+ * Exam template read, create and update model.
+ */
 export const zExamTemplateWritable = z.object({
     id: z.int().optional(),
-    institutionId: z.int(),
+    institutionId: z.int().optional(),
     name: z.string().min(3).max(255),
     description: z.string().min(0).max(4000).optional(),
     examType: z.enum([
@@ -1749,12 +1744,12 @@ export const zExamTemplateWritable = z.object({
     ]).optional(),
     supporter: z.array(z.string()).optional(),
     configurationTemplateId: z.int().optional(),
-    institutionalDefault: z.boolean().optional(),
-    lmsIntegration: z.boolean().optional(),
+    institutionalDefault: z.boolean(),
+    lmsIntegration: z.boolean(),
     clientConfigurationId: z.int().optional(),
-    indicatorTemplates: z.array(zIndicatorTemplate).optional(),
-    CLIENT_GROUP_TEMPLATES: z.array(zClientGroupTemplateWritable).optional(),
-    EXAM_ATTRIBUTES: z.record(z.string(), z.string()).optional()
+    indicatorTemplates: z.array(zIndicatorTemplate),
+    CLIENT_GROUP_TEMPLATES: z.array(zClientGroupTemplateWritable),
+    EXAM_ATTRIBUTES: z.record(z.string(), z.string())
 });
 
 export const zMultiValueMapStringStringWritable = z.object({
@@ -1850,15 +1845,6 @@ export const zPageExamTemplateWritable = z.object({
     page_size: z.int().gte(1).lte(2147483647).optional(),
     sort: z.string().optional(),
     content: z.array(zExamTemplateWritable).optional(),
-    complete: z.boolean().optional()
-});
-
-export const zPageClientGroupTemplateWritable = z.object({
-    number_of_pages: z.int().min(-2147483648, { error: 'Invalid value: Expected int32 to be >= -2147483648' }).max(2147483647, { error: 'Invalid value: Expected int32 to be <= 2147483647' }).optional(),
-    page_number: z.int().gte(1).lte(2147483647).optional(),
-    page_size: z.int().gte(1).lte(2147483647).optional(),
-    sort: z.string().optional(),
-    content: z.array(zClientGroupTemplateWritable).optional(),
     complete: z.boolean().optional()
 });
 
@@ -2488,7 +2474,9 @@ export const zGetExamTemplatesQuery = z.object({
     page_number: z.int().min(-2147483648, { error: 'Invalid value: Expected int32 to be >= -2147483648' }).max(2147483647, { error: 'Invalid value: Expected int32 to be <= 2147483647' }).optional(),
     page_size: z.int().min(-2147483648, { error: 'Invalid value: Expected int32 to be >= -2147483648' }).max(2147483647, { error: 'Invalid value: Expected int32 to be <= 2147483647' }).optional(),
     sort: z.string().optional(),
-    institutionId: z.int().optional()
+    institutionId: z.int().optional(),
+    name: z.string().optional(),
+    examType: z.string().optional()
 });
 
 /**
@@ -2514,47 +2502,23 @@ export const zEditExamTemplateBody = zExamTemplateWritable;
  */
 export const zEditExamTemplateResponse = zExamTemplate;
 
-export const zCreateIndicatorTemplateBody = z.object({
-    allRequestParams: zMultiValueMapStringStringWritable,
-    institutionId: z.int().optional()
-});
+export const zCreateIndicatorTemplateBody = zIndicatorTemplate;
 
 /**
  * OK
  */
 export const zCreateIndicatorTemplateResponse = zIndicatorTemplate;
 
-export const zSaveIndicatorPutBody = zIndicatorTemplate;
+export const zSaveIndicatorTemplateBody = zIndicatorTemplate;
 
-export const zSaveIndicatorPutQuery = z.object({
+export const zSaveIndicatorTemplateQuery = z.object({
     institutionId: z.int().optional()
 });
 
 /**
  * OK
  */
-export const zSaveIndicatorPutResponse = zIndicatorTemplate;
-
-export const zCreateClientGroupTemplateBody = z.object({
-    allRequestParams: zMultiValueMapStringStringWritable,
-    institutionId: z.int().optional()
-});
-
-/**
- * OK
- */
-export const zCreateClientGroupTemplateResponse = zClientGroupTemplate;
-
-export const zSaveClientGroupTemplateBody = zClientGroupTemplateWritable;
-
-export const zSaveClientGroupTemplateQuery = z.object({
-    institutionId: z.int().optional()
-});
-
-/**
- * OK
- */
-export const zSaveClientGroupTemplateResponse = zClientGroupTemplate;
+export const zSaveIndicatorTemplateResponse = zIndicatorTemplate;
 
 export const zDeleteAllExamConfigurationMappingsBody = z.object({
     modelIds: z.array(z.string()),
@@ -3509,34 +3473,6 @@ export const zPublishPath = z.object({
  */
 export const zPublishResponse = zExam;
 
-export const zGetScreenProctoringSettings1Path = z.object({
-    modelId: z.int()
-});
-
-export const zGetScreenProctoringSettings1Query = z.object({
-    institutionId: z.int().optional()
-});
-
-/**
- * OK
- */
-export const zGetScreenProctoringSettings1Response = zScreenProctoringSettings;
-
-export const zSaveScreenProctoringSettings1Body = zScreenProctoringSettings;
-
-export const zSaveScreenProctoringSettings1Path = z.object({
-    modelId: z.int()
-});
-
-export const zSaveScreenProctoringSettings1Query = z.object({
-    institutionId: z.int().optional()
-});
-
-/**
- * OK
- */
-export const zSaveScreenProctoringSettings1Response = zExamTemplate;
-
 export const zCopyExamTemplatePath = z.object({
     modelId: z.string()
 });
@@ -3546,21 +3482,21 @@ export const zCopyExamTemplatePath = z.object({
  */
 export const zCopyExamTemplateResponse = zExamTemplate;
 
-export const zCreateExamTemplate1Body = zExamTemplateWritable;
+export const zFullCreateExamTemplateBody = zExamTemplateWritable;
 
-export const zCreateExamTemplate1Query = z.object({
+export const zFullCreateExamTemplateQuery = z.object({
     institutionId: z.int().optional()
 });
 
 /**
  * OK
  */
-export const zCreateExamTemplate1Response = zExamTemplate;
+export const zFullCreateExamTemplateResponse = zExamTemplate;
 
 /**
  * OK
  */
-export const zCreateTemporaryConfigurationTemplateResponse = zConfigurationNode;
+export const zCreateTemporaryConfigTemplateResponse = zConfigurationNode;
 
 export const zUndoPath = z.object({
     modelId: z.string()
@@ -5055,62 +4991,6 @@ export const zGetExamAdministrationsByIdsQuery = z.object({
  */
 export const zGetExamAdministrationsByIdsResponse = z.array(zExam);
 
-export const zDeleteIndicatorTemplatePath = z.object({
-    parentModelId: z.string(),
-    modelId: z.string()
-});
-
-export const zDeleteIndicatorTemplateQuery = z.object({
-    institutionId: z.int().optional()
-});
-
-/**
- * OK
- */
-export const zDeleteIndicatorTemplateResponse = zEntityKey;
-
-export const zGetIndicatorByPath = z.object({
-    parentModelId: z.string(),
-    modelId: z.string()
-});
-
-export const zGetIndicatorByQuery = z.object({
-    institutionId: z.int().optional()
-});
-
-/**
- * OK
- */
-export const zGetIndicatorByResponse = zIndicatorTemplate;
-
-export const zDeleteClientGroupTemplatePath = z.object({
-    parentModelId: z.string(),
-    modelId: z.string()
-});
-
-export const zDeleteClientGroupTemplateQuery = z.object({
-    institutionId: z.int().optional()
-});
-
-/**
- * OK
- */
-export const zDeleteClientGroupTemplateResponse = zEntityKey;
-
-export const zGetClientGroupTemplateByPath = z.object({
-    parentModelId: z.string(),
-    modelId: z.string()
-});
-
-export const zGetClientGroupTemplateByQuery = z.object({
-    institutionId: z.int().optional()
-});
-
-/**
- * OK
- */
-export const zGetClientGroupTemplateByResponse = zClientGroupTemplate;
-
 export const zDeleteExamTemplateBody = z.unknown();
 
 export const zDeleteExamTemplatePath = z.object({
@@ -5138,22 +5018,18 @@ export const zGetExamTemplateByIdPath = z.object({
  */
 export const zGetExamTemplateByIdResponse = zExamTemplate;
 
-export const zGetIndicatorPagePath = z.object({
-    modelId: z.string()
+export const zGetExamTemplateScreenProctoringSettingsPath = z.object({
+    modelId: z.int()
 });
 
-export const zGetIndicatorPageQuery = z.object({
-    institutionId: z.int().optional(),
-    page_number: z.int().min(-2147483648, { error: 'Invalid value: Expected int32 to be >= -2147483648' }).max(2147483647, { error: 'Invalid value: Expected int32 to be <= 2147483647' }).optional(),
-    page_size: z.int().min(-2147483648, { error: 'Invalid value: Expected int32 to be >= -2147483648' }).max(2147483647, { error: 'Invalid value: Expected int32 to be <= 2147483647' }).optional(),
-    sort: z.string().optional(),
-    allRequestParams: zMultiValueMapStringStringWritable
+export const zGetExamTemplateScreenProctoringSettingsQuery = z.object({
+    institutionId: z.int().optional()
 });
 
 /**
  * OK
  */
-export const zGetIndicatorPageResponse = zPageIndicatorTemplate;
+export const zGetExamTemplateScreenProctoringSettingsResponse = zScreenProctoringSettings;
 
 export const zGetExamTemplateDependenciesPath = z.object({
     modelId: z.string()
@@ -5174,22 +5050,6 @@ export const zGetExamTemplateDependenciesQuery = z.object({
  */
 export const zGetExamTemplateDependenciesResponse = z.array(zEntityDependency);
 
-export const zGetClientGroupTemplatePagePath = z.object({
-    modelId: z.string()
-});
-
-export const zGetClientGroupTemplatePageQuery = z.object({
-    institutionId: z.int().optional(),
-    page_number: z.int().min(-2147483648, { error: 'Invalid value: Expected int32 to be >= -2147483648' }).max(2147483647, { error: 'Invalid value: Expected int32 to be <= 2147483647' }).optional(),
-    page_size: z.int().min(-2147483648, { error: 'Invalid value: Expected int32 to be >= -2147483648' }).max(2147483647, { error: 'Invalid value: Expected int32 to be <= 2147483647' }).optional(),
-    sort: z.string().optional()
-});
-
-/**
- * OK
- */
-export const zGetClientGroupTemplatePageResponse = zPageClientGroupTemplate;
-
 export const zGetExamTemplateNamesQuery = z.object({
     institutionId: z.int().optional()
 });
@@ -5207,11 +5067,6 @@ export const zGetExamTemplatesByIdsQuery = z.object({
  * OK
  */
 export const zGetExamTemplatesByIdsResponse = z.array(zExamTemplate);
-
-/**
- * OK
- */
-export const zGetDefaultResponse = zExamTemplate;
 
 export const zDeleteExamConfigurationMappingBody = z.unknown();
 
@@ -6042,6 +5897,20 @@ export const zForceDeleteExamAdministrationQuery = z.object({
  * OK
  */
 export const zForceDeleteExamAdministrationResponse = zEntityProcessingReport;
+
+export const zDeleteIndicatorTemplatePath = z.object({
+    parentModelId: z.string(),
+    modelId: z.string()
+});
+
+export const zDeleteIndicatorTemplateQuery = z.object({
+    institutionId: z.int().optional()
+});
+
+/**
+ * OK
+ */
+export const zDeleteIndicatorTemplateResponse = zEntityKey;
 
 export const zForceDeleteExamTemplateBody = z.unknown();
 

@@ -47,44 +47,35 @@
 </template>
 
 <script setup lang="ts">
-import { watchEffect } from "vue";
+import { computed, onUnmounted } from "vue";
 import { useRouter } from "vue-router";
 
 import BasicPage from "@/components/layout/pages/BasicPage.vue";
 import LoadingFallbackComponent from "@/components/widgets/loadingFallbackComponent/LoadingFallbackComponent.vue";
 import StepperFooterActions from "@/components/widgets/stepperVertical/StepperFooterActions.vue";
 import StepperSidebar from "@/components/widgets/stepperVertical/StepperSidebar.vue";
+import { useCreateExamTemplateMutation } from "@/pages/(app)/exam-template/api/useCreateExamTemplateMutation.ts";
 import { stepComponents } from "@/pages/(app)/exam-template/create/types/types.ts";
+import { toAppErrorOrUndefined } from "@/services/errors/toAppError.ts";
 
-import { useCreateExamTemplate } from "./composables/api/useCreateExamTemplate.ts";
 import { useCreateExamTemplateStore } from "./composables/store/useCreateExamTemplateStore.ts";
 
 const {
-    create: createExamTemplate,
-    loading: createExamTemplateLoading,
-    error: createExamTemplateError,
-    data: createdExamTemplate,
-} = useCreateExamTemplate();
+    mutateAsync: createExamTemplate,
+    isPending: createExamTemplateLoading,
+    error: createMutationError,
+} = useCreateExamTemplateMutation();
+const createExamTemplateError = computed(() =>
+    toAppErrorOrUndefined(createMutationError.value),
+);
 
 const store = useCreateExamTemplateStore();
 const router = useRouter();
 
-watchEffect(() => {
-    if (!createdExamTemplate.value) {
-        return;
-    }
+// abandoning the wizard must not leave the draft (and its temporary
+// configuration-template id) in the app-lifetime stores
+onUnmounted(() => {
     store.$reset();
-    const createdId = createdExamTemplate.value.id;
-
-    if (createdId === undefined) {
-        // TODO @alain: once ExamTemplate and ExamTemplateExisting types are split, checks like these won't be required anymore
-        throw "existing exam template has no id";
-    }
-
-    router.push({
-        name: "/(app)/exam-template/[id]/",
-        params: { id: createdId },
-    });
 });
 
 const handleStepperNext = () => {
@@ -96,6 +87,17 @@ const handleStepperPrev = () => {
 };
 
 const handleStepperFinish = async () => {
-    createExamTemplate(store.examTemplate);
+    let created;
+    try {
+        created = await createExamTemplate(store.examTemplate);
+    } catch {
+        return;
+    }
+
+    store.$reset();
+    router.push({
+        name: "/(app)/exam-template/[id]/",
+        params: { id: created.id },
+    });
 };
 </script>

@@ -4,11 +4,14 @@ import { useRules } from "vuetify/labs/rules";
 import { FormField } from "@/components/widgets/formBuilder/types.ts";
 import { useClientConfigurationNames } from "@/composables/useClientConfigurationNames.ts";
 import { useExamTemplateNames } from "@/composables/useExamTemplateNames.ts";
+import { useZodFormRules } from "@/composables/useZodFormRules.ts";
 import i18n from "@/i18n";
+import { examTemplateCreateSchema } from "@/models/examTemplate.ts";
 import {
     ExamTypeEnum,
     SELECTABLE_EXAM_TYPES,
 } from "@/models/seb-server/examFiltersEnum.ts";
+import { toAppErrorOrUndefined } from "@/services/errors/toAppError.ts";
 
 export const useExamTemplateBasicSettingsFields = (
     models: {
@@ -27,9 +30,12 @@ export const useExamTemplateBasicSettingsFields = (
 ) => {
     const {
         data: examTemplateNames,
-        loading: loadingExamTemplateNames,
-        error: errorExamTemplateNames,
+        isLoading: loadingExamTemplateNames,
+        error: examTemplateNamesQueryError,
     } = useExamTemplateNames();
+    const errorExamTemplateNames = computed(() =>
+        toAppErrorOrUndefined(examTemplateNamesQueryError.value),
+    );
 
     const {
         data: clientConfigurationNames,
@@ -63,6 +69,8 @@ export const useExamTemplateBasicSettingsFields = (
         return names;
     });
 
+    const { isRequired, fieldRules } = useZodFormRules();
+
     const formFields = computed<FormField[]>(() => {
         if (loading.value) {
             return [];
@@ -77,10 +85,9 @@ export const useExamTemplateBasicSettingsFields = (
                 placeholder: i18n.global.t(
                     "examTemplate.fields.name.placeholder",
                 ),
-                required: true,
+                required: isRequired(examTemplateCreateSchema.shape.name),
                 rules: [
-                    useRules().minLength(3),
-                    useRules().maxLength(255),
+                    ...fieldRules(examTemplateCreateSchema.shape.name),
                     useRules().blacklisted(
                         blacklistedNames.value,
                         i18n.global.t(
@@ -97,7 +104,9 @@ export const useExamTemplateBasicSettingsFields = (
                 placeholder: i18n.global.t(
                     "examTemplate.fields.description.placeholder",
                 ),
-                rules: [useRules().maxLength(4000)],
+                rules: [
+                    ...fieldRules(examTemplateCreateSchema.shape.description),
+                ],
             },
             {
                 type: "select" as const,

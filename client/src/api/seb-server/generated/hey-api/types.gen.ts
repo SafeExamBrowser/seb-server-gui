@@ -269,9 +269,21 @@ export type Indicator = {
     thresholds?: Array<Threshold>;
 };
 
+/**
+ * Indicator threshold with value and display color.
+ */
 export type Threshold = {
+    /**
+     * Threshold value; percent (0-100) for battery and WLAN indicators.
+     */
     value: number;
+    /**
+     * RGB color (hex, without leading '#') shown when the threshold is reached.
+     */
     color?: string;
+    /**
+     * Icon shown when the threshold is reached.
+     */
     icon?: string;
 };
 
@@ -300,8 +312,8 @@ export type Exam = {
     additionalAttributes?: {
         [key: string]: string;
     };
-    quiz_description?: string;
     quiz_start_url?: string;
+    quiz_description?: string;
 };
 
 export type ClientGroupTemplate = {
@@ -319,33 +331,90 @@ export type ClientGroupTemplate = {
     examTemplateId?: number;
 };
 
+/**
+ * Exam template read, create and update model.
+ */
 export type ExamTemplate = {
+    /**
+     * Exam template identifier (PK). Not set on create.
+     */
     id?: number;
-    institutionId: number;
+    /**
+     * Institution identifier the exam template belongs to. Derived from the current user on create; required on update.
+     */
+    institutionId?: number;
+    /**
+     * Unique name of the exam template.
+     */
     name: string;
+    /**
+     * Free-text description of the exam template.
+     */
     description?: string;
+    /**
+     * Exam type preset applied to exams created from this template.
+     */
     examType?: 'UNDEFINED' | 'MANAGED' | 'BYOD' | 'VDI';
     supporter?: Array<string>;
+    /**
+     * Identifier of the configuration template holding the SEB settings.
+     */
     configurationTemplateId?: number;
-    institutionalDefault?: boolean;
-    lmsIntegration?: boolean;
+    /**
+     * Whether this is the institutional default exam template.
+     */
+    institutionalDefault: boolean;
+    /**
+     * Whether assessment tool (LMS) integration is enabled for exams created from this template.
+     */
+    lmsIntegration: boolean;
+    /**
+     * Identifier of the preselected connection configuration.
+     */
     clientConfigurationId?: number;
-    indicatorTemplates?: Array<IndicatorTemplate>;
-    CLIENT_GROUP_TEMPLATES?: Array<ClientGroupTemplate>;
-    EXAM_ATTRIBUTES?: {
+    indicatorTemplates: Array<IndicatorTemplate>;
+    CLIENT_GROUP_TEMPLATES: Array<ClientGroupTemplate>;
+    /**
+     * Additional exam attributes as key-value pairs (enableScreenProctoring, spsCollectingStrategy, spsCollectingGroupName, spsSEBGroupsSelection, quitPassword). Always present.
+     */
+    EXAM_ATTRIBUTES: {
         [key: string]: string;
     };
 };
 
+/**
+ * Indicator template of an exam template.
+ */
 export type IndicatorTemplate = {
+    /**
+     * Indicator template identifier (PK). Not set on create.
+     */
     id?: number;
+    /**
+     * Identifier of the exam template this indicator template belongs to. Not set for indicator templates embedded in a full-create request.
+     */
     examTemplateId?: number;
+    /**
+     * Name of the indicator shown in monitoring.
+     */
     name: string;
+    /**
+     * Indicator type.
+     */
     type: 'UNKNOWN' | 'LAST_PING' | 'ERROR_COUNT' | 'WARN_COUNT' | 'INFO_COUNT' | 'BATTERY_STATUS' | 'WLAN_STATUS';
+    /**
+     * Default RGB color (hex, without leading '#') of the indicator.
+     */
     color?: string;
+    /**
+     * Default icon name of the indicator.
+     */
     icon?: string;
+    /**
+     * Comma-separated tags for log-based indicators.
+     */
     tags?: string;
-    thresholds?: Array<Threshold>;
+    thresholds: Array<Threshold>;
 };
 
 export type ExamConfigurationMap = {
@@ -820,6 +889,7 @@ export type CertificateInfo = {
     validityFrom?: string;
     validityTo?: string;
     certType?: Array<'UNKNOWN' | 'DIGITAL_SIGNATURE' | 'DATA_ENCIPHERMENT' | 'DATA_ENCIPHERMENT_PRIVATE_KEY' | 'KEY_CERT_SIGN'>;
+    inUse?: boolean;
 };
 
 export type TemplateAttribute = {
@@ -1225,16 +1295,16 @@ export type ClientNotification = {
 };
 
 export type ClientMonitoringDataView = {
-    pendingNotification?: boolean;
     missingPing?: boolean;
     grantChecked?: boolean;
     grantDenied?: boolean;
     sebversionDenied?: boolean;
-    st?: 'UNDEFINED' | 'CONNECTION_REQUESTED' | 'READY' | 'ACTIVE' | 'CLOSED' | 'DISABLED';
+    pendingNotification?: boolean;
     lat?: number;
     iv?: {
         [key: string]: string;
     };
+    st?: 'UNDEFINED' | 'CONNECTION_REQUESTED' | 'READY' | 'ACTIVE' | 'CLOSED' | 'DISABLED';
     nf?: number;
     id?: number;
 };
@@ -1460,54 +1530,6 @@ export type PageExamTemplate = {
      * The actual content objects of the page. Might be empty.
      */
     content?: Array<ExamTemplate>;
-    complete?: boolean;
-};
-
-export type PageIndicatorTemplate = {
-    /**
-     * The number of available pages for the specified page size.
-     */
-    number_of_pages?: number;
-    /**
-     * The actual page number. Starting with 1.
-     */
-    page_number?: number;
-    /**
-     * The the actual size of a page
-     */
-    page_size?: number;
-    /**
-     * The page sort column name
-     */
-    sort?: string;
-    /**
-     * The actual content objects of the page. Might be empty.
-     */
-    content?: Array<IndicatorTemplate>;
-    complete?: boolean;
-};
-
-export type PageClientGroupTemplate = {
-    /**
-     * The number of available pages for the specified page size.
-     */
-    number_of_pages?: number;
-    /**
-     * The actual page number. Starting with 1.
-     */
-    page_number?: number;
-    /**
-     * The the actual size of a page
-     */
-    page_size?: number;
-    /**
-     * The page sort column name
-     */
-    sort?: string;
-    /**
-     * The actual content objects of the page. Might be empty.
-     */
-    content?: Array<ClientGroupTemplate>;
     complete?: boolean;
 };
 
@@ -1972,20 +1994,53 @@ export type ClientGroupTemplateWritable = {
     examTemplateId?: number;
 };
 
+/**
+ * Exam template read, create and update model.
+ */
 export type ExamTemplateWritable = {
+    /**
+     * Exam template identifier (PK). Not set on create.
+     */
     id?: number;
-    institutionId: number;
+    /**
+     * Institution identifier the exam template belongs to. Derived from the current user on create; required on update.
+     */
+    institutionId?: number;
+    /**
+     * Unique name of the exam template.
+     */
     name: string;
+    /**
+     * Free-text description of the exam template.
+     */
     description?: string;
+    /**
+     * Exam type preset applied to exams created from this template.
+     */
     examType?: 'UNDEFINED' | 'MANAGED' | 'BYOD' | 'VDI';
     supporter?: Array<string>;
+    /**
+     * Identifier of the configuration template holding the SEB settings.
+     */
     configurationTemplateId?: number;
-    institutionalDefault?: boolean;
-    lmsIntegration?: boolean;
+    /**
+     * Whether this is the institutional default exam template.
+     */
+    institutionalDefault: boolean;
+    /**
+     * Whether assessment tool (LMS) integration is enabled for exams created from this template.
+     */
+    lmsIntegration: boolean;
+    /**
+     * Identifier of the preselected connection configuration.
+     */
     clientConfigurationId?: number;
-    indicatorTemplates?: Array<IndicatorTemplate>;
-    CLIENT_GROUP_TEMPLATES?: Array<ClientGroupTemplateWritable>;
-    EXAM_ATTRIBUTES?: {
+    indicatorTemplates: Array<IndicatorTemplate>;
+    CLIENT_GROUP_TEMPLATES: Array<ClientGroupTemplateWritable>;
+    /**
+     * Additional exam attributes as key-value pairs (enableScreenProctoring, spsCollectingStrategy, spsCollectingGroupName, spsSEBGroupsSelection, quitPassword). Always present.
+     */
+    EXAM_ATTRIBUTES: {
         [key: string]: string;
     };
 };
@@ -2093,30 +2148,6 @@ export type PageExamTemplateWritable = {
      * The actual content objects of the page. Might be empty.
      */
     content?: Array<ExamTemplateWritable>;
-    complete?: boolean;
-};
-
-export type PageClientGroupTemplateWritable = {
-    /**
-     * The number of available pages for the specified page size.
-     */
-    number_of_pages?: number;
-    /**
-     * The actual page number. Starting with 1.
-     */
-    page_number?: number;
-    /**
-     * The the actual size of a page
-     */
-    page_size?: number;
-    /**
-     * The page sort column name
-     */
-    sort?: string;
-    /**
-     * The actual content objects of the page. Might be empty.
-     */
-    content?: Array<ClientGroupTemplateWritable>;
     complete?: boolean;
 };
 
@@ -4973,6 +5004,14 @@ export type GetExamTemplatesData = {
          * Default is the institution identifier of the institution of the current user
          */
         institutionId?: number;
+        /**
+         * Filters exam templates by name.
+         */
+        name?: string;
+        /**
+         * Filters exam templates by exam type.
+         */
+        examType?: string;
     };
     url: '/admin-api/v1/exam-template';
 };
@@ -5112,10 +5151,7 @@ export type EditExamTemplateResponses = {
 export type EditExamTemplateResponse = EditExamTemplateResponses[keyof EditExamTemplateResponses];
 
 export type CreateIndicatorTemplateData = {
-    body?: {
-        allRequestParams: MultiValueMapStringStringWritable;
-        institutionId?: number;
-    };
+    body?: IndicatorTemplate;
     path?: never;
     query?: never;
     url: '/admin-api/v1/exam-template/indicator';
@@ -5159,7 +5195,7 @@ export type CreateIndicatorTemplateResponses = {
 
 export type CreateIndicatorTemplateResponse = CreateIndicatorTemplateResponses[keyof CreateIndicatorTemplateResponses];
 
-export type SaveIndicatorPutData = {
+export type SaveIndicatorTemplateData = {
     body: IndicatorTemplate;
     path?: never;
     query?: {
@@ -5168,7 +5204,7 @@ export type SaveIndicatorPutData = {
     url: '/admin-api/v1/exam-template/indicator';
 };
 
-export type SaveIndicatorPutErrors = {
+export type SaveIndicatorTemplateErrors = {
     /**
      * Bad request, e.g. field validation or an illegal argument. The body is usually a list of APIMessage, but may be absent for some illegal-argument cases.
      */
@@ -5195,111 +5231,16 @@ export type SaveIndicatorPutErrors = {
     500: Array<ApiMessage>;
 };
 
-export type SaveIndicatorPutError = SaveIndicatorPutErrors[keyof SaveIndicatorPutErrors];
+export type SaveIndicatorTemplateError = SaveIndicatorTemplateErrors[keyof SaveIndicatorTemplateErrors];
 
-export type SaveIndicatorPutResponses = {
+export type SaveIndicatorTemplateResponses = {
     /**
      * OK
      */
     200: IndicatorTemplate;
 };
 
-export type SaveIndicatorPutResponse = SaveIndicatorPutResponses[keyof SaveIndicatorPutResponses];
-
-export type CreateClientGroupTemplateData = {
-    body?: {
-        allRequestParams: MultiValueMapStringStringWritable;
-        institutionId?: number;
-    };
-    path?: never;
-    query?: never;
-    url: '/admin-api/v1/exam-template/client-group';
-};
-
-export type CreateClientGroupTemplateErrors = {
-    /**
-     * Bad request, e.g. field validation or an illegal argument. The body is usually a list of APIMessage, but may be absent for some illegal-argument cases.
-     */
-    400: Array<ApiMessage>;
-    /**
-     * Unauthorized. Body is an APIMessage or a list of APIMessage.
-     */
-    401: ApiMessage | Array<ApiMessage>;
-    /**
-     * Forbidden. Body is a list of APIMessage.
-     */
-    403: Array<ApiMessage>;
-    /**
-     * Resource not found. Body is a list of APIMessage.
-     */
-    404: Array<ApiMessage>;
-    /**
-     * Too many requests (rate limit). Body is the rate-limit code as plain text.
-     */
-    429: string;
-    /**
-     * Unexpected internal server error. Body is a list of APIMessage.
-     */
-    500: Array<ApiMessage>;
-};
-
-export type CreateClientGroupTemplateError = CreateClientGroupTemplateErrors[keyof CreateClientGroupTemplateErrors];
-
-export type CreateClientGroupTemplateResponses = {
-    /**
-     * OK
-     */
-    200: ClientGroupTemplate;
-};
-
-export type CreateClientGroupTemplateResponse = CreateClientGroupTemplateResponses[keyof CreateClientGroupTemplateResponses];
-
-export type SaveClientGroupTemplateData = {
-    body: ClientGroupTemplateWritable;
-    path?: never;
-    query?: {
-        institutionId?: number;
-    };
-    url: '/admin-api/v1/exam-template/client-group';
-};
-
-export type SaveClientGroupTemplateErrors = {
-    /**
-     * Bad request, e.g. field validation or an illegal argument. The body is usually a list of APIMessage, but may be absent for some illegal-argument cases.
-     */
-    400: Array<ApiMessage>;
-    /**
-     * Unauthorized. Body is an APIMessage or a list of APIMessage.
-     */
-    401: ApiMessage | Array<ApiMessage>;
-    /**
-     * Forbidden. Body is a list of APIMessage.
-     */
-    403: Array<ApiMessage>;
-    /**
-     * Resource not found. Body is a list of APIMessage.
-     */
-    404: Array<ApiMessage>;
-    /**
-     * Too many requests (rate limit). Body is the rate-limit code as plain text.
-     */
-    429: string;
-    /**
-     * Unexpected internal server error. Body is a list of APIMessage.
-     */
-    500: Array<ApiMessage>;
-};
-
-export type SaveClientGroupTemplateError = SaveClientGroupTemplateErrors[keyof SaveClientGroupTemplateErrors];
-
-export type SaveClientGroupTemplateResponses = {
-    /**
-     * OK
-     */
-    200: ClientGroupTemplate;
-};
-
-export type SaveClientGroupTemplateResponse = SaveClientGroupTemplateResponses[keyof SaveClientGroupTemplateResponses];
+export type SaveIndicatorTemplateResponse = SaveIndicatorTemplateResponses[keyof SaveIndicatorTemplateResponses];
 
 export type DeleteAllExamConfigurationMappingsData = {
     body?: {
@@ -9575,104 +9516,6 @@ export type PublishResponses = {
 
 export type PublishResponse = PublishResponses[keyof PublishResponses];
 
-export type GetScreenProctoringSettings1Data = {
-    body?: never;
-    path: {
-        modelId: number;
-    };
-    query?: {
-        institutionId?: number;
-    };
-    url: '/admin-api/v1/exam-template/{modelId}/screen-proctoring';
-};
-
-export type GetScreenProctoringSettings1Errors = {
-    /**
-     * Bad request, e.g. field validation or an illegal argument. The body is usually a list of APIMessage, but may be absent for some illegal-argument cases.
-     */
-    400: Array<ApiMessage>;
-    /**
-     * Unauthorized. Body is an APIMessage or a list of APIMessage.
-     */
-    401: ApiMessage | Array<ApiMessage>;
-    /**
-     * Forbidden. Body is a list of APIMessage.
-     */
-    403: Array<ApiMessage>;
-    /**
-     * Resource not found. Body is a list of APIMessage.
-     */
-    404: Array<ApiMessage>;
-    /**
-     * Too many requests (rate limit). Body is the rate-limit code as plain text.
-     */
-    429: string;
-    /**
-     * Unexpected internal server error. Body is a list of APIMessage.
-     */
-    500: Array<ApiMessage>;
-};
-
-export type GetScreenProctoringSettings1Error = GetScreenProctoringSettings1Errors[keyof GetScreenProctoringSettings1Errors];
-
-export type GetScreenProctoringSettings1Responses = {
-    /**
-     * OK
-     */
-    200: ScreenProctoringSettings;
-};
-
-export type GetScreenProctoringSettings1Response = GetScreenProctoringSettings1Responses[keyof GetScreenProctoringSettings1Responses];
-
-export type SaveScreenProctoringSettings1Data = {
-    body: ScreenProctoringSettings;
-    path: {
-        modelId: number;
-    };
-    query?: {
-        institutionId?: number;
-    };
-    url: '/admin-api/v1/exam-template/{modelId}/screen-proctoring';
-};
-
-export type SaveScreenProctoringSettings1Errors = {
-    /**
-     * Bad request, e.g. field validation or an illegal argument. The body is usually a list of APIMessage, but may be absent for some illegal-argument cases.
-     */
-    400: Array<ApiMessage>;
-    /**
-     * Unauthorized. Body is an APIMessage or a list of APIMessage.
-     */
-    401: ApiMessage | Array<ApiMessage>;
-    /**
-     * Forbidden. Body is a list of APIMessage.
-     */
-    403: Array<ApiMessage>;
-    /**
-     * Resource not found. Body is a list of APIMessage.
-     */
-    404: Array<ApiMessage>;
-    /**
-     * Too many requests (rate limit). Body is the rate-limit code as plain text.
-     */
-    429: string;
-    /**
-     * Unexpected internal server error. Body is a list of APIMessage.
-     */
-    500: Array<ApiMessage>;
-};
-
-export type SaveScreenProctoringSettings1Error = SaveScreenProctoringSettings1Errors[keyof SaveScreenProctoringSettings1Errors];
-
-export type SaveScreenProctoringSettings1Responses = {
-    /**
-     * OK
-     */
-    200: ExamTemplate;
-};
-
-export type SaveScreenProctoringSettings1Response = SaveScreenProctoringSettings1Responses[keyof SaveScreenProctoringSettings1Responses];
-
 export type CopyExamTemplateData = {
     body?: never;
     path: {
@@ -9720,7 +9563,7 @@ export type CopyExamTemplateResponses = {
 
 export type CopyExamTemplateResponse = CopyExamTemplateResponses[keyof CopyExamTemplateResponses];
 
-export type CreateExamTemplate1Data = {
+export type FullCreateExamTemplateData = {
     body: ExamTemplateWritable;
     path?: never;
     query?: {
@@ -9729,7 +9572,7 @@ export type CreateExamTemplate1Data = {
     url: '/admin-api/v1/exam-template/create';
 };
 
-export type CreateExamTemplate1Errors = {
+export type FullCreateExamTemplateErrors = {
     /**
      * Bad request, e.g. field validation or an illegal argument. The body is usually a list of APIMessage, but may be absent for some illegal-argument cases.
      */
@@ -9756,25 +9599,25 @@ export type CreateExamTemplate1Errors = {
     500: Array<ApiMessage>;
 };
 
-export type CreateExamTemplate1Error = CreateExamTemplate1Errors[keyof CreateExamTemplate1Errors];
+export type FullCreateExamTemplateError = FullCreateExamTemplateErrors[keyof FullCreateExamTemplateErrors];
 
-export type CreateExamTemplate1Responses = {
+export type FullCreateExamTemplateResponses = {
     /**
      * OK
      */
     200: ExamTemplate;
 };
 
-export type CreateExamTemplate1Response = CreateExamTemplate1Responses[keyof CreateExamTemplate1Responses];
+export type FullCreateExamTemplateResponse = FullCreateExamTemplateResponses[keyof FullCreateExamTemplateResponses];
 
-export type CreateTemporaryConfigurationTemplateData = {
+export type CreateTemporaryConfigTemplateData = {
     body?: never;
     path?: never;
     query?: never;
     url: '/admin-api/v1/exam-template/create-config-template';
 };
 
-export type CreateTemporaryConfigurationTemplateErrors = {
+export type CreateTemporaryConfigTemplateErrors = {
     /**
      * Bad request, e.g. field validation or an illegal argument. The body is usually a list of APIMessage, but may be absent for some illegal-argument cases.
      */
@@ -9801,16 +9644,16 @@ export type CreateTemporaryConfigurationTemplateErrors = {
     500: Array<ApiMessage>;
 };
 
-export type CreateTemporaryConfigurationTemplateError = CreateTemporaryConfigurationTemplateErrors[keyof CreateTemporaryConfigurationTemplateErrors];
+export type CreateTemporaryConfigTemplateError = CreateTemporaryConfigTemplateErrors[keyof CreateTemporaryConfigTemplateErrors];
 
-export type CreateTemporaryConfigurationTemplateResponses = {
+export type CreateTemporaryConfigTemplateResponses = {
     /**
      * OK
      */
     200: ConfigurationNode;
 };
 
-export type CreateTemporaryConfigurationTemplateResponse = CreateTemporaryConfigurationTemplateResponses[keyof CreateTemporaryConfigurationTemplateResponses];
+export type CreateTemporaryConfigTemplateResponse = CreateTemporaryConfigTemplateResponses[keyof CreateTemporaryConfigTemplateResponses];
 
 export type UndoData = {
     body?: never;
@@ -16273,206 +16116,6 @@ export type GetExamAdministrationsByIdsResponses = {
 
 export type GetExamAdministrationsByIdsResponse = GetExamAdministrationsByIdsResponses[keyof GetExamAdministrationsByIdsResponses];
 
-export type DeleteIndicatorTemplateData = {
-    body?: never;
-    path: {
-        parentModelId: string;
-        modelId: string;
-    };
-    query?: {
-        institutionId?: number;
-    };
-    url: '/admin-api/v1/exam-template/{parentModelId}/indicator/{modelId}';
-};
-
-export type DeleteIndicatorTemplateErrors = {
-    /**
-     * Bad request, e.g. field validation or an illegal argument. The body is usually a list of APIMessage, but may be absent for some illegal-argument cases.
-     */
-    400: Array<ApiMessage>;
-    /**
-     * Unauthorized. Body is an APIMessage or a list of APIMessage.
-     */
-    401: ApiMessage | Array<ApiMessage>;
-    /**
-     * Forbidden. Body is a list of APIMessage.
-     */
-    403: Array<ApiMessage>;
-    /**
-     * Resource not found. Body is a list of APIMessage.
-     */
-    404: Array<ApiMessage>;
-    /**
-     * Too many requests (rate limit). Body is the rate-limit code as plain text.
-     */
-    429: string;
-    /**
-     * Unexpected internal server error. Body is a list of APIMessage.
-     */
-    500: Array<ApiMessage>;
-};
-
-export type DeleteIndicatorTemplateError = DeleteIndicatorTemplateErrors[keyof DeleteIndicatorTemplateErrors];
-
-export type DeleteIndicatorTemplateResponses = {
-    /**
-     * OK
-     */
-    200: EntityKey;
-};
-
-export type DeleteIndicatorTemplateResponse = DeleteIndicatorTemplateResponses[keyof DeleteIndicatorTemplateResponses];
-
-export type GetIndicatorByData = {
-    body?: never;
-    path: {
-        parentModelId: string;
-        modelId: string;
-    };
-    query?: {
-        institutionId?: number;
-    };
-    url: '/admin-api/v1/exam-template/{parentModelId}/indicator/{modelId}';
-};
-
-export type GetIndicatorByErrors = {
-    /**
-     * Bad request, e.g. field validation or an illegal argument. The body is usually a list of APIMessage, but may be absent for some illegal-argument cases.
-     */
-    400: Array<ApiMessage>;
-    /**
-     * Unauthorized. Body is an APIMessage or a list of APIMessage.
-     */
-    401: ApiMessage | Array<ApiMessage>;
-    /**
-     * Forbidden. Body is a list of APIMessage.
-     */
-    403: Array<ApiMessage>;
-    /**
-     * Resource not found. Body is a list of APIMessage.
-     */
-    404: Array<ApiMessage>;
-    /**
-     * Too many requests (rate limit). Body is the rate-limit code as plain text.
-     */
-    429: string;
-    /**
-     * Unexpected internal server error. Body is a list of APIMessage.
-     */
-    500: Array<ApiMessage>;
-};
-
-export type GetIndicatorByError = GetIndicatorByErrors[keyof GetIndicatorByErrors];
-
-export type GetIndicatorByResponses = {
-    /**
-     * OK
-     */
-    200: IndicatorTemplate;
-};
-
-export type GetIndicatorByResponse = GetIndicatorByResponses[keyof GetIndicatorByResponses];
-
-export type DeleteClientGroupTemplateData = {
-    body?: never;
-    path: {
-        parentModelId: string;
-        modelId: string;
-    };
-    query?: {
-        institutionId?: number;
-    };
-    url: '/admin-api/v1/exam-template/{parentModelId}/client-group/{modelId}';
-};
-
-export type DeleteClientGroupTemplateErrors = {
-    /**
-     * Bad request, e.g. field validation or an illegal argument. The body is usually a list of APIMessage, but may be absent for some illegal-argument cases.
-     */
-    400: Array<ApiMessage>;
-    /**
-     * Unauthorized. Body is an APIMessage or a list of APIMessage.
-     */
-    401: ApiMessage | Array<ApiMessage>;
-    /**
-     * Forbidden. Body is a list of APIMessage.
-     */
-    403: Array<ApiMessage>;
-    /**
-     * Resource not found. Body is a list of APIMessage.
-     */
-    404: Array<ApiMessage>;
-    /**
-     * Too many requests (rate limit). Body is the rate-limit code as plain text.
-     */
-    429: string;
-    /**
-     * Unexpected internal server error. Body is a list of APIMessage.
-     */
-    500: Array<ApiMessage>;
-};
-
-export type DeleteClientGroupTemplateError = DeleteClientGroupTemplateErrors[keyof DeleteClientGroupTemplateErrors];
-
-export type DeleteClientGroupTemplateResponses = {
-    /**
-     * OK
-     */
-    200: EntityKey;
-};
-
-export type DeleteClientGroupTemplateResponse = DeleteClientGroupTemplateResponses[keyof DeleteClientGroupTemplateResponses];
-
-export type GetClientGroupTemplateByData = {
-    body?: never;
-    path: {
-        parentModelId: string;
-        modelId: string;
-    };
-    query?: {
-        institutionId?: number;
-    };
-    url: '/admin-api/v1/exam-template/{parentModelId}/client-group/{modelId}';
-};
-
-export type GetClientGroupTemplateByErrors = {
-    /**
-     * Bad request, e.g. field validation or an illegal argument. The body is usually a list of APIMessage, but may be absent for some illegal-argument cases.
-     */
-    400: Array<ApiMessage>;
-    /**
-     * Unauthorized. Body is an APIMessage or a list of APIMessage.
-     */
-    401: ApiMessage | Array<ApiMessage>;
-    /**
-     * Forbidden. Body is a list of APIMessage.
-     */
-    403: Array<ApiMessage>;
-    /**
-     * Resource not found. Body is a list of APIMessage.
-     */
-    404: Array<ApiMessage>;
-    /**
-     * Too many requests (rate limit). Body is the rate-limit code as plain text.
-     */
-    429: string;
-    /**
-     * Unexpected internal server error. Body is a list of APIMessage.
-     */
-    500: Array<ApiMessage>;
-};
-
-export type GetClientGroupTemplateByError = GetClientGroupTemplateByErrors[keyof GetClientGroupTemplateByErrors];
-
-export type GetClientGroupTemplateByResponses = {
-    /**
-     * OK
-     */
-    200: ClientGroupTemplate;
-};
-
-export type GetClientGroupTemplateByResponse = GetClientGroupTemplateByResponses[keyof GetClientGroupTemplateByResponses];
-
 export type DeleteExamTemplateData = {
     body?: unknown;
     path: {
@@ -16583,22 +16226,18 @@ export type GetExamTemplateByIdResponses = {
 
 export type GetExamTemplateByIdResponse = GetExamTemplateByIdResponses[keyof GetExamTemplateByIdResponses];
 
-export type GetIndicatorPageData = {
+export type GetExamTemplateScreenProctoringSettingsData = {
     body?: never;
     path: {
-        modelId: string;
+        modelId: number;
     };
-    query: {
+    query?: {
         institutionId?: number;
-        page_number?: number;
-        page_size?: number;
-        sort?: string;
-        allRequestParams: MultiValueMapStringStringWritable;
     };
-    url: '/admin-api/v1/exam-template/{modelId}/indicator';
+    url: '/admin-api/v1/exam-template/{modelId}/screen-proctoring';
 };
 
-export type GetIndicatorPageErrors = {
+export type GetExamTemplateScreenProctoringSettingsErrors = {
     /**
      * Bad request, e.g. field validation or an illegal argument. The body is usually a list of APIMessage, but may be absent for some illegal-argument cases.
      */
@@ -16625,16 +16264,16 @@ export type GetIndicatorPageErrors = {
     500: Array<ApiMessage>;
 };
 
-export type GetIndicatorPageError = GetIndicatorPageErrors[keyof GetIndicatorPageErrors];
+export type GetExamTemplateScreenProctoringSettingsError = GetExamTemplateScreenProctoringSettingsErrors[keyof GetExamTemplateScreenProctoringSettingsErrors];
 
-export type GetIndicatorPageResponses = {
+export type GetExamTemplateScreenProctoringSettingsResponses = {
     /**
      * OK
      */
-    200: PageIndicatorTemplate;
+    200: ScreenProctoringSettings;
 };
 
-export type GetIndicatorPageResponse = GetIndicatorPageResponses[keyof GetIndicatorPageResponses];
+export type GetExamTemplateScreenProctoringSettingsResponse = GetExamTemplateScreenProctoringSettingsResponses[keyof GetExamTemplateScreenProctoringSettingsResponses];
 
 export type GetExamTemplateDependenciesData = {
     body?: never;
@@ -16700,58 +16339,6 @@ export type GetExamTemplateDependenciesResponses = {
 };
 
 export type GetExamTemplateDependenciesResponse = GetExamTemplateDependenciesResponses[keyof GetExamTemplateDependenciesResponses];
-
-export type GetClientGroupTemplatePageData = {
-    body?: never;
-    path: {
-        modelId: string;
-    };
-    query?: {
-        institutionId?: number;
-        page_number?: number;
-        page_size?: number;
-        sort?: string;
-    };
-    url: '/admin-api/v1/exam-template/{modelId}/client-group';
-};
-
-export type GetClientGroupTemplatePageErrors = {
-    /**
-     * Bad request, e.g. field validation or an illegal argument. The body is usually a list of APIMessage, but may be absent for some illegal-argument cases.
-     */
-    400: Array<ApiMessage>;
-    /**
-     * Unauthorized. Body is an APIMessage or a list of APIMessage.
-     */
-    401: ApiMessage | Array<ApiMessage>;
-    /**
-     * Forbidden. Body is a list of APIMessage.
-     */
-    403: Array<ApiMessage>;
-    /**
-     * Resource not found. Body is a list of APIMessage.
-     */
-    404: Array<ApiMessage>;
-    /**
-     * Too many requests (rate limit). Body is the rate-limit code as plain text.
-     */
-    429: string;
-    /**
-     * Unexpected internal server error. Body is a list of APIMessage.
-     */
-    500: Array<ApiMessage>;
-};
-
-export type GetClientGroupTemplatePageError = GetClientGroupTemplatePageErrors[keyof GetClientGroupTemplatePageErrors];
-
-export type GetClientGroupTemplatePageResponses = {
-    /**
-     * OK
-     */
-    200: PageClientGroupTemplate;
-};
-
-export type GetClientGroupTemplatePageResponse = GetClientGroupTemplatePageResponses[keyof GetClientGroupTemplatePageResponses];
 
 export type GetExamTemplateNamesData = {
     body?: never;
@@ -16853,51 +16440,6 @@ export type GetExamTemplatesByIdsResponses = {
 };
 
 export type GetExamTemplatesByIdsResponse = GetExamTemplatesByIdsResponses[keyof GetExamTemplatesByIdsResponses];
-
-export type GetDefaultData = {
-    body?: never;
-    path?: never;
-    query?: never;
-    url: '/admin-api/v1/exam-template/default';
-};
-
-export type GetDefaultErrors = {
-    /**
-     * Bad request, e.g. field validation or an illegal argument. The body is usually a list of APIMessage, but may be absent for some illegal-argument cases.
-     */
-    400: Array<ApiMessage>;
-    /**
-     * Unauthorized. Body is an APIMessage or a list of APIMessage.
-     */
-    401: ApiMessage | Array<ApiMessage>;
-    /**
-     * Forbidden. Body is a list of APIMessage.
-     */
-    403: Array<ApiMessage>;
-    /**
-     * Resource not found. Body is a list of APIMessage.
-     */
-    404: Array<ApiMessage>;
-    /**
-     * Too many requests (rate limit). Body is the rate-limit code as plain text.
-     */
-    429: string;
-    /**
-     * Unexpected internal server error. Body is a list of APIMessage.
-     */
-    500: Array<ApiMessage>;
-};
-
-export type GetDefaultError = GetDefaultErrors[keyof GetDefaultErrors];
-
-export type GetDefaultResponses = {
-    /**
-     * OK
-     */
-    200: ExamTemplate;
-};
-
-export type GetDefaultResponse = GetDefaultResponses[keyof GetDefaultResponses];
 
 export type DeleteExamConfigurationMappingData = {
     body?: unknown;
@@ -20378,6 +19920,56 @@ export type ForceDeleteExamAdministrationResponses = {
 };
 
 export type ForceDeleteExamAdministrationResponse = ForceDeleteExamAdministrationResponses[keyof ForceDeleteExamAdministrationResponses];
+
+export type DeleteIndicatorTemplateData = {
+    body?: never;
+    path: {
+        parentModelId: string;
+        modelId: string;
+    };
+    query?: {
+        institutionId?: number;
+    };
+    url: '/admin-api/v1/exam-template/{parentModelId}/indicator/{modelId}';
+};
+
+export type DeleteIndicatorTemplateErrors = {
+    /**
+     * Bad request, e.g. field validation or an illegal argument. The body is usually a list of APIMessage, but may be absent for some illegal-argument cases.
+     */
+    400: Array<ApiMessage>;
+    /**
+     * Unauthorized. Body is an APIMessage or a list of APIMessage.
+     */
+    401: ApiMessage | Array<ApiMessage>;
+    /**
+     * Forbidden. Body is a list of APIMessage.
+     */
+    403: Array<ApiMessage>;
+    /**
+     * Resource not found. Body is a list of APIMessage.
+     */
+    404: Array<ApiMessage>;
+    /**
+     * Too many requests (rate limit). Body is the rate-limit code as plain text.
+     */
+    429: string;
+    /**
+     * Unexpected internal server error. Body is a list of APIMessage.
+     */
+    500: Array<ApiMessage>;
+};
+
+export type DeleteIndicatorTemplateError = DeleteIndicatorTemplateErrors[keyof DeleteIndicatorTemplateErrors];
+
+export type DeleteIndicatorTemplateResponses = {
+    /**
+     * OK
+     */
+    200: EntityKey;
+};
+
+export type DeleteIndicatorTemplateResponse = DeleteIndicatorTemplateResponses[keyof DeleteIndicatorTemplateResponses];
 
 export type ForceDeleteExamTemplateData = {
     body?: unknown;

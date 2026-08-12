@@ -3,11 +3,11 @@ import {
     SummarySectionItem,
 } from "@/components/widgets/wizardSummary/types.ts";
 import i18n from "@/i18n";
-import { ExamTemplate } from "@/models/seb-server/examTemplate.ts";
+import { ExamTemplateCreate } from "@/models/examTemplate.ts";
 import { UserAccountName } from "@/models/userAccount.ts";
 
 export const getSummarySupervisors = (
-    examTemplate: ExamTemplate,
+    examTemplate: ExamTemplateCreate,
     userAccounts: UserAccountName[],
 ): SummarySectionData => {
     const getSupervisorItems = (supervisorId: string) => {

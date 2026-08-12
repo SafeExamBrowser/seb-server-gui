@@ -1,9 +1,9 @@
 import { SummarySectionData } from "@/components/widgets/wizardSummary/types.ts";
 import i18n from "@/i18n";
-import { ExamTemplate } from "@/models/seb-server/examTemplate.ts";
+import { ExamTemplateCreate } from "@/models/examTemplate.ts";
 
 export const getSummaryIndicators = (
-    examTemplate: ExamTemplate,
+    examTemplate: ExamTemplateCreate,
 ): SummarySectionData => ({
     label: i18n.global.t(
         "createTemplateExam.steps.summary.sections.indicators.title",

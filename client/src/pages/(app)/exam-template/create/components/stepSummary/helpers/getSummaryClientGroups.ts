@@ -3,11 +3,12 @@ import {
     SummarySectionItem,
 } from "@/components/widgets/wizardSummary/types.ts";
 import i18n from "@/i18n";
-import { ClientGroup, ExamTemplate } from "@/models/seb-server/examTemplate.ts";
+import { ExamTemplateCreate } from "@/models/examTemplate.ts";
+import { ClientGroup } from "@/models/seb-server/examTemplate.ts";
 import { getClientGroupTypeDetails } from "@/utils/clientGroup.ts";
 
 export const getSummaryClientGroups = (
-    examTemplate: ExamTemplate,
+    examTemplate: ExamTemplateCreate,
 ): SummarySectionData => {
     const getClientGroup = (
         clientGroup: ClientGroup,

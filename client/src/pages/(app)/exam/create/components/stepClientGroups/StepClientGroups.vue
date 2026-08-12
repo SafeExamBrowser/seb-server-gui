@@ -109,7 +109,7 @@ const { data: screenProctoring, fetch: fetchScreenProctoring } =
 watchEffect(() => {
     const templateId = examTemplateStore.selectedExamTemplate?.id;
     if (templateId !== undefined) {
-        fetchScreenProctoring(templateId.toString());
+        fetchScreenProctoring(templateId);
     }
 });
 

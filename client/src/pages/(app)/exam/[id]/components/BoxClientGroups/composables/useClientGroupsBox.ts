@@ -1,3 +1,4 @@
+import { useMutation as useTanstackMutation } from "@tanstack/vue-query";
 import { computed, type Ref } from "vue";
 
 import { useFetch } from "@/composables/useFetch.ts";
@@ -9,9 +10,13 @@ import { ClientGroupExisting } from "@/models/seb-server/examTemplate.ts";
 import { templateGroupToClientGroup } from "@/pages/(app)/exam/[id]/components/BoxClientGroups/utils/templateGroupToClientGroup.ts";
 import { useExamActionDisabled } from "@/pages/(app)/exam/[id]/composables/useExamActionDisabled.ts";
 import { GUIAction } from "@/services/ability.ts";
+import {
+    appErrorToMessage,
+    toAppErrorOrUndefined,
+} from "@/services/errors/toAppError.ts";
 import { notify } from "@/services/notifications/notify.ts";
 import * as clientGroupService from "@/services/seb-server/clientGroupService.ts";
-import * as examTemplateService from "@/services/seb-server/examTemplateService.ts";
+import { getExamTemplateSelectionById } from "@/services/seb-server/examTemplateService.ts";
 
 export const useClientGroupsBox = (
     examId: number,
@@ -29,14 +34,16 @@ export const useClientGroupsBox = (
         GUIAction.EDIT_CLIENT_GROUPS,
     );
 
-    const templateFetch = useFetch(() =>
-        examTemplateService.getExamTemplate(String(exam.value?.examTemplateId)),
+    const templateFetch = useTanstackMutation({
+        mutationFn: (modelId: string) => getExamTemplateSelectionById(modelId),
+    });
+    const templateError = computed(() =>
+        toAppErrorOrUndefined(templateFetch.error.value),
     );
 
-    // useFetch keeps stale data on error; ignore it so a template deleted
-    // after a successful fetch shows the empty state, not its old groups
+    // a failed fetch must show the empty state, not the previous template's groups
     const templateGroups = computed(() => {
-        if (templateFetch.error.value) {
+        if (templateError.value) {
             return [];
         }
 
@@ -46,20 +53,26 @@ export const useClientGroupsBox = (
     // A deleted template (404) is a regular empty state, not an error
     const templateNotFound = computed(
         () =>
-            templateFetch.error.value?.kind === "backend" &&
-            templateFetch.error.value.status === 404,
+            templateError.value?.kind === "backend" &&
+            templateError.value.status === 404,
     );
 
     const templateErrorMessage = computed(() =>
-        templateNotFound.value ? undefined : templateFetch.errorMessage.value,
+        templateNotFound.value || !templateError.value
+            ? undefined
+            : appErrorToMessage(templateError.value),
     );
 
     const loadTemplateGroups = () => {
-        if (exam.value?.examTemplateId === undefined) {
+        const templateId = exam.value?.examTemplateId;
+
+        if (templateId === undefined) {
             return;
         }
 
-        templateFetch.fetchData();
+        void templateFetch
+            .mutateAsync(String(templateId))
+            .catch(() => undefined);
     };
 
     const copyMutation = useMutation((templateGroup: ClientGroupExisting) =>
@@ -114,7 +127,7 @@ export const useClientGroupsBox = (
         error: groupsFetch.error,
         editDisabled,
         templateGroups,
-        templateLoading: templateFetch.loading,
+        templateLoading: templateFetch.isPending,
         templateErrorMessage,
         loadTemplateGroups,
         copyTemplateGroup,

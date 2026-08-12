@@ -3,11 +3,11 @@ import { computed, Ref } from "vue";
 import { KeyValueItem } from "@/components/widgets/keyValueList/types.ts";
 import { useClientConfigurationNames } from "@/composables/useClientConfigurationNames.ts";
 import i18n from "@/i18n";
+import { BasicSettings } from "@/models/examTemplate.ts";
 import {
     ExamTypeEnum,
     toSelectableExamType,
 } from "@/models/seb-server/examFiltersEnum.ts";
-import { BasicSettings } from "@/models/seb-server/examTemplate.ts";
 
 export const useBasicSettingsItems = (basicSettings: Ref<BasicSettings>) => {
     const {
