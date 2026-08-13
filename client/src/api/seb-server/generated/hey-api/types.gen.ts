@@ -312,8 +312,8 @@ export type Exam = {
     additionalAttributes?: {
         [key: string]: string;
     };
-    quiz_start_url?: string;
     quiz_description?: string;
+    quiz_start_url?: string;
 };
 
 export type ClientGroupTemplate = {
@@ -1195,16 +1195,49 @@ export type PageQuizData = {
     complete?: boolean;
 };
 
+/**
+ * Quiz (course) data as discovered on an LMS.
+ */
 export type QuizData = {
-    quiz_id?: string;
+    /**
+     * LMS-side identifier of the quiz.
+     */
+    quiz_id: string;
+    /**
+     * Institution identifier the assessment tool of this quiz belongs to.
+     */
     institutionId?: number;
-    lms_setup_id?: number;
+    /**
+     * Identifier of the assessment tool (LMS setup) the quiz was discovered on.
+     */
+    lms_setup_id: number;
+    /**
+     * Type of the LMS the quiz was discovered on.
+     */
     lms_setup_type?: 'MOCKUP' | 'OPEN_EDX' | 'MOODLE' | 'MOODLE_PLUGIN' | 'ANS_DELFT' | 'OPEN_OLAT';
-    quiz_name?: string;
+    /**
+     * Name of the quiz.
+     */
+    quiz_name: string;
+    /**
+     * Description of the quiz.
+     */
     quiz_description?: string;
+    /**
+     * Start time of the quiz.
+     */
     quiz_start_time?: string;
+    /**
+     * End time of the quiz.
+     */
     quiz_end_time?: string;
+    /**
+     * URL under which the quiz starts on the LMS.
+     */
     quiz_start_url?: string;
+    /**
+     * Additional LMS-specific quiz attributes as key-value pairs.
+     */
     additionalAttributes?: {
         [key: string]: string;
     };
@@ -1295,16 +1328,16 @@ export type ClientNotification = {
 };
 
 export type ClientMonitoringDataView = {
+    pendingNotification?: boolean;
     missingPing?: boolean;
     grantChecked?: boolean;
     grantDenied?: boolean;
     sebversionDenied?: boolean;
-    pendingNotification?: boolean;
+    st?: 'UNDEFINED' | 'CONNECTION_REQUESTED' | 'READY' | 'ACTIVE' | 'CLOSED' | 'DISABLED';
     lat?: number;
     iv?: {
         [key: string]: string;
     };
-    st?: 'UNDEFINED' | 'CONNECTION_REQUESTED' | 'READY' | 'ACTIVE' | 'CLOSED' | 'DISABLED';
     nf?: number;
     id?: number;
 };
@@ -12583,20 +12616,35 @@ export type GetFullReportByIdResponses = {
 
 export type GetFullReportByIdResponse = GetFullReportByIdResponses[keyof GetFullReportByIdResponses];
 
-export type GetQuizPageData = {
+export type GetQuizzesData = {
     body?: never;
     path?: never;
-    query: {
+    query?: {
+        /**
+         * Filters quizzes by name.
+         */
+        name?: string;
+        /**
+         * Filters quizzes by start time; unix timestamp in milliseconds.
+         */
+        start_timestamp_millis?: number;
+        /**
+         * Identifier of the assessment tool (LMS setup) to discover quizzes on.
+         */
+        lms_setup?: number;
+        /**
+         * Forces a new LMS lookup instead of serving the cached result of the previous search.
+         */
+        force_new_search?: boolean;
         institutionId?: number;
         page_number?: number;
         page_size?: number;
         sort?: string;
-        allRequestParams: MultiValueMapStringStringWritable;
     };
     url: '/admin-api/v1/quiz';
 };
 
-export type GetQuizPageErrors = {
+export type GetQuizzesErrors = {
     /**
      * Bad request, e.g. field validation or an illegal argument. The body is usually a list of APIMessage, but may be absent for some illegal-argument cases.
      */
@@ -12623,65 +12671,16 @@ export type GetQuizPageErrors = {
     500: Array<ApiMessage>;
 };
 
-export type GetQuizPageError = GetQuizPageErrors[keyof GetQuizPageErrors];
+export type GetQuizzesError = GetQuizzesErrors[keyof GetQuizzesErrors];
 
-export type GetQuizPageResponses = {
+export type GetQuizzesResponses = {
     /**
      * OK
      */
     200: PageQuizData;
 };
 
-export type GetQuizPageResponse = GetQuizPageResponses[keyof GetQuizPageResponses];
-
-export type GetQuizData = {
-    body?: never;
-    path: {
-        modelId: string;
-    };
-    query: {
-        lms_setup_id: number;
-    };
-    url: '/admin-api/v1/quiz/{modelId}';
-};
-
-export type GetQuizErrors = {
-    /**
-     * Bad request, e.g. field validation or an illegal argument. The body is usually a list of APIMessage, but may be absent for some illegal-argument cases.
-     */
-    400: Array<ApiMessage>;
-    /**
-     * Unauthorized. Body is an APIMessage or a list of APIMessage.
-     */
-    401: ApiMessage | Array<ApiMessage>;
-    /**
-     * Forbidden. Body is a list of APIMessage.
-     */
-    403: Array<ApiMessage>;
-    /**
-     * Resource not found. Body is a list of APIMessage.
-     */
-    404: Array<ApiMessage>;
-    /**
-     * Too many requests (rate limit). Body is the rate-limit code as plain text.
-     */
-    429: string;
-    /**
-     * Unexpected internal server error. Body is a list of APIMessage.
-     */
-    500: Array<ApiMessage>;
-};
-
-export type GetQuizError = GetQuizErrors[keyof GetQuizErrors];
-
-export type GetQuizResponses = {
-    /**
-     * OK
-     */
-    200: QuizData;
-};
-
-export type GetQuizResponse = GetQuizResponses[keyof GetQuizResponses];
+export type GetQuizzesResponse = GetQuizzesResponses[keyof GetQuizzesResponses];
 
 export type DeleteOrientationData = {
     body?: unknown;

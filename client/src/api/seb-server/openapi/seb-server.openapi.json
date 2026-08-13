@@ -12,6 +12,7 @@
             "name": "Institution",
             "description": "Institution administration endpoints."
         },
+        { "name": "Quiz", "description": "LMS quiz discovery endpoints." },
         {
             "name": "ExamTemplate",
             "description": "Exam template administration endpoints."
@@ -11378,9 +11379,35 @@
         },
         "/admin-api/v1/quiz": {
             "get": {
-                "tags": ["quiz-controller"],
-                "operationId": "getQuizPage",
+                "tags": ["Quiz"],
+                "summary": "Gets a page of quizzes discovered on an assessment tool (LMS).",
+                "description": "The quiz lookup runs asynchronously on the LMS: while the returned page's 'complete' flag is false, only a partial result set is available and the same page should be polled again.",
+                "operationId": "getQuizzes",
                 "parameters": [
+                    {
+                        "name": "name",
+                        "in": "query",
+                        "description": "Filters quizzes by name.",
+                        "schema": { "type": "string" }
+                    },
+                    {
+                        "name": "start_timestamp_millis",
+                        "in": "query",
+                        "description": "Filters quizzes by start time; unix timestamp in milliseconds.",
+                        "schema": { "type": "integer" }
+                    },
+                    {
+                        "name": "lms_setup",
+                        "in": "query",
+                        "description": "Identifier of the assessment tool (LMS setup) to discover quizzes on.",
+                        "schema": { "type": "integer" }
+                    },
+                    {
+                        "name": "force_new_search",
+                        "in": "query",
+                        "description": "Forces a new LMS lookup instead of serving the cached result of the previous search.",
+                        "schema": { "type": "boolean" }
+                    },
                     {
                         "name": "institutionId",
                         "in": "query",
@@ -11404,14 +11431,6 @@
                         "in": "query",
                         "required": false,
                         "schema": { "type": "string" }
-                    },
-                    {
-                        "name": "allRequestParams",
-                        "in": "query",
-                        "required": true,
-                        "schema": {
-                            "$ref": "#/components/schemas/MultiValueMapStringString"
-                        }
                     }
                 ],
                 "responses": {
@@ -11421,57 +11440,6 @@
                             "application/json": {
                                 "schema": {
                                     "$ref": "#/components/schemas/PageQuizData"
-                                }
-                            }
-                        }
-                    },
-                    "400": {
-                        "$ref": "#/components/responses/Error400BadRequest"
-                    },
-                    "401": {
-                        "$ref": "#/components/responses/Error401Unauthorized"
-                    },
-                    "403": {
-                        "$ref": "#/components/responses/Error403Forbidden"
-                    },
-                    "404": {
-                        "$ref": "#/components/responses/Error404NotFound"
-                    },
-                    "429": {
-                        "$ref": "#/components/responses/Error429TooManyRequests"
-                    },
-                    "500": {
-                        "$ref": "#/components/responses/Error500InternalServerError"
-                    }
-                },
-                "security": [{ "oauth": [] }]
-            }
-        },
-        "/admin-api/v1/quiz/{modelId}": {
-            "get": {
-                "tags": ["quiz-controller"],
-                "operationId": "getQuiz",
-                "parameters": [
-                    {
-                        "name": "modelId",
-                        "in": "path",
-                        "required": true,
-                        "schema": { "type": "string" }
-                    },
-                    {
-                        "name": "lms_setup_id",
-                        "in": "query",
-                        "required": true,
-                        "schema": { "type": "integer" }
-                    }
-                ],
-                "responses": {
-                    "200": {
-                        "description": "OK",
-                        "content": {
-                            "application/json": {
-                                "schema": {
-                                    "$ref": "#/components/schemas/QuizData"
                                 }
                             }
                         }
@@ -20655,8 +20623,8 @@
                         "type": "object",
                         "additionalProperties": { "type": "string" }
                     },
-                    "quiz_start_url": { "type": "string" },
-                    "quiz_description": { "type": "string" }
+                    "quiz_description": { "type": "string" },
+                    "quiz_start_url": { "type": "string" }
                 },
                 "required": ["externalId", "institutionId", "type"]
             },
@@ -22371,12 +22339,26 @@
             },
             "QuizData": {
                 "type": "object",
+                "description": "Quiz (course) data as discovered on an LMS.",
                 "properties": {
-                    "quiz_id": { "type": "string" },
-                    "institutionId": { "type": "integer" },
-                    "lms_setup_id": { "type": "integer" },
+                    "quiz_id": {
+                        "type": "string",
+                        "description": "LMS-side identifier of the quiz.",
+                        "example": "quiz10"
+                    },
+                    "institutionId": {
+                        "type": "integer",
+                        "description": "Institution identifier the assessment tool of this quiz belongs to.",
+                        "example": 1
+                    },
+                    "lms_setup_id": {
+                        "type": "integer",
+                        "description": "Identifier of the assessment tool (LMS setup) the quiz was discovered on.",
+                        "example": 1
+                    },
                     "lms_setup_type": {
                         "type": "string",
+                        "description": "Type of the LMS the quiz was discovered on.",
                         "enum": [
                             "MOCKUP",
                             "OPEN_EDX",
@@ -22384,24 +22366,39 @@
                             "MOODLE_PLUGIN",
                             "ANS_DELFT",
                             "OPEN_OLAT"
-                        ]
+                        ],
+                        "example": "MOODLE"
                     },
-                    "quiz_name": { "type": "string" },
-                    "quiz_description": { "type": "string" },
+                    "quiz_name": {
+                        "type": "string",
+                        "description": "Name of the quiz.",
+                        "example": "Semester End Quiz"
+                    },
+                    "quiz_description": {
+                        "type": "string",
+                        "description": "Description of the quiz."
+                    },
                     "quiz_start_time": {
                         "type": "string",
-                        "format": "date-time"
+                        "format": "date-time",
+                        "description": "Start time of the quiz."
                     },
                     "quiz_end_time": {
                         "type": "string",
-                        "format": "date-time"
+                        "format": "date-time",
+                        "description": "End time of the quiz."
                     },
-                    "quiz_start_url": { "type": "string" },
+                    "quiz_start_url": {
+                        "type": "string",
+                        "description": "URL under which the quiz starts on the LMS."
+                    },
                     "additionalAttributes": {
                         "type": "object",
-                        "additionalProperties": { "type": "string" }
+                        "additionalProperties": { "type": "string" },
+                        "description": "Additional LMS-specific quiz attributes as key-value pairs."
                     }
-                }
+                },
+                "required": ["lms_setup_id", "quiz_id", "quiz_name"]
             },
             "PageOrientation": {
                 "type": "object",
@@ -22536,16 +22533,11 @@
             "ClientMonitoringDataView": {
                 "type": "object",
                 "properties": {
+                    "pendingNotification": { "type": "boolean" },
                     "missingPing": { "type": "boolean" },
                     "grantChecked": { "type": "boolean" },
                     "grantDenied": { "type": "boolean" },
                     "sebversionDenied": { "type": "boolean" },
-                    "pendingNotification": { "type": "boolean" },
-                    "lat": { "type": "integer" },
-                    "iv": {
-                        "type": "object",
-                        "additionalProperties": { "type": "string" }
-                    },
                     "st": {
                         "type": "string",
                         "enum": [
@@ -22556,6 +22548,11 @@
                             "CLOSED",
                             "DISABLED"
                         ]
+                    },
+                    "lat": { "type": "integer" },
+                    "iv": {
+                        "type": "object",
+                        "additionalProperties": { "type": "string" }
                     },
                     "nf": { "type": "integer", "format": "int32" },
                     "id": { "type": "integer" }

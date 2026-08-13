@@ -371,8 +371,8 @@ export const zExam = z.object({
     followupId: z.int().optional(),
     excludeFromDeletion: z.boolean().optional(),
     additionalAttributes: z.record(z.string(), z.string()).optional(),
-    quiz_start_url: z.string().optional(),
-    quiz_description: z.string().optional()
+    quiz_description: z.string().optional(),
+    quiz_start_url: z.string().optional()
 });
 
 export const zClientGroupTemplate = z.object({
@@ -1256,10 +1256,13 @@ export const zPageScheduledDelete = z.object({
     complete: z.boolean().optional()
 });
 
+/**
+ * Quiz (course) data as discovered on an LMS.
+ */
 export const zQuizData = z.object({
-    quiz_id: z.string().optional(),
+    quiz_id: z.string(),
     institutionId: z.int().optional(),
-    lms_setup_id: z.int().optional(),
+    lms_setup_id: z.int(),
     lms_setup_type: z.enum([
         'MOCKUP',
         'OPEN_EDX',
@@ -1268,7 +1271,7 @@ export const zQuizData = z.object({
         'ANS_DELFT',
         'OPEN_OLAT'
     ]).optional(),
-    quiz_name: z.string().optional(),
+    quiz_name: z.string(),
     quiz_description: z.string().optional(),
     quiz_start_time: z.iso.datetime().optional(),
     quiz_end_time: z.iso.datetime().optional(),
@@ -1337,13 +1340,11 @@ export const zClientNotification = z.object({
 });
 
 export const zClientMonitoringDataView = z.object({
+    pendingNotification: z.boolean().optional(),
     missingPing: z.boolean().optional(),
     grantChecked: z.boolean().optional(),
     grantDenied: z.boolean().optional(),
     sebversionDenied: z.boolean().optional(),
-    pendingNotification: z.boolean().optional(),
-    lat: z.int().optional(),
-    iv: z.record(z.string(), z.string()).optional(),
     st: z.enum([
         'UNDEFINED',
         'CONNECTION_REQUESTED',
@@ -1352,6 +1353,8 @@ export const zClientMonitoringDataView = z.object({
         'CLOSED',
         'DISABLED'
     ]).optional(),
+    lat: z.int().optional(),
+    iv: z.record(z.string(), z.string()).optional(),
     nf: z.int().min(-2147483648, { error: 'Invalid value: Expected int32 to be >= -2147483648' }).max(2147483647, { error: 'Invalid value: Expected int32 to be <= 2147483647' }).optional(),
     id: z.int().optional()
 });
@@ -4151,31 +4154,21 @@ export const zGetFullReportByIdPath = z.object({
  */
 export const zGetFullReportByIdResponse = zScheduledDeleteReport;
 
-export const zGetQuizPageQuery = z.object({
+export const zGetQuizzesQuery = z.object({
+    name: z.string().optional(),
+    start_timestamp_millis: z.int().optional(),
+    lms_setup: z.int().optional(),
+    force_new_search: z.boolean().optional(),
     institutionId: z.int().optional(),
     page_number: z.int().min(-2147483648, { error: 'Invalid value: Expected int32 to be >= -2147483648' }).max(2147483647, { error: 'Invalid value: Expected int32 to be <= 2147483647' }).optional(),
     page_size: z.int().min(-2147483648, { error: 'Invalid value: Expected int32 to be >= -2147483648' }).max(2147483647, { error: 'Invalid value: Expected int32 to be <= 2147483647' }).optional(),
-    sort: z.string().optional(),
-    allRequestParams: zMultiValueMapStringStringWritable
+    sort: z.string().optional()
 });
 
 /**
  * OK
  */
-export const zGetQuizPageResponse = zPageQuizData;
-
-export const zGetQuizPath = z.object({
-    modelId: z.string()
-});
-
-export const zGetQuizQuery = z.object({
-    lms_setup_id: z.int()
-});
-
-/**
- * OK
- */
-export const zGetQuizResponse = zQuizData;
+export const zGetQuizzesResponse = zPageQuizData;
 
 export const zDeleteOrientationBody = z.unknown();
 
