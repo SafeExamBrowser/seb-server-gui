@@ -2,8 +2,9 @@ import { computed, reactive, Ref } from "vue";
 
 import { KeyValueItem } from "@/components/widgets/keyValueList/types";
 import i18n from "@/i18n";
-import { DeletionInfo } from "@/models/seb-server/scheduled-deletion";
-import { useGetScheduledDeletionReport } from "@/pages/(app)/scheduled-deletion/composables/api/useGetScheduledDeletionReport";
+import { DeletionInfo } from "@/models/scheduledDeletion.ts";
+import { useScheduledDeleteReportQuery } from "@/pages/(app)/scheduled-deletion/composables/api/useScheduledDeleteReportQuery.ts";
+import { toAppErrorOrUndefined } from "@/services/errors/toAppError.ts";
 import {
     formatTimestampToDate,
     formatTimestampToFullDate,
@@ -12,9 +13,10 @@ import {
 export const useScheduledDeletionReport = (id: string) => {
     const {
         data: scheduledDelete,
-        loading,
-        error,
-    } = useGetScheduledDeletionReport(Number(id));
+        isLoading: loading,
+        error: reportQueryError,
+    } = useScheduledDeleteReportQuery(computed(() => id));
+    const error = computed(() => toAppErrorOrUndefined(reportQueryError.value));
 
     const reportItems: Ref<KeyValueItem[]> = computed(() => {
         if (scheduledDelete.value) {

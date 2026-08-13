@@ -1,9 +1,9 @@
 import { computed, ref } from "vue";
 
-import { ScheduledDeleteItem } from "@/models/seb-server/scheduled-deletion";
+import { ScheduledDeleteItem } from "@/models/scheduledDeletion.ts";
+import { useDeleteScheduledDeleteMutation } from "@/pages/(app)/scheduled-deletion/composables/api/useDeleteScheduledDeleteMutation.ts";
+import { toAppErrorOrUndefined } from "@/services/errors/toAppError.ts";
 import { formatTimestampToDate } from "@/utils/timeUtils";
-
-import { useDeleteScheduledDeletion } from "./api/useDeleteScheduledDeletion";
 
 export const useScheduledDeleteDeleteFlow = ({
     onDeleteSuccess,
@@ -11,17 +11,21 @@ export const useScheduledDeleteDeleteFlow = ({
     onDeleteSuccess: () => void;
 }) => {
     const {
-        mutateData: deleteTemplate,
-        loading: deleteLoading,
-        error: deleteError,
-    } = useDeleteScheduledDeletion();
+        mutateAsync: deleteScheduledDelete,
+        error: deleteMutationError,
+        isPending: deleteLoading,
+    } = useDeleteScheduledDeleteMutation();
+
+    const deleteError = computed(() =>
+        toAppErrorOrUndefined(deleteMutationError.value),
+    );
 
     const deleteTarget = ref<ScheduledDeleteItem | undefined>(undefined);
     const deleteDialogOpen = ref(false);
 
     const deleteDetailText = computed(() =>
         deleteTarget.value
-            ? `Scheduled Deletion ${formatTimestampToDate(Number(String(deleteTarget.value.scheduleTime)))}`
+            ? `Scheduled Deletion ${formatTimestampToDate(deleteTarget.value.scheduleTime)}`
             : "",
     );
 
@@ -32,16 +36,15 @@ export const useScheduledDeleteDeleteFlow = ({
 
     const confirmDelete = async () => {
         const target = deleteTarget.value;
+        deleteDialogOpen.value = false;
 
         if (!target) {
-            deleteDialogOpen.value = false;
             return;
         }
 
-        await deleteTemplate(target.id);
-        deleteDialogOpen.value = false;
-
-        if (deleteError.value !== undefined) {
+        try {
+            await deleteScheduledDelete(String(target.id));
+        } catch {
             return;
         }
 

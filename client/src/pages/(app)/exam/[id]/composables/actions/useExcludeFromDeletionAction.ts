@@ -1,16 +1,27 @@
+import { useMutation, useQueryClient } from "@tanstack/vue-query";
 import type { Ref } from "vue";
 
-import { useMutation } from "@/composables/useMutation.ts";
+import { getScheduledDeletesQueryKey } from "@/api/seb-server/generated/hey-api/@tanstack/vue-query.gen.ts";
+import { heySebServerClient } from "@/api/seb-server/http/heySebServerClient.ts";
 import { Exam } from "@/models/seb-server/exam.ts";
-import { excludeFromDeletion } from "@/services/seb-server/scheduledDeletionService.ts";
+import { setExamExcludedFromDeletion } from "@/services/seb-server/scheduledDeletionService.ts";
 
 export const useExcludeFromDeletionAction = (
     exam: Ref<Exam | undefined>,
     examId?: number,
 ) => {
-    const excludeFromDeletionMutation = useMutation(
-        (id: number, exclude: boolean) => excludeFromDeletion(id, exclude),
-    );
+    const queryClient = useQueryClient();
+    const excludeFromDeletionMutation = useMutation({
+        mutationFn: ({ id, exclude }: { id: number; exclude: boolean }) =>
+            setExamExcludedFromDeletion(id, exclude),
+        onSuccess: () => {
+            void queryClient.invalidateQueries({
+                queryKey: getScheduledDeletesQueryKey({
+                    client: heySebServerClient,
+                }),
+            });
+        },
+    });
 
     const handleExcludeFromDeletionToggle = async () => {
         if (examId === undefined || !exam.value) {
@@ -18,9 +29,13 @@ export const useExcludeFromDeletionAction = (
         }
 
         const exclude = !exam.value.excludeFromDeletion;
-        await excludeFromDeletionMutation.mutateData(examId, exclude);
 
-        if (excludeFromDeletionMutation.error.value) {
+        try {
+            await excludeFromDeletionMutation.mutateAsync({
+                id: examId,
+                exclude,
+            });
+        } catch {
             return;
         }
 

@@ -2,7 +2,7 @@ import { computed, reactive } from "vue";
 import { type RouteLocationAsRelative, useRouter } from "vue-router";
 
 import type { TableItem } from "@/components/widgets/entity-table/types.ts";
-import { ScheduledDeleteStatusEnum } from "@/models/seb-server/scheduled-deletion.ts";
+import { ScheduledDeleteStatusEnum } from "@/models/scheduledDeletion.ts";
 
 import { useScheduledDeleteTableHeaders } from "./useScheduledDeleteTableHeaders.ts";
 import { useScheduledDeleteDeleteFlow } from "./useScheduledDeletionDeleteFlow.ts";

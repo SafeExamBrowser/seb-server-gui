@@ -109,7 +109,7 @@ import SearchBar from "@/components/widgets/searches/SearchBar.vue";
 import {
     scheduledDeleteStatusColor,
     ScheduledDeleteStatusEnum,
-} from "@/models/seb-server/scheduled-deletion.ts";
+} from "@/models/scheduledDeletion.ts";
 import { formatTimestampToDate } from "@/utils/timeUtils.ts";
 
 import { useScheduledDeletionOverview } from "./composables/useScheduledDeletionOverview.ts";

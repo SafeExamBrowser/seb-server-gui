@@ -2,13 +2,12 @@ import { useMutation, useQueryClient } from "@tanstack/vue-query";
 
 import { getScheduledDeletesQueryKey } from "@/api/seb-server/generated/hey-api/@tanstack/vue-query.gen.ts";
 import { heySebServerClient } from "@/api/seb-server/http/heySebServerClient.ts";
-import { createScheduledDelete } from "@/services/seb-server/scheduledDeletionService.ts";
+import { deleteScheduledDelete } from "@/services/seb-server/scheduledDeletionService.ts";
 
-export const useCreateScheduledDeleteMutation = () => {
+export const useDeleteScheduledDeleteMutation = () => {
     const queryClient = useQueryClient();
     return useMutation({
-        mutationFn: (body: { deleteDueTime: number }) =>
-            createScheduledDelete(body.deleteDueTime),
+        mutationFn: (modelId: string) => deleteScheduledDelete(modelId),
         onSuccess: () => {
             void queryClient.invalidateQueries({
                 queryKey: getScheduledDeletesQueryKey({

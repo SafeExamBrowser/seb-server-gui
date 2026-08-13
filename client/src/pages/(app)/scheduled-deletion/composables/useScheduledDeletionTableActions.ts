@@ -8,7 +8,7 @@ import i18n from "@/i18n";
 import {
     isScheduledDeleteItem,
     ScheduledDeleteItem,
-} from "@/models/seb-server/scheduled-deletion";
+} from "@/models/scheduledDeletion.ts";
 
 export function useScheduledDeletionTableActions(deps: {
     onNavigate: (item: ScheduledDeleteItem) => void;
