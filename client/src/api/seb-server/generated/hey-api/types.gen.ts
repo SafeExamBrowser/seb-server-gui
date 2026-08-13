@@ -678,19 +678,55 @@ export type GroupInfo = {
     numberOfSessions?: string;
 };
 
+/**
+ * Full report of a scheduled deletion, including the affected exams.
+ */
 export type ScheduledDeleteReport = {
-    id?: number;
+    /**
+     * Scheduled deletion identifier (PK).
+     */
+    id: number;
+    /**
+     * Identifier of the corresponding deletion on the screen proctoring service.
+     */
     spsId?: number;
-    state?: 'PENDING' | 'SPS_RUNNING' | 'RUNNING' | 'FINISHED';
-    deleteDueTime?: number;
-    scheduleTime?: number;
+    /**
+     * Processing state of the scheduled deletion.
+     */
+    state: 'PENDING' | 'SPS_RUNNING' | 'RUNNING' | 'FINISHED';
+    /**
+     * Exams that ended before this time get deleted; unix timestamp in milliseconds.
+     */
+    deleteDueTime: number;
+    /**
+     * Time the deletion runs; unix timestamp in milliseconds.
+     */
+    scheduleTime: number;
+    /**
+     * Time the deletion run started; unix timestamp in milliseconds.
+     */
     startTime?: number;
+    /**
+     * Time the deletion run finished; unix timestamp in milliseconds.
+     */
     endTime?: number;
+    /**
+     * Institution identifier the scheduled deletion belongs to.
+     */
     institutionId?: number;
-    examDeletions?: Array<ScheduledDeleteViewInfo>;
-    spsOnlyDeletions?: Array<ScheduledDeleteViewInfo>;
+    /**
+     * Deletions of exams managed by this SEB Server.
+     */
+    examDeletions: Array<ScheduledDeleteViewInfo>;
+    /**
+     * Deletions of exams that only exist on the screen proctoring service.
+     */
+    spsOnlyDeletions: Array<ScheduledDeleteViewInfo>;
 };
 
+/**
+ * Deletion details of one exam affected by a scheduled deletion.
+ */
 export type ScheduledDeleteViewInfo = {
     examUUID?: string;
     examName?: string;
@@ -1146,15 +1182,45 @@ export type PageScheduledDelete = {
     complete?: boolean;
 };
 
+/**
+ * A scheduled deletion of all exams that ended before its delete-due time.
+ */
 export type ScheduledDelete = {
-    readonly id?: number;
+    /**
+     * Scheduled deletion identifier (PK).
+     */
+    readonly id: number;
+    /**
+     * Identifier of the corresponding deletion on the screen proctoring service.
+     */
     spsId?: number;
-    state?: 'PENDING' | 'SPS_RUNNING' | 'RUNNING' | 'FINISHED';
-    deleteDueTime?: number;
-    scheduleTime?: number;
+    /**
+     * Processing state of the scheduled deletion.
+     */
+    state: 'PENDING' | 'SPS_RUNNING' | 'RUNNING' | 'FINISHED';
+    /**
+     * Exams that ended before this time get deleted; unix timestamp in milliseconds.
+     */
+    deleteDueTime: number;
+    /**
+     * Time the deletion runs; unix timestamp in milliseconds.
+     */
+    scheduleTime: number;
+    /**
+     * Time the deletion run started; unix timestamp in milliseconds.
+     */
     startTime?: number;
+    /**
+     * Time the deletion run finished; unix timestamp in milliseconds.
+     */
     endTime?: number;
+    /**
+     * UUID of the user account that scheduled the deletion.
+     */
     owner?: string;
+    /**
+     * Institution identifier the scheduled deletion belongs to.
+     */
     institutionId?: number;
     info?: Array<ScheduledDeleteInfo>;
 };
@@ -2088,19 +2154,55 @@ export type MultiValueMapStringStringWritable = {
     } | boolean | undefined;
 };
 
+/**
+ * Full report of a scheduled deletion, including the affected exams.
+ */
 export type ScheduledDeleteReportWritable = {
-    id?: number;
+    /**
+     * Scheduled deletion identifier (PK).
+     */
+    id: number;
+    /**
+     * Identifier of the corresponding deletion on the screen proctoring service.
+     */
     spsId?: number;
-    state?: 'PENDING' | 'SPS_RUNNING' | 'RUNNING' | 'FINISHED';
-    deleteDueTime?: number;
-    scheduleTime?: number;
+    /**
+     * Processing state of the scheduled deletion.
+     */
+    state: 'PENDING' | 'SPS_RUNNING' | 'RUNNING' | 'FINISHED';
+    /**
+     * Exams that ended before this time get deleted; unix timestamp in milliseconds.
+     */
+    deleteDueTime: number;
+    /**
+     * Time the deletion runs; unix timestamp in milliseconds.
+     */
+    scheduleTime: number;
+    /**
+     * Time the deletion run started; unix timestamp in milliseconds.
+     */
     startTime?: number;
+    /**
+     * Time the deletion run finished; unix timestamp in milliseconds.
+     */
     endTime?: number;
+    /**
+     * Institution identifier the scheduled deletion belongs to.
+     */
     institutionId?: number;
-    examDeletions?: Array<ScheduledDeleteViewInfoWritable>;
-    spsOnlyDeletions?: Array<ScheduledDeleteViewInfoWritable>;
+    /**
+     * Deletions of exams managed by this SEB Server.
+     */
+    examDeletions: Array<ScheduledDeleteViewInfoWritable>;
+    /**
+     * Deletions of exams that only exist on the screen proctoring service.
+     */
+    spsOnlyDeletions: Array<ScheduledDeleteViewInfoWritable>;
 };
 
+/**
+ * Deletion details of one exam affected by a scheduled deletion.
+ */
 export type ScheduledDeleteViewInfoWritable = {
     examUUID?: string;
     examName?: string;
@@ -2137,14 +2239,41 @@ export type PageScheduledDeleteWritable = {
     complete?: boolean;
 };
 
+/**
+ * A scheduled deletion of all exams that ended before its delete-due time.
+ */
 export type ScheduledDeleteWritable = {
+    /**
+     * Identifier of the corresponding deletion on the screen proctoring service.
+     */
     spsId?: number;
-    state?: 'PENDING' | 'SPS_RUNNING' | 'RUNNING' | 'FINISHED';
-    deleteDueTime?: number;
-    scheduleTime?: number;
+    /**
+     * Processing state of the scheduled deletion.
+     */
+    state: 'PENDING' | 'SPS_RUNNING' | 'RUNNING' | 'FINISHED';
+    /**
+     * Exams that ended before this time get deleted; unix timestamp in milliseconds.
+     */
+    deleteDueTime: number;
+    /**
+     * Time the deletion runs; unix timestamp in milliseconds.
+     */
+    scheduleTime: number;
+    /**
+     * Time the deletion run started; unix timestamp in milliseconds.
+     */
     startTime?: number;
+    /**
+     * Time the deletion run finished; unix timestamp in milliseconds.
+     */
     endTime?: number;
+    /**
+     * UUID of the user account that scheduled the deletion.
+     */
     owner?: string;
+    /**
+     * Institution identifier the scheduled deletion belongs to.
+     */
     institutionId?: number;
     info?: Array<ScheduledDeleteInfoWritable>;
 };
@@ -7797,6 +7926,14 @@ export type GetScheduledDeletesData = {
     body?: never;
     path?: never;
     query?: {
+        /**
+         * Filters scheduled deletions by delete-due time; unix timestamp in milliseconds.
+         */
+        dueTimestamp?: number;
+        /**
+         * Filters scheduled deletions by state.
+         */
+        state?: 'PENDING' | 'SPS_RUNNING' | 'RUNNING' | 'FINISHED';
         page_number?: number;
         page_size?: number;
         sort?: string;
@@ -7843,7 +7980,12 @@ export type GetScheduledDeletesResponses = {
 export type GetScheduledDeletesResponse = GetScheduledDeletesResponses[keyof GetScheduledDeletesResponses];
 
 export type CreateScheduledDeleteData = {
-    body?: number;
+    body?: {
+        /**
+         * Exams that ended before this time get deleted; unix timestamp in milliseconds.
+         */
+        deleteDueTime: number;
+    };
     path?: never;
     query?: never;
     url: '/admin-api/v1/scheduled-delete';
@@ -7887,7 +8029,7 @@ export type CreateScheduledDeleteResponses = {
 
 export type CreateScheduledDeleteResponse = CreateScheduledDeleteResponses[keyof CreateScheduledDeleteResponses];
 
-export type UnmarkExcludeData = {
+export type UnmarkExcludeFromDeletionData = {
     body?: unknown;
     path: {
         modelId: string;
@@ -7896,7 +8038,7 @@ export type UnmarkExcludeData = {
     url: '/admin-api/v1/scheduled-delete/{modelId}/unmark-exclude';
 };
 
-export type UnmarkExcludeErrors = {
+export type UnmarkExcludeFromDeletionErrors = {
     /**
      * Bad request, e.g. field validation or an illegal argument. The body is usually a list of APIMessage, but may be absent for some illegal-argument cases.
      */
@@ -7923,18 +8065,18 @@ export type UnmarkExcludeErrors = {
     500: Array<ApiMessage>;
 };
 
-export type UnmarkExcludeError = UnmarkExcludeErrors[keyof UnmarkExcludeErrors];
+export type UnmarkExcludeFromDeletionError = UnmarkExcludeFromDeletionErrors[keyof UnmarkExcludeFromDeletionErrors];
 
-export type UnmarkExcludeResponses = {
+export type UnmarkExcludeFromDeletionResponses = {
     /**
      * OK
      */
     200: ScheduledDeleteReport;
 };
 
-export type UnmarkExcludeResponse = UnmarkExcludeResponses[keyof UnmarkExcludeResponses];
+export type UnmarkExcludeFromDeletionResponse = UnmarkExcludeFromDeletionResponses[keyof UnmarkExcludeFromDeletionResponses];
 
-export type MarkExcludeData = {
+export type MarkExcludeFromDeletionData = {
     body?: unknown;
     path: {
         modelId: string;
@@ -7943,7 +8085,7 @@ export type MarkExcludeData = {
     url: '/admin-api/v1/scheduled-delete/{modelId}/mark-exclude';
 };
 
-export type MarkExcludeErrors = {
+export type MarkExcludeFromDeletionErrors = {
     /**
      * Bad request, e.g. field validation or an illegal argument. The body is usually a list of APIMessage, but may be absent for some illegal-argument cases.
      */
@@ -7970,16 +8112,16 @@ export type MarkExcludeErrors = {
     500: Array<ApiMessage>;
 };
 
-export type MarkExcludeError = MarkExcludeErrors[keyof MarkExcludeErrors];
+export type MarkExcludeFromDeletionError = MarkExcludeFromDeletionErrors[keyof MarkExcludeFromDeletionErrors];
 
-export type MarkExcludeResponses = {
+export type MarkExcludeFromDeletionResponses = {
     /**
      * OK
      */
     200: ScheduledDeleteReport;
 };
 
-export type MarkExcludeResponse = MarkExcludeResponses[keyof MarkExcludeResponses];
+export type MarkExcludeFromDeletionResponse = MarkExcludeFromDeletionResponses[keyof MarkExcludeFromDeletionResponses];
 
 export type RegisterUserAccountData = {
     body: UserMod;
@@ -12522,7 +12664,7 @@ export type GetClientConnectionDataByResponses = {
 
 export type GetClientConnectionDataByResponse = GetClientConnectionDataByResponses[keyof GetClientConnectionDataByResponses];
 
-export type DeleteData = {
+export type DeleteScheduledDeleteData = {
     body?: never;
     path: {
         modelId: string;
@@ -12531,7 +12673,7 @@ export type DeleteData = {
     url: '/admin-api/v1/scheduled-delete/{modelId}';
 };
 
-export type DeleteErrors = {
+export type DeleteScheduledDeleteErrors = {
     /**
      * Bad request, e.g. field validation or an illegal argument. The body is usually a list of APIMessage, but may be absent for some illegal-argument cases.
      */
@@ -12558,18 +12700,18 @@ export type DeleteErrors = {
     500: Array<ApiMessage>;
 };
 
-export type DeleteError = DeleteErrors[keyof DeleteErrors];
+export type DeleteScheduledDeleteError = DeleteScheduledDeleteErrors[keyof DeleteScheduledDeleteErrors];
 
-export type DeleteResponses = {
+export type DeleteScheduledDeleteResponses = {
     /**
      * OK
      */
     200: EntityKey;
 };
 
-export type DeleteResponse = DeleteResponses[keyof DeleteResponses];
+export type DeleteScheduledDeleteResponse = DeleteScheduledDeleteResponses[keyof DeleteScheduledDeleteResponses];
 
-export type GetFullReportByIdData = {
+export type GetScheduledDeleteReportData = {
     body?: never;
     path: {
         modelId: string;
@@ -12578,7 +12720,7 @@ export type GetFullReportByIdData = {
     url: '/admin-api/v1/scheduled-delete/{modelId}';
 };
 
-export type GetFullReportByIdErrors = {
+export type GetScheduledDeleteReportErrors = {
     /**
      * Bad request, e.g. field validation or an illegal argument. The body is usually a list of APIMessage, but may be absent for some illegal-argument cases.
      */
@@ -12605,16 +12747,16 @@ export type GetFullReportByIdErrors = {
     500: Array<ApiMessage>;
 };
 
-export type GetFullReportByIdError = GetFullReportByIdErrors[keyof GetFullReportByIdErrors];
+export type GetScheduledDeleteReportError = GetScheduledDeleteReportErrors[keyof GetScheduledDeleteReportErrors];
 
-export type GetFullReportByIdResponses = {
+export type GetScheduledDeleteReportResponses = {
     /**
      * OK
      */
     200: ScheduledDeleteReport;
 };
 
-export type GetFullReportByIdResponse = GetFullReportByIdResponses[keyof GetFullReportByIdResponses];
+export type GetScheduledDeleteReportResponse = GetScheduledDeleteReportResponses[keyof GetScheduledDeleteReportResponses];
 
 export type GetQuizzesData = {
     body?: never;

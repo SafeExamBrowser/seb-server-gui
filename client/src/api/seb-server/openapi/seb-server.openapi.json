@@ -18,6 +18,10 @@
             "description": "Exam template administration endpoints."
         },
         {
+            "name": "ScheduledDelete",
+            "description": "Scheduled exam deletion administration endpoints."
+        },
+        {
             "name": "UserAccount",
             "description": "User account administration and current-user endpoints."
         }
@@ -6189,9 +6193,31 @@
         },
         "/admin-api/v1/scheduled-delete": {
             "get": {
-                "tags": ["scheduled-delete-controller"],
+                "tags": ["ScheduledDelete"],
+                "summary": "Gets a page of scheduled deletions.",
+                "description": "Sorted by schedule time (descending) unless a sort parameter is given.",
                 "operationId": "getScheduledDeletes",
                 "parameters": [
+                    {
+                        "name": "dueTimestamp",
+                        "in": "query",
+                        "description": "Filters scheduled deletions by delete-due time; unix timestamp in milliseconds.",
+                        "schema": { "type": "integer" }
+                    },
+                    {
+                        "name": "state",
+                        "in": "query",
+                        "description": "Filters scheduled deletions by state.",
+                        "schema": {
+                            "type": "string",
+                            "enum": [
+                                "PENDING",
+                                "SPS_RUNNING",
+                                "RUNNING",
+                                "FINISHED"
+                            ]
+                        }
+                    },
                     {
                         "name": "page_number",
                         "in": "query",
@@ -6244,12 +6270,22 @@
                 "security": [{ "oauth": [] }]
             },
             "post": {
-                "tags": ["scheduled-delete-controller"],
+                "tags": ["ScheduledDelete"],
+                "summary": "Schedules a new deletion of all exams that ended before the given due time.",
                 "operationId": "createScheduledDelete",
                 "requestBody": {
                     "content": {
                         "application/x-www-form-urlencoded": {
-                            "schema": { "type": "integer" }
+                            "schema": {
+                                "type": "object",
+                                "properties": {
+                                    "deleteDueTime": {
+                                        "type": "integer",
+                                        "description": "Exams that ended before this time get deleted; unix timestamp in milliseconds."
+                                    }
+                                },
+                                "required": ["deleteDueTime"]
+                            }
                         }
                     }
                 },
@@ -6288,8 +6324,9 @@
         },
         "/admin-api/v1/scheduled-delete/{modelId}/unmark-exclude": {
             "post": {
-                "tags": ["scheduled-delete-controller"],
-                "operationId": "unmarkExclude",
+                "tags": ["ScheduledDelete"],
+                "summary": "Includes the given exam in scheduled deletions again and recalculates a pending deletion.",
+                "operationId": "unmarkExcludeFromDeletion",
                 "parameters": [
                     {
                         "name": "modelId",
@@ -6336,8 +6373,9 @@
         },
         "/admin-api/v1/scheduled-delete/{modelId}/mark-exclude": {
             "post": {
-                "tags": ["scheduled-delete-controller"],
-                "operationId": "markExclude",
+                "tags": ["ScheduledDelete"],
+                "summary": "Excludes the given exam from scheduled deletions and recalculates a pending deletion.",
+                "operationId": "markExcludeFromDeletion",
                 "parameters": [
                     {
                         "name": "modelId",
@@ -11291,8 +11329,9 @@
         },
         "/admin-api/v1/scheduled-delete/{modelId}": {
             "get": {
-                "tags": ["scheduled-delete-controller"],
-                "operationId": "getFullReportById",
+                "tags": ["ScheduledDelete"],
+                "summary": "Gets the full report of the given scheduled deletion, including the affected exams.",
+                "operationId": "getScheduledDeleteReport",
                 "parameters": [
                     {
                         "name": "modelId",
@@ -11334,8 +11373,9 @@
                 "security": [{ "oauth": [] }]
             },
             "delete": {
-                "tags": ["scheduled-delete-controller"],
-                "operationId": "delete",
+                "tags": ["ScheduledDelete"],
+                "summary": "Deletes (cancels) the given pending scheduled deletion.",
+                "operationId": "deleteScheduledDelete",
                 "parameters": [
                     {
                         "name": "modelId",
@@ -21349,11 +21389,19 @@
             },
             "ScheduledDeleteReport": {
                 "type": "object",
+                "description": "Full report of a scheduled deletion, including the affected exams.",
                 "properties": {
-                    "id": { "type": "integer" },
-                    "spsId": { "type": "integer" },
+                    "id": {
+                        "type": "integer",
+                        "description": "Scheduled deletion identifier (PK)."
+                    },
+                    "spsId": {
+                        "type": "integer",
+                        "description": "Identifier of the corresponding deletion on the screen proctoring service."
+                    },
                     "state": {
                         "type": "string",
+                        "description": "Processing state of the scheduled deletion.",
                         "enum": [
                             "PENDING",
                             "SPS_RUNNING",
@@ -21361,27 +21409,53 @@
                             "FINISHED"
                         ]
                     },
-                    "deleteDueTime": { "type": "integer" },
-                    "scheduleTime": { "type": "integer" },
-                    "startTime": { "type": "integer" },
-                    "endTime": { "type": "integer" },
-                    "institutionId": { "type": "integer" },
+                    "deleteDueTime": {
+                        "type": "integer",
+                        "description": "Exams that ended before this time get deleted; unix timestamp in milliseconds."
+                    },
+                    "scheduleTime": {
+                        "type": "integer",
+                        "description": "Time the deletion runs; unix timestamp in milliseconds."
+                    },
+                    "startTime": {
+                        "type": "integer",
+                        "description": "Time the deletion run started; unix timestamp in milliseconds."
+                    },
+                    "endTime": {
+                        "type": "integer",
+                        "description": "Time the deletion run finished; unix timestamp in milliseconds."
+                    },
+                    "institutionId": {
+                        "type": "integer",
+                        "description": "Institution identifier the scheduled deletion belongs to."
+                    },
                     "examDeletions": {
                         "type": "array",
+                        "description": "Deletions of exams managed by this SEB Server.",
                         "items": {
                             "$ref": "#/components/schemas/ScheduledDeleteViewInfo"
                         }
                     },
                     "spsOnlyDeletions": {
                         "type": "array",
+                        "description": "Deletions of exams that only exist on the screen proctoring service.",
                         "items": {
                             "$ref": "#/components/schemas/ScheduledDeleteViewInfo"
                         }
                     }
-                }
+                },
+                "required": [
+                    "deleteDueTime",
+                    "examDeletions",
+                    "id",
+                    "scheduleTime",
+                    "spsOnlyDeletions",
+                    "state"
+                ]
             },
             "ScheduledDeleteViewInfo": {
                 "type": "object",
+                "description": "Deletion details of one exam affected by a scheduled deletion.",
                 "properties": {
                     "examUUID": { "type": "string" },
                     "examName": { "type": "string" },
@@ -22250,11 +22324,20 @@
             },
             "ScheduledDelete": {
                 "type": "object",
+                "description": "A scheduled deletion of all exams that ended before its delete-due time.",
                 "properties": {
-                    "id": { "type": "integer", "readOnly": true },
-                    "spsId": { "type": "integer" },
+                    "id": {
+                        "type": "integer",
+                        "description": "Scheduled deletion identifier (PK).",
+                        "readOnly": true
+                    },
+                    "spsId": {
+                        "type": "integer",
+                        "description": "Identifier of the corresponding deletion on the screen proctoring service."
+                    },
                     "state": {
                         "type": "string",
+                        "description": "Processing state of the scheduled deletion.",
                         "enum": [
                             "PENDING",
                             "SPS_RUNNING",
@@ -22262,19 +22345,38 @@
                             "FINISHED"
                         ]
                     },
-                    "deleteDueTime": { "type": "integer" },
-                    "scheduleTime": { "type": "integer" },
-                    "startTime": { "type": "integer" },
-                    "endTime": { "type": "integer" },
-                    "owner": { "type": "string" },
-                    "institutionId": { "type": "integer" },
+                    "deleteDueTime": {
+                        "type": "integer",
+                        "description": "Exams that ended before this time get deleted; unix timestamp in milliseconds."
+                    },
+                    "scheduleTime": {
+                        "type": "integer",
+                        "description": "Time the deletion runs; unix timestamp in milliseconds."
+                    },
+                    "startTime": {
+                        "type": "integer",
+                        "description": "Time the deletion run started; unix timestamp in milliseconds."
+                    },
+                    "endTime": {
+                        "type": "integer",
+                        "description": "Time the deletion run finished; unix timestamp in milliseconds."
+                    },
+                    "owner": {
+                        "type": "string",
+                        "description": "UUID of the user account that scheduled the deletion."
+                    },
+                    "institutionId": {
+                        "type": "integer",
+                        "description": "Institution identifier the scheduled deletion belongs to."
+                    },
                     "info": {
                         "type": "array",
                         "items": {
                             "$ref": "#/components/schemas/ScheduledDeleteInfo"
                         }
                     }
-                }
+                },
+                "required": ["deleteDueTime", "id", "scheduleTime", "state"]
             },
             "ScheduledDeleteInfo": {
                 "type": "object",
