@@ -202,7 +202,7 @@ const clearSearch = () => {
 };
 
 const handleRowClick = (item: TableItem) => {
-    const quiz = quizzes.value?.content.find(
+    const quiz = quizzes.value?.content?.find(
         (candidate) => candidate.quiz_id === item.quiz_id,
     );
     if (!quiz) {

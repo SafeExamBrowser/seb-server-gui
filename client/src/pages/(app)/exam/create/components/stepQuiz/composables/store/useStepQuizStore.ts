@@ -1,7 +1,7 @@
 import { defineStore } from "pinia";
 import { computed, ref } from "vue";
 
-import { Quiz } from "@/models/seb-server/quiz.ts";
+import { Quiz } from "@/models/quiz.ts";
 
 const getInitialState = () => ({
     selectedQuiz: undefined,

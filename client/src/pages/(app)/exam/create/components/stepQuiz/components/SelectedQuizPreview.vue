@@ -64,7 +64,7 @@
 <script setup lang="ts">
 import { VIcon } from "vuetify/components";
 
-import { Quiz } from "@/models/seb-server/quiz.ts";
+import { Quiz } from "@/models/quiz.ts";
 import { formatIsoToReadableDateTime } from "@/utils/timeUtils.ts";
 
 defineProps<{

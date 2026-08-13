@@ -10,19 +10,6 @@ export type OptionalParInstitutionId = {
     institutionId?: number;
 };
 
-export type OptionalParGetQuizzes = {
-    institutionId?: number;
-    page_number?: number;
-    page_size?: number;
-    sort?: string;
-    filterCriteria?: string;
-    name?: string;
-    start_timestamp_millis?: number;
-    start_timestamp?: string;
-    lms_setup?: string;
-    force_new_search: boolean;
-};
-
 export type OptionalParGetExams = {
     institutionId?: number;
     page_number?: number;
