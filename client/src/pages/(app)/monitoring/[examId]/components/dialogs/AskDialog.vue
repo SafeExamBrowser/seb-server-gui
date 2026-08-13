@@ -263,9 +263,7 @@ const selectedAskIdx = ref<number>(-1);
 const page = ref(1);
 const pageSize = 10;
 const searchQuery = ref("");
-const statusFilter = ref<"ALL" | ConnectionStatusEnum>(
-    ConnectionStatusEnum.ACTIVE,
-);
+const statusFilter = ref<"ALL" | ConnectionStatusEnum>("ALL");
 const grantKeyInput = ref("");
 
 const isKeySelected = computed(
@@ -386,6 +384,7 @@ function trStatus(value: "ALL" | ConnectionStatusEnum) {
 watch(selectedAskIdx, () => {
     page.value = 1;
     searchQuery.value = "";
+    statusFilter.value = "ALL";
 });
 watch([searchQuery, statusFilter], () => {
     page.value = 1;
@@ -458,7 +457,7 @@ function closeDialog() {
     selectedAskIdx.value = -1;
     searchQuery.value = "";
     page.value = 1;
-    statusFilter.value = ConnectionStatusEnum.ACTIVE;
+    statusFilter.value = "ALL";
     emit("closeAskDialog");
 }
 
