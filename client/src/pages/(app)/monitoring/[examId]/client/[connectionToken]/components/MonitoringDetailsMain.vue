@@ -1,5 +1,5 @@
 <template>
-    <v-card border elevation="1" rounded="lg">
+    <v-card border elevation="1" rounded="lg" class="flex-grow-1 flex-shrink-0">
         <template v-if="screenProctoringEnabled">
             <v-tabs v-model="currentView" color="primary" grow>
                 <v-tab prepend-icon="mdi-monitor-eye" value="proctoring">
