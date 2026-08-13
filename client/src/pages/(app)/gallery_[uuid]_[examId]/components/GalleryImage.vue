@@ -73,9 +73,7 @@
                         }}</template>
                     </div>
                     <v-btn
-                        :aria-label="
-                            i18n.t('galleryView.screenReader.expandImage')
-                        "
+                        :aria-label="$t('galleryView.screenReader.expandImage')"
                         color="white"
                         icon="mdi-arrow-expand"
                         rounded="sm"
@@ -86,9 +84,7 @@
                     </v-btn>
                     <v-btn
                         :aria-label="
-                            i18n.t(
-                                'galleryView.screenReader.openProcotringView',
-                            )
+                            $t('galleryView.screenReader.openProcotringView')
                         "
                         color="primary"
                         icon="mdi-video"
@@ -151,7 +147,7 @@
                         <v-spacer />
                         <v-btn
                             :aria-label="
-                                i18n.t('galleryView.screenReader.collapseImage')
+                                $t('galleryView.screenReader.collapseImage')
                             "
                             color="white"
                             icon="mdi-arrow-collapse"
@@ -202,9 +198,7 @@
                     </div>
                     <v-btn
                         :aria-label="
-                            i18n.t(
-                                'galleryView.screenReader.openProcotringView',
-                            )
+                            $t('galleryView.screenReader.openProcotringView')
                         "
                         color="primary"
                         icon="mdi-video"
@@ -223,7 +217,6 @@
 
 <script setup lang="ts">
 import { computed, onBeforeMount, ref } from "vue";
-import { useI18n } from "vue-i18n";
 import { useRoute } from "vue-router";
 import {
     VAvatar,
@@ -265,9 +258,6 @@ const examId = computed(() => {
 
     return typeof value === "string" ? value : "";
 });
-
-// i18n
-const i18n = useI18n();
 
 // dialog - expanded image
 const dialog = ref(false);
