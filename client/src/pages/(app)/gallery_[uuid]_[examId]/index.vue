@@ -1,51 +1,79 @@
 <template>
-    <!-- Breadcrumb -->
-    <v-row density="compact">
-        <v-col cols="12" md="10">
-            <BreadCrumb :items="breadCrumbItems" />
-        </v-col>
-    </v-row>
+    <v-card
+        border
+        elevation="1"
+        rounded="lg"
+        class="bg-surface-tint mb-6 pb-4 flex-shrink-0"
+    >
+        <PageHeader
+            :title="translate('titles.galleryView')"
+            :bread-crumb="breadCrumbItems"
+            data-test-id="gallery-view"
+        >
+            <template #actions>
+                <div
+                    class="d-flex align-center ga-2 text-success text-body-small font-weight-bold text-uppercase"
+                >
+                    <v-avatar
+                        color="success"
+                        size="8"
+                        :style="{
+                            opacity: liveBlinkOn ? 1 : 0.2,
+                            transition: 'opacity 0.7s ease-in-out',
+                        }"
+                    />
+                    {{
+                        $t("monitoringOverview.infos.live", {
+                            seconds: SCREENSHOT_INTERVAL / 1000,
+                        })
+                    }}
+                </div>
+            </template>
+        </PageHeader>
+    </v-card>
+
     <v-window
         v-model="currentWindow"
         show-arrows
         @update:model-value="windowChange()"
     >
+        <template #prev="{ props: prevProps }">
+            <v-btn v-bind="prevProps" color="surface" elevation="2" />
+        </template>
+        <template #next="{ props: nextProps }">
+            <v-btn v-bind="nextProps" color="surface" elevation="2" />
+        </template>
         <v-window-item v-for="(w, index) in maxPages" :key="index">
-            <template v-if="!noScreenshotData">
-                <v-row
+            <div v-if="!noScreenshotData" class="ga-3" :style="gridStyle">
+                <template
                     v-for="i in appBarStore.galleryGridSize.value"
                     :key="i"
-                    align-strech
-                    no-gutters
                 >
-                    <v-col
+                    <GalleryImage
                         v-for="n in appBarStore.galleryGridSize.value"
                         :key="n"
-                    >
-                        <GalleryImage
-                            :group-uuid="groupUuid"
-                            :index="
+                        :group-uuid="groupUuid"
+                        :index="
+                            galleryUtils.calcIndex(
+                                i,
+                                n,
+                                appBarStore.galleryGridSize.value,
+                            )
+                        "
+                        :screenshot="
+                            group?.screenshots[
                                 galleryUtils.calcIndex(
                                     i,
                                     n,
                                     appBarStore.galleryGridSize.value,
                                 )
-                            "
-                            :screenshot="
-                                group?.screenshots[
-                                    galleryUtils.calcIndex(
-                                        i,
-                                        n,
-                                        appBarStore.galleryGridSize.value,
-                                    )
-                                ]
-                            "
-                            :timestamp="timestamp"
-                        >
-                        </GalleryImage>
-                    </v-col>
-                </v-row>
-            </template>
+                            ]
+                        "
+                        :timestamp="timestamp"
+                    >
+                    </GalleryImage>
+                </template>
+            </div>
             <AlertMsg
                 v-else
                 :alert-props="{
@@ -64,10 +92,10 @@
 import { storeToRefs } from "pinia";
 import { computed, onBeforeMount, onBeforeUnmount, ref, watch } from "vue";
 import { useRoute } from "vue-router";
-import { VCol, VRow, VWindow, VWindowItem } from "vuetify/components";
+import { VAvatar, VBtn, VCard, VWindow, VWindowItem } from "vuetify/components";
 
+import PageHeader from "@/components/layout/pages/components/PageHeader.vue";
 import AlertMsg from "@/components/widgets/AlertMsg.vue";
-import BreadCrumb from "@/components/widgets/breadCrumb/BreadCrumb.vue";
 import type { BreadCrumbItem } from "@/components/widgets/breadCrumb/types.ts";
 import { GroupUuid } from "@/models/screen-proctoring/group";
 import { MetaData, ScreenshotData } from "@/models/screen-proctoring/session";
@@ -130,6 +158,15 @@ const breadCrumbItems = computed<BreadCrumbItem[]>(() => {
     items.push({ label: translate("titles.galleryView") });
     return items;
 });
+
+const liveBlinkOn = computed(
+    () => Math.floor(timestamp.value / SCREENSHOT_INTERVAL) % 2 === 0,
+);
+
+const gridStyle = computed(() => ({
+    display: "grid",
+    gridTemplateColumns: `repeat(${appBarStore.galleryGridSize.value}, 1fr)`,
+}));
 
 let intervalGroup: ReturnType<typeof setInterval> | null = null;
 let intervalImageUrl: ReturnType<typeof setInterval> | null = null;
@@ -333,5 +370,3 @@ function stopIntervalImageUrl() {
 }
 //= =============================
 </script>
-
-<style scoped></style>
