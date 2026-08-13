@@ -1,13 +1,12 @@
 <template>
     <!-----------gallery image---------->
     <v-hover v-slot="{ isHovering, props: hoverProps }">
-        <!--todo: add max height  -->
         <v-img
             v-if="screenshot"
             v-bind="hoverProps"
             :aspect-ratio="16 / 9"
-            class="img-styling"
-            :class="{ 'on-hover': isHovering }"
+            class="rounded-lg"
+            :style="tileStyle"
             eager
             :src="getLatestImageLink(screenshot, timestamp.toString())"
             tabindex="0"
@@ -16,109 +15,96 @@
             @keydown="registerKeyPress($event)"
             @mousedown="registerKeyPress($event)"
         >
+            <span
+                class="position-absolute d-inline-flex align-center ga-1 px-2 py-1 rounded-pill text-white text-body-small font-weight-black text-uppercase"
+                :style="liveBadgeStyle"
+            >
+                <v-avatar color="success" size="6" :style="pulseStyle" />
+                {{ $t("galleryView.live") }}
+            </span>
+
             <div
                 v-if="isHovering || galleryStore.focusedImageIndexes[index]"
-                class="hover-overlay d-flex"
+                class="d-flex flex-column justify-end h-100"
+                :style="overlayStyle"
             >
-                <v-row>
-                    <v-col>
-                        <div v-if="appBarStore.galleryIsMetadataEnabled">
-                            <v-expansion-panels color="#404040">
-                                <v-expansion-panel
-                                    :title="i18n.t('galleryView.metadata')"
-                                >
-                                    <v-expansion-panel-text>
-                                        <v-row
-                                            v-for="(
-                                                value, key
-                                            ) in galleryUtils.getScreenshotMetadata(
-                                                screenshot.metaData,
-                                            )"
-                                            :key="key"
-                                            no-gutters
-                                        >
-                                            <v-col>
-                                                {{ key }}
-                                            </v-col>
-                                            <v-col>
-                                                {{ value }}
-                                            </v-col>
-                                        </v-row>
-                                    </v-expansion-panel-text>
-                                </v-expansion-panel>
-                            </v-expansion-panels>
-                        </div>
-                    </v-col>
-                </v-row>
+                <div
+                    v-if="appBarStore.galleryIsMetadataEnabled"
+                    class="d-flex flex-column ga-1 rounded-lg pa-2 mx-2 overflow-y-auto"
+                    :style="metaPanelStyle"
+                >
+                    <div
+                        v-for="(
+                            value, key
+                        ) in galleryUtils.getScreenshotMetadata(
+                            screenshot.metaData,
+                        )"
+                        :key="key"
+                        class="d-flex justify-space-between ga-2 text-body-small"
+                    >
+                        <span class="font-weight-medium" :style="metaKeyStyle">
+                            {{ key }}
+                        </span>
+                        <span
+                            class="text-white font-weight-bold text-truncate text-right"
+                        >
+                            {{ value }}
+                        </span>
+                    </div>
+                </div>
 
-                <v-row class="align-end">
-                    <v-col>
-                        <v-sheet class="d-flex pa-2 button-row">
-                            <div class="text-body-large title-box">
-                                <template
-                                    v-if="appBarStore.galleryIsNameEnabled"
-                                    >{{ screenshot.clientName }}</template
-                                >
-                                <template
-                                    v-if="
-                                        appBarStore.galleryIsNameEnabled &&
-                                        appBarStore.galleryIsIpEnabled
-                                    "
-                                >
-                                    /
-                                </template>
-                                <template
-                                    v-if="appBarStore.galleryIsIpEnabled"
-                                    >{{ screenshot.clientIp }}</template
-                                >
-                            </div>
-                            <v-spacer></v-spacer>
-                            <span>
-                                <v-btn
-                                    :aria-label="
-                                        i18n.t(
-                                            'galleryView.screenReader.expandImage',
-                                        )
-                                    "
-                                    color="white"
-                                    icon="mdi-arrow-expand"
-                                    rounded="sm"
-                                    size="small"
-                                    variant="outlined"
-                                    @click="openDialog()"
-                                >
-                                </v-btn>
-
-                                <v-btn
-                                    :aria-label="
-                                        i18n.t(
-                                            'galleryView.screenReader.openProcotringView',
-                                        )
-                                    "
-                                    class="ml-2"
-                                    color="primary"
-                                    icon="mdi-video"
-                                    rounded="sm"
-                                    size="small"
-                                    variant="flat"
-                                    @click="
-                                        navigateToProctoringView(
-                                            screenshot,
-                                            examId,
-                                        )
-                                    "
-                                >
-                                </v-btn>
-                            </span>
-                        </v-sheet>
-                    </v-col>
-                </v-row>
+                <div class="d-flex align-center ga-2 pa-2">
+                    <div
+                        class="flex-grow-1 text-white text-body-medium font-weight-bold text-truncate"
+                    >
+                        <template v-if="appBarStore.galleryIsNameEnabled">{{
+                            screenshot.clientName
+                        }}</template>
+                        <template
+                            v-if="
+                                appBarStore.galleryIsNameEnabled &&
+                                appBarStore.galleryIsIpEnabled
+                            "
+                        >
+                            /
+                        </template>
+                        <template v-if="appBarStore.galleryIsIpEnabled">{{
+                            screenshot.clientIp
+                        }}</template>
+                    </div>
+                    <v-btn
+                        :aria-label="
+                            i18n.t('galleryView.screenReader.expandImage')
+                        "
+                        color="white"
+                        icon="mdi-arrow-expand"
+                        rounded="sm"
+                        size="small"
+                        variant="outlined"
+                        @click="openDialog()"
+                    >
+                    </v-btn>
+                    <v-btn
+                        :aria-label="
+                            i18n.t(
+                                'galleryView.screenReader.openProcotringView',
+                            )
+                        "
+                        color="primary"
+                        icon="mdi-video"
+                        rounded="sm"
+                        size="small"
+                        variant="flat"
+                        @click="navigateToProctoringView(screenshot, examId)"
+                    >
+                    </v-btn>
+                </div>
             </div>
         </v-img>
         <v-img
             v-else
             :aspect-ratio="16 / 9"
-            class="content-filler"
+            :style="{ visibility: 'hidden' }"
             eager
             :src="getLatestImageLink(screenshot, timestamp.toString())"
         >
@@ -127,122 +113,109 @@
     <!-------------------------->
 
     <!-----------expanded image---------->
-    <v-dialog v-model="dialog" max-width="1500">
-        <v-card>
-            <v-img
-                v-if="screenshot"
-                :aspect-ratio="16 / 9"
-                class="img-styling"
-                eager
-                :src="expandedScreenshotLink"
-            >
-                <div class="hover-overlay-expanded d-flex">
-                    <v-row>
-                        <v-col>
-                            <div>
-                                <v-expansion-panels>
-                                    <v-expansion-panel>
-                                        <v-expansion-panel-title
-                                            color="#404040"
-                                        >
-                                            <template #default="{ expanded }">
-                                                <v-icon
-                                                    class="mr-2"
-                                                    :icon="
-                                                        expanded
-                                                            ? 'mdi-chevron-up'
-                                                            : 'mdi-chevron-down'
-                                                    "
-                                                >
-                                                </v-icon>
-                                                {{
-                                                    translate(
-                                                        "navigation.screenReader.titleImage",
-                                                    )
-                                                }}
-                                            </template>
+    <v-dialog v-model="dialog" max-width="1100">
+        <v-card class="overflow-hidden" rounded="lg" :style="lightboxCardStyle">
+            <template v-if="screenshot">
+                <v-img
+                    :aspect-ratio="16 / 9"
+                    eager
+                    :src="expandedScreenshotLink"
+                    :style="{ backgroundColor: '#14181f' }"
+                >
+                    <span
+                        class="position-absolute d-inline-flex align-center ga-1 px-2 py-1 rounded-pill text-white text-body-small font-weight-black text-uppercase"
+                        :style="liveBadgeStyle"
+                    >
+                        <v-avatar
+                            color="success"
+                            size="6"
+                            :style="pulseStyle"
+                        />
+                        {{ $t("galleryView.live") }}
+                    </span>
+                </v-img>
 
-                                            <template #actions>
-                                                <v-btn
-                                                    :aria-label="
-                                                        i18n.t(
-                                                            'galleryView.screenReader.collapseImage',
-                                                        )
-                                                    "
-                                                    color="white"
-                                                    icon="mdi-arrow-collapse"
-                                                    rounded="sm"
-                                                    size="small"
-                                                    variant="outlined"
-                                                    @click="closeDialog()"
-                                                >
-                                                </v-btn>
-                                            </template>
-                                        </v-expansion-panel-title>
-                                        <v-expansion-panel-text>
-                                            <div class="metadata-container">
-                                                <v-table density="compact">
-                                                    <tbody>
-                                                        <tr
-                                                            v-for="(
-                                                                value, key
-                                                            ) in galleryUtils.getScreenshotMetadata(
-                                                                screenshot.metaData,
-                                                            )"
-                                                            :key="key"
-                                                        >
-                                                            <td>
-                                                                {{ key }}
-                                                            </td>
-                                                            <td align="right">
-                                                                {{ value }}
-                                                            </td>
-                                                        </tr>
-                                                    </tbody>
-                                                </v-table>
-                                            </div>
-                                        </v-expansion-panel-text>
-                                    </v-expansion-panel>
-                                </v-expansion-panels>
-                            </div>
-                        </v-col>
-                    </v-row>
-
-                    <v-row class="align-end">
-                        <v-col>
-                            <v-sheet class="d-flex pa-2 button-row">
-                                <div class="text-body-large title-box">
-                                    {{ screenshot.clientName }} /
-                                    {{ screenshot.clientIp }}
-                                </div>
-                                <v-spacer></v-spacer>
-                                <span>
-                                    <v-btn
-                                        :aria-label="
-                                            i18n.t(
-                                                'galleryView.screenReader.openProcotringView',
-                                            )
-                                        "
-                                        class="ml-2"
-                                        color="primary"
-                                        icon="mdi-video"
-                                        rounded="sm"
-                                        size="small"
-                                        variant="flat"
-                                        @click="
-                                            navigateToProctoringView(
-                                                screenshot,
-                                                groupUuid,
-                                            )
-                                        "
-                                    >
-                                    </v-btn>
-                                </span>
-                            </v-sheet>
-                        </v-col>
-                    </v-row>
+                <div :style="lightboxMetaSectionStyle">
+                    <div
+                        class="d-flex align-center ga-2 px-4 py-3 text-white text-body-medium font-weight-bold"
+                        :style="{ cursor: 'pointer' }"
+                        @click="handleToggleMeta"
+                    >
+                        <v-icon
+                            :icon="
+                                metaOpen ? 'mdi-chevron-up' : 'mdi-chevron-down'
+                            "
+                            size="small"
+                        />
+                        {{ $t("galleryView.metadata") }}
+                        <v-spacer />
+                        <v-btn
+                            :aria-label="
+                                i18n.t('galleryView.screenReader.collapseImage')
+                            "
+                            color="white"
+                            icon="mdi-arrow-collapse"
+                            rounded="sm"
+                            size="small"
+                            variant="outlined"
+                            @click.stop="closeDialog()"
+                        >
+                        </v-btn>
+                    </div>
+                    <div
+                        v-if="metaOpen"
+                        class="px-4 pb-4"
+                        :style="lightboxMetaBodyStyle"
+                    >
+                        <div
+                            v-for="(
+                                value, key
+                            ) in galleryUtils.getScreenshotMetadata(
+                                screenshot.metaData,
+                            )"
+                            :key="key"
+                            class="d-flex justify-space-between ga-2 py-1 text-body-small"
+                            :style="lightboxMetaRowStyle"
+                        >
+                            <span
+                                class="font-weight-medium"
+                                :style="metaKeyStyle"
+                            >
+                                {{ key }}
+                            </span>
+                            <span class="text-white font-weight-bold">
+                                {{ value }}
+                            </span>
+                        </div>
+                    </div>
                 </div>
-            </v-img>
+
+                <div
+                    class="d-flex align-center ga-3 px-4 py-2"
+                    :style="lightboxFootStyle"
+                >
+                    <div
+                        class="flex-grow-1 text-white text-body-medium font-weight-bold text-truncate"
+                    >
+                        {{ screenshot.clientName }} /
+                        {{ screenshot.clientIp }}
+                    </div>
+                    <v-btn
+                        :aria-label="
+                            i18n.t(
+                                'galleryView.screenReader.openProcotringView',
+                            )
+                        "
+                        color="primary"
+                        icon="mdi-video"
+                        rounded="sm"
+                        size="small"
+                        variant="flat"
+                        @click="navigateToProctoringView(screenshot, groupUuid)"
+                    >
+                    </v-btn>
+                </div>
+            </template>
         </v-card>
     </v-dialog>
     <!-------------------------->
@@ -253,28 +226,20 @@ import { computed, onBeforeMount, ref } from "vue";
 import { useI18n } from "vue-i18n";
 import { useRoute } from "vue-router";
 import {
+    VAvatar,
     VBtn,
     VCard,
-    VCol,
     VDialog,
-    VExpansionPanel,
-    VExpansionPanels,
-    VExpansionPanelText,
-    VExpansionPanelTitle,
     VHover,
     VIcon,
     VImg,
-    VRow,
-    VSheet,
     VSpacer,
-    VTable,
 } from "vuetify/components";
 
 import { ScreenshotData } from "@/models/screen-proctoring/session";
 import { navigateToProctoringView } from "@/pages/(app)/gallery_[uuid]_[examId]/utils/galleryNavigation.ts";
 import * as galleryUtils from "@/pages/(app)/gallery_[uuid]_[examId]/utils/galleryUtils.ts";
 import { useAppBarStore, useGalleryStore } from "@/stores/store";
-import { translate } from "@/utils/generalUtils";
 import { getLatestImageLink } from "@/utils/linkBuilder.ts";
 
 // props
@@ -306,20 +271,69 @@ const i18n = useI18n();
 
 // dialog - expanded image
 const dialog = ref(false);
+const metaOpen = ref(true);
 
 // accessibility
 const lastKeyPressed = ref<string | null>("Tab");
+
+const overlayStyle = {
+    background:
+        "linear-gradient(180deg, rgba(0, 0, 0, 0) 55%, rgba(0, 0, 0, 0.78) 100%)",
+};
+const metaPanelStyle = {
+    backgroundColor: "rgba(20, 22, 28, 0.92)",
+    maxHeight: "45%",
+};
+const metaKeyStyle = { color: "rgba(255, 255, 255, 0.55)" };
+const liveBadgeStyle = {
+    top: "8px",
+    left: "8px",
+    backgroundColor: "rgba(0, 0, 0, 0.45)",
+    letterSpacing: "0.3px",
+    zIndex: 1,
+};
+const lightboxCardStyle = { backgroundColor: "#12151b" };
+const lightboxMetaSectionStyle = {
+    borderTop: "1px solid rgba(255, 255, 255, 0.1)",
+};
+const lightboxMetaBodyStyle = {
+    display: "grid",
+    gridTemplateColumns: "1fr 1fr",
+    gap: "8px 24px",
+};
+const lightboxMetaRowStyle = {
+    borderBottom: "1px solid rgba(255, 255, 255, 0.08)",
+};
+const lightboxFootStyle = { backgroundColor: "#1c2027" };
+
+const tileStyle = computed(() => ({
+    backgroundColor: "#14181f",
+    outline: galleryStore.focusedImageIndexes[props.index]
+        ? "2px solid rgb(var(--v-theme-primary))"
+        : "2px solid transparent",
+    transition: "outline-color 120ms",
+}));
+
+const pulseStyle = computed(() => ({
+    opacity: Math.floor(props.timestamp / 1000) % 2 === 0 ? 1 : 0.35,
+    transition: "opacity 0.7s ease-in-out",
+}));
 
 onBeforeMount(() => {
     galleryStore.focusedImageIndexes[props.index] = false;
 });
 
 function openDialog() {
+    metaOpen.value = true;
     dialog.value = true;
 }
 
 function closeDialog() {
     dialog.value = false;
+}
+
+function handleToggleMeta() {
+    metaOpen.value = !metaOpen.value;
 }
 
 const expandedScreenshotLink = computed<string>(() => {
@@ -346,51 +360,3 @@ function registerKeyPress(event: KeyboardEvent) {
     lastKeyPressed.value = event.key;
 }
 </script>
-
-<style scoped>
-.img-styling {
-    background-color: black;
-}
-
-.img-styling .hover-overlay {
-    position: absolute;
-    top: 0;
-    right: 0;
-    bottom: 0;
-    left: 0;
-    z-index: 0;
-    background-color: rgba(255, 255, 255, 0.3);
-    flex-direction: column;
-    justify-content: space-between;
-}
-
-.img-styling .hover-overlay-expanded {
-    position: absolute;
-    top: 0;
-    right: 0;
-    bottom: 0;
-    left: 0;
-    z-index: 0;
-    flex-direction: column;
-    justify-content: space-between;
-}
-
-.button-row {
-    background-color: #404040;
-    align-items: center;
-    justify-content: center;
-}
-
-.title-box {
-    color: white;
-}
-
-.content-filler {
-    visibility: hidden;
-}
-
-.metadata-container {
-    margin: auto;
-    width: 60%;
-}
-</style>
