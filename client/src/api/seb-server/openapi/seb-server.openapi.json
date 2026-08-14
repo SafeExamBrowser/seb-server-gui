@@ -22473,6 +22473,11 @@
                     "grantChecked": { "type": "boolean" },
                     "grantDenied": { "type": "boolean" },
                     "sebversionDenied": { "type": "boolean" },
+                    "lat": { "type": "integer" },
+                    "iv": {
+                        "type": "object",
+                        "additionalProperties": { "type": "string" }
+                    },
                     "st": {
                         "type": "string",
                         "enum": [
@@ -22483,11 +22488,6 @@
                             "CLOSED",
                             "DISABLED"
                         ]
-                    },
-                    "lat": { "type": "integer" },
-                    "iv": {
-                        "type": "object",
-                        "additionalProperties": { "type": "string" }
                     },
                     "nf": { "type": "integer", "format": "int32" },
                     "id": { "type": "integer" }
