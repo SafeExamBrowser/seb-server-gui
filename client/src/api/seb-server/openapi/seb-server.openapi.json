@@ -22,6 +22,10 @@
             "description": "Scheduled exam deletion administration endpoints."
         },
         {
+            "name": "Info",
+            "description": "Public server information endpoints."
+        },
+        {
             "name": "UserAccount",
             "description": "User account administration and current-user endpoints."
         }
@@ -13972,93 +13976,11 @@
                 "security": [{ "oauth": [] }]
             }
         },
-        "/admin-api/v1/info/privileges": {
-            "get": {
-                "tags": ["info-controller"],
-                "operationId": "privileges",
-                "responses": {
-                    "200": {
-                        "description": "OK",
-                        "content": {
-                            "application/json": {
-                                "schema": {
-                                    "type": "array",
-                                    "items": {
-                                        "$ref": "#/components/schemas/Privilege"
-                                    }
-                                }
-                            }
-                        }
-                    },
-                    "400": {
-                        "$ref": "#/components/responses/Error400BadRequest"
-                    },
-                    "401": {
-                        "$ref": "#/components/responses/Error401Unauthorized"
-                    },
-                    "403": {
-                        "$ref": "#/components/responses/Error403Forbidden"
-                    },
-                    "404": {
-                        "$ref": "#/components/responses/Error404NotFound"
-                    },
-                    "429": {
-                        "$ref": "#/components/responses/Error429TooManyRequests"
-                    },
-                    "500": {
-                        "$ref": "#/components/responses/Error500InternalServerError"
-                    }
-                },
-                "security": [{ "oauth": [] }]
-            }
-        },
-        "/admin-api/v1/info/logo/{urlSuffix}": {
-            "get": {
-                "tags": ["info-controller"],
-                "operationId": "logo",
-                "parameters": [
-                    {
-                        "name": "urlSuffix",
-                        "in": "path",
-                        "required": true,
-                        "schema": { "type": "string" }
-                    }
-                ],
-                "responses": {
-                    "200": {
-                        "description": "OK",
-                        "content": {
-                            "image/png": { "schema": { "type": "string" } },
-                            "image/png;base64": {
-                                "schema": { "type": "string" }
-                            }
-                        }
-                    },
-                    "400": {
-                        "$ref": "#/components/responses/Error400BadRequest"
-                    },
-                    "401": {
-                        "$ref": "#/components/responses/Error401Unauthorized"
-                    },
-                    "403": {
-                        "$ref": "#/components/responses/Error403Forbidden"
-                    },
-                    "404": {
-                        "$ref": "#/components/responses/Error404NotFound"
-                    },
-                    "429": {
-                        "$ref": "#/components/responses/Error429TooManyRequests"
-                    },
-                    "500": {
-                        "$ref": "#/components/responses/Error500InternalServerError"
-                    }
-                },
-                "security": [{ "oauth": [] }]
-            }
-        },
         "/admin-api/v1/info/institution": {
             "get": {
-                "tags": ["info-controller"],
+                "tags": ["Info"],
+                "summary": "Gets the names of all active institutions for selection.",
+                "description": "Publicly reachable; it backs the institution selection of the self-registration page.",
                 "operationId": "getInstitutionInfo",
                 "responses": {
                     "200": {
@@ -14092,96 +14014,7 @@
                     "500": {
                         "$ref": "#/components/responses/Error500InternalServerError"
                     }
-                },
-                "security": [{ "oauth": [] }]
-            }
-        },
-        "/admin-api/v1/info/institution/{urlSuffix}": {
-            "get": {
-                "tags": ["info-controller"],
-                "operationId": "getInstitutionInfo_1",
-                "parameters": [
-                    {
-                        "name": "urlSuffix",
-                        "in": "path",
-                        "required": true,
-                        "schema": { "type": "string" }
-                    }
-                ],
-                "responses": {
-                    "200": {
-                        "description": "OK",
-                        "content": {
-                            "application/json": {
-                                "schema": {
-                                    "type": "array",
-                                    "items": {
-                                        "$ref": "#/components/schemas/EntityName"
-                                    }
-                                }
-                            }
-                        }
-                    },
-                    "400": {
-                        "$ref": "#/components/responses/Error400BadRequest"
-                    },
-                    "401": {
-                        "$ref": "#/components/responses/Error401Unauthorized"
-                    },
-                    "403": {
-                        "$ref": "#/components/responses/Error403Forbidden"
-                    },
-                    "404": {
-                        "$ref": "#/components/responses/Error404NotFound"
-                    },
-                    "429": {
-                        "$ref": "#/components/responses/Error429TooManyRequests"
-                    },
-                    "500": {
-                        "$ref": "#/components/responses/Error500InternalServerError"
-                    }
-                },
-                "security": [{ "oauth": [] }]
-            }
-        },
-        "/admin-api/v1/info/features": {
-            "get": {
-                "tags": ["info-controller"],
-                "operationId": "getServiceFeatures",
-                "responses": {
-                    "200": {
-                        "description": "OK",
-                        "content": {
-                            "application/json": {
-                                "schema": {
-                                    "type": "object",
-                                    "additionalProperties": {
-                                        "type": "boolean"
-                                    }
-                                }
-                            }
-                        }
-                    },
-                    "400": {
-                        "$ref": "#/components/responses/Error400BadRequest"
-                    },
-                    "401": {
-                        "$ref": "#/components/responses/Error401Unauthorized"
-                    },
-                    "403": {
-                        "$ref": "#/components/responses/Error403Forbidden"
-                    },
-                    "404": {
-                        "$ref": "#/components/responses/Error404NotFound"
-                    },
-                    "429": {
-                        "$ref": "#/components/responses/Error429TooManyRequests"
-                    },
-                    "500": {
-                        "$ref": "#/components/responses/Error500InternalServerError"
-                    }
-                },
-                "security": [{ "oauth": [] }]
+                }
             }
         },
         "/admin-api/v1/indicator/{modelId}": {
@@ -22868,83 +22701,6 @@
                         "items": { "$ref": "#/components/schemas/Institution" }
                     },
                     "complete": { "type": "boolean" }
-                }
-            },
-            "Privilege": {
-                "type": "object",
-                "properties": {
-                    "roleTypeKey": {
-                        "$ref": "#/components/schemas/RoleTypeKey"
-                    },
-                    "basePrivilege": {
-                        "type": "string",
-                        "enum": ["NONE", "ASSIGNED", "READ", "MODIFY", "WRITE"]
-                    },
-                    "institutionalPrivilege": {
-                        "type": "string",
-                        "enum": ["NONE", "ASSIGNED", "READ", "MODIFY", "WRITE"]
-                    },
-                    "ownershipPrivilege": {
-                        "type": "string",
-                        "enum": ["NONE", "ASSIGNED", "READ", "MODIFY", "WRITE"]
-                    }
-                }
-            },
-            "RoleTypeKey": {
-                "type": "object",
-                "properties": {
-                    "entityType": {
-                        "type": "string",
-                        "enum": [
-                            "CONFIGURATION_ATTRIBUTE",
-                            "CONFIGURATION_VALUE",
-                            "VIEW",
-                            "ORIENTATION",
-                            "CONFIGURATION",
-                            "CONFIGURATION_NODE",
-                            "EXAM_CONFIGURATION_MAP",
-                            "EXAM",
-                            "EXAM_SEB_RESTRICTION",
-                            "EXAM_PROCTOR_DATA",
-                            "CLIENT_CONNECTION",
-                            "REMOTE_PROCTORING_ROOM",
-                            "SCREEN_PROCTORING_GROUP",
-                            "CLIENT_EVENT",
-                            "CLIENT_INSTRUCTION",
-                            "INDICATOR",
-                            "THRESHOLD",
-                            "INSTITUTION",
-                            "SEB_CLIENT_CONFIGURATION",
-                            "LMS_SETUP",
-                            "USER",
-                            "USER_ROLE",
-                            "USER_ACTIVITY_LOG",
-                            "ADDITIONAL_ATTRIBUTES",
-                            "WEBSERVICE_SERVER_INFO",
-                            "CERTIFICATE",
-                            "EXAM_TEMPLATE",
-                            "BATCH_ACTION",
-                            "CLIENT_INDICATOR",
-                            "CLIENT_NOTIFICATION",
-                            "CLIENT_GROUP",
-                            "SEB_SECURITY_KEY_REGISTRY",
-                            "ENTITY_PRIVILEGE",
-                            "FEATURE_PRIVILEGE",
-                            "SCHEDULED_DELETE",
-                            "SCHEDULED_DELETE_INFO",
-                            "CONFIGURATION_ATTRIBUTE_DEPRECATION"
-                        ]
-                    },
-                    "userRole": {
-                        "type": "string",
-                        "enum": [
-                            "SEB_SERVER_ADMIN",
-                            "INSTITUTIONAL_ADMIN",
-                            "EXAM_ADMIN",
-                            "EXAM_SUPPORTER",
-                            "TEACHER"
-                        ]
-                    }
                 }
             },
             "PageIndicator": {

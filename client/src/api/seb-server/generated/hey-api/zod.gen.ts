@@ -1466,80 +1466,6 @@ export const zPageInstitution = z.object({
     complete: z.boolean().optional()
 });
 
-export const zRoleTypeKey = z.object({
-    entityType: z.enum([
-        'CONFIGURATION_ATTRIBUTE',
-        'CONFIGURATION_VALUE',
-        'VIEW',
-        'ORIENTATION',
-        'CONFIGURATION',
-        'CONFIGURATION_NODE',
-        'EXAM_CONFIGURATION_MAP',
-        'EXAM',
-        'EXAM_SEB_RESTRICTION',
-        'EXAM_PROCTOR_DATA',
-        'CLIENT_CONNECTION',
-        'REMOTE_PROCTORING_ROOM',
-        'SCREEN_PROCTORING_GROUP',
-        'CLIENT_EVENT',
-        'CLIENT_INSTRUCTION',
-        'INDICATOR',
-        'THRESHOLD',
-        'INSTITUTION',
-        'SEB_CLIENT_CONFIGURATION',
-        'LMS_SETUP',
-        'USER',
-        'USER_ROLE',
-        'USER_ACTIVITY_LOG',
-        'ADDITIONAL_ATTRIBUTES',
-        'WEBSERVICE_SERVER_INFO',
-        'CERTIFICATE',
-        'EXAM_TEMPLATE',
-        'BATCH_ACTION',
-        'CLIENT_INDICATOR',
-        'CLIENT_NOTIFICATION',
-        'CLIENT_GROUP',
-        'SEB_SECURITY_KEY_REGISTRY',
-        'ENTITY_PRIVILEGE',
-        'FEATURE_PRIVILEGE',
-        'SCHEDULED_DELETE',
-        'SCHEDULED_DELETE_INFO',
-        'CONFIGURATION_ATTRIBUTE_DEPRECATION'
-    ]).optional(),
-    userRole: z.enum([
-        'SEB_SERVER_ADMIN',
-        'INSTITUTIONAL_ADMIN',
-        'EXAM_ADMIN',
-        'EXAM_SUPPORTER',
-        'TEACHER'
-    ]).optional()
-});
-
-export const zPrivilege = z.object({
-    roleTypeKey: zRoleTypeKey.optional(),
-    basePrivilege: z.enum([
-        'NONE',
-        'ASSIGNED',
-        'READ',
-        'MODIFY',
-        'WRITE'
-    ]).optional(),
-    institutionalPrivilege: z.enum([
-        'NONE',
-        'ASSIGNED',
-        'READ',
-        'MODIFY',
-        'WRITE'
-    ]).optional(),
-    ownershipPrivilege: z.enum([
-        'NONE',
-        'ASSIGNED',
-        'READ',
-        'MODIFY',
-        'WRITE'
-    ]).optional()
-});
-
 export const zPageIndicator = z.object({
     number_of_pages: z.int().min(-2147483648, { error: 'Invalid value: Expected int32 to be >= -2147483648' }).max(2147483647, { error: 'Invalid value: Expected int32 to be <= 2147483647' }).optional(),
     page_number: z.int().gte(1).lte(2147483647).optional(),
@@ -4743,35 +4669,7 @@ export const zGetActiveInstitutionsResponse = zPageInstitution;
 /**
  * OK
  */
-export const zPrivilegesResponse = z.array(zPrivilege);
-
-export const zLogoPath = z.object({
-    urlSuffix: z.string()
-});
-
-/**
- * OK
- */
-export const zLogoResponse = z.string();
-
-/**
- * OK
- */
 export const zGetInstitutionInfoResponse = z.array(zEntityName);
-
-export const zGetInstitutionInfo1Path = z.object({
-    urlSuffix: z.string()
-});
-
-/**
- * OK
- */
-export const zGetInstitutionInfo1Response = z.array(zEntityName);
-
-/**
- * OK
- */
-export const zGetServiceFeaturesResponse = z.record(z.string(), z.boolean());
 
 export const zDeleteIndicatorBody = z.unknown();
 
