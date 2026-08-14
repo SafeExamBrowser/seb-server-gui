@@ -19,8 +19,6 @@ export const useLogout = () => {
 
         await router.push({ name: "/(public)/login/" });
 
-        // drop every cached query once the app pages are unmounted, so the
-        // next login cannot see the previous user's data
         queryClient.clear();
     };
 
