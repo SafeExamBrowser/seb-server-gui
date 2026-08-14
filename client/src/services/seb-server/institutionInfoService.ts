@@ -1,24 +1,14 @@
+import { getInstitutionInfo as getInstitutionInfoSdk } from "@/api/seb-server/generated/hey-api/sdk.gen.ts";
+import { heySebServerClient as client } from "@/api/seb-server/http/heySebServerClient.ts";
 import {
     type InstitutionName,
     institutionNameSchema,
 } from "@/models/institution.ts";
-import * as apiService from "@/services/apiService";
 import { decodeWire } from "@/services/errors/wireCodec.ts";
 
-// /info/* is on the unmigrated InfoController and backs the PUBLIC register
-// dropdown, so it stays on the legacy apiService (reachable unauthenticated).
-const infoBaseUrl = "/info" as const;
-
-export const getInstitutions = async (): Promise<InstitutionName[]> => {
-    const { data } = await apiService.getRequest({
-        url: `${infoBaseUrl}/institution`,
-        options: {
-            headers: {
-                "Content-Type": "application/x-www-form-urlencoded",
-            },
-        },
-    });
-    return (data ?? []).map((row: InstitutionName) =>
-        decodeWire(institutionNameSchema, row),
+// Publicly reachable (listed in PUBLIC_PATHS): it backs the institution
+// dropdown of the unauthenticated register page.
+export const getInstitutions = (): Promise<InstitutionName[]> =>
+    getInstitutionInfoSdk({ client }).then(({ data }) =>
+        (data ?? []).map((name) => decodeWire(institutionNameSchema, name)),
     );
-};

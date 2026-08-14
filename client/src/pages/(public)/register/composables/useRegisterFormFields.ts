@@ -6,6 +6,7 @@ import { useInstitutions } from "@/composables/useInstitutions.ts";
 import { useZodFormRules } from "@/composables/useZodFormRules.ts";
 import i18n from "@/i18n";
 import { userAccountCreateSchema } from "@/models/userAccount.ts";
+import { toAppErrorOrUndefined } from "@/services/errors/toAppError.ts";
 
 const timezoneOptions = moment.tz
     .names()
@@ -26,7 +27,14 @@ export const useRegisterFormFields = () => {
     const { isRequired, fieldRules } = useZodFormRules();
     const schema = userAccountCreateSchema;
 
-    const { data: institutions, loading, error } = useInstitutions();
+    const {
+        data: institutions,
+        isLoading: loading,
+        error: institutionsQueryError,
+    } = useInstitutions();
+    const error = computed(() =>
+        toAppErrorOrUndefined(institutionsQueryError.value),
+    );
     const institutionSelectDisabled = ref(false);
 
     watch(

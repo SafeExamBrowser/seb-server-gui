@@ -13,6 +13,7 @@ import {
     type UserRole,
 } from "@/models/userAccount.ts";
 import { USER_ACCOUNT_FIELD } from "@/pages/(app)/user-account/userAccountFormConfig.ts";
+import { toAppErrorOrUndefined } from "@/services/errors/toAppError.ts";
 
 const ADMIN_VISIBLE_ROLES: ReadonlySet<UserRole> = new Set<UserRole>([
     "SEB_SERVER_ADMIN",
@@ -61,9 +62,12 @@ export const useUserAccountFormFields = (mode: UserAccountFormMode) => {
 
     const {
         data: institutions,
-        loading: loadingInstitutions,
-        error: errorInstitutions,
+        isLoading: loadingInstitutions,
+        error: institutionsQueryError,
     } = useInstitutions();
+    const errorInstitutions = computed(() =>
+        toAppErrorOrUndefined(institutionsQueryError.value),
+    );
 
     const { data: authenticatedUser } = useCurrentUserQuery();
     const userRoles = computed(() => authenticatedUser.value?.userRoles ?? []);
