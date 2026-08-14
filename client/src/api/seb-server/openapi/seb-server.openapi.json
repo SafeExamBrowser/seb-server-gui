@@ -12,9 +12,18 @@
             "name": "Institution",
             "description": "Institution administration endpoints."
         },
+        { "name": "Quiz", "description": "LMS quiz discovery endpoints." },
         {
             "name": "ExamTemplate",
             "description": "Exam template administration endpoints."
+        },
+        {
+            "name": "ScheduledDelete",
+            "description": "Scheduled exam deletion administration endpoints."
+        },
+        {
+            "name": "Info",
+            "description": "Public server information endpoints."
         },
         {
             "name": "UserAccount",
@@ -6188,9 +6197,31 @@
         },
         "/admin-api/v1/scheduled-delete": {
             "get": {
-                "tags": ["scheduled-delete-controller"],
+                "tags": ["ScheduledDelete"],
+                "summary": "Gets a page of scheduled deletions.",
+                "description": "Sorted by schedule time (descending) unless a sort parameter is given.",
                 "operationId": "getScheduledDeletes",
                 "parameters": [
+                    {
+                        "name": "dueTimestamp",
+                        "in": "query",
+                        "description": "Filters scheduled deletions by delete-due time; unix timestamp in milliseconds.",
+                        "schema": { "type": "integer" }
+                    },
+                    {
+                        "name": "state",
+                        "in": "query",
+                        "description": "Filters scheduled deletions by state.",
+                        "schema": {
+                            "type": "string",
+                            "enum": [
+                                "PENDING",
+                                "SPS_RUNNING",
+                                "RUNNING",
+                                "FINISHED"
+                            ]
+                        }
+                    },
                     {
                         "name": "page_number",
                         "in": "query",
@@ -6243,12 +6274,22 @@
                 "security": [{ "oauth": [] }]
             },
             "post": {
-                "tags": ["scheduled-delete-controller"],
+                "tags": ["ScheduledDelete"],
+                "summary": "Schedules a new deletion of all exams that ended before the given due time.",
                 "operationId": "createScheduledDelete",
                 "requestBody": {
                     "content": {
                         "application/x-www-form-urlencoded": {
-                            "schema": { "type": "integer" }
+                            "schema": {
+                                "type": "object",
+                                "properties": {
+                                    "deleteDueTime": {
+                                        "type": "integer",
+                                        "description": "Exams that ended before this time get deleted; unix timestamp in milliseconds."
+                                    }
+                                },
+                                "required": ["deleteDueTime"]
+                            }
                         }
                     }
                 },
@@ -6287,8 +6328,9 @@
         },
         "/admin-api/v1/scheduled-delete/{modelId}/unmark-exclude": {
             "post": {
-                "tags": ["scheduled-delete-controller"],
-                "operationId": "unmarkExclude",
+                "tags": ["ScheduledDelete"],
+                "summary": "Includes the given exam in scheduled deletions again and recalculates a pending deletion.",
+                "operationId": "unmarkExcludeFromDeletion",
                 "parameters": [
                     {
                         "name": "modelId",
@@ -6335,8 +6377,9 @@
         },
         "/admin-api/v1/scheduled-delete/{modelId}/mark-exclude": {
             "post": {
-                "tags": ["scheduled-delete-controller"],
-                "operationId": "markExclude",
+                "tags": ["ScheduledDelete"],
+                "summary": "Excludes the given exam from scheduled deletions and recalculates a pending deletion.",
+                "operationId": "markExcludeFromDeletion",
                 "parameters": [
                     {
                         "name": "modelId",
@@ -11290,8 +11333,9 @@
         },
         "/admin-api/v1/scheduled-delete/{modelId}": {
             "get": {
-                "tags": ["scheduled-delete-controller"],
-                "operationId": "getFullReportById",
+                "tags": ["ScheduledDelete"],
+                "summary": "Gets the full report of the given scheduled deletion, including the affected exams.",
+                "operationId": "getScheduledDeleteReport",
                 "parameters": [
                     {
                         "name": "modelId",
@@ -11333,8 +11377,9 @@
                 "security": [{ "oauth": [] }]
             },
             "delete": {
-                "tags": ["scheduled-delete-controller"],
-                "operationId": "delete",
+                "tags": ["ScheduledDelete"],
+                "summary": "Deletes (cancels) the given pending scheduled deletion.",
+                "operationId": "deleteScheduledDelete",
                 "parameters": [
                     {
                         "name": "modelId",
@@ -11378,9 +11423,35 @@
         },
         "/admin-api/v1/quiz": {
             "get": {
-                "tags": ["quiz-controller"],
-                "operationId": "getQuizPage",
+                "tags": ["Quiz"],
+                "summary": "Gets a page of quizzes discovered on an assessment tool (LMS).",
+                "description": "The quiz lookup runs asynchronously on the LMS: while the returned page's 'complete' flag is false, only a partial result set is available and the same page should be polled again.",
+                "operationId": "getQuizzes",
                 "parameters": [
+                    {
+                        "name": "name",
+                        "in": "query",
+                        "description": "Filters quizzes by name.",
+                        "schema": { "type": "string" }
+                    },
+                    {
+                        "name": "start_timestamp_millis",
+                        "in": "query",
+                        "description": "Filters quizzes by start time; unix timestamp in milliseconds.",
+                        "schema": { "type": "integer" }
+                    },
+                    {
+                        "name": "lms_setup",
+                        "in": "query",
+                        "description": "Identifier of the assessment tool (LMS setup) to discover quizzes on.",
+                        "schema": { "type": "integer" }
+                    },
+                    {
+                        "name": "force_new_search",
+                        "in": "query",
+                        "description": "Forces a new LMS lookup instead of serving the cached result of the previous search.",
+                        "schema": { "type": "boolean" }
+                    },
                     {
                         "name": "institutionId",
                         "in": "query",
@@ -11404,14 +11475,6 @@
                         "in": "query",
                         "required": false,
                         "schema": { "type": "string" }
-                    },
-                    {
-                        "name": "allRequestParams",
-                        "in": "query",
-                        "required": true,
-                        "schema": {
-                            "$ref": "#/components/schemas/MultiValueMapStringString"
-                        }
                     }
                 ],
                 "responses": {
@@ -11421,57 +11484,6 @@
                             "application/json": {
                                 "schema": {
                                     "$ref": "#/components/schemas/PageQuizData"
-                                }
-                            }
-                        }
-                    },
-                    "400": {
-                        "$ref": "#/components/responses/Error400BadRequest"
-                    },
-                    "401": {
-                        "$ref": "#/components/responses/Error401Unauthorized"
-                    },
-                    "403": {
-                        "$ref": "#/components/responses/Error403Forbidden"
-                    },
-                    "404": {
-                        "$ref": "#/components/responses/Error404NotFound"
-                    },
-                    "429": {
-                        "$ref": "#/components/responses/Error429TooManyRequests"
-                    },
-                    "500": {
-                        "$ref": "#/components/responses/Error500InternalServerError"
-                    }
-                },
-                "security": [{ "oauth": [] }]
-            }
-        },
-        "/admin-api/v1/quiz/{modelId}": {
-            "get": {
-                "tags": ["quiz-controller"],
-                "operationId": "getQuiz",
-                "parameters": [
-                    {
-                        "name": "modelId",
-                        "in": "path",
-                        "required": true,
-                        "schema": { "type": "string" }
-                    },
-                    {
-                        "name": "lms_setup_id",
-                        "in": "query",
-                        "required": true,
-                        "schema": { "type": "integer" }
-                    }
-                ],
-                "responses": {
-                    "200": {
-                        "description": "OK",
-                        "content": {
-                            "application/json": {
-                                "schema": {
-                                    "$ref": "#/components/schemas/QuizData"
                                 }
                             }
                         }
@@ -13964,93 +13976,11 @@
                 "security": [{ "oauth": [] }]
             }
         },
-        "/admin-api/v1/info/privileges": {
-            "get": {
-                "tags": ["info-controller"],
-                "operationId": "privileges",
-                "responses": {
-                    "200": {
-                        "description": "OK",
-                        "content": {
-                            "application/json": {
-                                "schema": {
-                                    "type": "array",
-                                    "items": {
-                                        "$ref": "#/components/schemas/Privilege"
-                                    }
-                                }
-                            }
-                        }
-                    },
-                    "400": {
-                        "$ref": "#/components/responses/Error400BadRequest"
-                    },
-                    "401": {
-                        "$ref": "#/components/responses/Error401Unauthorized"
-                    },
-                    "403": {
-                        "$ref": "#/components/responses/Error403Forbidden"
-                    },
-                    "404": {
-                        "$ref": "#/components/responses/Error404NotFound"
-                    },
-                    "429": {
-                        "$ref": "#/components/responses/Error429TooManyRequests"
-                    },
-                    "500": {
-                        "$ref": "#/components/responses/Error500InternalServerError"
-                    }
-                },
-                "security": [{ "oauth": [] }]
-            }
-        },
-        "/admin-api/v1/info/logo/{urlSuffix}": {
-            "get": {
-                "tags": ["info-controller"],
-                "operationId": "logo",
-                "parameters": [
-                    {
-                        "name": "urlSuffix",
-                        "in": "path",
-                        "required": true,
-                        "schema": { "type": "string" }
-                    }
-                ],
-                "responses": {
-                    "200": {
-                        "description": "OK",
-                        "content": {
-                            "image/png": { "schema": { "type": "string" } },
-                            "image/png;base64": {
-                                "schema": { "type": "string" }
-                            }
-                        }
-                    },
-                    "400": {
-                        "$ref": "#/components/responses/Error400BadRequest"
-                    },
-                    "401": {
-                        "$ref": "#/components/responses/Error401Unauthorized"
-                    },
-                    "403": {
-                        "$ref": "#/components/responses/Error403Forbidden"
-                    },
-                    "404": {
-                        "$ref": "#/components/responses/Error404NotFound"
-                    },
-                    "429": {
-                        "$ref": "#/components/responses/Error429TooManyRequests"
-                    },
-                    "500": {
-                        "$ref": "#/components/responses/Error500InternalServerError"
-                    }
-                },
-                "security": [{ "oauth": [] }]
-            }
-        },
         "/admin-api/v1/info/institution": {
             "get": {
-                "tags": ["info-controller"],
+                "tags": ["Info"],
+                "summary": "Gets the names of all active institutions for selection.",
+                "description": "Publicly reachable; it backs the institution selection of the self-registration page.",
                 "operationId": "getInstitutionInfo",
                 "responses": {
                     "200": {
@@ -14084,96 +14014,7 @@
                     "500": {
                         "$ref": "#/components/responses/Error500InternalServerError"
                     }
-                },
-                "security": [{ "oauth": [] }]
-            }
-        },
-        "/admin-api/v1/info/institution/{urlSuffix}": {
-            "get": {
-                "tags": ["info-controller"],
-                "operationId": "getInstitutionInfo_1",
-                "parameters": [
-                    {
-                        "name": "urlSuffix",
-                        "in": "path",
-                        "required": true,
-                        "schema": { "type": "string" }
-                    }
-                ],
-                "responses": {
-                    "200": {
-                        "description": "OK",
-                        "content": {
-                            "application/json": {
-                                "schema": {
-                                    "type": "array",
-                                    "items": {
-                                        "$ref": "#/components/schemas/EntityName"
-                                    }
-                                }
-                            }
-                        }
-                    },
-                    "400": {
-                        "$ref": "#/components/responses/Error400BadRequest"
-                    },
-                    "401": {
-                        "$ref": "#/components/responses/Error401Unauthorized"
-                    },
-                    "403": {
-                        "$ref": "#/components/responses/Error403Forbidden"
-                    },
-                    "404": {
-                        "$ref": "#/components/responses/Error404NotFound"
-                    },
-                    "429": {
-                        "$ref": "#/components/responses/Error429TooManyRequests"
-                    },
-                    "500": {
-                        "$ref": "#/components/responses/Error500InternalServerError"
-                    }
-                },
-                "security": [{ "oauth": [] }]
-            }
-        },
-        "/admin-api/v1/info/features": {
-            "get": {
-                "tags": ["info-controller"],
-                "operationId": "getServiceFeatures",
-                "responses": {
-                    "200": {
-                        "description": "OK",
-                        "content": {
-                            "application/json": {
-                                "schema": {
-                                    "type": "object",
-                                    "additionalProperties": {
-                                        "type": "boolean"
-                                    }
-                                }
-                            }
-                        }
-                    },
-                    "400": {
-                        "$ref": "#/components/responses/Error400BadRequest"
-                    },
-                    "401": {
-                        "$ref": "#/components/responses/Error401Unauthorized"
-                    },
-                    "403": {
-                        "$ref": "#/components/responses/Error403Forbidden"
-                    },
-                    "404": {
-                        "$ref": "#/components/responses/Error404NotFound"
-                    },
-                    "429": {
-                        "$ref": "#/components/responses/Error429TooManyRequests"
-                    },
-                    "500": {
-                        "$ref": "#/components/responses/Error500InternalServerError"
-                    }
-                },
-                "security": [{ "oauth": [] }]
+                }
             }
         },
         "/admin-api/v1/indicator/{modelId}": {
@@ -20655,8 +20496,8 @@
                         "type": "object",
                         "additionalProperties": { "type": "string" }
                     },
-                    "quiz_start_url": { "type": "string" },
-                    "quiz_description": { "type": "string" }
+                    "quiz_description": { "type": "string" },
+                    "quiz_start_url": { "type": "string" }
                 },
                 "required": ["externalId", "institutionId", "type"]
             },
@@ -21381,11 +21222,19 @@
             },
             "ScheduledDeleteReport": {
                 "type": "object",
+                "description": "Full report of a scheduled deletion, including the affected exams.",
                 "properties": {
-                    "id": { "type": "integer" },
-                    "spsId": { "type": "integer" },
+                    "id": {
+                        "type": "integer",
+                        "description": "Scheduled deletion identifier (PK)."
+                    },
+                    "spsId": {
+                        "type": "integer",
+                        "description": "Identifier of the corresponding deletion on the screen proctoring service."
+                    },
                     "state": {
                         "type": "string",
+                        "description": "Processing state of the scheduled deletion.",
                         "enum": [
                             "PENDING",
                             "SPS_RUNNING",
@@ -21393,27 +21242,53 @@
                             "FINISHED"
                         ]
                     },
-                    "deleteDueTime": { "type": "integer" },
-                    "scheduleTime": { "type": "integer" },
-                    "startTime": { "type": "integer" },
-                    "endTime": { "type": "integer" },
-                    "institutionId": { "type": "integer" },
+                    "deleteDueTime": {
+                        "type": "integer",
+                        "description": "Exams that ended before this time get deleted; unix timestamp in milliseconds."
+                    },
+                    "scheduleTime": {
+                        "type": "integer",
+                        "description": "Time the deletion runs; unix timestamp in milliseconds."
+                    },
+                    "startTime": {
+                        "type": "integer",
+                        "description": "Time the deletion run started; unix timestamp in milliseconds."
+                    },
+                    "endTime": {
+                        "type": "integer",
+                        "description": "Time the deletion run finished; unix timestamp in milliseconds."
+                    },
+                    "institutionId": {
+                        "type": "integer",
+                        "description": "Institution identifier the scheduled deletion belongs to."
+                    },
                     "examDeletions": {
                         "type": "array",
+                        "description": "Deletions of exams managed by this SEB Server.",
                         "items": {
                             "$ref": "#/components/schemas/ScheduledDeleteViewInfo"
                         }
                     },
                     "spsOnlyDeletions": {
                         "type": "array",
+                        "description": "Deletions of exams that only exist on the screen proctoring service.",
                         "items": {
                             "$ref": "#/components/schemas/ScheduledDeleteViewInfo"
                         }
                     }
-                }
+                },
+                "required": [
+                    "deleteDueTime",
+                    "examDeletions",
+                    "id",
+                    "scheduleTime",
+                    "spsOnlyDeletions",
+                    "state"
+                ]
             },
             "ScheduledDeleteViewInfo": {
                 "type": "object",
+                "description": "Deletion details of one exam affected by a scheduled deletion.",
                 "properties": {
                     "examUUID": { "type": "string" },
                     "examName": { "type": "string" },
@@ -22282,11 +22157,20 @@
             },
             "ScheduledDelete": {
                 "type": "object",
+                "description": "A scheduled deletion of all exams that ended before its delete-due time.",
                 "properties": {
-                    "id": { "type": "integer", "readOnly": true },
-                    "spsId": { "type": "integer" },
+                    "id": {
+                        "type": "integer",
+                        "description": "Scheduled deletion identifier (PK).",
+                        "readOnly": true
+                    },
+                    "spsId": {
+                        "type": "integer",
+                        "description": "Identifier of the corresponding deletion on the screen proctoring service."
+                    },
                     "state": {
                         "type": "string",
+                        "description": "Processing state of the scheduled deletion.",
                         "enum": [
                             "PENDING",
                             "SPS_RUNNING",
@@ -22294,19 +22178,38 @@
                             "FINISHED"
                         ]
                     },
-                    "deleteDueTime": { "type": "integer" },
-                    "scheduleTime": { "type": "integer" },
-                    "startTime": { "type": "integer" },
-                    "endTime": { "type": "integer" },
-                    "owner": { "type": "string" },
-                    "institutionId": { "type": "integer" },
+                    "deleteDueTime": {
+                        "type": "integer",
+                        "description": "Exams that ended before this time get deleted; unix timestamp in milliseconds."
+                    },
+                    "scheduleTime": {
+                        "type": "integer",
+                        "description": "Time the deletion runs; unix timestamp in milliseconds."
+                    },
+                    "startTime": {
+                        "type": "integer",
+                        "description": "Time the deletion run started; unix timestamp in milliseconds."
+                    },
+                    "endTime": {
+                        "type": "integer",
+                        "description": "Time the deletion run finished; unix timestamp in milliseconds."
+                    },
+                    "owner": {
+                        "type": "string",
+                        "description": "UUID of the user account that scheduled the deletion."
+                    },
+                    "institutionId": {
+                        "type": "integer",
+                        "description": "Institution identifier the scheduled deletion belongs to."
+                    },
                     "info": {
                         "type": "array",
                         "items": {
                             "$ref": "#/components/schemas/ScheduledDeleteInfo"
                         }
                     }
-                }
+                },
+                "required": ["deleteDueTime", "id", "scheduleTime", "state"]
             },
             "ScheduledDeleteInfo": {
                 "type": "object",
@@ -22371,12 +22274,26 @@
             },
             "QuizData": {
                 "type": "object",
+                "description": "Quiz (course) data as discovered on an LMS.",
                 "properties": {
-                    "quiz_id": { "type": "string" },
-                    "institutionId": { "type": "integer" },
-                    "lms_setup_id": { "type": "integer" },
+                    "quiz_id": {
+                        "type": "string",
+                        "description": "LMS-side identifier of the quiz.",
+                        "example": "quiz10"
+                    },
+                    "institutionId": {
+                        "type": "integer",
+                        "description": "Institution identifier the assessment tool of this quiz belongs to.",
+                        "example": 1
+                    },
+                    "lms_setup_id": {
+                        "type": "integer",
+                        "description": "Identifier of the assessment tool (LMS setup) the quiz was discovered on.",
+                        "example": 1
+                    },
                     "lms_setup_type": {
                         "type": "string",
+                        "description": "Type of the LMS the quiz was discovered on.",
                         "enum": [
                             "MOCKUP",
                             "OPEN_EDX",
@@ -22384,24 +22301,39 @@
                             "MOODLE_PLUGIN",
                             "ANS_DELFT",
                             "OPEN_OLAT"
-                        ]
+                        ],
+                        "example": "MOODLE"
                     },
-                    "quiz_name": { "type": "string" },
-                    "quiz_description": { "type": "string" },
+                    "quiz_name": {
+                        "type": "string",
+                        "description": "Name of the quiz.",
+                        "example": "Semester End Quiz"
+                    },
+                    "quiz_description": {
+                        "type": "string",
+                        "description": "Description of the quiz."
+                    },
                     "quiz_start_time": {
                         "type": "string",
-                        "format": "date-time"
+                        "format": "date-time",
+                        "description": "Start time of the quiz."
                     },
                     "quiz_end_time": {
                         "type": "string",
-                        "format": "date-time"
+                        "format": "date-time",
+                        "description": "End time of the quiz."
                     },
-                    "quiz_start_url": { "type": "string" },
+                    "quiz_start_url": {
+                        "type": "string",
+                        "description": "URL under which the quiz starts on the LMS."
+                    },
                     "additionalAttributes": {
                         "type": "object",
-                        "additionalProperties": { "type": "string" }
+                        "additionalProperties": { "type": "string" },
+                        "description": "Additional LMS-specific quiz attributes as key-value pairs."
                     }
-                }
+                },
+                "required": ["lms_setup_id", "quiz_id", "quiz_name"]
             },
             "PageOrientation": {
                 "type": "object",
@@ -22536,11 +22468,11 @@
             "ClientMonitoringDataView": {
                 "type": "object",
                 "properties": {
+                    "pendingNotification": { "type": "boolean" },
                     "missingPing": { "type": "boolean" },
                     "grantChecked": { "type": "boolean" },
                     "grantDenied": { "type": "boolean" },
                     "sebversionDenied": { "type": "boolean" },
-                    "pendingNotification": { "type": "boolean" },
                     "lat": { "type": "integer" },
                     "iv": {
                         "type": "object",
@@ -22769,83 +22701,6 @@
                         "items": { "$ref": "#/components/schemas/Institution" }
                     },
                     "complete": { "type": "boolean" }
-                }
-            },
-            "Privilege": {
-                "type": "object",
-                "properties": {
-                    "roleTypeKey": {
-                        "$ref": "#/components/schemas/RoleTypeKey"
-                    },
-                    "basePrivilege": {
-                        "type": "string",
-                        "enum": ["NONE", "ASSIGNED", "READ", "MODIFY", "WRITE"]
-                    },
-                    "institutionalPrivilege": {
-                        "type": "string",
-                        "enum": ["NONE", "ASSIGNED", "READ", "MODIFY", "WRITE"]
-                    },
-                    "ownershipPrivilege": {
-                        "type": "string",
-                        "enum": ["NONE", "ASSIGNED", "READ", "MODIFY", "WRITE"]
-                    }
-                }
-            },
-            "RoleTypeKey": {
-                "type": "object",
-                "properties": {
-                    "entityType": {
-                        "type": "string",
-                        "enum": [
-                            "CONFIGURATION_ATTRIBUTE",
-                            "CONFIGURATION_VALUE",
-                            "VIEW",
-                            "ORIENTATION",
-                            "CONFIGURATION",
-                            "CONFIGURATION_NODE",
-                            "EXAM_CONFIGURATION_MAP",
-                            "EXAM",
-                            "EXAM_SEB_RESTRICTION",
-                            "EXAM_PROCTOR_DATA",
-                            "CLIENT_CONNECTION",
-                            "REMOTE_PROCTORING_ROOM",
-                            "SCREEN_PROCTORING_GROUP",
-                            "CLIENT_EVENT",
-                            "CLIENT_INSTRUCTION",
-                            "INDICATOR",
-                            "THRESHOLD",
-                            "INSTITUTION",
-                            "SEB_CLIENT_CONFIGURATION",
-                            "LMS_SETUP",
-                            "USER",
-                            "USER_ROLE",
-                            "USER_ACTIVITY_LOG",
-                            "ADDITIONAL_ATTRIBUTES",
-                            "WEBSERVICE_SERVER_INFO",
-                            "CERTIFICATE",
-                            "EXAM_TEMPLATE",
-                            "BATCH_ACTION",
-                            "CLIENT_INDICATOR",
-                            "CLIENT_NOTIFICATION",
-                            "CLIENT_GROUP",
-                            "SEB_SECURITY_KEY_REGISTRY",
-                            "ENTITY_PRIVILEGE",
-                            "FEATURE_PRIVILEGE",
-                            "SCHEDULED_DELETE",
-                            "SCHEDULED_DELETE_INFO",
-                            "CONFIGURATION_ATTRIBUTE_DEPRECATION"
-                        ]
-                    },
-                    "userRole": {
-                        "type": "string",
-                        "enum": [
-                            "SEB_SERVER_ADMIN",
-                            "INSTITUTIONAL_ADMIN",
-                            "EXAM_ADMIN",
-                            "EXAM_SUPPORTER",
-                            "TEACHER"
-                        ]
-                    }
                 }
             },
             "PageIndicator": {

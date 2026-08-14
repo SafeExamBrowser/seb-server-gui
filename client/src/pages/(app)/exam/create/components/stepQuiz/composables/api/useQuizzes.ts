@@ -1,7 +1,11 @@
+import { useMutation } from "@tanstack/vue-query";
 import { ref } from "vue";
 
-import { Quizzes } from "@/models/seb-server/quiz.ts";
+import type { GetQuizzesData } from "@/api/seb-server/generated/hey-api/types.gen.ts";
+import type { QuizPage } from "@/models/quiz.ts";
 import type { ServerTablePaging } from "@/models/types.ts";
+import { toAppError } from "@/services/errors/toAppError.ts";
+import type { AppError } from "@/services/errors/types.ts";
 import { getQuizzes } from "@/services/seb-server/quizService.ts";
 import { wait } from "@/utils/generalUtils.ts";
 import { toServerPageQuery } from "@/utils/table/tableUtils.ts";
@@ -16,10 +20,14 @@ export type FetchQuizzesFilters = {
 };
 
 export const useQuizzes = () => {
-    const data = ref<Quizzes>();
+    const data = ref<QuizPage>();
     const loading = ref(false);
-    const error = ref<string>();
+    const error = ref<AppError>();
     let currentRequestId = 0;
+
+    const quizzesMutation = useMutation({
+        mutationFn: (query: GetQuizzesData["query"]) => getQuizzes(query),
+    });
 
     const fetch = async (
         options: ServerTablePaging,
@@ -30,17 +38,17 @@ export const useQuizzes = () => {
         loading.value = true;
         error.value = undefined;
 
-        const buildParams = (force: boolean) => ({
+        const buildQuery = (force: boolean): GetQuizzesData["query"] => ({
             ...toServerPageQuery(options),
             name: filters.name || undefined,
             start_timestamp_millis: filters.startTimestampMillis,
-            lms_setup: filters.lmsSetupId.toString(),
+            lms_setup: filters.lmsSetupId,
             force_new_search: force,
         });
 
         try {
-            let response: Quizzes = await getQuizzes(
-                buildParams(forceNewSearch),
+            let response: QuizPage = await quizzesMutation.mutateAsync(
+                buildQuery(forceNewSearch),
             );
 
             if (requestId !== currentRequestId) {
@@ -52,13 +60,16 @@ export const useQuizzes = () => {
             // `complete` is false, only a partial result set is available, so we
             // keep polling the same page until the lookup finished.
             let attempts = 0;
-            while (!response.complete && attempts < POLL_MAX_ATTEMPTS) {
+            while (
+                !(response.complete ?? true) &&
+                attempts < POLL_MAX_ATTEMPTS
+            ) {
                 await wait(POLL_INTERVAL_MS);
                 if (requestId !== currentRequestId) {
                     return;
                 }
 
-                response = await getQuizzes(buildParams(false));
+                response = await quizzesMutation.mutateAsync(buildQuery(false));
 
                 if (requestId !== currentRequestId) {
                     return;
@@ -70,7 +81,7 @@ export const useQuizzes = () => {
             if (requestId !== currentRequestId) {
                 return;
             }
-            error.value = err instanceof Error ? err.message : "Unknown error";
+            error.value = toAppError(err);
         } finally {
             if (requestId === currentRequestId) {
                 loading.value = false;

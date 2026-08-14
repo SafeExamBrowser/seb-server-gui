@@ -6,7 +6,10 @@ import {
 } from "@/api/seb-server/generated/hey-api/client";
 import { configureApiAxios } from "@/services/http/configureApiAxios.ts";
 
-const PUBLIC_PATHS = new Set(["/admin-api/v1/register"]);
+const PUBLIC_PATHS = new Set([
+    "/admin-api/v1/register",
+    "/admin-api/v1/info/institution",
+]);
 
 const requestPath = (url?: string) => {
     if (!url) {

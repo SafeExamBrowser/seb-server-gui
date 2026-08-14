@@ -10,6 +10,7 @@ import {
     LMS_TYPES,
 } from "@/models/assessmentTool.ts";
 import { ASSESSMENT_TOOL_FIELD } from "@/pages/(app)/assessment-tool/assessmentToolFormConfig.ts";
+import { toAppErrorOrUndefined } from "@/services/errors/toAppError.ts";
 
 export type AuthMode = "client" | "token";
 
@@ -54,9 +55,12 @@ export const useAssessmentToolFormFields = (
 
     const {
         data: institutions,
-        loading: loadingInstitutions,
-        error: errorInstitutions,
+        isLoading: loadingInstitutions,
+        error: institutionsQueryError,
     } = useInstitutions();
+    const errorInstitutions = computed(() =>
+        toAppErrorOrUndefined(institutionsQueryError.value),
+    );
 
     const { data: authenticatedUser } = useCurrentUserQuery();
 

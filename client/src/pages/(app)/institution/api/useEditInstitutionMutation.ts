@@ -2,6 +2,7 @@ import { useMutation, useQueryClient } from "@tanstack/vue-query";
 
 import {
     getInstitutionByIdQueryKey,
+    getInstitutionInfoQueryKey,
     getInstitutionsQueryKey,
 } from "@/api/seb-server/generated/hey-api/@tanstack/vue-query.gen.ts";
 import { heySebServerClient } from "@/api/seb-server/http/heySebServerClient.ts";
@@ -15,6 +16,11 @@ export const useEditInstitutionMutation = () => {
         onSuccess: (institution) => {
             void queryClient.invalidateQueries({
                 queryKey: getInstitutionsQueryKey({
+                    client: heySebServerClient,
+                }),
+            });
+            void queryClient.invalidateQueries({
+                queryKey: getInstitutionInfoQueryKey({
                     client: heySebServerClient,
                 }),
             });

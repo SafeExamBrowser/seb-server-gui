@@ -228,7 +228,7 @@ import LoadingFallbackComponent from "@/components/widgets/loadingFallbackCompon
 import {
     ScheduledDeleteStatusEnum,
     SPSGroupInfo,
-} from "@/models/seb-server/scheduled-deletion";
+} from "@/models/scheduledDeletion.ts";
 import { useScheduledDeletionReport } from "@/pages/(app)/scheduled-deletion/composables/useScheduledDeletionReport";
 import { formatTimestampToFullDate } from "@/utils/timeUtils";
 

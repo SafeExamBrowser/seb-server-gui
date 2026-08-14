@@ -371,8 +371,8 @@ export const zExam = z.object({
     followupId: z.int().optional(),
     excludeFromDeletion: z.boolean().optional(),
     additionalAttributes: z.record(z.string(), z.string()).optional(),
-    quiz_start_url: z.string().optional(),
-    quiz_description: z.string().optional()
+    quiz_description: z.string().optional(),
+    quiz_start_url: z.string().optional()
 });
 
 export const zClientGroupTemplate = z.object({
@@ -781,6 +781,9 @@ export const zGroupInfo = z.object({
     numberOfSessions: z.string().optional()
 });
 
+/**
+ * Deletion details of one exam affected by a scheduled deletion.
+ */
 export const zScheduledDeleteViewInfo = z.object({
     examUUID: z.string().optional(),
     examName: z.string().optional(),
@@ -798,22 +801,25 @@ export const zScheduledDeleteViewInfo = z.object({
     spsGroups: z.array(zGroupInfo).optional()
 });
 
+/**
+ * Full report of a scheduled deletion, including the affected exams.
+ */
 export const zScheduledDeleteReport = z.object({
-    id: z.int().optional(),
+    id: z.int(),
     spsId: z.int().optional(),
     state: z.enum([
         'PENDING',
         'SPS_RUNNING',
         'RUNNING',
         'FINISHED'
-    ]).optional(),
-    deleteDueTime: z.int().optional(),
-    scheduleTime: z.int().optional(),
+    ]),
+    deleteDueTime: z.int(),
+    scheduleTime: z.int(),
     startTime: z.int().optional(),
     endTime: z.int().optional(),
     institutionId: z.int().optional(),
-    examDeletions: z.array(zScheduledDeleteViewInfo).optional(),
-    spsOnlyDeletions: z.array(zScheduledDeleteViewInfo).optional()
+    examDeletions: z.array(zScheduledDeleteViewInfo),
+    spsOnlyDeletions: z.array(zScheduledDeleteViewInfo)
 });
 
 /**
@@ -1229,17 +1235,20 @@ export const zScheduledDeleteInfo = z.object({
     ]).optional()
 });
 
+/**
+ * A scheduled deletion of all exams that ended before its delete-due time.
+ */
 export const zScheduledDelete = z.object({
-    id: z.int().readonly().optional(),
+    id: z.int().readonly(),
     spsId: z.int().optional(),
     state: z.enum([
         'PENDING',
         'SPS_RUNNING',
         'RUNNING',
         'FINISHED'
-    ]).optional(),
-    deleteDueTime: z.int().optional(),
-    scheduleTime: z.int().optional(),
+    ]),
+    deleteDueTime: z.int(),
+    scheduleTime: z.int(),
     startTime: z.int().optional(),
     endTime: z.int().optional(),
     owner: z.string().optional(),
@@ -1256,10 +1265,13 @@ export const zPageScheduledDelete = z.object({
     complete: z.boolean().optional()
 });
 
+/**
+ * Quiz (course) data as discovered on an LMS.
+ */
 export const zQuizData = z.object({
-    quiz_id: z.string().optional(),
+    quiz_id: z.string(),
     institutionId: z.int().optional(),
-    lms_setup_id: z.int().optional(),
+    lms_setup_id: z.int(),
     lms_setup_type: z.enum([
         'MOCKUP',
         'OPEN_EDX',
@@ -1268,7 +1280,7 @@ export const zQuizData = z.object({
         'ANS_DELFT',
         'OPEN_OLAT'
     ]).optional(),
-    quiz_name: z.string().optional(),
+    quiz_name: z.string(),
     quiz_description: z.string().optional(),
     quiz_start_time: z.iso.datetime().optional(),
     quiz_end_time: z.iso.datetime().optional(),
@@ -1337,11 +1349,11 @@ export const zClientNotification = z.object({
 });
 
 export const zClientMonitoringDataView = z.object({
+    pendingNotification: z.boolean().optional(),
     missingPing: z.boolean().optional(),
     grantChecked: z.boolean().optional(),
     grantDenied: z.boolean().optional(),
     sebversionDenied: z.boolean().optional(),
-    pendingNotification: z.boolean().optional(),
     lat: z.int().optional(),
     iv: z.record(z.string(), z.string()).optional(),
     st: z.enum([
@@ -1452,80 +1464,6 @@ export const zPageInstitution = z.object({
     sort: z.string().optional(),
     content: z.array(zInstitution).optional(),
     complete: z.boolean().optional()
-});
-
-export const zRoleTypeKey = z.object({
-    entityType: z.enum([
-        'CONFIGURATION_ATTRIBUTE',
-        'CONFIGURATION_VALUE',
-        'VIEW',
-        'ORIENTATION',
-        'CONFIGURATION',
-        'CONFIGURATION_NODE',
-        'EXAM_CONFIGURATION_MAP',
-        'EXAM',
-        'EXAM_SEB_RESTRICTION',
-        'EXAM_PROCTOR_DATA',
-        'CLIENT_CONNECTION',
-        'REMOTE_PROCTORING_ROOM',
-        'SCREEN_PROCTORING_GROUP',
-        'CLIENT_EVENT',
-        'CLIENT_INSTRUCTION',
-        'INDICATOR',
-        'THRESHOLD',
-        'INSTITUTION',
-        'SEB_CLIENT_CONFIGURATION',
-        'LMS_SETUP',
-        'USER',
-        'USER_ROLE',
-        'USER_ACTIVITY_LOG',
-        'ADDITIONAL_ATTRIBUTES',
-        'WEBSERVICE_SERVER_INFO',
-        'CERTIFICATE',
-        'EXAM_TEMPLATE',
-        'BATCH_ACTION',
-        'CLIENT_INDICATOR',
-        'CLIENT_NOTIFICATION',
-        'CLIENT_GROUP',
-        'SEB_SECURITY_KEY_REGISTRY',
-        'ENTITY_PRIVILEGE',
-        'FEATURE_PRIVILEGE',
-        'SCHEDULED_DELETE',
-        'SCHEDULED_DELETE_INFO',
-        'CONFIGURATION_ATTRIBUTE_DEPRECATION'
-    ]).optional(),
-    userRole: z.enum([
-        'SEB_SERVER_ADMIN',
-        'INSTITUTIONAL_ADMIN',
-        'EXAM_ADMIN',
-        'EXAM_SUPPORTER',
-        'TEACHER'
-    ]).optional()
-});
-
-export const zPrivilege = z.object({
-    roleTypeKey: zRoleTypeKey.optional(),
-    basePrivilege: z.enum([
-        'NONE',
-        'ASSIGNED',
-        'READ',
-        'MODIFY',
-        'WRITE'
-    ]).optional(),
-    institutionalPrivilege: z.enum([
-        'NONE',
-        'ASSIGNED',
-        'READ',
-        'MODIFY',
-        'WRITE'
-    ]).optional(),
-    ownershipPrivilege: z.enum([
-        'NONE',
-        'ASSIGNED',
-        'READ',
-        'MODIFY',
-        'WRITE'
-    ]).optional()
 });
 
 export const zPageIndicator = z.object({
@@ -1757,6 +1695,9 @@ export const zMultiValueMapStringStringWritable = z.object({
     empty: z.boolean().optional()
 });
 
+/**
+ * Deletion details of one exam affected by a scheduled deletion.
+ */
 export const zScheduledDeleteViewInfoWritable = z.object({
     examUUID: z.string().optional(),
     examName: z.string().optional(),
@@ -1775,22 +1716,25 @@ export const zScheduledDeleteViewInfoWritable = z.object({
     spsGroups: z.array(zGroupInfo).optional()
 });
 
+/**
+ * Full report of a scheduled deletion, including the affected exams.
+ */
 export const zScheduledDeleteReportWritable = z.object({
-    id: z.int().optional(),
+    id: z.int(),
     spsId: z.int().optional(),
     state: z.enum([
         'PENDING',
         'SPS_RUNNING',
         'RUNNING',
         'FINISHED'
-    ]).optional(),
-    deleteDueTime: z.int().optional(),
-    scheduleTime: z.int().optional(),
+    ]),
+    deleteDueTime: z.int(),
+    scheduleTime: z.int(),
     startTime: z.int().optional(),
     endTime: z.int().optional(),
     institutionId: z.int().optional(),
-    examDeletions: z.array(zScheduledDeleteViewInfoWritable).optional(),
-    spsOnlyDeletions: z.array(zScheduledDeleteViewInfoWritable).optional()
+    examDeletions: z.array(zScheduledDeleteViewInfoWritable),
+    spsOnlyDeletions: z.array(zScheduledDeleteViewInfoWritable)
 });
 
 export const zScheduledDeleteInfoWritable = z.object({
@@ -1813,6 +1757,9 @@ export const zScheduledDeleteInfoWritable = z.object({
     ]).optional()
 });
 
+/**
+ * A scheduled deletion of all exams that ended before its delete-due time.
+ */
 export const zScheduledDeleteWritable = z.object({
     spsId: z.int().optional(),
     state: z.enum([
@@ -1820,9 +1767,9 @@ export const zScheduledDeleteWritable = z.object({
         'SPS_RUNNING',
         'RUNNING',
         'FINISHED'
-    ]).optional(),
-    deleteDueTime: z.int().optional(),
-    scheduleTime: z.int().optional(),
+    ]),
+    deleteDueTime: z.int(),
+    scheduleTime: z.int(),
     startTime: z.int().optional(),
     endTime: z.int().optional(),
     owner: z.string().optional(),
@@ -3041,6 +2988,13 @@ export const zDeleteSessionsQuery = z.object({
 export const zDeleteSessionsResponse = zSessionDeletionReport;
 
 export const zGetScheduledDeletesQuery = z.object({
+    dueTimestamp: z.int().optional(),
+    state: z.enum([
+        'PENDING',
+        'SPS_RUNNING',
+        'RUNNING',
+        'FINISHED'
+    ]).optional(),
     page_number: z.int().min(-2147483648, { error: 'Invalid value: Expected int32 to be >= -2147483648' }).max(2147483647, { error: 'Invalid value: Expected int32 to be <= 2147483647' }).optional(),
     page_size: z.int().min(-2147483648, { error: 'Invalid value: Expected int32 to be >= -2147483648' }).max(2147483647, { error: 'Invalid value: Expected int32 to be <= 2147483647' }).optional(),
     sort: z.string().optional()
@@ -3051,34 +3005,36 @@ export const zGetScheduledDeletesQuery = z.object({
  */
 export const zGetScheduledDeletesResponse = zPageScheduledDelete;
 
-export const zCreateScheduledDeleteBody = z.int();
+export const zCreateScheduledDeleteBody = z.object({
+    deleteDueTime: z.int()
+});
 
 /**
  * OK
  */
 export const zCreateScheduledDeleteResponse = zScheduledDeleteReport;
 
-export const zUnmarkExcludeBody = z.unknown();
+export const zUnmarkExcludeFromDeletionBody = z.unknown();
 
-export const zUnmarkExcludePath = z.object({
+export const zUnmarkExcludeFromDeletionPath = z.object({
     modelId: z.string()
 });
 
 /**
  * OK
  */
-export const zUnmarkExcludeResponse = zScheduledDeleteReport;
+export const zUnmarkExcludeFromDeletionResponse = zScheduledDeleteReport;
 
-export const zMarkExcludeBody = z.unknown();
+export const zMarkExcludeFromDeletionBody = z.unknown();
 
-export const zMarkExcludePath = z.object({
+export const zMarkExcludeFromDeletionPath = z.object({
     modelId: z.string()
 });
 
 /**
  * OK
  */
-export const zMarkExcludeResponse = zScheduledDeleteReport;
+export const zMarkExcludeFromDeletionResponse = zScheduledDeleteReport;
 
 export const zRegisterUserAccountBody = zUserMod;
 
@@ -4133,49 +4089,39 @@ export const zGetClientConnectionDataByPath = z.object({
  */
 export const zGetClientConnectionDataByResponse = zClientConnectionData;
 
-export const zDeletePath = z.object({
+export const zDeleteScheduledDeletePath = z.object({
     modelId: z.string()
 });
 
 /**
  * OK
  */
-export const zDeleteResponse = zEntityKey;
+export const zDeleteScheduledDeleteResponse = zEntityKey;
 
-export const zGetFullReportByIdPath = z.object({
+export const zGetScheduledDeleteReportPath = z.object({
     modelId: z.string()
 });
 
 /**
  * OK
  */
-export const zGetFullReportByIdResponse = zScheduledDeleteReport;
+export const zGetScheduledDeleteReportResponse = zScheduledDeleteReport;
 
-export const zGetQuizPageQuery = z.object({
+export const zGetQuizzesQuery = z.object({
+    name: z.string().optional(),
+    start_timestamp_millis: z.int().optional(),
+    lms_setup: z.int().optional(),
+    force_new_search: z.boolean().optional(),
     institutionId: z.int().optional(),
     page_number: z.int().min(-2147483648, { error: 'Invalid value: Expected int32 to be >= -2147483648' }).max(2147483647, { error: 'Invalid value: Expected int32 to be <= 2147483647' }).optional(),
     page_size: z.int().min(-2147483648, { error: 'Invalid value: Expected int32 to be >= -2147483648' }).max(2147483647, { error: 'Invalid value: Expected int32 to be <= 2147483647' }).optional(),
-    sort: z.string().optional(),
-    allRequestParams: zMultiValueMapStringStringWritable
+    sort: z.string().optional()
 });
 
 /**
  * OK
  */
-export const zGetQuizPageResponse = zPageQuizData;
-
-export const zGetQuizPath = z.object({
-    modelId: z.string()
-});
-
-export const zGetQuizQuery = z.object({
-    lms_setup_id: z.int()
-});
-
-/**
- * OK
- */
-export const zGetQuizResponse = zQuizData;
+export const zGetQuizzesResponse = zPageQuizData;
 
 export const zDeleteOrientationBody = z.unknown();
 
@@ -4723,35 +4669,7 @@ export const zGetActiveInstitutionsResponse = zPageInstitution;
 /**
  * OK
  */
-export const zPrivilegesResponse = z.array(zPrivilege);
-
-export const zLogoPath = z.object({
-    urlSuffix: z.string()
-});
-
-/**
- * OK
- */
-export const zLogoResponse = z.string();
-
-/**
- * OK
- */
 export const zGetInstitutionInfoResponse = z.array(zEntityName);
-
-export const zGetInstitutionInfo1Path = z.object({
-    urlSuffix: z.string()
-});
-
-/**
- * OK
- */
-export const zGetInstitutionInfo1Response = z.array(zEntityName);
-
-/**
- * OK
- */
-export const zGetServiceFeaturesResponse = z.record(z.string(), z.boolean());
 
 export const zDeleteIndicatorBody = z.unknown();
 
