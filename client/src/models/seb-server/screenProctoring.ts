@@ -21,13 +21,9 @@ type ScreenProctoringExamAttributes = Pick<
     | "spsCollectingGroupName"
 >;
 
-export const buildScreenProctoringExamAttributes = ({
-    enabled,
-    collectionStrategy,
-}: {
-    enabled: boolean;
-    collectionStrategy?: ScreenProctoringCollectionStrategy;
-}): ScreenProctoringExamAttributes => {
+export const buildScreenProctoringExamAttributes = (
+    enabled: boolean,
+): ScreenProctoringExamAttributes => {
     if (!enabled) {
         return {
             enableScreenProctoring: "false",
@@ -38,13 +34,10 @@ export const buildScreenProctoringExamAttributes = ({
 
     return {
         enableScreenProctoring: "true",
-        spsCollectingStrategy: collectionStrategy,
-        spsCollectingGroupName:
-            collectionStrategy === "EXAM"
-                ? i18n.global.t("clientGroups.screenProctoringSingleGroupName")
-                : i18n.global.t(
-                      "clientGroups.screenProctoringFallbackGroupName",
-                  ),
+        spsCollectingStrategy: "APPLY_SEB_GROUPS",
+        spsCollectingGroupName: i18n.global.t(
+            "clientGroups.screenProctoringFallbackGroupName",
+        ),
     };
 };
 
