@@ -198,3 +198,12 @@ existing idiom (`STRATEGY_LABEL_KEYS`, `clientOSLabels`).
   otherwise changing TEACHER behavior.
 - Touching translation values in `en.json` — this issue changes lookup code
   only.
+
+---
+
+**2026-08-17 (SEBSERV-968):** The `STRATEGY_LABEL_KEYS` /
+`BoxScreenProctoringSettings.vue` example referenced above was deleted by the
+grouping-strategy cleanup (the strategy became invisible to users; its i18n
+keys were removed). The idiom's canonical in-repo example is now
+`TYPE_LABEL_I18N_KEYS` in
+`client/src/components/widgets/clientGroupsTable/types.ts`.
