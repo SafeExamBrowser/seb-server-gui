@@ -46,6 +46,12 @@ with SPS off there is no strategy, no fallback group, and no per-group SPS flag.
    `spsCollectingStrategy` and `spsCollectingGroupName` pass through verbatim,
    even when toggling off/on on a legacy `EXAM` template. Deliberate behavior
    change: disabling no longer clears strategy/group name.
+   *Amended 2026-08-17 (Alain):* one exception — enabling on a template with
+   **no stored strategy** also writes
+   `spsCollectingStrategy: "APPLY_SEB_GROUPS"` (never on disable, never when
+   any strategy is stored). Currently a no-op because the backend seeds
+   `EXAM` at template creation; a backend ticket (Kristina) will change that
+   default, at which point this rule takes effect.
 4. The fallback-group row in the groups table already works (client-side
    synthetic, not editable/deletable, renders the `EXAM` variant for legacy
    templates) — no change.

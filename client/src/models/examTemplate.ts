@@ -184,7 +184,9 @@ export type BasicSettings = Pick<
     | "configurationTemplateId"
     | "lmsIntegration"
     | "institutionalDefault"
->;
+> & {
+    screenProctoringEnabled: boolean;
+};
 
 export const examTemplateCreateSchema = zExamTemplate
     .pick({
