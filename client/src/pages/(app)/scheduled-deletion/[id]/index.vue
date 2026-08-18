@@ -9,6 +9,7 @@
             { label: $t('titles.scheduledDeletionReport') },
         ]"
         data-test-id="scheduledDeleteReportTest"
+        floating
     >
         <template #PanelMain>
             <LoadingFallbackComponent
