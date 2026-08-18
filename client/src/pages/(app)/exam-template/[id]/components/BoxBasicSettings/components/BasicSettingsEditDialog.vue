@@ -93,7 +93,7 @@ const { formFields, loading, errors } = useExamTemplateBasicSettingsFields(
         institutionalDefault: institutionalDefaultTransient,
     },
     {
-        showScreenProctoringEnabled: screenProctoringEnabledTransient,
+        screenProctoringEnabled: screenProctoringEnabledTransient,
         nameToExcludeFromBlacklist: computed(() => basicSettings.name),
     },
 );

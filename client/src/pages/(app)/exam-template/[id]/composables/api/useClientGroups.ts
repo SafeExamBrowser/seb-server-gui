@@ -18,9 +18,7 @@ import {
 export const useClientGroups = (examTemplateId: number) => {
     const queryClient = useQueryClient();
 
-    // The backend derives state beyond the groups themselves from group changes (e.g. screenProctoringEnabled flags),
-    // so we invalidate the examTemplate query when the group changes.
-    // The examTemplate then gets refetched and the groups are automatically up2date.
+    // group changes also mutate backend-derived template state (e.g. sps flags), so refetch the whole template
     const invalidateExamTemplate = () =>
         queryClient.invalidateQueries({
             queryKey: getExamTemplateByIdQueryKey({

@@ -33,9 +33,9 @@ const tableDeps: ClientGroupsTableDeps = {
     clientGroups: groups,
     screenProctoring: {
         enabled: screenProctoringEnabled,
-        collectionStrategy: computed<
-            ScreenProctoringCollectionStrategy | undefined
-        >(() => "APPLY_SEB_GROUPS"),
+        collectionStrategy: computed<ScreenProctoringCollectionStrategy>(
+            () => "APPLY_SEB_GROUPS",
+        ),
     },
     createItem: async (item: ClientGroup) => clientGroupStore.createGroup(item),
     updateItem: async (item: ClientGroupExisting) =>

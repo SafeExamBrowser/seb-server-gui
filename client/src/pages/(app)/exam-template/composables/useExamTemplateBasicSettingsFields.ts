@@ -23,7 +23,8 @@ export const useExamTemplateBasicSettingsFields = (
         institutionalDefault: Ref<boolean>;
     },
     options?: {
-        showScreenProctoringEnabled?: Ref<boolean>;
+        // model for the screen proctoring switch; field is only shown when provided
+        screenProctoringEnabled?: Ref<boolean>;
         // name to exclude from the uniqueness check, so an existing template does not flag its own unchanged name as a duplicate (edit mode)
         nameToExcludeFromBlacklist?: Ref<string | undefined>;
     },
@@ -159,11 +160,11 @@ export const useExamTemplateBasicSettingsFields = (
             },
         ];
 
-        if (options?.showScreenProctoringEnabled !== undefined) {
+        if (options?.screenProctoringEnabled !== undefined) {
             fields.push({
                 type: "switch" as const,
                 name: "screenProctoringEnabled",
-                model: options.showScreenProctoringEnabled,
+                model: options.screenProctoringEnabled,
                 label: i18n.global.t("screenProctoring.enabled.label"),
             });
         }

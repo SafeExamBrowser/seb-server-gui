@@ -122,8 +122,7 @@ export const useExamTemplateDetailPage = () => {
 
     const screenProctoring = {
         enabled: computed(() => basicSettings.value.screenProctoringEnabled),
-        // templates that never stored a strategy (e.g. created with screen proctoring
-        // disabled) render as APPLY_SEB_GROUPS (display only)
+        // templates without a stored strategy render as APPLY_SEB_GROUPS (display only)
         collectionStrategy: computed(
             () =>
                 SCREEN_PROCTORING_COLLECTION_STRATEGY.find(
