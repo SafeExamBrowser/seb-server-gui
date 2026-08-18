@@ -2256,6 +2256,10 @@
             }
         }
     },
+    "notAllowed": {
+        "message": "You are not allowed to view this page",
+        "backToHome": "Back to home"
+    },
     "titles": {
         "navigationOverview": "Navigation Overview",
         "exams": "Exams",
