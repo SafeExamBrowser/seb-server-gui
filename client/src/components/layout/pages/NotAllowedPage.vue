@@ -1,7 +1,7 @@
 <template>
     <ErrorState
-        icon="mdi-magnify-remove-outline"
-        headline="404"
+        icon="mdi-lock-outline"
+        headline="403"
         :message="message"
         :back-link="backLink"
     />
