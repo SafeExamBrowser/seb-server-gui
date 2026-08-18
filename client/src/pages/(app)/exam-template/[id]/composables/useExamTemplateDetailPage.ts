@@ -173,24 +173,13 @@ export const useExamTemplateDetailPage = () => {
             return;
         }
 
-        const attributes = examTemplate.value.EXAM_ATTRIBUTES;
-
-        // stored strategy/group name pass through verbatim; only enabling a template
-        // that has no strategy yet writes one, so the backend does not fall back to
-        // its legacy EXAM default
-        const seedStrategy =
-            screenProctoringEnabled && !attributes?.spsCollectingStrategy;
-
         return updateTemplate({
             ...patch,
             EXAM_ATTRIBUTES: {
-                ...attributes,
+                ...examTemplate.value.EXAM_ATTRIBUTES,
                 enableScreenProctoring: screenProctoringEnabled
                     ? "true"
                     : "false",
-                ...(seedStrategy
-                    ? { spsCollectingStrategy: "APPLY_SEB_GROUPS" }
-                    : {}),
             },
         });
     };

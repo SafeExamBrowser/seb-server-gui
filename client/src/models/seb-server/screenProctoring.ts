@@ -16,9 +16,7 @@ export const isScreenProctoringAllowedForGroups = (
 
 type ScreenProctoringExamAttributes = Pick<
     ExamAttribute,
-    | "enableScreenProctoring"
-    | "spsCollectingStrategy"
-    | "spsCollectingGroupName"
+    "enableScreenProctoring" | "spsCollectingGroupName"
 >;
 
 export const buildScreenProctoringExamAttributes = (
@@ -27,14 +25,12 @@ export const buildScreenProctoringExamAttributes = (
     if (!enabled) {
         return {
             enableScreenProctoring: "false",
-            spsCollectingStrategy: undefined,
             spsCollectingGroupName: undefined,
         };
     }
 
     return {
         enableScreenProctoring: "true",
-        spsCollectingStrategy: "APPLY_SEB_GROUPS",
         spsCollectingGroupName: i18n.global.t(
             "clientGroups.screenProctoringFallbackGroupName",
         ),

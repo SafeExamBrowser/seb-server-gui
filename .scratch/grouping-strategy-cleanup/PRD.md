@@ -1,8 +1,19 @@
-# PRD: Remove the EXAM grouping strategy from the client (SEBSERV-968)
+# PRD: Remove the EXAM grouping strategy from the client (SEBSERV-973)
 
-Branch: `SEBSERV-968__groups-cleanup`
+Branch: `SEBSERV-973__exam-template-cleanups`
 Settled 2026-08-17 in a grilling session with Alain — don't relitigate the
 decisions below; ask only if the code contradicts them.
+
+*Ticket-number correction 2026-08-18:* this work was mislabeled SEBSERV-968
+at first; the correct ticket has always been SEBSERV-973. Prose references
+are fixed, but the already-pushed commits `a6ce5a66`, `27f1d472`, `10516ba6`
+keep their `#968:` prefixes (no history rewrite); later commits say `#973`.
+Historical artifact names ("SPS Cleanup Verify 968" etc.) stay verbatim.
+
+*Amended 2026-08-18 (issue 05):* the backend ticket referenced in decision #3
+landed — the backend now persists `APPLY_SEB_GROUPS` at template creation when
+no strategy is sent. The client no longer writes `spsCollectingStrategy` at
+all; decisions #3 and #9 are updated accordingly below.
 
 ## Goal
 
@@ -46,12 +57,11 @@ with SPS off there is no strategy, no fallback group, and no per-group SPS flag.
    `spsCollectingStrategy` and `spsCollectingGroupName` pass through verbatim,
    even when toggling off/on on a legacy `EXAM` template. Deliberate behavior
    change: disabling no longer clears strategy/group name.
-   *Amended 2026-08-17 (Alain):* one exception — enabling on a template with
-   **no stored strategy** also writes
-   `spsCollectingStrategy: "APPLY_SEB_GROUPS"` (never on disable, never when
-   any strategy is stored). Currently a no-op because the backend seeds
-   `EXAM` at template creation; a backend ticket (Kristina) will change that
-   default, at which point this rule takes effect.
+   *Amended 2026-08-17 (Alain), retired 2026-08-18:* the interim
+   seed-on-enable exception (write `APPLY_SEB_GROUPS` when no strategy is
+   stored) existed only to bridge the backend's legacy `EXAM` default. The
+   backend fix landed (persists `APPLY_SEB_GROUPS` at creation), so the seed
+   block is deleted — pass-through is unconditional again (issue 05).
 4. The fallback-group row in the groups table already works (client-side
    synthetic, not editable/deletable, renders the `EXAM` variant for legacy
    templates) — no change.
@@ -71,11 +81,13 @@ with SPS off there is no strategy, no fallback group, and no per-group SPS flag.
    optional with SPS on or off). Delete the temporary-hack comment block.
 9. Submit: `buildScreenProctoringExamAttributes`
    (`client/src/models/seb-server/screenProctoring.ts`) loses its
-   `collectionStrategy` parameter and, when enabled, hardcodes
-   `spsCollectingStrategy: "APPLY_SEB_GROUPS"` +
+   `collectionStrategy` parameter and, when enabled, sends
    `spsCollectingGroupName: i18n "Fallback Group"`. Disabled behavior
-   unchanged (`enableScreenProctoring: "false"`, strategy/name stripped).
+   unchanged (`enableScreenProctoring: "false"`, name stripped).
    The builder becomes wizard-only.
+   *Amended 2026-08-18 (issue 05):* `spsCollectingStrategy` is no longer sent
+   at all — the backend persists the `APPLY_SEB_GROUPS` default itself. The
+   group name is still client-sent (the backend does not default it).
 10. The wizard passes a constant `"APPLY_SEB_GROUPS"` as the
     `collectionStrategy` table dep so the shared `clientGroupsTable` widget
     stays **untouched**.
@@ -133,7 +145,9 @@ with SPS off there is no strategy, no fallback group, and no per-group SPS flag.
 - Wizard: create a template with SPS on → no strategy dropdown on the groups
   step, Next always enabled, summary shows the fallback group typed
   "Screen Proctoring Fallback Group"; the create request payload carries
-  `spsCollectingStrategy: "APPLY_SEB_GROUPS"` (check via network tab).
+  `spsCollectingGroupName` but **no** `spsCollectingStrategy` (check via
+  network tab); the first GET returns `APPLY_SEB_GROUPS` (backend default).
+  *(Amended 2026-08-18 — the payload previously had to carry the strategy.)*
 - Detail page: no Screen Proctoring Settings box; toggle sits last in Basic
   Settings; saving flips only `enableScreenProctoring` in the update payload.
 - Delete any `.playwright-mcp/*` artifacts before ending the turn.

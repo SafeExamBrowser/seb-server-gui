@@ -71,7 +71,7 @@ enable): the state turned out to be ~unreachable because **the backend seeds
 legacy "Single Group" via the untouched widget. The default stays as a
 defensive display fallback. Note for Alain: enabling SPS from the detail page
 thus produces new `EXAM`-strategy templates (backend-owned behavior — may be
-worth a backend ticket with Kristina, given SEBSERV-968's goal).
+worth a backend ticket with Kristina, given SEBSERV-973's goal).
 
 ### 2026-08-17 — Decision: seed APPLY_SEB_GROUPS on enable (PRD §3 amended)
 

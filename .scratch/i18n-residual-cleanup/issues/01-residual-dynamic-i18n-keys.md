@@ -155,7 +155,7 @@ of the branch itself was done against the dev server (port 8082 that day) — th
 is fine; this issue is exclusively about what it did **not** cover. Alain parks this
 until roughly early August 2026.
 
-### 2026-08-17 — Inventory update (SEBSERV-968)
+### 2026-08-17 — Inventory update (SEBSERV-973)
 
 `src/composables/useScreenProctoringStrategyField.ts` (listed above at lines
 23,34) was deleted by the grouping-strategy cleanup, together with all six
