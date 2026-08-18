@@ -195,9 +195,9 @@ export const examTemplateCreateSchema = zExamTemplate
         configurationTemplateId: true,
         institutionalDefault: true,
         lmsIntegration: true,
-        clientConfigurationId: true,
     })
     .extend({
+        clientConfigurationId: z.int().positive(),
         examType: examTypeCodec,
         supporter: z.array(z.string()),
         indicatorTemplates: z.array(indicatorExistingSchema),

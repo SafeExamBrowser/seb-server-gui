@@ -137,6 +137,9 @@ export const useExamTemplateBasicSettingsFields = (
                 placeholder: i18n.global.t(
                     "examTemplate.fields.clientConfiguration.placeholder",
                 ),
+                required: isRequired(
+                    examTemplateCreateSchema.shape.clientConfigurationId,
+                ),
             },
             {
                 type: "switch" as const,
