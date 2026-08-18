@@ -11,11 +11,7 @@ import {
     type IndicatorExisting,
 } from "@/models/examTemplate.ts";
 import { ClientGroupExisting } from "@/models/seb-server/examTemplate.ts";
-import {
-    buildScreenProctoringExamAttributes,
-    SCREEN_PROCTORING_COLLECTION_STRATEGY,
-    ScreenProctoringCollectionStrategy,
-} from "@/models/seb-server/screenProctoring.ts";
+import { SCREEN_PROCTORING_COLLECTION_STRATEGY } from "@/models/seb-server/screenProctoring.ts";
 import { useEditExamTemplateMutation } from "@/pages/(app)/exam-template/api/useEditExamTemplateMutation.ts";
 import { useExamTemplateQuery } from "@/pages/(app)/exam-template/api/useExamTemplateQuery.ts";
 import { toAppErrorOrUndefined } from "@/services/errors/toAppError.ts";
@@ -119,20 +115,22 @@ export const useExamTemplateDetailPage = () => {
         configurationTemplateId: examTemplate.value?.configurationTemplateId,
         lmsIntegration: examTemplate.value?.lmsIntegration ?? false,
         institutionalDefault: examTemplate.value?.institutionalDefault ?? false,
+        screenProctoringEnabled:
+            examTemplate.value?.EXAM_ATTRIBUTES?.enableScreenProctoring ===
+            "true",
     }));
 
     const screenProctoring = {
-        enabled: computed(
+        enabled: computed(() => basicSettings.value.screenProctoringEnabled),
+        // templates without a stored strategy render as APPLY_SEB_GROUPS (display only)
+        collectionStrategy: computed(
             () =>
-                examTemplate.value?.EXAM_ATTRIBUTES?.enableScreenProctoring ===
-                "true",
-        ),
-        collectionStrategy: computed(() =>
-            SCREEN_PROCTORING_COLLECTION_STRATEGY.find(
-                (strategy) =>
-                    strategy ===
-                    examTemplate.value?.EXAM_ATTRIBUTES?.spsCollectingStrategy,
-            ),
+                SCREEN_PROCTORING_COLLECTION_STRATEGY.find(
+                    (strategy) =>
+                        strategy ===
+                        examTemplate.value?.EXAM_ATTRIBUTES
+                            ?.spsCollectingStrategy,
+                ) ?? "APPLY_SEB_GROUPS",
         ),
         fallbackGroupName: computed(
             () => examTemplate.value?.EXAM_ATTRIBUTES?.spsCollectingGroupName,
@@ -166,28 +164,21 @@ export const useExamTemplateDetailPage = () => {
         }
     };
 
-    const handleBasicSettingsChange = (patch: BasicSettings) =>
-        updateTemplate(patch);
-
-    const handleScreenProctoringChange = ({
-        enabled,
-        collectionStrategy,
-    }: {
-        enabled: boolean;
-        collectionStrategy?: ScreenProctoringCollectionStrategy;
-    }) => {
+    const handleBasicSettingsChange = ({
+        screenProctoringEnabled,
+        ...patch
+    }: BasicSettings) => {
         if (!examTemplate.value) {
             return;
         }
 
-        // spsSEBGroupsSelection is deliberately not managed here, as this is owned by the backend
         return updateTemplate({
+            ...patch,
             EXAM_ATTRIBUTES: {
                 ...examTemplate.value.EXAM_ATTRIBUTES,
-                ...buildScreenProctoringExamAttributes({
-                    enabled,
-                    collectionStrategy,
-                }),
+                enableScreenProctoring: screenProctoringEnabled
+                    ? "true"
+                    : "false",
             },
         });
     };
@@ -206,7 +197,6 @@ export const useExamTemplateDetailPage = () => {
         screenProctoring,
         basicSettings,
         updateTemplate,
-        handleScreenProctoringChange,
         handleBasicSettingsChange,
     };
 };

@@ -78,6 +78,7 @@ const examTypeTransient = ref<ExamTypeEnum>();
 const clientConfigurationTransient = ref<string>();
 const lmsIntegrationTransient = ref(false);
 const institutionalDefaultTransient = ref(false);
+const screenProctoringEnabledTransient = ref(false);
 
 // TODO @alain (TanStack Query migration): these name lookups (examTemplateNames + clientConfigurationNames)
 // fetch eagerly on page mount even though they're only needed once this dialog is open. Gate the underlying
@@ -91,7 +92,10 @@ const { formFields, loading, errors } = useExamTemplateBasicSettingsFields(
         lmsIntegration: lmsIntegrationTransient,
         institutionalDefault: institutionalDefaultTransient,
     },
-    { nameToExcludeFromBlacklist: computed(() => basicSettings.name) },
+    {
+        screenProctoringEnabled: screenProctoringEnabledTransient,
+        nameToExcludeFromBlacklist: computed(() => basicSettings.name),
+    },
 );
 
 const handleButtonEditClick = () => {
@@ -103,6 +107,8 @@ const handleButtonEditClick = () => {
     );
     lmsIntegrationTransient.value = basicSettings.lmsIntegration;
     institutionalDefaultTransient.value = basicSettings.institutionalDefault;
+    screenProctoringEnabledTransient.value =
+        basicSettings.screenProctoringEnabled;
     dialogOpen.value = true;
 };
 
@@ -120,6 +126,7 @@ const handleButtonSaveClick = () => {
         ),
         lmsIntegration: lmsIntegrationTransient.value,
         institutionalDefault: institutionalDefaultTransient.value,
+        screenProctoringEnabled: screenProctoringEnabledTransient.value,
     });
     dialogOpen.value = false;
 };

@@ -45,7 +45,6 @@ const isStepReady = (
     stepNamingStore: ReturnType<typeof useStepNamingStore>,
     stepSupervisorsStore: ReturnType<typeof useStepSupervisorsStore>,
     stepIndicatorsStore: ReturnType<typeof useStepIndicatorsStore>,
-    stepClientGroupStore: ReturnType<typeof useStepClientGroupStore>,
 ) => {
     switch (stepName) {
         case "StepNaming":
@@ -57,7 +56,7 @@ const isStepReady = (
         case "StepIndicators":
             return stepIndicatorsStore.isReady;
         case "StepClientGroup":
-            return stepClientGroupStore.isReady;
+            return true;
         case "StepSummary":
             return true;
         default:
@@ -90,7 +89,6 @@ export const useCreateExamTemplateStore = defineStore(
                     stepNamingStore,
                     stepSupervisorsStore,
                     stepIndicatorsStore,
-                    stepClientGroupStore,
                 ),
                 value: index,
             })),
@@ -125,22 +123,19 @@ export const useCreateExamTemplateStore = defineStore(
             indicatorTemplates: stepIndicatorsStore.indicators,
             CLIENT_GROUP_TEMPLATES: stepClientGroupStore.groups,
             EXAM_ATTRIBUTES: {
-                ...buildScreenProctoringExamAttributes({
-                    enabled: screenProctoringStore.enabled,
-                    collectionStrategy:
-                        screenProctoringStore.collectionStrategy,
-                }),
-                spsSEBGroupsSelection:
-                    screenProctoringStore.screenProctoringAllowedForGroups
-                        ? stepClientGroupStore.groups
-                              .map((group, index) =>
-                                  group.screenProctoringEnabled
-                                      ? index.toString()
-                                      : undefined,
-                              )
-                              .filter(Boolean)
-                              .join(",")
-                        : undefined,
+                ...buildScreenProctoringExamAttributes(
+                    screenProctoringStore.enabled,
+                ),
+                spsSEBGroupsSelection: screenProctoringStore.enabled
+                    ? stepClientGroupStore.groups
+                          .map((group, index) =>
+                              group.screenProctoringEnabled
+                                  ? index.toString()
+                                  : undefined,
+                          )
+                          .filter(Boolean)
+                          .join(",")
+                    : undefined,
             },
         }));
 

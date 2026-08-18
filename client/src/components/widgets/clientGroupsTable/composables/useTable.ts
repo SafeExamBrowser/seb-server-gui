@@ -76,23 +76,14 @@ export const useTable = (
             };
         }
 
-        if (
-            deps.screenProctoring.collectionStrategy.value ===
-            "APPLY_SEB_GROUPS"
-        ) {
-            return {
-                id: SCREEN_PROCTORING_FALLBACK_ROW_ID,
-                type: "SCREEN_PROCTORING_FALLBACK" as const,
-                screenProctoringEnabled: true,
-                name:
-                    deps.screenProctoring.fallbackGroupName?.value ??
-                    i18n.global.t(
-                        "clientGroups.screenProctoringFallbackGroupName",
-                    ),
-            };
-        }
-
-        return undefined;
+        return {
+            id: SCREEN_PROCTORING_FALLBACK_ROW_ID,
+            type: "SCREEN_PROCTORING_FALLBACK" as const,
+            screenProctoringEnabled: true,
+            name:
+                deps.screenProctoring.fallbackGroupName?.value ??
+                i18n.global.t("clientGroups.screenProctoringFallbackGroupName"),
+        };
     });
 
     const items = computed<ClientGroupForTable[]>(() =>
@@ -100,13 +91,6 @@ export const useTable = (
             (item) => item !== undefined,
         ),
     );
-
-    const allowCreate = computed<boolean>(() => {
-        return !(
-            deps.screenProctoring.enabled.value &&
-            deps.screenProctoring.collectionStrategy.value === undefined
-        );
-    });
 
     const createItem = async (item: ClientGroupTransient) => {
         await deps.createItem(clientGroupTransientToClientGroup(item));
@@ -147,7 +131,7 @@ export const useTable = (
         hasActions,
         createConfig: {
             title: i18n.global.t("clientGroups.addDialogTitle"),
-            allowed: allowCreate,
+            allowed: true,
             getItem: getEmptyClientGroup,
             createItem,
         },
