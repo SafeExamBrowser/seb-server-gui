@@ -44,16 +44,7 @@
                             @change="handleSupervisorsChange"
                         />
                     </template>
-                    <template #05_screenProctoringSettings>
-                        <BoxScreenProctoringSettings
-                            :enabled="screenProctoring.enabled.value"
-                            :collection-strategy="
-                                screenProctoring.collectionStrategy.value
-                            "
-                            @change="handleScreenProctoringChange"
-                        />
-                    </template>
-                    <template #06_groups>
+                    <template #05_groups>
                         <BoxClientGroups
                             :exam-template-id="examTemplateId"
                             :client-groups="clientGroups"
@@ -80,7 +71,6 @@ import { typedTo } from "@/router/typedTo";
 
 import BoxClientGroups from "./components/BoxClientGroups.vue";
 import BoxIndicators from "./components/BoxIndicators.vue";
-import BoxScreenProctoringSettings from "./components/BoxScreenProctoringSettings/BoxScreenProctoringSettings.vue";
 import { useExamTemplateDetailPage } from "./composables/useExamTemplateDetailPage.ts";
 
 definePage({
@@ -108,7 +98,6 @@ const {
     screenProctoring,
     basicSettings,
     updateTemplate,
-    handleScreenProctoringChange,
     handleBasicSettingsChange,
 } = useExamTemplateDetailPage();
 

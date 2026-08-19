@@ -82,7 +82,7 @@ export type ClientGroupsTableDeps = {
     clientGroups: Ref<ClientGroupExisting[]>;
     screenProctoring: {
         enabled: Ref<boolean>;
-        collectionStrategy: Ref<ScreenProctoringCollectionStrategy | undefined>;
+        collectionStrategy: Ref<ScreenProctoringCollectionStrategy>;
         fallbackGroupName?: Ref<string | undefined>;
     };
     createItem: (item: ClientGroup) => Promise<void>;

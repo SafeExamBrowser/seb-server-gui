@@ -49,5 +49,5 @@ on the filesystem if they clash:
     keys they can't find. So: no template-literal keys (`$t("supervisors.title")`, never
     `$t(`${prefix}.title`)`), no prefix props or prefix-baking `t` wrappers (components take full
     keys or translated strings), and for runtime values use a `Record<Value, string>` of full
-    static keys, named with an `_I18N_KEYS` suffix (see `STRATEGY_LABEL_I18N_KEYS` in
-    `BoxScreenProctoringSettings.vue`).
+    static keys, named with an `_I18N_KEYS` suffix (see `TYPE_LABEL_I18N_KEYS` in
+    `client/src/components/widgets/clientGroupsTable/types.ts`).

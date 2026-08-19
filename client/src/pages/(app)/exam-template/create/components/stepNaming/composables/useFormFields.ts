@@ -15,7 +15,7 @@ export const useFormFields = () => {
         institutionalDefault,
     } = storeToRefs(useStepNamingStore());
 
-    const { enabled: showScreenProctoringEnabled } = storeToRefs(
+    const { enabled: screenProctoringEnabled } = storeToRefs(
         useScreenProctoringStore(),
     );
 
@@ -28,6 +28,6 @@ export const useFormFields = () => {
             lmsIntegration,
             institutionalDefault,
         },
-        { showScreenProctoringEnabled },
+        { screenProctoringEnabled },
     );
 };
