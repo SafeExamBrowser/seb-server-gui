@@ -17,9 +17,6 @@
                 :seb-lock-active="sebLockActive"
                 @toggle-test-run="actions.handleTestRunToggle"
                 @toggle-seb-lock="actions.handleSebLockToggle"
-                @toggle-exclude-from-deletion="
-                    actions.handleExcludeFromDeletionToggle
-                "
                 @delete-exam="actions.handleDeleteExam"
             />
         </template>

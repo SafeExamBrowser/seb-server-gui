@@ -23,11 +23,6 @@
                     @toggle="handleSebLockToggle"
                 />
 
-                <ExcludeFromDeletionAction
-                    :exam="exam"
-                    @toggle="handleExcludeFromDeletionToggle"
-                />
-
                 <DeleteExamAction :exam="exam" @delete="handleDeleteExam" />
             </div>
         </template>
@@ -42,7 +37,6 @@ import { Exam } from "@/models/seb-server/exam.ts";
 import DeleteExamAction from "./components/DeleteExamAction.vue";
 import DownloadConnectionAction from "./components/DownloadConnectionAction/DownloadConnectionAction.vue";
 import ExamSidePanelInfo from "./components/ExamSidePanelInfo.vue";
-import ExcludeFromDeletionAction from "./components/ExcludeFromDeletionAction.vue";
 import MonitorExamAction from "./components/MonitorExamAction.vue";
 import SebLockAction from "./components/SebLockAction/SebLockAction.vue";
 import TestRunAction from "./components/TestRunAction.vue";
@@ -55,7 +49,6 @@ defineProps<{
 const emit = defineEmits<{
     toggleTestRun: [];
     toggleSebLock: [];
-    toggleExcludeFromDeletion: [];
     deleteExam: [];
 }>();
 
@@ -65,10 +58,6 @@ const handleTestRunToggle = () => {
 
 const handleSebLockToggle = () => {
     emit("toggleSebLock");
-};
-
-const handleExcludeFromDeletionToggle = () => {
-    emit("toggleExcludeFromDeletion");
 };
 
 const handleDeleteExam = () => {

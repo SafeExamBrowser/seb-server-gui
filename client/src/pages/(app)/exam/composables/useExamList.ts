@@ -52,7 +52,7 @@ export const useExamList = () => {
         selectedStatus,
     );
 
-    const { items, pageCount, errors } = usePagedListData({
+    const { items, pageCount, errors, reloadList } = usePagedListData({
         data,
         error,
         options,
@@ -76,5 +76,6 @@ export const useExamList = () => {
         clearAll,
         setDate,
         loadItems,
+        reloadList,
     };
 };
