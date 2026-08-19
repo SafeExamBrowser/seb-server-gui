@@ -128,6 +128,7 @@ definePage({
         titleKey: "titles.institutions",
         pageTestId: "institutions-page",
         isPageBlue: true,
+        requiredComponent: "INSTITUTIONS",
     },
 });
 
