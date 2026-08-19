@@ -178,6 +178,81 @@ function userAccountRows(browser: string) {
     ];
 }
 
+// e2e-authored fixture rows for the 06-exam/07-monitoring/08-analyze/09-archive
+// specs (no upstream Flyway seed to mirror here: exam/monitoring/analyze/
+// archive have no dedicated *ListConfig.ts and instead hit `/exam` and
+// `/monitoring` directly, see examService.ts / monitoringService.ts).
+const EXAMS = [
+    {
+        id: 9201,
+        institutionId: 11,
+        quizName: "e2e-getall-exam-01",
+        quizStartTime: "2026-01-10T08:00:00.000Z",
+        quizEndTime: "2026-01-10T10:00:00.000Z",
+        type: "BYOD",
+        status: "UP_COMING",
+        excludeFromDeletion: false,
+    },
+    {
+        id: 9202,
+        institutionId: 11,
+        quizName: "e2e-getall-exam-02",
+        quizStartTime: "2026-01-11T08:00:00.000Z",
+        quizEndTime: "2026-01-11T10:00:00.000Z",
+        type: "MANAGED",
+        status: "TEST_RUN",
+        excludeFromDeletion: false,
+    },
+    {
+        id: 9203,
+        institutionId: 11,
+        quizName: "e2e-getall-exam-03",
+        quizStartTime: "2026-01-12T08:00:00.000Z",
+        quizEndTime: "2026-01-12T10:00:00.000Z",
+        type: "VDI",
+        status: "RUNNING",
+        excludeFromDeletion: false,
+    },
+    {
+        id: 9204,
+        institutionId: 11,
+        quizName: "e2e-getall-exam-04",
+        quizStartTime: "2026-01-13T08:00:00.000Z",
+        quizEndTime: "2026-01-13T10:00:00.000Z",
+        type: "BYOD",
+        status: "FINISHED",
+        excludeFromDeletion: false,
+        additionalAttributes: { enableScreenProctoring: "true" },
+    },
+    {
+        id: 9205,
+        institutionId: 11,
+        quizName: "e2e-getall-exam-05",
+        quizStartTime: "2026-01-14T08:00:00.000Z",
+        quizEndTime: "2026-01-14T10:00:00.000Z",
+        type: "MANAGED",
+        status: "ARCHIVED",
+        excludeFromDeletion: true,
+    },
+    {
+        id: 9206,
+        institutionId: 11,
+        quizName: "e2e-getall-exam-06",
+        quizStartTime: "2026-01-15T08:00:00.000Z",
+        quizEndTime: "2026-01-15T10:00:00.000Z",
+        type: "UNDEFINED",
+        status: "FINISHED",
+        excludeFromDeletion: false,
+    },
+];
+
+// getExamsForAnalysis hits a dedicated `/monitoring/finishedexams` resource
+// that only ever contains finished/archived exams, regardless of the
+// `status` query param (which just narrows further within that set).
+const FINISHED_EXAMS = EXAMS.filter(
+    (row) => row.status === "FINISHED" || row.status === "ARCHIVED",
+);
+
 type Row = Record<string, unknown>;
 
 function textContains(row: Row, field: string, value: string | null) {
@@ -222,6 +297,54 @@ function pagedEnvelope(
             ) &&
             matchesActive(row, params.get("active")) &&
             matchesInstitution(row, params.get("institutionId")),
+    );
+
+    const sort = params.get("sort");
+    if (sort) {
+        const key = sort.startsWith("-") ? sort.slice(1) : sort;
+        filtered = [...filtered].sort((a, b) =>
+            String(a[key] ?? "").localeCompare(String(b[key] ?? "")),
+        );
+        if (sort.startsWith("-")) {
+            filtered.reverse();
+        }
+    }
+
+    const pageSize = Number(params.get("page_size") ?? 10);
+    const pageNumber = Number(params.get("page_number") ?? 1);
+    const start = (pageNumber - 1) * pageSize;
+
+    return {
+        number_of_pages: Math.max(1, Math.ceil(filtered.length / pageSize)),
+        page_number: pageNumber,
+        page_size: pageSize,
+        sort: sort ?? undefined,
+        complete: true,
+        content: filtered.slice(start, start + pageSize),
+    };
+}
+
+// The exam family (exam/monitoring/analyze/archive) filters on a comma-list
+// param (e.g. `status=RUNNING,TEST_RUN` from a multi-select or the callers'
+// hard-coded defaults), so a row matches if its field is any of the values.
+function matchesCommaList(row: Row, field: string, value: string | null) {
+    if (!value) {
+        return true;
+    }
+    return value.split(",").includes(String(row[field]));
+}
+
+// Same shape as pagedEnvelope but for the exam family: the text filter is
+// always `quizName`, and `status`/`type` are comma-list filters instead of
+// the institution family's exact `active`/`institutionId` filters.
+function pagedExamEnvelope(rows: Row[], url: URL): Row[] | object {
+    const params = url.searchParams;
+
+    let filtered = rows.filter(
+        (row) =>
+            textContains(row, "quizName", params.get("quizName")) &&
+            matchesCommaList(row, "status", params.get("status")) &&
+            matchesCommaList(row, "type", params.get("type")),
     );
 
     const sort = params.get("sort");
@@ -403,5 +526,37 @@ export async function installMockBackend(page: Page, browser: string) {
     await page.route(
         /\/api\/admin-api\/v1\/certificate(?:$|\?)/,
         getOnly((route, url) => json(route, pagedEnvelope([], url, ["alias"]))),
+    );
+
+    // --- exams (06-exam and 09-archive both read the plain /exam collection) ---
+    await page.route(
+        /\/api\/exam(?:$|\?)/,
+        getOnly((route, url) => json(route, pagedExamEnvelope(EXAMS, url))),
+    );
+
+    // --- monitoring (07-monitoring) ---------------------------------------------
+    await page.route(
+        /\/api\/monitoring(?:$|\?)/,
+        getOnly((route, url) => json(route, pagedExamEnvelope(EXAMS, url))),
+    );
+
+    // --- analyze / finished exams (08-analyze) ----------------------------------
+    await page.route(
+        /\/api\/monitoring\/finishedexams(?:$|\?)/,
+        getOnly((route, url) =>
+            json(route, pagedExamEnvelope(FINISHED_EXAMS, url)),
+        ),
+    );
+
+    // --- SEB client log export (downloadSEBLogs row action on 08-analyze) ------
+    await page.route(
+        /\/api\/seb-client-event\/export(?:$|\?)/,
+        getOnly((route) =>
+            route.fulfill({
+                status: 200,
+                contentType: "text/csv",
+                body: "exam,client,event\n",
+            }),
+        ),
     );
 }

@@ -5,7 +5,7 @@ import {
     type Response,
 } from "@playwright/test";
 
-export type HttpMethod = "GET" | "POST" | "PUT" | "DELETE";
+export type HttpMethod = "GET" | "POST" | "PUT" | "PATCH" | "DELETE";
 
 export function waitForRequest(
     page: Page,
