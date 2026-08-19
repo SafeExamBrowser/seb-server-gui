@@ -131,7 +131,10 @@ export const useExamDetailPage = () => {
     const breadCrumb = computed<BreadCrumbItem[]>(() => [
         {
             label: i18n.global.t("titles.exams"),
-            link: { name: "/(app)/exam/" },
+            link: {
+                name: "/(app)/exam/",
+                query: { status: "UP_COMING,TEST_RUN,RUNNING" },
+            },
         },
         ...(exam.value ? [{ label: title.value }] : []),
     ]);

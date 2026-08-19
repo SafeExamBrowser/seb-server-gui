@@ -132,6 +132,9 @@ const {
 
 const notFoundBackLink = {
     label: t("examDetail.notFound.backToList"),
-    to: typedTo({ name: "/(app)/exam/" }),
+    to: typedTo({
+        name: "/(app)/exam/",
+        query: { status: "UP_COMING,TEST_RUN,RUNNING" },
+    }),
 };
 </script>
