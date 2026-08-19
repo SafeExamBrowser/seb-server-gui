@@ -9,7 +9,6 @@ import { Exam } from "@/models/seb-server/exam.ts";
 import * as examService from "@/services/seb-server/examService.ts";
 
 import { useDeleteExamAction } from "./actions/useDeleteExamAction.ts";
-import { useExcludeFromDeletionAction } from "./actions/useExcludeFromDeletionAction.ts";
 import { useSebLockAction } from "./actions/useSebLockAction.ts";
 import { useTestRunAction } from "./actions/useTestRunAction.ts";
 import { useExam } from "./api/useExam.ts";
@@ -132,17 +131,16 @@ export const useExamDetailPage = () => {
     const breadCrumb = computed<BreadCrumbItem[]>(() => [
         {
             label: i18n.global.t("titles.exams"),
-            link: { name: "/(app)/exam/" },
+            link: {
+                name: "/(app)/exam/",
+                query: { status: "UP_COMING,TEST_RUN,RUNNING" },
+            },
         },
         ...(exam.value ? [{ label: title.value }] : []),
     ]);
 
     const { handleTestRunToggle } = useTestRunAction(exam, examId);
     const { sebLockActive, handleSebLockToggle } = useSebLockAction(examId);
-    const { handleExcludeFromDeletionToggle } = useExcludeFromDeletionAction(
-        exam,
-        examId,
-    );
     const { handleDeleteExam } = useDeleteExamAction(examId);
 
     return {
@@ -161,7 +159,6 @@ export const useExamDetailPage = () => {
         actions: {
             handleTestRunToggle,
             handleSebLockToggle,
-            handleExcludeFromDeletionToggle,
             handleDeleteExam,
         },
     };
