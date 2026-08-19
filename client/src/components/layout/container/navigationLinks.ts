@@ -22,7 +22,10 @@ export function buildBaseNavigationLinks(
     if (ability.canView(GUIComponent.EXAMS)) {
         result.push({
             title: i18n.t("titles.exams"),
-            route: typedTo({ name: "/(app)/exam/" }),
+            route: typedTo({
+                name: "/(app)/exam/",
+                query: { status: "UP_COMING,TEST_RUN,RUNNING" },
+            }),
             icon: "mdi-file-document",
             testId: "layout-exam-button",
         });

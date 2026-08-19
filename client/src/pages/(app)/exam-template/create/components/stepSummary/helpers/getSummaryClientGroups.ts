@@ -32,11 +32,11 @@ export const getSummaryClientGroups = (
             },
         ];
 
+        const spsSEBGroupsSelection =
+            examTemplate.EXAM_ATTRIBUTES.spsSEBGroupsSelection;
         if (
             examTemplate.EXAM_ATTRIBUTES.enableScreenProctoring === "true" &&
-            examTemplate.EXAM_ATTRIBUTES.spsCollectingStrategy ===
-                "APPLY_SEB_GROUPS" &&
-            examTemplate.EXAM_ATTRIBUTES.spsSEBGroupsSelection
+            spsSEBGroupsSelection !== undefined
         ) {
             items.push({
                 type: "basic" as const,
@@ -46,9 +46,9 @@ export const getSummaryClientGroups = (
                 ),
                 value: {
                     type: "boolean",
-                    value: examTemplate.EXAM_ATTRIBUTES.spsSEBGroupsSelection.includes(
-                        clientGroupIndex.toString(),
-                    ),
+                    value: spsSEBGroupsSelection
+                        .split(",")
+                        .includes(clientGroupIndex.toString()),
                 },
             });
         }
@@ -58,27 +58,6 @@ export const getSummaryClientGroups = (
             key: `clientGroup-${clientGroup.name}`,
             items,
         };
-    };
-
-    const getFallbackGroupTypeValue = () => {
-        if (examTemplate.EXAM_ATTRIBUTES.spsCollectingStrategy === "EXAM") {
-            return i18n.global.t(
-                "clientGroups.fields.type.types.SCREEN_PROCTORING_SINGLE",
-            );
-        }
-
-        if (
-            examTemplate.EXAM_ATTRIBUTES.spsCollectingStrategy ===
-            "APPLY_SEB_GROUPS"
-        ) {
-            return i18n.global.t(
-                "clientGroups.fields.type.types.SCREEN_PROCTORING_FALLBACK",
-            );
-        }
-
-        // TODO @alain: look into this again when we have stricter API types.
-        // If our spsCollectionStrategy is more stricly defined (i.e. specific values instead of any string), we can remove this fallback.
-        return i18n.global.t("createTemplateExam.steps.summary.notFoundValue");
     };
 
     const getClientGroupFallback = () => {
@@ -102,7 +81,9 @@ export const getSummaryClientGroups = (
                 label: i18n.global.t("clientGroups.fields.type.label"),
                 value: {
                     type: "string",
-                    value: getFallbackGroupTypeValue(),
+                    value: i18n.global.t(
+                        "clientGroups.fields.type.types.SCREEN_PROCTORING_FALLBACK",
+                    ),
                 },
             },
             {
