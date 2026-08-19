@@ -1,15 +1,25 @@
+import { useQuery, useQueryClient } from "@tanstack/vue-query";
 import { computed, ref } from "vue";
 
-import type { InstitutionName } from "@/models/institution";
-import { getInstitutions } from "@/services/seb-server/institutionInfoService";
+import { getInstitutionInfoQueryKey } from "@/api/seb-server/generated/hey-api/@tanstack/vue-query.gen.ts";
+import { heySebServerClient } from "@/api/seb-server/http/heySebServerClient.ts";
+import { toAppErrorOrUndefined } from "@/services/errors/toAppError.ts";
+import { getInstitutions } from "@/services/seb-server/institutionInfoService.ts";
 
-const institutions = ref<InstitutionName[]>([]);
-const loading = ref(false);
-const error = ref<string>();
-const hasFetched = ref(false);
-const pendingRequest = ref<Promise<void> | null>(null);
+const queryKey = getInstitutionInfoQueryKey({ client: heySebServerClient });
 
 export const useInstitutionNameMap = () => {
+    const queryClient = useQueryClient();
+    const requested = ref(false);
+
+    const query = useQuery({
+        queryKey,
+        queryFn: () => getInstitutions(),
+        enabled: requested,
+    });
+
+    const institutions = computed(() => query.data.value ?? []);
+
     const institutionIdToNameMap = computed(() => {
         const map = new Map<string, string>();
 
@@ -21,32 +31,16 @@ export const useInstitutionNameMap = () => {
     });
 
     const fetchInstitutions = async () => {
-        if (hasFetched.value) {
-            return;
+        requested.value = true;
+
+        try {
+            await queryClient.ensureQueryData({
+                queryKey,
+                queryFn: () => getInstitutions(),
+            });
+        } catch {
+            /* surfaced via the query error below */
         }
-
-        if (pendingRequest.value) {
-            return pendingRequest.value;
-        }
-
-        loading.value = true;
-        error.value = undefined;
-
-        pendingRequest.value = (async () => {
-            try {
-                const response = await getInstitutions();
-                institutions.value = response ?? [];
-                hasFetched.value = true;
-            } catch (err) {
-                error.value =
-                    err instanceof Error ? err.message : "Unknown error";
-            } finally {
-                loading.value = false;
-                pendingRequest.value = null;
-            }
-        })();
-
-        return pendingRequest.value;
     };
 
     const getInstitutionName = (id: unknown): string => {
@@ -59,9 +53,8 @@ export const useInstitutionNameMap = () => {
 
     return {
         institutions,
-        loading,
-        error,
-        hasFetched,
+        loading: query.isLoading,
+        error: computed(() => toAppErrorOrUndefined(query.error.value)),
         fetchInstitutions,
         getInstitutionName,
     };

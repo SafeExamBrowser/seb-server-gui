@@ -17,9 +17,6 @@
                 :seb-lock-active="sebLockActive"
                 @toggle-test-run="actions.handleTestRunToggle"
                 @toggle-seb-lock="actions.handleSebLockToggle"
-                @toggle-exclude-from-deletion="
-                    actions.handleExcludeFromDeletionToggle
-                "
                 @delete-exam="actions.handleDeleteExam"
             />
         </template>
@@ -135,6 +132,9 @@ const {
 
 const notFoundBackLink = {
     label: t("examDetail.notFound.backToList"),
-    to: typedTo({ name: "/(app)/exam/" }),
+    to: typedTo({
+        name: "/(app)/exam/",
+        query: { status: "UP_COMING,TEST_RUN,RUNNING" },
+    }),
 };
 </script>

@@ -312,8 +312,8 @@ export type Exam = {
     additionalAttributes?: {
         [key: string]: string;
     };
-    quiz_start_url?: string;
     quiz_description?: string;
+    quiz_start_url?: string;
 };
 
 export type ClientGroupTemplate = {
@@ -678,19 +678,55 @@ export type GroupInfo = {
     numberOfSessions?: string;
 };
 
+/**
+ * Full report of a scheduled deletion, including the affected exams.
+ */
 export type ScheduledDeleteReport = {
-    id?: number;
+    /**
+     * Scheduled deletion identifier (PK).
+     */
+    id: number;
+    /**
+     * Identifier of the corresponding deletion on the screen proctoring service.
+     */
     spsId?: number;
-    state?: 'PENDING' | 'SPS_RUNNING' | 'RUNNING' | 'FINISHED';
-    deleteDueTime?: number;
-    scheduleTime?: number;
+    /**
+     * Processing state of the scheduled deletion.
+     */
+    state: 'PENDING' | 'SPS_RUNNING' | 'RUNNING' | 'FINISHED';
+    /**
+     * Exams that ended before this time get deleted; unix timestamp in milliseconds.
+     */
+    deleteDueTime: number;
+    /**
+     * Time the deletion runs; unix timestamp in milliseconds.
+     */
+    scheduleTime: number;
+    /**
+     * Time the deletion run started; unix timestamp in milliseconds.
+     */
     startTime?: number;
+    /**
+     * Time the deletion run finished; unix timestamp in milliseconds.
+     */
     endTime?: number;
+    /**
+     * Institution identifier the scheduled deletion belongs to.
+     */
     institutionId?: number;
-    examDeletions?: Array<ScheduledDeleteViewInfo>;
-    spsOnlyDeletions?: Array<ScheduledDeleteViewInfo>;
+    /**
+     * Deletions of exams managed by this SEB Server.
+     */
+    examDeletions: Array<ScheduledDeleteViewInfo>;
+    /**
+     * Deletions of exams that only exist on the screen proctoring service.
+     */
+    spsOnlyDeletions: Array<ScheduledDeleteViewInfo>;
 };
 
+/**
+ * Deletion details of one exam affected by a scheduled deletion.
+ */
 export type ScheduledDeleteViewInfo = {
     examUUID?: string;
     examName?: string;
@@ -1146,15 +1182,45 @@ export type PageScheduledDelete = {
     complete?: boolean;
 };
 
+/**
+ * A scheduled deletion of all exams that ended before its delete-due time.
+ */
 export type ScheduledDelete = {
-    readonly id?: number;
+    /**
+     * Scheduled deletion identifier (PK).
+     */
+    readonly id: number;
+    /**
+     * Identifier of the corresponding deletion on the screen proctoring service.
+     */
     spsId?: number;
-    state?: 'PENDING' | 'SPS_RUNNING' | 'RUNNING' | 'FINISHED';
-    deleteDueTime?: number;
-    scheduleTime?: number;
+    /**
+     * Processing state of the scheduled deletion.
+     */
+    state: 'PENDING' | 'SPS_RUNNING' | 'RUNNING' | 'FINISHED';
+    /**
+     * Exams that ended before this time get deleted; unix timestamp in milliseconds.
+     */
+    deleteDueTime: number;
+    /**
+     * Time the deletion runs; unix timestamp in milliseconds.
+     */
+    scheduleTime: number;
+    /**
+     * Time the deletion run started; unix timestamp in milliseconds.
+     */
     startTime?: number;
+    /**
+     * Time the deletion run finished; unix timestamp in milliseconds.
+     */
     endTime?: number;
+    /**
+     * UUID of the user account that scheduled the deletion.
+     */
     owner?: string;
+    /**
+     * Institution identifier the scheduled deletion belongs to.
+     */
     institutionId?: number;
     info?: Array<ScheduledDeleteInfo>;
 };
@@ -1195,16 +1261,49 @@ export type PageQuizData = {
     complete?: boolean;
 };
 
+/**
+ * Quiz (course) data as discovered on an LMS.
+ */
 export type QuizData = {
-    quiz_id?: string;
+    /**
+     * LMS-side identifier of the quiz.
+     */
+    quiz_id: string;
+    /**
+     * Institution identifier the assessment tool of this quiz belongs to.
+     */
     institutionId?: number;
-    lms_setup_id?: number;
+    /**
+     * Identifier of the assessment tool (LMS setup) the quiz was discovered on.
+     */
+    lms_setup_id: number;
+    /**
+     * Type of the LMS the quiz was discovered on.
+     */
     lms_setup_type?: 'MOCKUP' | 'OPEN_EDX' | 'MOODLE' | 'MOODLE_PLUGIN' | 'ANS_DELFT' | 'OPEN_OLAT';
-    quiz_name?: string;
+    /**
+     * Name of the quiz.
+     */
+    quiz_name: string;
+    /**
+     * Description of the quiz.
+     */
     quiz_description?: string;
+    /**
+     * Start time of the quiz.
+     */
     quiz_start_time?: string;
+    /**
+     * End time of the quiz.
+     */
     quiz_end_time?: string;
+    /**
+     * URL under which the quiz starts on the LMS.
+     */
     quiz_start_url?: string;
+    /**
+     * Additional LMS-specific quiz attributes as key-value pairs.
+     */
     additionalAttributes?: {
         [key: string]: string;
     };
@@ -1295,11 +1394,11 @@ export type ClientNotification = {
 };
 
 export type ClientMonitoringDataView = {
+    pendingNotification?: boolean;
     missingPing?: boolean;
     grantChecked?: boolean;
     grantDenied?: boolean;
     sebversionDenied?: boolean;
-    pendingNotification?: boolean;
     lat?: number;
     iv?: {
         [key: string]: string;
@@ -1437,18 +1536,6 @@ export type PageInstitution = {
      */
     content?: Array<Institution>;
     complete?: boolean;
-};
-
-export type Privilege = {
-    roleTypeKey?: RoleTypeKey;
-    basePrivilege?: 'NONE' | 'ASSIGNED' | 'READ' | 'MODIFY' | 'WRITE';
-    institutionalPrivilege?: 'NONE' | 'ASSIGNED' | 'READ' | 'MODIFY' | 'WRITE';
-    ownershipPrivilege?: 'NONE' | 'ASSIGNED' | 'READ' | 'MODIFY' | 'WRITE';
-};
-
-export type RoleTypeKey = {
-    entityType?: 'CONFIGURATION_ATTRIBUTE' | 'CONFIGURATION_VALUE' | 'VIEW' | 'ORIENTATION' | 'CONFIGURATION' | 'CONFIGURATION_NODE' | 'EXAM_CONFIGURATION_MAP' | 'EXAM' | 'EXAM_SEB_RESTRICTION' | 'EXAM_PROCTOR_DATA' | 'CLIENT_CONNECTION' | 'REMOTE_PROCTORING_ROOM' | 'SCREEN_PROCTORING_GROUP' | 'CLIENT_EVENT' | 'CLIENT_INSTRUCTION' | 'INDICATOR' | 'THRESHOLD' | 'INSTITUTION' | 'SEB_CLIENT_CONFIGURATION' | 'LMS_SETUP' | 'USER' | 'USER_ROLE' | 'USER_ACTIVITY_LOG' | 'ADDITIONAL_ATTRIBUTES' | 'WEBSERVICE_SERVER_INFO' | 'CERTIFICATE' | 'EXAM_TEMPLATE' | 'BATCH_ACTION' | 'CLIENT_INDICATOR' | 'CLIENT_NOTIFICATION' | 'CLIENT_GROUP' | 'SEB_SECURITY_KEY_REGISTRY' | 'ENTITY_PRIVILEGE' | 'FEATURE_PRIVILEGE' | 'SCHEDULED_DELETE' | 'SCHEDULED_DELETE_INFO' | 'CONFIGURATION_ATTRIBUTE_DEPRECATION';
-    userRole?: 'SEB_SERVER_ADMIN' | 'INSTITUTIONAL_ADMIN' | 'EXAM_ADMIN' | 'EXAM_SUPPORTER' | 'TEACHER';
 };
 
 export type PageIndicator = {
@@ -2055,19 +2142,55 @@ export type MultiValueMapStringStringWritable = {
     } | boolean | undefined;
 };
 
+/**
+ * Full report of a scheduled deletion, including the affected exams.
+ */
 export type ScheduledDeleteReportWritable = {
-    id?: number;
+    /**
+     * Scheduled deletion identifier (PK).
+     */
+    id: number;
+    /**
+     * Identifier of the corresponding deletion on the screen proctoring service.
+     */
     spsId?: number;
-    state?: 'PENDING' | 'SPS_RUNNING' | 'RUNNING' | 'FINISHED';
-    deleteDueTime?: number;
-    scheduleTime?: number;
+    /**
+     * Processing state of the scheduled deletion.
+     */
+    state: 'PENDING' | 'SPS_RUNNING' | 'RUNNING' | 'FINISHED';
+    /**
+     * Exams that ended before this time get deleted; unix timestamp in milliseconds.
+     */
+    deleteDueTime: number;
+    /**
+     * Time the deletion runs; unix timestamp in milliseconds.
+     */
+    scheduleTime: number;
+    /**
+     * Time the deletion run started; unix timestamp in milliseconds.
+     */
     startTime?: number;
+    /**
+     * Time the deletion run finished; unix timestamp in milliseconds.
+     */
     endTime?: number;
+    /**
+     * Institution identifier the scheduled deletion belongs to.
+     */
     institutionId?: number;
-    examDeletions?: Array<ScheduledDeleteViewInfoWritable>;
-    spsOnlyDeletions?: Array<ScheduledDeleteViewInfoWritable>;
+    /**
+     * Deletions of exams managed by this SEB Server.
+     */
+    examDeletions: Array<ScheduledDeleteViewInfoWritable>;
+    /**
+     * Deletions of exams that only exist on the screen proctoring service.
+     */
+    spsOnlyDeletions: Array<ScheduledDeleteViewInfoWritable>;
 };
 
+/**
+ * Deletion details of one exam affected by a scheduled deletion.
+ */
 export type ScheduledDeleteViewInfoWritable = {
     examUUID?: string;
     examName?: string;
@@ -2104,14 +2227,41 @@ export type PageScheduledDeleteWritable = {
     complete?: boolean;
 };
 
+/**
+ * A scheduled deletion of all exams that ended before its delete-due time.
+ */
 export type ScheduledDeleteWritable = {
+    /**
+     * Identifier of the corresponding deletion on the screen proctoring service.
+     */
     spsId?: number;
-    state?: 'PENDING' | 'SPS_RUNNING' | 'RUNNING' | 'FINISHED';
-    deleteDueTime?: number;
-    scheduleTime?: number;
+    /**
+     * Processing state of the scheduled deletion.
+     */
+    state: 'PENDING' | 'SPS_RUNNING' | 'RUNNING' | 'FINISHED';
+    /**
+     * Exams that ended before this time get deleted; unix timestamp in milliseconds.
+     */
+    deleteDueTime: number;
+    /**
+     * Time the deletion runs; unix timestamp in milliseconds.
+     */
+    scheduleTime: number;
+    /**
+     * Time the deletion run started; unix timestamp in milliseconds.
+     */
     startTime?: number;
+    /**
+     * Time the deletion run finished; unix timestamp in milliseconds.
+     */
     endTime?: number;
+    /**
+     * UUID of the user account that scheduled the deletion.
+     */
     owner?: string;
+    /**
+     * Institution identifier the scheduled deletion belongs to.
+     */
     institutionId?: number;
     info?: Array<ScheduledDeleteInfoWritable>;
 };
@@ -7764,6 +7914,14 @@ export type GetScheduledDeletesData = {
     body?: never;
     path?: never;
     query?: {
+        /**
+         * Filters scheduled deletions by delete-due time; unix timestamp in milliseconds.
+         */
+        dueTimestamp?: number;
+        /**
+         * Filters scheduled deletions by state.
+         */
+        state?: 'PENDING' | 'SPS_RUNNING' | 'RUNNING' | 'FINISHED';
         page_number?: number;
         page_size?: number;
         sort?: string;
@@ -7810,7 +7968,12 @@ export type GetScheduledDeletesResponses = {
 export type GetScheduledDeletesResponse = GetScheduledDeletesResponses[keyof GetScheduledDeletesResponses];
 
 export type CreateScheduledDeleteData = {
-    body?: number;
+    body?: {
+        /**
+         * Exams that ended before this time get deleted; unix timestamp in milliseconds.
+         */
+        deleteDueTime: number;
+    };
     path?: never;
     query?: never;
     url: '/admin-api/v1/scheduled-delete';
@@ -7854,7 +8017,7 @@ export type CreateScheduledDeleteResponses = {
 
 export type CreateScheduledDeleteResponse = CreateScheduledDeleteResponses[keyof CreateScheduledDeleteResponses];
 
-export type UnmarkExcludeData = {
+export type UnmarkExcludeFromDeletionData = {
     body?: unknown;
     path: {
         modelId: string;
@@ -7863,7 +8026,7 @@ export type UnmarkExcludeData = {
     url: '/admin-api/v1/scheduled-delete/{modelId}/unmark-exclude';
 };
 
-export type UnmarkExcludeErrors = {
+export type UnmarkExcludeFromDeletionErrors = {
     /**
      * Bad request, e.g. field validation or an illegal argument. The body is usually a list of APIMessage, but may be absent for some illegal-argument cases.
      */
@@ -7890,18 +8053,18 @@ export type UnmarkExcludeErrors = {
     500: Array<ApiMessage>;
 };
 
-export type UnmarkExcludeError = UnmarkExcludeErrors[keyof UnmarkExcludeErrors];
+export type UnmarkExcludeFromDeletionError = UnmarkExcludeFromDeletionErrors[keyof UnmarkExcludeFromDeletionErrors];
 
-export type UnmarkExcludeResponses = {
+export type UnmarkExcludeFromDeletionResponses = {
     /**
      * OK
      */
     200: ScheduledDeleteReport;
 };
 
-export type UnmarkExcludeResponse = UnmarkExcludeResponses[keyof UnmarkExcludeResponses];
+export type UnmarkExcludeFromDeletionResponse = UnmarkExcludeFromDeletionResponses[keyof UnmarkExcludeFromDeletionResponses];
 
-export type MarkExcludeData = {
+export type MarkExcludeFromDeletionData = {
     body?: unknown;
     path: {
         modelId: string;
@@ -7910,7 +8073,7 @@ export type MarkExcludeData = {
     url: '/admin-api/v1/scheduled-delete/{modelId}/mark-exclude';
 };
 
-export type MarkExcludeErrors = {
+export type MarkExcludeFromDeletionErrors = {
     /**
      * Bad request, e.g. field validation or an illegal argument. The body is usually a list of APIMessage, but may be absent for some illegal-argument cases.
      */
@@ -7937,16 +8100,16 @@ export type MarkExcludeErrors = {
     500: Array<ApiMessage>;
 };
 
-export type MarkExcludeError = MarkExcludeErrors[keyof MarkExcludeErrors];
+export type MarkExcludeFromDeletionError = MarkExcludeFromDeletionErrors[keyof MarkExcludeFromDeletionErrors];
 
-export type MarkExcludeResponses = {
+export type MarkExcludeFromDeletionResponses = {
     /**
      * OK
      */
     200: ScheduledDeleteReport;
 };
 
-export type MarkExcludeResponse = MarkExcludeResponses[keyof MarkExcludeResponses];
+export type MarkExcludeFromDeletionResponse = MarkExcludeFromDeletionResponses[keyof MarkExcludeFromDeletionResponses];
 
 export type RegisterUserAccountData = {
     body: UserMod;
@@ -12489,7 +12652,7 @@ export type GetClientConnectionDataByResponses = {
 
 export type GetClientConnectionDataByResponse = GetClientConnectionDataByResponses[keyof GetClientConnectionDataByResponses];
 
-export type DeleteData = {
+export type DeleteScheduledDeleteData = {
     body?: never;
     path: {
         modelId: string;
@@ -12498,7 +12661,7 @@ export type DeleteData = {
     url: '/admin-api/v1/scheduled-delete/{modelId}';
 };
 
-export type DeleteErrors = {
+export type DeleteScheduledDeleteErrors = {
     /**
      * Bad request, e.g. field validation or an illegal argument. The body is usually a list of APIMessage, but may be absent for some illegal-argument cases.
      */
@@ -12525,18 +12688,18 @@ export type DeleteErrors = {
     500: Array<ApiMessage>;
 };
 
-export type DeleteError = DeleteErrors[keyof DeleteErrors];
+export type DeleteScheduledDeleteError = DeleteScheduledDeleteErrors[keyof DeleteScheduledDeleteErrors];
 
-export type DeleteResponses = {
+export type DeleteScheduledDeleteResponses = {
     /**
      * OK
      */
     200: EntityKey;
 };
 
-export type DeleteResponse = DeleteResponses[keyof DeleteResponses];
+export type DeleteScheduledDeleteResponse = DeleteScheduledDeleteResponses[keyof DeleteScheduledDeleteResponses];
 
-export type GetFullReportByIdData = {
+export type GetScheduledDeleteReportData = {
     body?: never;
     path: {
         modelId: string;
@@ -12545,7 +12708,7 @@ export type GetFullReportByIdData = {
     url: '/admin-api/v1/scheduled-delete/{modelId}';
 };
 
-export type GetFullReportByIdErrors = {
+export type GetScheduledDeleteReportErrors = {
     /**
      * Bad request, e.g. field validation or an illegal argument. The body is usually a list of APIMessage, but may be absent for some illegal-argument cases.
      */
@@ -12572,31 +12735,46 @@ export type GetFullReportByIdErrors = {
     500: Array<ApiMessage>;
 };
 
-export type GetFullReportByIdError = GetFullReportByIdErrors[keyof GetFullReportByIdErrors];
+export type GetScheduledDeleteReportError = GetScheduledDeleteReportErrors[keyof GetScheduledDeleteReportErrors];
 
-export type GetFullReportByIdResponses = {
+export type GetScheduledDeleteReportResponses = {
     /**
      * OK
      */
     200: ScheduledDeleteReport;
 };
 
-export type GetFullReportByIdResponse = GetFullReportByIdResponses[keyof GetFullReportByIdResponses];
+export type GetScheduledDeleteReportResponse = GetScheduledDeleteReportResponses[keyof GetScheduledDeleteReportResponses];
 
-export type GetQuizPageData = {
+export type GetQuizzesData = {
     body?: never;
     path?: never;
-    query: {
+    query?: {
+        /**
+         * Filters quizzes by name.
+         */
+        name?: string;
+        /**
+         * Filters quizzes by start time; unix timestamp in milliseconds.
+         */
+        start_timestamp_millis?: number;
+        /**
+         * Identifier of the assessment tool (LMS setup) to discover quizzes on.
+         */
+        lms_setup?: number;
+        /**
+         * Forces a new LMS lookup instead of serving the cached result of the previous search.
+         */
+        force_new_search?: boolean;
         institutionId?: number;
         page_number?: number;
         page_size?: number;
         sort?: string;
-        allRequestParams: MultiValueMapStringStringWritable;
     };
     url: '/admin-api/v1/quiz';
 };
 
-export type GetQuizPageErrors = {
+export type GetQuizzesErrors = {
     /**
      * Bad request, e.g. field validation or an illegal argument. The body is usually a list of APIMessage, but may be absent for some illegal-argument cases.
      */
@@ -12623,65 +12801,16 @@ export type GetQuizPageErrors = {
     500: Array<ApiMessage>;
 };
 
-export type GetQuizPageError = GetQuizPageErrors[keyof GetQuizPageErrors];
+export type GetQuizzesError = GetQuizzesErrors[keyof GetQuizzesErrors];
 
-export type GetQuizPageResponses = {
+export type GetQuizzesResponses = {
     /**
      * OK
      */
     200: PageQuizData;
 };
 
-export type GetQuizPageResponse = GetQuizPageResponses[keyof GetQuizPageResponses];
-
-export type GetQuizData = {
-    body?: never;
-    path: {
-        modelId: string;
-    };
-    query: {
-        lms_setup_id: number;
-    };
-    url: '/admin-api/v1/quiz/{modelId}';
-};
-
-export type GetQuizErrors = {
-    /**
-     * Bad request, e.g. field validation or an illegal argument. The body is usually a list of APIMessage, but may be absent for some illegal-argument cases.
-     */
-    400: Array<ApiMessage>;
-    /**
-     * Unauthorized. Body is an APIMessage or a list of APIMessage.
-     */
-    401: ApiMessage | Array<ApiMessage>;
-    /**
-     * Forbidden. Body is a list of APIMessage.
-     */
-    403: Array<ApiMessage>;
-    /**
-     * Resource not found. Body is a list of APIMessage.
-     */
-    404: Array<ApiMessage>;
-    /**
-     * Too many requests (rate limit). Body is the rate-limit code as plain text.
-     */
-    429: string;
-    /**
-     * Unexpected internal server error. Body is a list of APIMessage.
-     */
-    500: Array<ApiMessage>;
-};
-
-export type GetQuizError = GetQuizErrors[keyof GetQuizErrors];
-
-export type GetQuizResponses = {
-    /**
-     * OK
-     */
-    200: QuizData;
-};
-
-export type GetQuizResponse = GetQuizResponses[keyof GetQuizResponses];
+export type GetQuizzesResponse = GetQuizzesResponses[keyof GetQuizzesResponses];
 
 export type DeleteOrientationData = {
     body?: unknown;
@@ -14895,98 +15024,6 @@ export type GetActiveInstitutionsResponses = {
 
 export type GetActiveInstitutionsResponse = GetActiveInstitutionsResponses[keyof GetActiveInstitutionsResponses];
 
-export type PrivilegesData = {
-    body?: never;
-    path?: never;
-    query?: never;
-    url: '/admin-api/v1/info/privileges';
-};
-
-export type PrivilegesErrors = {
-    /**
-     * Bad request, e.g. field validation or an illegal argument. The body is usually a list of APIMessage, but may be absent for some illegal-argument cases.
-     */
-    400: Array<ApiMessage>;
-    /**
-     * Unauthorized. Body is an APIMessage or a list of APIMessage.
-     */
-    401: ApiMessage | Array<ApiMessage>;
-    /**
-     * Forbidden. Body is a list of APIMessage.
-     */
-    403: Array<ApiMessage>;
-    /**
-     * Resource not found. Body is a list of APIMessage.
-     */
-    404: Array<ApiMessage>;
-    /**
-     * Too many requests (rate limit). Body is the rate-limit code as plain text.
-     */
-    429: string;
-    /**
-     * Unexpected internal server error. Body is a list of APIMessage.
-     */
-    500: Array<ApiMessage>;
-};
-
-export type PrivilegesError = PrivilegesErrors[keyof PrivilegesErrors];
-
-export type PrivilegesResponses = {
-    /**
-     * OK
-     */
-    200: Array<Privilege>;
-};
-
-export type PrivilegesResponse = PrivilegesResponses[keyof PrivilegesResponses];
-
-export type LogoData = {
-    body?: never;
-    path: {
-        urlSuffix: string;
-    };
-    query?: never;
-    url: '/admin-api/v1/info/logo/{urlSuffix}';
-};
-
-export type LogoErrors = {
-    /**
-     * Bad request, e.g. field validation or an illegal argument. The body is usually a list of APIMessage, but may be absent for some illegal-argument cases.
-     */
-    400: Array<ApiMessage>;
-    /**
-     * Unauthorized. Body is an APIMessage or a list of APIMessage.
-     */
-    401: ApiMessage | Array<ApiMessage>;
-    /**
-     * Forbidden. Body is a list of APIMessage.
-     */
-    403: Array<ApiMessage>;
-    /**
-     * Resource not found. Body is a list of APIMessage.
-     */
-    404: Array<ApiMessage>;
-    /**
-     * Too many requests (rate limit). Body is the rate-limit code as plain text.
-     */
-    429: string;
-    /**
-     * Unexpected internal server error. Body is a list of APIMessage.
-     */
-    500: Array<ApiMessage>;
-};
-
-export type LogoError = LogoErrors[keyof LogoErrors];
-
-export type LogoResponses = {
-    /**
-     * OK
-     */
-    200: string;
-};
-
-export type LogoResponse = LogoResponses[keyof LogoResponses];
-
 export type GetInstitutionInfoData = {
     body?: never;
     path?: never;
@@ -15031,100 +15068,6 @@ export type GetInstitutionInfoResponses = {
 };
 
 export type GetInstitutionInfoResponse = GetInstitutionInfoResponses[keyof GetInstitutionInfoResponses];
-
-export type GetInstitutionInfo1Data = {
-    body?: never;
-    path: {
-        urlSuffix: string;
-    };
-    query?: never;
-    url: '/admin-api/v1/info/institution/{urlSuffix}';
-};
-
-export type GetInstitutionInfo1Errors = {
-    /**
-     * Bad request, e.g. field validation or an illegal argument. The body is usually a list of APIMessage, but may be absent for some illegal-argument cases.
-     */
-    400: Array<ApiMessage>;
-    /**
-     * Unauthorized. Body is an APIMessage or a list of APIMessage.
-     */
-    401: ApiMessage | Array<ApiMessage>;
-    /**
-     * Forbidden. Body is a list of APIMessage.
-     */
-    403: Array<ApiMessage>;
-    /**
-     * Resource not found. Body is a list of APIMessage.
-     */
-    404: Array<ApiMessage>;
-    /**
-     * Too many requests (rate limit). Body is the rate-limit code as plain text.
-     */
-    429: string;
-    /**
-     * Unexpected internal server error. Body is a list of APIMessage.
-     */
-    500: Array<ApiMessage>;
-};
-
-export type GetInstitutionInfo1Error = GetInstitutionInfo1Errors[keyof GetInstitutionInfo1Errors];
-
-export type GetInstitutionInfo1Responses = {
-    /**
-     * OK
-     */
-    200: Array<EntityName>;
-};
-
-export type GetInstitutionInfo1Response = GetInstitutionInfo1Responses[keyof GetInstitutionInfo1Responses];
-
-export type GetServiceFeaturesData = {
-    body?: never;
-    path?: never;
-    query?: never;
-    url: '/admin-api/v1/info/features';
-};
-
-export type GetServiceFeaturesErrors = {
-    /**
-     * Bad request, e.g. field validation or an illegal argument. The body is usually a list of APIMessage, but may be absent for some illegal-argument cases.
-     */
-    400: Array<ApiMessage>;
-    /**
-     * Unauthorized. Body is an APIMessage or a list of APIMessage.
-     */
-    401: ApiMessage | Array<ApiMessage>;
-    /**
-     * Forbidden. Body is a list of APIMessage.
-     */
-    403: Array<ApiMessage>;
-    /**
-     * Resource not found. Body is a list of APIMessage.
-     */
-    404: Array<ApiMessage>;
-    /**
-     * Too many requests (rate limit). Body is the rate-limit code as plain text.
-     */
-    429: string;
-    /**
-     * Unexpected internal server error. Body is a list of APIMessage.
-     */
-    500: Array<ApiMessage>;
-};
-
-export type GetServiceFeaturesError = GetServiceFeaturesErrors[keyof GetServiceFeaturesErrors];
-
-export type GetServiceFeaturesResponses = {
-    /**
-     * OK
-     */
-    200: {
-        [key: string]: boolean;
-    };
-};
-
-export type GetServiceFeaturesResponse = GetServiceFeaturesResponses[keyof GetServiceFeaturesResponses];
 
 export type DeleteIndicatorData = {
     body?: unknown;

@@ -15,11 +15,7 @@
                     height="132"
                     class="position-relative flex-shrink-0"
                 >
-                    <Doughnut
-                        v-if="chartData"
-                        :data="chartData"
-                        :options="chartOptions"
-                    />
+                    <Doughnut :data="chartData" :options="chartOptions" />
                     <div
                         class="position-absolute text-center"
                         :style="{
@@ -59,7 +55,7 @@
                             @click="
                                 goToMonitoring(
                                     MonitoringHeaderEnum.SHOW_STATES,
-                                    state!,
+                                    state,
                                     examId,
                                 )
                             "
@@ -83,17 +79,20 @@
 
 <script setup lang="ts">
 import { ArcElement, Chart as ChartJS, Legend, Tooltip } from "chart.js";
-import { computed, ref, watch } from "vue";
+import { computed, ref } from "vue";
 import { Doughnut } from "vue-chartjs";
 import { useI18n } from "vue-i18n";
 import { VAvatar, VCard, VDivider, VHover, VSheet } from "vuetify/components";
 
 import LoadingFallbackComponent from "@/components/widgets/loadingFallbackComponent/LoadingFallbackComponent.vue";
-import { ConnectionStatusEnum } from "@/models/seb-server/connectionStatusEnum.ts";
 import { MonitoringHeaderEnum } from "@/models/seb-server/monitoringEnums.ts";
 import { goToMonitoring } from "@/pages/(app)/monitoring/[examId]/composables/useMonitoringNavigation.ts";
 import { useMonitoringStore } from "@/stores/seb-server/monitoringStore.ts";
 import { translate } from "@/utils/generalUtils.ts";
+import {
+    CONNECTION_STATUS_DISPLAY_ORDER,
+    getConnectionStatusColor,
+} from "@/utils/monitoringUtils.ts";
 
 const props = defineProps<{
     examId: string;
@@ -116,111 +115,40 @@ const chartOptions = ref({
     },
 });
 
-const chartData = ref<{
-    labels: string[];
-    datasets: [
-        {
-            backgroundColor: string[];
-            data: number[];
-        },
-    ];
-}>();
-
-const clientStatesListSortOrder: Record<ConnectionStatusEnum, number> = {
-    [ConnectionStatusEnum.CONNECTION_REQUESTED]: 0,
-    [ConnectionStatusEnum.READY]: 1,
-    [ConnectionStatusEnum.ACTIVE]: 2,
-    [ConnectionStatusEnum.CLOSED]: 3,
-    [ConnectionStatusEnum.DISABLED]: 4,
-    [ConnectionStatusEnum.MISSING]: 5,
-    [ConnectionStatusEnum.UNDEFINED]: 6,
-};
-
-const clientStates = ref<(ConnectionStatusEnum | null)[]>([]);
-const clientLabels = ref<string[]>([]);
-const clientData = ref<number[]>([]);
-const clientColors = ref<string[]>([]);
-
-const orderedStates = (
-    Object.keys(clientStatesListSortOrder) as ConnectionStatusEnum[]
-)
-    .filter((state) => state !== ConnectionStatusEnum.UNDEFINED)
-    .sort(
-        (a, b) => clientStatesListSortOrder[a] - clientStatesListSortOrder[b],
-    );
+const clientStates = CONNECTION_STATUS_DISPLAY_ORDER;
+const clientColors = clientStates.map((state) =>
+    getConnectionStatusColor(state),
+);
 
 const loading = computed(() => {
     return monitoringStore.monitoringOverviewData == null;
 });
 
-watch(
-    () => monitoringStore.monitoringOverviewData?.clientStates,
-    () => {
-        const states = monitoringStore.monitoringOverviewData?.clientStates;
-        if (states == null) {
-            return;
+const clientData = computed(() => {
+    const states = monitoringStore.monitoringOverviewData?.clientStates;
+    return clientStates.map((state) => states?.[state] ?? 0);
+});
+
+const chartData = computed(() => {
+    const chartLabels: string[] = [];
+    const chartColors: string[] = [];
+    const chartCounts: number[] = [];
+    clientData.value.forEach((amount, index) => {
+        if (amount > 0) {
+            chartLabels.push(translate(clientStates[index], i18n));
+            chartColors.push(clientColors[index]);
+            chartCounts.push(amount);
         }
+    });
 
-        const counts = new Map<string, number>();
-        Object.entries(states).forEach(([key, value]) => {
-            if (key !== "total") {
-                counts.set(key, Number(value));
-            }
-        });
-
-        clientStates.value = orderedStates;
-        clientLabels.value = orderedStates.map((state) =>
-            translate(state, i18n),
-        );
-        clientData.value = orderedStates.map((state) => counts.get(state) ?? 0);
-        clientColors.value = orderedStates.map((state) =>
-            getConnectionStatusColor(state),
-        );
-
-        const chartLabels: string[] = [];
-        const chartColors: string[] = [];
-        const chartCounts: number[] = [];
-        clientData.value.forEach((amount, index) => {
-            if (amount > 0) {
-                chartLabels.push(clientLabels.value[index]);
-                chartColors.push(clientColors.value[index]);
-                chartCounts.push(amount);
-            }
-        });
-
-        chartData.value = {
-            labels: chartLabels,
-            datasets: [
-                {
-                    backgroundColor: chartColors,
-                    data: chartCounts,
-                },
-            ],
-        };
-    },
-    { deep: true },
-);
-
-function getConnectionStatusColor(
-    connectionStatus: ConnectionStatusEnum | null,
-): string {
-    if (connectionStatus == null) return "#000000";
-
-    switch (connectionStatus) {
-        case ConnectionStatusEnum.CONNECTION_REQUESTED:
-            return "#d7fad9";
-        case ConnectionStatusEnum.READY:
-            return "#abf7af";
-        case ConnectionStatusEnum.ACTIVE:
-            return "#66BB6A";
-        case ConnectionStatusEnum.CLOSED:
-            return "#d4f7ff";
-        case ConnectionStatusEnum.DISABLED:
-            return "#9E9E9E";
-        case ConnectionStatusEnum.MISSING:
-            return "#EF5350";
-        default:
-            return "#000000";
-    }
-}
+    return {
+        labels: chartLabels,
+        datasets: [
+            {
+                backgroundColor: chartColors,
+                data: chartCounts,
+            },
+        ],
+    };
+});
 </script>

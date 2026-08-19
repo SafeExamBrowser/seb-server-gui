@@ -107,6 +107,15 @@ export const useBasicSettingsItems = (basicSettings: Ref<BasicSettings>) => {
                     value: basicSettings.value.institutionalDefault,
                 },
             },
+            {
+                key: "screenProctoringEnabled",
+                type: "basic",
+                label: i18n.global.t("screenProctoring.enabled.label"),
+                value: {
+                    type: "boolean",
+                    value: basicSettings.value.screenProctoringEnabled,
+                },
+            },
         );
 
         return result;

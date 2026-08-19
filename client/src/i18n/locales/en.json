@@ -396,18 +396,6 @@
     "screenProctoring": {
         "enabled": {
             "label": "Screen Proctoring"
-        },
-        "collectionStrategy": {
-            "label": "Grouping Strategy",
-            "placeholder": "Select the grouping strategy",
-            "info": {
-                "EXAM": "This strategy does not allow you to toggle the screen proctoring per group.",
-                "APPLY_SEB_GROUPS": "With this strategy, you must create at least one group with screen proctoring enabled."
-            },
-            "strategies": {
-                "EXAM": "One Group for Exam",
-                "APPLY_SEB_GROUPS": "Apply to SEB Client Groups"
-            }
         }
     },
     "scheduledDelete": {
@@ -531,8 +519,7 @@
             },
             "clientGroup": {
                 "title": "Add Groups",
-                "subtitle": "Add the groups, you want for your exam template. You can only use Screen Proctoring for a group, if you enabled Screen Proctoring in the first step.",
-                "subtitleScreenProctoring": "Screen Proctoring Settings"
+                "subtitle": "Add the groups, you want for your exam template. You can only use Screen Proctoring for a group, if you enabled Screen Proctoring in the first step."
             },
             "summary": {
                 "title": "Overview Exam Template",
@@ -580,10 +567,6 @@
                     "deleteFailed": "Failed to delete indicator"
                 }
             },
-            "screenProctoringSettings": {
-                "title": "Screen Proctoring Settings",
-                "dialogTitle": "Edit Screen Proctoring Settings"
-            },
             "groups": {
                 "errors": {
                     "deleteFailed": "Failed to delete group"
@@ -624,6 +607,8 @@
         "sortByName": "Sort by Name",
         "showName": "Show Name",
         "showIp": "Show IP",
+        "showMetadata": "Show Metadata",
+        "live": "Live",
         "metadata": "Metadata",
         "screenReader": {
             "settings": "Gallery View Settings",

@@ -1,6 +1,9 @@
 import { useMutation, useQueryClient } from "@tanstack/vue-query";
 
-import { getInstitutionsQueryKey } from "@/api/seb-server/generated/hey-api/@tanstack/vue-query.gen.ts";
+import {
+    getInstitutionInfoQueryKey,
+    getInstitutionsQueryKey,
+} from "@/api/seb-server/generated/hey-api/@tanstack/vue-query.gen.ts";
 import type { EntityProcessingReport } from "@/api/seb-server/generated/hey-api/types.gen.ts";
 import { heySebServerClient } from "@/api/seb-server/http/heySebServerClient.ts";
 import { entityProcessingReportToAppError } from "@/services/errors/toAppError.ts";
@@ -21,6 +24,11 @@ export const useDeleteInstitutionMutation = () => {
         onSuccess: () => {
             void queryClient.invalidateQueries({
                 queryKey: getInstitutionsQueryKey({
+                    client: heySebServerClient,
+                }),
+            });
+            void queryClient.invalidateQueries({
+                queryKey: getInstitutionInfoQueryKey({
                     client: heySebServerClient,
                 }),
             });

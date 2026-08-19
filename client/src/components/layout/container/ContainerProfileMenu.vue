@@ -3,7 +3,7 @@
         v-model="isOpen"
         :close-on-content-click="false"
         location="bottom end"
-        :offset="[20, 8]"
+        :offset="[24, 8]"
         transition="fade-transition"
     >
         <template #activator="{ props: menuProps }">
@@ -46,7 +46,8 @@
             class="overflow-hidden rounded-lg"
             data-testid="layout-profile-menu"
             elevation="4"
-            max-width="24rem"
+            width="24rem"
+            max-width="100%"
         >
             <div class="bg-primary pa-5 text-white">
                 <div class="d-flex align-center ga-4">

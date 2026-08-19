@@ -62,26 +62,24 @@
                         <EnumChip :label="formattedValue" />
                     </template>
 
-                    <template #cell-status="{ item, value, formattedValue }">
+                    <template #cell-status="{ value, formattedValue }">
                         <EnumChip
                             :label="formattedValue"
                             :color="examStatusColor[value as ExamStatusEnum]"
                         />
-                        <v-icon
-                            v-if="item.excludeFromDeletion"
-                            icon="mdi-delete-off-outline"
-                        >
-                        </v-icon>
-                        <v-tooltip
-                            v-if="item.excludeFromDeletion"
-                            activator="parent"
-                            :aria-label="
-                                $t('examList.info.excludeFromDeletion')
-                            "
-                            location="bottom"
-                        >
-                            {{ $t("examList.info.excludeFromDeletion") }}
-                        </v-tooltip>
+                    </template>
+                    <template #cell-excludeFromDeletion="{ item, value }">
+                        <div>
+                            <v-switch
+                                v-if="item.status === 'ARCHIVED'"
+                                class="d-flex"
+                                :model-value="value"
+                                color="primary"
+                                @update:model-value="
+                                    list.toggleExcludeFromDeletion(item)
+                                "
+                            />
+                        </div>
                     </template>
                 </EntityTable>
             </LoadingFallbackComponent>
@@ -109,7 +107,7 @@
 </template>
 
 <script setup lang="ts">
-import { VIcon, VTooltip } from "vuetify/components";
+import { VSwitch } from "vuetify/components";
 
 import BasicPage from "@/components/layout/pages/BasicPage.vue";
 import ConfirmDialog from "@/components/widgets/confirmDialog/ConfirmDialog.vue";

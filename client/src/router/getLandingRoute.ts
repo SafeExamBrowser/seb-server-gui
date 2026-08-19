@@ -17,7 +17,10 @@ export function getLandingRoute(
     }
 
     if (userRoles.includes("EXAM_ADMIN")) {
-        return typedTo({ name: "/(app)/exam/" });
+        return typedTo({
+            name: "/(app)/exam/",
+            query: { status: "UP_COMING,TEST_RUN,RUNNING" },
+        });
     }
 
     if (userRoles.includes("EXAM_SUPPORTER") || userRoles.includes("TEACHER")) {

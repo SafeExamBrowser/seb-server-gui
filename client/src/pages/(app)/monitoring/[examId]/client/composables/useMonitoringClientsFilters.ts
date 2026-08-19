@@ -11,7 +11,10 @@ import { MonitoringHeaderEnum } from "@/models/seb-server/monitoringEnums.ts";
 import * as useMonitoringNavigation from "@/pages/(app)/monitoring/[examId]/composables/useMonitoringNavigation.ts";
 import { useMonitoringStore } from "@/stores/seb-server/monitoringStore.ts";
 import { translate } from "@/utils/generalUtils.ts";
-import { getConnectionStatusColor } from "@/utils/monitoringUtils.ts";
+import {
+    CONNECTION_STATUS_DISPLAY_ORDER,
+    getConnectionStatusColor,
+} from "@/utils/monitoringUtils.ts";
 
 const FILTER_KEYS = [
     MonitoringHeaderEnum.SHOW_CLIENT_GROUPS,
@@ -75,32 +78,16 @@ export function useMonitoringClientsFilters() {
         }));
     }
 
-    // mirrors the previous chip visibility rules: hide the whole section
-    // while there are no connections at all, and hide states without
-    // connections unless the state is currently part of the filter query
     function buildClientStateOptions(): FilterOption[] {
         const clientStates =
             monitoringStore.monitoringOverviewData?.clientStates;
-        if (clientStates == null || clientStates.total === 0) {
-            return [];
-        }
 
-        const selectedStates = parseFilterValues(
-            filterValues.value[MonitoringHeaderEnum.SHOW_STATES],
-        );
-
-        return Object.entries(clientStates)
-            .filter(
-                ([state, amount]) =>
-                    state !== "total" &&
-                    (amount !== 0 || selectedStates.includes(state)),
-            )
-            .map(([state, amount]) => ({
-                value: state,
-                label: translate(state),
-                color: getConnectionStatusColor(state),
-                count: amount,
-            }));
+        return CONNECTION_STATUS_DISPLAY_ORDER.map((state) => ({
+            value: state,
+            label: translate(state),
+            color: getConnectionStatusColor(state),
+            count: clientStates?.[state] ?? 0,
+        }));
     }
 
     function buildNotificationOptions(): FilterOption[] {

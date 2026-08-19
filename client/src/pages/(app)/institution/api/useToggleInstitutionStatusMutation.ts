@@ -1,7 +1,10 @@
 import { useMutation, useQueryClient } from "@tanstack/vue-query";
 import { computed } from "vue";
 
-import { getInstitutionsQueryKey } from "@/api/seb-server/generated/hey-api/@tanstack/vue-query.gen.ts";
+import {
+    getInstitutionInfoQueryKey,
+    getInstitutionsQueryKey,
+} from "@/api/seb-server/generated/hey-api/@tanstack/vue-query.gen.ts";
 import type { EntityProcessingReport } from "@/api/seb-server/generated/hey-api/types.gen.ts";
 import { heySebServerClient } from "@/api/seb-server/http/heySebServerClient.ts";
 import type { InstitutionPage } from "@/models/institution.ts";
@@ -13,6 +16,8 @@ import {
 } from "@/services/seb-server/institutionService.ts";
 
 const listKey = () => getInstitutionsQueryKey({ client: heySebServerClient });
+const infoKey = () =>
+    getInstitutionInfoQueryKey({ client: heySebServerClient });
 
 const flipActiveInList =
     (modelId: string, isActive: boolean) =>
@@ -55,6 +60,7 @@ export const useToggleInstitutionStatusMutation = () => {
                 flipActiveInList(modelId, true),
             );
             void queryClient.invalidateQueries({ queryKey: listKey() });
+            void queryClient.invalidateQueries({ queryKey: infoKey() });
         },
     });
 
@@ -71,6 +77,7 @@ export const useToggleInstitutionStatusMutation = () => {
                 flipActiveInList(modelId, false),
             );
             void queryClient.invalidateQueries({ queryKey: listKey() });
+            void queryClient.invalidateQueries({ queryKey: infoKey() });
         },
     });
 

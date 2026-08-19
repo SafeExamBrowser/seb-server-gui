@@ -1,75 +1,56 @@
 import {
-    ScheduledDelete,
-    ScheduledDeleteReport,
-    ScheduledDeletions,
-} from "@/models/seb-server/scheduled-deletion";
-import * as apiService from "@/services/apiService";
-import { BasicListParams } from "@/services/types";
-import { normaliseBasicListParams } from "@/utils/table/tableUtils";
+    createScheduledDelete as createScheduledDeleteSdk,
+    deleteScheduledDelete as deleteScheduledDeleteSdk,
+    getScheduledDeleteReport as getScheduledDeleteReportSdk,
+    getScheduledDeletes as getScheduledDeletesSdk,
+    markExcludeFromDeletion as markExcludeFromDeletionSdk,
+    unmarkExcludeFromDeletion as unmarkExcludeFromDeletionSdk,
+} from "@/api/seb-server/generated/hey-api/sdk.gen.ts";
+import type { GetScheduledDeletesData } from "@/api/seb-server/generated/hey-api/types.gen.ts";
+import { heySebServerClient as client } from "@/api/seb-server/http/heySebServerClient.ts";
+import {
+    type ScheduledDeletePage,
+    scheduledDeletePageSchema,
+    type ScheduledDeleteReport,
+    scheduledDeleteReportSchema,
+} from "@/models/scheduledDeletion.ts";
+import { decodeWire } from "@/services/errors/wireCodec.ts";
 
-const baseUrl = "/scheduled-delete" as const;
+export const getScheduledDeletes = (
+    query?: GetScheduledDeletesData["query"],
+): Promise<ScheduledDeletePage> =>
+    getScheduledDeletesSdk({ client, query }).then(({ data }) =>
+        decodeWire(scheduledDeletePageSchema, data),
+    );
 
-export const getScheduledDeletions = async ({
-    basicListParams,
-    dueTimestamp,
-    state,
-}: {
-    basicListParams?: BasicListParams;
-    dueTimestamp?: number;
-    state?: string;
-}): Promise<ScheduledDeletions> =>
-    (
-        await apiService.getRequest({
-            url: baseUrl,
-            options: {
-                _authType: "seb",
-                params: {
-                    ...normaliseBasicListParams(basicListParams),
-                    dueTimestamp,
-                    state,
-                },
-            },
-        })
-    ).data;
-
-export const deleteScheduledDeletion = async (id: number): Promise<void> =>
-    (
-        await apiService.deleteRequest({
-            url: `${baseUrl}/${id}`,
-            options: { _authType: "seb" },
-        })
-    ).data;
-
-export const createScheduledDelete = async (body: {
-    deleteDueTime: number;
-}): Promise<ScheduledDelete> =>
-    (
-        await apiService.postRequest({
-            url: baseUrl,
-            data: body,
-            options: { _authType: "seb" },
-        })
-    ).data;
-
-export const getScheduledDeletionReport = async (
-    id: number,
+export const getScheduledDeleteReport = (
+    modelId: string,
 ): Promise<ScheduledDeleteReport> =>
-    (
-        await apiService.getRequest({
-            url: baseUrl + "/" + id,
-            options: {
-                _authType: "seb",
-            },
-        })
-    ).data;
+    getScheduledDeleteReportSdk({ client, path: { modelId } }).then(
+        ({ data }) => decodeWire(scheduledDeleteReportSchema, data),
+    );
 
-export const excludeFromDeletion = async (
-    id: number,
+export const createScheduledDelete = (
+    deleteDueTime: number,
+): Promise<ScheduledDeleteReport> =>
+    createScheduledDeleteSdk({ client, body: { deleteDueTime } }).then(
+        ({ data }) => decodeWire(scheduledDeleteReportSchema, data),
+    );
+
+export const deleteScheduledDelete = async (modelId: string): Promise<void> => {
+    await deleteScheduledDeleteSdk({ client, path: { modelId } });
+};
+
+// The response carries the recalculated pending deletion report, or an empty
+// body when no deletion is pending; no consumer needs it, so it is ignored.
+export const setExamExcludedFromDeletion = async (
+    examId: number,
     exclude: boolean,
-): Promise<ScheduledDeleteReport> =>
-    (
-        await apiService.postRequest({
-            url: `${baseUrl}/${id}/${exclude ? "mark-exclude" : "unmark-exclude"}`,
-            options: { _authType: "seb" },
-        })
-    ).data;
+): Promise<void> => {
+    const path = { modelId: String(examId) };
+    if (exclude) {
+        await markExcludeFromDeletionSdk({ client, path });
+        return;
+    }
+    await unmarkExcludeFromDeletionSdk({ client, path });
+};

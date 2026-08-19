@@ -15,6 +15,15 @@ const connectionStatusColors: Record<ConnectionStatusEnum, string> = {
     [ConnectionStatusEnum.MISSING]: "#ef5350",
 };
 
+export const CONNECTION_STATUS_DISPLAY_ORDER = [
+    ConnectionStatusEnum.CONNECTION_REQUESTED,
+    ConnectionStatusEnum.READY,
+    ConnectionStatusEnum.ACTIVE,
+    ConnectionStatusEnum.CLOSED,
+    ConnectionStatusEnum.DISABLED,
+    ConnectionStatusEnum.MISSING,
+] as const;
+
 export function getConnectionStatusColor(status: string): string {
     const connectionStatus = generalUtils.findEnumValue(
         ConnectionStatusEnum,
