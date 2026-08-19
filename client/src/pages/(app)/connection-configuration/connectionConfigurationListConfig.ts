@@ -1,5 +1,4 @@
 export const CONNECTION_CONFIGURATION_COLUMN = {
-    institutionId: "institutionId",
     name: "name",
     date: "date",
     active: "active",

@@ -24,7 +24,7 @@ export function buildSettingsNavigationItems(
             label: translate("navigation.routeNames.connectionConfiguration"),
             to: typedTo({ name: "/(app)/connection-configuration/" }),
             testId: `${testIdPrefix}-connectionConfigurations-link`,
-            visible: ability.canView(GUIComponent.CONNECTION_CONFIGS),
+            visible: ability.canView(GUIComponent.CONNECTION_CONFIGURATIONS),
         },
         {
             label: translate("navigation.routeNames.certificates"),

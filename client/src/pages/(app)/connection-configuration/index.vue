@@ -128,6 +128,7 @@ definePage({
         pageTestId: "connection-configurations-page",
         isPageBlue: true,
         das: true,
+        requiredComponent: "CONNECTION_CONFIGURATIONS",
     },
 });
 

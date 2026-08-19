@@ -224,6 +224,7 @@ definePage({
         titleKey: "titles.connectionConfigurationViewAndEdit",
         pageTestId: "edit-connection-configuration-page",
         isPageBlue: true,
+        requiredComponent: "EDIT_CONNECTION_CONFIGURATION",
     },
 });
 
