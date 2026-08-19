@@ -4,7 +4,6 @@ import { useEntityDeleteFlow } from "@/components/widgets/entity-table/composabl
 import { useDeleteCertificateMutation } from "@/pages/(app)/certificate/api/useDeleteCertificateMutation.ts";
 import { toAppErrorOrUndefined } from "@/services/errors/toAppError.ts";
 
-import { useCertificateCreateForm } from "./useCertificateCreateForm.ts";
 import { useCertificatesList } from "./useCertificatesList.ts";
 import { useCertificatesTableActions } from "./useCertificatesTableActions.ts";
 import { useCertificatesTableHeaders } from "./useCertificateTableHeaders.ts";
@@ -38,9 +37,6 @@ export const useCertificatesOverview = () => {
         onDeleteSuccess: list.reloadList,
     });
 
-    const { getEmptyItem, getFormFields, handleUploadCertificate } =
-        useCertificateCreateForm({ onSuccess: () => void list.loadItems() });
-
     const tableLoading = computed(
         () => list.loading.value || deleteFlow.deleteLoading.value,
     );
@@ -70,10 +66,5 @@ export const useCertificatesOverview = () => {
             detailText: deleteFlow.deleteDetailText,
             confirm: deleteFlow.confirmDelete,
         }),
-        uploadForm: {
-            getEmptyItem,
-            getFormFields,
-            handleUpload: handleUploadCertificate,
-        },
     };
 };

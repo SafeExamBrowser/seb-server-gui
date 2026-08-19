@@ -131,14 +131,4 @@ test.describe("03 Certificates - READ Get All", () => {
             certificates.page.getByText("No Data Available"),
         ).toBeVisible();
     });
-
-    test("H add button opens the upload dialog and cancel closes it", async ({
-        certificates,
-    }) => {
-        await certificates.mockList(certificateRows(6));
-        await certificates.goto();
-        await certificates.openUploadDialog();
-        await certificates.uploadDialog.cancel();
-        await certificates.uploadDialog.expectHidden();
-    });
 });
