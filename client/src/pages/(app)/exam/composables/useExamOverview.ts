@@ -42,8 +42,8 @@ export const useExamOverview = () => {
     const list = useExamList();
 
     const excludeFromDeletion = useExcludeFromDeletionAction();
-    const toggleExcludeFromDeletion = (item: TableItem): void => {
-        excludeFromDeletion.toggleExcludeFromDeletion(item);
+    const toggleExcludeFromDeletion = async (item: TableItem) => {
+        await excludeFromDeletion.toggleExcludeFromDeletion(item);
         list.reloadList();
     };
 
