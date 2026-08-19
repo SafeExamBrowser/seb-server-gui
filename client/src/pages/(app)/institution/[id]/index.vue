@@ -99,7 +99,7 @@ const {
 } = useInstitutionQuery(modelId);
 const error = computed(() => toAppErrorOrUndefined(queryError.value));
 
-const { formFields, name, urlSuffix, logoImage } = useInstitutionFormFields();
+const { formFields, name, logoImage } = useInstitutionFormFields();
 
 const formRef = ref<InstanceType<typeof FormBuilder>>();
 
@@ -115,7 +115,6 @@ const { refetch: refetchInstitutionBranding } = useInstitutionBranding();
 const { isDirty, snapshot } = useDirtyTracking(
     () => ({
         name: name.value ?? "",
-        urlSuffix: urlSuffix.value ?? "",
     }),
     [logoImage],
 );
@@ -127,7 +126,6 @@ watch(
             return;
         }
         name.value = fetched.name;
-        urlSuffix.value = fetched.urlSuffix;
         logoImage.value = fetched.logoImage;
         snapshot();
     },
@@ -172,7 +170,6 @@ const submit = async () => {
             saveInstitution({
                 id: current.id,
                 name: institutionName,
-                urlSuffix: urlSuffix.value || undefined,
                 active: current.active,
                 logoImage: resolveLogoImage(),
             }),

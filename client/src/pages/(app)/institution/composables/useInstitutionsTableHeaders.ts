@@ -19,12 +19,6 @@ export function useInstitutionsTableHeaders() {
             sortable: true,
         },
         {
-            title: translate("institutions.list.tableHeaders.urlSuffix"),
-            key: INSTITUTION_COLUMN.urlSuffix,
-            width: "33%",
-            sortable: false,
-        },
-        {
             title: translate("institutions.list.tableHeaders.active"),
             key: INSTITUTION_COLUMN.active,
             width: "10%",
