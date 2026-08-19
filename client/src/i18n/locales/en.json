@@ -1068,7 +1068,6 @@
             "tableHeaders": {
                 "logoImage": "Logo",
                 "name": "Name",
-                "urlSuffix": "URL Suffix",
                 "active": "Status"
             },
             "filters": {
@@ -1095,10 +1094,6 @@
         "fields": {
             "name": {
                 "label": "Name"
-            },
-            "urlSuffix": {
-                "label": "URL Suffix",
-                "validation": "URL suffix must be 3 to 45 characters or empty"
             },
             "logoImage": {
                 "label": "Logo Image"
@@ -2515,7 +2510,6 @@
                 "institution": {
                     "fields": {
                         "name": "Name",
-                        "urlSuffix": "URL suffix",
                         "logoImage": "Logo"
                     }
                 },
@@ -2632,7 +2626,6 @@
                 "url-noAccess": "Access was denied",
                 "url-noaccess": "No access has been granted by the service. Please check the given access credentials.",
                 "url-noservice": "The expected service is not available within the given URL and API access.",
-                "urlSuffix": "The URL suffix must have a size between {3} and {4} characters",
                 "username-notunique": "This Username is already in use. Please choose another one."
             }
         }

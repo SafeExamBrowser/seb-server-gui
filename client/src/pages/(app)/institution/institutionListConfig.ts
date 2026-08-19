@@ -1,7 +1,6 @@
 export const INSTITUTION_COLUMN = {
     logoImage: "logoImage",
     name: "name",
-    urlSuffix: "urlSuffix",
     active: "active",
 } as const;
 
