@@ -1104,12 +1104,14 @@ export const zGuiAbilities = z.object({
         'INSTITUTIONS',
         'EDIT_INSTITUTION',
         'CREATE_INSTITUTION',
+        'ASSESSMENT_TOOLS',
+        'EDIT_ASSESSMENT_TOOL',
+        'CREATE_ASSESSMENT_TOOL',
         'NAVIGATION_OVERVIEW',
         'HOME',
         'SETTINGS',
         'USER_ACCOUNTS',
         'CONNECTION_CONFIGS',
-        'LMS_SETUPS',
         'CERTIFICATES',
         'EXAM_TEMPLATE',
         'PREPARE_EXAM',
@@ -1356,7 +1358,6 @@ export const zClientMonitoringDataView = z.object({
     grantDenied: z.boolean().optional(),
     sebversionDenied: z.boolean().optional(),
     pendingNotification: z.boolean().optional(),
-    nf: z.int().min(-2147483648, { error: 'Invalid value: Expected int32 to be >= -2147483648' }).max(2147483647, { error: 'Invalid value: Expected int32 to be <= 2147483647' }).optional(),
     st: z.enum([
         'UNDEFINED',
         'CONNECTION_REQUESTED',
@@ -1365,8 +1366,9 @@ export const zClientMonitoringDataView = z.object({
         'CLOSED',
         'DISABLED'
     ]).optional(),
-    iv: z.record(z.string(), z.string()).optional(),
     lat: z.int().optional(),
+    iv: z.record(z.string(), z.string()).optional(),
+    nf: z.int().min(-2147483648, { error: 'Invalid value: Expected int32 to be >= -2147483648' }).max(2147483647, { error: 'Invalid value: Expected int32 to be <= 2147483647' }).optional(),
     id: z.int().optional()
 });
 

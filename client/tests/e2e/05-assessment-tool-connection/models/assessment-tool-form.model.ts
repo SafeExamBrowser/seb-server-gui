@@ -22,11 +22,6 @@ export function assessmentToolFields(prefix: string): FormFieldSpec[] {
     const proxyForm = `${prefix}-${assessmentToolFormConfig.proxyFormSuffix}`;
     return [
         {
-            name: ASSESSMENT_TOOL_FIELD.institutionId,
-            type: "select",
-            formTestId: mainForm,
-        },
-        {
             name: ASSESSMENT_TOOL_FIELD.name,
             type: "text",
             formTestId: mainForm,

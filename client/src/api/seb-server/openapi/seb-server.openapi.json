@@ -21875,12 +21875,14 @@
                                 "INSTITUTIONS",
                                 "EDIT_INSTITUTION",
                                 "CREATE_INSTITUTION",
+                                "ASSESSMENT_TOOLS",
+                                "EDIT_ASSESSMENT_TOOL",
+                                "CREATE_ASSESSMENT_TOOL",
                                 "NAVIGATION_OVERVIEW",
                                 "HOME",
                                 "SETTINGS",
                                 "USER_ACCOUNTS",
                                 "CONNECTION_CONFIGS",
-                                "LMS_SETUPS",
                                 "CERTIFICATES",
                                 "EXAM_TEMPLATE",
                                 "PREPARE_EXAM",
@@ -22475,7 +22477,6 @@
                     "grantDenied": { "type": "boolean" },
                     "sebversionDenied": { "type": "boolean" },
                     "pendingNotification": { "type": "boolean" },
-                    "nf": { "type": "integer", "format": "int32" },
                     "st": {
                         "type": "string",
                         "enum": [
@@ -22487,11 +22488,12 @@
                             "DISABLED"
                         ]
                     },
+                    "lat": { "type": "integer" },
                     "iv": {
                         "type": "object",
                         "additionalProperties": { "type": "string" }
                     },
-                    "lat": { "type": "integer" },
+                    "nf": { "type": "integer", "format": "int32" },
                     "id": { "type": "integer" }
                 }
             },

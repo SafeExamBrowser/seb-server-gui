@@ -2,7 +2,6 @@
 // form-fields composable's `name:` and the e2e form page model, so the test locators and the
 // app's rendered per-field test-ids (`<formBase>-field-<name>`) cannot drift.
 export const ASSESSMENT_TOOL_FIELD = {
-    institutionId: "institutionId",
     name: "name",
     lmsType: "lmsType",
     lmsUrl: "lmsUrl",
