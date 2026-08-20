@@ -23,8 +23,19 @@
                 :ability="ability"
             />
 
+            <div
+                v-if="notAllowed"
+                class="flex-1-1-0 overflow-y-auto pa-3 ma-n3"
+                data-testid="not-allowed-page-container"
+                :style="{ minHeight: 0, minWidth: 0 }"
+            >
+                <NotAllowedPage
+                    :message="$t('notAllowed.message')"
+                    :back-link="notAllowedBackLink"
+                />
+            </div>
             <v-card
-                v-if="isPageBlue"
+                v-else-if="isPageBlue"
                 class="flex-1-1-0 rounded-lg overflow-y-auto pa-4"
                 color="primary"
                 :data-testid="`${pageTestId}-page-container`"
@@ -51,6 +62,7 @@ import { useI18n } from "vue-i18n";
 import { RouterView, useRoute } from "vue-router";
 import { VCard } from "vuetify/components";
 
+import NotAllowedPage from "@/components/layout/pages/NotAllowedPage.vue";
 import { useCurrentUserQuery } from "@/composables/useCurrentUser";
 import { useInstitutionBranding } from "@/composables/useInstitutionBranding";
 import { useLogout } from "@/composables/useLogout";
@@ -68,8 +80,6 @@ const { logout } = useLogout();
 const { data: user } = useCurrentUserQuery();
 const { institutionName, institutionLogo } = useInstitutionBranding();
 const ability = useAbilities();
-
-// TODO @Andrei RBAC
 
 const homeRoute = typedTo({ name: "/(app)/" });
 const navigationOverviewRoute = typedTo({
@@ -89,6 +99,18 @@ const isNavigationOverviewRoute = computed(
 const isPageBlue = computed(() => route.meta.isPageBlue ?? false);
 
 const pageTestId = computed(() => route.meta.pageTestId ?? "page");
+
+const notAllowed = computed(() => {
+    const requiredComponent = route.meta.requiredComponent;
+    return (
+        requiredComponent !== undefined && !ability.canView(requiredComponent)
+    );
+});
+
+const notAllowedBackLink = {
+    label: t("notAllowed.backToHome"),
+    to: homeRoute,
+};
 
 async function handleLogout() {
     await logout();

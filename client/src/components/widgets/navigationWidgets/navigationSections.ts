@@ -18,13 +18,13 @@ export function buildSettingsNavigationItems(
             label: translate("titles.assessmentToolConnections"),
             to: typedTo({ name: "/(app)/assessment-tool/" }),
             testId: `${testIdPrefix}-assessmentToolConnections-link`,
-            visible: ability.canView(GUIComponent.LMS_SETUPS),
+            visible: ability.canView(GUIComponent.ASSESSMENT_TOOLS),
         },
         {
             label: translate("navigation.routeNames.connectionConfiguration"),
             to: typedTo({ name: "/(app)/connection-configuration/" }),
             testId: `${testIdPrefix}-connectionConfigurations-link`,
-            visible: ability.canView(GUIComponent.CONNECTION_CONFIGS),
+            visible: ability.canView(GUIComponent.CONNECTION_CONFIGURATIONS),
         },
         {
             label: translate("navigation.routeNames.certificates"),

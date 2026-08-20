@@ -25,6 +25,7 @@ definePage({
         titleKey: "titles.createAssessmentTool",
         pageTestId: "create-assessment-tool-page",
         isPageBlue: true,
+        requiredComponent: "CREATE_ASSESSMENT_TOOL",
     },
 });
 

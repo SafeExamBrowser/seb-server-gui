@@ -241,10 +241,6 @@ export type Institution = {
      */
     name: string;
     /**
-     * URL path suffix that routes to this institution. Empty, or 3 to 45 characters.
-     */
-    urlSuffix?: string;
-    /**
      * Base64-encoded institution logo image.
      */
     logoImage?: string;
@@ -312,8 +308,8 @@ export type Exam = {
     additionalAttributes?: {
         [key: string]: string;
     };
-    quiz_description?: string;
     quiz_start_url?: string;
+    quiz_description?: string;
 };
 
 export type ClientGroupTemplate = {
@@ -1031,8 +1027,8 @@ export type PageUserInfo = {
  * Effective GUI abilities of the current user, merged over the user's roles.
  */
 export type GuiAbilities = {
-    components: Array<'NAVIGATION_OVERVIEW' | 'HOME' | 'SETTINGS' | 'INSTITUTIONS' | 'USER_ACCOUNTS' | 'CONNECTION_CONFIGS' | 'LMS_SETUPS' | 'CERTIFICATES' | 'EXAM_TEMPLATE' | 'PREPARE_EXAM' | 'ADD_EXAM_WITH_URL' | 'EXAMS' | 'RUNNING_EXAMS' | 'SCREEN_PROCTORING' | 'SCREEN_PROCTORING_SEARCH' | 'SCREEN_PROCTORING_APPLICATION_SEARCH' | 'ANALYZE_EXAMS' | 'ARCHIVE_EXAMS' | 'SCHEDULED_DELETION'>;
-    actions: Array<'EDIT_EXAM_SETTINGS' | 'ARCHIVE_EXAM' | 'DELETE_EXAM' | 'APPLY_TEST_RUN' | 'DISABLE_TEST_RUN' | 'EXPORT_EXAM_CLIENT_CONFIG' | 'VIEW_ASK_SETTINGS' | 'EDIT_ASK_SETTINGS' | 'EDIT_SCREEN_PROCTORING' | 'EDIT_SEB_SETTINGS' | 'EDIT_FULL_SEB_SETTINGS' | 'EDIT_SUPERVISORS' | 'EDIT_INDICATORS' | 'EDIT_CLIENT_GROUPS' | 'APPLY_SEB_RESTRICTION' | 'SHOW_MONITORING' | 'SHOW_FINISHED_EXAM_DATA' | 'EXCLUDE_FROM_DELETION'>;
+    components: Array<'INSTITUTIONS' | 'EDIT_INSTITUTION' | 'CREATE_INSTITUTION' | 'ASSESSMENT_TOOLS' | 'EDIT_ASSESSMENT_TOOL' | 'CREATE_ASSESSMENT_TOOL' | 'CONNECTION_CONFIGURATIONS' | 'EDIT_CONNECTION_CONFIGURATION' | 'CREATE_CONNECTION_CONFIGURATION' | 'CERTIFICATES' | 'USER_ACCOUNTS' | 'EDIT_USER_ACCOUNT' | 'CREATE_USER_ACCOUNT' | 'NAVIGATION_OVERVIEW' | 'HOME' | 'SETTINGS' | 'EXAM_TEMPLATE' | 'PREPARE_EXAM' | 'ADD_EXAM_WITH_URL' | 'EXAMS' | 'RUNNING_EXAMS' | 'SCREEN_PROCTORING' | 'SCREEN_PROCTORING_SEARCH' | 'SCREEN_PROCTORING_APPLICATION_SEARCH' | 'ANALYZE_EXAMS' | 'ARCHIVE_EXAMS' | 'SCHEDULED_DELETION'>;
+    actions: Array<'SHOW_INSTITUTION_COLUMN' | 'OFFER_SERVER_ADMIN_ROLE' | 'CHOOSE_INSTITUTION' | 'EDIT_EXAM_SETTINGS' | 'ARCHIVE_EXAM' | 'DELETE_EXAM' | 'APPLY_TEST_RUN' | 'DISABLE_TEST_RUN' | 'EXPORT_EXAM_CLIENT_CONFIG' | 'VIEW_ASK_SETTINGS' | 'EDIT_ASK_SETTINGS' | 'EDIT_SCREEN_PROCTORING' | 'EDIT_SEB_SETTINGS' | 'EDIT_FULL_SEB_SETTINGS' | 'EDIT_SUPERVISORS' | 'EDIT_INDICATORS' | 'EDIT_CLIENT_GROUPS' | 'APPLY_SEB_RESTRICTION' | 'SHOW_MONITORING' | 'SHOW_FINISHED_EXAM_DATA' | 'EXCLUDE_FROM_DELETION'>;
 };
 
 export type PageClientEvent = {
@@ -1399,12 +1395,12 @@ export type ClientMonitoringDataView = {
     grantChecked?: boolean;
     grantDenied?: boolean;
     sebversionDenied?: boolean;
+    nf?: number;
+    st?: 'UNDEFINED' | 'CONNECTION_REQUESTED' | 'READY' | 'ACTIVE' | 'CLOSED' | 'DISABLED';
     lat?: number;
     iv?: {
         [key: string]: string;
     };
-    st?: 'UNDEFINED' | 'CONNECTION_REQUESTED' | 'READY' | 'ACTIVE' | 'CLOSED' | 'DISABLED';
-    nf?: number;
     id?: number;
 };
 

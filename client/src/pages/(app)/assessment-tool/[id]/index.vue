@@ -34,6 +34,7 @@ definePage({
         titleKey: "titles.assessmentToolEdit",
         pageTestId: "edit-assessment-tool-page",
         isPageBlue: true,
+        requiredComponent: "EDIT_ASSESSMENT_TOOL",
     },
 });
 

@@ -83,6 +83,7 @@ definePage({
         titleKey: "titles.editInstitution",
         pageTestId: "edit-institution-page",
         isPageBlue: true,
+        requiredComponent: "EDIT_INSTITUTION",
     },
 });
 

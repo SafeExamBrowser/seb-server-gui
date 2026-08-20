@@ -79,16 +79,6 @@ export const useAssessmentToolFormFields = (
         { immediate: true },
     );
 
-    const institutionOptions = computed(() =>
-        (institutions.value ?? [])
-            .filter(
-                (i) =>
-                    i.modelId ===
-                    String(authenticatedUser.value?.institutionId),
-            )
-            .map((i) => ({ value: i.modelId, text: i.name })),
-    );
-
     // The value set is derived from the schema enum so it can't drift from the backend;
     // the label-key record is keyed by the same enum, so the compiler flags drift there.
     const lmsTypeOptions = LMS_TYPES.map((value) => ({
@@ -104,17 +94,6 @@ export const useAssessmentToolFormFields = (
     const mainFormFields = computed<FormField[]>(() => {
         if (loading.value) return [];
         return [
-            {
-                type: "select" as const,
-                name: ASSESSMENT_TOOL_FIELD.institutionId,
-                model: institutionId,
-                label: i18n.global.t(
-                    "assessmentToolConnections.fields.institution.label",
-                ),
-                options: institutionOptions.value,
-                required: true,
-                disabled: true,
-            },
             {
                 type: "text" as const,
                 name: ASSESSMENT_TOOL_FIELD.name,

@@ -69,6 +69,7 @@ definePage({
         titleKey: "titles.createInstitution",
         pageTestId: "create-institution-page",
         isPageBlue: true,
+        requiredComponent: "CREATE_INSTITUTION",
     },
 });
 

@@ -1,5 +1,4 @@
 export const ASSESSMENT_TOOL_COLUMN = {
-    institutionId: "institutionId",
     name: "name",
     lmsType: "lmsType",
     active: "active",

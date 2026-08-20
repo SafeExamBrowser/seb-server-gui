@@ -198,6 +198,7 @@ definePage({
         titleKey: "titles.createConnectionConfiguration",
         pageTestId: "create-connection-configuration-page",
         isPageBlue: true,
+        requiredComponent: "CREATE_CONNECTION_CONFIGURATION",
     },
 });
 

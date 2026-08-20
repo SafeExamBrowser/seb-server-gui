@@ -303,7 +303,6 @@ export const zLmsSetupTestResult = z.object({
 export const zInstitution = z.object({
     id: z.int().optional(),
     name: z.string().min(3).max(255),
-    urlSuffix: z.string().max(45).regex(/(^$|.{3,45})/).optional(),
     logoImage: z.string().optional(),
     themeName: z.string().optional(),
     active: z.boolean().optional()
@@ -371,8 +370,8 @@ export const zExam = z.object({
     followupId: z.int().optional(),
     excludeFromDeletion: z.boolean().optional(),
     additionalAttributes: z.record(z.string(), z.string()).optional(),
-    quiz_description: z.string().optional(),
-    quiz_start_url: z.string().optional()
+    quiz_start_url: z.string().optional(),
+    quiz_description: z.string().optional()
 });
 
 export const zClientGroupTemplate = z.object({
@@ -1101,14 +1100,22 @@ export const zPageUserInfo = z.object({
  */
 export const zGuiAbilities = z.object({
     components: z.array(z.enum([
+        'INSTITUTIONS',
+        'EDIT_INSTITUTION',
+        'CREATE_INSTITUTION',
+        'ASSESSMENT_TOOLS',
+        'EDIT_ASSESSMENT_TOOL',
+        'CREATE_ASSESSMENT_TOOL',
+        'CONNECTION_CONFIGURATIONS',
+        'EDIT_CONNECTION_CONFIGURATION',
+        'CREATE_CONNECTION_CONFIGURATION',
+        'CERTIFICATES',
+        'USER_ACCOUNTS',
+        'EDIT_USER_ACCOUNT',
+        'CREATE_USER_ACCOUNT',
         'NAVIGATION_OVERVIEW',
         'HOME',
         'SETTINGS',
-        'INSTITUTIONS',
-        'USER_ACCOUNTS',
-        'CONNECTION_CONFIGS',
-        'LMS_SETUPS',
-        'CERTIFICATES',
         'EXAM_TEMPLATE',
         'PREPARE_EXAM',
         'ADD_EXAM_WITH_URL',
@@ -1122,6 +1129,9 @@ export const zGuiAbilities = z.object({
         'SCHEDULED_DELETION'
     ])),
     actions: z.array(z.enum([
+        'SHOW_INSTITUTION_COLUMN',
+        'OFFER_SERVER_ADMIN_ROLE',
+        'CHOOSE_INSTITUTION',
         'EDIT_EXAM_SETTINGS',
         'ARCHIVE_EXAM',
         'DELETE_EXAM',
@@ -1354,8 +1364,7 @@ export const zClientMonitoringDataView = z.object({
     grantChecked: z.boolean().optional(),
     grantDenied: z.boolean().optional(),
     sebversionDenied: z.boolean().optional(),
-    lat: z.int().optional(),
-    iv: z.record(z.string(), z.string()).optional(),
+    nf: z.int().min(-2147483648, { error: 'Invalid value: Expected int32 to be >= -2147483648' }).max(2147483647, { error: 'Invalid value: Expected int32 to be <= 2147483647' }).optional(),
     st: z.enum([
         'UNDEFINED',
         'CONNECTION_REQUESTED',
@@ -1364,7 +1373,8 @@ export const zClientMonitoringDataView = z.object({
         'CLOSED',
         'DISABLED'
     ]).optional(),
-    nf: z.int().min(-2147483648, { error: 'Invalid value: Expected int32 to be >= -2147483648' }).max(2147483647, { error: 'Invalid value: Expected int32 to be <= 2147483647' }).optional(),
+    lat: z.int().optional(),
+    iv: z.record(z.string(), z.string()).optional(),
     id: z.int().optional()
 });
 

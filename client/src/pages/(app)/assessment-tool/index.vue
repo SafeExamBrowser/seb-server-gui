@@ -131,6 +131,7 @@ definePage({
         titleKey: "titles.assessmentToolConnections",
         pageTestId: "assessment-tools-page",
         isPageBlue: true,
+        requiredComponent: "ASSESSMENT_TOOLS",
     },
 });
 

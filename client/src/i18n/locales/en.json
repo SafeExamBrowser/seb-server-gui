@@ -793,7 +793,6 @@
     "assessmentToolConnections": {
         "list": {
             "tableHeaders": {
-                "institution": "Institution",
                 "name": "Name",
                 "type": "Assessment Tool Type",
                 "status": "Status"
@@ -801,7 +800,6 @@
             "filters": {
                 "searchTitle": "Search",
                 "searchField": "Search by Name",
-                "institutionFilter": "Institution",
                 "statusFilter": "Status",
                 "activeSelector": "Active",
                 "inactiveSelector": "Inactive",
@@ -826,9 +824,6 @@
             "edit": "Edit the assessment tool connection details. Leave secrets empty to keep the existing values."
         },
         "fields": {
-            "institution": {
-                "label": "Institution"
-            },
             "name": {
                 "label": "Name"
             },
@@ -911,7 +906,6 @@
     "connectionConfigurations": {
         "list": {
             "tableHeaders": {
-                "institution": "Institution",
                 "name": "Name",
                 "creationDate": "Creation Date",
                 "status": "Status"
@@ -919,7 +913,6 @@
             "filters": {
                 "searchTitle": "Search",
                 "searchField": "Search by Name",
-                "institutionFilter": "Institution",
                 "statusFilter": "Status",
                 "activeSelector": "Active",
                 "inactiveSelector": "Inactive"
@@ -2233,6 +2226,10 @@
                 "UNDEFINED": "Undefined"
             }
         }
+    },
+    "notAllowed": {
+        "message": "You are not allowed to view this page",
+        "backToHome": "Back to home"
     },
     "titles": {
         "navigationOverview": "Navigation Overview",

@@ -1,16 +1,8 @@
-import { expect, type Locator, type Page } from "@playwright/test";
+import { type Page } from "@playwright/test";
 
-import {
-    CERTIFICATE_FIELD,
-    certificateFormConfig,
-} from "@/pages/(app)/certificate/certificateFormConfig.ts";
 import { certificateListConfig } from "@/pages/(app)/certificate/certificateListConfig.ts";
 
 import { TableListPageModel } from "../../shared/page-models/model-pages/table-list-page.model";
-import {
-    type FormFieldFile,
-    FormFieldModel,
-} from "../../shared/page-models/widgets/form-field.model";
 import type { TableListPageConfig } from "../../shared/types/table-list-page.types";
 
 export type CertificateRow = {
@@ -35,72 +27,9 @@ const config: TableListPageConfig = {
     },
 };
 
-// The upload dialog is part of the list page (there is no create route); it owns the two
-// FormBuilder fields plus the dialog's own submit/cancel actions.
-export class CertificateUploadDialogModel {
-    readonly page: Page;
-    readonly root: Locator;
-    readonly fileField: FormFieldModel;
-    readonly passwordField: FormFieldModel;
-    readonly submitButton: Locator;
-    readonly cancelButton: Locator;
-
-    constructor(page: Page) {
-        this.page = page;
-        this.root = page.getByTestId(certificateFormConfig.uploadDialogTestId);
-        this.fileField = new FormFieldModel(
-            page,
-            `${certificateFormConfig.uploadFormTestId}-field-${CERTIFICATE_FIELD.file}`,
-            "file",
-        );
-        this.passwordField = new FormFieldModel(
-            page,
-            `${certificateFormConfig.uploadFormTestId}-field-${CERTIFICATE_FIELD.password}`,
-            "password",
-        );
-        this.submitButton = page.getByTestId(
-            certificateFormConfig.uploadSubmitTestId,
-        );
-        this.cancelButton = page.getByTestId(
-            certificateFormConfig.uploadCancelTestId,
-        );
-    }
-
-    async expectVisible() {
-        await expect(this.root).toBeVisible();
-    }
-
-    async expectHidden() {
-        await expect(this.root).toBeHidden();
-    }
-
-    async fill(file: FormFieldFile, password?: string) {
-        await this.fileField.setFile(file);
-        if (password !== undefined) {
-            await this.passwordField.fill(password);
-        }
-    }
-
-    async submit() {
-        await this.submitButton.click();
-    }
-
-    async cancel() {
-        await this.cancelButton.click();
-    }
-}
-
 export class CertificatesListModel extends TableListPageModel {
-    readonly uploadDialog: CertificateUploadDialogModel;
-
     constructor(page: Page) {
         super(page, config);
-        this.uploadDialog = new CertificateUploadDialogModel(page);
-    }
-
-    async openUploadDialog() {
-        await this.layout.addButton.click();
-        await this.uploadDialog.expectVisible();
     }
 
     // Certificates are stored as parsed keystore blobs, so the list is mocked:

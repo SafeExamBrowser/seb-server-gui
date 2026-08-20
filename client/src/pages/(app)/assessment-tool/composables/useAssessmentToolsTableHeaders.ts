@@ -1,73 +1,41 @@
-import { computed, watch } from "vue";
+import { computed } from "vue";
 
 import type {
     CellFormatter,
     TableHeader,
 } from "@/components/widgets/entity-table/types.ts";
-import { useInstitutionNameMap } from "@/composables/useInstitutionNameMap.ts";
-import { useShowInstitutionColumn } from "@/composables/useShowInstitutionColumn.ts";
 import { ASSESSMENT_TOOL_COLUMN } from "@/pages/(app)/assessment-tool/assessmentToolListConfig.ts";
 import { translate } from "@/utils/generalUtils.ts";
 
 export function useAssessmentToolsTableHeaders() {
-    const showInstitutionColumn = useShowInstitutionColumn();
-    const { getInstitutionName, fetchInstitutions } = useInstitutionNameMap();
-
-    watch(
-        showInstitutionColumn,
-        async (show) => {
-            if (show) await fetchInstitutions();
+    const headers = computed<TableHeader[]>(() => [
+        {
+            title: translate(
+                "assessmentToolConnections.list.tableHeaders.name",
+            ),
+            key: ASSESSMENT_TOOL_COLUMN.name,
+            width: "20%",
+            sortable: true,
         },
-        { immediate: true },
-    );
-
-    const headers = computed<TableHeader[]>(() => {
-        const base: TableHeader[] = [];
-
-        if (showInstitutionColumn.value) {
-            base.push({
-                title: translate(
-                    "assessmentToolConnections.list.tableHeaders.institution",
-                ),
-                key: ASSESSMENT_TOOL_COLUMN.institutionId,
-                width: "20%",
-                sortable: true,
-            });
-        }
-
-        base.push(
-            {
-                title: translate(
-                    "assessmentToolConnections.list.tableHeaders.name",
-                ),
-                key: ASSESSMENT_TOOL_COLUMN.name,
-                width: "20%",
-                sortable: true,
-            },
-            {
-                title: translate(
-                    "assessmentToolConnections.list.tableHeaders.type",
-                ),
-                key: ASSESSMENT_TOOL_COLUMN.lmsType,
-                width: "20%",
-                sortable: false,
-            },
-            {
-                title: translate(
-                    "assessmentToolConnections.list.tableHeaders.status",
-                ),
-                key: ASSESSMENT_TOOL_COLUMN.active,
-                width: "15%",
-                sortable: false,
-            },
-        );
-
-        return base;
-    });
+        {
+            title: translate(
+                "assessmentToolConnections.list.tableHeaders.type",
+            ),
+            key: ASSESSMENT_TOOL_COLUMN.lmsType,
+            width: "20%",
+            sortable: false,
+        },
+        {
+            title: translate(
+                "assessmentToolConnections.list.tableHeaders.status",
+            ),
+            key: ASSESSMENT_TOOL_COLUMN.active,
+            width: "15%",
+            sortable: false,
+        },
+    ]);
 
     const cellFormatters: Record<string, CellFormatter> = {
-        [ASSESSMENT_TOOL_COLUMN.institutionId]: (value) =>
-            getInstitutionName(value),
         [ASSESSMENT_TOOL_COLUMN.lmsType]: (value) =>
             value
                 ? translate(

@@ -25,6 +25,7 @@ definePage({
         titleKey: "titles.createUserAccount",
         pageTestId: "create-user-account-page",
         isPageBlue: true,
+        requiredComponent: "CREATE_USER_ACCOUNT",
     },
 });
 

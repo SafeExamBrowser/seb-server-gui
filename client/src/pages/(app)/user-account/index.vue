@@ -119,6 +119,7 @@ definePage({
         titleKey: "titles.userAccounts",
         pageTestId: "user-accounts-page",
         isPageBlue: true,
+        requiredComponent: "USER_ACCOUNTS",
     },
 });
 

@@ -1,12 +1,9 @@
 import { computed } from "vue";
 
-import { useCurrentUserQuery } from "@/composables/useCurrentUser.ts";
+import { GUIAction, useAbilities } from "@/services/ability.ts";
 
 export const useShowInstitutionColumn = () => {
-    const { data: currentUser } = useCurrentUserQuery();
+    const ability = useAbilities();
 
-    return computed(() => {
-        const roles = currentUser.value?.userRoles ?? [];
-        return roles.includes("SEB_SERVER_ADMIN");
-    });
+    return computed(() => ability.canDo(GUIAction.SHOW_INSTITUTION_COLUMN));
 };

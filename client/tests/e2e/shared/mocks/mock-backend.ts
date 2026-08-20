@@ -45,9 +45,17 @@ const GUI_ABILITIES = {
         "HOME",
         "SETTINGS",
         "INSTITUTIONS",
+        "EDIT_INSTITUTION",
+        "CREATE_INSTITUTION",
         "USER_ACCOUNTS",
-        "CONNECTION_CONFIGS",
-        "LMS_SETUPS",
+        "EDIT_USER_ACCOUNT",
+        "CREATE_USER_ACCOUNT",
+        "CONNECTION_CONFIGURATIONS",
+        "EDIT_CONNECTION_CONFIGURATION",
+        "CREATE_CONNECTION_CONFIGURATION",
+        "ASSESSMENT_TOOLS",
+        "EDIT_ASSESSMENT_TOOL",
+        "CREATE_ASSESSMENT_TOOL",
         "CERTIFICATES",
         "EXAM_TEMPLATE",
         "PREPARE_EXAM",
@@ -62,6 +70,9 @@ const GUI_ABILITIES = {
         "SCHEDULED_DELETION",
     ],
     actions: [
+        "SHOW_INSTITUTION_COLUMN",
+        "OFFER_SERVER_ADMIN_ROLE",
+        "CHOOSE_INSTITUTION",
         "EDIT_EXAM_SETTINGS",
         "ARCHIVE_EXAM",
         "DELETE_EXAM",
@@ -85,9 +96,9 @@ const GUI_ABILITIES = {
 
 // Mirrors the seb-server e2e Flyway seed (V200): institutions 11-13.
 const INSTITUTIONS = [
-    { id: 11, name: "SEB Server", urlSuffix: "sebserv", active: true },
-    { id: 12, name: "Test Institution", urlSuffix: "testinst", active: false },
-    { id: 13, name: "ETHZ", urlSuffix: "ethz", active: true },
+    { id: 11, name: "SEB Server", active: true },
+    { id: 12, name: "Test Institution", active: false },
+    { id: 13, name: "ETHZ", active: true },
 ];
 
 const INSTITUTION_NAMES = INSTITUTIONS.map((institution) => ({
