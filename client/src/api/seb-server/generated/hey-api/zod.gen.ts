@@ -303,7 +303,6 @@ export const zLmsSetupTestResult = z.object({
 export const zInstitution = z.object({
     id: z.int().optional(),
     name: z.string().min(3).max(255),
-    urlSuffix: z.string().max(45).regex(/(^$|.{3,45})/).optional(),
     logoImage: z.string().optional(),
     themeName: z.string().optional(),
     active: z.boolean().optional()
@@ -1110,11 +1109,13 @@ export const zGuiAbilities = z.object({
         'CONNECTION_CONFIGURATIONS',
         'EDIT_CONNECTION_CONFIGURATION',
         'CREATE_CONNECTION_CONFIGURATION',
+        'CERTIFICATES',
+        'USER_ACCOUNTS',
+        'EDIT_USER_ACCOUNT',
+        'CREATE_USER_ACCOUNT',
         'NAVIGATION_OVERVIEW',
         'HOME',
         'SETTINGS',
-        'USER_ACCOUNTS',
-        'CERTIFICATES',
         'EXAM_TEMPLATE',
         'PREPARE_EXAM',
         'ADD_EXAM_WITH_URL',
@@ -1128,6 +1129,9 @@ export const zGuiAbilities = z.object({
         'SCHEDULED_DELETION'
     ])),
     actions: z.array(z.enum([
+        'SHOW_INSTITUTION_COLUMN',
+        'OFFER_SERVER_ADMIN_ROLE',
+        'CHOOSE_INSTITUTION',
         'EDIT_EXAM_SETTINGS',
         'ARCHIVE_EXAM',
         'DELETE_EXAM',
@@ -1355,11 +1359,11 @@ export const zClientNotification = z.object({
 });
 
 export const zClientMonitoringDataView = z.object({
-    pendingNotification: z.boolean().optional(),
     missingPing: z.boolean().optional(),
     grantChecked: z.boolean().optional(),
     grantDenied: z.boolean().optional(),
     sebversionDenied: z.boolean().optional(),
+    pendingNotification: z.boolean().optional(),
     nf: z.int().min(-2147483648, { error: 'Invalid value: Expected int32 to be >= -2147483648' }).max(2147483647, { error: 'Invalid value: Expected int32 to be <= 2147483647' }).optional(),
     st: z.enum([
         'UNDEFINED',

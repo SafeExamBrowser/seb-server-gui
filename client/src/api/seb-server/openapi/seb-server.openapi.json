@@ -20373,13 +20373,6 @@
                         "maxLength": 255,
                         "minLength": 3
                     },
-                    "urlSuffix": {
-                        "type": "string",
-                        "description": "URL path suffix that routes to this institution. Empty, or 3 to 45 characters.",
-                        "example": "eth",
-                        "maxLength": 45,
-                        "pattern": "(^$|.{3,45})"
-                    },
                     "logoImage": {
                         "type": "string",
                         "description": "Base64-encoded institution logo image."
@@ -21881,11 +21874,13 @@
                                 "CONNECTION_CONFIGURATIONS",
                                 "EDIT_CONNECTION_CONFIGURATION",
                                 "CREATE_CONNECTION_CONFIGURATION",
+                                "CERTIFICATES",
+                                "USER_ACCOUNTS",
+                                "EDIT_USER_ACCOUNT",
+                                "CREATE_USER_ACCOUNT",
                                 "NAVIGATION_OVERVIEW",
                                 "HOME",
                                 "SETTINGS",
-                                "USER_ACCOUNTS",
-                                "CERTIFICATES",
                                 "EXAM_TEMPLATE",
                                 "PREPARE_EXAM",
                                 "ADD_EXAM_WITH_URL",
@@ -21906,6 +21901,9 @@
                             "type": "string",
                             "description": "Identifier of one GUI action (button, switch or workflow step).",
                             "enum": [
+                                "SHOW_INSTITUTION_COLUMN",
+                                "OFFER_SERVER_ADMIN_ROLE",
+                                "CHOOSE_INSTITUTION",
                                 "EDIT_EXAM_SETTINGS",
                                 "ARCHIVE_EXAM",
                                 "DELETE_EXAM",
@@ -22474,11 +22472,11 @@
             "ClientMonitoringDataView": {
                 "type": "object",
                 "properties": {
-                    "pendingNotification": { "type": "boolean" },
                     "missingPing": { "type": "boolean" },
                     "grantChecked": { "type": "boolean" },
                     "grantDenied": { "type": "boolean" },
                     "sebversionDenied": { "type": "boolean" },
+                    "pendingNotification": { "type": "boolean" },
                     "nf": { "type": "integer", "format": "int32" },
                     "st": {
                         "type": "string",

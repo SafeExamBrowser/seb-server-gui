@@ -13,6 +13,7 @@ import {
     type UserRole,
 } from "@/models/userAccount.ts";
 import { USER_ACCOUNT_FIELD } from "@/pages/(app)/user-account/userAccountFormConfig.ts";
+import { GUIAction, useAbilities } from "@/services/ability.ts";
 import { toAppErrorOrUndefined } from "@/services/errors/toAppError.ts";
 
 const ADMIN_VISIBLE_ROLES: ReadonlySet<UserRole> = new Set<UserRole>([
@@ -70,30 +71,26 @@ export const useUserAccountFormFields = (mode: UserAccountFormMode) => {
     );
 
     const { data: authenticatedUser } = useCurrentUserQuery();
-    const userRoles = computed(() => authenticatedUser.value?.userRoles ?? []);
-    const hasSebServerAdmin = computed(() =>
-        userRoles.value.includes("SEB_SERVER_ADMIN"),
-    );
-    const hasInstitutionalAdmin = computed(() =>
-        userRoles.value.includes("INSTITUTIONAL_ADMIN"),
+    const ability = useAbilities();
+    const canChooseInstitution = computed(() =>
+        ability.canDo(GUIAction.CHOOSE_INSTITUTION),
     );
 
-    const institutionSelectDisabled = ref(
-        !hasSebServerAdmin.value || mode !== "create",
+    const institutionSelectDisabled = computed(
+        () => !canChooseInstitution.value || mode !== "create",
     );
 
     watch(
         institutions,
         (data) => {
             if (!data || mode !== "create") return;
-            if (!hasInstitutionalAdmin.value || hasSebServerAdmin.value) return;
+            if (canChooseInstitution.value) return;
             const userInstitutionId = String(
                 authenticatedUser.value?.institutionId,
             );
             const matched = data.find((i) => i.modelId === userInstitutionId);
             if (matched) {
                 institutionId.value = matched.modelId;
-                institutionSelectDisabled.value = true;
             }
         },
         { immediate: true },
@@ -103,7 +100,7 @@ export const useUserAccountFormFields = (mode: UserAccountFormMode) => {
         (institutions.value ?? [])
             .filter(
                 (i) =>
-                    hasSebServerAdmin.value ||
+                    canChooseInstitution.value ||
                     i.modelId ===
                         String(authenticatedUser.value?.institutionId),
             )
@@ -111,20 +108,16 @@ export const useUserAccountFormFields = (mode: UserAccountFormMode) => {
     );
 
     const availableRoles = computed(() => {
-        const allRoles = USER_ROLES.map((value) => ({
-            value,
-            text: i18n.global.t(ROLE_LABEL_I18N_KEYS[value]),
-        }));
+        const visibleRoles = ability.canDo(GUIAction.OFFER_SERVER_ADMIN_ROLE)
+            ? ADMIN_VISIBLE_ROLES
+            : INSTITUTIONAL_VISIBLE_ROLES;
 
-        if (hasSebServerAdmin.value) {
-            return allRoles.filter((r) => ADMIN_VISIBLE_ROLES.has(r.value));
-        }
-        if (hasInstitutionalAdmin.value) {
-            return allRoles.filter((r) =>
-                INSTITUTIONAL_VISIBLE_ROLES.has(r.value),
-            );
-        }
-        return [];
+        return USER_ROLES.filter((value) => visibleRoles.has(value)).map(
+            (value) => ({
+                value,
+                text: i18n.global.t(ROLE_LABEL_I18N_KEYS[value]),
+            }),
+        );
     });
 
     const loading = computed(() => loadingInstitutions.value);

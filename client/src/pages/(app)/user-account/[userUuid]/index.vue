@@ -39,6 +39,7 @@ definePage({
         titleKey: "titles.editUserAccount",
         pageTestId: "edit-user-account-page",
         isPageBlue: true,
+        requiredComponent: "EDIT_USER_ACCOUNT",
     },
 });
 
