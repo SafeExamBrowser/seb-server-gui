@@ -13,6 +13,10 @@ import { ConnectionConfigurationsListModel } from "../../04-connection-configura
 import { AssessmentToolCreateModel } from "../../05-assessment-tool-connection/models/assessment-tool-create.model";
 import { AssessmentToolEditModel } from "../../05-assessment-tool-connection/models/assessment-tool-edit.model";
 import { AssessmentToolsListModel } from "../../05-assessment-tool-connection/models/assessment-tools-list.model";
+import { ExamsListModel } from "../../06-exam/models/exams-list.model";
+import { MonitoringListModel } from "../../07-monitoring/models/monitoring-list.model";
+import { AnalyzeListModel } from "../../08-analyze/models/analyze-list.model";
+import { ArchiveListModel } from "../../09-archive/models/archive-list.model";
 import { loginAsServerAdmin } from "../../utils/authenticate";
 import { installMockBackend } from "../mocks/mock-backend";
 import { ProfileMenuModel } from "../page-models/layout/profile-menu.model";
@@ -32,6 +36,10 @@ type Fixtures = {
     assessmentTools: AssessmentToolsListModel;
     assessmentToolCreate: AssessmentToolCreateModel;
     assessmentToolEdit: AssessmentToolEditModel;
+    exams: ExamsListModel;
+    monitoringExams: MonitoringListModel;
+    analyzeExams: AnalyzeListModel;
+    archiveExams: ArchiveListModel;
 };
 
 export const test = base.extend<Fixtures>({
@@ -104,6 +112,26 @@ export const test = base.extend<Fixtures>({
         await installMockBackend(page, testInfo.project.name);
         await loginAsServerAdmin(page);
         await use(new AssessmentToolEditModel(page));
+    },
+    exams: async ({ page }, use, testInfo) => {
+        await installMockBackend(page, testInfo.project.name);
+        await loginAsServerAdmin(page);
+        await use(new ExamsListModel(page));
+    },
+    monitoringExams: async ({ page }, use, testInfo) => {
+        await installMockBackend(page, testInfo.project.name);
+        await loginAsServerAdmin(page);
+        await use(new MonitoringListModel(page));
+    },
+    analyzeExams: async ({ page }, use, testInfo) => {
+        await installMockBackend(page, testInfo.project.name);
+        await loginAsServerAdmin(page);
+        await use(new AnalyzeListModel(page));
+    },
+    archiveExams: async ({ page }, use, testInfo) => {
+        await installMockBackend(page, testInfo.project.name);
+        await loginAsServerAdmin(page);
+        await use(new ArchiveListModel(page));
     },
 });
 

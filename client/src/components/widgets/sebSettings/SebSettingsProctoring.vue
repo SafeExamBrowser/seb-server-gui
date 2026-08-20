@@ -17,7 +17,9 @@
                     :disabled="context.readonly"
                 />
             </v-row>
-            <v-row>
+            <v-row
+                v-if="singleValues.attributes.has('showProctoringDisclaimer')"
+            >
                 <CheckboxSetting
                     v-model="singleValues"
                     name="showProctoringDisclaimer"
