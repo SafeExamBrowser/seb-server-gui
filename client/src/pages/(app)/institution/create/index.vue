@@ -75,7 +75,7 @@ definePage({
 
 const router = useRouter();
 
-const { formFields, name, urlSuffix, logoImage } = useInstitutionFormFields();
+const { formFields, name, logoImage } = useInstitutionFormFields();
 
 const formRef = ref<InstanceType<typeof FormBuilder>>();
 
@@ -110,7 +110,6 @@ const submit = async () => {
         run: () =>
             createInstitution({
                 name: institutionName,
-                urlSuffix: urlSuffix.value || undefined,
                 logoImage: logoImage.value ?? undefined,
             }),
         applyErrors: applyBackendErrors,

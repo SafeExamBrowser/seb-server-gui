@@ -22,7 +22,7 @@ const requiredId = z.codec(zInstitution.shape.id, z.int(), {
 // logoImage is wire base64 but a File/data-URL in the app, so it stays out of
 // the schemas and institutionService converts it (a File encode can't be a codec).
 export const institutionSchema = zInstitution
-    .pick({ name: true, urlSuffix: true, active: true })
+    .pick({ name: true, active: true })
     .extend({ id: requiredId });
 export type Institution = z.infer<typeof institutionSchema> & {
     logoImage?: string;
@@ -31,7 +31,6 @@ export type Institution = z.infer<typeof institutionSchema> & {
 // Create body: writable fields only (id/active are server-managed).
 export const institutionCreateSchema = zInstitution.pick({
     name: true,
-    urlSuffix: true,
 });
 export type InstitutionCreateRequest = z.infer<
     typeof institutionCreateSchema
