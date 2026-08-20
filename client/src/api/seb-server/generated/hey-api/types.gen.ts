@@ -308,8 +308,8 @@ export type Exam = {
     additionalAttributes?: {
         [key: string]: string;
     };
-    quiz_description?: string;
     quiz_start_url?: string;
+    quiz_description?: string;
 };
 
 export type ClientGroupTemplate = {
@@ -1390,16 +1390,16 @@ export type ClientNotification = {
 };
 
 export type ClientMonitoringDataView = {
-    pendingNotification?: boolean;
     missingPing?: boolean;
     grantChecked?: boolean;
     grantDenied?: boolean;
     sebversionDenied?: boolean;
+    pendingNotification?: boolean;
+    lat?: number;
     st?: 'UNDEFINED' | 'CONNECTION_REQUESTED' | 'READY' | 'ACTIVE' | 'CLOSED' | 'DISABLED';
     iv?: {
         [key: string]: string;
     };
-    lat?: number;
     nf?: number;
     id?: number;
 };
