@@ -31,18 +31,18 @@ let systemFeatures = new Map<string, boolean>();
 examStatusActions.set(
     ExamStatusEnum.UP_COMING,
     new Set<GUIAction>([
-        GUIAction.EDIT_EXAM_SETTINGS,
+        GUIAction.EDIT_BASIC_SETTINGS,
         GUIAction.DELETE_EXAM,
-        GUIAction.APPLY_TEST_RUN,
-        GUIAction.EXPORT_EXAM_CLIENT_CONFIG,
-        GUIAction.VIEW_ASK_SETTINGS,
-        GUIAction.EDIT_ASK_SETTINGS,
+        GUIAction.APPLY_DISABLE_TEST_RUN,
+        GUIAction.DOWNLOAD_EXAM_CONNECTION,
+        GUIAction.EDIT_SEB_KEYS,
         GUIAction.EDIT_SCREEN_PROCTORING,
-        GUIAction.EDIT_SEB_SETTINGS,
+        GUIAction.EDIT_FULL_SEB_SETTINGS,
+        GUIAction.EDIT_RESTRICTED_SEB_SETTINGS,
         GUIAction.EDIT_SUPERVISORS,
         GUIAction.EDIT_INDICATORS,
         GUIAction.EDIT_CLIENT_GROUPS,
-        GUIAction.APPLY_SEB_RESTRICTION,
+        GUIAction.APPLY_SEB_LOCK,
     ]),
 );
 
@@ -50,19 +50,18 @@ examStatusActions.set(
 examStatusActions.set(
     ExamStatusEnum.TEST_RUN,
     new Set<GUIAction>([
-        GUIAction.EDIT_EXAM_SETTINGS,
+        GUIAction.EDIT_BASIC_SETTINGS,
         GUIAction.DELETE_EXAM,
-        GUIAction.DISABLE_TEST_RUN,
-        GUIAction.EXPORT_EXAM_CLIENT_CONFIG,
-        GUIAction.VIEW_ASK_SETTINGS,
-        GUIAction.EDIT_ASK_SETTINGS,
+        GUIAction.APPLY_DISABLE_TEST_RUN,
+        GUIAction.DOWNLOAD_EXAM_CONNECTION,
+        GUIAction.EDIT_SEB_KEYS,
         GUIAction.EDIT_SCREEN_PROCTORING,
-        GUIAction.EDIT_SEB_SETTINGS,
+        GUIAction.EDIT_FULL_SEB_SETTINGS,
+        GUIAction.EDIT_RESTRICTED_SEB_SETTINGS,
         GUIAction.EDIT_SUPERVISORS,
         GUIAction.EDIT_INDICATORS,
         GUIAction.EDIT_CLIENT_GROUPS,
-        GUIAction.APPLY_SEB_RESTRICTION,
-        GUIAction.SHOW_MONITORING,
+        GUIAction.APPLY_SEB_LOCK,
     ]),
 );
 
@@ -70,18 +69,17 @@ examStatusActions.set(
 examStatusActions.set(
     ExamStatusEnum.RUNNING,
     new Set<GUIAction>([
-        GUIAction.EDIT_EXAM_SETTINGS,
+        GUIAction.EDIT_BASIC_SETTINGS,
         GUIAction.DELETE_EXAM,
-        GUIAction.EXPORT_EXAM_CLIENT_CONFIG,
-        GUIAction.VIEW_ASK_SETTINGS,
-        GUIAction.EDIT_ASK_SETTINGS,
+        GUIAction.DOWNLOAD_EXAM_CONNECTION,
+        GUIAction.EDIT_SEB_KEYS,
         GUIAction.EDIT_SCREEN_PROCTORING,
-        GUIAction.EDIT_SEB_SETTINGS,
+        GUIAction.EDIT_FULL_SEB_SETTINGS,
+        GUIAction.EDIT_RESTRICTED_SEB_SETTINGS,
         GUIAction.EDIT_SUPERVISORS,
         GUIAction.EDIT_INDICATORS,
         GUIAction.EDIT_CLIENT_GROUPS,
-        GUIAction.APPLY_SEB_RESTRICTION,
-        GUIAction.SHOW_MONITORING,
+        GUIAction.APPLY_SEB_LOCK,
     ]),
 );
 
@@ -89,13 +87,12 @@ examStatusActions.set(
 examStatusActions.set(
     ExamStatusEnum.FINISHED,
     new Set<GUIAction>([
-        GUIAction.EDIT_EXAM_SETTINGS,
+        GUIAction.EDIT_BASIC_SETTINGS,
         GUIAction.ARCHIVE_EXAM,
         GUIAction.DELETE_EXAM,
-        GUIAction.EXPORT_EXAM_CLIENT_CONFIG,
-        GUIAction.VIEW_ASK_SETTINGS,
+        GUIAction.DOWNLOAD_EXAM_CONNECTION,
         GUIAction.EDIT_SUPERVISORS,
-        GUIAction.APPLY_SEB_RESTRICTION,
+        GUIAction.APPLY_SEB_LOCK,
         GUIAction.SHOW_FINISHED_EXAM_DATA,
     ]),
 );
@@ -105,7 +102,6 @@ examStatusActions.set(
     ExamStatusEnum.ARCHIVED,
     new Set<GUIAction>([
         GUIAction.DELETE_EXAM,
-        GUIAction.VIEW_ASK_SETTINGS,
         GUIAction.SHOW_FINISHED_EXAM_DATA,
         GUIAction.EXCLUDE_FROM_DELETION,
     ]),
@@ -212,4 +208,4 @@ export const useAbilities = () => {
 
 // in components... :disabled="!canDo(GUIAction.DELETE_EXAM)"
 // in code... if (canDo(GUIAction.DELETE_EXAM)) ...
-// for special cases: :disabled="!(canDo(GUIAction.EDIT_EXAM_SETTINGS) || isExamSupporter(exam))"
+// for special cases: :disabled="!(canDo(GUIAction.EDIT_BASIC_SETTINGS) || isExamSupporter(exam))"

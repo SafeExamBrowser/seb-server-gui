@@ -4,6 +4,7 @@
             <v-menu @update:model-value="handleMenuToggle">
                 <template #activator="{ props: menuProps }">
                     <BoxActionButton
+                        v-if="!editHidden"
                         v-bind="menuProps"
                         icon="mdi-plus-circle-outline"
                         :label="$t('examDetail.boxes.clientGroups.addButton')"
@@ -47,6 +48,7 @@
                 </template>
                 <template #item.actions="{ item }">
                     <v-btn
+                        v-if="!editHidden"
                         icon="mdi-delete"
                         color="medium-emphasis"
                         variant="text"
@@ -115,6 +117,7 @@ const {
     clientGroups,
     loading,
     error,
+    editHidden,
     editDisabled,
     templateGroups,
     templateLoading,

@@ -28,6 +28,7 @@
                             :exam-id="examId"
                             :basic-settings="basicSettingsValues"
                             :exam-with-u-r-l="examWithURL"
+                            :edit-hidden="basicSettingsEditHidden"
                             :edit-disabled="basicSettingsEditDisabled"
                             @change="handleBasicSettingsChange"
                         />
@@ -36,6 +37,7 @@
                     <template #02_sebSettings>
                         <BoxSEBSettings
                             :exam-id="examId"
+                            :edit-hidden="sebSettingsEditHidden"
                             :edit-disabled="sebSettingsEditDisabled"
                             :last-modified-items="lastModifiedItems"
                             :last-modified-loading="lastModifiedLoading"
@@ -46,6 +48,8 @@
                         <BoxSEBKeys
                             :last-modified-items="lastModifiedItems"
                             :last-modified-loading="lastModifiedLoading"
+                            :edit-hidden="sebKeysEditHidden"
+                            :edit-disabled="sebKeysEditDisabled"
                         />
                     </template>
 
@@ -53,6 +57,7 @@
                         <BoxSupervisors
                             :available-supervisors="availableSupervisors"
                             :selected-supervisor-ids="selectedSupervisorIds"
+                            :edit-hidden="supervisorsEditHidden"
                             :edit-disabled="supervisorsEditDisabled"
                             @change="handleSupervisorsChange"
                         />
@@ -76,18 +81,21 @@ import NotFoundPage from "@/components/layout/pages/NotFoundPage.vue";
 import BoxSupervisors from "@/components/widgets/BoxSupervisors.vue";
 import LoadingFallbackComponent from "@/components/widgets/loadingFallbackComponent/LoadingFallbackComponent.vue";
 import { typedTo } from "@/router/typedTo";
+import { GUIAction } from "@/services/ability.ts";
 
 import BoxBasicSettings from "./components/BoxBasicSettings/BoxBasicSettings.vue";
 import BoxClientGroups from "./components/BoxClientGroups/BoxClientGroups.vue";
 import BoxSEBKeys from "./components/BoxSEBKeys/BoxSEBKeys.vue";
 import BoxSEBSettings from "./components/BoxSEBSettings/BoxSEBSettings.vue";
 import ExamSidePanel from "./components/ExamSidePanel/ExamSidePanel.vue";
+import { useExamActionAccess } from "./composables/useExamActionAccess.ts";
 import { useExamDetailPage } from "./composables/useExamDetailPage.ts";
 
 definePage({
     meta: {
         titleKey: "titles.examDetails",
         pageTestId: "exam-details-page",
+        requiredComponent: "EXAM_DETAIL",
     },
 });
 
@@ -113,11 +121,13 @@ const {
 
 const {
     settings: basicSettingsValues,
+    editHidden: basicSettingsEditHidden,
     editDisabled: basicSettingsEditDisabled,
     handleChange: handleBasicSettingsChange,
 } = basicSettings;
 
 const {
+    editHidden: sebSettingsEditHidden,
     editDisabled: sebSettingsEditDisabled,
     lastModifiedItems,
     lastModifiedLoading,
@@ -126,9 +136,13 @@ const {
 const {
     availableSupervisors,
     selectedSupervisorIds,
+    editHidden: supervisorsEditHidden,
     editDisabled: supervisorsEditDisabled,
     handleChange: handleSupervisorsChange,
 } = supervisors;
+
+const { hidden: sebKeysEditHidden, disabled: sebKeysEditDisabled } =
+    useExamActionAccess(exam, GUIAction.EDIT_SEB_KEYS);
 
 const notFoundBackLink = {
     label: t("examDetail.notFound.backToList"),

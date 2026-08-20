@@ -2,6 +2,7 @@
     <BoxActionButton
         icon="mdi-pencil"
         :label="$t('examDetail.boxes.sebKeys.edit')"
+        :disabled="disabled"
         @click="handleButtonEditClick"
     />
 
@@ -36,6 +37,8 @@ import {
 } from "vuetify/components";
 
 import BoxActionButton from "@/components/widgets/BoxActionButton.vue";
+
+withDefaults(defineProps<{ disabled?: boolean }>(), { disabled: false });
 
 const { thresholds: thresholdsRef } = useDisplay();
 const thresholds = computed(() => thresholdsRef.value);

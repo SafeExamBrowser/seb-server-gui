@@ -3,6 +3,7 @@
         <DetailBox :title="$t('examDetail.boxes.basicSettings.title')">
             <template #action>
                 <BasicSettingsEditDialog
+                    v-if="!editHidden"
                     :basic-settings="basicSettings"
                     :exam-with-u-r-l="examWithURL"
                     :edit-disabled="editDisabled"
@@ -31,6 +32,7 @@ const { examId, basicSettings, examWithURL, editDisabled } = defineProps<{
     examId: number;
     basicSettings: BasicSettings;
     examWithURL: boolean;
+    editHidden: boolean;
     editDisabled: boolean;
 }>();
 

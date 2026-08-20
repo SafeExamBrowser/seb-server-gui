@@ -31,7 +31,7 @@ export function buildBaseNavigationLinks(
         });
     }
 
-    if (ability.canView(GUIComponent.RUNNING_EXAMS)) {
+    if (ability.canView(GUIComponent.MONITORING)) {
         result.push({
             title: i18n.t("titles.monitor"),
             route: typedTo({ name: "/(app)/monitoring/" }),

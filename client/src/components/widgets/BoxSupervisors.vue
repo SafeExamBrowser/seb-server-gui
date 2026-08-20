@@ -2,6 +2,7 @@
     <DetailBox :title="$t('boxSupervisors.title')">
         <template #action>
             <BoxActionButton
+                v-if="!editHidden"
                 icon="mdi-pencil"
                 :label="$t('boxSupervisors.dialogTitle')"
                 :disabled="editDisabled"
@@ -81,10 +82,12 @@ const {
     availableSupervisors,
     selectedSupervisorIds,
     editDisabled = false,
+    editHidden = false,
 } = defineProps<{
     availableSupervisors: UserAccountName[];
     selectedSupervisorIds: string[];
     editDisabled?: boolean;
+    editHidden?: boolean;
 }>();
 
 const emit = defineEmits<{

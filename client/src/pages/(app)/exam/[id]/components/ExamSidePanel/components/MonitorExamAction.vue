@@ -8,8 +8,10 @@
 import { computed } from "vue";
 
 import { Exam } from "@/models/seb-server/exam.ts";
+import { ExamStatusEnum } from "@/models/seb-server/examFiltersEnum.ts";
 import { typedTo } from "@/router/typedTo.ts";
-import { GUIAction, useAbilities } from "@/services/ability.ts";
+import { GUIComponent, useAbilities } from "@/services/ability.ts";
+import * as generalUtils from "@/utils/generalUtils.ts";
 
 import ActionButton from "./ActionButton.vue";
 
@@ -19,9 +21,17 @@ const props = defineProps<{
 
 const ability = useAbilities();
 
-const monitorVisible = computed(() =>
-    ability.canDoExamAction(GUIAction.SHOW_MONITORING, props.exam ?? null),
-);
+const monitorVisible = computed(() => {
+    const status = generalUtils.findEnumValue(
+        ExamStatusEnum,
+        props.exam?.status,
+    );
+    return (
+        ability.canView(GUIComponent.MONITORING) &&
+        (status === ExamStatusEnum.RUNNING ||
+            status === ExamStatusEnum.TEST_RUN)
+    );
+});
 
 const monitoringRoute = computed(() => {
     if (!props.exam) {

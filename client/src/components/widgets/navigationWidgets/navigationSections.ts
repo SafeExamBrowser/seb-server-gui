@@ -1,6 +1,6 @@
 import type { NavigationSectionItem } from "@/components/widgets/navigationWidgets/types.ts";
 import { typedTo } from "@/router/typedTo";
-import { AbilityLike, GUIAction, GUIComponent } from "@/services/ability";
+import { AbilityLike, GUIComponent } from "@/services/ability";
 import { translate } from "@/utils/generalUtils";
 
 export function buildSettingsNavigationItems(
@@ -82,9 +82,7 @@ export function buildMonitoringNavigationItems(
             label: translate("titles.monitoring"),
             to: typedTo({ name: "/(app)/monitoring/" }),
             testId: `${testIdPrefix}-runningExams-link`,
-            visible:
-                ability.canDo(GUIAction.SHOW_MONITORING) ||
-                ability.canView(GUIComponent.EXAMS),
+            visible: ability.canView(GUIComponent.MONITORING),
         },
         {
             label: translate("titles.spSearch"),

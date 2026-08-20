@@ -82,6 +82,7 @@ definePage({
     meta: {
         titleKey: "titles.monitoring",
         pageTestId: "monitoring-page",
+        requiredComponent: "MONITORING",
     },
 });
 

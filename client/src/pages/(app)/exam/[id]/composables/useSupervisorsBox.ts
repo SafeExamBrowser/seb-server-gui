@@ -4,7 +4,7 @@ import { useSupervisors } from "@/composables/useSupervisors.ts";
 import { Exam } from "@/models/seb-server/exam.ts";
 import { GUIAction } from "@/services/ability.ts";
 
-import { useExamActionDisabled } from "./useExamActionDisabled.ts";
+import { useExamActionAccess } from "./useExamActionAccess.ts";
 
 export const useSupervisorsBox = (
     exam: Ref<Exam | undefined>,
@@ -16,7 +16,7 @@ export const useSupervisorsBox = (
 
     const selectedSupervisorIds = computed(() => exam.value?.supporter ?? []);
 
-    const editDisabled = useExamActionDisabled(
+    const { hidden: editHidden, disabled: editDisabled } = useExamActionAccess(
         exam,
         GUIAction.EDIT_SUPERVISORS,
     );
@@ -28,6 +28,7 @@ export const useSupervisorsBox = (
     return {
         availableSupervisors,
         selectedSupervisorIds,
+        editHidden,
         editDisabled,
         handleChange,
         loading,

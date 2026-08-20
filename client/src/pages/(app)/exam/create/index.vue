@@ -8,6 +8,12 @@ import { useStepAssessmentToolStore } from "@/pages/(app)/exam/create/components
 import { useStepQuizStore } from "@/pages/(app)/exam/create/components/stepQuiz/composables/store/useStepQuizStore.ts";
 import { useCreateExamStore } from "@/pages/(app)/exam/create/composables/store/useCreateExamStore";
 
+definePage({
+    meta: {
+        requiredComponent: "CREATE_EXAM_WIZARD",
+    },
+});
+
 const store = useCreateExamStore();
 
 // re-fetch on every navigation so tools created in the meantime show up

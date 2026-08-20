@@ -6,5 +6,11 @@
 import CreateExamStepper from "@/pages/(app)/exam/create/components/CreateExamStepper.vue";
 import { useCreateExamStore } from "@/pages/(app)/exam/create/composables/store/useCreateExamStore";
 
+definePage({
+    meta: {
+        requiredComponent: "ADD_EXAM_WITH_URL",
+    },
+});
+
 const store = useCreateExamStore();
 </script>

@@ -8,7 +8,7 @@ import { ClientGroup } from "@/models/seb-server/clientGroup.ts";
 import { Exam } from "@/models/seb-server/exam.ts";
 import { ClientGroupExisting } from "@/models/seb-server/examTemplate.ts";
 import { templateGroupToClientGroup } from "@/pages/(app)/exam/[id]/components/BoxClientGroups/utils/templateGroupToClientGroup.ts";
-import { useExamActionDisabled } from "@/pages/(app)/exam/[id]/composables/useExamActionDisabled.ts";
+import { useExamActionAccess } from "@/pages/(app)/exam/[id]/composables/useExamActionAccess.ts";
 import { GUIAction } from "@/services/ability.ts";
 import {
     appErrorToMessage,
@@ -29,7 +29,7 @@ export const useClientGroupsBox = (
 
     const clientGroups = computed(() => groupsFetch.data.value?.content ?? []);
 
-    const editDisabled = useExamActionDisabled(
+    const { hidden: editHidden, disabled: editDisabled } = useExamActionAccess(
         exam,
         GUIAction.EDIT_CLIENT_GROUPS,
     );
@@ -125,6 +125,7 @@ export const useClientGroupsBox = (
         clientGroups,
         loading: groupsFetch.loading,
         error: groupsFetch.error,
+        editHidden,
         editDisabled,
         templateGroups,
         templateLoading: templateFetch.isPending,

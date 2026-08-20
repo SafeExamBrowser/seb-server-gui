@@ -54,6 +54,12 @@ import { extractClientGroupNames } from "@/utils/monitoringUtils.ts";
 import MonitoringDetailsContextPanel from "./components/MonitoringDetailsContextPanel.vue";
 import MonitoringDetailsMain from "./components/MonitoringDetailsMain.vue";
 
+definePage({
+    meta: {
+        requiredComponent: "MONITORING",
+    },
+});
+
 // route params
 const examId = useRoute().params.examId;
 const connectionToken = useRoute().params.connectionToken;

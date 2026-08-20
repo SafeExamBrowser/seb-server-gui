@@ -1,5 +1,6 @@
 <template>
     <ActionButton
+        v-if="deleteVisible"
         color="error"
         variant="outlined"
         :disabled="!deleteEnabled"
@@ -42,6 +43,8 @@ const ability = useAbilities();
 const excludedFromDeletion = computed(
     () => props.exam?.excludeFromDeletion ?? false,
 );
+
+const deleteVisible = computed(() => ability.canDo(GUIAction.DELETE_EXAM));
 
 const deleteEnabled = computed(
     () =>

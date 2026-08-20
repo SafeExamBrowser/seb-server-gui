@@ -1,7 +1,7 @@
 <template>
     <DetailBox :title="$t('examDetail.boxes.sebKeys.title')">
         <template #action>
-            <SebKeysEditDialog />
+            <SebKeysEditDialog v-if="!editHidden" :disabled="editDisabled" />
         </template>
 
         <LoadingFallbackComponent :loading="lastModifiedLoading">
@@ -25,5 +25,7 @@ import SebKeysEditDialog from "./components/SebKeysEditDialog.vue";
 defineProps<{
     lastModifiedItems: KeyValueItem[];
     lastModifiedLoading: boolean;
+    editHidden: boolean;
+    editDisabled: boolean;
 }>();
 </script>

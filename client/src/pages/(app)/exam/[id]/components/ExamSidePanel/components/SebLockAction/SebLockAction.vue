@@ -42,6 +42,10 @@ const { data: assessmentTool } = useAssessmentTool(
 );
 
 const sebLockVisible = computed(() => {
+    if (!ability.canDo(GUIAction.APPLY_SEB_LOCK)) {
+        return false;
+    }
+
     if (!assessmentTool.value) {
         return false;
     }
@@ -53,10 +57,7 @@ const sebLockVisible = computed(() => {
 });
 
 const sebLockEnabled = computed(() =>
-    ability.canDoExamAction(
-        GUIAction.APPLY_SEB_RESTRICTION,
-        props.exam ?? null,
-    ),
+    ability.canDoExamAction(GUIAction.APPLY_SEB_LOCK, props.exam ?? null),
 );
 
 const handleClick = () => {

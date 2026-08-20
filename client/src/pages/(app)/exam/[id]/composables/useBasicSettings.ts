@@ -6,7 +6,7 @@ import { BasicSettings, Exam } from "@/models/seb-server/exam.ts";
 import { GUIAction } from "@/services/ability.ts";
 import * as examService from "@/services/seb-server/examService.ts";
 
-import { useExamActionDisabled } from "./useExamActionDisabled.ts";
+import { useExamActionAccess } from "./useExamActionAccess.ts";
 
 export const useBasicSettings = (
     exam: Ref<Exam | undefined>,
@@ -27,9 +27,9 @@ export const useBasicSettings = (
         encryptPassword: configMapping.value?.encryptSecret,
     }));
 
-    const editDisabled = useExamActionDisabled(
+    const { hidden: editHidden, disabled: editDisabled } = useExamActionAccess(
         exam,
-        GUIAction.EDIT_EXAM_SETTINGS,
+        GUIAction.EDIT_BASIC_SETTINGS,
     );
 
     const configMappingMutation = useMutation(
@@ -81,6 +81,7 @@ export const useBasicSettings = (
 
     return {
         settings,
+        editHidden,
         editDisabled,
         handleChange,
     };

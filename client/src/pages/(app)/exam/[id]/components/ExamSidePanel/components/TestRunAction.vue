@@ -1,5 +1,6 @@
 <template>
     <ActionButton
+        v-if="testRunVisible"
         :active="testRunActive"
         :disabled="!testRunEnabled"
         @click="handleClick"
@@ -40,11 +41,13 @@ const testRunActive = computed(
         ExamStatusEnum.TEST_RUN,
 );
 
+const testRunVisible = computed(() =>
+    ability.canDo(GUIAction.APPLY_DISABLE_TEST_RUN),
+);
+
 const testRunEnabled = computed(() =>
     ability.canDoExamAction(
-        testRunActive.value
-            ? GUIAction.DISABLE_TEST_RUN
-            : GUIAction.APPLY_TEST_RUN,
+        GUIAction.APPLY_DISABLE_TEST_RUN,
         props.exam ?? null,
     ),
 );

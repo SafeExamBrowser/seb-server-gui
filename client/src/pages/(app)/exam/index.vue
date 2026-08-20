@@ -7,6 +7,7 @@
     >
         <template #ActionButton>
             <AddButton
+                v-if="abilities.canView(GUIComponent.CREATE_EXAM_WIZARD)"
                 :route="{ name: '/(app)/exam/create/' }"
                 :label="$t('general.prepareButton')"
                 icon="mdi-clipboard-edit-outline"
@@ -100,7 +101,7 @@ import {
     examStatusColor,
     ExamStatusEnum,
 } from "@/models/seb-server/examFiltersEnum.ts";
-import { GUIAction, useAbilities } from "@/services/ability.ts";
+import { GUIAction, GUIComponent, useAbilities } from "@/services/ability.ts";
 
 import { useExamOverview } from "./composables/useExamOverview.ts";
 
@@ -108,6 +109,7 @@ definePage({
     meta: {
         titleKey: "titles.exams",
         pageTestId: "exams-page",
+        requiredComponent: "EXAMS",
     },
 });
 

@@ -1,5 +1,6 @@
 <template>
     <ActionButton
+        v-if="downloadConnectionVisible"
         :disabled="!downloadConnectionEnabled || !available || loading"
         :loading="loading"
         @click="handleClick"
@@ -30,8 +31,15 @@ const props = defineProps<{
 
 const ability = useAbilities();
 
+const downloadConnectionVisible = computed(() =>
+    ability.canDo(GUIAction.DOWNLOAD_EXAM_CONNECTION),
+);
+
 const downloadConnectionEnabled = computed(() =>
-    ability.canDoExamAction(GUIAction.EDIT_SEB_SETTINGS, props.exam ?? null),
+    ability.canDoExamAction(
+        GUIAction.DOWNLOAD_EXAM_CONNECTION,
+        props.exam ?? null,
+    ),
 );
 
 const {

@@ -126,6 +126,7 @@ definePage({
     meta: {
         titleKey: "titles.monitoring",
         pageTestId: "monitoring-detail-page",
+        requiredComponent: "MONITORING",
     },
 });
 
