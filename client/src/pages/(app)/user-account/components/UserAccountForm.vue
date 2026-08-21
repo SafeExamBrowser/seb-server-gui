@@ -23,12 +23,12 @@
                     >
                         <FormBuilder
                             ref="leftFormRef"
-                            :fields="leftFormFields"
+                            :fields="displayedLeftFormFields"
                             :data-testid="`${dataTestPrefix}-form`"
                         />
 
                         <v-text-field
-                            v-if="mode !== 'create'"
+                            v-if="mode !== 'create' && !changePasswordHidden"
                             :label="
                                 $t(
                                     'userAccount.fields.passwordPlaceholder.label',
@@ -60,7 +60,7 @@
                         >
                             <FormBuilder
                                 ref="rightFormRef"
-                                :fields="rightFormFields"
+                                :fields="displayedRightFormFields"
                                 :data-testid="`${dataTestPrefix}-role-form`"
                             />
                         </LoadingFallbackComponent>
@@ -77,7 +77,7 @@
                 }}{{ formatDate(initialUser.creationDate) }}
             </div>
 
-            <div class="d-flex justify-end ga-2 px-6 pb-4">
+            <div v-if="!editDisabled" class="d-flex justify-end ga-2 px-6 pb-4">
                 <CancelButton
                     :data-testid="`${dataTestPrefix}-cancel-button`"
                     text="general.cancelButton"
@@ -92,7 +92,11 @@
             </div>
 
             <ChangePasswordDialog
-                v-if="mode !== 'create' && initialUser?.username"
+                v-if="
+                    mode !== 'create' &&
+                    initialUser?.username &&
+                    !changePasswordHidden
+                "
                 ref="changePasswordDialogRef"
                 v-model="changePasswordDialogOpen"
                 :username="initialUser.username"
@@ -155,6 +159,8 @@ const props = defineProps<{
     initialUser?: UserAccount;
     dataTestPrefix: string;
     changePasswordLoading?: boolean;
+    editDisabled?: boolean;
+    changePasswordHidden?: boolean;
 }>();
 
 const emit = defineEmits<{
@@ -187,6 +193,18 @@ const {
 } = useUserAccountFormFields(props.mode);
 
 const showSettingsNavigation = computed(() => props.mode !== "profile");
+
+const displayedLeftFormFields = computed(() =>
+    props.editDisabled
+        ? leftFormFields.value.map((field) => ({ ...field, disabled: true }))
+        : leftFormFields.value,
+);
+
+const displayedRightFormFields = computed(() =>
+    props.editDisabled
+        ? rightFormFields.value.map((field) => ({ ...field, disabled: true }))
+        : rightFormFields.value,
+);
 
 const ROLE_INFO_I18N_KEYS: Record<UserRole, string> = {
     SEB_SERVER_ADMIN: "userAccount.general.role.info.SEB_SERVER_ADMIN",
