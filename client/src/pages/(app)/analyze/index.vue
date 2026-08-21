@@ -76,6 +76,12 @@ import {
 } from "@/models/seb-server/examFiltersEnum.ts";
 import { useAnalyzeOverview } from "@/pages/(app)/analyze/composables/useAnalyzeOverview.ts";
 
+definePage({
+    meta: {
+        requiredComponent: "ANALYZE_EXAMS",
+    },
+});
+
 const dataTestId = "analyze";
 
 const { list } = useAnalyzeOverview();
