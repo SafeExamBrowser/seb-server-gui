@@ -56,7 +56,7 @@ import MonitoringDetailsMain from "./components/MonitoringDetailsMain.vue";
 
 definePage({
     meta: {
-        requiredComponent: "MONITORING",
+        requiredComponent: "MONITORING_CLIENT_DETAIL",
     },
 });
 

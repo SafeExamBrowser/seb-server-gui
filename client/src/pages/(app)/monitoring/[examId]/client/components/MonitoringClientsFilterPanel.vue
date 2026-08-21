@@ -36,6 +36,7 @@ import type { SearchBarAction } from "@/components/widgets/searches/types.ts";
 import { ConnectionStatusEnum } from "@/models/seb-server/connectionStatusEnum.ts";
 import { InstructionEnum } from "@/models/seb-server/instructionEnum.ts";
 import { useMonitoringClientsFilters } from "@/pages/(app)/monitoring/[examId]/client/composables/useMonitoringClientsFilters.ts";
+import { GUIAction, useAbilities } from "@/services/ability.ts";
 import { notify } from "@/services/notifications/notify.ts";
 import { useMonitoringStore } from "@/stores/seb-server/monitoringStore.ts";
 import * as generalUtils from "@/utils/generalUtils.ts";
@@ -96,6 +97,11 @@ function handleClearFilters() {
 }
 
 // bulk actions
+const ability = useAbilities();
+const quitClientsVisible = computed(() =>
+    ability.canDo(GUIAction.QUIT_CLIENTS),
+);
+
 const bulkActions = computed<SearchBarAction[]>(() => [
     {
         key: "lock",
@@ -105,14 +111,18 @@ const bulkActions = computed<SearchBarAction[]>(() => [
         disabled: isScreenLockDisabled,
         onClick: handleLockClients,
     },
-    {
-        key: "quit",
-        icon: "mdi-backspace-outline",
-        label: "monitoringClients.info.quitClients",
-        variant: "outlined",
-        disabled: isSEBQuitDisabled,
-        onClick: handleQuitClients,
-    },
+    ...(quitClientsVisible.value
+        ? [
+              {
+                  key: "quit",
+                  icon: "mdi-backspace-outline",
+                  label: "monitoringClients.info.quitClients",
+                  variant: "outlined",
+                  disabled: isSEBQuitDisabled,
+                  onClick: handleQuitClients,
+              } satisfies SearchBarAction,
+          ]
+        : []),
     {
         key: "cancel",
         icon: "mdi-cancel",

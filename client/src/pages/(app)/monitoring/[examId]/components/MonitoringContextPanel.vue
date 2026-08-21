@@ -100,21 +100,23 @@
                         }}
                     </v-btn>
                 </template>
-                <v-btn
-                    block
-                    color="error"
-                    variant="flat"
-                    height="44"
-                    prepend-icon="mdi-power"
-                    @click="openQuitAllDialog()"
-                >
-                    {{ $t("monitoringOverview.quitAll.button") }}
-                </v-btn>
-                <v-dialog v-model="quitAllDialog" max-width="800">
-                    <QuitAllDialog
-                        @close-quit-all-dialog="closeQuitAllDialog"
-                    />
-                </v-dialog>
+                <template v-if="quitAllVisible">
+                    <v-btn
+                        block
+                        color="error"
+                        variant="flat"
+                        height="44"
+                        prepend-icon="mdi-power"
+                        @click="openQuitAllDialog()"
+                    >
+                        {{ $t("monitoringOverview.quitAll.button") }}
+                    </v-btn>
+                    <v-dialog v-model="quitAllDialog" max-width="800">
+                        <QuitAllDialog
+                            @close-quit-all-dialog="closeQuitAllDialog"
+                        />
+                    </v-dialog>
+                </template>
             </div>
         </div>
     </div>
@@ -126,6 +128,7 @@ import { VAvatar, VBtn, VDialog, VDivider } from "vuetify/components";
 
 import { ExamStatusEnum } from "@/models/seb-server/examFiltersEnum.ts";
 import { typedTo } from "@/router/typedTo.ts";
+import { GUIAction, useAbilities } from "@/services/ability.ts";
 import { quitAll } from "@/services/seb-server/monitoringService.ts";
 import { useMonitoringStore } from "@/stores/seb-server/monitoringStore.ts";
 import * as generalUtils from "@/utils/generalUtils.ts";
@@ -137,6 +140,11 @@ import MonitoringOverviewASK from "./MonitoringOverviewASK.vue";
 withDefaults(defineProps<{ refreshSeconds?: number }>(), { refreshSeconds: 5 });
 
 const monitoringStore = useMonitoringStore();
+
+const ability = useAbilities();
+const quitAllVisible = computed(() =>
+    ability.canDo(GUIAction.QUIT_ALL_CLIENTS),
+);
 
 const spSearchRoute = typedTo({ name: "/(app)/sp-search/" });
 const spApplicationsRoute = typedTo({ name: "/(app)/applications-search/" });
