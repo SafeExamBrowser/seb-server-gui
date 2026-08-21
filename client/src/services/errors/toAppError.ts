@@ -28,6 +28,10 @@ export function isAppError(error: unknown): error is AppError {
     );
 }
 
+export function isNotFoundError(error: AppError | undefined): boolean {
+    return error?.kind === "backend" && error.status === 404;
+}
+
 export function normalizeAPIMessages(payload: unknown): APIMessage[] {
     const raw = Array.isArray(payload) ? payload : [payload];
     const parsed = zApiMessageArray.safeParse(raw);

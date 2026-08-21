@@ -1,5 +1,11 @@
 <template>
+    <NotFoundPage
+        v-if="notFound"
+        :message="$t('institutions.notFound.message')"
+        :back-link="notFoundBackLink"
+    />
     <BasicPage
+        v-else
         :title="$t('titles.editInstitution')"
         :bread-crumb="[
             {
@@ -58,10 +64,12 @@
 
 <script setup lang="ts">
 import { computed, ref, watch } from "vue";
+import { useI18n } from "vue-i18n";
 import { useRoute, useRouter } from "vue-router";
 import { VCol, VRow } from "vuetify/components";
 
 import BasicPage from "@/components/layout/pages/BasicPage.vue";
+import NotFoundPage from "@/components/layout/pages/NotFoundPage.vue";
 import CancelButton from "@/components/widgets/CancelButton.vue";
 import ConfirmButton from "@/components/widgets/ConfirmButton.vue";
 import FormBuilder from "@/components/widgets/formBuilder/FormBuilder.vue";
@@ -74,9 +82,13 @@ import { useInstitutionBranding } from "@/composables/useInstitutionBranding.ts"
 import { useEditInstitutionMutation } from "@/pages/(app)/institution/api/useEditInstitutionMutation.ts";
 import { useInstitutionQuery } from "@/pages/(app)/institution/api/useInstitutionQuery.ts";
 import { useInstitutionFormFields } from "@/pages/(app)/institution/composables/useInstitutionFormFields.ts";
+import { typedTo } from "@/router/typedTo";
 import { applyBackendFieldErrors } from "@/services/errors/formErrorMapping.ts";
 import { submitWithFormErrors } from "@/services/errors/submitWithFormErrors.ts";
-import { toAppErrorOrUndefined } from "@/services/errors/toAppError.ts";
+import {
+    isNotFoundError,
+    toAppErrorOrUndefined,
+} from "@/services/errors/toAppError.ts";
 
 definePage({
     meta: {
@@ -89,6 +101,7 @@ definePage({
 
 const route = useRoute("/(app)/institution/[id]/");
 const router = useRouter();
+const { t } = useI18n();
 
 const modelId = computed(() => String(route.params.id));
 
@@ -98,6 +111,13 @@ const {
     error: queryError,
 } = useInstitutionQuery(modelId);
 const error = computed(() => toAppErrorOrUndefined(queryError.value));
+
+const notFound = computed(() => isNotFoundError(error.value));
+
+const notFoundBackLink = {
+    label: t("institutions.notFound.backToList"),
+    to: typedTo({ name: "/(app)/institution/" }),
+};
 
 const { formFields, name, logoImage } = useInstitutionFormFields();
 

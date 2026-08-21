@@ -12,6 +12,7 @@ import { useExamActionAccess } from "@/pages/(app)/exam/[id]/composables/useExam
 import { GUIAction } from "@/services/ability.ts";
 import {
     appErrorToMessage,
+    isNotFoundError,
     toAppErrorOrUndefined,
 } from "@/services/errors/toAppError.ts";
 import { notify } from "@/services/notifications/notify.ts";
@@ -51,10 +52,8 @@ export const useClientGroupsBox = (
     });
 
     // A deleted template (404) is a regular empty state, not an error
-    const templateNotFound = computed(
-        () =>
-            templateError.value?.kind === "backend" &&
-            templateError.value.status === 404,
+    const templateNotFound = computed(() =>
+        isNotFoundError(templateError.value),
     );
 
     const templateErrorMessage = computed(() =>

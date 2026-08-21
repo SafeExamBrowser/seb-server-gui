@@ -6,6 +6,7 @@ import type { BreadCrumbItem } from "@/components/widgets/breadCrumb/types.ts";
 import { useMutation } from "@/composables/useMutation.ts";
 import i18n from "@/i18n";
 import { Exam } from "@/models/seb-server/exam.ts";
+import { isNotFoundError } from "@/services/errors/toAppError.ts";
 import * as examService from "@/services/seb-server/examService.ts";
 
 import { useDeleteExamAction } from "./actions/useDeleteExamAction.ts";
@@ -80,11 +81,7 @@ export const useExamDetailPage = () => {
             supervisors.loading.value,
     );
 
-    const notFound = computed(
-        () =>
-            examError.value?.kind === "backend" &&
-            examError.value.status === 404,
-    );
+    const notFound = computed(() => isNotFoundError(examError.value));
 
     const errors = computed(() => {
         const messages = [];

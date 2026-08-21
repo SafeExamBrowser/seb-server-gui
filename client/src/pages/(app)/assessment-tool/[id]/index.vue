@@ -1,5 +1,11 @@
 <template>
+    <NotFoundPage
+        v-if="notFound"
+        :message="$t('assessmentToolConnections.notFound.message')"
+        :back-link="notFoundBackLink"
+    />
     <LoadingFallbackComponent
+        v-else
         :loading="loading"
         :errors="fetchError ? [fetchError] : []"
     >
@@ -18,16 +24,22 @@
 
 <script setup lang="ts">
 import { computed, ref } from "vue";
+import { useI18n } from "vue-i18n";
 import { useRoute, useRouter } from "vue-router";
 
+import NotFoundPage from "@/components/layout/pages/NotFoundPage.vue";
 import LoadingFallbackComponent from "@/components/widgets/loadingFallbackComponent/LoadingFallbackComponent.vue";
 import type { AssessmentToolEditRequest } from "@/models/assessmentTool.ts";
 import { useAssessmentToolQuery } from "@/pages/(app)/assessment-tool/api/useAssessmentToolQuery.ts";
 import { useEditAssessmentToolMutation } from "@/pages/(app)/assessment-tool/api/useEditAssessmentToolMutation.ts";
 import { assessmentToolFormConfig } from "@/pages/(app)/assessment-tool/assessmentToolFormConfig.ts";
 import AssessmentToolForm from "@/pages/(app)/assessment-tool/components/AssessmentToolForm.vue";
+import { typedTo } from "@/router/typedTo";
 import { submitWithFormErrors } from "@/services/errors/submitWithFormErrors.ts";
-import { toAppErrorOrUndefined } from "@/services/errors/toAppError.ts";
+import {
+    isNotFoundError,
+    toAppErrorOrUndefined,
+} from "@/services/errors/toAppError.ts";
 
 definePage({
     meta: {
@@ -40,6 +52,7 @@ definePage({
 
 const route = useRoute("/(app)/assessment-tool/[id]/");
 const router = useRouter();
+const { t } = useI18n();
 
 const formRef = ref<InstanceType<typeof AssessmentToolForm>>();
 const id = computed(() => {
@@ -52,6 +65,13 @@ const {
     error: fetchQueryError,
 } = useAssessmentToolQuery(id);
 const fetchError = computed(() => toAppErrorOrUndefined(fetchQueryError.value));
+
+const notFound = computed(() => isNotFoundError(fetchError.value));
+
+const notFoundBackLink = {
+    label: t("assessmentToolConnections.notFound.backToList"),
+    to: typedTo({ name: "/(app)/assessment-tool/" }),
+};
 
 const { mutateAsync: save, error: saveMutationError } =
     useEditAssessmentToolMutation();

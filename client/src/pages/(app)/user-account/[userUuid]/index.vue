@@ -1,5 +1,11 @@
 <template>
+    <NotFoundPage
+        v-if="notFound"
+        :message="$t('userAccount.notFound.message')"
+        :back-link="notFoundBackLink"
+    />
     <LoadingFallbackComponent
+        v-else
         :loading="loading"
         :errors="fetchError ? [fetchError] : []"
     >
@@ -23,6 +29,7 @@ import { computed, ref, watch } from "vue";
 import { useI18n } from "vue-i18n";
 import { useRoute, useRouter } from "vue-router";
 
+import NotFoundPage from "@/components/layout/pages/NotFoundPage.vue";
 import LoadingFallbackComponent from "@/components/widgets/loadingFallbackComponent/LoadingFallbackComponent.vue";
 import { useCurrentUserQuery } from "@/composables/useCurrentUser.ts";
 import { useLogout } from "@/composables/useLogout.ts";
@@ -31,7 +38,11 @@ import { useUserAccountQuery } from "@/pages/(app)/user-account/api/useUserAccou
 import UserAccountForm from "@/pages/(app)/user-account/components/UserAccountForm.vue";
 import { useUserAccountFormSubmit } from "@/pages/(app)/user-account/composables/useUserAccountFormSubmit.ts";
 import { userAccountFormConfig } from "@/pages/(app)/user-account/userAccountFormConfig.ts";
-import { toAppErrorOrUndefined } from "@/services/errors/toAppError.ts";
+import { typedTo } from "@/router/typedTo";
+import {
+    isNotFoundError,
+    toAppErrorOrUndefined,
+} from "@/services/errors/toAppError.ts";
 import { notify } from "@/services/notifications/notify.ts";
 
 definePage({
@@ -58,6 +69,13 @@ const {
     error: userError,
 } = useUserAccountQuery(userUuid);
 const fetchError = computed(() => toAppErrorOrUndefined(userError.value));
+
+const notFound = computed(() => isNotFoundError(fetchError.value));
+
+const notFoundBackLink = {
+    label: t("userAccount.notFound.backToList"),
+    to: typedTo({ name: "/(app)/user-account/" }),
+};
 
 // Teacher accounts are auto-generated and cannot be edited. If someone reaches
 // this page directly (e.g. by URL) for one, warn them and send them home.

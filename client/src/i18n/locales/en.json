@@ -399,6 +399,10 @@
         }
     },
     "scheduledDelete": {
+        "notFound": {
+            "message": "Scheduled deletion report not found",
+            "backToList": "Back to scheduled deletions"
+        },
         "list": {
             "headerName": "Name",
             "headerDueTime": "Deletion Due Date",
@@ -662,6 +666,10 @@
         "selected": "exam(s) selected"
     },
     "userAccount": {
+        "notFound": {
+            "message": "User account not found",
+            "backToList": "Back to user accounts"
+        },
         "general": {
             "status": {
                 "active": "Active",
@@ -791,6 +799,10 @@
         }
     },
     "assessmentToolConnections": {
+        "notFound": {
+            "message": "Assessment tool connection not found",
+            "backToList": "Back to assessment tool connections"
+        },
         "list": {
             "tableHeaders": {
                 "name": "Name",
@@ -904,6 +916,10 @@
         }
     },
     "connectionConfigurations": {
+        "notFound": {
+            "message": "Connection configuration not found",
+            "backToList": "Back to connection configurations"
+        },
         "list": {
             "tableHeaders": {
                 "name": "Name",
@@ -1057,6 +1073,10 @@
         }
     },
     "institutions": {
+        "notFound": {
+            "message": "Institution not found",
+            "backToList": "Back to institutions"
+        },
         "list": {
             "tableHeaders": {
                 "logoImage": "Logo",

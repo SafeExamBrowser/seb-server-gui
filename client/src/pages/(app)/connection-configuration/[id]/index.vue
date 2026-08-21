@@ -1,5 +1,11 @@
 <template>
+    <NotFoundPage
+        v-if="notFound"
+        :message="$t('connectionConfigurations.notFound.message')"
+        :back-link="notFoundBackLink"
+    />
     <BasicPage
+        v-else
         :title="$t('titles.connectionConfigurationViewAndEdit')"
         :bread-crumb="[
             {
@@ -184,6 +190,7 @@
 <script setup lang="ts">
 import moment from "moment-timezone";
 import { computed, ref, watch } from "vue";
+import { useI18n } from "vue-i18n";
 import { useRoute, useRouter } from "vue-router";
 import {
     VCol,
@@ -197,6 +204,7 @@ import {
 } from "vuetify/components";
 
 import BasicPage from "@/components/layout/pages/BasicPage.vue";
+import NotFoundPage from "@/components/layout/pages/NotFoundPage.vue";
 import CancelButton from "@/components/widgets/CancelButton.vue";
 import ConfirmButton from "@/components/widgets/ConfirmButton.vue";
 import FormBuilder from "@/components/widgets/formBuilder/FormBuilder.vue";
@@ -215,9 +223,13 @@ import { useConnectionConfigurationQuery } from "@/pages/(app)/connection-config
 import { useEditConnectionConfigurationMutation } from "@/pages/(app)/connection-configuration/api/useEditConnectionConfigurationMutation.ts";
 import { useCertificates } from "@/pages/(app)/connection-configuration/composables/api/useCertificates.ts";
 import { useConnectionConfigurationFormFields } from "@/pages/(app)/connection-configuration/composables/useConnectionConfigurationFormFields.ts";
+import { typedTo } from "@/router/typedTo";
 import { applyBackendFieldErrors } from "@/services/errors/formErrorMapping.ts";
 import { submitWithFormErrors } from "@/services/errors/submitWithFormErrors.ts";
-import { toAppErrorOrUndefined } from "@/services/errors/toAppError.ts";
+import {
+    isNotFoundError,
+    toAppErrorOrUndefined,
+} from "@/services/errors/toAppError.ts";
 
 definePage({
     meta: {
@@ -230,6 +242,7 @@ definePage({
 
 const route = useRoute("/(app)/connection-configuration/[id]/");
 const router = useRouter();
+const { t } = useI18n();
 
 const {
     mainFormFields,
@@ -272,6 +285,13 @@ const {
     error: fetchQueryError,
 } = useConnectionConfigurationQuery(id);
 const fetchError = computed(() => toAppErrorOrUndefined(fetchQueryError.value));
+
+const notFound = computed(() => isNotFoundError(fetchError.value));
+
+const notFoundBackLink = {
+    label: t("connectionConfigurations.notFound.backToList"),
+    to: typedTo({ name: "/(app)/connection-configuration/" }),
+};
 
 const { mutateAsync: save, error: saveMutationError } =
     useEditConnectionConfigurationMutation();

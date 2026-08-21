@@ -1,5 +1,11 @@
 <template>
+    <NotFoundPage
+        v-if="report.notFound"
+        :message="$t('scheduledDelete.notFound.message')"
+        :back-link="notFoundBackLink"
+    />
     <BasicPage
+        v-else
         :title="$t('titles.scheduledDeletionReport')"
         :bread-crumb="[
             {
@@ -223,6 +229,7 @@ import { useRoute } from "vue-router";
 import { VChip, VCol, VDivider, VRow, VTooltip } from "vuetify/components";
 
 import BasicPage from "@/components/layout/pages/BasicPage.vue";
+import NotFoundPage from "@/components/layout/pages/NotFoundPage.vue";
 import DetailBox from "@/components/widgets/DetailBox.vue";
 import KeyValueList from "@/components/widgets/keyValueList/KeyValueList.vue";
 import LoadingFallbackComponent from "@/components/widgets/loadingFallbackComponent/LoadingFallbackComponent.vue";
@@ -231,6 +238,7 @@ import {
     SPSGroupInfo,
 } from "@/models/scheduledDeletion.ts";
 import { useScheduledDeletionReport } from "@/pages/(app)/scheduled-deletion/composables/useScheduledDeletionReport";
+import { typedTo } from "@/router/typedTo";
 import { formatTimestampToFullDate } from "@/utils/timeUtils";
 
 definePage({
@@ -246,6 +254,11 @@ const route = useRoute();
 const id = route.params.id;
 
 const { report } = useScheduledDeletionReport(id);
+
+const notFoundBackLink = {
+    label: t("scheduledDelete.notFound.backToList"),
+    to: typedTo({ name: "/(app)/scheduled-deletion/" }),
+};
 
 function getGroupInfo(group: SPSGroupInfo): string {
     return `${t("scheduledDelete.report.spsGroupsName")}: ${group.groupName} - ${t("scheduledDelete.report.spsGroupSessions")}: ${group.numberOfSessions}`;
