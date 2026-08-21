@@ -21882,18 +21882,22 @@
                                 "ADD_EXAM_WITH_URL",
                                 "CREATE_EXAM_WIZARD",
                                 "EXAM_DETAIL",
+                                "ANALYZE_EXAMS",
+                                "ARCHIVE_EXAMS",
+                                "EXAM_TEMPLATES",
+                                "CREATE_EXAM_TEMPLATE",
+                                "EXAM_TEMPLATE_DETAIL",
+                                "SCHEDULED_DELETIONS",
+                                "CREATE_SCHEDULED_DELETION",
+                                "SCHEDULED_DELETION_REPORT",
                                 "MONITORING",
                                 "NAVIGATION_OVERVIEW",
                                 "HOME",
                                 "SETTINGS",
-                                "EXAM_TEMPLATE",
                                 "RUNNING_EXAMS",
                                 "SCREEN_PROCTORING",
                                 "SCREEN_PROCTORING_SEARCH",
-                                "SCREEN_PROCTORING_APPLICATION_SEARCH",
-                                "ANALYZE_EXAMS",
-                                "ARCHIVE_EXAMS",
-                                "SCHEDULED_DELETION"
+                                "SCREEN_PROCTORING_APPLICATION_SEARCH"
                             ]
                         }
                     },
@@ -21918,7 +21922,6 @@
                                 "APPLY_SEB_LOCK",
                                 "DOWNLOAD_EXAM_CONNECTION",
                                 "DELETE_EXAM",
-                                "ARCHIVE_EXAM",
                                 "EDIT_INDICATORS",
                                 "SHOW_FINISHED_EXAM_DATA"
                             ]
@@ -22476,7 +22479,7 @@
                     "grantDenied": { "type": "boolean" },
                     "sebversionDenied": { "type": "boolean" },
                     "pendingNotification": { "type": "boolean" },
-                    "lat": { "type": "integer" },
+                    "nf": { "type": "integer", "format": "int32" },
                     "st": {
                         "type": "string",
                         "enum": [
@@ -22488,11 +22491,11 @@
                             "DISABLED"
                         ]
                     },
+                    "lat": { "type": "integer" },
                     "iv": {
                         "type": "object",
                         "additionalProperties": { "type": "string" }
                     },
-                    "nf": { "type": "integer", "format": "int32" },
                     "id": { "type": "integer" }
                 }
             },
