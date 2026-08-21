@@ -209,6 +209,7 @@ definePage({
     meta: {
         titleKey: "titles.spSearch",
         pageTestId: "sp-search-page",
+        requiredComponent: "SCREEN_PROCTORING_SEARCH",
     },
 });
 

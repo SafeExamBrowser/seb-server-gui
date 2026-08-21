@@ -112,6 +112,7 @@ definePage({
         titleKey: "titles.galleryView",
         pageTestId: "gallery-view-page",
         layoutContext: "gallery-view",
+        requiredComponent: "GALLERY",
     },
 });
 

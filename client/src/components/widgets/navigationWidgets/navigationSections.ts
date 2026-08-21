@@ -89,13 +89,15 @@ export function buildMonitoringNavigationItems(
             to: typedTo({ name: "/(app)/sp-search/" }),
             thickDivider: true,
             testId: `${testIdPrefix}-spSearch-link`,
-            visible: ability.canView(GUIComponent.EXAMS),
+            visible: ability.canView(GUIComponent.SCREEN_PROCTORING_SEARCH),
         },
         {
             label: translate("titles.spApplications"),
             to: typedTo({ name: "/(app)/applications-search/" }),
             testId: `${testIdPrefix}-spApplications-link`,
-            visible: ability.canView(GUIComponent.EXAMS),
+            visible: ability.canView(
+                GUIComponent.SCREEN_PROCTORING_APPLICATION_SEARCH,
+            ),
         },
     ];
 }

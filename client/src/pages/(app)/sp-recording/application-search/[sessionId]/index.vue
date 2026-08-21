@@ -241,6 +241,7 @@ definePage({
     meta: {
         titleKey: "titles.screenProctoring",
         pageTestId: "sp-recording-application-search-page",
+        requiredComponent: "SCREEN_PROCTORING_RECORDING",
     },
 });
 
