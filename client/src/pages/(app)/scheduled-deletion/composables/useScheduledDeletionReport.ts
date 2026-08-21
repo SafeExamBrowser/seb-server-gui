@@ -4,7 +4,10 @@ import { KeyValueItem } from "@/components/widgets/keyValueList/types";
 import i18n from "@/i18n";
 import { DeletionInfo } from "@/models/scheduledDeletion.ts";
 import { useScheduledDeleteReportQuery } from "@/pages/(app)/scheduled-deletion/composables/api/useScheduledDeleteReportQuery.ts";
-import { toAppErrorOrUndefined } from "@/services/errors/toAppError.ts";
+import {
+    isNotFoundError,
+    toAppErrorOrUndefined,
+} from "@/services/errors/toAppError.ts";
 import {
     formatTimestampToDate,
     formatTimestampToFullDate,
@@ -138,6 +141,8 @@ export const useScheduledDeletionReport = (id: string) => {
 
     const errors = computed(() => (error.value ? [error.value] : []));
 
+    const notFound = computed(() => isNotFoundError(error.value));
+
     return {
         report: reactive({
             scheduledDelete,
@@ -147,6 +152,7 @@ export const useScheduledDeletionReport = (id: string) => {
             spsDeletions,
             loading,
             errors,
+            notFound,
         }),
     };
 };

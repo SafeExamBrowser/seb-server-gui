@@ -14,7 +14,10 @@ import { ClientGroupExisting } from "@/models/seb-server/examTemplate.ts";
 import { SCREEN_PROCTORING_COLLECTION_STRATEGY } from "@/models/seb-server/screenProctoring.ts";
 import { useEditExamTemplateMutation } from "@/pages/(app)/exam-template/api/useEditExamTemplateMutation.ts";
 import { useExamTemplateQuery } from "@/pages/(app)/exam-template/api/useExamTemplateQuery.ts";
-import { toAppErrorOrUndefined } from "@/services/errors/toAppError.ts";
+import {
+    isNotFoundError,
+    toAppErrorOrUndefined,
+} from "@/services/errors/toAppError.ts";
 import { notify } from "@/services/notifications/notify.ts";
 
 const idSchema = z.coerce.number().int().positive();
@@ -47,11 +50,7 @@ export const useExamTemplateDetailPage = () => {
         () => examTemplateLoading.value || availableSupervisorsLoading.value,
     );
 
-    const notFound = computed(
-        () =>
-            examTemplateError.value?.kind === "backend" &&
-            examTemplateError.value.status === 404,
-    );
+    const notFound = computed(() => isNotFoundError(examTemplateError.value));
 
     const errors = computed(() => {
         const messages = [];
