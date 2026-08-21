@@ -237,6 +237,7 @@ definePage({
     meta: {
         titleKey: "titles.scheduledDeletionReport",
         pageTestId: "scheduledDeleteReport-page",
+        requiredComponent: "SCHEDULED_DELETION_REPORT",
     },
 });
 
