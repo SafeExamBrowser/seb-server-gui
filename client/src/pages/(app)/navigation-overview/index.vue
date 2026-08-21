@@ -77,6 +77,7 @@ definePage({
         pageTestId: "navigation-overview-page",
         isPageBlue: true,
         layoutContext: "navigation-overview",
+        requiredComponent: "NAVIGATION_OVERVIEW",
     },
 });
 

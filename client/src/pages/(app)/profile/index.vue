@@ -8,6 +8,8 @@
             :initial-user="user"
             :data-test-prefix="userAccountFormConfig.profileTestPrefix"
             :change-password-loading="changePasswordLoading"
+            :edit-disabled="editDisabled"
+            :change-password-hidden="changePasswordHidden"
             @edit-submit="handleSubmit"
             @cancel="router.push({ name: '/(app)/' })"
             @change-password="handleChangePassword"
@@ -25,6 +27,7 @@ import { useLogout } from "@/composables/useLogout.ts";
 import UserAccountForm from "@/pages/(app)/user-account/components/UserAccountForm.vue";
 import { useUserAccountFormSubmit } from "@/pages/(app)/user-account/composables/useUserAccountFormSubmit.ts";
 import { userAccountFormConfig } from "@/pages/(app)/user-account/userAccountFormConfig.ts";
+import { GUIAction, useAbilities } from "@/services/ability.ts";
 import { toAppErrorOrUndefined } from "@/services/errors/toAppError.ts";
 
 definePage({
@@ -32,11 +35,20 @@ definePage({
         titleKey: "titles.profileSettings",
         pageTestId: "profile-settings-page",
         isPageBlue: true,
+        requiredComponent: "PROFILE",
     },
 });
 
 const router = useRouter();
 const formRef = ref<InstanceType<typeof UserAccountForm>>();
+
+const ability = useAbilities();
+const editDisabled = computed(
+    () => !ability.canDo(GUIAction.EDIT_PROFILE_FIELDS),
+);
+const changePasswordHidden = computed(
+    () => !ability.canDo(GUIAction.CHANGE_OWN_PASSWORD),
+);
 const {
     data: user,
     isPending: loading,

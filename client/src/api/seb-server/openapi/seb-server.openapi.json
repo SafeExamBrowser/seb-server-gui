@@ -21865,6 +21865,7 @@
                             "type": "string",
                             "description": "Identifier of one GUI component (view, page or navigation entry).",
                             "enum": [
+                                "NAVIGATION_OVERVIEW",
                                 "INSTITUTIONS",
                                 "EDIT_INSTITUTION",
                                 "CREATE_INSTITUTION",
@@ -21890,14 +21891,17 @@
                                 "SCHEDULED_DELETIONS",
                                 "CREATE_SCHEDULED_DELETION",
                                 "SCHEDULED_DELETION_REPORT",
+                                "PROFILE",
                                 "MONITORING",
-                                "NAVIGATION_OVERVIEW",
-                                "HOME",
-                                "SETTINGS",
-                                "RUNNING_EXAMS",
-                                "SCREEN_PROCTORING",
+                                "MONITORING_DETAIL",
+                                "MONITORING_CLIENTS",
+                                "MONITORING_CLIENT_DETAIL",
+                                "SCREEN_PROCTORING_APPLICATION_SEARCH",
+                                "GALLERY",
+                                "SCREEN_PROCTORING_RECORDING",
                                 "SCREEN_PROCTORING_SEARCH",
-                                "SCREEN_PROCTORING_APPLICATION_SEARCH"
+                                "HOME",
+                                "SETTINGS"
                             ]
                         }
                     },
@@ -21922,6 +21926,10 @@
                                 "APPLY_SEB_LOCK",
                                 "DOWNLOAD_EXAM_CONNECTION",
                                 "DELETE_EXAM",
+                                "EDIT_PROFILE_FIELDS",
+                                "CHANGE_OWN_PASSWORD",
+                                "QUIT_ALL_CLIENTS",
+                                "QUIT_CLIENTS",
                                 "EDIT_INDICATORS",
                                 "SHOW_FINISHED_EXAM_DATA"
                             ]
@@ -22479,7 +22487,6 @@
                     "grantDenied": { "type": "boolean" },
                     "sebversionDenied": { "type": "boolean" },
                     "pendingNotification": { "type": "boolean" },
-                    "nf": { "type": "integer", "format": "int32" },
                     "st": {
                         "type": "string",
                         "enum": [
@@ -22496,6 +22503,7 @@
                         "type": "object",
                         "additionalProperties": { "type": "string" }
                     },
+                    "nf": { "type": "integer", "format": "int32" },
                     "id": { "type": "integer" }
                 }
             },

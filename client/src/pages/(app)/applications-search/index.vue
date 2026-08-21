@@ -266,6 +266,7 @@ definePage({
     meta: {
         titleKey: "titles.spApplications",
         pageTestId: "applications-page",
+        requiredComponent: "SCREEN_PROCTORING_APPLICATION_SEARCH",
     },
 });
 
