@@ -1117,18 +1117,22 @@ export const zGuiAbilities = z.object({
         'ADD_EXAM_WITH_URL',
         'CREATE_EXAM_WIZARD',
         'EXAM_DETAIL',
+        'ANALYZE_EXAMS',
+        'ARCHIVE_EXAMS',
+        'EXAM_TEMPLATES',
+        'CREATE_EXAM_TEMPLATE',
+        'EXAM_TEMPLATE_DETAIL',
+        'SCHEDULED_DELETIONS',
+        'CREATE_SCHEDULED_DELETION',
+        'SCHEDULED_DELETION_REPORT',
         'MONITORING',
         'NAVIGATION_OVERVIEW',
         'HOME',
         'SETTINGS',
-        'EXAM_TEMPLATE',
         'RUNNING_EXAMS',
         'SCREEN_PROCTORING',
         'SCREEN_PROCTORING_SEARCH',
-        'SCREEN_PROCTORING_APPLICATION_SEARCH',
-        'ANALYZE_EXAMS',
-        'ARCHIVE_EXAMS',
-        'SCHEDULED_DELETION'
+        'SCREEN_PROCTORING_APPLICATION_SEARCH'
     ])),
     actions: z.array(z.enum([
         'SHOW_INSTITUTION_COLUMN',
@@ -1146,7 +1150,6 @@ export const zGuiAbilities = z.object({
         'APPLY_SEB_LOCK',
         'DOWNLOAD_EXAM_CONNECTION',
         'DELETE_EXAM',
-        'ARCHIVE_EXAM',
         'EDIT_INDICATORS',
         'SHOW_FINISHED_EXAM_DATA'
     ]))
@@ -1363,7 +1366,7 @@ export const zClientMonitoringDataView = z.object({
     grantDenied: z.boolean().optional(),
     sebversionDenied: z.boolean().optional(),
     pendingNotification: z.boolean().optional(),
-    lat: z.int().optional(),
+    nf: z.int().min(-2147483648, { error: 'Invalid value: Expected int32 to be >= -2147483648' }).max(2147483647, { error: 'Invalid value: Expected int32 to be <= 2147483647' }).optional(),
     st: z.enum([
         'UNDEFINED',
         'CONNECTION_REQUESTED',
@@ -1372,8 +1375,8 @@ export const zClientMonitoringDataView = z.object({
         'CLOSED',
         'DISABLED'
     ]).optional(),
+    lat: z.int().optional(),
     iv: z.record(z.string(), z.string()).optional(),
-    nf: z.int().min(-2147483648, { error: 'Invalid value: Expected int32 to be >= -2147483648' }).max(2147483647, { error: 'Invalid value: Expected int32 to be <= 2147483647' }).optional(),
     id: z.int().optional()
 });
 

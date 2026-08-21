@@ -50,13 +50,13 @@ export function buildPreparationNavigationItems(
             label: translate("titles.createTemplateExam"),
             to: typedTo({ name: "/(app)/exam-template/create/" }),
             testId: `${testIdPrefix}-createTemplate-link`,
-            visible: ability.canView(GUIComponent.EXAM_TEMPLATE),
+            visible: ability.canView(GUIComponent.CREATE_EXAM_TEMPLATE),
         },
         {
             label: translate("titles.examTemplateList"),
             to: typedTo({ name: "/(app)/exam-template/" }),
             testId: `${testIdPrefix}-examTemplateList-link`,
-            visible: ability.canView(GUIComponent.EXAM_TEMPLATE),
+            visible: ability.canView(GUIComponent.EXAM_TEMPLATES),
         },
         {
             label: translate("titles.createExam"),
@@ -120,7 +120,7 @@ export function buildFollowUpNavigationItems(
         {
             label: translate("navigation.routeNames.scheduledDeletion"),
             to: typedTo({ name: "/(app)/scheduled-deletion/" }),
-            visible: ability.canView(GUIComponent.SCHEDULED_DELETION),
+            visible: ability.canView(GUIComponent.SCHEDULED_DELETIONS),
             testId: `${testIdPrefix}-scheduledDelete-test`,
         },
     ];

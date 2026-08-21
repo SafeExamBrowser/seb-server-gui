@@ -124,6 +124,12 @@ import {
 } from "@/models/seb-server/examFiltersEnum.ts";
 import { useArchiveOverview } from "@/pages/(app)/archive/composables/useArchiveOverview.ts";
 
+definePage({
+    meta: {
+        requiredComponent: "ARCHIVE_EXAMS",
+    },
+});
+
 const dataTestId = "archive";
 
 const { list, archiveFlow, archiveMultiFlow, multiSelectionActions } =

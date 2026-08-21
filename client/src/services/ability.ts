@@ -88,7 +88,6 @@ examStatusActions.set(
     ExamStatusEnum.FINISHED,
     new Set<GUIAction>([
         GUIAction.EDIT_BASIC_SETTINGS,
-        GUIAction.ARCHIVE_EXAM,
         GUIAction.DELETE_EXAM,
         GUIAction.DOWNLOAD_EXAM_CONNECTION,
         GUIAction.EDIT_SUPERVISORS,

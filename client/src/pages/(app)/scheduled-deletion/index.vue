@@ -118,6 +118,7 @@ definePage({
     meta: {
         titleKey: "titles.scheduled-deletion",
         pageTestId: "scheduled-deletion-page",
+        requiredComponent: "SCHEDULED_DELETIONS",
     },
 });
 

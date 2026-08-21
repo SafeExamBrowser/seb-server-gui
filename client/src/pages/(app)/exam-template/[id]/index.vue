@@ -77,6 +77,7 @@ definePage({
     meta: {
         titleKey: "titles.examTemplateDetail",
         pageTestId: "exam-template-detail-page",
+        requiredComponent: "EXAM_TEMPLATE_DETAIL",
     },
 });
 

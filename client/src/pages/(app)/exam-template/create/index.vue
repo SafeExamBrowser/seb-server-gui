@@ -60,6 +60,12 @@ import { toAppErrorOrUndefined } from "@/services/errors/toAppError.ts";
 
 import { useCreateExamTemplateStore } from "./composables/store/useCreateExamTemplateStore.ts";
 
+definePage({
+    meta: {
+        requiredComponent: "CREATE_EXAM_TEMPLATE",
+    },
+});
+
 const {
     mutateAsync: createExamTemplate,
     isPending: createExamTemplateLoading,

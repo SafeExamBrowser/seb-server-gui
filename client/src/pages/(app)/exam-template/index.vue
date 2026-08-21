@@ -94,6 +94,12 @@ import SearchBar from "@/components/widgets/searches/SearchBar.vue";
 
 import { useExamTemplateOverview } from "./composables/useExamTemplateOverview.ts";
 
+definePage({
+    meta: {
+        requiredComponent: "EXAM_TEMPLATES",
+    },
+});
+
 const dataTestId = "examTemplates";
 
 const { list, deleteFlow, copyFlow } = useExamTemplateOverview();
