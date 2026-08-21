@@ -62,13 +62,13 @@ export function buildPreparationNavigationItems(
             label: translate("titles.createExam"),
             to: typedTo({ name: "/(app)/exam/create/" }),
             testId: `${testIdPrefix}-prepareExam-link`,
-            visible: ability.canView(GUIComponent.EXAMS),
+            visible: ability.canView(GUIComponent.CREATE_EXAM_WIZARD),
         },
         {
             label: translate("titles.addExamWithURL"),
             to: typedTo({ name: "/(app)/exam/create/withURL/" }),
             testId: `${testIdPrefix}-addExamWithURL-text`,
-            visible: ability.canView(GUIComponent.EXAMS),
+            visible: ability.canView(GUIComponent.ADD_EXAM_WITH_URL),
         },
     ];
 }
