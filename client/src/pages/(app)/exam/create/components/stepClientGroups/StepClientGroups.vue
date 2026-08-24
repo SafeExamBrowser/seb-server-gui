@@ -58,6 +58,30 @@
                         </v-chip>
                     </template>
                 </v-list-item>
+                <v-list-item
+                    v-if="fallbackGroup !== undefined"
+                    class="border rounded-lg pa-3"
+                >
+                    <template #prepend>
+                        <v-checkbox-btn
+                            disabled
+                            :model-value="true"
+                            tabindex="-1"
+                        />
+                    </template>
+                    <v-list-item-title class="font-weight-medium">
+                        {{ fallbackGroup.name }}
+                    </v-list-item-title>
+                    <v-list-item-subtitle>
+                        {{
+                            $t(
+                                FALLBACK_GROUP_TYPE_LABEL_I18N_KEYS[
+                                    fallbackGroup.type
+                                ],
+                            )
+                        }}
+                    </v-list-item-subtitle>
+                </v-list-item>
             </v-list>
         </template>
     </StepItem>
@@ -79,6 +103,10 @@ import {
 import StepItem from "@/components/widgets/stepItem/StepItem.vue";
 import { ClientGroup } from "@/models/seb-server/clientGroup.ts";
 import { useStepExamTemplateStore } from "@/pages/(app)/exam/create/components/stepExamTemplate/composables/store/useStepExamTemplateStore.ts";
+import {
+    FALLBACK_GROUP_TYPE_LABEL_I18N_KEYS,
+    getScreenProctoringFallbackGroup,
+} from "@/utils/clientGroup.ts";
 import { createNumberIdList } from "@/utils/generalUtils.ts";
 
 import { useExamTemplateScreenProctoring } from "./composables/api/useExamTemplateScreenProctoring.ts";
@@ -101,6 +129,19 @@ const filteredGroups = computed<ClientGroup[]>(() => {
     return availableGroups.value.filter((group) =>
         group.name.toLowerCase().includes(term),
     );
+});
+
+const fallbackGroup = computed(() => {
+    const attributes = examTemplateStore.selectedExamTemplate?.EXAM_ATTRIBUTES;
+    if (attributes === undefined) {
+        return undefined;
+    }
+
+    return getScreenProctoringFallbackGroup({
+        enabled: attributes.enableScreenProctoring === "true",
+        collectingStrategy: attributes.spsCollectingStrategy,
+        collectingGroupName: attributes.spsCollectingGroupName,
+    });
 });
 
 const { data: screenProctoring, fetch: fetchScreenProctoring } =
