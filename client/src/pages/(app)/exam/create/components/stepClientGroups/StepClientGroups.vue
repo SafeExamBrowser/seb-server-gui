@@ -60,6 +60,7 @@
                 </v-list-item>
                 <v-list-item
                     v-if="fallbackGroup !== undefined"
+                    active
                     class="border rounded-lg pa-3"
                 >
                     <template #prepend>
@@ -105,7 +106,7 @@ import { ClientGroup } from "@/models/seb-server/clientGroup.ts";
 import { useStepExamTemplateStore } from "@/pages/(app)/exam/create/components/stepExamTemplate/composables/store/useStepExamTemplateStore.ts";
 import {
     FALLBACK_GROUP_TYPE_LABEL_I18N_KEYS,
-    getScreenProctoringFallbackGroup,
+    getScreenProctoringFallbackGroupForTemplate,
 } from "@/utils/clientGroup.ts";
 import { createNumberIdList } from "@/utils/generalUtils.ts";
 
@@ -131,18 +132,11 @@ const filteredGroups = computed<ClientGroup[]>(() => {
     );
 });
 
-const fallbackGroup = computed(() => {
-    const attributes = examTemplateStore.selectedExamTemplate?.EXAM_ATTRIBUTES;
-    if (attributes === undefined) {
-        return undefined;
-    }
-
-    return getScreenProctoringFallbackGroup({
-        enabled: attributes.enableScreenProctoring === "true",
-        collectingStrategy: attributes.spsCollectingStrategy,
-        collectingGroupName: attributes.spsCollectingGroupName,
-    });
-});
+const fallbackGroup = computed(() =>
+    getScreenProctoringFallbackGroupForTemplate(
+        examTemplateStore.selectedExamTemplate?.EXAM_ATTRIBUTES,
+    ),
+);
 
 const { data: screenProctoring, fetch: fetchScreenProctoring } =
     useExamTemplateScreenProctoring();

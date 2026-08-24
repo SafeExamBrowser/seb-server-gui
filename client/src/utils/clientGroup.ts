@@ -1,4 +1,5 @@
 import i18n from "@/i18n";
+import { ExamAttribute } from "@/models/examTemplate.ts";
 import { ClientGroup as ExamClientGroup } from "@/models/seb-server/clientGroup.ts";
 import {
     ClientGroupEnum,
@@ -8,6 +9,10 @@ import {
     ClientGroup,
     clientGroupSchema,
 } from "@/models/seb-server/examTemplate.ts";
+import {
+    SCREEN_PROCTORING_COLLECTION_STRATEGY,
+    ScreenProctoringCollectionStrategy,
+} from "@/models/seb-server/screenProctoring.ts";
 
 const CLIENT_OS_LABEL_I18N_KEYS: Record<ClientOSLimited, string> = {
     WINDOWS: "clientGroups.fields.clientOS.types.WINDOWS",
@@ -62,7 +67,7 @@ export const FALLBACK_GROUP_TYPE_LABEL_I18N_KEYS: Record<
 
 export const getScreenProctoringFallbackGroup = (screenProctoring: {
     enabled: boolean;
-    collectingStrategy?: string;
+    collectingStrategy?: ScreenProctoringCollectionStrategy;
     collectingGroupName?: string;
 }): ClientGroupFallback | undefined => {
     if (!screenProctoring.enabled) {
@@ -76,7 +81,7 @@ export const getScreenProctoringFallbackGroup = (screenProctoring: {
             type: "SCREEN_PROCTORING_SINGLE",
             screenProctoringEnabled: true,
             name:
-                screenProctoring.collectingGroupName ??
+                screenProctoring.collectingGroupName ||
                 i18n.global.t("clientGroups.screenProctoringSingleGroupName"),
         };
     }
@@ -86,9 +91,25 @@ export const getScreenProctoringFallbackGroup = (screenProctoring: {
         type: "SCREEN_PROCTORING_FALLBACK",
         screenProctoringEnabled: true,
         name:
-            screenProctoring.collectingGroupName ??
+            screenProctoring.collectingGroupName ||
             i18n.global.t("clientGroups.screenProctoringFallbackGroupName"),
     };
+};
+
+export const getScreenProctoringFallbackGroupForTemplate = (
+    attributes?: ExamAttribute,
+) => {
+    if (attributes === undefined) {
+        return undefined;
+    }
+
+    return getScreenProctoringFallbackGroup({
+        enabled: attributes.enableScreenProctoring === "true",
+        collectingStrategy: SCREEN_PROCTORING_COLLECTION_STRATEGY.find(
+            (strategy) => strategy === attributes.spsCollectingStrategy,
+        ),
+        collectingGroupName: attributes.spsCollectingGroupName,
+    });
 };
 
 const TYPE_LABEL_I18N_KEYS: Partial<Record<string, string>> = {

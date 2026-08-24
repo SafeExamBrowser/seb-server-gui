@@ -15,7 +15,7 @@ import { getSummaryQuitPassword } from "@/pages/(app)/exam/create/components/ste
 import { getSummarySupervisors } from "@/pages/(app)/exam/create/components/stepSummary/helpers/getSummarySupervisors.ts";
 import { useStepSupervisorsStore } from "@/pages/(app)/exam/create/components/stepSupervisors/composables/store/useStepSupervisorsStore.ts";
 import { useCreateExamStore } from "@/pages/(app)/exam/create/composables/store/useCreateExamStore";
-import { getScreenProctoringFallbackGroup } from "@/utils/clientGroup.ts";
+import { getScreenProctoringFallbackGroupForTemplate } from "@/utils/clientGroup.ts";
 
 export const useSummary = () => {
     const examStore = useCreateExamStore();
@@ -47,19 +47,11 @@ export const useSummary = () => {
         ),
     );
 
-    const fallbackGroup = computed(() => {
-        const attributes =
-            examTemplateStore.selectedExamTemplate?.EXAM_ATTRIBUTES;
-        if (attributes === undefined) {
-            return undefined;
-        }
-
-        return getScreenProctoringFallbackGroup({
-            enabled: attributes.enableScreenProctoring === "true",
-            collectingStrategy: attributes.spsCollectingStrategy,
-            collectingGroupName: attributes.spsCollectingGroupName,
-        });
-    });
+    const fallbackGroup = computed(() =>
+        getScreenProctoringFallbackGroupForTemplate(
+            examTemplateStore.selectedExamTemplate?.EXAM_ATTRIBUTES,
+        ),
+    );
 
     const summarySections = computed<SummarySectionData[]>(() => {
         if (loading.value || errors.value.length > 0) {
