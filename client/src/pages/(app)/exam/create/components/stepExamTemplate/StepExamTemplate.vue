@@ -128,8 +128,6 @@ const handleSelect = async (template: ExamTemplateSelection) => {
 
     store.selectedExamTemplate = template;
 
-    // an untouched selection makes the backend copy all template groups, so
-    // starting with everything selected shows the outcome it actually creates
     stepClientGroupsStore.selectedClientGroups = [
         ...template.CLIENT_GROUP_TEMPLATES,
     ];
