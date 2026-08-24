@@ -148,17 +148,15 @@ watchEffect(() => {
     }
 });
 
-const screenProctoringGroupIndices = computed(
+const screenProctoringGroupIds = computed(
     () =>
         new Set(
             createNumberIdList(screenProctoring.value?.spsSEBGroupsSelection),
         ),
 );
 
-const isScreenProctoringGroup = (group: ClientGroup) => {
-    const index = availableGroups.value.indexOf(group);
-    return index !== -1 && screenProctoringGroupIndices.value.has(index);
-};
+const isScreenProctoringGroup = (group: ClientGroup) =>
+    group.id !== undefined && screenProctoringGroupIds.value.has(group.id);
 
 const isSelected = (group: ClientGroup) =>
     store.selectedClientGroups.some(

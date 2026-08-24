@@ -1,7 +1,5 @@
 # Screen Proctoring chips in Prepare Exam read group ids as list positions
 
-Status: ready-for-agent
-
 Found 2026-08-24 while investigating SEBSERV-970 (grilling session with Alain).
 Out of scope for SEBSERV-970 (`.scratch/prepare-exam-groups/`), tracked here
 separately.
@@ -73,3 +71,43 @@ No backend change required.
 - Control: template 22 "test final" (ids == positions, selection `"0,2"`)
   must keep chips on "group 1" and "gropu3".
 - Exam 13 "ZZZ SEBSERV-970 probe exam" documents the end-to-end mapping.
+
+---
+
+**Implemented** (2026-08-24)
+
+All three fix items applied:
+
+- `StepClientGroups.vue`: `isScreenProctoringGroup` now tests
+  `screenProctoringGroupIds.has(group.id)` (set renamed from
+  `...Indices`); the `indexOf` position lookup is gone.
+- `models/seb-server/examTemplate.ts`: field comment and footnote (1)
+  corrected from "list indices" to "ids"; footnote now states that the
+  backend matches the values against ClientGroupTemplate ids, not list
+  positions.
+- `useCreateExamTemplateStore.ts`: comment added documenting why writing
+  indices is valid at creation time only (backend assigns sequential ids
+  0, 1, ... to the one-shot payload in array order).
+
+Verification (Playwright against dev, 2026-08-24, `vue-tsc` clean):
+
+- Template 91 "ZZZ SEBSERV-970 id-index probe" (ids 1, 2; selection `"2"`):
+  chip on Probe C only — before the fix no chip at all. Chip follows
+  Probe C through the search filter; fallback row stays search-exempt.
+- Template 54 "Alain ClientGroups Test" (selection `"3"`): chip on asdf2
+  only — before the fix no chip.
+- Control template 22 "test final" (ids == positions, selection `"0,2"`):
+  chips still on "group 1" and "gropu3", none on "grpuo2".
+- Configuration Summary for template 22 unchanged: three real groups plus
+  the SEBSERV-970 fallback-group row.
+
+Code review note — considered and declined: deriving the chip from the
+per-group `screenProctoringEnabled` flag on `CLIENT_GROUP_TEMPLATES`
+(would remove the `exam-template/{id}/screen-proctoring` fetch and the id
+parsing). Declined because `spsSEBGroupsSelection` is what
+`convertSPSTemplateSettings` actually consumes at exam creation; the chip
+mirrors that source of truth, and flag/selection equivalence after
+detail-page edits is unverified. Pre-existing, out of scope:
+`useExamTemplateScreenProctoring` is a `useMutation` for a pure GET
+(last-resolved-wins race when switching templates quickly, no caching);
+`createNumberIdList("")` returns `[NaN]` (harmless here).

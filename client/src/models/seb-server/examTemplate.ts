@@ -95,7 +95,7 @@ export type ExamAttribute = {
     spsCollectingStrategy?: string; // mandatory, name of collecting strategy selection: "CollectingStrategyEnum" --> EXAM|APPLY_SEB_GROUPS
     spsCollectingGroupName?: string; // mandatory, min 3 - max 255 chars, name of the collecting of fallback room
     spsCollectingGroupSize?: string; // not used yet, must be null or absent
-    spsSEBGroupsSelection?: string; // optional, comma separated list of selected ClientGroupTemplate list indices that are used for screen proctoring. (1)
+    spsSEBGroupsSelection?: string; // optional, comma separated list of selected ClientGroupTemplate ids that are used for screen proctoring. (1)
     quitPassword?: string; // optional, is not used yet, ignore it
 };
 
@@ -138,8 +138,8 @@ export type ExamTemplates = {
 };
 
 // (1)  spsSEBGroupsSelection: In the Wizard within the Screen Proctoring selection there is the type selection. This only is needed when the type selection is "APPLY_SEB_GROUPS"
-//      In this case the Wizard should show existing ClientGroupTemplates in a list for selection. The system should then store the indices of the selected ClientGroupTemplates from
-// 	    the original ClientGroupTemplates list as a comma separated sting into "spsSEBGroupsSelection"
+//      In this case the Wizard should show existing ClientGroupTemplates in a list for selection. The system should then store the ids of the selected ClientGroupTemplates
+// 	    as a comma separated string into "spsSEBGroupsSelection" (the backend matches the values against ClientGroupTemplate ids, not list positions)
 
 // (2)  The uniqueness of the name of an ExamTemplate can be checked by fetching all existing ExamTemplate names with:
 //      "GET: .../admin-api/v1/exam-template/names" to get a list of entity key pair like:
