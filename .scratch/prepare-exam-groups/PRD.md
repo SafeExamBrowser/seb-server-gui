@@ -1,6 +1,7 @@
 # PRD: Prepare Exam — group selection & fallback group (SEBSERV-970)
 
-Status: ready-for-agent
+Status: done — all four issues implemented and browser-verified 2026-08-24
+(see the dated "Implemented" comments in the issue files)
 
 Branch: `SEBSERV-970_prepare-exam`
 Settled 2026-08-24 in a grilling session with Alain — don't relitigate the
