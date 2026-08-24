@@ -8,10 +8,10 @@ import {
     clientGroupTransientToClientGroup,
     clientGroupTransientToClientGroupExisting,
     isFallbackGroup,
-    SCREEN_PROCTORING_FALLBACK_ROW_ID,
 } from "@/components/widgets/clientGroupsTable/types.ts";
 import { CrudTableConfig } from "@/components/widgets/crudTable/types.ts";
 import i18n from "@/i18n";
+import { getScreenProctoringFallbackGroup } from "@/utils/clientGroup.ts";
 
 import { useFormFields } from "./useFormFields.ts";
 
@@ -58,33 +58,13 @@ export const useTable = (
         },
     ].filter((header) => header !== undefined);
 
-    const fallbackGroup = computed<ClientGroupForTable | undefined>(() => {
-        if (!deps.screenProctoring.enabled.value) {
-            return undefined;
-        }
-
-        if (deps.screenProctoring.collectionStrategy.value === "EXAM") {
-            return {
-                id: SCREEN_PROCTORING_FALLBACK_ROW_ID,
-                type: "SCREEN_PROCTORING_SINGLE" as const,
-                screenProctoringEnabled: true,
-                name:
-                    deps.screenProctoring.fallbackGroupName?.value ??
-                    i18n.global.t(
-                        "clientGroups.screenProctoringSingleGroupName",
-                    ),
-            };
-        }
-
-        return {
-            id: SCREEN_PROCTORING_FALLBACK_ROW_ID,
-            type: "SCREEN_PROCTORING_FALLBACK" as const,
-            screenProctoringEnabled: true,
-            name:
-                deps.screenProctoring.fallbackGroupName?.value ??
-                i18n.global.t("clientGroups.screenProctoringFallbackGroupName"),
-        };
-    });
+    const fallbackGroup = computed(() =>
+        getScreenProctoringFallbackGroup({
+            enabled: deps.screenProctoring.enabled.value,
+            collectingStrategy: deps.screenProctoring.collectionStrategy.value,
+            collectingGroupName: deps.screenProctoring.fallbackGroupName?.value,
+        }),
+    );
 
     const items = computed<ClientGroupForTable[]>(() =>
         [...deps.clientGroups.value, fallbackGroup.value].filter(

@@ -11,6 +11,10 @@ import {
     clientGroupSchema,
 } from "@/models/seb-server/examTemplate.ts";
 import { ScreenProctoringCollectionStrategy } from "@/models/seb-server/screenProctoring.ts";
+import {
+    ClientGroupFallback,
+    FALLBACK_GROUP_TYPE_LABEL_I18N_KEYS,
+} from "@/utils/clientGroup.ts";
 
 export type ClientGroupTransient = {
     id?: number; // absent for new groups; present (real id) only when editing
@@ -27,25 +31,6 @@ export type ClientGroupTransient = {
     nameRangeEndLetter?: string;
 };
 
-// Synthetic, non-editable row representing the screen proctoring fallback group.
-// Its id is a sentinel that cannot collide with real client group ids (which are
-// non-negative)
-export const SCREEN_PROCTORING_FALLBACK_ROW_ID = -1;
-
-type ClientGroupFallback =
-    | {
-          id: typeof SCREEN_PROCTORING_FALLBACK_ROW_ID;
-          name: string;
-          type: "SCREEN_PROCTORING_SINGLE";
-          screenProctoringEnabled: true;
-      }
-    | {
-          id: typeof SCREEN_PROCTORING_FALLBACK_ROW_ID;
-          name: string;
-          type: "SCREEN_PROCTORING_FALLBACK";
-          screenProctoringEnabled: true;
-      };
-
 export type ClientGroupForTable = ClientGroupExisting | ClientGroupFallback;
 
 export const isFallbackGroup = (
@@ -60,10 +45,7 @@ export const TYPE_LABEL_I18N_KEYS: Record<ClientGroupForTable["type"], string> =
         CLIENT_OS: "clientGroups.fields.type.types.CLIENT_OS",
         NAME_ALPHABETICAL_RANGE:
             "clientGroups.fields.type.types.NAME_ALPHABETICAL_RANGE",
-        SCREEN_PROCTORING_SINGLE:
-            "clientGroups.fields.type.types.SCREEN_PROCTORING_SINGLE",
-        SCREEN_PROCTORING_FALLBACK:
-            "clientGroups.fields.type.types.SCREEN_PROCTORING_FALLBACK",
+        ...FALLBACK_GROUP_TYPE_LABEL_I18N_KEYS,
     };
 
 // zod.parse does two things in both converters below:

@@ -38,6 +38,59 @@ export const getClientGroupTypeDetails = (clientGroup: ClientGroup) => {
     }
 };
 
+// Synthetic, display-only row representing the screen proctoring fallback group.
+// Its id is a sentinel that cannot collide with real client group ids (which are
+// non-negative)
+export const SCREEN_PROCTORING_FALLBACK_ROW_ID = -1;
+
+export type ClientGroupFallback = {
+    id: typeof SCREEN_PROCTORING_FALLBACK_ROW_ID;
+    name: string;
+    type: "SCREEN_PROCTORING_SINGLE" | "SCREEN_PROCTORING_FALLBACK";
+    screenProctoringEnabled: true;
+};
+
+export const FALLBACK_GROUP_TYPE_LABEL_I18N_KEYS: Record<
+    ClientGroupFallback["type"],
+    string
+> = {
+    SCREEN_PROCTORING_SINGLE:
+        "clientGroups.fields.type.types.SCREEN_PROCTORING_SINGLE",
+    SCREEN_PROCTORING_FALLBACK:
+        "clientGroups.fields.type.types.SCREEN_PROCTORING_FALLBACK",
+};
+
+export const getScreenProctoringFallbackGroup = (screenProctoring: {
+    enabled: boolean;
+    collectingStrategy?: string;
+    collectingGroupName?: string;
+}): ClientGroupFallback | undefined => {
+    if (!screenProctoring.enabled) {
+        return undefined;
+    }
+
+    // the legacy "one group for exam" strategy
+    if (screenProctoring.collectingStrategy === "EXAM") {
+        return {
+            id: SCREEN_PROCTORING_FALLBACK_ROW_ID,
+            type: "SCREEN_PROCTORING_SINGLE",
+            screenProctoringEnabled: true,
+            name:
+                screenProctoring.collectingGroupName ??
+                i18n.global.t("clientGroups.screenProctoringSingleGroupName"),
+        };
+    }
+
+    return {
+        id: SCREEN_PROCTORING_FALLBACK_ROW_ID,
+        type: "SCREEN_PROCTORING_FALLBACK",
+        screenProctoringEnabled: true,
+        name:
+            screenProctoring.collectingGroupName ??
+            i18n.global.t("clientGroups.screenProctoringFallbackGroupName"),
+    };
+};
+
 const TYPE_LABEL_I18N_KEYS: Partial<Record<string, string>> = {
     IP_V4_RANGE: "clientGroups.fields.type.types.IP_V4_RANGE",
     CLIENT_OS: "clientGroups.fields.type.types.CLIENT_OS",
