@@ -58,6 +58,31 @@
                         </v-chip>
                     </template>
                 </v-list-item>
+                <v-list-item
+                    v-if="fallbackGroup !== undefined"
+                    active
+                    class="border rounded-lg pa-3"
+                >
+                    <template #prepend>
+                        <v-checkbox-btn
+                            disabled
+                            :model-value="true"
+                            tabindex="-1"
+                        />
+                    </template>
+                    <v-list-item-title class="font-weight-medium">
+                        {{ fallbackGroup.name }}
+                    </v-list-item-title>
+                    <v-list-item-subtitle>
+                        {{
+                            $t(
+                                FALLBACK_GROUP_TYPE_LABEL_I18N_KEYS[
+                                    fallbackGroup.type
+                                ],
+                            )
+                        }}
+                    </v-list-item-subtitle>
+                </v-list-item>
             </v-list>
         </template>
     </StepItem>
@@ -79,6 +104,10 @@ import {
 import StepItem from "@/components/widgets/stepItem/StepItem.vue";
 import { ClientGroup } from "@/models/seb-server/clientGroup.ts";
 import { useStepExamTemplateStore } from "@/pages/(app)/exam/create/components/stepExamTemplate/composables/store/useStepExamTemplateStore.ts";
+import {
+    FALLBACK_GROUP_TYPE_LABEL_I18N_KEYS,
+    getScreenProctoringFallbackGroupForTemplate,
+} from "@/utils/clientGroup.ts";
 import { createNumberIdList } from "@/utils/generalUtils.ts";
 
 import { useExamTemplateScreenProctoring } from "./composables/api/useExamTemplateScreenProctoring.ts";
@@ -103,6 +132,12 @@ const filteredGroups = computed<ClientGroup[]>(() => {
     );
 });
 
+const fallbackGroup = computed(() =>
+    getScreenProctoringFallbackGroupForTemplate(
+        examTemplateStore.selectedExamTemplate?.EXAM_ATTRIBUTES,
+    ),
+);
+
 const { data: screenProctoring, fetch: fetchScreenProctoring } =
     useExamTemplateScreenProctoring();
 
@@ -113,17 +148,15 @@ watchEffect(() => {
     }
 });
 
-const screenProctoringGroupIndices = computed(
+const screenProctoringGroupIds = computed(
     () =>
         new Set(
             createNumberIdList(screenProctoring.value?.spsSEBGroupsSelection),
         ),
 );
 
-const isScreenProctoringGroup = (group: ClientGroup) => {
-    const index = availableGroups.value.indexOf(group);
-    return index !== -1 && screenProctoringGroupIndices.value.has(index);
-};
+const isScreenProctoringGroup = (group: ClientGroup) =>
+    group.id !== undefined && screenProctoringGroupIds.value.has(group.id);
 
 const isSelected = (group: ClientGroup) =>
     store.selectedClientGroups.some(

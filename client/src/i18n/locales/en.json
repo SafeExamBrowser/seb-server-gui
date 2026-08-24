@@ -323,7 +323,7 @@
             },
             "clientGroups": {
                 "title": "Add Groups",
-                "subtitle": "Select or Remove Groups",
+                "subtitle": "Remove or Select Groups",
                 "noGroupsAvailable": "The selected exam template has no client groups.",
                 "search": "Search groups",
                 "screenProctoring": "Screen Proctoring"

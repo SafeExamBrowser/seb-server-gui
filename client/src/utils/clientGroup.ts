@@ -1,4 +1,5 @@
 import i18n from "@/i18n";
+import { ExamAttribute } from "@/models/examTemplate.ts";
 import { ClientGroup as ExamClientGroup } from "@/models/seb-server/clientGroup.ts";
 import {
     ClientGroupEnum,
@@ -8,6 +9,10 @@ import {
     ClientGroup,
     clientGroupSchema,
 } from "@/models/seb-server/examTemplate.ts";
+import {
+    SCREEN_PROCTORING_COLLECTION_STRATEGY,
+    ScreenProctoringCollectionStrategy,
+} from "@/models/seb-server/screenProctoring.ts";
 
 const CLIENT_OS_LABEL_I18N_KEYS: Record<ClientOSLimited, string> = {
     WINDOWS: "clientGroups.fields.clientOS.types.WINDOWS",
@@ -36,6 +41,75 @@ export const getClientGroupTypeDetails = (clientGroup: ClientGroup) => {
         default:
             return clientGroup satisfies never;
     }
+};
+
+// Synthetic, display-only row representing the screen proctoring fallback group.
+// Its id is a sentinel that cannot collide with real client group ids (which are
+// non-negative)
+export const SCREEN_PROCTORING_FALLBACK_ROW_ID = -1;
+
+export type ClientGroupFallback = {
+    id: typeof SCREEN_PROCTORING_FALLBACK_ROW_ID;
+    name: string;
+    type: "SCREEN_PROCTORING_SINGLE" | "SCREEN_PROCTORING_FALLBACK";
+    screenProctoringEnabled: true;
+};
+
+export const FALLBACK_GROUP_TYPE_LABEL_I18N_KEYS: Record<
+    ClientGroupFallback["type"],
+    string
+> = {
+    SCREEN_PROCTORING_SINGLE:
+        "clientGroups.fields.type.types.SCREEN_PROCTORING_SINGLE",
+    SCREEN_PROCTORING_FALLBACK:
+        "clientGroups.fields.type.types.SCREEN_PROCTORING_FALLBACK",
+};
+
+export const getScreenProctoringFallbackGroup = (screenProctoring: {
+    enabled: boolean;
+    collectingStrategy?: ScreenProctoringCollectionStrategy;
+    collectingGroupName?: string;
+}): ClientGroupFallback | undefined => {
+    if (!screenProctoring.enabled) {
+        return undefined;
+    }
+
+    // the legacy "one group for exam" strategy
+    if (screenProctoring.collectingStrategy === "EXAM") {
+        return {
+            id: SCREEN_PROCTORING_FALLBACK_ROW_ID,
+            type: "SCREEN_PROCTORING_SINGLE",
+            screenProctoringEnabled: true,
+            name:
+                screenProctoring.collectingGroupName ||
+                i18n.global.t("clientGroups.screenProctoringSingleGroupName"),
+        };
+    }
+
+    return {
+        id: SCREEN_PROCTORING_FALLBACK_ROW_ID,
+        type: "SCREEN_PROCTORING_FALLBACK",
+        screenProctoringEnabled: true,
+        name:
+            screenProctoring.collectingGroupName ||
+            i18n.global.t("clientGroups.screenProctoringFallbackGroupName"),
+    };
+};
+
+export const getScreenProctoringFallbackGroupForTemplate = (
+    attributes?: ExamAttribute,
+) => {
+    if (attributes === undefined) {
+        return undefined;
+    }
+
+    return getScreenProctoringFallbackGroup({
+        enabled: attributes.enableScreenProctoring === "true",
+        collectingStrategy: SCREEN_PROCTORING_COLLECTION_STRATEGY.find(
+            (strategy) => strategy === attributes.spsCollectingStrategy,
+        ),
+        collectingGroupName: attributes.spsCollectingGroupName,
+    });
 };
 
 const TYPE_LABEL_I18N_KEYS: Partial<Record<string, string>> = {

@@ -126,6 +126,9 @@ export const useCreateExamTemplateStore = defineStore(
                 ...buildScreenProctoringExamAttributes(
                     screenProctoringStore.enabled,
                 ),
+                // spsSEBGroupsSelection holds ClientGroupTemplate ids; writing indices is
+                // valid only here because the backend assigns sequential ids (0, 1, ...)
+                // to this one-shot payload in array order
                 spsSEBGroupsSelection: screenProctoringStore.enabled
                     ? stepClientGroupStore.groups
                           .map((group, index) =>

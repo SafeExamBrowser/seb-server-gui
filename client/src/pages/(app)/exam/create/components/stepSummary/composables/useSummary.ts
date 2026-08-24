@@ -15,6 +15,7 @@ import { getSummaryQuitPassword } from "@/pages/(app)/exam/create/components/ste
 import { getSummarySupervisors } from "@/pages/(app)/exam/create/components/stepSummary/helpers/getSummarySupervisors.ts";
 import { useStepSupervisorsStore } from "@/pages/(app)/exam/create/components/stepSupervisors/composables/store/useStepSupervisorsStore.ts";
 import { useCreateExamStore } from "@/pages/(app)/exam/create/composables/store/useCreateExamStore";
+import { getScreenProctoringFallbackGroupForTemplate } from "@/utils/clientGroup.ts";
 
 export const useSummary = () => {
     const examStore = useCreateExamStore();
@@ -46,6 +47,12 @@ export const useSummary = () => {
         ),
     );
 
+    const fallbackGroup = computed(() =>
+        getScreenProctoringFallbackGroupForTemplate(
+            examTemplateStore.selectedExamTemplate?.EXAM_ATTRIBUTES,
+        ),
+    );
+
     const summarySections = computed<SummarySectionData[]>(() => {
         if (loading.value || errors.value.length > 0) {
             return [];
@@ -55,7 +62,10 @@ export const useSummary = () => {
             return [
                 getSummaryExamWithURL(),
                 getSummaryExamTemplate(examTemplateStore.selectedExamTemplate),
-                getSummaryClientGroups(clientGroupsStore.selectedClientGroups),
+                getSummaryClientGroups(
+                    clientGroupsStore.selectedClientGroups,
+                    fallbackGroup.value,
+                ),
                 getSummarySupervisors(
                     supervisorsStore.selectedSupervisorIds,
                     supervisors.value ?? [],
@@ -70,7 +80,10 @@ export const useSummary = () => {
                 assessmentTools.value?.content ?? [],
             ),
             getSummaryExamTemplate(examTemplateStore.selectedExamTemplate),
-            getSummaryClientGroups(clientGroupsStore.selectedClientGroups),
+            getSummaryClientGroups(
+                clientGroupsStore.selectedClientGroups,
+                fallbackGroup.value,
+            ),
             getSummarySupervisors(
                 supervisorsStore.selectedSupervisorIds,
                 supervisors.value ?? [],

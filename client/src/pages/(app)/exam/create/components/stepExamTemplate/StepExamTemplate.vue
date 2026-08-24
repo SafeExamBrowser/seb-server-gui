@@ -128,11 +128,9 @@ const handleSelect = async (template: ExamTemplateSelection) => {
 
     store.selectedExamTemplate = template;
 
-    if (template.CLIENT_GROUP_TEMPLATES.length === 1) {
-        stepClientGroupsStore.selectedClientGroups = [
-            ...template.CLIENT_GROUP_TEMPLATES,
-        ];
-    }
+    stepClientGroupsStore.selectedClientGroups = [
+        ...template.CLIENT_GROUP_TEMPLATES,
+    ];
 
     if (!grantableSupervisors.value) {
         await fetchSupervisors();
