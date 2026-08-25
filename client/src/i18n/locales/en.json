@@ -2007,13 +2007,9 @@
             },
             "clientGroups": {
                 "title": "Groups",
-                "addButton": "Add client groups from template",
                 "headers": {
                     "name": "Name",
                     "type": "Type"
-                },
-                "popover": {
-                    "empty": "The exam's template has no client groups to copy."
                 },
                 "deleteDialog": {
                     "title": "Delete Group",
@@ -2021,7 +2017,6 @@
                     "action": "Delete"
                 },
                 "errors": {
-                    "copyFailed": "Failed to copy group",
                     "deleteFailed": "Failed to delete group"
                 }
             }
