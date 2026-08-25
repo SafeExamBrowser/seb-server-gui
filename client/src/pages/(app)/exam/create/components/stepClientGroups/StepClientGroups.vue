@@ -82,6 +82,15 @@
                             )
                         }}
                     </v-list-item-subtitle>
+                    <template #append>
+                        <v-chip color="primary" size="small" variant="tonal">
+                            {{
+                                $t(
+                                    "createExam.steps.clientGroups.screenProctoring",
+                                )
+                            }}
+                        </v-chip>
+                    </template>
                 </v-list-item>
             </v-list>
         </template>
