@@ -104,8 +104,6 @@ export const useBasicSettings = (
             return;
         }
 
-        // the screen proctoring flag is not part of the exam update; it goes
-        // through the dedicated activation endpoint
         await screenProctoringMutation.mutateData(
             examId,
             value.screenProctoringEnabled,

@@ -56,8 +56,7 @@ export const useClientGroupsBox = (
     };
 
     // toggling the exam's screen proctoring rewrites backend-derived group
-    // flags, so a changed flag invalidates the list (prev undefined = the
-    // exam just arrived; the initial fetch already covers that)
+    // flags, so a changed flag invalidates the list
     watch(
         () => exam.value?.additionalAttributes?.enableScreenProctoring,
         (next, prev) => {
@@ -72,13 +71,7 @@ export const useClientGroupsBox = (
         add?: number;
         remove?: number;
     }) => {
-        // the strategy is a client-side constant today (the exam GET carries
-        // no spsCollectingStrategy), so this check only future-proofs against
-        // legacy EXAM-strategy exams; the effective guard is `enabled`
-        if (
-            !screenProctoring.value.enabled ||
-            screenProctoring.value.collectionStrategy !== "APPLY_SEB_GROUPS"
-        ) {
+        if (!screenProctoring.value.enabled) {
             return;
         }
 
@@ -101,10 +94,9 @@ export const useClientGroupsBox = (
             selection.delete(delta.remove);
         }
 
-        await examService.applyScreenProctoringGroups(
-            String(examId),
-            [...selection].join(","),
-        );
+        await examService.applyScreenProctoringGroups(String(examId), [
+            ...selection,
+        ]);
     };
 
     const createItem = async (group: ClientGroup) => {
