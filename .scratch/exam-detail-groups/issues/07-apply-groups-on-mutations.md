@@ -116,3 +116,30 @@ decisions below.
     `spsCollectingStrategy`; `getScreenProctoringForExam` hardcodes
     `APPLY_SEB_GROUPS`) → kept as future-proofing with a comment saying so;
     the effective guard is `enabled`.
+
+**2026-08-25 — Pre-merge re-verification (full manual suite re-run)**
+
+- Bug report "flag not updated on exam 5" diagnosed as legacy data, not a
+  regression: exam 5's stored SP settings (`GET /exam/5/screen-proctoring`)
+  have `spsCollectingStrategy: EXAM`, under which the backend sync ignores
+  the selection (`ScreenProctoringAPIBinding.synchronizeGroups` switches to
+  `synchronizeExamSingleGroup`) while apply-groups still returns 200 and
+  persists the selection. The client cannot see the strategy — the exam GET
+  strips it (`ExamAdditionalAttributeSerializer`); only the settings GET
+  (which also leaks the SP secrets in plaintext) carries it. Decision with
+  Alain: leave it — legacy `EXAM` exams will be migrated soon.
+- All acceptance tests re-run on the dev server (Playwright, super-admin),
+  exam 11 (SP + APPLY_SEB_GROUPS) and exam 4 (SP off), all green:
+  - Create "Apply Test A" (toggle on, id 58) →
+    `apply-groups?spsSEBGroupsSelection=58`, column Yes, wire
+    `isSPSGroup: true`.
+  - Edit toggle on "new group" (55) → `…=58,55`, column Yes; toggle back
+    off → `…=58`, column No.
+  - No-delta save on "testgriuo alain" → PUT only, no apply-groups.
+  - Delete flagged "Apply Test A" → `…spsSEBGroupsSelection=` (blank
+    clears).
+  - Create + delete unflagged "Apply Test B" → no apply-groups on either.
+  - Exam 4: SP column and dialog switch absent; create + delete
+    "Apply Test C" → no apply-groups/screen-proctoring calls.
+  - Test data cleaned up on both exams; `npx vue-tsc --noEmit` and eslint
+    clean.
