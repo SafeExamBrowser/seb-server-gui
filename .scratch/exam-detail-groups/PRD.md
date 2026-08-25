@@ -1,6 +1,6 @@
 # PRD: Exam Detail — client groups rework & screen proctoring setting (SEBSERV-968)
 
-Status: ready-for-agent
+Status: ready-for-human
 
 Branch: `SEBSERV-968_exam-detail-groups`
 Settled 2026-08-24 in a grilling session with Alain — don't relitigate the
@@ -213,3 +213,8 @@ verification seams are:
   `spsAPISecret`, `spsAccountId`, `spsAccountPassword` in plaintext; the GUI
   never uses them; the OpenAPI spec models the secrets as CharSequence-ish
   objects, so the plaintext serialization looks accidental.
+- Backend finding for Andreas (discovered during implementation,
+  2026-08-25): the exam client-group POST and PUT ignore `isSPSGroup` — the
+  GUI sends `true`, the backend stores and returns `false` (verified via
+  network log on the dev backend). The GUI-side default and edit toggle are
+  correct; persistence needs a backend fix.
