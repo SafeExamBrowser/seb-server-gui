@@ -76,14 +76,9 @@ export const useClientGroupsBox = (
         }
 
         const selection = new Set(
-            (groupsFetch.data.value?.content ?? [])
-                .filter(
-                    (group) =>
-                        group.type !== ClientGroupEnum.SP_FALLBACK_GROUP &&
-                        group.isSPSGroup === true,
-                )
-                .map((group) => group.id)
-                .filter((id) => id !== undefined),
+            clientGroups.value
+                .filter((group) => group.screenProctoringEnabled)
+                .map((group) => group.id),
         );
 
         if (delta.add !== undefined) {
