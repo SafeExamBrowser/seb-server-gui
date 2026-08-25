@@ -117,9 +117,15 @@ export const useClientGroupsBox = (
         confirmDelete: true,
     };
 
+    // only the initial load may swap the table for the loading/error fallback;
+    // background refetches after a mutation must not tear down the box
+    const initialLoad = computed(() => groupsFetch.data.value === undefined);
+
     return {
         tableDeps,
-        loading: groupsFetch.loading,
-        error: groupsFetch.error,
+        loading: computed(() => groupsFetch.loading.value && initialLoad.value),
+        error: computed(() =>
+            initialLoad.value ? groupsFetch.error.value : undefined,
+        ),
     };
 };

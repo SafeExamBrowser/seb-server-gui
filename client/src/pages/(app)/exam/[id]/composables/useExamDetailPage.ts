@@ -7,6 +7,7 @@ import { useMutation } from "@/composables/useMutation.ts";
 import i18n from "@/i18n";
 import { Exam } from "@/models/seb-server/exam.ts";
 import { isNotFoundError } from "@/services/errors/toAppError.ts";
+import { notify } from "@/services/notifications/notify.ts";
 import * as examService from "@/services/seb-server/examService.ts";
 
 import { useDeleteExamAction } from "./actions/useDeleteExamAction.ts";
@@ -44,9 +45,13 @@ export const useExamDetailPage = () => {
 
         const fresh = await refetchExamMutation.mutateData();
 
-        if (fresh) {
-            exam.value = fresh;
+        if (!fresh) {
+            notify.serverError(refetchExamMutation.error.value);
+
+            return;
         }
+
+        exam.value = fresh;
     };
 
     const {
