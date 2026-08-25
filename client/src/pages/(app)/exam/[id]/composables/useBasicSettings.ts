@@ -13,7 +13,7 @@ import { useExamActionAccess } from "./useExamActionAccess.ts";
 export const useBasicSettings = (
     exam: Ref<Exam | undefined>,
     examWithURL: ComputedRef<boolean>,
-    updateExam: (patch: Partial<Exam>) => Promise<void>,
+    updateExam: (patch: Partial<Exam>) => Promise<Exam | undefined>,
     configMapping: Ref<ConfigurationExamMapping | undefined>,
     refetchExam: () => Promise<void>,
 ) => {
@@ -42,8 +42,9 @@ export const useBasicSettings = (
         GUIAction.EDIT_SCREEN_PROCTORING,
     );
 
-    const screenProctoringMutation = useMutation((enable: boolean) =>
-        examService.activateScreenProctoring(String(exam.value?.id), enable),
+    const screenProctoringMutation = useMutation(
+        (examId: number, enable: boolean) =>
+            examService.activateScreenProctoring(String(examId), enable),
     );
 
     const configMappingMutation = useMutation(
@@ -94,15 +95,17 @@ export const useBasicSettings = (
             };
         }
 
-        await updateExam(patch);
+        const examId = exam.value.id;
+        const updatedExam = await updateExam(patch);
 
-        if (!screenProctoringChanged) {
+        if (!updatedExam || !screenProctoringChanged) {
             return;
         }
 
         // the screen proctoring flag is not part of the exam update; it goes
         // through the dedicated activation endpoint
         await screenProctoringMutation.mutateData(
+            examId,
             value.screenProctoringEnabled,
         );
 

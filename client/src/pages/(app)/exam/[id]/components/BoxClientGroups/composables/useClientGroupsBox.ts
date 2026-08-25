@@ -1,4 +1,4 @@
-import { computed, type Ref } from "vue";
+import { computed, type Ref, watch } from "vue";
 
 import { ClientGroupsTableDeps } from "@/components/widgets/clientGroupsTable/types.ts";
 import { useFetch } from "@/composables/useFetch.ts";
@@ -53,6 +53,18 @@ export const useClientGroupsBox = (
     const refetchAll = async () => {
         await Promise.all([groupsFetch.fetchData(), refetchExam()]);
     };
+
+    // toggling the exam's screen proctoring rewrites backend-derived group
+    // flags, so a changed flag invalidates the list (prev undefined = the
+    // exam just arrived; the initial fetch already covers that)
+    watch(
+        () => exam.value?.additionalAttributes?.enableScreenProctoring,
+        (next, prev) => {
+            if (prev !== undefined && next !== prev) {
+                void groupsFetch.fetchData();
+            }
+        },
+    );
 
     const createItem = async (group: ClientGroup) => {
         await clientGroupService.createClientGroup(

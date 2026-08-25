@@ -8,7 +8,7 @@ import { useExamActionAccess } from "./useExamActionAccess.ts";
 
 export const useSupervisorsBox = (
     exam: Ref<Exam | undefined>,
-    updateExam: (patch: Partial<Exam>) => Promise<void>,
+    updateExam: (patch: Partial<Exam>) => Promise<Exam | undefined>,
 ) => {
     const { data: supervisors, loading, error } = useSupervisors();
 

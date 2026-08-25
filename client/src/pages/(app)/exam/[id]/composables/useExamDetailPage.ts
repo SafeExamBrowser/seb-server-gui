@@ -73,7 +73,7 @@ export const useExamDetailPage = () => {
 
     const updateExam = async (patch: Partial<Exam>) => {
         if (!exam.value) {
-            return;
+            return undefined;
         }
 
         const examUpdated = await updateExamMutation.mutateData({
@@ -82,10 +82,14 @@ export const useExamDetailPage = () => {
         });
 
         if (!examUpdated) {
-            return;
+            notify.serverError(updateExamMutation.error.value);
+
+            return undefined;
         }
 
         exam.value = examUpdated;
+
+        return examUpdated;
     };
 
     const basicSettings = useBasicSettings(
