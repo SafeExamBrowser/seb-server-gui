@@ -160,7 +160,6 @@ export const registerInstruction = async (
     examId: string,
     clientInstruction: ClientInstruction,
 ): Promise<number> =>
-    // TODO @andreas: please check if this really needs "application/json"
     (
         await apiService.postRequest({
             url: `${baseUrl}/${examId}/instruction`,
@@ -174,18 +173,13 @@ export const registerInstruction = async (
         })
     ).status;
 
-// TODO @andreas: please test this as soon as quit all function is working again
 export const quitAll = async (examId: string): Promise<number> =>
-    // TODO @andreas: please check if this really needs "application/json"
     (
         await apiService.postRequest({
             url: `${baseUrl}/${examId}/quitAll`,
             data: {},
             options: {
                 _authType: "seb",
-                headers: {
-                    "Content-Type": "application/json",
-                },
             },
         })
     ).status;
@@ -206,17 +200,25 @@ export const confirmNotification = async (
     notificationId: string,
     connectionToken: string,
 ): Promise<unknown> =>
-    // TODO @andreas: please check if this really needs "application/json"
     (
         await apiService.postRequest({
             url: `${baseUrl}/${examId}/notification/${notificationId}/${connectionToken}`,
             data: {},
             options: {
                 _authType: "seb",
-                headers: {
-                    "Content-Type": "application/json",
-                },
             },
+        })
+    ).status;
+
+export const unlockScreens = async (
+    examId: string,
+    connectionToken: string,
+): Promise<unknown> =>
+    (
+        await apiService.postRequest({
+            url: `${baseUrl}/${examId}/notification/unlock-screens`,
+            data: { connectionToken },
+            options: { _authType: "seb" },
         })
     ).status;
 
