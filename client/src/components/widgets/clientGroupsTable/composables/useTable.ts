@@ -15,8 +15,10 @@ import { getScreenProctoringFallbackGroup } from "@/utils/clientGroup.ts";
 
 import { useFormFields } from "./useFormFields.ts";
 
-const getEmptyClientGroup = (): ClientGroupTransient => ({
-    screenProctoringEnabled: false,
+const getEmptyClientGroup = (
+    screenProctoringAllowedForGroups: boolean,
+): ClientGroupTransient => ({
+    screenProctoringEnabled: screenProctoringAllowedForGroups,
 });
 
 export const useTable = (
@@ -115,7 +117,8 @@ export const useTable = (
         createConfig: {
             title: i18n.global.t("clientGroups.addDialogTitle"),
             allowed: true,
-            getItem: getEmptyClientGroup,
+            getItem: () =>
+                getEmptyClientGroup(screenProctoringAllowedForGroups.value),
             createItem,
         },
         updateConfig: {
