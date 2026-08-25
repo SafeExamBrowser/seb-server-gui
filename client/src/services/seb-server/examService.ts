@@ -157,6 +157,17 @@ export const removeSEBLock = async (id: string): Promise<null> =>
         })
     ).data;
 
+export const activateScreenProctoring = async (
+    id: string,
+    enableScreenProctoring: boolean,
+): Promise<Exam> =>
+    (
+        await apiService.postRequest({
+            url: `${baseUrl}/${id}/screen-proctoring/activation`,
+            options: { _authType: "seb", params: { enableScreenProctoring } },
+        })
+    ).data;
+
 export const getConsecutiveExamSelection = async (
     id: string,
 ): Promise<EntityName[]> =>

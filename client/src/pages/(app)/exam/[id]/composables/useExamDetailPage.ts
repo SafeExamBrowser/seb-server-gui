@@ -88,6 +88,7 @@ export const useExamDetailPage = () => {
         examWithURL,
         updateExam,
         configMapping,
+        refetchExam,
     );
     const sebSettings = useSebSettings(exam, configMapping);
     const supervisors = useSupervisorsBox(exam, updateExam);

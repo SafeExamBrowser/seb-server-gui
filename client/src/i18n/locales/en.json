@@ -1994,7 +1994,10 @@
         "boxes": {
             "lastModifiedBy": "Last modified by",
             "basicSettings": {
-                "title": "Basic Settings"
+                "title": "Basic Settings",
+                "errors": {
+                    "screenProctoringFailed": "Failed to update screen proctoring"
+                }
             },
             "sebSettings": {
                 "title": "SEB Settings",

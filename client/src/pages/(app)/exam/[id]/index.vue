@@ -30,6 +30,9 @@
                             :exam-with-u-r-l="examWithURL"
                             :edit-hidden="basicSettingsEditHidden"
                             :edit-disabled="basicSettingsEditDisabled"
+                            :screen-proctoring-edit-disabled="
+                                basicSettingsScreenProctoringEditDisabled
+                            "
                             @change="handleBasicSettingsChange"
                         />
                     </template>
@@ -128,6 +131,7 @@ const {
     settings: basicSettingsValues,
     editHidden: basicSettingsEditHidden,
     editDisabled: basicSettingsEditDisabled,
+    screenProctoringEditDisabled: basicSettingsScreenProctoringEditDisabled,
     handleChange: handleBasicSettingsChange,
 } = basicSettings;
 

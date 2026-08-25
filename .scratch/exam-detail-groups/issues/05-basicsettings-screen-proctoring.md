@@ -14,18 +14,43 @@ normal exam update, and the exam is refetched afterwards either way.
 
 **Blocked by:** 04 — Exam groups box on the shared widget.
 
-**Status:** ready-for-agent
+**Status:** ready-for-human
 
-- [ ] The BasicSettings box shows the exam's screen proctoring state,
+- [x] The BasicSettings box shows the exam's screen proctoring state,
       derived from the exam's additional attributes.
-- [ ] The edit dialog always shows the toggle; it is interactive only with
+- [x] The edit dialog always shows the toggle; it is interactive only with
       the edit-screen-proctoring ability and a permitting exam status.
-- [ ] Toggling it calls the activation endpoint, then the refetched exam
+- [x] Toggling it calls the activation endpoint, then the refetched exam
       updates the box row and the Groups box (column/fallback row) without a
       page reload.
-- [ ] Saving without touching the toggle does not call the activation
+- [x] Saving without touching the toggle does not call the activation
       endpoint.
-- [ ] Typecheck passes (`npx vue-tsc --noEmit` in `client/`).
-- [ ] Browser check (dev server, super-admin/admin123): exam 11 — row shows
+- [x] Typecheck passes (`npx vue-tsc --noEmit` in `client/`).
+- [x] Browser check (dev server, super-admin/admin123): exam 11 — row shows
       enabled; dialog toggle interactive; toggling off and back on round-trips
       and the Groups box follows; exam 4 — row shows disabled.
+
+## Comments
+
+**2026-08-25 — Implemented**
+
+- `BasicSettings` (exam model) gains `screenProctoringEnabled`; derived in
+  `useBasicSettings` from `additionalAttributes.enableScreenProctoring`.
+- Read-only row appended to the BasicSettings box items (boolean row, shared
+  `screenProctoring.enabled.label` key, like the template box).
+- Edit dialog always renders the switch; its disabled state comes from
+  `useExamActionAccess(EDIT_SCREEN_PROCTORING).disabled` (ability + status),
+  threaded as `screenProctoringEditDisabled` through box and dialog.
+- Save split in `useBasicSettings.handleChange`: normal exam update first;
+  only when the flag changed, POST
+  `/exam/{id}/screen-proctoring/activation?enableScreenProctoring=…` (new
+  `examService.activateScreenProctoring`), error-notified via
+  `examDetail.boxes.basicSettings.errors.screenProctoringFailed`, then the
+  silent `refetchExam` from ticket 04.
+- Verification: `npx vue-tsc --noEmit` clean. Browser (dev server): exam 11 —
+  row "Yes"; toggle off+save issued PUT /api/exam then POST
+  activation?enableScreenProctoring=false then GET /api/exam/11; row flipped
+  to "No" and the Groups box lost SP column + fallback row without reload;
+  toggled back on the same way and both boxes returned. Save without
+  touching the toggle issued only the PUT (network log). Exam 4 — row "No".
+  Finished exam 9 — dialog opens, toggle present but disabled.

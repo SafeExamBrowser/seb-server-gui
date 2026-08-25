@@ -77,6 +77,7 @@ export type BasicSettings = Pick<
     | "quitPassword"
 > & {
     encryptPassword?: string;
+    screenProctoringEnabled: boolean;
 };
 
 export type Exams = {

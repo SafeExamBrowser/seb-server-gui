@@ -1,4 +1,4 @@
-import { computed, Ref } from "vue";
+import { computed, ComputedRef, Ref } from "vue";
 import { useRules } from "vuetify/labs/rules";
 
 import { EntityName } from "@/api/seb-server/generated/hey-api";
@@ -25,7 +25,9 @@ export const useExamBasicSettingsFields = (
         consecutiveExam: Ref<string | undefined>;
         quitPassword: Ref<string | undefined>;
         encryptPassword: Ref<string | undefined>;
+        screenProctoring: Ref<boolean>;
     },
+    screenProctoringDisabled: ComputedRef<boolean>,
 ) => {
     const formFields = computed<FormField[]>(() => {
         const fields: FormField[] = [];
@@ -122,6 +124,14 @@ export const useExamBasicSettingsFields = (
             model: models.encryptPassword,
             label: i18n.global.t("examDetail.info.encryptPassword"),
             required: false,
+        });
+
+        fields.push({
+            type: "switch" as const,
+            name: "screenProctoringEnabled",
+            model: models.screenProctoring,
+            label: i18n.global.t("screenProctoring.enabled.label"),
+            disabled: screenProctoringDisabled.value,
         });
 
         return fields;

@@ -1,9 +1,11 @@
 import { computed, type ComputedRef, type Ref } from "vue";
 
 import { useMutation } from "@/composables/useMutation.ts";
+import i18n from "@/i18n";
 import { ConfigurationExamMapping } from "@/models/seb-server/configurationNode";
 import { BasicSettings, Exam } from "@/models/seb-server/exam.ts";
 import { GUIAction } from "@/services/ability.ts";
+import { notify } from "@/services/notifications/notify.ts";
 import * as examService from "@/services/seb-server/examService.ts";
 
 import { useExamActionAccess } from "./useExamActionAccess.ts";
@@ -13,6 +15,7 @@ export const useBasicSettings = (
     examWithURL: ComputedRef<boolean>,
     updateExam: (patch: Partial<Exam>) => Promise<void>,
     configMapping: Ref<ConfigurationExamMapping | undefined>,
+    refetchExam: () => Promise<void>,
 ) => {
     const settings = computed<BasicSettings>(() => ({
         quizName: exam.value?.quizName ?? "",
@@ -25,11 +28,22 @@ export const useBasicSettings = (
         followupId: exam.value?.followupId ?? null,
         quitPassword: exam.value?.quitPassword,
         encryptPassword: configMapping.value?.encryptSecret,
+        screenProctoringEnabled:
+            exam.value?.additionalAttributes?.enableScreenProctoring === "true",
     }));
 
     const { hidden: editHidden, disabled: editDisabled } = useExamActionAccess(
         exam,
         GUIAction.EDIT_BASIC_SETTINGS,
+    );
+
+    const { disabled: screenProctoringEditDisabled } = useExamActionAccess(
+        exam,
+        GUIAction.EDIT_SCREEN_PROCTORING,
+    );
+
+    const screenProctoringMutation = useMutation((enable: boolean) =>
+        examService.activateScreenProctoring(String(exam.value?.id), enable),
     );
 
     const configMappingMutation = useMutation(
@@ -40,6 +54,10 @@ export const useBasicSettings = (
         if (!exam.value) {
             return;
         }
+
+        const screenProctoringChanged =
+            value.screenProctoringEnabled !==
+            settings.value.screenProctoringEnabled;
 
         // first update the start encryption password for exam configuration if changed
         if (
@@ -77,12 +95,35 @@ export const useBasicSettings = (
         }
 
         await updateExam(patch);
+
+        if (!screenProctoringChanged) {
+            return;
+        }
+
+        // the screen proctoring flag is not part of the exam update; it goes
+        // through the dedicated activation endpoint
+        await screenProctoringMutation.mutateData(
+            value.screenProctoringEnabled,
+        );
+
+        if (screenProctoringMutation.error.value) {
+            notify.serverError(screenProctoringMutation.error.value, {
+                titleOverride: i18n.global.t(
+                    "examDetail.boxes.basicSettings.errors.screenProctoringFailed",
+                ),
+            });
+
+            return;
+        }
+
+        await refetchExam();
     };
 
     return {
         settings,
         editHidden,
         editDisabled,
+        screenProctoringEditDisabled,
         handleChange,
     };
 };

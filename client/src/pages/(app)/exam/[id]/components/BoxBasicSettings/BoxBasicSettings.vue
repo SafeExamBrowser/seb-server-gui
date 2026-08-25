@@ -7,6 +7,9 @@
                     :basic-settings="basicSettings"
                     :exam-with-u-r-l="examWithURL"
                     :edit-disabled="editDisabled"
+                    :screen-proctoring-edit-disabled="
+                        screenProctoringEditDisabled
+                    "
                     :consecutive-exam-names="consecutiveExamNames"
                     @change="handleChange"
                 />
@@ -34,6 +37,7 @@ const { examId, basicSettings, examWithURL, editDisabled } = defineProps<{
     examWithURL: boolean;
     editHidden: boolean;
     editDisabled: boolean;
+    screenProctoringEditDisabled: boolean;
 }>();
 
 const emit = defineEmits<{
