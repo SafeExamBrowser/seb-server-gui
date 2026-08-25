@@ -19,7 +19,7 @@
             :exam-id="examId"
             :connection-tokens="selectedConnectionTokens"
             :instruction-type="selectedInstructionType"
-            :is-cancel-instruction="isSelectedInstructionCancel"
+            :is-unlock-screens="isSelectedInstructionUnlock"
             @close-instruction-confirm-dialog="closeInstructionConfirmDialog"
         >
         </InstructionConfirmDialog>
@@ -111,6 +111,14 @@ const bulkActions = computed<SearchBarAction[]>(() => [
         disabled: isScreenLockDisabled,
         onClick: handleLockClients,
     },
+    {
+        key: "unlock",
+        icon: "mdi-monitor",
+        label: "monitoringClients.info.unlockClients",
+        variant: "outlined",
+        disabled: isUnlockDisabled,
+        onClick: handleUnlockClients,
+    },
     ...(quitClientsVisible.value
         ? [
               {
@@ -142,7 +150,11 @@ function handleQuitClients() {
 }
 
 function handleCancelClients() {
-    openInstructionConfirmDialog(InstructionEnum.SEB_MARK_AS_CANCELLED, true);
+    openInstructionConfirmDialog(InstructionEnum.SEB_MARK_AS_CANCELLED, false);
+}
+
+function handleUnlockClients() {
+    openInstructionConfirmDialog(InstructionEnum.NOTIFICATION_CONFIRM, true);
 }
 
 function isScreenLockDisabled(): boolean {
@@ -166,15 +178,22 @@ function isCancelConnectionDisabled(): boolean {
     );
 }
 
+function isUnlockDisabled(): boolean {
+    return (
+        monitoringStore.selectedMonitoringIds.length == 0 ||
+        getConnectionTokens(InstructionEnum.NOTIFICATION_CONFIRM) == null
+    );
+}
+
 //= ==============instruction confirm dialog====================
 const instructionConfirmDialog = ref<boolean>(false);
 const selectedInstructionType = ref<InstructionEnum | null>(null);
-const isSelectedInstructionCancel = ref<boolean>(false);
+const isSelectedInstructionUnlock = ref<boolean>(false);
 const selectedConnectionTokens = ref<string>("");
 
 function openInstructionConfirmDialog(
     instructionType: InstructionEnum | null,
-    isCancelInstruction: boolean,
+    isUnlock: boolean,
 ) {
     if (instructionType == null) {
         return;
@@ -189,7 +208,7 @@ function openInstructionConfirmDialog(
 
     selectedInstructionType.value = instructionType;
     selectedConnectionTokens.value = connectionTokens;
-    isSelectedInstructionCancel.value = isCancelInstruction;
+    isSelectedInstructionUnlock.value = isUnlock;
 
     instructionConfirmDialog.value = true;
 }
@@ -228,6 +247,12 @@ function getConnectionTokens(instructionType: InstructionEnum): string | null {
                         row.status == ConnectionStatusEnum.MISSING ||
                         row.missing
                     ) {
+                        connectionTokens.push(row.connectionToken);
+                    }
+                    break;
+                }
+                case InstructionEnum.NOTIFICATION_CONFIRM: {
+                    if (row.pendingLockScreen) {
                         connectionTokens.push(row.connectionToken);
                     }
                     break;

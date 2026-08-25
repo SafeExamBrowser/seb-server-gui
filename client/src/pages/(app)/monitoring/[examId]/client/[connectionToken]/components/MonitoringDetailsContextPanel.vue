@@ -238,7 +238,7 @@
                 :exam-id="examId"
                 :connection-tokens="connectionToken"
                 :instruction-type="selectedInstructionType"
-                :is-cancel-instruction="isSelectedInstructionCancel"
+                :is-unlock-screens="isSelectedInstructionUnlock"
                 @close-instruction-confirm-dialog="
                     handleCloseInstructionConfirmDialog
                 "
@@ -457,7 +457,7 @@ const showIndicators = computed(
 //= ==============instruction confirm dialog====================
 const instructionConfirmDialog = ref(false);
 const selectedInstructionType = ref<InstructionEnum | null>(null);
-const isSelectedInstructionCancel = ref(false);
+const isSelectedInstructionUnlock = ref(false);
 
 const hasPendingLockScreen = computed(() =>
     monitoringStore.pendingNotifications.some(
@@ -473,8 +473,8 @@ const isCancelDisabled = computed(() => !currentBehavior.value.cancel);
 
 function openInstructionConfirmDialog(instructionType: InstructionEnum) {
     selectedInstructionType.value = instructionType;
-    isSelectedInstructionCancel.value =
-        instructionType === InstructionEnum.SEB_MARK_AS_CANCELLED;
+    isSelectedInstructionUnlock.value =
+        instructionType === InstructionEnum.NOTIFICATION_CONFIRM;
     instructionConfirmDialog.value = true;
 }
 

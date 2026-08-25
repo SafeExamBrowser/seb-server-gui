@@ -61,11 +61,7 @@
                         color="error"
                         rounded="sm"
                         variant="flat"
-                        @click="
-                            isCancelInstruction
-                                ? cancelClients()
-                                : registerInstruction()
-                        "
+                        @click="doAction"
                     >
                         {{ getButtonText() }}
                     </v-btn>
@@ -104,7 +100,7 @@ const emit = defineEmits<{
 const props = defineProps<{
     examId: string;
     instructionType: InstructionEnum | null;
-    isCancelInstruction?: boolean;
+    isUnlockScreens: boolean;
     connectionTokens: string;
 }>();
 
@@ -113,7 +109,25 @@ const examId = props.examId;
 // lock screen text
 const lockScreenText = ref<string>("");
 
+function doAction(): void {
+    if (props.isUnlockScreens) {
+        unlockScreens();
+        return;
+    }
+
+    if (props.instructionType == InstructionEnum.SEB_MARK_AS_CANCELLED) {
+        cancelClients();
+        return;
+    }
+
+    registerInstruction();
+}
+
 function getTitle(): string {
+    if (props.isUnlockScreens) {
+        return translate("monitoringDialog.instructionConfirm.unlockSeb");
+    }
+
     if (props.instructionType === InstructionEnum.SEB_FORCE_LOCK_SCREEN) {
         return translate("monitoringDialog.instructionConfirm.lockSeb");
     }
@@ -122,7 +136,7 @@ function getTitle(): string {
         return translate("monitoringDialog.instructionConfirm.quitSeb");
     }
 
-    if (props.isCancelInstruction) {
+    if (props.instructionType == InstructionEnum.SEB_MARK_AS_CANCELLED) {
         return translate("monitoringDialog.instructionConfirm.cancelSeb");
     }
 
@@ -130,6 +144,10 @@ function getTitle(): string {
 }
 
 function getDescription(): string {
+    if (props.isUnlockScreens) {
+        return translate("monitoringDialog.instructionConfirm.unlockAction");
+    }
+
     if (props.instructionType === InstructionEnum.SEB_FORCE_LOCK_SCREEN) {
         return translate("monitoringDialog.instructionConfirm.lockAction");
     }
@@ -138,7 +156,7 @@ function getDescription(): string {
         return translate("monitoringDialog.instructionConfirm.quitAction");
     }
 
-    if (props.isCancelInstruction) {
+    if (props.instructionType == InstructionEnum.SEB_MARK_AS_CANCELLED) {
         return translate("monitoringDialog.instructionConfirm.cancelAction");
     }
 
@@ -154,6 +172,10 @@ function getQuestionConfirmText(): string {
 }
 
 function getButtonText(): string {
+    if (props.isUnlockScreens) {
+        return translate("monitoringDialog.instructionConfirm.unlock");
+    }
+
     if (props.instructionType === InstructionEnum.SEB_FORCE_LOCK_SCREEN) {
         return translate("monitoringDialog.instructionConfirm.lock");
     }
@@ -162,7 +184,7 @@ function getButtonText(): string {
         return translate("monitoringDialog.instructionConfirm.quit");
     }
 
-    if (props.isCancelInstruction) {
+    if (props.instructionType == InstructionEnum.SEB_MARK_AS_CANCELLED) {
         return translate("monitoringDialog.instructionConfirm.markCancel");
     }
 
@@ -195,12 +217,25 @@ async function registerInstruction() {
 }
 
 async function cancelClients() {
-    if (!props.isCancelInstruction) {
+    if (props.instructionType != InstructionEnum.SEB_MARK_AS_CANCELLED) {
         return;
     }
 
-    // send disable (calcel) inctruction
+    // send disable (cancel) instructions
     monitoringService.disableConnections(examId, props.connectionTokens);
+
+    emit("closeInstructionConfirmDialog");
+}
+
+async function unlockScreens() {
+    if (
+        !props.isUnlockScreens &&
+        props.instructionType != InstructionEnum.NOTIFICATION_CONFIRM
+    ) {
+        return;
+    }
+
+    monitoringService.unlockScreens(examId, props.connectionTokens);
 
     emit("closeInstructionConfirmDialog");
 }
