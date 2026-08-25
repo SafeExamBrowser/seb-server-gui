@@ -1,18 +1,22 @@
 import { computed, type ComputedRef, type Ref } from "vue";
 
 import { useMutation } from "@/composables/useMutation.ts";
+import i18n from "@/i18n";
 import { ConfigurationExamMapping } from "@/models/seb-server/configurationNode";
 import { BasicSettings, Exam } from "@/models/seb-server/exam.ts";
 import { GUIAction } from "@/services/ability.ts";
+import { notify } from "@/services/notifications/notify.ts";
 import * as examService from "@/services/seb-server/examService.ts";
+import { getScreenProctoringForExam } from "@/utils/clientGroup.ts";
 
 import { useExamActionAccess } from "./useExamActionAccess.ts";
 
 export const useBasicSettings = (
     exam: Ref<Exam | undefined>,
     examWithURL: ComputedRef<boolean>,
-    updateExam: (patch: Partial<Exam>) => Promise<void>,
+    updateExam: (patch: Partial<Exam>) => Promise<Exam | undefined>,
     configMapping: Ref<ConfigurationExamMapping | undefined>,
+    refetchExam: () => Promise<void>,
 ) => {
     const settings = computed<BasicSettings>(() => ({
         quizName: exam.value?.quizName ?? "",
@@ -25,11 +29,24 @@ export const useBasicSettings = (
         followupId: exam.value?.followupId ?? null,
         quitPassword: exam.value?.quitPassword,
         encryptPassword: configMapping.value?.encryptSecret,
+        screenProctoringEnabled: getScreenProctoringForExam(
+            exam.value?.additionalAttributes,
+        ).enabled,
     }));
 
     const { hidden: editHidden, disabled: editDisabled } = useExamActionAccess(
         exam,
         GUIAction.EDIT_BASIC_SETTINGS,
+    );
+
+    const { disabled: screenProctoringEditDisabled } = useExamActionAccess(
+        exam,
+        GUIAction.EDIT_SCREEN_PROCTORING,
+    );
+
+    const screenProctoringMutation = useMutation(
+        (examId: number, enable: boolean) =>
+            examService.activateScreenProctoring(String(examId), enable),
     );
 
     const configMappingMutation = useMutation(
@@ -40,6 +57,10 @@ export const useBasicSettings = (
         if (!exam.value) {
             return;
         }
+
+        const screenProctoringChanged =
+            value.screenProctoringEnabled !==
+            settings.value.screenProctoringEnabled;
 
         // first update the start encryption password for exam configuration if changed
         if (
@@ -76,13 +97,36 @@ export const useBasicSettings = (
             };
         }
 
-        await updateExam(patch);
+        const examId = exam.value.id;
+        const updatedExam = await updateExam(patch);
+
+        if (!updatedExam || !screenProctoringChanged) {
+            return;
+        }
+
+        await screenProctoringMutation.mutateData(
+            examId,
+            value.screenProctoringEnabled,
+        );
+
+        if (screenProctoringMutation.error.value) {
+            notify.serverError(screenProctoringMutation.error.value, {
+                titleOverride: i18n.global.t(
+                    "examDetail.boxes.basicSettings.errors.screenProctoringFailed",
+                ),
+            });
+
+            return;
+        }
+
+        await refetchExam();
     };
 
     return {
         settings,
         editHidden,
         editDisabled,
+        screenProctoringEditDisabled,
         handleChange,
     };
 };

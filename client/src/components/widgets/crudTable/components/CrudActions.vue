@@ -3,12 +3,14 @@
         <CrudUpdate
             :label="updateConfig.title"
             :form-id="`form-${name}-update`"
+            :disabled="disabled"
             :get-form-fields="getFormFields"
             :get-item="() => updateConfig.getItem(item)"
             :update-item="updateConfig.updateItem"
         />
         <CrudDelete
             :item="item"
+            :disabled="disabled"
             :delete-item="deleteConfig.deleteItem"
             :confirm="deleteConfig.confirm"
         />
@@ -29,6 +31,7 @@ const props = defineProps<{
     hasActions: CrudTableConfig<TItem, TTransient>["hasActions"];
     updateConfig: CrudTableConfig<TItem, TTransient>["updateConfig"];
     deleteConfig: CrudTableConfig<TItem, TTransient>["deleteConfig"];
+    disabled?: boolean;
 }>();
 
 const renderActions = computed(() =>

@@ -10,10 +10,10 @@ domain language the GUI uses; backend wire names sometimes differ.
 **Client Group**:
 A named partition of SEB clients, matched by one criterion (IP range, client
 OS, or alphabetical name range). The same concept whether it lives on an exam
-template or on an exam: a template's client groups serve as blueprints, and
-copying one onto an exam creates a detached client group there — no ongoing
-link, so edits or deletions on either side never affect the other. An exam's
-client groups exist only by being copied from its template.
+template or on an exam. An exam's client groups reach it either through the
+selection from the template while preparing the exam or by direct creation on
+the exam — either way they are detached from the template: no ongoing link, so
+edits or deletions on either side never affect the other.
 _Avoid_: group (alone), SEB group, client group template (the backend wire
 name `CLIENT_GROUP_TEMPLATES` notwithstanding — it's not a distinct concept)
 

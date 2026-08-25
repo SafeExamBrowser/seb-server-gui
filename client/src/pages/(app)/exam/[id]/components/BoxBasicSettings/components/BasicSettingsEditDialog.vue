@@ -68,11 +68,13 @@ const {
     examWithURL,
     basicSettings,
     editDisabled,
+    screenProctoringEditDisabled,
 } = defineProps<{
     consecutiveExamNames?: EntityName[];
     examWithURL: boolean;
     basicSettings: BasicSettings;
     editDisabled: boolean;
+    screenProctoringEditDisabled: boolean;
 }>();
 
 const emit = defineEmits<{
@@ -90,6 +92,7 @@ const typeTransient = ref<ExamTypeEnum>();
 const consecutiveExamTransient = ref<string>();
 const quitPasswordTransient = ref<string>();
 const encryptPasswordTransient = ref<string>();
+const screenProctoringTransient = ref(false);
 
 const { formFields } = useExamBasicSettingsFields(
     examWithURL,
@@ -103,7 +106,9 @@ const { formFields } = useExamBasicSettingsFields(
         consecutiveExam: consecutiveExamTransient,
         quitPassword: quitPasswordTransient,
         encryptPassword: encryptPasswordTransient,
+        screenProctoring: screenProctoringTransient,
     },
+    computed(() => screenProctoringEditDisabled),
 );
 
 const handleButtonEditClick = () => {
@@ -119,6 +124,7 @@ const handleButtonEditClick = () => {
         basicSettings.followupId?.toString() ?? undefined;
     quitPasswordTransient.value = basicSettings.quitPassword;
     encryptPasswordTransient.value = basicSettings.encryptPassword;
+    screenProctoringTransient.value = basicSettings.screenProctoringEnabled;
 
     dialogOpen.value = true;
 };
@@ -140,6 +146,7 @@ const handleButtonSaveClick = () => {
         followupId: getFollowupIdNum(),
         quitPassword: quitPasswordTransient.value,
         encryptPassword: encryptPasswordTransient.value,
+        screenProctoringEnabled: screenProctoringTransient.value,
     });
     dialogOpen.value = false;
 };

@@ -30,6 +30,9 @@
                             :exam-with-u-r-l="examWithURL"
                             :edit-hidden="basicSettingsEditHidden"
                             :edit-disabled="basicSettingsEditDisabled"
+                            :screen-proctoring-edit-disabled="
+                                basicSettingsScreenProctoringEditDisabled
+                            "
                             @change="handleBasicSettingsChange"
                         />
                     </template>
@@ -64,7 +67,11 @@
                     </template>
 
                     <template #05_clientGroups>
-                        <BoxClientGroups :exam-id="examId" :exam="exam" />
+                        <BoxClientGroups
+                            :exam-id="examId"
+                            :exam="exam"
+                            :refetch-exam="refetchExam"
+                        />
                     </template>
                 </BasicGrid>
             </LoadingFallbackComponent>
@@ -106,6 +113,7 @@ const { t } = useI18n();
 const {
     examId,
     exam,
+    refetchExam,
     title,
     breadCrumb,
     errors,
@@ -123,6 +131,7 @@ const {
     settings: basicSettingsValues,
     editHidden: basicSettingsEditHidden,
     editDisabled: basicSettingsEditDisabled,
+    screenProctoringEditDisabled: basicSettingsScreenProctoringEditDisabled,
     handleChange: handleBasicSettingsChange,
 } = basicSettings;
 

@@ -22,10 +22,6 @@ export const useFormFields = (
     ): FormField[] =>
         [
             useFormFieldsBasic(clientGroup, rules, groups),
-            useFormFieldsScreenProctoring(
-                clientGroup,
-                screenProctoringAllowedForGroups,
-            ),
             clientGroup.value.type === ClientGroupEnum.IP_V4_RANGE
                 ? useFormFieldsTypeIPRange(clientGroup, rules)
                 : [],
@@ -35,6 +31,10 @@ export const useFormFields = (
             clientGroup.value.type === ClientGroupEnum.NAME_ALPHABETICAL_RANGE
                 ? useFormFieldsTypeNameAlphabeticalRange(clientGroup, rules)
                 : [],
+            useFormFieldsScreenProctoring(
+                clientGroup,
+                screenProctoringAllowedForGroups,
+            ),
         ].flat();
 
     return {

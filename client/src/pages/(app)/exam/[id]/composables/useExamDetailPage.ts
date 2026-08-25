@@ -7,6 +7,7 @@ import { useMutation } from "@/composables/useMutation.ts";
 import i18n from "@/i18n";
 import { Exam } from "@/models/seb-server/exam.ts";
 import { isNotFoundError } from "@/services/errors/toAppError.ts";
+import { notify } from "@/services/notifications/notify.ts";
 import * as examService from "@/services/seb-server/examService.ts";
 
 import { useDeleteExamAction } from "./actions/useDeleteExamAction.ts";
@@ -31,6 +32,28 @@ export const useExamDetailPage = () => {
         error: examError,
     } = useExam(examId);
 
+    // silent refresh: updates the exam in place without flipping the
+    // page-level loading state (which would unmount the whole panel)
+    const refetchExamMutation = useMutation(() =>
+        examService.getExam(String(examId)),
+    );
+
+    const refetchExam = async () => {
+        if (examId === undefined) {
+            return;
+        }
+
+        const fresh = await refetchExamMutation.mutateData();
+
+        if (!fresh) {
+            notify.serverError(refetchExamMutation.error.value);
+
+            return;
+        }
+
+        exam.value = fresh;
+    };
+
     const {
         data: configMapping,
         loading: configMappingLoading,
@@ -50,7 +73,7 @@ export const useExamDetailPage = () => {
 
     const updateExam = async (patch: Partial<Exam>) => {
         if (!exam.value) {
-            return;
+            return undefined;
         }
 
         const examUpdated = await updateExamMutation.mutateData({
@@ -59,10 +82,14 @@ export const useExamDetailPage = () => {
         });
 
         if (!examUpdated) {
-            return;
+            notify.serverError(updateExamMutation.error.value);
+
+            return undefined;
         }
 
         exam.value = examUpdated;
+
+        return examUpdated;
     };
 
     const basicSettings = useBasicSettings(
@@ -70,6 +97,7 @@ export const useExamDetailPage = () => {
         examWithURL,
         updateExam,
         configMapping,
+        refetchExam,
     );
     const sebSettings = useSebSettings(exam, configMapping);
     const supervisors = useSupervisorsBox(exam, updateExam);
@@ -143,6 +171,7 @@ export const useExamDetailPage = () => {
     return {
         examId,
         exam,
+        refetchExam,
         loading,
         notFound,
         errors,

@@ -1994,7 +1994,10 @@
         "boxes": {
             "lastModifiedBy": "Last modified by",
             "basicSettings": {
-                "title": "Basic Settings"
+                "title": "Basic Settings",
+                "errors": {
+                    "screenProctoringFailed": "Failed to update screen proctoring"
+                }
             },
             "sebSettings": {
                 "title": "SEB Settings",
@@ -2006,22 +2009,7 @@
                 "edit": "Edit SEB Keys"
             },
             "clientGroups": {
-                "title": "Groups",
-                "addButton": "Add client groups from template",
-                "headers": {
-                    "name": "Name",
-                    "type": "Type"
-                },
-                "popover": {
-                    "empty": "The exam's template has no client groups to copy."
-                },
-                "deleteDialog": {
-                    "title": "Delete Group",
-                    "text": "Are you sure you want to delete this group?",
-                    "action": "Delete"
-                },
                 "errors": {
-                    "copyFailed": "Failed to copy group",
                     "deleteFailed": "Failed to delete group"
                 }
             }

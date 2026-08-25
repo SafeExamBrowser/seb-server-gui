@@ -1,5 +1,6 @@
 import { Ref } from "vue";
 
+import { CrudTableAccess } from "@/components/widgets/crudTable/types.ts";
 import {
     ClientGroupEnum,
     ClientOSLimited,
@@ -67,6 +68,7 @@ export type ClientGroupsTableDeps = {
         collectionStrategy: Ref<ScreenProctoringCollectionStrategy>;
         fallbackGroupName?: Ref<string | undefined>;
     };
+    access?: CrudTableAccess;
     createItem: (item: ClientGroup) => Promise<void>;
     updateItem: (item: ClientGroupExisting) => Promise<void>;
     deleteItem: (item: ClientGroupExisting) => Promise<void>;

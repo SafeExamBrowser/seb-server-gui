@@ -5,7 +5,7 @@
         variant="text"
         density="compact"
         size="small"
-        :disabled="submitting"
+        :disabled="submitting || disabled"
         :loading="submitting"
         :title="$t('general.deleteButton')"
         :aria-label="$t('general.deleteButton')"
@@ -31,7 +31,9 @@ import { VBtn } from "vuetify/components";
 import DeleteConfirmDialog from "@/components/widgets/confirmDialog/DeleteConfirmDialog.vue";
 import { CrudDeleteConfig } from "@/components/widgets/crudTable/types";
 
-const props = defineProps<{ item: T } & CrudDeleteConfig<T>>();
+const props = defineProps<
+    { item: T; disabled?: boolean } & CrudDeleteConfig<T>
+>();
 
 const submitting = ref(false);
 const dialogOpen = ref(false);
