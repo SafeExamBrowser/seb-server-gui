@@ -74,9 +74,14 @@
                 <!------notification icons------->
                 <td width="2%">
                     <v-icon
-                        v-if="hasNotification(item)"
+                        v-if="item.pendingLockScreen"
                         color="warning"
-                        icon="mdi-alert-decagram"
+                        icon="mdi-monitor-lock"
+                    ></v-icon>
+                    <v-icon
+                        v-if="item.pendingRaiseHand"
+                        color="warning"
+                        icon="mdi-hand-back-right"
                     ></v-icon>
                 </td>
 
@@ -600,7 +605,8 @@ function createMonitoringRowData(
         missing: (fullPageDataConnection.nf & 1) > 0,
         invalidSEBVersion: (fullPageDataConnection.nf & 16) > 0,
         indicators: extractIndicators(fullPageDataConnection.iv),
-        notification: (fullPageDataConnection.nf & 2) > 0,
+        pendingLockScreen: (fullPageDataConnection.nf & 2) > 0,
+        pendingRaiseHand: (fullPageDataConnection.nf & 32) > 0,
     };
 }
 
@@ -625,14 +631,6 @@ function getAllConnectionIds(): number[] {
     return connections.value.monitoringConnectionData.cons.map(
         (cons: { id: number }) => cons.id,
     );
-}
-
-//= ================notifications===================
-
-function hasNotification(item: MonitoringRow): boolean {
-    // TODO if we have to divert on notification type and symbol, we can do this here
-    //      by also adding different methods or adding a notification type to the function
-    return item.notification;
 }
 
 //= ================indicators===================
@@ -811,7 +809,8 @@ function updateConnectionRow(
 ) {
     updateIndicator(row.indicators, data.iv);
     row.missing = (data.nf & 1) > 0;
-    row.notification = (data.nf & 2) > 0;
+    row.pendingLockScreen = (data.nf & 2) > 0;
+    row.pendingRaiseHand = (data.nf & 32) > 0;
 }
 
 function updateIndicator(

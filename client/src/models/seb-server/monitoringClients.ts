@@ -11,5 +11,6 @@ export type MonitoringRow = {
     missing: boolean;
     invalidSEBVersion: boolean;
     indicators?: Map<number, IndicatorObject>;
-    notification: boolean;
+    pendingLockScreen: boolean;
+    pendingRaiseHand: boolean;
 };

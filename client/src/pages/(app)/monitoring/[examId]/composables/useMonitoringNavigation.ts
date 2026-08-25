@@ -49,14 +49,14 @@ export function goToMonitoringOfGroup(value: string | boolean, examId: string) {
 function getScreenProctoringState(): string {
     const monitoringStore = useMonitoringStore();
     if (monitoringStore.selectedExam == null) {
-        return ConnectionStatusEnum.ACTIVE;
+        return `${ConnectionStatusEnum.ACTIVE},${ConnectionStatusEnum.MISSING}`;
     }
 
     if (!monitoringStore.selectedExam.lmsSetupId) {
-        return ConnectionStatusEnum.READY + "," + ConnectionStatusEnum.ACTIVE;
+        return `${ConnectionStatusEnum.READY},${ConnectionStatusEnum.ACTIVE},${ConnectionStatusEnum.MISSING}`;
     }
 
-    return ConnectionStatusEnum.ACTIVE;
+    return `${ConnectionStatusEnum.ACTIVE},${ConnectionStatusEnum.MISSING}`;
 }
 
 export function goToMonitoringDetails(
