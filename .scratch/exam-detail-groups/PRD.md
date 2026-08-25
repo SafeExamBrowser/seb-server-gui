@@ -1,6 +1,6 @@
 # PRD: Exam Detail — client groups rework & screen proctoring setting (SEBSERV-968)
 
-Status: ready-for-human
+Status: ready-for-agent (tickets 01–06 ready-for-human; ticket 07 open)
 
 Branch: `SEBSERV-968_exam-detail-groups`
 Settled 2026-08-24 in a grilling session with Alain — don't relitigate the
@@ -226,7 +226,12 @@ verification seams are:
   (`ScreenProctoringAPIBinding`) from `spsSEBGroupsSelection` under
   APPLY_SEB_GROUPS — which is why groups that entered the selection via
   prepare-exam/SP-settings show `true` (exam 2 ids 8/9) even though direct
-  create/update of the flag never sticks. Fix belongs in the backend:
-  honoring the flag on create/save means updating the SP group selection and
-  triggering the sync, or the endpoints should reject/document the flag as
-  read-only.
+  create/update of the flag never sticks. **Resolution (settled 2026-08-25
+  with Andreas):** the client uses the existing
+  `POST /exam/{modelId}/screen-proctoring/apply-groups` endpoint (the
+  pre-SEBSERV-958 UI did the same; the refactoring dropped the call) — see
+  ticket 07. This is an acknowledged workaround: group mutation plus SP
+  application should be one atomic backend operation, and the client
+  currently carries too much business logic. Andreas will add a single exam
+  groups endpoint later; a `TODO @Andreas` in the adapter marks the
+  replacement point.
