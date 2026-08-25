@@ -33,7 +33,8 @@ export type ExamAdditionalAttributes = {
     quiz_start_url: string;
     quiz_description: string;
     SCREEN_PROCTORING_SETTINGS: string;
-    enableScreenProctoring: string;
+    enableScreenProctoring?: string;
+    spsCollectingGroupName?: string;
     SIGNATURE_KEY_CHECK_ENABLED: string;
     NUMERICAL_TRUST_THRESHOLD: string;
 };

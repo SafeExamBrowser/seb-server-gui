@@ -5,6 +5,7 @@ import {
     ClientGroupEnum,
     ClientOSLimited,
 } from "@/models/seb-server/clientGroupEnum.ts";
+import { ExamAdditionalAttributes } from "@/models/seb-server/exam.ts";
 import {
     ClientGroup,
     clientGroupSchema,
@@ -111,6 +112,17 @@ export const getScreenProctoringFallbackGroupForTemplate = (
         collectingGroupName: attributes.spsCollectingGroupName,
     });
 };
+
+// The exam GET never carries spsCollectingStrategy, so it renders as
+// APPLY_SEB_GROUPS (display only) — legacy EXAM-strategy exams simply show
+// their stored collecting-group name.
+export const getScreenProctoringForExam = (
+    attributes?: ExamAdditionalAttributes,
+) => ({
+    enabled: attributes?.enableScreenProctoring === "true",
+    collectionStrategy: "APPLY_SEB_GROUPS" as const,
+    fallbackGroupName: attributes?.spsCollectingGroupName,
+});
 
 const TYPE_LABEL_I18N_KEYS: Partial<Record<string, string>> = {
     IP_V4_RANGE: "clientGroups.fields.type.types.IP_V4_RANGE",

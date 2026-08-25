@@ -31,6 +31,24 @@ export const useExamDetailPage = () => {
         error: examError,
     } = useExam(examId);
 
+    // silent refresh: updates the exam in place without flipping the
+    // page-level loading state (which would unmount the whole panel)
+    const refetchExamMutation = useMutation(() =>
+        examService.getExam(String(examId)),
+    );
+
+    const refetchExam = async () => {
+        if (examId === undefined) {
+            return;
+        }
+
+        const fresh = await refetchExamMutation.mutateData();
+
+        if (fresh) {
+            exam.value = fresh;
+        }
+    };
+
     const {
         data: configMapping,
         loading: configMappingLoading,
@@ -143,6 +161,7 @@ export const useExamDetailPage = () => {
     return {
         examId,
         exam,
+        refetchExam,
         loading,
         notFound,
         errors,

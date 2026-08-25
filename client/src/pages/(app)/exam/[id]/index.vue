@@ -64,7 +64,11 @@
                     </template>
 
                     <template #05_clientGroups>
-                        <BoxClientGroups :exam-id="examId" :exam="exam" />
+                        <BoxClientGroups
+                            :exam-id="examId"
+                            :exam="exam"
+                            :refetch-exam="refetchExam"
+                        />
                     </template>
                 </BasicGrid>
             </LoadingFallbackComponent>
@@ -106,6 +110,7 @@ const { t } = useI18n();
 const {
     examId,
     exam,
+    refetchExam,
     title,
     breadCrumb,
     errors,

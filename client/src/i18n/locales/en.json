@@ -2006,16 +2006,6 @@
                 "edit": "Edit SEB Keys"
             },
             "clientGroups": {
-                "title": "Groups",
-                "headers": {
-                    "name": "Name",
-                    "type": "Type"
-                },
-                "deleteDialog": {
-                    "title": "Delete Group",
-                    "text": "Are you sure you want to delete this group?",
-                    "action": "Delete"
-                },
                 "errors": {
                     "deleteFailed": "Failed to delete group"
                 }
