@@ -13,10 +13,16 @@ export type CrudDeleteConfig<TItem> = {
     };
 };
 
+export type CrudTableAccess = {
+    hidden: MaybeRef<boolean>;
+    disabled: MaybeRef<boolean>;
+};
+
 export type CrudTableConfig<TItem, TTransient> = {
     name: string;
     title: string;
     headers: DataTableHeader[];
+    access?: CrudTableAccess;
     items: MaybeRef<TItem[]>;
     getFormFields: (
         item: Ref<UnwrapRef<TTransient>> | Ref<TTransient>,

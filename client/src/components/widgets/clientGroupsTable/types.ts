@@ -67,6 +67,10 @@ export type ClientGroupsTableDeps = {
         collectionStrategy: Ref<ScreenProctoringCollectionStrategy>;
         fallbackGroupName?: Ref<string | undefined>;
     };
+    access?: {
+        hidden: Ref<boolean>;
+        disabled: Ref<boolean>;
+    };
     createItem: (item: ClientGroup) => Promise<void>;
     updateItem: (item: ClientGroupExisting) => Promise<void>;
     deleteItem: (item: ClientGroupExisting) => Promise<void>;

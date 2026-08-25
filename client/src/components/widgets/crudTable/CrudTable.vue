@@ -8,9 +8,12 @@
         <template #top>
             <TableHeader :label="config.title">
                 <CrudCreate
+                    v-if="!accessHidden"
                     :label="config.createConfig.title"
                     :form-id="`form-${config.name}-create`"
-                    :disabled="!unref(config.createConfig.allowed)"
+                    :disabled="
+                        !unref(config.createConfig.allowed) || accessDisabled
+                    "
                     :get-form-fields="config.getFormFields"
                     :get-item="config.createConfig.getItem"
                     :create-item="config.createConfig.createItem"
@@ -32,6 +35,8 @@
                         :name="config.name"
                         :get-form-fields="config.getFormFields"
                         :has-actions="config.hasActions"
+                        :hidden="accessHidden"
+                        :disabled="accessDisabled"
                     />
                 </template>
                 <template v-else>
@@ -43,7 +48,7 @@
 </template>
 
 <script setup lang="ts" generic="TItem extends Record<string, any>, TTransient">
-import { unref } from "vue";
+import { computed, unref } from "vue";
 import { VDataTable } from "vuetify/components";
 
 import CrudActions from "@/components/widgets/crudTable/components/CrudActions.vue";
@@ -51,9 +56,16 @@ import CrudCreate from "@/components/widgets/crudTable/components/CrudCreate.vue
 import { CrudTableConfig } from "@/components/widgets/crudTable/types";
 import TableHeader from "@/components/widgets/TableHeader.vue";
 
-defineProps<{
+const props = defineProps<{
     config: CrudTableConfig<TItem, TTransient>;
 }>();
+
+const accessHidden = computed(
+    () => unref(props.config.access?.hidden) ?? false,
+);
+const accessDisabled = computed(
+    () => unref(props.config.access?.disabled) ?? false,
+);
 
 // Vuetify's v-data-table typed slots don't propagate the item type through a
 // <script setup generic> wrapper, so declare our re-exposed item.* slots

@@ -50,12 +50,14 @@ export const useTable = (
                   width: "30%",
               }
             : undefined,
-        {
-            title: i18n.global.t("clientGroups.fields.actions.label"),
-            value: "actions",
-            align: "end" as const,
-            width: "10%",
-        },
+        deps.access?.hidden.value
+            ? undefined
+            : {
+                  title: i18n.global.t("clientGroups.fields.actions.label"),
+                  value: "actions",
+                  align: "end" as const,
+                  width: "10%",
+              },
     ].filter((header) => header !== undefined);
 
     const fallbackGroup = computed(() =>
@@ -106,6 +108,7 @@ export const useTable = (
         name: "client-groups",
         title: i18n.global.t("clientGroups.entityNamePlural"),
         headers,
+        access: deps.access,
         items: items,
         getFormFields,
         hasActions,

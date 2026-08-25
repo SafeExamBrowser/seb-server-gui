@@ -3,6 +3,7 @@
         icon-activator="mdi-pencil"
         color-activator="medium-emphasis"
         size-activator="small"
+        :disabled="props.disabled"
         :label-activator="props.label"
         :label-cancel="$t('general.cancelButton')"
         :label-submit="$t('general.saveButton')"
@@ -20,6 +21,7 @@ import FormDialog from "@/components/widgets/formDialog/FormDialog.vue";
 const props = defineProps<{
     label: string;
     formId: string;
+    disabled?: boolean;
     getFormFields: CrudTableConfig<TItem, TTransient>["getFormFields"];
     getItem: () => TTransient;
     updateItem: CrudTableConfig<
