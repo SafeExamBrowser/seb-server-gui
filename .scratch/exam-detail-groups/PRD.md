@@ -214,7 +214,19 @@ verification seams are:
   never uses them; the OpenAPI spec models the secrets as CharSequence-ish
   objects, so the plaintext serialization looks accidental.
 - Backend finding for Andreas (discovered during implementation,
-  2026-08-25): the exam client-group POST and PUT ignore `isSPSGroup` — the
-  GUI sends `true`, the backend stores and returns `false` (verified via
-  network log on the dev backend). The GUI-side default and edit toggle are
-  correct; persistence needs a backend fix.
+  2026-08-25; root cause confirmed in the backend source, `development`
+  branch): the exam client-group POST **and** PUT both ignore `isSPSGroup`.
+  `isSPSGroup` is read-only derived state — `ClientGroupDAOImpl.toDomainModel`
+  computes it as "a `screen_proctoring_groop` record with this `sebGroupId`
+  exists for the exam", while `createNew`/`save` build the DB record without
+  any SP data, silently dropping the posted flag (no property-name variant
+  binds: `isSPSGroup`, `spsGroup`, `spsgroup` all tested on both verbs,
+  JSON and form-encoded, on exams 2 and 11). The links that make the flag
+  read `true` are only created by the SP sync
+  (`ScreenProctoringAPIBinding`) from `spsSEBGroupsSelection` under
+  APPLY_SEB_GROUPS — which is why groups that entered the selection via
+  prepare-exam/SP-settings show `true` (exam 2 ids 8/9) even though direct
+  create/update of the flag never sticks. Fix belongs in the backend:
+  honoring the flag on create/save means updating the SP group selection and
+  triggering the sync, or the endpoints should reject/document the flag as
+  read-only.
