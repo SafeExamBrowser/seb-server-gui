@@ -1,6 +1,6 @@
 <template>
     <v-data-table
-        :headers="config.headers"
+        :headers="headers"
         :items="unref(config.items)"
         :no-data-text="$t('general.noData')"
         hide-default-footer
@@ -22,7 +22,7 @@
         </template>
 
         <template
-            v-for="header in config.headers"
+            v-for="header in headers"
             :key="header.value"
             #[`item.${header.value}`]="{ item }: { item: TItem }"
         >
@@ -35,7 +35,6 @@
                         :name="config.name"
                         :get-form-fields="config.getFormFields"
                         :has-actions="config.hasActions"
-                        :hidden="accessHidden"
                         :disabled="accessDisabled"
                     />
                 </template>
@@ -65,6 +64,12 @@ const accessHidden = computed(
 );
 const accessDisabled = computed(
     () => unref(props.config.access?.disabled) ?? false,
+);
+
+const headers = computed(() =>
+    accessHidden.value
+        ? props.config.headers.filter((header) => header.value !== "actions")
+        : props.config.headers,
 );
 
 // Vuetify's v-data-table typed slots don't propagate the item type through a

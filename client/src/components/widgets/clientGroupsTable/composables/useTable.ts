@@ -1,4 +1,4 @@
-import { computed, Ref, unref } from "vue";
+import { computed, Ref } from "vue";
 import { RuleAliases } from "vuetify/labs/rules";
 
 import {
@@ -52,14 +52,12 @@ export const useTable = (
                   width: "30%",
               }
             : undefined,
-        unref(deps.access?.hidden)
-            ? undefined
-            : {
-                  title: i18n.global.t("clientGroups.fields.actions.label"),
-                  value: "actions",
-                  align: "end" as const,
-                  width: "10%",
-              },
+        {
+            title: i18n.global.t("clientGroups.fields.actions.label"),
+            value: "actions",
+            align: "end" as const,
+            width: "10%",
+        },
     ].filter((header) => header !== undefined);
 
     const fallbackGroup = computed(() =>
