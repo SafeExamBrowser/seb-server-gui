@@ -168,6 +168,17 @@ export const activateScreenProctoring = async (
         })
     ).data;
 
+export const applyScreenProctoringGroups = async (
+    id: string,
+    spsSEBGroupsSelection: string,
+): Promise<Exam> =>
+    (
+        await apiService.postRequest({
+            url: `${baseUrl}/${id}/screen-proctoring/apply-groups`,
+            options: { _authType: "seb", params: { spsSEBGroupsSelection } },
+        })
+    ).data;
+
 export const getConsecutiveExamSelection = async (
     id: string,
 ): Promise<EntityName[]> =>

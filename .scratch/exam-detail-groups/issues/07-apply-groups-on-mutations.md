@@ -13,7 +13,7 @@ decisions below.
 
 **Blocked by:** — (follow-up to 04/05, both done)
 
-**Status:** ready-for-agent
+**Status:** ready-for-human
 
 ## Backend facts (verified in source)
 
@@ -66,15 +66,53 @@ decisions below.
 
 ## Acceptance
 
-- [ ] Creating a group with the toggle on shows Screen Proctoring "Yes"
+- [x] Creating a group with the toggle on shows Screen Proctoring "Yes"
       after the refetch; network log shows the apply-groups call with the
       full selection including the new id.
-- [ ] Toggling the flag off/on via edit updates the column and the selection
+- [x] Toggling the flag off/on via edit updates the column and the selection
       csv accordingly.
-- [ ] Deleting a flagged group fires apply-groups with the id removed.
-- [ ] Mutations without a flag delta, and any mutation on a non-SP exam
+- [x] Deleting a flagged group fires apply-groups with the id removed.
+- [x] Mutations without a flag delta, and any mutation on a non-SP exam
       (e.g. exam 4) or non-APPLY_SEB_GROUPS exam, fire no apply-groups call.
-- [ ] Typecheck passes (`npx vue-tsc --noEmit` in `client/`).
-- [ ] Browser check on the dev server (super-admin/admin123) on exam 11
+- [x] Typecheck passes (`npx vue-tsc --noEmit` in `client/`).
+- [x] Browser check on the dev server (super-admin/admin123) on exam 11
       (SP + APPLY_SEB_GROUPS) and exam 4 (SP off), evidence from the network
       log; no unit tests per standing decision.
+
+## Comments
+
+**2026-08-25 — Implemented**
+
+- `applyScreenProctoringGroups(id, spsSEBGroupsSelection)` added to
+  `examService.ts` next to `activateScreenProctoring`, same query-param
+  `postRequest` style.
+- Adapter helper `applyScreenProctoringGroups({ add?, remove? })` in
+  `useClientGroupsBox.ts` carries the single `TODO @Andreas` marker:
+  gates on SP enabled + `APPLY_SEB_GROUPS`, computes the selection from the
+  flagged wire rows (fallback row excluded) plus the mutation delta.
+  Callers gate on the flag delta: create (toggle on + new id from the POST
+  response), update (desired ≠ derived `isSPSGroup`), delete (group was
+  flagged). Apply call wrapped `try/finally` so `refetchAll` always runs
+  and errors propagate to the dialog's generic handling.
+- `toExamClientGroup` got the comment that the backend ignores `isSPSGroup`
+  on POST/PUT.
+- Verification (dev server, super-admin, network log):
+  - Exam 11 create "Apply Test A" (toggle on) → `POST …/exam/11/screen-proctoring/apply-groups?spsSEBGroupsSelection=52`,
+    column shows Yes after refetch.
+  - Edit toggle on "Manual Gropu" → `…spsSEBGroupsSelection=52,43`; toggle
+    back off → `…spsSEBGroupsSelection=52`; column updates both ways.
+  - No-delta edit (save unchanged) → PUT only, no apply-groups call.
+  - Delete flagged "Apply Test A" → `…spsSEBGroupsSelection=` (blank clears).
+  - Exam 4 (SP off): create + delete of "Apply Test B" fired no apply-groups
+    call. Test data cleaned up on both exams.
+  - `npx vue-tsc --noEmit`, eslint and prettier clean.
+- Code review findings, both addressed:
+  - Delete path: an apply-groups failure had no handler (the confirm dialog
+    has no generic catch, unlike the create/update FormDialog), leaving the
+    dialog stuck with no feedback → now caught and reported via
+    `notify.serverError` with the existing deleteFailed title; `refetchAll`
+    still runs.
+  - The `collectionStrategy` gate is inert today (the exam GET carries no
+    `spsCollectingStrategy`; `getScreenProctoringForExam` hardcodes
+    `APPLY_SEB_GROUPS`) → kept as future-proofing with a comment saying so;
+    the effective guard is `enabled`.

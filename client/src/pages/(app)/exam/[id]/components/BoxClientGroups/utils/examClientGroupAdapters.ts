@@ -35,6 +35,8 @@ export const toExamClientGroup = (
     return {
         ...rest,
         examId,
+        // the backend ignores isSPSGroup on POST/PUT — the apply-groups call
+        // after each mutation is what actually persists the flag
         isSPSGroup: screenProctoringEnabled,
     };
 };

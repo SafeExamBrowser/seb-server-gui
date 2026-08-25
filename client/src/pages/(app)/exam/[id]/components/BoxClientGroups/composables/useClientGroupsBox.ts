@@ -18,6 +18,7 @@ import { useExamActionAccess } from "@/pages/(app)/exam/[id]/composables/useExam
 import { GUIAction } from "@/services/ability.ts";
 import { notify } from "@/services/notifications/notify.ts";
 import * as clientGroupService from "@/services/seb-server/clientGroupService.ts";
+import * as examService from "@/services/seb-server/examService.ts";
 import { getScreenProctoringForExam } from "@/utils/clientGroup.ts";
 
 export const useClientGroupsBox = (
@@ -66,11 +67,58 @@ export const useClientGroupsBox = (
         },
     );
 
+    // TODO @Andreas: replace this by calling the new exam groups endpoint, once it exists
+    const applyScreenProctoringGroups = async (delta: {
+        add?: number;
+        remove?: number;
+    }) => {
+        // the strategy is a client-side constant today (the exam GET carries
+        // no spsCollectingStrategy), so this check only future-proofs against
+        // legacy EXAM-strategy exams; the effective guard is `enabled`
+        if (
+            !screenProctoring.value.enabled ||
+            screenProctoring.value.collectionStrategy !== "APPLY_SEB_GROUPS"
+        ) {
+            return;
+        }
+
+        const selection = new Set(
+            (groupsFetch.data.value?.content ?? [])
+                .filter(
+                    (group) =>
+                        group.type !== ClientGroupEnum.SP_FALLBACK_GROUP &&
+                        group.isSPSGroup === true,
+                )
+                .map((group) => group.id)
+                .filter((id) => id !== undefined),
+        );
+
+        if (delta.add !== undefined) {
+            selection.add(delta.add);
+        }
+
+        if (delta.remove !== undefined) {
+            selection.delete(delta.remove);
+        }
+
+        await examService.applyScreenProctoringGroups(
+            String(examId),
+            [...selection].join(","),
+        );
+    };
+
     const createItem = async (group: ClientGroup) => {
-        await clientGroupService.createClientGroup(
+        const created = await clientGroupService.createClientGroup(
             toExamClientGroup(examId, group),
         );
-        await refetchAll();
+
+        try {
+            if (group.screenProctoringEnabled && created.id !== undefined) {
+                await applyScreenProctoringGroups({ add: created.id });
+            }
+        } finally {
+            await refetchAll();
+        }
     };
 
     const updateItem = async (group: ClientGroupExisting) => {
@@ -85,7 +133,21 @@ export const useClientGroupsBox = (
             icon: original?.icon,
             ...toExamClientGroup(examId, group),
         });
-        await refetchAll();
+
+        try {
+            if (
+                group.screenProctoringEnabled !==
+                (original?.isSPSGroup ?? false)
+            ) {
+                await applyScreenProctoringGroups(
+                    group.screenProctoringEnabled
+                        ? { add: group.id }
+                        : { remove: group.id },
+                );
+            }
+        } finally {
+            await refetchAll();
+        }
     };
 
     const deleteMutation = useMutation((clientGroupId: number) =>
@@ -105,7 +167,19 @@ export const useClientGroupsBox = (
             return;
         }
 
-        await refetchAll();
+        try {
+            if (group.screenProctoringEnabled) {
+                await applyScreenProctoringGroups({ remove: group.id });
+            }
+        } catch (error) {
+            notify.serverError(error, {
+                titleOverride: i18n.global.t(
+                    "examDetail.boxes.clientGroups.errors.deleteFailed",
+                ),
+            });
+        } finally {
+            await refetchAll();
+        }
     };
 
     const tableDeps: ClientGroupsTableDeps = {
