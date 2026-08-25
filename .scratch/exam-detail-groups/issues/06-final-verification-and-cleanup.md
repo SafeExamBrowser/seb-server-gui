@@ -44,3 +44,37 @@ evidence to the issue files. No new functionality.
   decision (e2e suite needs a full environment, not run).
 - PRD set to ready-for-human, backend `isSPSGroup` finding recorded there
   for Andreas; `.playwright-mcp` artifacts deleted at session end.
+
+**2026-08-25 — Code review of the whole PR**
+
+Two code-review agents (widget/groups-box lens and BasicSettings/services
+lens) reviewed the full feature diff. Accepted findings landed as four
+follow-up commits:
+
+1. Exam groups adapter: wire rows of type `SP_FALLBACK_GROUP` are excluded
+   explicitly (the widget renders its own synthetic fallback row; the
+   monitoring API demonstrably returns such rows, and they'd otherwise hit
+   the invalid-row warning), and the full-entity group PUT now carries over
+   wire-only fields (`color`, `icon`) the strict schema strips — previously
+   lost on first edit.
+2. The Groups box only shows the loading/error fallback on the initial
+   load; background refetches after a mutation no longer unmount the table
+   (and a failed background refetch no longer permanently replaces it). The
+   silent exam refresh now notifies on failure instead of leaving stale
+   state without signal.
+3. Toggling screen proctoring refreshes the groups list (backend rewrites
+   group flags — latent until the backend honors `isSPSGroup`), and a
+   failed exam update now notifies and skips the activation call instead of
+   silently proceeding (`updateExam` returns the updated exam or
+   undefined).
+4. Cleanups: `ClientGroupsTableDeps.access` reuses `CrudTableAccess`;
+   `useBasicSettings` derives the SP flag via `getScreenProctoringForExam`;
+   small signature polish (`Ref` instead of `ComputedRef`, exam id passed
+   as mutation argument).
+
+Declined: replacing the PRD-mandated post-activation exam refetch with the
+activation response (PRD decision stands), dropping the invalid-row console
+warning (PRD decision stands), and destructure-style churn in
+`BoxBasicSettings`. Re-verified in the browser after the fixes: exam 11
+groups render, edit PUT round-trips, SP toggle off/on triggers the new
+groups refetch (network log), template 54 unchanged. Typecheck clean.
