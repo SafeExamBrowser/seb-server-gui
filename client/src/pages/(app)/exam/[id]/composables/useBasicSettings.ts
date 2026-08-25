@@ -7,6 +7,7 @@ import { BasicSettings, Exam } from "@/models/seb-server/exam.ts";
 import { GUIAction } from "@/services/ability.ts";
 import { notify } from "@/services/notifications/notify.ts";
 import * as examService from "@/services/seb-server/examService.ts";
+import { getScreenProctoringForExam } from "@/utils/clientGroup.ts";
 
 import { useExamActionAccess } from "./useExamActionAccess.ts";
 
@@ -28,8 +29,9 @@ export const useBasicSettings = (
         followupId: exam.value?.followupId ?? null,
         quitPassword: exam.value?.quitPassword,
         encryptPassword: configMapping.value?.encryptSecret,
-        screenProctoringEnabled:
-            exam.value?.additionalAttributes?.enableScreenProctoring === "true",
+        screenProctoringEnabled: getScreenProctoringForExam(
+            exam.value?.additionalAttributes,
+        ).enabled,
     }));
 
     const { hidden: editHidden, disabled: editDisabled } = useExamActionAccess(

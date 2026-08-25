@@ -1,4 +1,4 @@
-import { computed, ComputedRef, Ref } from "vue";
+import { computed, Ref } from "vue";
 import { useRules } from "vuetify/labs/rules";
 
 import { EntityName } from "@/api/seb-server/generated/hey-api";
@@ -27,7 +27,7 @@ export const useExamBasicSettingsFields = (
         encryptPassword: Ref<string | undefined>;
         screenProctoring: Ref<boolean>;
     },
-    screenProctoringDisabled: ComputedRef<boolean>,
+    screenProctoringDisabled: Ref<boolean>,
 ) => {
     const formFields = computed<FormField[]>(() => {
         const fields: FormField[] = [];

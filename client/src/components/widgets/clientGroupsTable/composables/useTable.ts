@@ -1,4 +1,4 @@
-import { computed, Ref } from "vue";
+import { computed, Ref, unref } from "vue";
 import { RuleAliases } from "vuetify/labs/rules";
 
 import {
@@ -52,7 +52,7 @@ export const useTable = (
                   width: "30%",
               }
             : undefined,
-        deps.access?.hidden.value
+        unref(deps.access?.hidden)
             ? undefined
             : {
                   title: i18n.global.t("clientGroups.fields.actions.label"),
