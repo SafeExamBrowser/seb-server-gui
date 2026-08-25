@@ -78,3 +78,37 @@ warning (PRD decision stands), and destructure-style churn in
 `BoxBasicSettings`. Re-verified in the browser after the fixes: exam 11
 groups render, edit PUT round-trips, SP toggle off/on triggers the new
 groups refetch (network log), template 54 unchanged. Typecheck clean.
+
+### 2026-08-25 — Pre-merge two-axis code review (whole branch vs. origin/main)
+
+Standards + spec sub-agent review before merging the branch. Cleanups applied
+(two commits):
+
+- Dropped the inert `collectionStrategy !== "APPLY_SEB_GROUPS"` guard in
+  `useClientGroupsBox.applyScreenProctoringGroups` plus its comment — the
+  strategy is a client-side constant, `enabled` is the whole guard. Reverses
+  the earlier "keep as future-proofing" call in favour of honest code.
+- `examService.applyScreenProctoringGroups` now takes `groupIds: number[]`
+  and owns the comma-joined wire format.
+- Actions-column hiding consolidated into one mechanism: `CrudTable` filters
+  the `actions` header off `config.headers` when `access.hidden`; the
+  duplicate branch in `clientGroupsTable/useTable` and the unreachable
+  `hidden` prop on `CrudActions` are gone.
+- Removed two narrating comments (activation-endpoint note in
+  `useBasicSettings`, watch parenthetical in `useClientGroupsBox`).
+
+Deliberately kept: `updateExam` failure notify for all callers (ticket 06
+review fix), delete-path dedicated error (ticket 07 deviation, documented),
+the backend-fact comments, `screenProctoring` ref re-wrapping in tableDeps.
+
+Verification: eslint, prettier, vue-tsc, vite build all clean. Browser
+(dev server, super-admin): exam 4 SP toggle on → PUT + activation + exam &
+groups refetch, SP column + fallback row appear; create "Review Test Group"
+(SP default-on) → `apply-groups?spsSEBGroupsSelection=54`; edit toggle →
+PUT + apply-groups; exam 11 "Manual Gropu" toggle on/off →
+`…=43` / blank, `isSPSGroup` round-trips and column updates in place;
+delete unflagged group → DELETE only, no apply-groups; SP toggle off
+restores plain table. Note: on exam 4 (SP freshly enabled) the backend kept
+`isSPSGroup=false` despite 200 on apply-groups — same wire calls succeed on
+exam 11, so this looks like an SPS-side init quirk on freshly activated
+exams, not a client issue. Test data cleaned up on both exams.
