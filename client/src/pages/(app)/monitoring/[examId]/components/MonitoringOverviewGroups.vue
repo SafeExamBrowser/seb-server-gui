@@ -332,6 +332,9 @@ const hasUserGalleryAccess = (): boolean => {
     if (currentUser.value.uuid.startsWith("TEACHER_ACCOUNT")) {
         return true;
     }
+    if (currentUser.value.userRoles.indexOf("INSTITUTIONAL_ADMIN") >= 0) {
+        return true;
+    }
     return (
         monitoringStore.selectedExam.supporter.indexOf(
             currentUser.value.uuid,
