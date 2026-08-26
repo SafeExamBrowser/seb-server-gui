@@ -54,7 +54,18 @@ const {
     enabled: () => downloadConnectionEnabled.value,
 });
 
-const handleClick = () => startConnectionDownload();
+const handleClick = () => {
+    if (props.exam) {
+        var configId =
+            props.exam.additionalAttributes.DEFAULT_CONNECTION_CONFIGURATION;
+        if (configId != null) {
+            downloadConnection(Number(configId));
+            return;
+        }
+    }
+
+    startConnectionDownload();
+};
 
 const handleConnectionConfigConfirm = (connectionId: number) =>
     downloadConnection(connectionId);

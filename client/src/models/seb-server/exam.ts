@@ -37,6 +37,7 @@ export type ExamAdditionalAttributes = {
     spsCollectingGroupName?: string;
     SIGNATURE_KEY_CHECK_ENABLED: string;
     NUMERICAL_TRUST_THRESHOLD: string;
+    DEFAULT_CONNECTION_CONFIGURATION: string | null;
 };
 
 export type Exam = {
