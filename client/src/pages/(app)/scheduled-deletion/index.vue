@@ -11,6 +11,12 @@
                 :label="$t('scheduledDelete.actions.add')"
                 icon="mdi-plus"
                 :data-test-id="dataTestId"
+                :disabled="hasPending()"
+                :tooltip="
+                    hasPending()
+                        ? 'scheduledDelete.actions.disabled.tooltip'
+                        : undefined
+                "
             />
         </template>
 
@@ -139,5 +145,17 @@ function getName(item: TableItem): string {
     }
 
     return `Report ${formatTimestampToDate(Number(String(item.scheduleTime)))}`;
+}
+
+function hasPending(): boolean {
+    if (!list) {
+        return false;
+    }
+
+    return (
+        list.items.find(
+            (item) => item.state == ScheduledDeleteStatusEnum.PENDING,
+        ) != undefined
+    );
 }
 </script>

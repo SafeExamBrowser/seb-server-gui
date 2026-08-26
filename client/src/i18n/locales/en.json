@@ -416,15 +416,18 @@
             }
         },
         "status": {
-            "PENDING": "Pending",
-            "SPS_RUNNING": "Running (SPS)",
-            "RUNNING": "Running",
-            "FINISHED": "Finished"
+            "PENDING": "Pending Deletion",
+            "SPS_RUNNING": "Running Deletion (SPS)",
+            "RUNNING": "Running Deletion",
+            "FINISHED": "Finished Deletion"
         },
         "actions": {
             "add": "Add",
             "delete": {
                 "tooltip": "Delete Schedule Task"
+            },
+            "disabled": {
+                "tooltip": "if a scheduled deletion already exists, the button could be disabled and a tooltip explaining why could be displayed on mouseover."
             }
         },
         "hints": {

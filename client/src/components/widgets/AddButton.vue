@@ -6,6 +6,7 @@
             variant="text"
             height="auto"
             :data-testid="`${dataTestId}-add-button`"
+            :disabled="disabled"
             @click="handleClick"
         >
             <div class="d-flex align-center ga-2 pr-4 pl-2">
@@ -16,13 +17,22 @@
                 </span>
             </div>
         </v-btn>
+        <v-tooltip
+            v-if="tooltip"
+            activator="parent"
+            location="top left"
+            :text="translate(tooltip)"
+            max-width="400"
+        />
     </div>
 </template>
 
 <script setup lang="ts">
 import type { RouteLocationAsRelative } from "vue-router";
 import { useRouter } from "vue-router";
-import { VBtn, VIcon } from "vuetify/components";
+import { VBtn, VIcon, VTooltip } from "vuetify/components";
+
+import { translate } from "@/utils/generalUtils";
 
 const router = useRouter();
 const props = withDefaults(
@@ -31,12 +41,16 @@ const props = withDefaults(
         dataTestId?: string;
         label?: string;
         icon?: string;
+        disabled?: boolean;
+        tooltip?: string;
     }>(),
     {
         route: undefined,
         dataTestId: undefined,
         label: undefined,
         icon: "mdi-plus",
+        disabled: false,
+        tooltip: undefined,
     },
 );
 
