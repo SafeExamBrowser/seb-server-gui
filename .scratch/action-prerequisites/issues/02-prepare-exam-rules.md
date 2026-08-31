@@ -78,3 +78,19 @@ Verification (dev server, Playwright, `test-exam-admin` in institution 6):
   The wizard opened from the live link and listed the mock LMS quizzes, so
   the moved composable still serves the wizard.
 - `npx vue-tsc --noEmit`, eslint and prettier clean.
+
+**2026-08-31 — Review fix: the staleTime opt-out leaked to every caller**
+
+`staleTime: options?.staleTime` passes an explicit `undefined` when called
+with no argument, and TanStack's `defaultQueryOptions` merges with a spread —
+so the key overwrote the query client's 30 s default instead of falling back
+to it, and `resolveStaleTime(undefined)` means "always stale". Every consumer
+of `useExamTemplateNames` (the exam side panel, the exam template basic
+settings form) was therefore refetching on each mount, the exact opposite of
+"on this observer only". Fixed by spreading `...options`, which contributes
+no key at all when the caller passes nothing.
+
+Verified in the browser by counting `/exam-template/names` requests: the
+Navigation Overview refetches on every visit (`staleTime: 0` observer), while
+the exam template create form mounted 3 seconds later reused the cache and
+fired no request (default observer). Typecheck, eslint and prettier clean.
