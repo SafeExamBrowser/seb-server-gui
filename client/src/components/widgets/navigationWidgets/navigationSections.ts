@@ -1,4 +1,5 @@
 import type { NavigationSectionItem } from "@/components/widgets/navigationWidgets/types.ts";
+import { Prerequisite } from "@/composables/useActionPrerequisites.ts";
 import { typedTo } from "@/router/typedTo";
 import { AbilityLike, GUIComponent } from "@/services/ability";
 import { translate } from "@/utils/generalUtils";
@@ -51,6 +52,12 @@ export function buildPreparationNavigationItems(
             to: typedTo({ name: "/(app)/exam-template/create/" }),
             testId: `${testIdPrefix}-createTemplate-link`,
             visible: ability.canView(GUIComponent.CREATE_EXAM_TEMPLATE),
+            requires: [Prerequisite.CONNECTION_CONFIGURATION],
+            prerequisiteMessages: {
+                [Prerequisite.CONNECTION_CONFIGURATION]: translate(
+                    "actionPrerequisites.connectionConfigurationBeforeExamTemplate",
+                ),
+            },
         },
         {
             label: translate("titles.examTemplateList"),

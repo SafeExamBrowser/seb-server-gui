@@ -12,6 +12,8 @@
             :to="item.to"
             :visible="item.visible"
             :thick-divider="item.thickDivider"
+            :disabled="item.disabled"
+            :unmet-messages="item.unmetMessages"
         />
 
         <v-divider class="section-divider" />

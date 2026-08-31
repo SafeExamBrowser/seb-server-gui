@@ -4,9 +4,12 @@
             :class="['section-divider', { 'thick-divider': thickDivider }]"
         />
 
-        <v-list-item class="px-0 nav-hover">
+        <v-list-item
+            class="px-0 nav-hover d-flex align-center ga-1"
+            :class="{ 'nav-disabled': disabled }"
+        >
             <RouterLink
-                v-if="to"
+                v-if="to && !disabled"
                 class="link-color nav-link"
                 :data-testid="testId"
                 :to="to"
@@ -14,16 +17,44 @@
                 {{ label }}
             </RouterLink>
 
-            <span v-else class="link-color nav-link" :data-testid="testId">
+            <span
+                v-else
+                class="link-color nav-link"
+                :class="{ 'opacity-50': disabled }"
+                :data-testid="testId"
+            >
                 {{ label }}
             </span>
+
+            <v-btn
+                v-if="disabled && unmetMessages.length > 0"
+                :aria-label="$t('actionPrerequisites.infoButtonLabel')"
+                :data-testid="testId ? `${testId}-prerequisiteInfo` : undefined"
+                color="white"
+                density="compact"
+                icon="mdi-information-outline"
+                size="small"
+                variant="text"
+            >
+                <v-icon size="small">mdi-information-outline</v-icon>
+
+                <v-tooltip activator="parent" location="bottom" max-width="400">
+                    <div
+                        v-for="message in unmetMessages"
+                        :key="message"
+                        data-testid="navigationItem-prerequisiteMessage-text"
+                    >
+                        {{ message }}
+                    </div>
+                </v-tooltip>
+            </v-btn>
         </v-list-item>
     </template>
 </template>
 
 <script setup lang="ts">
 import { RouterLink } from "vue-router";
-import { VDivider, VListItem } from "vuetify/components";
+import { VBtn, VDivider, VIcon, VListItem, VTooltip } from "vuetify/components";
 
 import type { NavigationSectionTarget } from "@/components/widgets/navigationWidgets/types.ts";
 
@@ -34,18 +65,22 @@ withDefaults(
         to?: NavigationSectionTarget;
         visible?: boolean;
         thickDivider?: boolean;
+        disabled?: boolean;
+        unmetMessages?: string[];
     }>(),
     {
         visible: true,
         thickDivider: false,
         testId: undefined,
         to: undefined,
+        disabled: false,
+        unmetMessages: () => [],
     },
 );
 </script>
 
 <style scoped>
-.nav-hover:hover .nav-link {
+.nav-hover:not(.nav-disabled):hover .nav-link {
     color: rgb(var(--v-theme-primary));
 }
 
@@ -62,7 +97,7 @@ withDefaults(
     width: 85% !important;
 }
 
-.nav-hover:hover {
+.nav-hover:not(.nav-disabled):hover {
     background: linear-gradient(
         to right,
         rgba(255, 255, 255, 1) 0%,

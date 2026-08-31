@@ -5,6 +5,23 @@ domain language the GUI uses; backend wire names sometimes differ.
 
 ## Language
 
+### Actions
+
+**Prerequisite**:
+An entity that must exist before an action becomes available. Not a
+permission: an ability (`canView`) answers "may I do this at all" from the
+user's role and hides the action when unmet, while a Prerequisite answers "can
+I do this yet" from the institution's data and leaves the action visible but
+dead. An unresolved, failed or refused prerequisite check counts as met, so
+the action behaves exactly as it would without the gate.
+_Avoid_: permission, requirement, precondition
+
+**Assessment Tool Connection**:
+The GUI name for what the backend calls an LMS Setup. A prerequisite phrased
+in Assessment Tool Connections is therefore answered by reading LMS Setup
+endpoints.
+_Avoid_: LMS setup, LMS connection
+
 ### Client groups
 
 **Client Group**:
