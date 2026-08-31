@@ -1,6 +1,6 @@
 # PRD: Prerequisites for GUI actions (SEBSERV-997)
 
-Status: ready-for-agent (tickets 01–05 ready-for-agent, none started)
+Status: done (tickets 01–05 implemented and verified 2026-08-31)
 
 Branch: `SEBSERV-997_ensure_conditional-steps-ready`
 Settled 2026-08-31 in a grilling session with Alain — don't relitigate the

@@ -5,7 +5,7 @@
         />
 
         <v-list-item
-            class="px-0 nav-hover d-flex align-center ga-1"
+            class="px-0 nav-hover"
             :class="{ 'nav-disabled': disabled }"
         >
             <RouterLink
@@ -32,11 +32,11 @@
                 :data-testid="testId ? `${testId}-prerequisiteInfo` : undefined"
                 color="white"
                 density="compact"
-                icon="mdi-information-outline"
+                icon
                 size="small"
                 variant="text"
             >
-                <v-icon size="small">mdi-information-outline</v-icon>
+                <v-icon icon="mdi-information-outline" size="small" />
 
                 <v-tooltip activator="parent" location="bottom" max-width="400">
                     <div
