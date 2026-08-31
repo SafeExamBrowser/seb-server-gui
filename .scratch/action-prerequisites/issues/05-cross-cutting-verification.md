@@ -22,7 +22,8 @@ what was left behind on the dev server.
 - [ ] Typecheck passes across the finished feature (`npx vue-tsc --noEmit` in
       `client/`).
 - [ ] What was left in institution 6 is reported: the account created, and
-      which entities were removed or deactivated.
+      which entities were removed or deactivated. No restoration is required
+      — institution 6 is disposable test data, exam 17 included.
 - [ ] Any follow-up worth filing is named, in particular the wizard-step
       empty state that would replace a route guard for bookmarked deep links,
       and the outcome of the connection configuration active-filter question

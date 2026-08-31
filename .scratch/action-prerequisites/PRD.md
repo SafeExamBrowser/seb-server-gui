@@ -287,8 +287,11 @@ parallel sentences.
 ### Visual treatment
 
 The disabled navigation item renders as a non-link label dimmed with the
-Vuetify opacity utility, with the hover effect suppressed. No custom CSS. The
-two buttons use their component's existing disabled prop.
+Vuetify opacity utility, with the hover effect suppressed via a minimal
+change to `NavigationItem.vue`'s existing scoped style block — the hover
+effect is custom CSS there already, and its class also carries base layout,
+so suppression cannot be done with utilities alone. No new style blocks, no
+inline styles. The two buttons use their component's existing disabled prop.
 
 ## Testing Decisions
 
@@ -304,7 +307,11 @@ that maps prerequisites to answers, it has no rendering concerns, and driving
 it with empty and non-empty responses covers every rule in the table above.
 
 Verification for this work runs against institution 6 on the dev server,
-which Alain has cleared for destructive use. An institutional administrator
+which Alain has cleared for destructive use. Institution 6 is wholly
+disposable test data, exam 17 included — existing entities may be
+deactivated or deleted outright to produce the empty state, and nothing
+needs restoring afterwards; issue 05 only asks for a report of what was
+done. An institutional administrator
 account is created there so the checks resolve against an institution the
 test user actually belongs to — the endpoints derive the institution from the
 current user, so being super administrator in institution 1 cannot observe

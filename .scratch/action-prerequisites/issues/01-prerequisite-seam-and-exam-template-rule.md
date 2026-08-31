@@ -35,8 +35,9 @@ already uses.
       the existing `visible`, and the navigation section builders stay pure —
       they declare rules, they do not resolve them.
 - [ ] A disabled navigation item renders as a non-link label, dimmed with the
-      Vuetify opacity utility and with the hover effect suppressed. No custom
-      CSS.
+      Vuetify opacity utility and with the hover effect suppressed via a
+      minimal change to `NavigationItem.vue`'s existing scoped style block.
+      No new style blocks, no inline styles.
 - [ ] The info icon button renders only when the item is disabled and has a
       message; it is a real focusable button with an accessible name, it is
       the sole tooltip activator, and the tooltip uses default triggers only.
@@ -47,7 +48,9 @@ already uses.
       behaves exactly as it does today.
 - [ ] An institutional administrator account exists in institution 6 for
       verification, and the institution has no active Connection
-      Configuration. Username and password are reported in the comment.
+      Configuration. Institution 6 is disposable test data, exam 17 included
+      — deactivate or delete whatever stands in the way of the empty state.
+      Username and password are reported in the comment.
 - [ ] Browser verification as that user: the link is dimmed and dead, the
       info button is reachable and shows the message, then creating a
       Connection Configuration and returning to the Navigation Overview
