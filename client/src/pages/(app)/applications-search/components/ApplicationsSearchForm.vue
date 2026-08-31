@@ -15,6 +15,7 @@
                 {{ $t("titles.spApplications") }}
             </span>
             <v-btn
+                v-if="clearAllAvailable"
                 variant="text"
                 color="primary"
                 size="small"
@@ -23,7 +24,7 @@
                 @click="handleReset"
             >
                 <v-icon start size="small" icon="mdi-refresh" />
-                {{ $t("searchForm.resetAll") }}
+                {{ $t("general.clearAll") }}
             </v-btn>
             <v-btn
                 icon="mdi-chevron-left"
@@ -68,7 +69,7 @@
 </template>
 
 <script setup lang="ts">
-import { onMounted, ref } from "vue";
+import { computed, onMounted, ref } from "vue";
 import { VBtn, VDivider, VForm, VIcon } from "vuetify/components";
 
 import TimeRangeModeSelector from "@/components/widgets/searches/timeRange/TimeRangeModeSelector.vue";
@@ -104,6 +105,8 @@ const createDefaultTimeRange = (): TimeRangeSelection => ({
 const timeRange = ref<TimeRangeSelection>(createDefaultTimeRange());
 const timeRangeSelector = ref<InstanceType<typeof TimeRangeModeSelector>>();
 
+const clearAllAvailable = computed(() => timeRange.value.mode !== undefined);
+
 onMounted(() => {
     handleSearch();
 });
@@ -131,6 +134,8 @@ function handleReset() {
     timeRange.value = createDefaultTimeRange();
     handleSearch();
 }
+
+defineExpose({ reset: handleReset });
 </script>
 
 <style scoped>

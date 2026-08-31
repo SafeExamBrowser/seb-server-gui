@@ -68,6 +68,17 @@
                     >
                         {{ chip.label }}: {{ chip.value }}
                     </v-chip>
+                    <v-btn
+                        variant="text"
+                        color="primary"
+                        size="small"
+                        class="text-none"
+                        :data-testid="`${dataTestId}-clear-all-button`"
+                        @click="handleClearAll"
+                    >
+                        <v-icon start size="small" icon="mdi-refresh" />
+                        {{ $t("general.clearAll") }}
+                    </v-btn>
                 </template>
 
                 <v-spacer />
@@ -153,11 +164,6 @@
                         :data-testid="`${dataTestId}-day-panel`"
                     >
                         <v-expansion-panel-title>
-                            <v-icon
-                                icon="mdi-calendar-outline"
-                                color="primary"
-                                class="mr-3"
-                            />
                             <span class="font-weight-bold">
                                 {{ formatDayTitle(day) }}
                             </span>
@@ -360,6 +366,10 @@ function handleRemoveFilter(key: SpSearchFilterKey) {
 
 function handleToggleFilters() {
     filtersOpen.value = !filtersOpen.value;
+}
+
+function handleClearAll() {
+    searchForm.value?.reset();
 }
 
 function handleCollapseFilters() {

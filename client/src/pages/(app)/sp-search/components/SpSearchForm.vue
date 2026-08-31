@@ -15,15 +15,16 @@
                 {{ $t("titles.spSearch") }}
             </span>
             <v-btn
+                v-if="clearAllAvailable"
                 variant="text"
                 color="primary"
                 size="small"
                 class="text-none"
-                :data-testid="`${dataTestId}-search-reset-button`"
+                :data-testid="`${dataTestId}-search-cancel-button`"
                 @click="handleReset"
             >
                 <v-icon start size="small" icon="mdi-refresh" />
-                {{ $t("searchForm.resetAll") }}
+                {{ $t("general.clearAll") }}
             </v-btn>
             <v-btn
                 icon="mdi-chevron-left"
@@ -169,7 +170,7 @@
 </template>
 
 <script setup lang="ts">
-import { onMounted, reactive, ref } from "vue";
+import { computed, onMounted, reactive, ref } from "vue";
 import { useRoute } from "vue-router";
 import {
     VBtn,
@@ -247,6 +248,12 @@ const timeRange = ref<TimeRangeSelection>(createDefaultTimeRange());
 const openGroups = ref<string[]>([]);
 const timeRangeSelector = ref<InstanceType<typeof TimeRangeModeSelector>>();
 
+const clearAllAvailable = computed(
+    () =>
+        Object.values(filters).some((value) => value !== "") ||
+        timeRange.value.mode !== undefined,
+);
+
 onMounted(() => {
     handleSearch();
 });
@@ -287,7 +294,7 @@ function handleReset() {
     handleSearch();
 }
 
-defineExpose({ clearFilter });
+defineExpose({ clearFilter, reset: handleReset });
 </script>
 
 <style scoped>

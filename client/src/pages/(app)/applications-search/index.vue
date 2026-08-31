@@ -7,6 +7,7 @@
     >
         <template #PanelLeft>
             <ApplicationsSearchForm
+                ref="searchForm"
                 :data-test-id="dataTestId"
                 @search="handleSearch"
                 @collapse="filtersOpen = false"
@@ -37,7 +38,7 @@
                     }}
                 </v-btn>
 
-                <template v-if="search.activeSummary">
+                <template v-if="activeChipsAvailable">
                     <v-divider vertical class="align-self-stretch mx-1" />
 
                     <span
@@ -46,6 +47,7 @@
                         {{ $t("searchForm.active") }}
                     </span>
                     <v-chip
+                        v-if="search.activeSummary"
                         color="primary"
                         variant="tonal"
                         class="font-weight-medium"
@@ -54,27 +56,38 @@
                         <v-icon start size="small" icon="mdi-clock-outline" />
                         {{ search.activeSummary }}
                     </v-chip>
-                </template>
-                <v-chip
-                    v-if="search.metadataAvailable"
-                    color="primary"
-                    variant="tonal"
-                    closable
-                    class="font-weight-medium"
-                    :data-testid="`${dataTestId}-selection-pill`"
-                    @click:close="search.changeSelection()"
-                >
-                    <v-icon
-                        start
+                    <v-chip
+                        v-if="search.metadataAvailable"
+                        color="primary"
+                        variant="tonal"
+                        closable
+                        class="font-weight-medium"
+                        :data-testid="`${dataTestId}-selection-pill`"
+                        @click:close="search.changeSelection()"
+                    >
+                        <v-icon
+                            start
+                            size="small"
+                            icon="mdi-file-document-outline"
+                        />
+                        {{
+                            $t("applicationsSearch.examsSelected", {
+                                count: search.submittedCount,
+                            })
+                        }}
+                    </v-chip>
+                    <v-btn
+                        variant="text"
+                        color="primary"
                         size="small"
-                        icon="mdi-file-document-outline"
-                    />
-                    {{
-                        $t("applicationsSearch.examsSelected", {
-                            count: search.submittedCount,
-                        })
-                    }}
-                </v-chip>
+                        class="text-none"
+                        :data-testid="`${dataTestId}-clear-all-button`"
+                        @click="handleClearAll"
+                    >
+                        <v-icon start size="small" icon="mdi-refresh" />
+                        {{ $t("general.clearAll") }}
+                    </v-btn>
+                </template>
 
                 <v-spacer />
 
@@ -243,7 +256,7 @@
 </template>
 
 <script setup lang="ts">
-import { ref } from "vue";
+import { computed, ref } from "vue";
 import {
     VAlert,
     VBtn,
@@ -275,7 +288,17 @@ const dataTestId = "applications-search";
 const filtersOpen = ref<boolean>(true);
 const search = useApplicationsSearch();
 
+const searchForm = ref<InstanceType<typeof ApplicationsSearchForm>>();
+
+const activeChipsAvailable = computed(
+    () => Boolean(search.activeSummary) || search.metadataAvailable,
+);
+
 async function handleSearch(query: ApplicationsSearchQuery) {
     await search.runSearch(query);
+}
+
+function handleClearAll() {
+    searchForm.value?.reset();
 }
 </script>

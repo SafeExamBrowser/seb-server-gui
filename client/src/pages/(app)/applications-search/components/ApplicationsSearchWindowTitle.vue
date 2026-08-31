@@ -35,12 +35,6 @@
                     :value="metadataWindow.raw.title"
                 >
                     <v-expansion-panel-title class="font-weight-bold">
-                        <v-icon
-                            start
-                            icon="mdi-image-outline"
-                            color="primary"
-                            size="small"
-                        />
                         {{ metadataWindow.raw.title }}
                     </v-expansion-panel-title>
 
@@ -108,7 +102,6 @@ import {
     VExpansionPanels,
     VExpansionPanelText,
     VExpansionPanelTitle,
-    VIcon,
     VTextField,
 } from "vuetify/components";
 
