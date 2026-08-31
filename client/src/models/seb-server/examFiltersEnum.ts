@@ -27,12 +27,12 @@ export const SELECTABLE_EXAM_TYPES = [
     ExamTypeEnum.VDI,
 ] as const;
 
-// TODO @alain: once ExamTemplate has a zod schema, this can be done with a zod codec
+// TODO @andrei: once ExamTemplate has a zod schema, this can be done with a zod codec
 export const toSelectableExamType = (
     value?: string,
 ): ExamTypeEnum | undefined =>
     SELECTABLE_EXAM_TYPES.find((examType) => examType === value);
 
-// TODO @alain: once ExamTemplate has a zod schema, this can be done with a zod codec
+// TODO @andrei: once ExamTemplate has a zod schema, this can be done with a zod codec
 export const toApiExamType = (value?: ExamTypeEnum): ExamTypeEnum =>
     value ?? ExamTypeEnum.UNDEFINED;

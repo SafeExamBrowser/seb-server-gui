@@ -23,7 +23,9 @@
         "skipLibCheck": true
     },
     "vueCompilerOptions": {
-        "strictTemplates": false, // TODO @alain: we would like this to be "true", but it causes a known issue with Vuetify (see https://github.com/vuetifyjs/vuetify/issues/16190)
+        // TODO @andrei: we would like this to be "true", but it causes a known issue with Vuetify
+        // - see https://github.com/vuetifyjs/vuetify/issues/16190 for details
+        "strictTemplates": false,
         "plugins": [
             "vue-router/volar/sfc-route-blocks",
             "vue-router/volar/sfc-typed-router"

@@ -99,7 +99,7 @@ export type ExamAttribute = {
     quitPassword?: string; // optional, is not used yet, ignore it
 };
 
-// TODO @alain: we should soon differentiate between ExamTemplate and ExamTemplateExisting
+// TODO @andrei: we should soon differentiate between ExamTemplate and ExamTemplateExisting
 // - id undefined vs number
 // - indicatorTemplates will have a different type
 // - CLIENT_GROUP_TEMPLATES will have a different type
@@ -118,7 +118,7 @@ export type ExamTemplate = {
     EXAM_ATTRIBUTES: ExamAttribute; // additional exam attributes see ExamAttribute
 };
 
-// TODO @alain: once we have a proper zod schema for ExamTemplate, the BasicSettings type can be more strict and be inferred from the schema
+// TODO @andrei: once we have a proper zod schema for ExamTemplate, the BasicSettings type can be more strict and be inferred from the schema
 export type BasicSettings = Pick<
     ExamTemplate,
     | "name"

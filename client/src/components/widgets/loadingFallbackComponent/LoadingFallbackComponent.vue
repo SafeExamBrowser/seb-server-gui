@@ -1,4 +1,4 @@
-<!-- TODO @alain: use Suspense for this, once it's stable https://vuejs.org/guide/built-ins/suspense.html -->
+<!-- TODO @andrei: use Suspense for this, once it's stable https://vuejs.org/guide/built-ins/suspense.html -->
 <template>
     <div v-if="messages.length > 0">
         <!-- TODO @alain: add proper error message -->

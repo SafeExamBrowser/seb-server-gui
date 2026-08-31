@@ -11,7 +11,7 @@
             <v-card-title>
                 {{ $t("examDetail.boxes.sebKeys.edit") }}
             </v-card-title>
-            <!-- TODO @alain: replace the placeholder with the actual SEB keys editing UI once they are available -->
+            <!-- TODO @andreas: replace the placeholder with the actual SEB keys editing UI once they are available -->
             <v-card-text>Not implemented yet</v-card-text>
             <v-card-actions>
                 <v-spacer />

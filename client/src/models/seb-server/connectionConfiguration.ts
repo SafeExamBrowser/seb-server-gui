@@ -40,13 +40,13 @@ export type ConnectionConfigurationName = {
     name: string;
 };
 
-// TODO @alain: once ExamTemplate has a zod schema, this can be done with a zod codec
+// TODO @andrei: once ExamTemplate has a zod schema, this can be done with a zod codec
 // 0 is the API's "no connection configuration" sentinel; sending undefined omits the
 // field from the PUT and leaves the stored value unchanged, so clearing must send 0.
 export const toApiClientConfigurationId = (value?: string): number =>
     value ? Number(value) : 0;
 
-// TODO @alain: once ExamTemplate has a zod schema, this can be done with a zod codec
+// TODO @andrei: once ExamTemplate has a zod schema, this can be done with a zod codec
 export const toSelectableClientConfigurationId = (
     value?: number,
 ): string | undefined =>
