@@ -1,7 +1,7 @@
 import { defineStore } from "pinia";
 import { computed, ref, watchEffect } from "vue";
 
-import { useAssessmentTools } from "@/pages/(app)/exam/create/components/stepAssessmentTool/composables/api/useAssessmentTools.ts";
+import { useAssessmentTools } from "@/composables/useAssessmentTools.ts";
 
 const getInitialState = () => ({
     selectedAssessmentToolId: undefined,

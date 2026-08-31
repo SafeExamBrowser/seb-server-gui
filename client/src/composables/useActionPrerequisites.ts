@@ -1,9 +1,13 @@
 import { computed } from "vue";
 
+import { useAssessmentTools } from "@/composables/useAssessmentTools.ts";
 import { useClientConfigurationNames } from "@/composables/useClientConfigurationNames.ts";
+import { useExamTemplateNames } from "@/composables/useExamTemplateNames.ts";
 
 export enum Prerequisite {
     CONNECTION_CONFIGURATION = "CONNECTION_CONFIGURATION",
+    EXAM_TEMPLATE = "EXAM_TEMPLATE",
+    ASSESSMENT_TOOL_CONNECTION = "ASSESSMENT_TOOL_CONNECTION",
 }
 
 interface PrerequisiteAnswer {
@@ -15,11 +19,23 @@ interface PrerequisiteAnswer {
 // hand here; this collapses once `useFetch` is migrated to TanStack Query.
 export const useActionPrerequisites = () => {
     const connectionConfigurations = useClientConfigurationNames();
+    const assessmentTools = useAssessmentTools();
+    // The exam template answer must reflect a template created moments ago on another page, so
+    // this observer opts out of the project's default staleness.
+    const examTemplates = useExamTemplateNames({ staleTime: 0 });
 
     const answers = computed<Record<Prerequisite, PrerequisiteAnswer>>(() => ({
         [Prerequisite.CONNECTION_CONFIGURATION]: {
             resolved: connectionConfigurations.data.value !== undefined,
             met: (connectionConfigurations.data.value ?? []).length > 0,
+        },
+        [Prerequisite.EXAM_TEMPLATE]: {
+            resolved: examTemplates.data.value !== undefined,
+            met: (examTemplates.data.value ?? []).length > 0,
+        },
+        [Prerequisite.ASSESSMENT_TOOL_CONNECTION]: {
+            resolved: assessmentTools.data.value !== undefined,
+            met: (assessmentTools.data.value?.content ?? []).length > 0,
         },
     }));
 

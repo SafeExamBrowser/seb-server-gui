@@ -70,12 +70,30 @@ export function buildPreparationNavigationItems(
             to: typedTo({ name: "/(app)/exam/create/" }),
             testId: `${testIdPrefix}-prepareExam-link`,
             visible: ability.canView(GUIComponent.CREATE_EXAM_WIZARD),
+            requires: [
+                Prerequisite.EXAM_TEMPLATE,
+                Prerequisite.ASSESSMENT_TOOL_CONNECTION,
+            ],
+            prerequisiteMessages: {
+                [Prerequisite.EXAM_TEMPLATE]: translate(
+                    "actionPrerequisites.examTemplateBeforePrepareExam",
+                ),
+                [Prerequisite.ASSESSMENT_TOOL_CONNECTION]: translate(
+                    "actionPrerequisites.assessmentToolConnectionBeforePrepareExam",
+                ),
+            },
         },
         {
             label: translate("titles.addExamWithURL"),
             to: typedTo({ name: "/(app)/exam/create/withURL/" }),
             testId: `${testIdPrefix}-addExamWithURL-text`,
             visible: ability.canView(GUIComponent.ADD_EXAM_WITH_URL),
+            requires: [Prerequisite.EXAM_TEMPLATE],
+            prerequisiteMessages: {
+                [Prerequisite.EXAM_TEMPLATE]: translate(
+                    "actionPrerequisites.examTemplateBeforePrepareExamWithUrl",
+                ),
+            },
         },
     ];
 }
