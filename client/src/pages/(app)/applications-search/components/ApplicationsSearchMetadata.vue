@@ -4,7 +4,6 @@
         <div
             class="d-flex align-center flex-wrap ga-3 px-5 py-4 bg-blue-lighten-5"
         >
-            <v-icon icon="mdi-file-document-outline" color="primary" />
             <span class="text-subtitle-1 font-weight-bold">
                 {{ examObject.exam.name }}
             </span>
@@ -29,12 +28,6 @@
                     :value="metadataApp"
                 >
                     <v-expansion-panel-title class="font-weight-bold">
-                        <v-icon
-                            start
-                            icon="mdi-apps"
-                            color="primary"
-                            size="small"
-                        />
                         {{ metadataApp }}
                     </v-expansion-panel-title>
 
@@ -59,7 +52,6 @@ import {
     VExpansionPanels,
     VExpansionPanelText,
     VExpansionPanelTitle,
-    VIcon,
     VSpacer,
 } from "vuetify/components";
 
