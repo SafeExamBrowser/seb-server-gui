@@ -11,6 +11,7 @@
                 :route="{ name: '/(app)/exam/create/' }"
                 :label="$t('general.prepareButton')"
                 icon="mdi-clipboard-edit-outline"
+                :disabled="prepareDisabled"
                 :data-test-id="dataTestId"
             />
         </template>
@@ -87,6 +88,7 @@
 </template>
 
 <script setup lang="ts">
+import { computed } from "vue";
 import { VSwitch } from "vuetify/components";
 
 import BasicPage from "@/components/layout/pages/BasicPage.vue";
@@ -97,6 +99,10 @@ import FilterControlsRow from "@/components/widgets/filters/FilterControlsRow.vu
 import { useListFilterPanel } from "@/components/widgets/filters/useListFilterPanel.ts";
 import LoadingFallbackComponent from "@/components/widgets/loadingFallbackComponent/LoadingFallbackComponent.vue";
 import SearchBar from "@/components/widgets/searches/SearchBar.vue";
+import {
+    Prerequisite,
+    useActionPrerequisites,
+} from "@/composables/useActionPrerequisites.ts";
 import {
     examStatusColor,
     ExamStatusEnum,
@@ -114,6 +120,14 @@ definePage({
 });
 
 const abilities = useAbilities();
+const { isUnmet } = useActionPrerequisites();
+
+const prepareDisabled = computed(() =>
+    isUnmet([
+        Prerequisite.EXAM_TEMPLATE,
+        Prerequisite.ASSESSMENT_TOOL_CONNECTION,
+    ]),
+);
 
 const dataTestId = "exams";
 
