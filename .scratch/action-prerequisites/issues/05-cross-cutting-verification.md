@@ -142,7 +142,8 @@ checked. Three structural findings were implemented in one follow-up commit:
   three prerequisite reads over the standard mock backend and asserts the
   three Navigation Overview items are dead spans with info buttons, the
   Prepare Exam tooltip carries both messages, and the Exams "Prepare" /
-  Exam Template "Add" buttons are disabled.
+  Exam Template "Add" buttons are disabled. *(Removed again before merge —
+  see the 2026-09-01 e2e cleanup comment below.)*
 
 Verified: `vue-tsc --noEmit`, `typecheck:playwright`, eslint and prettier
 clean; the new spec passes; `06-exam` suite unchanged (7 passed, 1 failure
@@ -156,3 +157,31 @@ actions render dead with their info buttons.
 Skipped on purpose: moving the `Prerequisite` enum out of the composable
 (layering nit, no bundle impact worth the churn) and rewording the
 `useExamTemplateNames` staleTime comment.
+
+**2026-09-01 — e2e cleanup before merge**
+
+The e2e suite is experimental and frozen: no new specs while it is broken on
+`main` (the branch goal is only to not break more of it). So the unmet-state
+spec added in the review follow-up
+(`tests/e2e/10-action-prerequisites/unmet-prerequisites.spec.ts`) was removed
+again; the unmet branch keeps its manual verification (dev server,
+institution 6) recorded above. The three prerequisite mock routes in
+`tests/e2e/shared/mocks/mock-backend.ts` stay.
+
+Evidence the mock routes are the right ones (full chromium suite against a
+local vite, sandbox):
+
+- `main` baseline: 121/173 passed.
+- This branch with the mocks: 121/173 passed, failure list byte-identical
+  to `main`'s.
+- This branch with `main`'s mock-backend.ts: 53 failures — the same 52 plus
+  `06-exam/2.2-read-get-all.spec.ts` "H add button navigates to the create
+  page", because the now-gated Prepare button reads `lms-setup/active`,
+  whose catch-all `{}` resolves to an empty page and disables it.
+- Per-route: only `lms-setup/active` is strictly load-bearing today.
+  `client_configuration/names` and `exam-template/names` pass without their
+  mocks only because the catch-all `{}` fails zod parsing, so the
+  prerequisite stays unresolved and `useActionPrerequisites` fails open.
+  All three are kept anyway: that accident dies as soon as error states
+  resolve to `[]` (e.g. the TanStack Query migration), and the mock
+  institution should stay semantically "fully set up".
