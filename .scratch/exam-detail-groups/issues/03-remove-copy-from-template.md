@@ -11,7 +11,7 @@ parked; only unused hand-written seb-server models stay for Andrei's sweep.
 
 **Blocked by:** 02 — Screen proctoring on by default for new groups.
 
-**Status:** ready-for-human
+**Status:** done
 
 - [x] The exam detail Groups box shows no add/copy affordance; listing and
       deleting groups still work.
@@ -40,3 +40,5 @@ parked; only unused hand-written seb-server models stay for Andrei's sweep.
   Groups box shows no add/copy affordance, listed "Manual Gropu"
   (SEB Client OS, macOS), delete + confirm removed it and the list refetched
   to empty. (Group recreated in the ticket 04 add test.)
+
+**2026-09-01 — Human-tested by Alain; closed as done.**

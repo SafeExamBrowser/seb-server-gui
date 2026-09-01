@@ -1,6 +1,6 @@
 # 02 — Wizard: remove the grouping-strategy choice
 
-Status: ready-for-agent
+Status: done
 Parent: `.scratch/grouping-strategy-cleanup/PRD.md` (decisions 5–10, Background)
 Blocked by: 01 — Detail page: merge SPS toggle into Basic Settings.
 

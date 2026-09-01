@@ -39,6 +39,13 @@
     "-------NotificationTypeEnum------": "----------",
     "LOCK_SCREEN": "Lock screen",
     "RAISE_HAND": "Raise hand",
+    "actionPrerequisites": {
+        "infoButtonLabel": "Why this action is unavailable",
+        "connectionConfigurationBeforeExamTemplate": "You need to create a Connection Configuration first, before creating an Exam Template",
+        "examTemplateBeforePrepareExam": "You need to create an Exam Template first, before preparing an Exam",
+        "examTemplateBeforePrepareExamWithUrl": "You need to create an Exam Template first, before preparing an Exam with URL",
+        "assessmentToolConnectionBeforePrepareExam": "You need to create an Assessment Tool Connection first, before preparing an Exam"
+    },
     "general": {
         "loadingText": "Loading... Please wait",
         "addButton": "Add",

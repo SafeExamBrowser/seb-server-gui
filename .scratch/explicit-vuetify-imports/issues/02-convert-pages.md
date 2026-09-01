@@ -6,7 +6,7 @@ After this ticket, every Vuetify tag in the entire codebase has an explicit impo
 
 **Blocked by:** 01 — Codemod + convert components/, App.vue, utils/ (reuses its codemod).
 
-**Status:** ready-for-agent
+**Status:** done
 
 - [x] All Vuetify-using SFCs under `pages/` have explicit `vuetify/components` imports covering every Vuetify tag in their template
 - [x] Templates unchanged (kebab-case tags kept); only script blocks touched

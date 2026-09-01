@@ -1,4 +1,5 @@
 import type { NavigationSectionItem } from "@/components/widgets/navigationWidgets/types.ts";
+import { Prerequisite } from "@/composables/useActionPrerequisites.ts";
 import { typedTo } from "@/router/typedTo";
 import { AbilityLike, GUIComponent } from "@/services/ability";
 import { translate } from "@/utils/generalUtils";
@@ -51,6 +52,12 @@ export function buildPreparationNavigationItems(
             to: typedTo({ name: "/(app)/exam-template/create/" }),
             testId: `${testIdPrefix}-createTemplate-link`,
             visible: ability.canView(GUIComponent.CREATE_EXAM_TEMPLATE),
+            requires: [Prerequisite.CONNECTION_CONFIGURATION],
+            prerequisiteMessages: {
+                [Prerequisite.CONNECTION_CONFIGURATION]: translate(
+                    "actionPrerequisites.connectionConfigurationBeforeExamTemplate",
+                ),
+            },
         },
         {
             label: translate("titles.examTemplateList"),
@@ -63,12 +70,30 @@ export function buildPreparationNavigationItems(
             to: typedTo({ name: "/(app)/exam/create/" }),
             testId: `${testIdPrefix}-prepareExam-link`,
             visible: ability.canView(GUIComponent.CREATE_EXAM_WIZARD),
+            requires: [
+                Prerequisite.EXAM_TEMPLATE,
+                Prerequisite.ASSESSMENT_TOOL_CONNECTION,
+            ],
+            prerequisiteMessages: {
+                [Prerequisite.EXAM_TEMPLATE]: translate(
+                    "actionPrerequisites.examTemplateBeforePrepareExam",
+                ),
+                [Prerequisite.ASSESSMENT_TOOL_CONNECTION]: translate(
+                    "actionPrerequisites.assessmentToolConnectionBeforePrepareExam",
+                ),
+            },
         },
         {
             label: translate("titles.addExamWithURL"),
             to: typedTo({ name: "/(app)/exam/create/withURL/" }),
             testId: `${testIdPrefix}-addExamWithURL-text`,
             visible: ability.canView(GUIComponent.ADD_EXAM_WITH_URL),
+            requires: [Prerequisite.EXAM_TEMPLATE],
+            prerequisiteMessages: {
+                [Prerequisite.EXAM_TEMPLATE]: translate(
+                    "actionPrerequisites.examTemplateBeforePrepareExamWithUrl",
+                ),
+            },
         },
     ];
 }

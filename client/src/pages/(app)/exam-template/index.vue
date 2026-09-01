@@ -12,6 +12,7 @@
         <template #ActionButton>
             <AddButton
                 :route="{ name: '/(app)/exam-template/create/' }"
+                :disabled="addDisabled"
                 :data-test-id="dataTestId"
             />
         </template>
@@ -81,6 +82,7 @@
 </template>
 
 <script setup lang="ts">
+import { computed } from "vue";
 import { VChip } from "vuetify/components";
 
 import BasicPage from "@/components/layout/pages/BasicPage.vue";
@@ -91,6 +93,10 @@ import FilterControlsRow from "@/components/widgets/filters/FilterControlsRow.vu
 import { useListFilterPanel } from "@/components/widgets/filters/useListFilterPanel.ts";
 import LoadingFallbackComponent from "@/components/widgets/loadingFallbackComponent/LoadingFallbackComponent.vue";
 import SearchBar from "@/components/widgets/searches/SearchBar.vue";
+import {
+    Prerequisite,
+    useActionPrerequisites,
+} from "@/composables/useActionPrerequisites.ts";
 
 import { useExamTemplateOverview } from "./composables/useExamTemplateOverview.ts";
 
@@ -101,6 +107,11 @@ definePage({
 });
 
 const dataTestId = "examTemplates";
+
+const addRequires = [Prerequisite.CONNECTION_CONFIGURATION];
+const { isUnmet } = useActionPrerequisites(addRequires);
+
+const addDisabled = computed(() => isUnmet(addRequires));
 
 const { list, deleteFlow, copyFlow } = useExamTemplateOverview();
 

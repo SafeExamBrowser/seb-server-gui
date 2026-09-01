@@ -1,6 +1,6 @@
 # 03 — Summary: simplify strategy handling + fix group-selection substring bug
 
-Status: ready-for-agent
+Status: done
 Parent: `.scratch/grouping-strategy-cleanup/PRD.md` (decisions 11–13)
 Blocked by: 02 — Wizard: remove the grouping-strategy choice.
 
