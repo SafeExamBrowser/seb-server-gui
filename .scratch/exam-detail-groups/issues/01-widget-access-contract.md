@@ -11,7 +11,7 @@ on the template wizard or the template detail page.
 
 **Blocked by:** None — can start immediately.
 
-**Status:** ready-for-human
+**Status:** done
 
 - [x] The widget's deps accept an optional access contract with reactive
       hidden and disabled states.
@@ -41,3 +41,5 @@ on the template wizard or the template detail page.
   open and cancel as before. Wizard groups step regression covered in the
   ticket 02 session (same shared-widget path; no-access consumers are
   code-identical to before).
+
+**2026-09-01 — Human-tested by Alain; closed as done.**

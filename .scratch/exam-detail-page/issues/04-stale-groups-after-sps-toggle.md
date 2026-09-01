@@ -1,6 +1,6 @@
 # 04 — Groups table shows stale SPS flags after template-level SPS toggle
 
-Labels: ready-for-human
+Status: done
 Reported by Alain 2026-08-18 (SEBSERV-973 verification follow-up).
 
 ## Symptom
@@ -44,3 +44,5 @@ Two ingredients (verified with a scripted Playwright loop + direct API calls):
   row appears via refetch; deleted it → row disappears. Template 86 restored
   to original state (testgroup SPS on).
 - `npx vue-tsc --noEmit` and eslint clean on both changed files.
+
+**2026-09-01 — Human-tested by Alain; closed as done.**

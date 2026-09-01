@@ -1,5 +1,7 @@
 # Screen Proctoring chips in Prepare Exam read group ids as list positions
 
+Status: done
+
 Found 2026-08-24 while investigating SEBSERV-970 (grilling session with Alain).
 Out of scope for SEBSERV-970 (`.scratch/prepare-exam-groups/`), tracked here
 separately.

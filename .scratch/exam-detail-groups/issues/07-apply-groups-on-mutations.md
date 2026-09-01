@@ -13,7 +13,7 @@ decisions below.
 
 **Blocked by:** — (follow-up to 04/05, both done)
 
-**Status:** ready-for-human
+**Status:** done
 
 ## Backend facts (verified in source)
 
@@ -143,3 +143,5 @@ decisions below.
     "Apply Test C" → no apply-groups/screen-proctoring calls.
   - Test data cleaned up on both exams; `npx vue-tsc --noEmit` and eslint
     clean.
+
+**2026-09-01 — Human-tested by Alain; closed as done.**

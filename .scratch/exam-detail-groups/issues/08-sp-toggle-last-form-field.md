@@ -10,7 +10,7 @@ final.
 
 **Blocked by:** —
 
-**Status:** ready-for-human
+**Status:** done
 
 ## Facts (verified in source)
 
@@ -61,3 +61,5 @@ final.
     confirmed, SP toggle last.
   - No data was created or mutated anywhere; every dialog was cancelled.
 - `npx vue-tsc --noEmit` clean.
+
+**2026-09-01 — Human-tested by Alain; closed as done.**

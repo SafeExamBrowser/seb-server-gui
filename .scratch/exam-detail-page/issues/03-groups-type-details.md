@@ -1,6 +1,6 @@
 # Type-with-details column for the exam detail Groups box
 
-Status: ready-for-human
+Status: done
 Parent: `.scratch/exam-detail-page/PRD.md`
 Branch: `SEBSERV-958_groups`
 Builds on: `.scratch/exam-detail-page/issues/01-groups-box.md` (implemented,
@@ -156,3 +156,5 @@ proctoring active (e.g. group-based collection), or is the flag inert until
   exam 5 — table still renders the combined strings, copying the
   SP-enabled "Lab IP Range" POSTs `isSPSGroup=false`, and the test copy
   was deleted again (exam 5 back to its 7 documented groups).
+
+**2026-09-01 — Human-tested by Alain; closed as done.**

@@ -21,7 +21,7 @@ ClientGroup types shrink it later — no TODOs inside generated api types).
 
 **Blocked by:** 03 — Remove the copy-from-template machinery.
 
-**Status:** ready-for-human
+**Status:** done
 
 - [x] Adding, editing, and deleting a client group on the exam detail page
       works end-to-end, including the confirmation dialog on delete.
@@ -77,3 +77,5 @@ ClientGroup types shrink it later — no TODOs inside generated api types).
   ignore `isSPSGroup` — the GUI sends `true`, the response comes back
   `false` (create and update verified via network log). GUI-side handling is
   correct; flag persistence needs a backend fix.
+
+**2026-09-01 — Human-tested by Alain; closed as done.**

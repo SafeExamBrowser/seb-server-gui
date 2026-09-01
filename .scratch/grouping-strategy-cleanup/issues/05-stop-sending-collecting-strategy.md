@@ -1,6 +1,6 @@
 # 05 — Stop sending spsCollectingStrategy from the client
 
-Labels: ready-for-agent
+Status: done
 Settled 2026-08-18 in a grilling session with Alain.
 
 ## Context

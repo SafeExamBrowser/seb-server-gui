@@ -14,7 +14,7 @@ normal exam update, and the exam is refetched afterwards either way.
 
 **Blocked by:** 04 — Exam groups box on the shared widget.
 
-**Status:** ready-for-human
+**Status:** done
 
 - [x] The BasicSettings box shows the exam's screen proctoring state,
       derived from the exam's additional attributes.
@@ -54,3 +54,5 @@ normal exam update, and the exam is refetched afterwards either way.
   toggled back on the same way and both boxes returned. Save without
   touching the toggle issued only the PUT (network log). Exam 4 — row "No".
   Finished exam 9 — dialog opens, toggle present but disabled.
+
+**2026-09-01 — Human-tested by Alain; closed as done.**
