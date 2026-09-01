@@ -11,37 +11,116 @@
         @clear="handleClearSearch"
         @update:filter-values="handleFilterValuesUpdate"
         @clear-filters="handleClearFilters"
-    />
-
-    <!-----------instruction confirm dialog---------->
-    <v-dialog v-model="instructionConfirmDialog" max-width="600">
-        <InstructionConfirmDialog
-            :exam-id="examId"
-            :connection-tokens="selectedConnectionTokens"
-            :instruction-type="selectedInstructionType"
-            :is-unlock-screens="isSelectedInstructionUnlock"
-            @close-instruction-confirm-dialog="closeInstructionConfirmDialog"
-        >
-        </InstructionConfirmDialog>
-    </v-dialog>
+    >
+        <template #footer>
+            <v-expand-transition>
+                <v-sheet
+                    v-if="armedActionMeta"
+                    rounded="lg"
+                    class="bg-surface-tint d-flex flex-column ga-2 pa-3"
+                    data-testid="monitoring-clients-armed-action-panel"
+                >
+                    <div class="d-flex align-center ga-2">
+                        <v-icon
+                            size="small"
+                            color="primary"
+                            :icon="armedActionMeta.icon"
+                        />
+                        <span class="text-body-medium font-weight-bold">
+                            {{ $t(armedActionMeta.titleKey) }}
+                        </span>
+                    </div>
+                    <span class="text-body-small text-medium-emphasis">
+                        {{ $t(armedActionMeta.hintKey) }}
+                    </span>
+                    <v-textarea
+                        v-if="isLockActionArmed"
+                        v-model="lockMessage"
+                        rows="1"
+                        max-rows="6"
+                        auto-grow
+                        density="compact"
+                        variant="outlined"
+                        bg-color="surface"
+                        hide-details
+                        :placeholder="
+                            $t(
+                                'monitoringClients.actions.lockMessagePlaceholder',
+                            )
+                        "
+                        data-testid="monitoring-clients-lock-message-input"
+                    />
+                    <v-btn
+                        color="primary"
+                        variant="flat"
+                        block
+                        class="text-none"
+                        :disabled="confirmDisabled"
+                        data-testid="monitoring-clients-confirm-action-button"
+                        @click="handleConfirmArmedAction"
+                    >
+                        {{ $t("monitoringClients.actions.confirm") }}
+                    </v-btn>
+                    <v-btn
+                        variant="outlined"
+                        block
+                        class="text-none"
+                        data-testid="monitoring-clients-cancel-action-button"
+                        @click="handleCancelArmedAction"
+                    >
+                        {{ $t("monitoringClients.actions.cancel") }}
+                    </v-btn>
+                </v-sheet>
+            </v-expand-transition>
+        </template>
+    </SearchBar>
 </template>
 
 <script setup lang="ts">
 import { computed, ref, watch } from "vue";
-import { VDialog } from "vuetify/components";
+import {
+    VBtn,
+    VExpandTransition,
+    VIcon,
+    VSheet,
+    VTextarea,
+} from "vuetify/components";
 
 import type { TableFilters } from "@/components/widgets/entity-table/types.ts";
 import SearchBar from "@/components/widgets/searches/SearchBar.vue";
 import type { SearchBarAction } from "@/components/widgets/searches/types.ts";
-import { ConnectionStatusEnum } from "@/models/seb-server/connectionStatusEnum.ts";
-import { InstructionEnum } from "@/models/seb-server/instructionEnum.ts";
+import { MonitoringBulkActionEnum } from "@/models/seb-server/monitoringEnums.ts";
+import { useMonitoringClientsActions } from "@/pages/(app)/monitoring/[examId]/client/composables/useMonitoringClientsActions.ts";
 import { useMonitoringClientsFilters } from "@/pages/(app)/monitoring/[examId]/client/composables/useMonitoringClientsFilters.ts";
-import { GUIAction, useAbilities } from "@/services/ability.ts";
-import { notify } from "@/services/notifications/notify.ts";
 import { useMonitoringStore } from "@/stores/seb-server/monitoringStore.ts";
-import * as generalUtils from "@/utils/generalUtils.ts";
 
-import InstructionConfirmDialog from "./InstructionConfirmDialog.vue";
+const BULK_ACTION_LABEL_I18N_KEYS: Record<MonitoringBulkActionEnum, string> = {
+    [MonitoringBulkActionEnum.LOCK]: "monitoringClients.info.lockClients",
+    [MonitoringBulkActionEnum.UNLOCK]: "monitoringClients.info.unlockClients",
+    [MonitoringBulkActionEnum.QUIT]: "monitoringClients.info.quitClients",
+    [MonitoringBulkActionEnum.CANCEL]: "monitoringClients.info.cancelClients",
+};
+
+const BULK_ACTION_TITLE_I18N_KEYS: Record<MonitoringBulkActionEnum, string> = {
+    [MonitoringBulkActionEnum.LOCK]: "monitoringClients.actions.lockTitle",
+    [MonitoringBulkActionEnum.UNLOCK]: "monitoringClients.actions.unlockTitle",
+    [MonitoringBulkActionEnum.QUIT]: "monitoringClients.actions.quitTitle",
+    [MonitoringBulkActionEnum.CANCEL]: "monitoringClients.actions.cancelTitle",
+};
+
+const BULK_ACTION_HINT_I18N_KEYS: Record<MonitoringBulkActionEnum, string> = {
+    [MonitoringBulkActionEnum.LOCK]: "monitoringClients.actions.lockHint",
+    [MonitoringBulkActionEnum.UNLOCK]: "monitoringClients.actions.unlockHint",
+    [MonitoringBulkActionEnum.QUIT]: "monitoringClients.actions.quitHint",
+    [MonitoringBulkActionEnum.CANCEL]: "monitoringClients.actions.cancelHint",
+};
+
+const BULK_ACTION_ICONS: Record<MonitoringBulkActionEnum, string> = {
+    [MonitoringBulkActionEnum.LOCK]: "mdi-monitor-lock",
+    [MonitoringBulkActionEnum.UNLOCK]: "mdi-lock-open-outline",
+    [MonitoringBulkActionEnum.QUIT]: "mdi-backspace-outline",
+    [MonitoringBulkActionEnum.CANCEL]: "mdi-cancel",
+};
 
 const props = defineProps<{
     examId: string;
@@ -97,176 +176,64 @@ function handleClearFilters() {
 }
 
 // bulk actions
-const ability = useAbilities();
-const quitClientsVisible = computed(() =>
-    ability.canDo(GUIAction.QUIT_CLIENTS),
+const {
+    armedAction,
+    availableActions,
+    selectedEligibleRows,
+    arm,
+    disarm,
+    applyArmedAction,
+} = useMonitoringClientsActions(examId);
+
+const lockMessage = ref<string>("");
+
+// While an action is armed the action buttons make way for the confirm sheet.
+const bulkActions = computed<SearchBarAction[]>(() => {
+    if (armedAction.value != null) {
+        return [];
+    }
+
+    return availableActions.value.map((action) => ({
+        key: action.toLowerCase(),
+        icon: BULK_ACTION_ICONS[action],
+        label: BULK_ACTION_LABEL_I18N_KEYS[action],
+        color: action === MonitoringBulkActionEnum.CANCEL ? "error" : "primary",
+        variant:
+            action === MonitoringBulkActionEnum.CANCEL ? "flat" : "outlined",
+        onClick: () => handleArmAction(action),
+    }));
+});
+
+const armedActionMeta = computed(() => {
+    const action = armedAction.value;
+    if (action == null) {
+        return undefined;
+    }
+
+    return {
+        icon: BULK_ACTION_ICONS[action],
+        titleKey: BULK_ACTION_TITLE_I18N_KEYS[action],
+        hintKey: BULK_ACTION_HINT_I18N_KEYS[action],
+    };
+});
+
+const isLockActionArmed = computed(
+    () => armedAction.value === MonitoringBulkActionEnum.LOCK,
 );
 
-const bulkActions = computed<SearchBarAction[]>(() => [
-    {
-        key: "lock",
-        icon: "mdi-monitor-lock",
-        label: "monitoringClients.info.lockClients",
-        variant: "outlined",
-        disabled: isScreenLockDisabled,
-        onClick: handleLockClients,
-    },
-    {
-        key: "unlock",
-        icon: "mdi-monitor",
-        label: "monitoringClients.info.unlockClients",
-        variant: "outlined",
-        disabled: isUnlockDisabled,
-        onClick: handleUnlockClients,
-    },
-    ...(quitClientsVisible.value
-        ? [
-              {
-                  key: "quit",
-                  icon: "mdi-backspace-outline",
-                  label: "monitoringClients.info.quitClients",
-                  variant: "outlined",
-                  disabled: isSEBQuitDisabled,
-                  onClick: handleQuitClients,
-              } satisfies SearchBarAction,
-          ]
-        : []),
-    {
-        key: "cancel",
-        icon: "mdi-cancel",
-        label: "monitoringClients.info.cancelClients",
-        color: "error",
-        disabled: isCancelConnectionDisabled,
-        onClick: handleCancelClients,
-    },
-]);
+const confirmDisabled = computed(() => selectedEligibleRows.value.length === 0);
 
-function handleLockClients() {
-    openInstructionConfirmDialog(InstructionEnum.SEB_FORCE_LOCK_SCREEN, false);
+function handleArmAction(action: MonitoringBulkActionEnum) {
+    lockMessage.value = "";
+    arm(action);
 }
 
-function handleQuitClients() {
-    openInstructionConfirmDialog(InstructionEnum.SEB_QUIT, false);
+function handleCancelArmedAction() {
+    disarm();
 }
 
-function handleCancelClients() {
-    openInstructionConfirmDialog(InstructionEnum.SEB_MARK_AS_CANCELLED, false);
-}
-
-function handleUnlockClients() {
-    openInstructionConfirmDialog(InstructionEnum.NOTIFICATION_CONFIRM, true);
-}
-
-function isScreenLockDisabled(): boolean {
-    return (
-        monitoringStore.selectedMonitoringIds.length == 0 ||
-        getConnectionTokens(InstructionEnum.SEB_FORCE_LOCK_SCREEN) == null
-    );
-}
-
-function isSEBQuitDisabled(): boolean {
-    return (
-        monitoringStore.selectedMonitoringIds.length == 0 ||
-        getConnectionTokens(InstructionEnum.SEB_QUIT) == null
-    );
-}
-
-function isCancelConnectionDisabled(): boolean {
-    return (
-        monitoringStore.selectedMonitoringIds.length == 0 ||
-        getConnectionTokens(InstructionEnum.SEB_MARK_AS_CANCELLED) == null
-    );
-}
-
-function isUnlockDisabled(): boolean {
-    return (
-        monitoringStore.selectedMonitoringIds.length == 0 ||
-        getConnectionTokens(InstructionEnum.NOTIFICATION_CONFIRM) == null
-    );
-}
-
-//= ==============instruction confirm dialog====================
-const instructionConfirmDialog = ref<boolean>(false);
-const selectedInstructionType = ref<InstructionEnum | null>(null);
-const isSelectedInstructionUnlock = ref<boolean>(false);
-const selectedConnectionTokens = ref<string>("");
-
-function openInstructionConfirmDialog(
-    instructionType: InstructionEnum | null,
-    isUnlock: boolean,
-) {
-    if (instructionType == null) {
-        return;
-    }
-
-    const connectionTokens: string | null =
-        getConnectionTokens(instructionType);
-    if (connectionTokens == null) {
-        notify.clientError(generalUtils.translate("warnings.no-data"));
-        return;
-    }
-
-    selectedInstructionType.value = instructionType;
-    selectedConnectionTokens.value = connectionTokens;
-    isSelectedInstructionUnlock.value = isUnlock;
-
-    instructionConfirmDialog.value = true;
-}
-
-function closeInstructionConfirmDialog() {
-    instructionConfirmDialog.value = false;
-}
-
-function getConnectionTokens(instructionType: InstructionEnum): string | null {
-    if (monitoringStore.monitoringData == null) {
-        return null;
-    }
-
-    // get token and add it to list
-    const connectionTokens: string[] = [];
-    monitoringStore.selectedMonitoringIds.forEach((id) => {
-        const row = monitoringStore.monitoringData.get(id);
-        if (row) {
-            switch (instructionType) {
-                case InstructionEnum.SEB_QUIT:
-                case InstructionEnum.SEB_FORCE_LOCK_SCREEN: {
-                    if (
-                        !row.missing &&
-                        (row.status == ConnectionStatusEnum.ACTIVE ||
-                            row.status ==
-                                ConnectionStatusEnum.CONNECTION_REQUESTED ||
-                            row.status == ConnectionStatusEnum.READY)
-                    ) {
-                        connectionTokens.push(row.connectionToken);
-                    }
-                    break;
-                }
-                case InstructionEnum.SEB_MARK_AS_CANCELLED: {
-                    if (
-                        row.status == ConnectionStatusEnum.CLOSED ||
-                        row.status == ConnectionStatusEnum.MISSING ||
-                        row.missing
-                    ) {
-                        connectionTokens.push(row.connectionToken);
-                    }
-                    break;
-                }
-                case InstructionEnum.NOTIFICATION_CONFIRM: {
-                    if (row.pendingLockScreen) {
-                        connectionTokens.push(row.connectionToken);
-                    }
-                    break;
-                }
-                default:
-            }
-        }
-    });
-
-    if (connectionTokens.length === 0) {
-        return null;
-    }
-
-    // create string and return string comma list
-    return generalUtils.createStringCommaList(connectionTokens);
+async function handleConfirmArmedAction() {
+    await applyArmedAction(lockMessage.value);
+    emit("updatePageInfo");
 }
 </script>

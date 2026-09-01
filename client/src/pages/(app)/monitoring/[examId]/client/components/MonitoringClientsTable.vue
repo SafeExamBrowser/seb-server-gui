@@ -1,9 +1,5 @@
 <template>
-    <div class="d-flex align-center px-5 py-4">
-        <span class="text-body-medium font-weight-bold">
-            {{ $t("monitoringClients.main.title") }}
-        </span>
-        <v-spacer />
+    <div class="d-flex align-center justify-end px-5 py-4">
         <span class="text-body-small text-medium-emphasis">
             {{
                 isFiltered
@@ -14,189 +10,169 @@
     </div>
     <v-divider />
 
-    <v-data-table
-        v-model="monitoringStore.selectedMonitoringIds"
-        :headers="clientsTableHeaders"
-        hide-default-footer
-        :hover="true"
-        item-value="id"
-        :items="monitoringDataTable"
-        :items-length="monitoringDataTable.length"
-        :items-per-page="monitoringDataTable.length"
-        :loading="loading"
-        :loading-text="$t('general.loading')"
-        :no-data-text="$t('general.noData')"
-        select-strategy="all"
-        show-select
-    >
-        <template #loading>
-            <v-skeleton-loader type="table-row@8" />
-        </template>
-
-        <template
-            #headers="{
-                columns,
-                isSorted,
-                getSortIcon,
-                toggleSort,
-                selectAll,
-                allSelected,
-                someSelected,
-            }"
+    <div class="overflow-hidden">
+        <v-data-table
+            :style="tableSlideStyle"
+            :headers="clientsTableHeaders"
+            hide-default-footer
+            :hover="true"
+            item-value="id"
+            :items="monitoringDataTable"
+            :items-length="monitoringDataTable.length"
+            :items-per-page="monitoringDataTable.length"
+            :loading="loading"
+            :loading-text="$t('general.loading')"
+            :no-data-text="$t('general.noData')"
         >
-            <TableHeaders
-                :all-selected="allSelected"
-                :columns="columns"
-                :get-sort-icon="getSortIcon"
-                :header-refs-prop="clientsTableHeadersRef"
-                :is-sorted="isSorted"
-                :select-all="selectAll"
-                :some-selected="someSelected"
-                table-key="monitoringClients"
-                :toggle-sort="toggleSort"
-                @add-indicator-headers="addIndicatorHeaders"
-                @remove-indicator-headers="removeIndicatorHeaders"
-            >
-            </TableHeaders>
-        </template>
+            <template #loading>
+                <v-skeleton-loader type="table-row@8" />
+            </template>
 
-        <template #item="{ item, isSelected, toggleSelect, internalItem }">
-            <tr :class="isSelected(internalItem) ? 'bg-surface-tint' : ''">
-                <!------selection checkbox------->
-                <td width="2%">
-                    <v-checkbox-btn
-                        :model-value="isSelected(internalItem)"
-                        @update:model-value="toggleSelect(internalItem)"
-                    >
-                    </v-checkbox-btn>
-                </td>
+            <template #headers="{ columns, isSorted, getSortIcon, toggleSort }">
+                <TableHeaders
+                    :all-selected="allEligibleSelected"
+                    :columns="columns"
+                    :get-sort-icon="getSortIcon"
+                    :header-refs-prop="clientsTableHeadersRef"
+                    :is-sorted="isSorted"
+                    :select-all="toggleSelectAll"
+                    :selection-active="isActionArmed"
+                    :some-selected="someEligibleSelected"
+                    table-key="monitoringClients"
+                    :toggle-sort="toggleSort"
+                    @add-indicator-headers="handleAddIndicatorHeaders"
+                    @remove-indicator-headers="handleRemoveIndicatorHeaders"
+                >
+                </TableHeaders>
+            </template>
 
-                <!------notification icons------->
-                <td width="2%">
-                    <v-icon
-                        v-if="item.pendingLockScreen"
-                        color="warning"
-                        icon="mdi-monitor-lock"
-                    ></v-icon>
-                    <v-icon
-                        v-if="item.pendingRaiseHand"
-                        color="warning"
-                        icon="mdi-hand-back-right"
-                    ></v-icon>
-                </td>
-
-                <!------client name------->
-                <td>
-                    <span class="font-weight-bold">
-                        {{ item.nameOrSession }}
-                    </span>
-                </td>
-
-                <!------client groups------->
-                <td>
-                    <template
-                        v-for="(clientGroup, index) in item.clientGroups"
-                        :key="clientGroup.id"
-                    >
-                        <div>
-                            <v-chip
-                                class="mb-2"
-                                :class="[index == 0 ? 'mt-2' : '']"
-                                color="primary"
-                                size="small"
-                                variant="tonal"
-                                @click="openClientGroupDialog(clientGroup)"
+            <template #item="{ item, index }">
+                <tr
+                    :class="isRowSelected(item) ? 'bg-surface-tint' : ''"
+                    :style="getRowStyle(item)"
+                    @click="handleRowClick(item)"
+                >
+                    <!------selection checkbox------->
+                    <td :style="SELECTION_CELL_STYLE">
+                        <div
+                            :style="
+                                selectionCellInnerStyle(isActionArmed, index)
+                            "
+                        >
+                            <v-checkbox-btn
+                                v-if="isActionArmed && isRowEligible(item)"
+                                :model-value="isRowSelected(item)"
+                                @click.stop
+                                @update:model-value="toggleRowSelection(item)"
                             >
-                                {{ clientGroup.name }}
-                            </v-chip>
+                            </v-checkbox-btn>
                         </div>
-                    </template>
-                </td>
+                    </td>
 
-                <!------connection info------->
-                <td>
-                    <span class="text-medium-emphasis">
-                        {{ item.connectionInfo }}
-                    </span>
-                </td>
+                    <!------notification icons------->
+                    <td width="2%">
+                        <div class="d-flex align-center ga-1">
+                            <v-icon
+                                v-if="item.pendingLockScreen"
+                                :color="NOTIFICATION_META.LOCK_SCREEN.color"
+                                :icon="NOTIFICATION_META.LOCK_SCREEN.icon"
+                            ></v-icon>
+                            <v-icon
+                                v-if="item.pendingRaiseHand"
+                                :color="NOTIFICATION_META.RAISE_HAND.color"
+                                :icon="NOTIFICATION_META.RAISE_HAND.icon"
+                            ></v-icon>
+                        </div>
+                    </td>
 
-                <!------status------->
-                <td>
-                    <EnumChip
-                        :color="getStatusColor(item)"
-                        :label="translateStatus(item)"
-                    />
-                </td>
+                    <!------client name------->
+                    <td>
+                        <span class="font-weight-bold">
+                            {{ item.nameOrSession }}
+                        </span>
+                    </td>
 
-                <!------battery indicator------->
-                <td
-                    v-if="
-                        (tableStore.isIndicatorsExpanded ||
-                            isBatteryIndicator) &&
-                        monitoringStore.batteryIndicatorId != null
-                    "
-                >
-                    <v-chip
-                        :color="
-                            getIndicatorColor(
-                                item.indicators?.get(
-                                    monitoringStore.batteryIndicatorId,
-                                ),
-                            )
-                        "
-                        size="small"
-                    >
-                        {{
-                            item.indicators?.get(
-                                monitoringStore.batteryIndicatorId,
-                            )?.indicatorValue
-                        }}
-                    </v-chip>
-                </td>
+                    <!------client groups------->
+                    <td>
+                        <template
+                            v-for="(
+                                clientGroup, groupIndex
+                            ) in item.clientGroups"
+                            :key="clientGroup.id"
+                        >
+                            <div>
+                                <v-chip
+                                    class="mb-2"
+                                    :class="[groupIndex == 0 ? 'mt-2' : '']"
+                                    color="primary"
+                                    size="small"
+                                    variant="tonal"
+                                    @click.stop="
+                                        openClientGroupDialog(clientGroup)
+                                    "
+                                >
+                                    {{ clientGroup.name }}
+                                </v-chip>
+                            </div>
+                        </template>
+                    </td>
 
-                <!------wlan indicator------->
-                <td
-                    v-if="
-                        (tableStore.isIndicatorsExpanded || isWlanIndicator) &&
-                        monitoringStore.wlanIndicatorId != null
-                    "
-                >
-                    <v-chip
-                        :color="
-                            getIndicatorColor(
-                                item.indicators?.get(
-                                    monitoringStore.wlanIndicatorId,
-                                ),
-                            )
-                        "
-                        size="small"
-                    >
-                        {{
-                            item.indicators?.get(
-                                monitoringStore.wlanIndicatorId,
-                            )?.indicatorValue
-                        }}
-                    </v-chip>
-                </td>
+                    <!------connection info------->
+                    <td>
+                        <span class="text-medium-emphasis">
+                            {{ item.connectionInfo }}
+                        </span>
+                    </td>
 
-                <!------navigation button------->
-                <td align="right">
-                    <v-icon
-                        icon="mdi-chevron-right"
-                        style="font-size: 30px"
-                        @click="
-                            goToMonitoringDetails(
-                                examId,
-                                item.connectionToken,
-                                route.query,
-                            )
-                        "
-                    >
-                    </v-icon>
-                </td>
-            </tr>
-        </template>
-    </v-data-table>
+                    <!------status------->
+                    <td>
+                        <EnumChip
+                            :color="getStatusColor(item)"
+                            :label="translateStatus(item)"
+                        />
+                    </td>
+
+                    <!------battery indicator------->
+                    <td v-if="showBatteryColumn">
+                        <v-chip
+                            :color="
+                                getIndicatorColor(getBatteryIndicator(item))
+                            "
+                            size="small"
+                        >
+                            {{ getBatteryIndicator(item)?.indicatorValue }}
+                        </v-chip>
+                    </td>
+
+                    <!------wlan indicator------->
+                    <td v-if="showWlanColumn">
+                        <v-chip
+                            :color="getIndicatorColor(getWlanIndicator(item))"
+                            size="small"
+                        >
+                            {{ getWlanIndicator(item)?.indicatorValue }}
+                        </v-chip>
+                    </td>
+
+                    <!------navigation button------->
+                    <td align="right">
+                        <v-icon
+                            icon="mdi-chevron-right"
+                            style="font-size: 30px"
+                            @click.stop="
+                                goToMonitoringDetails(
+                                    examId,
+                                    item.connectionToken,
+                                    route.query,
+                                )
+                            "
+                        >
+                        </v-icon>
+                    </td>
+                </tr>
+            </template>
+        </v-data-table>
+    </div>
     <!-----------group dialog---------->
     <v-dialog v-model="clientGroupDialog" max-width="800">
         <ClientGroupInfoDialog
@@ -226,7 +202,6 @@ import {
     VDivider,
     VIcon,
     VSkeletonLoader,
-    VSpacer,
 } from "vuetify/components";
 
 import EnumChip from "@/components/widgets/EnumChip.vue";
@@ -245,6 +220,13 @@ import {
     IndicatorObject,
     MonitoringHeaderEnum,
 } from "@/models/seb-server/monitoringEnums.ts";
+import {
+    SELECTION_CELL_STYLE,
+    SELECTION_COLUMN_WIDTH,
+    SELECTION_EASE,
+    selectionCellInnerStyle,
+    useMonitoringClientsActions,
+} from "@/pages/(app)/monitoring/[examId]/client/composables/useMonitoringClientsActions.ts";
 import { goToMonitoringDetails } from "@/pages/(app)/monitoring/[examId]/composables/useMonitoringNavigation.ts";
 import * as monitoringService from "@/services/seb-server/monitoringService.ts";
 import { useMonitoringStore } from "@/stores/seb-server/monitoringStore.ts";
@@ -254,6 +236,7 @@ import { translate } from "@/utils/generalUtils.ts";
 import {
     extractClientGroupNames,
     getConnectionStatusColor,
+    NOTIFICATION_META,
 } from "@/utils/monitoringUtils.ts";
 import TableHeaders from "@/utils/table/TableHeaders.vue";
 
@@ -296,12 +279,28 @@ const clientGroupToView = ref<ClientGroup | null>(null);
 
 // table
 const clientsTableHeadersRef = ref<(HTMLElement | null)[] | null>(null);
-const clientsTableHeaders = ref([
-    { title: "", key: "icons", width: "2%" },
+
+const showBatteryColumn = computed(
+    () =>
+        (tableStore.isIndicatorsExpanded || isBatteryIndicator.value) &&
+        monitoringStore.batteryIndicatorId != null,
+);
+
+const showWlanColumn = computed(
+    () =>
+        (tableStore.isIndicatorsExpanded || isWlanIndicator.value) &&
+        monitoringStore.wlanIndicatorId != null,
+);
+
+// The headers are derived from the same conditions as the body cells, so the
+// indicator columns always end up between "Status" and the navigation column.
+const clientsTableHeaders = computed(() => [
+    { title: "", key: "select", width: "52px", sortable: false },
+    { title: "", key: "icons", width: "2%", sortable: false },
     {
         title: translate("monitoringClients.main.tableHeaderNameSession"),
         key: "nameOrSession",
-        width: "40%",
+        width: "53%",
         sortable: true,
     },
     {
@@ -322,8 +321,69 @@ const clientsTableHeaders = ref([
         width: "10%",
         sortable: true,
     },
-    { title: "", key: "link", width: "5%" },
+    ...(showBatteryColumn.value
+        ? [
+              {
+                  title: translate(
+                      "monitoringClients.main.tableHeaderBattery",
+                      i18n,
+                  ),
+                  key: "battery",
+                  width: "8%",
+                  sortable: false,
+              },
+          ]
+        : []),
+    ...(showWlanColumn.value
+        ? [
+              {
+                  title: translate(
+                      "monitoringClients.main.tableHeaderWlan",
+                      i18n,
+                  ),
+                  key: "wlan",
+                  width: "8%",
+                  sortable: false,
+              },
+          ]
+        : []),
+    { title: "", key: "link", width: "5%", sortable: false },
 ]);
+
+// selection & bulk actions
+const {
+    armedAction,
+    allEligibleSelected,
+    someEligibleSelected,
+    isRowEligible,
+    isRowSelected,
+    toggleRowSelection,
+    toggleSelectAll,
+} = useMonitoringClientsActions(examId);
+
+const isActionArmed = computed(() => armedAction.value != null);
+
+// While no action is armed the table is shifted left, hiding the fixed-width
+// selection column behind the overflow-hidden wrapper.
+const tableSlideStyle = computed(() => ({
+    marginLeft: isActionArmed.value ? "0px" : `-${SELECTION_COLUMN_WIDTH}px`,
+    transition: `margin-left 0.3s ${SELECTION_EASE}`,
+}));
+
+function getRowStyle(row: MonitoringRow) {
+    const eligible = isActionArmed.value && isRowEligible(row);
+    return {
+        opacity: isActionArmed.value && !eligible ? 0.4 : 1,
+        cursor: eligible ? "pointer" : "auto",
+    };
+}
+
+function handleRowClick(row: MonitoringRow) {
+    if (!isActionArmed.value || !isRowEligible(row)) {
+        return;
+    }
+    toggleRowSelection(row);
+}
 
 const isFiltered = computed(
     () => !monitoringStore.isNoFilterSelected || !!monitoringStore.searchName,
@@ -675,47 +735,12 @@ function extractIndicators(
     return indicatorsMap;
 }
 
-function addIndicatorHeaders() {
+function handleAddIndicatorHeaders() {
     tableStore.isIndicatorsExpanded = true;
-
-    if (monitoringStore.batteryIndicatorId != null) {
-        clientsTableHeaders.value.splice(4, 0, {
-            title: translate("monitoringClients.main.tableHeaderBattery", i18n),
-            key: "",
-            width: "8%",
-            sortable: false,
-        });
-    }
-
-    if (monitoringStore.wlanIndicatorId != null) {
-        clientsTableHeaders.value.splice(5, 0, {
-            title: translate("monitoringClients.main.tableHeaderWlan", i18n),
-            key: "",
-            width: "8%",
-            sortable: false,
-        });
-    }
 }
 
-function removeIndicatorHeaders() {
-    if (
-        monitoringStore.batteryIndicatorId == null &&
-        monitoringStore.wlanIndicatorId == null
-    ) {
-        return;
-    }
-
+function handleRemoveIndicatorHeaders() {
     tableStore.isIndicatorsExpanded = false;
-
-    if (
-        monitoringStore.batteryIndicatorId != null &&
-        monitoringStore.wlanIndicatorId != null
-    ) {
-        clientsTableHeaders.value.splice(4, 2);
-        return;
-    }
-
-    clientsTableHeaders.value.splice(4, 1);
 }
 
 function modifyIndicatorHeaders(
@@ -725,82 +750,21 @@ function modifyIndicatorHeaders(
         indicatorString = "";
     }
 
-    // at least 1 filter is selected
+    // at least 1 indicator filter is selected: the expand toggle is disabled
+    // and the filtered indicators are shown as fixed columns instead
     if (indicatorString !== "") {
-        if (tableStore.isIndicatorsExpanded) {
-            removeIndicatorHeaders();
-        }
         tableStore.isIndicatorExpandButtonDisabled = true;
         tableStore.isIndicatorsExpanded = false;
     } else {
         tableStore.isIndicatorExpandButtonDisabled = false;
     }
 
-    // remove battery indicator
-    if (
-        !indicatorString.includes(IndicatorEnum.BATTERY_STATUS.toString()) &&
-        isBatteryIndicator.value
-    ) {
-        removeBatteryHeader(4);
-    }
-
-    // add battery indicator
-    if (
-        indicatorString.includes(IndicatorEnum.BATTERY_STATUS.toString()) &&
-        !tableStore.isIndicatorsExpanded &&
-        !isBatteryIndicator.value
-    ) {
-        addBatteryHeader(4);
-    }
-
-    // remove wlan indicator
-    if (
-        !indicatorString.includes(IndicatorEnum.WLAN_STATUS.toString()) &&
-        isWlanIndicator.value
-    ) {
-        const index: number = isBatteryIndicator.value ? 5 : 4;
-        removeWlanHeader(index);
-    }
-
-    // add wlan indicator
-    if (
-        indicatorString.includes(IndicatorEnum.WLAN_STATUS.toString()) &&
-        !tableStore.isIndicatorsExpanded &&
-        !isWlanIndicator.value
-    ) {
-        const index: number = isBatteryIndicator.value ? 5 : 4;
-        addWlanHeader(index);
-    }
-}
-
-function addBatteryHeader(index: number) {
-    isBatteryIndicator.value = true;
-    clientsTableHeaders.value.splice(index, 0, {
-        title: translate("monitoringClients.main.tableHeaderBattery", i18n),
-        key: "",
-        width: "8%",
-        sortable: false,
-    });
-}
-
-function removeBatteryHeader(index: number) {
-    isBatteryIndicator.value = false;
-    clientsTableHeaders.value.splice(index, 1);
-}
-
-function addWlanHeader(index: number) {
-    isWlanIndicator.value = true;
-    clientsTableHeaders.value.splice(index, 0, {
-        title: translate("monitoringClients.main.tableHeaderWlan", i18n),
-        key: "",
-        width: "8%",
-        sortable: false,
-    });
-}
-
-function removeWlanHeader(index: number) {
-    isWlanIndicator.value = false;
-    clientsTableHeaders.value.splice(index, 1);
+    isBatteryIndicator.value = indicatorString.includes(
+        IndicatorEnum.BATTERY_STATUS.toString(),
+    );
+    isWlanIndicator.value = indicatorString.includes(
+        IndicatorEnum.WLAN_STATUS.toString(),
+    );
 }
 
 function updateConnectionRow(
@@ -826,6 +790,22 @@ function updateIndicator(
             indicatorValues[key.toString()],
         );
     });
+}
+
+function getBatteryIndicator(row: MonitoringRow): IndicatorObject | undefined {
+    const indicatorId = monitoringStore.batteryIndicatorId;
+    if (indicatorId == null) {
+        return undefined;
+    }
+    return row.indicators?.get(indicatorId);
+}
+
+function getWlanIndicator(row: MonitoringRow): IndicatorObject | undefined {
+    const indicatorId = monitoringStore.wlanIndicatorId;
+    if (indicatorId == null) {
+        return undefined;
+    }
+    return row.indicators?.get(indicatorId);
 }
 
 function getIndicatorColor(indicatorObj: IndicatorObject | undefined): string {

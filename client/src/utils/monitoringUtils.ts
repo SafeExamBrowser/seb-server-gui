@@ -2,6 +2,7 @@ import { ClientGroup } from "@/models/seb-server/clientGroup.ts";
 import { ConnectionStatusEnum } from "@/models/seb-server/connectionStatusEnum.ts";
 import { Exam } from "@/models/seb-server/exam.ts";
 import { ExamStatusEnum } from "@/models/seb-server/examFiltersEnum.ts";
+import { NotificationEnum } from "@/models/seb-server/monitoringEnums.ts";
 import { useMonitoringStore } from "@/stores/seb-server/monitoringStore.ts";
 import * as generalUtils from "@/utils/generalUtils.ts";
 
@@ -13,6 +14,22 @@ const connectionStatusColors: Record<ConnectionStatusEnum, string> = {
     [ConnectionStatusEnum.CLOSED]: "#7fc6db",
     [ConnectionStatusEnum.DISABLED]: "#9e9e9e",
     [ConnectionStatusEnum.MISSING]: "#ef5350",
+};
+
+export const NOTIFICATION_META: Record<
+    NotificationEnum,
+    { icon: string; color: string; background: string }
+> = {
+    [NotificationEnum.RAISE_HAND]: {
+        icon: "mdi-hand-back-right",
+        color: "#1565C0",
+        background: "#E3F2FD",
+    },
+    [NotificationEnum.LOCK_SCREEN]: {
+        icon: "mdi-monitor-lock",
+        color: "#F9A825",
+        background: "#FFF8E1",
+    },
 };
 
 export const CONNECTION_STATUS_DISPLAY_ORDER = [

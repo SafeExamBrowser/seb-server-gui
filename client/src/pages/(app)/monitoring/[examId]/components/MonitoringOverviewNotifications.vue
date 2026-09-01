@@ -103,6 +103,7 @@ import { goToMonitoring } from "@/pages/(app)/monitoring/[examId]/composables/us
 import { useMonitoringStore } from "@/stores/seb-server/monitoringStore.ts";
 import * as generalUtils from "@/utils/generalUtils.ts";
 import { translate } from "@/utils/generalUtils.ts";
+import { NOTIFICATION_META } from "@/utils/monitoringUtils.ts";
 
 const props = defineProps<{
     examId: string;
@@ -127,26 +128,18 @@ function isActiveNotification(value: unknown): boolean {
 
 function getNotificationIconColor(key: string, value: unknown): string {
     if (!isActiveNotification(value)) return NEUTRAL_ICON;
-    switch (key) {
-        case "RAISE_HAND":
-            return "#1565C0";
-        case "LOCK_SCREEN":
-            return "#F9A825";
-        default:
-            return NEUTRAL_ICON;
-    }
+    const notification = generalUtils.findEnumValue(NotificationEnum, key);
+    return notification == null
+        ? NEUTRAL_ICON
+        : NOTIFICATION_META[notification].color;
 }
 
 function getNotificationIconBackground(key: string, value: unknown): string {
     if (!isActiveNotification(value)) return NEUTRAL_BG;
-    switch (key) {
-        case "RAISE_HAND":
-            return "#E3F2FD";
-        case "LOCK_SCREEN":
-            return "#FFF8E1";
-        default:
-            return NEUTRAL_BG;
-    }
+    const notification = generalUtils.findEnumValue(NotificationEnum, key);
+    return notification == null
+        ? NEUTRAL_BG
+        : NOTIFICATION_META[notification].background;
 }
 
 function getNotificationAvatarColor(key: string, value: unknown): string {
@@ -163,13 +156,6 @@ function getNotificationSub(key: string): string {
 
 function getNotificationIcon(notification: NotificationEnum | null): string {
     if (notification == null) return "mdi-chevron-right";
-    switch (notification) {
-        case NotificationEnum.LOCK_SCREEN:
-            return "mdi-monitor-lock";
-        case NotificationEnum.RAISE_HAND:
-            return "mdi-hand-back-right";
-        default:
-            return "mdi-chevron-right";
-    }
+    return NOTIFICATION_META[notification].icon;
 }
 </script>

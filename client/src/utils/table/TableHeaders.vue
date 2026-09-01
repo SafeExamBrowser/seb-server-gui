@@ -9,7 +9,7 @@
                     column.key == 'data-table-select' ? 'pl-4' : '',
                     column.align === 'center' ? 'text-center' : '',
                 ]"
-                :style="{ width: column.width }"
+                :style="getHeaderCellStyle(column)"
             >
                 <!------------------------sorting---------------------------------->
                 <span
@@ -48,11 +48,29 @@
                             props.someSelected && !props.allSelected
                         "
                         :model-value="props.allSelected"
-                        @update:model-value="
-                            (val) => props.selectAll && props.selectAll(!!val)
-                        "
+                        @update:model-value="handleSelectAll"
                     />
                     <div></div>
+                </template>
+
+                <!------------------------monitoring: bulk action selection-------->
+                <template
+                    v-if="
+                        column.key == 'select' &&
+                        tableKey == 'monitoringClients' &&
+                        props.selectAll != null
+                    "
+                >
+                    <div :style="selectionCellInnerStyle(!!selectionActive, 0)">
+                        <v-checkbox-btn
+                            v-if="selectionActive"
+                            :indeterminate="
+                                props.someSelected && !props.allSelected
+                            "
+                            :model-value="props.allSelected"
+                            @update:model-value="handleSelectAll"
+                        />
+                    </div>
                 </template>
 
                 <!------------------------sp: session search: delete----------------------->
@@ -135,42 +153,42 @@
     </tr>
 </template>
 <script setup lang="ts">
-import { onBeforeMount, onBeforeUnmount, ref } from "vue";
+import { onBeforeMount, onBeforeUnmount, ref, StyleValue } from "vue";
 import { VBtn, VCheckboxBtn, VIcon } from "vuetify/components";
 import {
     HeadersSlotProps,
     VDataTableHeaderCellColumnSlotProps,
 } from "vuetify/lib/components/VDataTable/VDataTableHeaders.mjs";
 
+import {
+    SELECTION_CELL_STYLE,
+    selectionCellInnerStyle,
+} from "@/pages/(app)/monitoring/[examId]/client/composables/useMonitoringClientsActions.ts";
 import { useMonitoringStore } from "@/stores/seb-server/monitoringStore";
 import { useTableStore } from "@/stores/store";
 import * as tableUtils from "@/utils/table/tableUtils";
 
-type Clickable = { click: () => void };
-
 const tableStore = useTableStore();
 const monitoringStore = useMonitoringStore();
 
-// header refs
-const headerRefs = ref<Clickable[] | null>(null);
+type Clickable = { click: () => void };
 
-// TODO @Rad14nt: properly type the props (use HeadersSlotProps), then remove eslint-disable comments
+// header refs
+const headerRefs = ref<(Clickable | null)[] | null>(null);
+
 // props
 const props = defineProps<{
     columns: HeadersSlotProps["columns"];
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    isSorted: (column: any) => boolean;
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    getSortIcon: any;
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    toggleSort: (column: any) => void;
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    headerRefsProp: any;
+    isSorted: HeadersSlotProps["isSorted"];
+    getSortIcon: HeadersSlotProps["getSortIcon"];
+    toggleSort: HeadersSlotProps["toggleSort"];
+    headerRefsProp: (Clickable | null)[] | null;
     day?: string;
     selectAll?: (value: boolean) => void;
     allSelected?: boolean;
     someSelected?: boolean;
     tableKey?: string;
+    selectionActive?: boolean;
 }>();
 
 // emits
@@ -187,6 +205,19 @@ onBeforeMount(() => {
 onBeforeUnmount(() => {
     headerRefs.value = null;
 });
+
+function handleSelectAll(value: boolean | null) {
+    props.selectAll?.(!!value);
+}
+
+function getHeaderCellStyle(
+    column: VDataTableHeaderCellColumnSlotProps["column"],
+): StyleValue {
+    if (props.tableKey === "monitoringClients" && column.key === "select") {
+        return SELECTION_CELL_STYLE;
+    }
+    return { width: column.width };
+}
 
 function toggleNameIpSwitch() {
     if (!props.day) return;

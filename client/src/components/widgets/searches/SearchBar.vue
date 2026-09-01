@@ -66,7 +66,9 @@
             </template>
         </div>
 
-        <v-divider v-if="enableTextSearch || actions.length > 0" />
+        <v-divider
+            v-if="enableTextSearch || actions.length > 0 || $slots.footer"
+        />
 
         <div class="pa-4 d-flex flex-column ga-2">
             <ConfirmButton
@@ -77,27 +79,32 @@
                 :data-test-id="`${dataTestId}-search-button`"
                 @click="onSearch"
             />
-            <v-btn
-                v-for="action in actions"
-                :key="action.key"
-                :variant="action.variant ?? 'flat'"
-                :color="action.color ?? 'primary'"
-                block
-                class="text-none"
-                :data-testid="`${dataTestId}-action-${action.key}-button`"
-                :disabled="action.disabled?.() ?? false"
-                @click="action.onClick()"
-            >
-                <v-icon start>{{ action.icon }}</v-icon>
-                {{ $t(action.label) }}
-            </v-btn>
+            <v-expand-transition>
+                <div v-if="actions.length > 0" class="d-flex flex-column ga-2">
+                    <v-btn
+                        v-for="action in actions"
+                        :key="action.key"
+                        :variant="action.variant ?? 'flat'"
+                        :color="action.color ?? 'primary'"
+                        block
+                        class="text-none"
+                        :data-testid="`${dataTestId}-action-${action.key}-button`"
+                        :disabled="action.disabled?.() ?? false"
+                        @click="action.onClick()"
+                    >
+                        <v-icon start>{{ action.icon }}</v-icon>
+                        {{ $t(action.label) }}
+                    </v-btn>
+                </div>
+            </v-expand-transition>
+            <slot name="footer" />
         </div>
     </div>
 </template>
 
 <script setup lang="ts">
 import { computed } from "vue";
-import { VBtn, VDivider, VIcon } from "vuetify/components";
+import { VBtn, VDivider, VExpandTransition, VIcon } from "vuetify/components";
 
 import ConfirmButton from "@/components/widgets/ConfirmButton.vue";
 import DatePicker from "@/components/widgets/DatePicker.vue";
