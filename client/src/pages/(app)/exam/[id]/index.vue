@@ -53,6 +53,7 @@
                             :last-modified-loading="lastModifiedLoading"
                             :edit-hidden="sebKeysEditHidden"
                             :edit-disabled="sebKeysEditDisabled"
+                            :exam-id="examId"
                         />
                     </template>
 
