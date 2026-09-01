@@ -11,6 +11,7 @@ import {
     Exams,
 } from "@/models/seb-server/exam";
 import { OptionalParGetExams } from "@/models/seb-server/optionalParamters";
+import { SEBKeys } from "@/models/seb-server/sebKeys";
 import * as apiService from "@/services/apiService";
 
 const baseUrl = "/exam" as const;
@@ -209,6 +210,26 @@ export const updateExamConfigMapping = async (
         await apiService.putRequest({
             url: configMappingBaseUrl,
             data: configMapping,
+            options: { _authType: "seb" },
+        })
+    ).data;
+
+export const getSEBKeys = async (examId: string): Promise<SEBKeys> =>
+    (
+        await apiService.getRequest({
+            url: `${baseUrl}/${examId}/seb-restriction`,
+            options: { _authType: "seb" },
+        })
+    ).data;
+
+export const updateSEBKeys = async (
+    examId: string,
+    sebKeys: SEBKeys,
+): Promise<Exam> =>
+    (
+        await apiService.postRequest({
+            url: `${baseUrl}/${examId}/seb-restriction`,
+            data: sebKeys,
             options: { _authType: "seb" },
         })
     ).data;

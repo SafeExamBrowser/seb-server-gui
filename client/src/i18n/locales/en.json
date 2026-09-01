@@ -2009,7 +2009,10 @@
             },
             "sebKeys": {
                 "title": "SEB Keys",
-                "edit": "Edit SEB Keys"
+                "edit": "Edit SEB Keys",
+                "configKey": "Config Key",
+                "sebServerExamKey": "SEB Server Exam Key",
+                "browserExamKey": "Browser Exam Keys"
             },
             "clientGroups": {
                 "errors": {
