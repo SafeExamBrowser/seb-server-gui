@@ -2158,8 +2158,20 @@
             "quitClients": "Quit selected clients",
             "cancelClients": "Cancel selected clients"
         },
+        "actions": {
+            "lockTitle": "Lock clients",
+            "unlockTitle": "Unlock clients",
+            "quitTitle": "Quit clients",
+            "cancelTitle": "Cancel clients",
+            "lockHint": "Select the clients to lock, then confirm.",
+            "unlockHint": "Select the clients to unlock, then confirm.",
+            "quitHint": "Select the clients to quit, then confirm.",
+            "cancelHint": "Select the clients to mark as canceled, then confirm.",
+            "lockMessagePlaceholder": "Lock message (optional)",
+            "confirm": "Confirm",
+            "cancel": "Cancel"
+        },
         "main": {
-            "title": "Clients",
             "filtered": "Filtered",
             "allConnections": "All connections",
             "displayed": "displayed",

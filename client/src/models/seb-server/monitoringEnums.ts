@@ -22,6 +22,13 @@ export enum NotificationEnum {
     RAISE_HAND = "RAISE_HAND",
 }
 
+export enum MonitoringBulkActionEnum {
+    LOCK = "LOCK",
+    UNLOCK = "UNLOCK",
+    QUIT = "QUIT",
+    CANCEL = "CANCEL",
+}
+
 export type IndicatorObject = {
     indicatorType: IndicatorEnum | null;
     indicatorValue: number | string;
