@@ -11,6 +11,9 @@ export interface NavigationSectionItem {
     thickDivider?: boolean;
     requires?: Prerequisite[];
     prerequisiteMessages?: Partial<Record<Prerequisite, string>>;
-    disabled?: boolean;
-    unmetMessages?: string[];
+}
+
+export interface ResolvedNavigationSectionItem extends NavigationSectionItem {
+    disabled: boolean;
+    unmetMessages: string[];
 }

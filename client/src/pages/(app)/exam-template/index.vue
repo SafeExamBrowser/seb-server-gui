@@ -108,11 +108,10 @@ definePage({
 
 const dataTestId = "examTemplates";
 
-const { isUnmet } = useActionPrerequisites();
+const addRequires = [Prerequisite.CONNECTION_CONFIGURATION];
+const { isUnmet } = useActionPrerequisites(addRequires);
 
-const addDisabled = computed(() =>
-    isUnmet([Prerequisite.CONNECTION_CONFIGURATION]),
-);
+const addDisabled = computed(() => isUnmet(addRequires));
 
 const { list, deleteFlow, copyFlow } = useExamTemplateOverview();
 

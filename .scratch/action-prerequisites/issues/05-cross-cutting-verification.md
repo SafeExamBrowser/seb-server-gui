@@ -59,11 +59,11 @@ info button revealed both messages.
 every animation frame from page load, in institution 6 with the
 prerequisites unmet:
 
-| Page | live → dead |
-| --- | --- |
+| Page                                                         | live → dead                                     |
+| ------------------------------------------------------------ | ----------------------------------------------- |
 | Navigation Overview ("Create Exam Template", "Prepare Exam") | 307 ms → 422 ms (115 ms visible as a live link) |
-| Exam Template list ("Add") | 400 ms → 422 ms (22 ms enabled) |
-| Exams list ("Prepare") | 311 ms → 343 ms (32 ms enabled) |
+| Exam Template list ("Add")                                   | 400 ms → 422 ms (22 ms enabled)                 |
+| Exams list ("Prepare")                                       | 311 ms → 343 ms (32 ms enabled)                 |
 
 This is the direct and unavoidable consequence of the settled state model
 (unknown counts as ready): the action must render live until the check
@@ -105,13 +105,54 @@ eslint and prettier all clean.
 
 **Follow-ups worth filing**
 
-1. *Empty state on the wizard steps.* Deep links (bookmark, history, typed
+1. _Empty state on the wizard steps._ Deep links (bookmark, history, typed
    URL) still reach the exam wizard and the exam template form with an empty
    selector. The PRD rules out a route guard; an empty state on the step
    itself is the fix.
-2. *The cold-load window above*, if the flicker turns out to bother anyone.
+2. _The cold-load window above_, if the flicker turns out to bother anyone.
 3. Not needed: the connection-configuration `active` filter question from
    ticket 01 is answered — the backend honours it (institution 1:
    `?active=true` → the 2 active rows, `?active=false` → the 3 inactive,
    unfiltered → all 5). Only the generated OpenAPI types omit the parameter,
    which is worth a note to the backend team but changes nothing in the GUI.
+
+---
+
+**2026-09-01 — Review follow-up (code review of the finished branch)**
+
+A code review of the branch (manual pass plus an independent reviewer agent)
+found no correctness issues — the fail-open contract held at every layer
+checked. Three structural findings were implemented in one follow-up commit:
+
+- `useActionPrerequisites` now takes the prerequisites to check and only
+  fetches those. Before, every consuming page fired all three reads: the
+  Exam Template list fetched all active LMS setups (page_size 500) and the
+  exam template names for nothing, the Exams list fetched connection
+  configuration names for nothing. Out-of-scope prerequisites stay
+  unresolved and therefore count as met, like every other unknown.
+- `NavigationSectionItem` was split: the declaration shape keeps `requires`/
+  `prerequisiteMessages`, and a `ResolvedNavigationSectionItem` (required
+  `disabled` + `unmetMessages`) is what `NavigationSection` accepts — so a
+  consumer that forgets to resolve prerequisites no longer typechecks.
+- The tooltip message testid is now item-scoped
+  (`${testId}-prerequisiteMessage-text`) like its info-button sibling; the
+  global one would trip Playwright strict mode with two dead items open.
+- The unmet branch got e2e coverage:
+  `tests/e2e/10-action-prerequisites/unmet-prerequisites.spec.ts` empties the
+  three prerequisite reads over the standard mock backend and asserts the
+  three Navigation Overview items are dead spans with info buttons, the
+  Prepare Exam tooltip carries both messages, and the Exams "Prepare" /
+  Exam Template "Add" buttons are disabled.
+
+Verified: `vue-tsc --noEmit`, `typecheck:playwright`, eslint and prettier
+clean; the new spec passes; `06-exam` suite unchanged (7 passed, 1 failure
+in "row click opens the detail page" that reproduces identically on
+`origin/main` served by a clean local vite — pre-existing sandbox
+flakiness, not from this branch). Live against the dev server, institution
+6: the Exam Template list fires only `client_configuration/names`, the
+Exams list only `lms-setup/active` + `exam-template/names`, and all gated
+actions render dead with their info buttons.
+
+Skipped on purpose: moving the `Prerequisite` enum out of the composable
+(layering nit, no bundle impact worth the churn) and rewording the
+`useExamTemplateNames` staleTime comment.

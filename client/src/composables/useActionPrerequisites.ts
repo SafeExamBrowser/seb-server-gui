@@ -17,25 +17,39 @@ interface PrerequisiteAnswer {
 
 // TODO @alain: the homemade `useFetch` sources are normalised into the resolved/met shape by
 // hand here; this collapses once `useFetch` is migrated to TanStack Query.
-export const useActionPrerequisites = () => {
-    const connectionConfigurations = useClientConfigurationNames();
-    const assessmentTools = useAssessmentTools();
+// Only the prerequisites in `scope` are fetched; anything outside it stays
+// unresolved forever and therefore counts as met, like every other unknown.
+export const useActionPrerequisites = (
+    scope: Prerequisite[] = Object.values(Prerequisite),
+) => {
+    const connectionConfigurations = scope.includes(
+        Prerequisite.CONNECTION_CONFIGURATION,
+    )
+        ? useClientConfigurationNames()
+        : undefined;
+    const assessmentTools = scope.includes(
+        Prerequisite.ASSESSMENT_TOOL_CONNECTION,
+    )
+        ? useAssessmentTools()
+        : undefined;
     // The exam template answer must reflect a template created moments ago on another page, so
     // this observer opts out of the project's default staleness.
-    const examTemplates = useExamTemplateNames({ staleTime: 0 });
+    const examTemplates = scope.includes(Prerequisite.EXAM_TEMPLATE)
+        ? useExamTemplateNames({ staleTime: 0 })
+        : undefined;
 
     const answers = computed<Record<Prerequisite, PrerequisiteAnswer>>(() => ({
         [Prerequisite.CONNECTION_CONFIGURATION]: {
-            resolved: connectionConfigurations.data.value !== undefined,
-            met: (connectionConfigurations.data.value ?? []).length > 0,
+            resolved: connectionConfigurations?.data.value !== undefined,
+            met: (connectionConfigurations?.data.value ?? []).length > 0,
         },
         [Prerequisite.EXAM_TEMPLATE]: {
-            resolved: examTemplates.data.value !== undefined,
-            met: (examTemplates.data.value ?? []).length > 0,
+            resolved: examTemplates?.data.value !== undefined,
+            met: (examTemplates?.data.value ?? []).length > 0,
         },
         [Prerequisite.ASSESSMENT_TOOL_CONNECTION]: {
-            resolved: assessmentTools.data.value !== undefined,
-            met: (assessmentTools.data.value?.content ?? []).length > 0,
+            resolved: assessmentTools?.data.value !== undefined,
+            met: (assessmentTools?.data.value?.content ?? []).length > 0,
         },
     }));
 

@@ -120,14 +120,13 @@ definePage({
 });
 
 const abilities = useAbilities();
-const { isUnmet } = useActionPrerequisites();
+const prepareRequires = [
+    Prerequisite.EXAM_TEMPLATE,
+    Prerequisite.ASSESSMENT_TOOL_CONNECTION,
+];
+const { isUnmet } = useActionPrerequisites(prepareRequires);
 
-const prepareDisabled = computed(() =>
-    isUnmet([
-        Prerequisite.EXAM_TEMPLATE,
-        Prerequisite.ASSESSMENT_TOOL_CONNECTION,
-    ]),
-);
+const prepareDisabled = computed(() => isUnmet(prepareRequires));
 
 const dataTestId = "exams";
 

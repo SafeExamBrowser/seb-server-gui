@@ -42,7 +42,11 @@
                     <div
                         v-for="message in unmetMessages"
                         :key="message"
-                        data-testid="navigationItem-prerequisiteMessage-text"
+                        :data-testid="
+                            testId
+                                ? `${testId}-prerequisiteMessage-text`
+                                : undefined
+                        "
                     >
                         {{ message }}
                     </div>
