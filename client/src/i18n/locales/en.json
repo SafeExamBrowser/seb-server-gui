@@ -2182,8 +2182,6 @@
             "cancel": "Cancel"
         },
         "main": {
-            "filtered": "Filtered",
-            "allConnections": "All connections",
             "displayed": "displayed",
             "selected": "selected",
             "tableHeaderBattery": "Battery Status",
