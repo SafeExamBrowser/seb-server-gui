@@ -48,6 +48,7 @@
     },
     "general": {
         "loadingText": "Loading... Please wait",
+        "somethingWentWrong": "Something went wrong",
         "addButton": "Add",
         "prepareButton": "Prepare",
         "cancelButton": "Cancel",
