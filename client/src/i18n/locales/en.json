@@ -2020,7 +2020,8 @@
                 "edit": "Edit SEB Keys",
                 "configKey": "Config Key",
                 "sebServerExamKey": "SEB Server Exam Key",
-                "browserExamKey": "Browser Exam Keys"
+                "browserExamKey": "Browser Exam Keys",
+                "browserExamKey_tooltip": "Enter additional SEB Browser Exam Keys, separated with new lines."
             },
             "clientGroups": {
                 "errors": {

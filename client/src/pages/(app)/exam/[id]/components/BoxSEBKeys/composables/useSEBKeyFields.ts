@@ -50,6 +50,9 @@ export const useSEBKeyFields = (examId: string) => {
             name: "browserExamKey",
             model: browserExamKeyRef,
             label: i18n.global.t("examDetail.boxes.sebKeys.browserExamKey"),
+            tooltip: i18n.global.t(
+                "examDetail.boxes.sebKeys.browserExamKey_tooltip",
+            ),
             required: false,
             rules: [useRules().maxLength(4000)],
         });

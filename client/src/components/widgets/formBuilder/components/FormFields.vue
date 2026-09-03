@@ -142,6 +142,14 @@
                 :label-to="field.labelTo"
                 :standard-properties="getBaseProperties(field)"
             />
+
+            <v-tooltip
+                v-if="field.tooltip"
+                activator="parent"
+                location="top left"
+            >
+                {{ $t(field.tooltip) }}
+            </v-tooltip>
         </div>
     </div>
 </template>
@@ -156,6 +164,7 @@ import {
     VSwitch,
     VTextarea,
     VTextField,
+    VTooltip,
 } from "vuetify/components";
 
 import FormFieldDateTime from "@/components/widgets/formBuilder/components/FormFieldDateTime.vue";
