@@ -41,20 +41,16 @@ export const useSEBKeyItems = (
                 });
             }
 
-            if (data.value.browserExamKeys.length > 0) {
-                const bek = data.value.browserExamKeys.join("\n");
-                result.push({
-                    key: "browserExamKey",
-                    type: "basic",
-                    label: i18n.global.t(
-                        "examDetail.boxes.sebKeys.browserExamKey",
-                    ),
-                    value: {
-                        type: "string",
-                        value: bek,
-                    },
-                });
-            }
+            const bek = data.value.browserExamKeys.join("\n");
+            result.push({
+                key: "browserExamKey",
+                type: "basic",
+                label: i18n.global.t("examDetail.boxes.sebKeys.browserExamKey"),
+                value: {
+                    type: "string",
+                    value: bek,
+                },
+            });
         }
 
         return result;

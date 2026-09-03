@@ -9,7 +9,7 @@
             />
         </template>
 
-        <LoadingFallbackComponent :loading="lastModifiedLoading || loading">
+        <LoadingFallbackComponent :loading="lastModifiedLoading && loading">
             <KeyValueList v-if="items.length > 0" :items="items" class="pt-4" />
         </LoadingFallbackComponent>
     </DetailBox>
