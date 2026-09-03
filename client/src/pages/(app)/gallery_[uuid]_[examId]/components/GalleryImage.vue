@@ -82,6 +82,7 @@
                         @click="openDialog()"
                     >
                     </v-btn>
+
                     <v-btn
                         :aria-label="
                             $t('galleryView.screenReader.openProcotringView')
@@ -196,6 +197,8 @@
                         {{ screenshot.clientName }} /
                         {{ screenshot.clientIp }}
                     </div>
+
+                    hiii
                     <v-btn
                         :aria-label="
                             $t('galleryView.screenReader.openProcotringView')
@@ -205,7 +208,7 @@
                         rounded="sm"
                         size="small"
                         variant="flat"
-                        @click="navigateToProctoringView(screenshot, groupUuid)"
+                        @click="navigateToProctoringView(screenshot, examId)"
                     >
                     </v-btn>
                 </div>

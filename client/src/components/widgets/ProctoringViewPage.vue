@@ -1,249 +1,218 @@
 <template>
-    <v-row v-if="!showError" class="d-flex align-stretch" no-gutters>
+    <div v-if="!showError" class="proctor d-flex flex-column h-100">
         <!-----------video player---------->
-        <v-col cols="12">
-            <div class="proctor">
-                <div
-                    id="player-wrapper"
-                    ref="videoPlayer"
-                    class="player-wrapper"
-                    @mouseleave="onMouseLeave"
-                    @mousemove="onMouseMove"
-                >
-                    <div class="proctor__screen">
-                        <span v-if="isLiveSelected" class="proctor__livebadge">
-                            <span class="pulse"></span>
-                            Live
-                        </span>
-                        <v-img
-                            eager
-                            :aspect-ratio="16 / 9"
-                            class="img-styling"
-                            :src="imageLink"
-                        >
-                            <template #error> no img available </template>
-                        </v-img>
-                    </div>
-
-                    <!-----------controls---------->
-                    <div
-                        class="controls proctor__bar"
-                        :class="{
-                            'controls-hidden': !controlsVisible,
-                        }"
-                    >
-                        <!-----------slider---------->
-                        <v-slider
-                            v-model="sliderTime"
-                            class="mt-4"
-                            color="white"
-                            :max="sliderMax"
-                            :min="sliderMin"
-                            :step="1000"
-                            thumb-color="white"
-                            thumb-label
-                            track-color="#bbb"
-                        >
-                            <template #thumb-label>
-                                {{ currentTimeString }}
-                            </template>
-
-                            <!-----------control buttons---------->
-                            <template #prepend>
-                                <!--backwards-->
-                                <v-btn
-                                    aria-label="backwards"
-                                    :disabled="isLiveSelected"
-                                    icon="mdi-step-backward"
-                                    size="small"
-                                    variant="text"
-                                    @click="backwards()"
-                                >
-                                </v-btn>
-
-                                <!--pause / play-->
-                                <v-btn
-                                    :aria-label="isPlaying ? 'pause' : 'play'"
-                                    :icon="isPlaying ? 'mdi-pause' : 'mdi-play'"
-                                    size="small"
-                                    variant="text"
-                                    @click="isPlaying ? pause() : play()"
-                                >
-                                </v-btn>
-
-                                <!--forwards-->
-                                <v-btn
-                                    aria-label="forwards"
-                                    :disabled="isLiveSelected"
-                                    icon="mdi-step-forward"
-                                    size="small"
-                                    variant="text"
-                                    @click="forwards()"
-                                >
-                                </v-btn>
-
-                                <!--live button-->
-                                <v-btn
-                                    v-if="isLive"
-                                    aria-label="Go Live"
-                                    variant="text"
-                                    @click="goLive()"
-                                >
-                                    <template #prepend>
-                                        <v-badge
-                                            :color="
-                                                isLiveSelected ? 'error' : ''
-                                            "
-                                            dot
-                                            inline
-                                        >
-                                        </v-badge>
-                                    </template>
-                                    LIVE
-                                </v-btn>
-                            </template>
-                            <!-------------------------->
-
-                            <!-----------time---------->
-                            <template #append>
-                                <v-menu attach="#player-wrapper">
-                                    <template
-                                        #activator="{ props: activatorProps }"
-                                    >
-                                        <v-btn
-                                            v-bind="activatorProps"
-                                            aria-label="Playback Speed Selection"
-                                            :disabled="isLiveSelected"
-                                            icon="mdi-cog"
-                                            variant="text"
-                                        >
-                                        </v-btn>
-                                    </template>
-                                    <v-list>
-                                        <v-list-item>
-                                            Playback Speed
-                                        </v-list-item>
-                                        <v-divider></v-divider>
-                                        <v-list-item
-                                            v-for="(
-                                                playbackSpeed, index
-                                            ) in playbackSpeeds"
-                                            :key="index"
-                                            :value="index"
-                                            @click="
-                                                changePlaybackSpeed(
-                                                    playbackSpeed.id,
-                                                )
-                                            "
-                                        >
-                                            <template
-                                                v-if="
-                                                    playbackSpeed.id ==
-                                                    selectedSpeedId
-                                                "
-                                                #append
-                                            >
-                                                <v-icon
-                                                    icon="mdi-check"
-                                                ></v-icon>
-                                            </template>
-
-                                            {{ playbackSpeed.title }}
-                                        </v-list-item>
-                                    </v-list>
-                                </v-menu>
-
-                                <v-chip v-if="isLive" variant="outlined">
-                                    {{ liveSessionTime }}
-                                </v-chip>
-                                <v-chip v-else variant="outlined">
-                                    {{ currentTimeString }} /
-                                    {{ endTimeString }}
-                                </v-chip>
-                                <v-btn
-                                    aria-label="Fullscreen"
-                                    icon="mdi-fullscreen"
-                                    variant="text"
-                                    @click="toggle"
-                                ></v-btn>
-
-                                <!-----------session info on click (stays open until the info button is clicked again)---------->
-                                <v-menu
-                                    attach="#player-wrapper"
-                                    :close-on-back="false"
-                                    :close-on-content-click="false"
-                                    location="top end"
-                                    persistent
-                                >
-                                    <template #activator="{ props: infoProps }">
-                                        <v-btn
-                                            v-bind="infoProps"
-                                            aria-label="Session info"
-                                            icon="mdi-information-outline"
-                                            variant="text"
-                                        >
-                                        </v-btn>
-                                    </template>
-                                    <div class="proctor-info">
-                                        <div class="proctor-info__group">
-                                            <div class="proctor-info__title">
-                                                SEB Session Info
-                                            </div>
-                                            <div
-                                                v-for="(
-                                                    value, key
-                                                ) in sessionInfodata"
-                                                :key="key"
-                                                class="proctor-info__row"
-                                            >
-                                                <span
-                                                    class="proctor-info__label"
-                                                >
-                                                    {{ key }}
-                                                </span>
-                                                <span
-                                                    class="proctor-info__value"
-                                                >
-                                                    {{ value }}
-                                                </span>
-                                            </div>
-                                        </div>
-
-                                        <div class="proctor-info__group">
-                                            <div class="proctor-info__title">
-                                                Screenshot Metadata
-                                            </div>
-                                            <div
-                                                v-for="(
-                                                    value, key
-                                                ) in screenshotMetadata"
-                                                :key="key"
-                                                class="proctor-info__row"
-                                            >
-                                                <span
-                                                    class="proctor-info__label"
-                                                >
-                                                    {{ key }}
-                                                </span>
-                                                <span
-                                                    class="proctor-info__value"
-                                                >
-                                                    {{ value }}
-                                                </span>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </v-menu>
-                            </template>
-                            <!-------------------------->
-                        </v-slider>
-                        <!-------------------------->
-                    </div>
-                </div>
+        <div
+            id="player-wrapper"
+            ref="videoPlayer"
+            class="player-wrapper d-flex flex-column flex-grow-1"
+            @mouseleave="onMouseLeave"
+            @mousemove="onMouseMove"
+        >
+            <div class="proctor__screen">
+                <span v-if="isLiveSelected" class="proctor__livebadge">
+                    <span class="pulse"></span>
+                    Live
+                </span>
+                <v-img eager class="img-styling" :src="imageLink">
+                    <template #error> no img available </template>
+                </v-img>
             </div>
-        </v-col>
-        <!-------------------------->
-    </v-row>
+
+            <!-----------controls---------->
+            <div
+                class="controls proctor__bar flex-shrink-0"
+                :class="{
+                    'controls-hidden': !controlsVisible,
+                }"
+            >
+                <!-----------slider---------->
+                <v-slider
+                    v-model="sliderTime"
+                    class="mt-4"
+                    color="white"
+                    :max="sliderMax"
+                    :min="sliderMin"
+                    :step="1000"
+                    thumb-color="white"
+                    thumb-label
+                    track-color="#bbb"
+                >
+                    <template #thumb-label>
+                        {{ currentTimeString }}
+                    </template>
+
+                    <!-----------control buttons---------->
+                    <template #prepend>
+                        <!--backwards-->
+                        <v-btn
+                            aria-label="backwards"
+                            :disabled="isLiveSelected"
+                            icon="mdi-step-backward"
+                            size="small"
+                            variant="text"
+                            @click="backwards()"
+                        >
+                        </v-btn>
+
+                        <!--pause / play-->
+                        <v-btn
+                            :aria-label="isPlaying ? 'pause' : 'play'"
+                            :icon="isPlaying ? 'mdi-pause' : 'mdi-play'"
+                            size="small"
+                            variant="text"
+                            @click="isPlaying ? pause() : play()"
+                        >
+                        </v-btn>
+
+                        <!--forwards-->
+                        <v-btn
+                            aria-label="forwards"
+                            :disabled="isLiveSelected"
+                            icon="mdi-step-forward"
+                            size="small"
+                            variant="text"
+                            @click="forwards()"
+                        >
+                        </v-btn>
+
+                        <!--live button-->
+                        <v-btn
+                            v-if="isLive"
+                            aria-label="Go Live"
+                            variant="text"
+                            @click="goLive()"
+                        >
+                            <template #prepend>
+                                <v-badge
+                                    :color="isLiveSelected ? 'error' : ''"
+                                    dot
+                                    inline
+                                >
+                                </v-badge>
+                            </template>
+                            LIVE
+                        </v-btn>
+                    </template>
+                    <!-------------------------->
+
+                    <!-----------time---------->
+                    <template #append>
+                        <v-menu attach="#player-wrapper">
+                            <template #activator="{ props: activatorProps }">
+                                <v-btn
+                                    v-bind="activatorProps"
+                                    aria-label="Playback Speed Selection"
+                                    :disabled="isLiveSelected"
+                                    icon="mdi-cog"
+                                    variant="text"
+                                >
+                                </v-btn>
+                            </template>
+                            <v-list>
+                                <v-list-item> Playback Speed </v-list-item>
+                                <v-divider></v-divider>
+                                <v-list-item
+                                    v-for="(
+                                        playbackSpeed, index
+                                    ) in playbackSpeeds"
+                                    :key="index"
+                                    :value="index"
+                                    @click="
+                                        changePlaybackSpeed(playbackSpeed.id)
+                                    "
+                                >
+                                    <template
+                                        v-if="
+                                            playbackSpeed.id == selectedSpeedId
+                                        "
+                                        #append
+                                    >
+                                        <v-icon icon="mdi-check"></v-icon>
+                                    </template>
+
+                                    {{ playbackSpeed.title }}
+                                </v-list-item>
+                            </v-list>
+                        </v-menu>
+
+                        <v-chip v-if="isLive" variant="outlined">
+                            {{ liveSessionTime }}
+                        </v-chip>
+                        <v-chip v-else variant="outlined">
+                            {{ currentTimeString }} /
+                            {{ endTimeString }}
+                        </v-chip>
+                        <v-btn
+                            aria-label="Fullscreen"
+                            icon="mdi-fullscreen"
+                            variant="text"
+                            @click="toggle"
+                        ></v-btn>
+
+                        <!-----------session info on click (stays open until the info button is clicked again)---------->
+                        <v-menu
+                            attach="#player-wrapper"
+                            :close-on-back="false"
+                            :close-on-content-click="false"
+                            location="top end"
+                            persistent
+                        >
+                            <template #activator="{ props: infoProps }">
+                                <v-btn
+                                    v-bind="infoProps"
+                                    aria-label="Session info"
+                                    icon="mdi-information-outline"
+                                    variant="text"
+                                >
+                                </v-btn>
+                            </template>
+                            <div class="proctor-info">
+                                <div class="proctor-info__group">
+                                    <div class="proctor-info__title">
+                                        SEB Session Info
+                                    </div>
+                                    <div
+                                        v-for="(value, key) in sessionInfodata"
+                                        :key="key"
+                                        class="proctor-info__row"
+                                    >
+                                        <span class="proctor-info__label">
+                                            {{ key }}
+                                        </span>
+                                        <span class="proctor-info__value">
+                                            {{ value }}
+                                        </span>
+                                    </div>
+                                </div>
+
+                                <div class="proctor-info__group">
+                                    <div class="proctor-info__title">
+                                        Screenshot Metadata
+                                    </div>
+                                    <div
+                                        v-for="(
+                                            value, key
+                                        ) in screenshotMetadata"
+                                        :key="key"
+                                        class="proctor-info__row"
+                                    >
+                                        <span class="proctor-info__label">
+                                            {{ key }}
+                                        </span>
+                                        <span class="proctor-info__value">
+                                            {{ value }}
+                                        </span>
+                                    </div>
+                                </div>
+                            </div>
+                        </v-menu>
+                    </template>
+                    <!-------------------------->
+                </v-slider>
+                <!-------------------------->
+            </div>
+        </div>
+    </div>
 </template>
 
 <script setup lang="ts">
@@ -255,14 +224,12 @@ import {
     VBadge,
     VBtn,
     VChip,
-    VCol,
     VDivider,
     VIcon,
     VImg,
     VList,
     VListItem,
     VMenu,
-    VRow,
     VSlider,
 } from "vuetify/components";
 
@@ -892,13 +859,20 @@ async function calcTotalNrOfScreenshots(): Promise<number> {
 
 <style scoped>
 .img-styling {
+    flex: 1 1 0;
+    min-width: 0;
     background-color: transparent;
     transition: transform 0.3s ease-in-out;
+}
+
+.img-styling :deep(.v-responsive__sizer) {
+    display: none;
 }
 
 .player-wrapper {
     position: relative;
     z-index: 0;
+    min-height: 0;
 }
 
 /* dark "screen proctoring" player surface (matches monitoring detail design) */
@@ -911,6 +885,10 @@ async function calcTotalNrOfScreenshots(): Promise<number> {
 
 .proctor__screen {
     position: relative;
+    display: flex;
+    flex: 1 1 auto;
+    min-height: 0;
+    aspect-ratio: 16 / 9;
     color: rgba(255, 255, 255, 0.7);
     background:
         radial-gradient(
@@ -1041,100 +1019,22 @@ async function calcTotalNrOfScreenshots(): Promise<number> {
     pointer-events: none;
 }
 
-.player-wrapper:fullscreen .controls,
-.player-wrapper:-webkit-full-screen .controls {
-    position: absolute !important;
+.player-wrapper:fullscreen {
+    background: #000;
+}
+
+.player-wrapper:fullscreen .proctor__screen {
+    aspect-ratio: auto;
+    background: #000;
+}
+
+.player-wrapper:fullscreen .controls {
+    position: absolute;
     bottom: 16px;
     left: 0;
-    width: 100%;
-    z-index: 999;
-    background: rgba(0, 0, 0, 0.5);
+    z-index: 2;
     padding: 8px 0;
-}
-
-.player-wrapper:fullscreen .controls .v-btn,
-.player-wrapper:-webkit-full-screen .controls .v-btn {
-    color: white !important;
-}
-
-.player-wrapper:fullscreen .controls .v-slider-track__background,
-.player-wrapper:fullscreen .controls .v-slider-track__fill,
-.player-wrapper:fullscreen .controls .v-slider-track__tick,
-.player-wrapper:fullscreen .controls .v-slider-thumb__surface {
-    background-color: white !important;
-}
-
-.player-wrapper:fullscreen .controls .v-slider-thumb__surface {
-    border-color: white !important;
-}
-
-.player-wrapper:fullscreen .controls .v-chip {
-    color: white !important;
-    border-color: white !important;
-}
-
-.player-wrapper:-webkit-full-screen .controls .v-slider-track__background,
-.player-wrapper:-webkit-full-screen .controls .v-slider-track__fill,
-.player-wrapper:-webkit-full-screen .controls .v-slider-track__tick,
-.player-wrapper:-webkit-full-screen .controls .v-slider-thumb__surface {
-    background-color: white !important;
-}
-
-.player-wrapper:-webkit-full-screen .controls .v-slider-thumb__surface {
-    border-color: white !important;
-}
-
-.player-wrapper:-webkit-full-screen .controls .v-chip {
-    color: white !important;
-    border-color: white !important;
-}
-
-.player-wrapper:fullscreen .controls,
-.player-wrapper:-moz-full-screen .controls {
-    position: absolute !important;
-    bottom: 16px;
-    left: 0;
-    width: 100%;
-    z-index: 999;
     background: rgba(0, 0, 0, 0.5);
-    padding: 8px 0;
-}
-
-.player-wrapper:fullscreen .controls .v-btn,
-.player-wrapper:-moz-full-screen .controls .v-btn {
-    color: white !important;
-}
-
-.player-wrapper:fullscreen .controls .v-slider-track__background,
-.player-wrapper:fullscreen .controls .v-slider-track__fill,
-.player-wrapper:fullscreen .controls .v-slider-track__tick,
-.player-wrapper:fullscreen .controls .v-slider-thumb__surface {
-    background-color: white !important;
-}
-
-.player-wrapper:fullscreen .controls .v-slider-thumb__surface {
-    border-color: white !important;
-}
-
-.player-wrapper:fullscreen .controls .v-chip {
-    color: white !important;
-    border-color: white !important;
-}
-
-.player-wrapper:-moz-full-screen .controls .v-slider-track__background,
-.player-wrapper:-moz-full-screen .controls .v-slider-track__fill,
-.player-wrapper:-moz-full-screen .controls .v-slider-track__tick,
-.player-wrapper:-moz-full-screen .controls .v-slider-thumb__surface {
-    background-color: white !important;
-}
-
-.player-wrapper:-moz-full-screen .controls .v-slider-thumb__surface {
-    border-color: white !important;
-}
-
-.player-wrapper:-moz-full-screen .controls .v-chip {
-    color: white !important;
-    border-color: white !important;
 }
 
 .v-icon {
