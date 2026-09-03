@@ -1,7 +1,17 @@
 <template>
-    <v-card border elevation="1" rounded="lg" class="flex-grow-1 flex-shrink-0">
+    <v-card
+        border
+        elevation="1"
+        rounded="lg"
+        class="h-100 flex-grow-1 flex-shrink-0 d-flex flex-column"
+    >
         <template v-if="screenProctoringEnabled">
-            <v-tabs v-model="currentView" color="primary" grow>
+            <v-tabs
+                v-model="currentView"
+                class="flex-grow-0 flex-shrink-0"
+                color="primary"
+                grow
+            >
                 <v-tab prepend-icon="mdi-monitor-eye" value="proctoring">
                     {{ $t("monitoringDetails.main.screenProctoring") }}
                 </v-tab>
@@ -12,16 +22,22 @@
             <v-divider />
         </template>
 
-        <div class="pa-4">
-            <!-- Proctoring view -->
-            <div v-if="currentView === 'proctoring'">
-                <ProctoringViewPage :session-id-prop="connectionToken" />
-            </div>
+        <!-- Proctoring view -->
+        <div
+            v-if="currentView === 'proctoring'"
+            class="pa-4 flex-1-1-0 d-flex flex-column"
+            :style="{ minHeight: 0 }"
+        >
+            <ProctoringViewPage :session-id-prop="connectionToken" />
+        </div>
 
-            <!-- Logs view -->
-            <div v-else>
-                <MonitoringClientLogsContainer />
-            </div>
+        <!-- Logs view -->
+        <div
+            v-else
+            class="pa-4 flex-1-1-0 overflow-y-auto"
+            :style="{ minHeight: 0 }"
+        >
+            <MonitoringClientLogsContainer />
         </div>
     </v-card>
 </template>
