@@ -111,7 +111,7 @@ export const useExamBasicSettingsFields = (
         });
 
         fields.push({
-            type: "password" as const,
+            type: "text" as const,
             name: "quitPassword",
             model: models.quitPassword,
             label: i18n.global.t("examDetail.info.quitPassword"),

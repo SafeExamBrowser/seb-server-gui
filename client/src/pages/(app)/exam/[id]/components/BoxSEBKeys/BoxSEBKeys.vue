@@ -26,6 +26,7 @@ import { useSEBKeyItems } from "@/pages/(app)/exam/[id]/components/BoxSEBKeys/co
 import SebKeysEditDialog from "./components/SebKeysEditDialog.vue";
 
 const props = defineProps<{
+    hasBEK: boolean;
     examId: number;
     lastModifiedItems: KeyValueItem[];
     lastModifiedLoading: boolean;
@@ -34,6 +35,7 @@ const props = defineProps<{
 }>();
 
 const { items, loading, data } = useSEBKeyItems(
+    props.hasBEK,
     String(props.examId),
     props.lastModifiedItems,
 );

@@ -5,6 +5,7 @@ import i18n from "@/i18n";
 import { useFetchSEBKeys } from "@/pages/(app)/exam/[id]/components/BoxSEBKeys/composables/api/useFetchSEBKeys";
 
 export const useSEBKeyItems = (
+    hasBEK: boolean,
     examId: string,
     lastModifiedItems: KeyValueItem[],
 ) => {
@@ -41,16 +42,20 @@ export const useSEBKeyItems = (
                 });
             }
 
-            const bek = data.value.browserExamKeys.join("\n");
-            result.push({
-                key: "browserExamKey",
-                type: "basic",
-                label: i18n.global.t("examDetail.boxes.sebKeys.browserExamKey"),
-                value: {
-                    type: "string",
-                    value: bek,
-                },
-            });
+            if (hasBEK) {
+                const bek = data.value.browserExamKeys.join("\n");
+                result.push({
+                    key: "browserExamKey",
+                    type: "basic",
+                    label: i18n.global.t(
+                        "examDetail.boxes.sebKeys.browserExamKey",
+                    ),
+                    value: {
+                        type: "string",
+                        value: bek,
+                    },
+                });
+            }
         }
 
         return result;

@@ -11,7 +11,7 @@ export const useFormFields = () => {
 
     const formFields = computed<FormField[]>(() => [
         {
-            type: "password" as const,
+            type: "text" as const,
             name: "quitPassword",
             model: quitPassword,
             label: i18n.global.t(
