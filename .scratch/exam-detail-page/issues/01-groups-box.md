@@ -1,6 +1,6 @@
 # Groups box for the exam detail page
 
-Status: ready-for-human
+Status: done
 Parent: `.scratch/exam-detail-page/PRD.md` (deferred there under "Out of scope")
 Branch: `SEBSERV-958_groups`
 
@@ -151,3 +151,5 @@ field's last GUI relevance.
   template's SP flag as `isSPSGroup`) and replaces the plain-type column and
   popover subtitle with a combined type-with-details string. See 03 for the
   settled decisions.
+
+**2026-09-01 — Human-tested by Alain; closed as done.**

@@ -8,7 +8,7 @@ See the PRD (`.scratch/explicit-vuetify-imports/PRD.md`) for the full rationale 
 
 **Blocked by:** None — can start immediately.
 
-**Status:** ready-for-agent
+**Status:** done
 
 - [x] Codemod exists under the feature's `.scratch` directory and validates names against real `vuetify/components` exports
 - [x] All Vuetify-using SFCs outside `pages/` have explicit `vuetify/components` imports covering every Vuetify tag in their template

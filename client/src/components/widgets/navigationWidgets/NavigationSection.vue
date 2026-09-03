@@ -12,6 +12,8 @@
             :to="item.to"
             :visible="item.visible"
             :thick-divider="item.thickDivider"
+            :disabled="item.disabled"
+            :unmet-messages="item.unmetMessages"
         />
 
         <v-divider class="section-divider" />
@@ -23,12 +25,12 @@ import { computed } from "vue";
 import { VDivider } from "vuetify/components";
 
 import NavigationItem from "@/components/widgets/navigationWidgets/NavigationItem.vue";
-import type { NavigationSectionItem } from "@/components/widgets/navigationWidgets/types.ts";
+import type { ResolvedNavigationSectionItem } from "@/components/widgets/navigationWidgets/types.ts";
 
 const props = withDefaults(
     defineProps<{
         title: string;
-        items: NavigationSectionItem[];
+        items: ResolvedNavigationSectionItem[];
         showTitle?: boolean;
     }>(),
     {

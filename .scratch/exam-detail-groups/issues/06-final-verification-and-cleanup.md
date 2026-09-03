@@ -8,7 +8,7 @@ evidence to the issue files. No new functionality.
 
 **Blocked by:** 05 — Screen proctoring setting in the exam's BasicSettings.
 
-**Status:** ready-for-human
+**Status:** done
 
 - [x] Browser sweep (dev server, super-admin/admin123): exam 11 (proctored,
       APPLY_SEB_GROUPS), exam 4 (proctoring off), exam 5 (legacy EXAM
@@ -112,3 +112,5 @@ restores plain table. Note: on exam 4 (SP freshly enabled) the backend kept
 `isSPSGroup=false` despite 200 on apply-groups — same wire calls succeed on
 exam 11, so this looks like an SPS-side init quirk on freshly activated
 exams, not a client issue. Test data cleaned up on both exams.
+
+**2026-09-01 — Human-tested by Alain; closed as done.**

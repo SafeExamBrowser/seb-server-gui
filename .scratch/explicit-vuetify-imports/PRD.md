@@ -1,6 +1,6 @@
 # PRD: Explicit Vuetify component imports
 
-Status: ready-for-agent
+Status: done (all 4 tickets implemented; merged via PR #192)
 
 ## Problem Statement
 

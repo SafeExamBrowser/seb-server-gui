@@ -4,8 +4,11 @@ import { getExamTemplateNamesQueryKey } from "@/api/seb-server/generated/hey-api
 import { heySebServerClient } from "@/api/seb-server/http/heySebServerClient.ts";
 import { getExamTemplateNames } from "@/services/seb-server/examTemplateService.ts";
 
-export const useExamTemplateNames = () =>
+// Spread rather than `staleTime: options?.staleTime`: an explicit `undefined`
+// key overwrites the query client's default instead of falling back to it.
+export const useExamTemplateNames = (options?: { staleTime?: number }) =>
     useQuery({
         queryKey: getExamTemplateNamesQueryKey({ client: heySebServerClient }),
         queryFn: () => getExamTemplateNames(),
+        ...options,
     });

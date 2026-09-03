@@ -1,6 +1,6 @@
 # 01 — Detail page: merge SPS toggle into Basic Settings
 
-Status: ready-for-agent
+Status: done
 Parent: `.scratch/grouping-strategy-cleanup/PRD.md` (decisions 1–4)
 Blocked by: None — can start immediately.
 

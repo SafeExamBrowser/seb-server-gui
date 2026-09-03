@@ -1,5 +1,7 @@
 # PRD: Remove the EXAM grouping strategy from the client (SEBSERV-973)
 
+Status: done (implemented and verified; SEBSERV-973 merged to main)
+
 Branch: `SEBSERV-973__exam-template-cleanups`
 Settled 2026-08-17 in a grilling session with Alain — don't relitigate the
 decisions below; ask only if the code contradicts them.

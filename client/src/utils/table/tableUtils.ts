@@ -19,8 +19,8 @@ type ItemsPerPageOption = { value: number; title: string };
 
 type Clickable = { click: () => void };
 type HeaderRefs =
-    | { value?: Clickable[] | null }
-    | Clickable[]
+    | { value?: (Clickable | null)[] | null }
+    | (Clickable | null)[]
     | null
     | undefined;
 

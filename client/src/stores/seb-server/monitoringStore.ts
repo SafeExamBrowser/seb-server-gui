@@ -15,6 +15,7 @@ import {
     SingleConnection,
 } from "@/models/seb-server/monitoring";
 import { MonitoringRow } from "@/models/seb-server/monitoringClients";
+import { MonitoringBulkActionEnum } from "@/models/seb-server/monitoringEnums";
 import { ServerTablePaging } from "@/models/types";
 
 export const useMonitoringStore = defineStore("monitoring", () => {
@@ -28,6 +29,7 @@ export const useMonitoringStore = defineStore("monitoring", () => {
     const currentPagingOptions = ref<ServerTablePaging>();
     const searchName = ref<string | null>(null);
     const isNoFilterSelected = ref<boolean>(false);
+    const armedBulkAction = ref<MonitoringBulkActionEnum>();
     const selectedMonitoringIds = ref<number[]>([]);
     const indicators = ref<Indicators | null>(null);
     const clientGroups = ref<ClientGroups | null>(null);
@@ -68,6 +70,7 @@ export const useMonitoringStore = defineStore("monitoring", () => {
     }
 
     function clearClientValues() {
+        armedBulkAction.value = undefined;
         selectedMonitoringIds.value = [];
         indicators.value = null;
         clientGroups.value = null;
@@ -89,6 +92,7 @@ export const useMonitoringStore = defineStore("monitoring", () => {
         indicators,
         appSignatureKeys,
         clientGroups,
+        armedBulkAction,
         selectedMonitoringIds,
         isNoFilterSelected,
         monitoringData,

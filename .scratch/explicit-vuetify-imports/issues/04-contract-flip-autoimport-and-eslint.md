@@ -10,7 +10,7 @@ Verification runs all three seams from the PRD:
 
 **Blocked by:** 01, 02, 03.
 
-**Status:** ready-for-agent
+**Status:** done
 
 - [x] `autoImport` disabled; `vite-plugin-vuetify` retained for styles and asset URL transforms
 - [x] `vue/no-undef-components` has no Vuetify exemption

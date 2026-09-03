@@ -153,6 +153,14 @@ const CLIENT_CONFIGURATIONS = [true, false, true, true, true, true].map(
     }),
 );
 
+// No spec reads exam templates directly; they exist so the exam-wizard
+// prerequisite is satisfied and the Exams list "Prepare" button stays enabled.
+const EXAM_TEMPLATE_NAMES = [9201, 9202].map((id) => ({
+    modelId: String(id),
+    entityType: "EXAM_TEMPLATE",
+    name: `e2e-exam-template-${id}`,
+}));
+
 // Mirrors the V200 per-browser user rows plus fillers so the paging and
 // items-per-page steps of the read template have something to page over.
 function userAccountRows(browser: string) {
@@ -540,6 +548,48 @@ export async function installMockBackend(page: Page, browser: string) {
             }
             return json(route, configuration);
         }),
+    );
+
+    // --- action prerequisites (SEBSERV-997): the reads behind "is this action
+    // available yet". The mocked institution is fully set up, so every gated
+    // action stays enabled; without these the catch-all's empty object would
+    // read as "nothing exists" and disable them.
+    await page.route(
+        /\/api\/client_configuration\/names(?:$|\?)/,
+        getOnly((route, url) =>
+            json(
+                route,
+                CLIENT_CONFIGURATIONS.filter((configuration) =>
+                    matchesActive(
+                        configuration,
+                        url.searchParams.get("active"),
+                    ),
+                ).map((configuration) => ({
+                    modelId: String(configuration.id),
+                    entityType: "SEB_CLIENT_CONFIGURATION",
+                    name: configuration.name,
+                })),
+            ),
+        ),
+    );
+
+    await page.route(
+        /\/api\/lms-setup\/active(?:$|\?)/,
+        getOnly((route, url) =>
+            json(
+                route,
+                pagedEnvelope(
+                    LMS_SETUPS.filter((setup) => setup.active),
+                    url,
+                    ["name"],
+                ),
+            ),
+        ),
+    );
+
+    await page.route(
+        /\/api\/admin-api\/v1\/exam-template\/names(?:$|\?)/,
+        getOnly((route) => json(route, EXAM_TEMPLATE_NAMES)),
     );
 
     // --- certificates (empty default; certificate specs mock their own list, this

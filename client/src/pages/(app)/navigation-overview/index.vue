@@ -68,6 +68,8 @@ import {
     buildPreparationNavigationItems,
     buildSettingsNavigationItems,
 } from "@/components/widgets/navigationWidgets/navigationSections";
+import type { NavigationSectionItem } from "@/components/widgets/navigationWidgets/types.ts";
+import { useActionPrerequisites } from "@/composables/useActionPrerequisites.ts";
 import { useAbilities } from "@/services/ability";
 import { translate } from "@/utils/generalUtils";
 
@@ -82,20 +84,46 @@ definePage({
 });
 
 const ability = useAbilities();
+const { isUnmet, unmet } = useActionPrerequisites();
+
+function resolvePrerequisites(items: NavigationSectionItem[]) {
+    return items.map((item) => {
+        const requires = item.requires ?? [];
+
+        return {
+            ...item,
+            disabled: isUnmet(requires),
+            unmetMessages: unmet(requires)
+                .map(
+                    (prerequisite) => item.prerequisiteMessages?.[prerequisite],
+                )
+                .filter((message) => message !== undefined),
+        };
+    });
+}
+
 const settingsItems = computed(() =>
-    buildSettingsNavigationItems(ability, "navigationOverview"),
+    resolvePrerequisites(
+        buildSettingsNavigationItems(ability, "navigationOverview"),
+    ),
 );
 
 const preparationItems = computed(() =>
-    buildPreparationNavigationItems(ability, "navigationOverview"),
+    resolvePrerequisites(
+        buildPreparationNavigationItems(ability, "navigationOverview"),
+    ),
 );
 
 const monitoringItems = computed(() =>
-    buildMonitoringNavigationItems(ability, "navigationOverview"),
+    resolvePrerequisites(
+        buildMonitoringNavigationItems(ability, "navigationOverview"),
+    ),
 );
 
 const followUpItems = computed(() =>
-    buildFollowUpNavigationItems(ability, "navigationOverview"),
+    resolvePrerequisites(
+        buildFollowUpNavigationItems(ability, "navigationOverview"),
+    ),
 );
 </script>
 

@@ -9,7 +9,7 @@ detail page, and (once it exists) the exam detail groups box.
 
 **Blocked by:** 01 — Access contract for the shared client-groups table.
 
-**Status:** ready-for-human
+**Status:** done
 
 - [x] The add-group dialog opens with the screen proctoring toggle on iff
       screen proctoring is allowed for groups.
@@ -35,3 +35,5 @@ detail page, and (once it exists) the exam detail groups box.
   add dialog opens with the toggle checked; add/edit affordances unchanged —
   covers the ticket 01 wizard regression too. Wizard abandoned without
   saving.
+
+**2026-09-01 — Human-tested by Alain; closed as done.**

@@ -1,8 +1,8 @@
 import { computed } from "vue";
 
 import { SummarySectionData } from "@/components/widgets/wizardSummary/types.ts";
+import { useAssessmentTools } from "@/composables/useAssessmentTools.ts";
 import { useSupervisors } from "@/composables/useSupervisors.ts";
-import { useAssessmentTools } from "@/pages/(app)/exam/create/components/stepAssessmentTool/composables/api/useAssessmentTools.ts";
 import { useStepAssessmentToolStore } from "@/pages/(app)/exam/create/components/stepAssessmentTool/composables/store/useStepAssessmentToolStore.ts";
 import { useStepClientGroupsStore } from "@/pages/(app)/exam/create/components/stepClientGroups/composables/store/useStepClientGroupsStore.ts";
 import { useStepExamTemplateStore } from "@/pages/(app)/exam/create/components/stepExamTemplate/composables/store/useStepExamTemplateStore.ts";

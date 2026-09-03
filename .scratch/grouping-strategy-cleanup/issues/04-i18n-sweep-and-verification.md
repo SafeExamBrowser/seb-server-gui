@@ -1,6 +1,6 @@
 # 04 — i18n sweep + full verification
 
-Status: ready-for-agent
+Status: done
 Parent: `.scratch/grouping-strategy-cleanup/PRD.md` (decisions 14–15, Dev environment)
 Blocked by: 01, 02, 03.
 

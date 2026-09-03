@@ -4,7 +4,7 @@
 
 **Blocked by:** 01, 02 — the local imports must already exist everywhere these components are used.
 
-**Status:** ready-for-agent
+**Status:** done
 
 - [x] `createVuetify` has no `components` option
 - [x] Full lint run green; `vue-tsc --noEmit` green

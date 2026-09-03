@@ -1,6 +1,6 @@
 # PRD: Exam Detail — client groups rework & screen proctoring setting (SEBSERV-968)
 
-Status: ready-for-agent (tickets 01–06 ready-for-human; ticket 07 open)
+Status: done (all 8 tickets implemented and human-tested; closed 2026-09-01)
 
 Branch: `SEBSERV-968_exam-detail-groups`
 Settled 2026-08-24 in a grilling session with Alain — don't relitigate the
