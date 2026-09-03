@@ -40,8 +40,8 @@
                         :tooltip="false"
                         :label-tooltip="true"
                         :disabled="
-                            context.readonly || igonreSEBServiceRef
-                                ? !igonreSEBServiceRef?.boolVal
+                            context.readonly || ignoreSEBServiceRef
+                                ? !ignoreSEBServiceRef?.boolVal
                                 : false
                         "
                     />
@@ -53,8 +53,8 @@
                         label="sebSettings.securityView.sebService.enableWindowsUpdate"
                         :tooltip="false"
                         :disabled="
-                            context.readonly || igonreSEBServiceRef
-                                ? !igonreSEBServiceRef?.boolVal
+                            context.readonly || ignoreSEBServiceRef
+                                ? !ignoreSEBServiceRef?.boolVal
                                 : false
                         "
                     />
@@ -66,23 +66,25 @@
                         label="sebSettings.securityView.sebService.enableChromeNotifications"
                         :tooltip="false"
                         :disabled="
-                            context.readonly || igonreSEBServiceRef
-                                ? !igonreSEBServiceRef?.boolVal
+                            context.readonly || ignoreSEBServiceRef
+                                ? !ignoreSEBServiceRef?.boolVal
                                 : false
                         "
                     />
                 </v-row>
                 <v-row>
                     <CheckboxSetting
+                        ref="allowScreenSharing1"
                         v-model="singleValues"
                         name="allowScreenSharing"
                         label="sebSettings.securityView.sebService.allowScreenSharing"
                         :tooltip="false"
                         :disabled="
-                            context.readonly || igonreSEBServiceRef
-                                ? !igonreSEBServiceRef?.boolVal
+                            context.readonly || ignoreSEBServiceRef
+                                ? !ignoreSEBServiceRef?.boolVal
                                 : false
                         "
+                        @saved="notifyAllowScreenSharing1"
                     />
                 </v-row>
 
@@ -124,6 +126,7 @@
                     label="sebSettings.securityView.overall.title"
                     :tooltip="false"
                 />
+
                 <v-row>
                     <NumberSetting
                         v-model="singleValues"
@@ -135,6 +138,19 @@
                         :min="1"
                     />
                 </v-row>
+
+                <v-row>
+                    <CheckboxSetting
+                        ref="allowScreenSharing2"
+                        v-model="singleValues"
+                        name="allowScreenSharing"
+                        label="sebSettings.securityView.sebService.allowScreenSharing"
+                        :tooltip="false"
+                        :disabled="context.readonly"
+                        @saved="notifyAllowScreenSharing2"
+                    />
+                </v-row>
+
                 <v-row>
                     <CheckboxSetting
                         v-model="singleValues"
@@ -520,6 +536,15 @@
                 <v-row>
                     <CheckboxSetting
                         v-model="singleValues"
+                        name="allowScreenCaptureiOS"
+                        label="sebSettings.securityView.ios.allowScreenCaptureiOS"
+                        :tooltip="true"
+                        :disabled="context.readonly"
+                    />
+                </v-row>
+                <v-row>
+                    <CheckboxSetting
+                        v-model="singleValues"
                         name="mobilePreventAutoLock"
                         label="sebSettings.securityView.ios.mobilePreventAutoLock"
                         :tooltip="true"
@@ -538,13 +563,14 @@
                 </v-row>
 
                 <v-row>
-                    <SelectionSetting
+                    <NumberSetting
                         v-model="singleValues"
                         name="allowiOSBetaVersionNumber"
                         label="sebSettings.securityView.ios.allowiOSBetaVersionNumber"
-                        :labels="true"
+                        :show-label="true"
                         :tooltip="true"
                         :disabled="context.readonly"
+                        :min="0"
                     />
                 </v-row>
                 <v-row>
@@ -632,13 +658,34 @@ const { singleValues, loadingSebSettingsView, errorSebSettingsView } =
         ViewType.SECURITY,
     );
 
-const igonreSEBServiceRef = useTemplateRef("sebServiceIgnore");
+const allowScreenSharing1Ref = useTemplateRef("allowScreenSharing1");
+const allowScreenSharing2Ref = useTemplateRef("allowScreenSharing2");
+
+const ignoreSEBServiceRef = useTemplateRef("sebServiceIgnore");
 
 function notifyEBServiceIgnore() {
     if (!singleValues) return;
 
-    if (igonreSEBServiceRef.value) {
-        ignoreSEBService.value = igonreSEBServiceRef.value.boolVal;
+    if (ignoreSEBServiceRef.value) {
+        ignoreSEBService.value = ignoreSEBServiceRef.value.boolVal;
+    }
+}
+
+function notifyAllowScreenSharing1() {
+    if (!singleValues) return;
+
+    if (allowScreenSharing2Ref.value && allowScreenSharing1Ref.value) {
+        allowScreenSharing2Ref.value.boolVal =
+            allowScreenSharing1Ref.value.boolVal;
+    }
+}
+
+function notifyAllowScreenSharing2() {
+    if (!singleValues) return;
+
+    if (allowScreenSharing1Ref.value && allowScreenSharing2Ref.value) {
+        allowScreenSharing1Ref.value.boolVal =
+            allowScreenSharing2Ref.value.boolVal;
     }
 }
 </script>
