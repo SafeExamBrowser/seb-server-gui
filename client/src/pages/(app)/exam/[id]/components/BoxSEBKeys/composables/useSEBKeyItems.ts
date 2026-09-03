@@ -8,28 +8,25 @@ export const useSEBKeyItems = (
     examId: string,
     lastModifiedItems: KeyValueItem[],
 ) => {
-    const sebKeysFetch = computed(() => useFetchSEBKeys(examId));
+    const { data, loading, error } = useFetchSEBKeys(examId);
 
     const items = computed<KeyValueItem[]>(() => {
         let result: KeyValueItem[] = [];
 
         result = result.concat(lastModifiedItems);
 
-        if (sebKeysFetch.value.data.value) {
+        if (data.value) {
             result.push({
                 key: "configKey",
                 type: "basic",
                 label: i18n.global.t("examDetail.boxes.sebKeys.configKey"),
                 value: {
                     type: "string",
-                    value: sebKeysFetch.value.data.value.configKeys[0],
+                    value: data.value.configKeys[0],
                 },
             });
 
-            if (
-                sebKeysFetch.value.data.value.additionalProperties
-                    .ALTERNATIVE_SEB_BEK
-            ) {
+            if (data.value.additionalProperties.ALTERNATIVE_SEB_BEK) {
                 result.push({
                     key: "sebServerExamKey",
                     type: "basic",
@@ -38,15 +35,14 @@ export const useSEBKeyItems = (
                     ),
                     value: {
                         type: "string",
-                        value: sebKeysFetch.value.data.value
-                            .additionalProperties.ALTERNATIVE_SEB_BEK,
+                        value: data.value.additionalProperties
+                            .ALTERNATIVE_SEB_BEK,
                     },
                 });
             }
 
-            if (sebKeysFetch.value.data.value.browserExamKeys) {
-                const bek =
-                    sebKeysFetch.value.data.value.browserExamKeys.join("\n");
+            if (data.value.browserExamKeys.length > 0) {
+                const bek = data.value.browserExamKeys.join("\n");
                 result.push({
                     key: "browserExamKey",
                     type: "basic",
@@ -66,6 +62,8 @@ export const useSEBKeyItems = (
 
     return {
         items,
-        sebKeysFetch,
+        data,
+        loading,
+        error,
     };
 };
