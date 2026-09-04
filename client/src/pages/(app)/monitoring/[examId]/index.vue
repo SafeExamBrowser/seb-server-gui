@@ -186,9 +186,14 @@ const hasGroups = computed(
 );
 
 // below the basis a box gets too narrow for its chart or list rows and wraps to
-// its own line instead; the cap keeps a box that is left on its own from
-// stretching across the page into a banner
-const overviewBoxStyle = { flex: "1 1 280px", maxWidth: "560px" };
+// its own line instead. only a box without any sibling is capped - on its own it
+// would stretch across the page into a banner - while two or three of them fill
+// the row like the groups section below
+const overviewBoxStyle = computed(() => ({
+    flex: "1 1 280px",
+    maxWidth:
+        hasNotifications.value || hasIndicators.value ? undefined : "560px",
+}));
 
 // NOTE: This is the backend data fetch that gets called in an update interval.
 //       To prevent subsequent calls when the backend is not responding, what would lead to
