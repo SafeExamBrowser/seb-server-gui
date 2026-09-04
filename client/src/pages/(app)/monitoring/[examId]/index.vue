@@ -49,44 +49,37 @@
 
             <template #PanelMain>
                 <LoadingFallbackComponent :loading="loading">
-                    <!-- the last visible section absorbs leftover viewport
-                    height; once the content overflows, everything scrolls
-                    normally because flex-grow has nothing left to distribute -->
+                    <!-- only the groups section absorbs leftover viewport
+                    height: its tile grid can use it, while the fixed content of
+                    the boxes above would just be pulled apart. once the content
+                    overflows, everything scrolls normally because flex-grow has
+                    nothing left to distribute -->
                     <div class="d-flex flex-column flex-grow-1 flex-shrink-0">
-                        <v-row
-                            class="align-stretch"
-                            :class="{ 'flex-grow-1': !hasGroups }"
-                        >
-                            <v-col cols="12" :md="dashColMd">
+                        <!-- the boxes wrap on the width they actually get:
+                        viewport breakpoints would ignore the context panel that
+                        sits next to them -->
+                        <div class="d-flex flex-wrap ga-6">
+                            <div :style="overviewBoxStyle">
                                 <MonitoringOverviewClients :exam-id="examId" />
-                            </v-col>
-                            <v-col
+                            </div>
+                            <div
                                 v-if="hasNotifications"
-                                cols="12"
-                                :md="dashColMd"
+                                :style="overviewBoxStyle"
                             >
                                 <MonitoringOverviewNotifications
                                     :exam-id="examId"
                                 />
-                            </v-col>
-                            <v-col
-                                v-if="hasIndicators"
-                                cols="12"
-                                :md="dashColMd"
-                            >
+                            </div>
+                            <div v-if="hasIndicators" :style="overviewBoxStyle">
                                 <MonitoringOverviewIndicators
                                     :exam-id="examId"
                                 />
-                            </v-col>
-                        </v-row>
-                        <v-row
-                            v-if="hasGroups"
-                            class="align-stretch flex-grow-1 mt-3"
-                        >
-                            <v-col cols="12">
-                                <MonitoringOverviewGroups :exam-id="examId" />
-                            </v-col>
-                        </v-row>
+                            </div>
+                        </div>
+
+                        <div v-if="hasGroups" class="flex-grow-1 mt-3">
+                            <MonitoringOverviewGroups :exam-id="examId" />
+                        </div>
                     </div>
                 </LoadingFallbackComponent>
             </template>
@@ -97,7 +90,7 @@
 <script setup lang="ts">
 import { computed, onBeforeMount, onBeforeUnmount, ref } from "vue";
 import { useRoute } from "vue-router";
-import { VCol, VIcon, VRow, VSheet } from "vuetify/components";
+import { VIcon, VSheet } from "vuetify/components";
 
 import BasicPage from "@/components/layout/pages/BasicPage.vue";
 import AlertMsg from "@/components/widgets/AlertMsg.vue";
@@ -192,11 +185,10 @@ const hasGroups = computed(
         (monitoringStore.monitoringOverviewData?.clientGroups.length ?? 0) > 0,
 );
 
-const dashColMd = computed(() => {
-    const count =
-        1 + (hasNotifications.value ? 1 : 0) + (hasIndicators.value ? 1 : 0);
-    return Math.floor(12 / count);
-});
+// below the basis a box gets too narrow for its chart or list rows and wraps to
+// its own line instead; the cap keeps a box that is left on its own from
+// stretching across the page into a banner
+const overviewBoxStyle = { flex: "1 1 280px", maxWidth: "560px" };
 
 // NOTE: This is the backend data fetch that gets called in an update interval.
 //       To prevent subsequent calls when the backend is not responding, what would lead to
