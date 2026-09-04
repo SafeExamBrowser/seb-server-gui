@@ -862,15 +862,6 @@ export type SebRestriction = {
 export type ScreenProctoringSettings = {
     id?: number;
     enableScreenProctoring?: boolean;
-    spsServiceURL?: string;
-    spsAPIKey?: string;
-    spsAPISecret?: {
-        empty?: boolean;
-    };
-    spsAccountId?: string;
-    spsAccountPassword?: {
-        empty?: boolean;
-    };
     spsCollectingStrategy?: 'EXAM' | 'APPLY_SEB_GROUPS';
     spsCollectingGroupName?: string;
     spsCollectingGroupSize?: number;
@@ -1028,7 +1019,7 @@ export type PageUserInfo = {
  */
 export type GuiAbilities = {
     components: Array<'NAVIGATION_OVERVIEW' | 'INSTITUTIONS' | 'EDIT_INSTITUTION' | 'CREATE_INSTITUTION' | 'ASSESSMENT_TOOLS' | 'EDIT_ASSESSMENT_TOOL' | 'CREATE_ASSESSMENT_TOOL' | 'CONNECTION_CONFIGURATIONS' | 'EDIT_CONNECTION_CONFIGURATION' | 'CREATE_CONNECTION_CONFIGURATION' | 'CERTIFICATES' | 'USER_ACCOUNTS' | 'EDIT_USER_ACCOUNT' | 'CREATE_USER_ACCOUNT' | 'EXAMS' | 'ADD_EXAM_WITH_URL' | 'CREATE_EXAM_WIZARD' | 'EXAM_DETAIL' | 'ANALYZE_EXAMS' | 'ARCHIVE_EXAMS' | 'EXAM_TEMPLATES' | 'CREATE_EXAM_TEMPLATE' | 'EXAM_TEMPLATE_DETAIL' | 'SCHEDULED_DELETIONS' | 'CREATE_SCHEDULED_DELETION' | 'SCHEDULED_DELETION_REPORT' | 'PROFILE' | 'MONITORING' | 'MONITORING_DETAIL' | 'MONITORING_CLIENTS' | 'MONITORING_CLIENT_DETAIL' | 'SCREEN_PROCTORING_APPLICATION_SEARCH' | 'GALLERY' | 'SCREEN_PROCTORING_RECORDING' | 'SCREEN_PROCTORING_SEARCH' | 'HOME' | 'SETTINGS'>;
-    actions: Array<'SHOW_INSTITUTION_COLUMN' | 'OFFER_SERVER_ADMIN_ROLE' | 'CHOOSE_INSTITUTION' | 'EXCLUDE_FROM_DELETION' | 'EDIT_FULL_SEB_SETTINGS' | 'EDIT_RESTRICTED_SEB_SETTINGS' | 'EDIT_BASIC_SETTINGS' | 'EDIT_SCREEN_PROCTORING' | 'EDIT_SEB_KEYS' | 'EDIT_SUPERVISORS' | 'EDIT_CLIENT_GROUPS' | 'APPLY_DISABLE_TEST_RUN' | 'APPLY_SEB_LOCK' | 'DOWNLOAD_EXAM_CONNECTION' | 'DELETE_EXAM' | 'EDIT_PROFILE_FIELDS' | 'CHANGE_OWN_PASSWORD' | 'QUIT_ALL_CLIENTS' | 'QUIT_CLIENTS' | 'EDIT_INDICATORS' | 'SHOW_FINISHED_EXAM_DATA'>;
+    actions: Array<'SHOW_INSTITUTION_COLUMN' | 'OFFER_SERVER_ADMIN_ROLE' | 'CHOOSE_INSTITUTION' | 'EXCLUDE_FROM_DELETION' | 'EDIT_FULL_SEB_SETTINGS' | 'EDIT_RESTRICTED_SEB_SETTINGS' | 'EDIT_BASIC_SETTINGS' | 'EDIT_SCREEN_PROCTORING' | 'SHOW_SEB_KEYS' | 'EDIT_SUPERVISORS' | 'EDIT_CLIENT_GROUPS' | 'APPLY_DISABLE_TEST_RUN' | 'APPLY_SEB_LOCK' | 'DOWNLOAD_EXAM_CONNECTION' | 'DELETE_EXAM' | 'EDIT_PROFILE_FIELDS' | 'CHANGE_OWN_PASSWORD' | 'QUIT_ALL_CLIENTS' | 'QUIT_CLIENTS' | 'EDIT_INDICATORS' | 'SHOW_FINISHED_EXAM_DATA'>;
 };
 
 export type PageClientEvent = {
@@ -1119,7 +1110,8 @@ export type PageClientConnection = {
 
 export type ClientConnectionData = {
     miss?: boolean;
-    pnot?: boolean;
+    'p-ls'?: boolean;
+    'p-rh'?: boolean;
     cdat?: ClientConnection;
     iVal?: Array<IndicatorValue>;
     cg?: Array<number>;
@@ -1394,13 +1386,12 @@ export type ClientMonitoringDataView = {
     grantChecked?: boolean;
     grantDenied?: boolean;
     sebversionDenied?: boolean;
-    pendingNotification?: boolean;
+    nf?: number;
     st?: 'UNDEFINED' | 'CONNECTION_REQUESTED' | 'READY' | 'ACTIVE' | 'CLOSED' | 'DISABLED';
-    lat?: number;
     iv?: {
         [key: string]: string;
     };
-    nf?: number;
+    lat?: number;
     id?: number;
 };
 
@@ -1413,10 +1404,10 @@ export type MonitoringFullPageData = {
 export type MonitoringSebConnectionData = {
     cons?: Array<ClientMonitoringDataView>;
     sm?: Array<number>;
-    im?: Array<number>;
     cgm?: {
         [key: string]: number;
     };
+    im?: Array<number>;
 };
 
 export type ProctoringGroupMonitoringData = {
@@ -8292,6 +8283,54 @@ export type ConfirmNotificationErrors = {
 export type ConfirmNotificationError = ConfirmNotificationErrors[keyof ConfirmNotificationErrors];
 
 export type ConfirmNotificationResponses = {
+    /**
+     * OK
+     */
+    200: unknown;
+};
+
+export type UnlockScreensData = {
+    body?: {
+        institutionId?: number;
+        connectionToken: string;
+    };
+    path: {
+        parentModelId: number;
+    };
+    query?: never;
+    url: '/admin-api/v1/monitoring/{parentModelId}/notification/unlock-screens';
+};
+
+export type UnlockScreensErrors = {
+    /**
+     * Bad request, e.g. field validation or an illegal argument. The body is usually a list of APIMessage, but may be absent for some illegal-argument cases.
+     */
+    400: Array<ApiMessage>;
+    /**
+     * Unauthorized. Body is an APIMessage or a list of APIMessage.
+     */
+    401: ApiMessage | Array<ApiMessage>;
+    /**
+     * Forbidden. Body is a list of APIMessage.
+     */
+    403: Array<ApiMessage>;
+    /**
+     * Resource not found. Body is a list of APIMessage.
+     */
+    404: Array<ApiMessage>;
+    /**
+     * Too many requests (rate limit). Body is the rate-limit code as plain text.
+     */
+    429: string;
+    /**
+     * Unexpected internal server error. Body is a list of APIMessage.
+     */
+    500: Array<ApiMessage>;
+};
+
+export type UnlockScreensError = UnlockScreensErrors[keyof UnlockScreensErrors];
+
+export type UnlockScreensResponses = {
     /**
      * OK
      */

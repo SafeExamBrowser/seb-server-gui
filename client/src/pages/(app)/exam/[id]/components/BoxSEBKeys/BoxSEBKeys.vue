@@ -2,7 +2,6 @@
     <DetailBox :title="$t('examDetail.boxes.sebKeys.title')">
         <template #action>
             <SebKeysEditDialog
-                v-if="!editHidden"
                 :exam-id="examId"
                 :disabled="editDisabled"
                 @change="saveSEBKeys.mutateAsync"
@@ -30,7 +29,6 @@ const props = defineProps<{
     examId: number;
     lastModifiedItems: KeyValueItem[];
     lastModifiedLoading: boolean;
-    editHidden: boolean;
     editDisabled: boolean;
 }>();
 
