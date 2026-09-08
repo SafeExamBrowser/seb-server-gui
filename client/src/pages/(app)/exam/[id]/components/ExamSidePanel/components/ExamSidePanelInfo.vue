@@ -23,6 +23,7 @@
             class="text-body-small text-medium-emphasis text-uppercase font-weight-bold"
         >
             {{ $t("examDetail.sidePanel.createdWithTemplate") }}
+            hii
         </span>
         <span class="text-primary font-weight-medium text-decoration-none">
             {{ examTemplateName }}
