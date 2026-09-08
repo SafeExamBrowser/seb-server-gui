@@ -144,8 +144,8 @@
                         ref="allowScreenSharing2"
                         v-model="singleValues"
                         name="allowScreenSharing"
-                        label="sebSettings.securityView.sebService.allowScreenSharing"
-                        :tooltip="false"
+                        label="sebSettings.securityView.sebService.allowScreenSharing2"
+                        :tooltip="true"
                         :disabled="context.readonly"
                         @saved="notifyAllowScreenSharing2"
                     />
