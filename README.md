@@ -36,10 +36,14 @@ If you're just working on the frontend part (SEB Server GUI), this is the easies
 
 1. Visit http://localhost:8082 and login to confirm that the full setup works
 
-## Install the pre-commit hook
+## Install the git hooks
 
 1. Run `cd client && nvm use && npm run prepare`
 1. Run `git config core.hooksPath` and verify, that the `hooksPath` was correctly set to `./client/.husky/_`
+
+The hooks run inside `client/`. `pre-commit` formats the staged files with Prettier. `pre-push` runs
+`npm run format:check:all` and `npm run typecheck:app`; if it rejects the push, run `npm run quality:fix:all`,
+commit and push again.
 
 ## Find Login info
 
