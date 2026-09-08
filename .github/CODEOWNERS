@@ -1,0 +1,10 @@
+# Code owners are requested for review automatically and, once the main ruleset
+# enables "Require review from Code Owners", their approval becomes mandatory.
+#
+# Fill in real handles before enabling that rule. Until then this file is inert.
+# Order matters: the last matching pattern wins.
+#
+# *                                      @SafeExamBrowser/<gui-team>
+# /client/src/pages/(app)/monitoring/    @<monitoring-owner>
+# /client/tests/                         @<e2e-owner>
+# /.github/                              @<pipeline-owner>

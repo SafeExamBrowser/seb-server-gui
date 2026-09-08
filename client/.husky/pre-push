@@ -1,0 +1,3 @@
+cd client || exit 1
+npm run format:check:all
+npm run typecheck:app
