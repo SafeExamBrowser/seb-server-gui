@@ -23,7 +23,7 @@ export const useScheduledDeletionReport = (id: string) => {
 
     const reportItems: Ref<KeyValueItem[]> = computed(() => {
         if (scheduledDelete.value) {
-            var items: KeyValueItem[] = [
+            let items: KeyValueItem[] = [
                 {
                     key: "name",
                     type: "basic",
