@@ -15,7 +15,7 @@ interface PrerequisiteAnswer {
     met: boolean;
 }
 
-// TODO @alain: the homemade `useFetch` sources are normalised into the resolved/met shape by
+// TODO @andrei: the homemade `useFetch` sources are normalised into the resolved/met shape by
 // hand here; this collapses once `useFetch` is migrated to TanStack Query.
 // Only the prerequisites in `scope` are fetched; anything outside it stays
 // unresolved forever and therefore counts as met, like every other unknown.
