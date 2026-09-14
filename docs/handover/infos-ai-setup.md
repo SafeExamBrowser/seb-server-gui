@@ -6,12 +6,13 @@ Dieses Dokument gibt einen Überblick über die Arbeit mit AI [Agenten](https://
 
 - **Feedback-Loops sind alles.** Agenten werden massiv besser, wenn sie ihre Arbeit selbst verifizieren können ([Automated Checks](https://www.aihero.dev/ai-coding-dictionary/automated-check)): Playwright (oder andere automatisierte Tests), Typecheck, ESLint, Prettier, Browser-Zugriff. Jede Investition in deterministische Tools zahlt sich doppelt aus, weil sie nicht nur uns, sondern auch die AI besser macht.
 - **Die AI imitiert, was sie sieht.** Schlechte Gewohnheiten in der Codebase beeinflussen den generierten Code direkt. Aufräumen ist keine Kosmetik, sondern verbessert auch den Output der AI.
+- **Kontext ist eine knappe Ressource.** Das [Kontext](https://www.aihero.dev/ai-coding-dictionary/context)-Fenster des Agenten ist begrenzt, und die Qualität sinkt schon, bevor es voll ist. Deshalb: eine Aufgabe pro Session; zwischen einzelnen Aufgaben `/clear` benutzen; relevantes Wissen in kleinen, gezielten Files ablegen, statt es in langen Chat-Verläufen mitzuschleppen. Alles, was permanent im Kontext landet (z.B. `CLAUDE.md`, MCP-Server), muss seinen Platz verdienen.
 - **Niemals Code committen, den wir nicht verstehen.** Generierten Code so lange reviewen und tweaken ([Human Review](https://www.aihero.dev/ai-coding-dictionary/human-review)), bis alles so ist, wie wir es selbst geschrieben hätten. Das ist die Grenze zu [Vibe-Coding](https://www.aihero.dev/ai-coding-dictionary/vibe-coding).
 
 ## Arbeitsmodus
 
-- **Workflow:** [aihero.dev/skills](https://www.aihero.dev/skills) erklärt den Workflow, nach dem wir arbeiten (inkl. Doku und Erklärvideos). Kurzfassung: Idee per [Grilling](https://www.aihero.dev/ai-coding-dictionary/grilling) klar definieren / Gegenfragen provozieren → [Spec](https://www.aihero.dev/ai-coding-dictionary/spec) → [Tickets](https://www.aihero.dev/ai-coding-dictionary/ticket) → Umsetzung. Gutes Intro-Video: [youtube.com/watch?v=v4F1gFy-hqg](https://www.youtube.com/watch?v=v4F1gFy-hqg).
-- **Der Mensch bleibt dabei** ([Human-in-the-Loop](https://www.aihero.dev/ai-coding-dictionary/human-in-the-loop)): Der Mensch plant zusammen mit dem Agenten, der Code wird reviewt, der Agent wird auf die richtige Bahn zurückgebracht, wenn er sich verirrt. Ob man den Code auf GitHub oder lokal reviewt, ist egal. Hauptsache, man tut es. Damit stellt man nicht nur die Codequalität sicher, sondern auch, dass man nicht den Überblick verliert.
+- **Workflow:** [aihero.dev/skills](https://www.aihero.dev/skills) erklärt den Workflow, nach dem wir arbeiten (inkl. Doku und Erklärvideos). Kurzfassung: Idee per [Grilling](https://www.aihero.dev/ai-coding-dictionary/grilling) klar definieren / Gegenfragen provozieren → [Spec](https://www.aihero.dev/ai-coding-dictionary/spec) → [Tickets](https://www.aihero.dev/ai-coding-dictionary/ticket) → Umsetzung. Dazu gibt es ein gutes [Intro-Video](https://www.youtube.com/watch?v=v4F1gFy-hqg).
+- **Der Mensch bleibt dabei** ([Human-in-the-Loop](https://www.aihero.dev/ai-coding-dictionary/human-in-the-loop)): Der Mensch plant zusammen mit dem Agenten, der Code wird reviewed, der Agent wird auf die richtige Bahn zurückgebracht, wenn er sich verirrt. Ob man den Code auf GitHub oder lokal reviewed, ist egal. Hauptsache, man tut es. Damit stellt man nicht nur die Codequalität sicher, sondern auch, dass man nicht den Überblick verliert.
 - **Verifikation während der Entwicklung:** Der Agent muss die vorhandenen Verifikationstools verwenden (siehe Feedback-Loops). Mit Playwright-[MCP](https://www.aihero.dev/ai-coding-dictionary/mcp) kann der Agent die Änderung selbständig im Browser gegen den laufenden Dev-Server testen, v.a. dort wo automatisierte Tests (noch) fehlen. Sobald wir eine saubere E2E-Testabdeckung haben, verliert dies an Bedeutung (automatische Tests sind billiger und schneller). Während der Entwicklung bleibt es für Claude aber ein wichtiges [Tool](https://www.aihero.dev/ai-coding-dictionary/tool).
 
 ## Setup & Werkzeuge
@@ -30,7 +31,7 @@ Dieses Dokument gibt einen Überblick über die Arbeit mit AI [Agenten](https://
 - `.scratch/`: Die technischen Tickets und die Resultate aus Grilling-Sessions. Sie helfen den Agenten, den [Kontext](https://www.aihero.dev/ai-coding-dictionary/context) und vergangene Entscheidungen zu verstehen. Wird es irgendwann zu viel, kann man alte Ordner einfach löschen. Es gibt auch die Möglichkeit, die technischen Tickets direkt im [Jira](https://jira.ethz.ch/) abzulegen.
 - `client/CONTEXT.md` (+ `CONTEXT-MAP.md` im Root): Glossar mit den Begriffsdefinitionen. Dieses wird von Grilling-Sessions aktiv gepflegt.
 
-## Meine Empfehlungen
+## Empfehlungen
 
 1. **e2e-Testabdeckung aufbauen.** Stärkt den Feedback-Loop der Agenten und reduziert manuelle Arbeit.
 2. **Einfach mal ausprobieren.** Solange man in der Sandbox ist, kann man kaum Schaden anrichten, der sich nicht mit Git wieder rückgängig machen lässt.
