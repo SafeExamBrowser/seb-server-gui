@@ -75,6 +75,15 @@
                 <v-row>
                     <CheckboxSetting
                         v-model="singleValues"
+                        name="enablePrintScreen"
+                        label="sebSettings.hotKeys.enablePrintScreen"
+                        :tooltip="false"
+                        :disabled="context.readonly"
+                    />
+                </v-row>
+                <v-row>
+                    <CheckboxSetting
+                        v-model="singleValues"
                         name="enableAltMouseWheel"
                         label="sebSettings.hotKeys.enableAltMouseWheel"
                         :tooltip="true"

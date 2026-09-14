@@ -47,13 +47,13 @@
                         />
                     </template>
 
-                    <template #03_sebKeys>
+                    <template v-if="!sebKeysHidden" #03_sebKeys>
                         <BoxSEBKeys
                             :last-modified-items="lastModifiedItems"
                             :last-modified-loading="lastModifiedLoading"
-                            :edit-hidden="sebKeysEditHidden"
-                            :edit-disabled="sebKeysEditDisabled"
+                            :edit-disabled="sebKeysEditDisabled()"
                             :exam-id="examId"
+                            :has-b-e-k="exam?.lmsSetupId != null"
                         />
                     </template>
 
@@ -88,6 +88,7 @@ import BasicPage from "@/components/layout/pages/BasicPage.vue";
 import NotFoundPage from "@/components/layout/pages/NotFoundPage.vue";
 import BoxSupervisors from "@/components/widgets/BoxSupervisors.vue";
 import LoadingFallbackComponent from "@/components/widgets/loadingFallbackComponent/LoadingFallbackComponent.vue";
+import { ExamStatusEnum } from "@/models/seb-server/examFiltersEnum.ts";
 import { typedTo } from "@/router/typedTo";
 import { GUIAction } from "@/services/ability.ts";
 
@@ -151,8 +152,8 @@ const {
     handleChange: handleSupervisorsChange,
 } = supervisors;
 
-const { hidden: sebKeysEditHidden, disabled: sebKeysEditDisabled } =
-    useExamActionAccess(exam, GUIAction.EDIT_SEB_KEYS);
+const { hidden: sebKeysHidden, disabled: sebKeysActionDisabled } =
+    useExamActionAccess(exam, GUIAction.SHOW_SEB_KEYS);
 
 const notFoundBackLink = {
     label: t("examDetail.notFound.backToList"),
@@ -161,4 +162,16 @@ const notFoundBackLink = {
         query: { status: "UP_COMING,TEST_RUN,RUNNING" },
     }),
 };
+
+function sebKeysEditDisabled(): boolean {
+    if (!exam.value) {
+        return true;
+    }
+    return (
+        sebKeysActionDisabled.value ||
+        exam.value.status == ExamStatusEnum.FINISHED ||
+        exam.value.status == ExamStatusEnum.ARCHIVED ||
+        exam.value.lmsSetupId == null
+    );
+}
 </script>

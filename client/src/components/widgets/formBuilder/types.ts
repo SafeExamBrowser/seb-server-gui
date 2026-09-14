@@ -29,6 +29,7 @@ export type FormFieldTextualProperties = Pick<VTextFieldProps, "placeholder">;
 type FormFieldBase = {
     name: string;
     label: string;
+    tooltip?: string;
     rules?: VInputProps["rules"];
     info?: string;
     validationDependsOn?: string[];
@@ -40,12 +41,14 @@ export type FormFieldSimple = FormFieldBase &
         | {
               type: "text";
               placeholder?: string;
+              tooltip?: string;
               required?: boolean;
               model: Ref<string | undefined>;
           }
         | {
               type: "textarea";
               placeholder?: string;
+              tooltip?: string;
               required?: boolean;
               model: Ref<string | undefined>;
           }

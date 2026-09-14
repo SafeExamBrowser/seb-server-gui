@@ -7,7 +7,7 @@
     },
     "scripts": {
         "dev": "vite",
-        "build": "vue-tsc --noEmit && vite build",
+        "build": "npm run typecheck:app && vite build",
         "preview": "vite preview",
         "lint:check:file": "eslint --max-warnings 0 --no-warn-ignored",
         "lint:check:all": "eslint --max-warnings 0 .",
@@ -20,13 +20,15 @@
         "format:check:all": "npm run lint:check:all && npm run prettier:check:all",
         "format:fix:all": "npm run lint:fix:all && npm run prettier:fix:all",
         "check:precommit": "lint-staged",
-        "quality:fix:all": "npm run lint:fix:all && npm run prettier:fix:all && vue-tsc --noEmit",
-        "quality:fix:all:no-format": "npm run lint:fix:all && vue-tsc --noEmit",
+        "quality:fix:all": "npm run lint:fix:all && npm run prettier:fix:all && npm run typecheck:app",
+        "quality:fix:all:no-format": "npm run lint:fix:all && npm run typecheck:app",
         "openapi:fetch:seb-server": "node scripts/fetch-seb-server-openapi.mjs",
         "openapi:generate": "openapi-ts --file openapi-ts.config.ts",
         "openapi:refresh": "npm run openapi:fetch:seb-server && npm run openapi:generate",
         "prepare": "cd .. && husky ./client/.husky",
+        "typecheck:app": "vue-tsc --noEmit",
         "typecheck:playwright": "tsc -p tests/tsconfig.json --noEmit",
+        "test:unit": "vitest run",
         "test:e2e": "npx playwright test",
         "test:e2eui": "npx playwright test --ui",
         "test:e2e:headed": "npx playwright test --headed",
@@ -34,11 +36,7 @@
         "test:e2e:chromium": "npx playwright test --project=chromium --headed"
     },
     "lint-staged": {
-        "*.{vue,js,jsx,ts,tsx}": [
-            "npm run lint:check:file",
-            "npm run prettier:fix:file"
-        ],
-        "*.{json,md,mdx,css,scss,html,yml,yaml}": "npm run prettier:fix:file"
+        "*.{vue,js,jsx,ts,tsx,json,md,mdx,css,scss,html,yml,yaml}": "npm run prettier:fix:file"
     },
     "dependencies": {
         "@eslint/js": "10.0.1",

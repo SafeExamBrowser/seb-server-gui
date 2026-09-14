@@ -48,6 +48,7 @@
     },
     "general": {
         "loadingText": "Loading... Please wait",
+        "somethingWentWrong": "Something went wrong",
         "addButton": "Add",
         "prepareButton": "Prepare",
         "cancelButton": "Cancel",
@@ -1706,7 +1707,8 @@
                 "enableWindowsUpdate": "Allow Windows Update to run while SEB is running",
                 "enableChromeNotifications": "Allow notifications from Chrome browsers",
                 "allowScreenSharing": "Allow remote session/screen sharing",
-                "allowScreenSharing_tooltip": "Allows Windows remote sessions and macOS screen sharing to be used"
+                "allowScreenSharing2": "Allow screen capturing and recording",
+                "allowScreenSharing2_tooltip": "Controls the possibility to capture and record the user interface of Safe Exam Browser (Windows). Controls Print Screen and OS X screen capture (Mac)."
             },
             "kioskMode": {
                 "kioskMode": "Kiosk Mode",
@@ -1827,6 +1829,8 @@
                 "mobileEnableASAM": "Use ​Assessment ​Mode (​AAC​/​ASAM) if available",
                 "mobileEnableGuidedAccessLinkTransform": "Guided ​Access ​Compatibility",
                 "mobileEnableGuidedAccessLinkTransform_tooltip": "Transforms specific ​HTTP requests for clicked links to prevent the '​Guided ​Access is enabled' message being displayed when clicking all links",
+                "allowScreenCaptureiOS": "Allow Screen Capture",
+                "allowScreenCaptureiOS_tooltip": "Controls capturing the iOS device screen using AirPlay or a Lightning/USB-C cable",
                 "mobilePreventAutoLock": "Prevent auto​-lock",
                 "mobilePreventAutoLock_tooltip": "While ​SEB is running, the display isn​'t switched off and the device isn​'t locked",
                 "mobileSleepModeLockScreen": "Lock screen after sleep mode",
@@ -1897,6 +1901,7 @@
             "enableStartMenu": "Enable Start Menu",
             "enableRightMouse": "Enable right mouse button (Mac)",
             "enableRightMouse_tooltip": "Enable to access context menu for Web Inspector in SEB for macOS (use ONLY for debugging).",
+            "enablePrintScreen": "Enable PrintScreen",
             "enableAltMouseWheel": "Enable Alt-Mousewheel",
             "enableAltMouseWheel_tooltip": "Corresponds to 'Allow browsing back/forward' in Browser pane. Disabling browsing to previously visited pages may increase security, because browsing back might allow to leave an exam",
             "enableF1": "Enable F1",
@@ -2019,7 +2024,8 @@
                 "edit": "Edit SEB Keys",
                 "configKey": "Config Key",
                 "sebServerExamKey": "SEB Server Exam Key",
-                "browserExamKey": "Browser Exam Keys"
+                "browserExamKey": "Browser Exam Keys",
+                "browserExamKey_tooltip": "Enter additional SEB Browser Exam Keys, separated with new lines."
             },
             "clientGroups": {
                 "errors": {
@@ -2182,8 +2188,6 @@
             "cancel": "Cancel"
         },
         "main": {
-            "filtered": "Filtered",
-            "allConnections": "All connections",
             "displayed": "displayed",
             "selected": "selected",
             "tableHeaderBattery": "Battery Status",

@@ -222,14 +222,16 @@ export const getSEBKeys = async (examId: string): Promise<SEBKeys> =>
         })
     ).data;
 
-export const updateSEBKeys = async (
-    examId: string,
-    sebKeys: SEBKeys,
-): Promise<Exam> =>
+export const updateSEBKeys = async (sebKeys: SEBKeys): Promise<Exam> =>
     (
         await apiService.postRequest({
-            url: `${baseUrl}/${examId}/seb-restriction`,
+            url: `${baseUrl}/${sebKeys.id}/seb-restriction`,
             data: sebKeys,
-            options: { _authType: "seb" },
+            options: {
+                _authType: "seb",
+                headers: {
+                    "Content-Type": "application/json",
+                },
+            },
         })
     ).data;

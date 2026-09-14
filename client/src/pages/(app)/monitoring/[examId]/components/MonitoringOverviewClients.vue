@@ -8,7 +8,9 @@
         <v-divider />
 
         <LoadingFallbackComponent :loading="loading">
-            <div class="flex-grow-1 d-flex flex-wrap align-center ga-4 pa-5">
+            <div
+                class="flex-grow-1 d-flex flex-wrap align-center justify-center ga-4 pa-5"
+            >
                 <v-sheet
                     color="transparent"
                     width="132"
@@ -40,7 +42,7 @@
 
                 <div
                     class="flex-grow-1 d-flex flex-column ga-1"
-                    :style="{ minWidth: '150px' }"
+                    :style="{ minWidth: '150px', maxWidth: '260px' }"
                 >
                     <v-hover
                         v-for="(state, index) in clientStates"

@@ -43,7 +43,6 @@
 
         <template #PanelMain>
             <FilterControlsRow
-                class="mb-3"
                 :open="filtersOpen"
                 :pills="activePills"
                 :data-test-id="dataTestId"

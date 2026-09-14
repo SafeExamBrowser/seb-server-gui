@@ -397,7 +397,7 @@ const indicatorTypeConfig: Record<
 > = {
     [IndicatorEnum.BATTERY_STATUS]: { icon: "mdi-battery", unit: "%" },
     [IndicatorEnum.LAST_PING]: {
-        icon: "mdi-network-strength-2",
+        icon: "mdi-pulse",
         unit: "s ago",
     },
     [IndicatorEnum.ERROR_COUNT]: { icon: "mdi-alert-circle", color: "red" },

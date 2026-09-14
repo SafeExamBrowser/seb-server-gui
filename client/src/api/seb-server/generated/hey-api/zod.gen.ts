@@ -926,15 +926,6 @@ export const zSebRestriction = z.object({
 export const zScreenProctoringSettings = z.object({
     id: z.int().optional(),
     enableScreenProctoring: z.boolean().optional(),
-    spsServiceURL: z.string().optional(),
-    spsAPIKey: z.string().optional(),
-    spsAPISecret: z.object({
-        empty: z.boolean().optional()
-    }).optional(),
-    spsAccountId: z.string().optional(),
-    spsAccountPassword: z.object({
-        empty: z.boolean().optional()
-    }).optional(),
     spsCollectingStrategy: z.enum(['EXAM', 'APPLY_SEB_GROUPS']).optional(),
     spsCollectingGroupName: z.string().min(3).max(255).optional(),
     spsCollectingGroupSize: z.int().min(-2147483648, { error: 'Invalid value: Expected int32 to be >= -2147483648' }).max(2147483647, { error: 'Invalid value: Expected int32 to be <= 2147483647' }).optional(),
@@ -1147,7 +1138,7 @@ export const zGuiAbilities = z.object({
         'EDIT_RESTRICTED_SEB_SETTINGS',
         'EDIT_BASIC_SETTINGS',
         'EDIT_SCREEN_PROCTORING',
-        'EDIT_SEB_KEYS',
+        'SHOW_SEB_KEYS',
         'EDIT_SUPERVISORS',
         'EDIT_CLIENT_GROUPS',
         'APPLY_DISABLE_TEST_RUN',
@@ -1219,7 +1210,8 @@ export const zIndicatorValue = z.object({
 
 export const zClientConnectionData = z.object({
     miss: z.boolean().optional(),
-    pnot: z.boolean().optional(),
+    'p-ls': z.boolean().optional(),
+    'p-rh': z.boolean().optional(),
     cdat: zClientConnection.optional(),
     iVal: z.array(zIndicatorValue).optional(),
     cg: z.array(z.int()).optional()
@@ -1373,7 +1365,7 @@ export const zClientMonitoringDataView = z.object({
     grantChecked: z.boolean().optional(),
     grantDenied: z.boolean().optional(),
     sebversionDenied: z.boolean().optional(),
-    pendingNotification: z.boolean().optional(),
+    nf: z.int().min(-2147483648, { error: 'Invalid value: Expected int32 to be >= -2147483648' }).max(2147483647, { error: 'Invalid value: Expected int32 to be <= 2147483647' }).optional(),
     st: z.enum([
         'UNDEFINED',
         'CONNECTION_REQUESTED',
@@ -1382,17 +1374,16 @@ export const zClientMonitoringDataView = z.object({
         'CLOSED',
         'DISABLED'
     ]).optional(),
-    lat: z.int().optional(),
     iv: z.record(z.string(), z.string()).optional(),
-    nf: z.int().min(-2147483648, { error: 'Invalid value: Expected int32 to be >= -2147483648' }).max(2147483647, { error: 'Invalid value: Expected int32 to be <= 2147483647' }).optional(),
+    lat: z.int().optional(),
     id: z.int().optional()
 });
 
 export const zMonitoringSebConnectionData = z.object({
     cons: z.array(zClientMonitoringDataView).optional(),
     sm: z.array(z.int().min(-2147483648, { error: 'Invalid value: Expected int32 to be >= -2147483648' }).max(2147483647, { error: 'Invalid value: Expected int32 to be <= 2147483647' })).optional(),
-    im: z.array(z.int().min(-2147483648, { error: 'Invalid value: Expected int32 to be >= -2147483648' }).max(2147483647, { error: 'Invalid value: Expected int32 to be <= 2147483647' })).optional(),
-    cgm: z.record(z.string(), z.int().min(-2147483648, { error: 'Invalid value: Expected int32 to be >= -2147483648' }).max(2147483647, { error: 'Invalid value: Expected int32 to be <= 2147483647' })).optional()
+    cgm: z.record(z.string(), z.int().min(-2147483648, { error: 'Invalid value: Expected int32 to be >= -2147483648' }).max(2147483647, { error: 'Invalid value: Expected int32 to be <= 2147483647' })).optional(),
+    im: z.array(z.int().min(-2147483648, { error: 'Invalid value: Expected int32 to be >= -2147483648' }).max(2147483647, { error: 'Invalid value: Expected int32 to be <= 2147483647' })).optional()
 });
 
 export const zProctoringGroupMonitoringData = z.object({
@@ -3093,6 +3084,15 @@ export const zConfirmNotificationPath = z.object({
 
 export const zConfirmNotificationQuery = z.object({
     institutionId: z.int().optional()
+});
+
+export const zUnlockScreensBody = z.object({
+    institutionId: z.int().optional(),
+    connectionToken: z.string()
+});
+
+export const zUnlockScreensPath = z.object({
+    parentModelId: z.int()
 });
 
 export const zRegisterInstructionBody = zClientInstruction;

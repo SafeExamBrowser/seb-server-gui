@@ -1,177 +1,177 @@
 <template>
-    <div class="d-flex align-center justify-end px-5 py-4">
-        <span class="text-body-small text-medium-emphasis">
-            {{
-                isFiltered
-                    ? $t("monitoringClients.main.filtered")
-                    : $t("monitoringClients.main.allConnections")
-            }}
-        </span>
-    </div>
-    <v-divider />
+    <div class="px-2 pt-2">
+        <div class="overflow-hidden">
+            <v-data-table
+                :style="tableSlideStyle"
+                :headers="clientsTableHeaders"
+                hide-default-footer
+                :hover="true"
+                item-value="id"
+                :items="monitoringDataTable"
+                :items-length="monitoringDataTable.length"
+                :items-per-page="monitoringDataTable.length"
+                :loading="loading"
+                :loading-text="$t('general.loading')"
+                :no-data-text="$t('general.noData')"
+            >
+                <template #loading>
+                    <v-skeleton-loader type="table-row@8" />
+                </template>
 
-    <div class="overflow-hidden">
-        <v-data-table
-            :style="tableSlideStyle"
-            :headers="clientsTableHeaders"
-            hide-default-footer
-            :hover="true"
-            item-value="id"
-            :items="monitoringDataTable"
-            :items-length="monitoringDataTable.length"
-            :items-per-page="monitoringDataTable.length"
-            :loading="loading"
-            :loading-text="$t('general.loading')"
-            :no-data-text="$t('general.noData')"
-        >
-            <template #loading>
-                <v-skeleton-loader type="table-row@8" />
-            </template>
-
-            <template #headers="{ columns, isSorted, getSortIcon, toggleSort }">
-                <TableHeaders
-                    :all-selected="allEligibleSelected"
-                    :columns="columns"
-                    :get-sort-icon="getSortIcon"
-                    :header-refs-prop="clientsTableHeadersRef"
-                    :is-sorted="isSorted"
-                    :select-all="toggleSelectAll"
-                    :selection-active="isActionArmed"
-                    :some-selected="someEligibleSelected"
-                    table-key="monitoringClients"
-                    :toggle-sort="toggleSort"
-                    @add-indicator-headers="handleAddIndicatorHeaders"
-                    @remove-indicator-headers="handleRemoveIndicatorHeaders"
+                <template
+                    #headers="{ columns, isSorted, getSortIcon, toggleSort }"
                 >
-                </TableHeaders>
-            </template>
+                    <TableHeaders
+                        :all-selected="allEligibleSelected"
+                        :columns="columns"
+                        :get-sort-icon="getSortIcon"
+                        :header-refs-prop="clientsTableHeadersRef"
+                        :is-sorted="isSorted"
+                        :select-all="toggleSelectAll"
+                        :selection-active="isActionArmed"
+                        :some-selected="someEligibleSelected"
+                        table-key="monitoringClients"
+                        :toggle-sort="toggleSort"
+                        @add-indicator-headers="handleAddIndicatorHeaders"
+                        @remove-indicator-headers="handleRemoveIndicatorHeaders"
+                    >
+                    </TableHeaders>
+                </template>
 
-            <template #item="{ item, index }">
-                <tr
-                    :class="isRowSelected(item) ? 'bg-surface-tint' : ''"
-                    :style="getRowStyle(item)"
-                    @click="handleRowClick(item)"
-                >
-                    <!------selection checkbox------->
-                    <td :style="SELECTION_CELL_STYLE">
-                        <div
-                            :style="
-                                selectionCellInnerStyle(isActionArmed, index)
-                            "
-                        >
-                            <v-checkbox-btn
-                                v-if="isActionArmed && isRowEligible(item)"
-                                :model-value="isRowSelected(item)"
-                                @click.stop
-                                @update:model-value="toggleRowSelection(item)"
+                <template #item="{ item, index }">
+                    <tr
+                        :class="isRowSelected(item) ? 'bg-surface-tint' : ''"
+                        :style="getRowStyle(item)"
+                        @click="handleRowClick(item)"
+                    >
+                        <!------selection checkbox------->
+                        <td :style="SELECTION_CELL_STYLE">
+                            <div
+                                :style="
+                                    selectionCellInnerStyle(
+                                        isActionArmed,
+                                        index,
+                                    )
+                                "
                             >
-                            </v-checkbox-btn>
-                        </div>
-                    </td>
-
-                    <!------notification icons------->
-                    <td width="2%">
-                        <div class="d-flex align-center ga-1">
-                            <v-icon
-                                v-if="item.pendingLockScreen"
-                                :color="NOTIFICATION_META.LOCK_SCREEN.color"
-                                :icon="NOTIFICATION_META.LOCK_SCREEN.icon"
-                            ></v-icon>
-                            <v-icon
-                                v-if="item.pendingRaiseHand"
-                                :color="NOTIFICATION_META.RAISE_HAND.color"
-                                :icon="NOTIFICATION_META.RAISE_HAND.icon"
-                            ></v-icon>
-                        </div>
-                    </td>
-
-                    <!------client name------->
-                    <td>
-                        <span class="font-weight-bold">
-                            {{ item.nameOrSession }}
-                        </span>
-                    </td>
-
-                    <!------client groups------->
-                    <td>
-                        <template
-                            v-for="(
-                                clientGroup, groupIndex
-                            ) in item.clientGroups"
-                            :key="clientGroup.id"
-                        >
-                            <div>
-                                <v-chip
-                                    class="mb-2"
-                                    :class="[groupIndex == 0 ? 'mt-2' : '']"
-                                    color="primary"
-                                    size="small"
-                                    variant="tonal"
-                                    @click.stop="
-                                        openClientGroupDialog(clientGroup)
+                                <v-checkbox-btn
+                                    v-if="isActionArmed && isRowEligible(item)"
+                                    :model-value="isRowSelected(item)"
+                                    @click.stop
+                                    @update:model-value="
+                                        toggleRowSelection(item)
                                     "
                                 >
-                                    {{ clientGroup.name }}
-                                </v-chip>
+                                </v-checkbox-btn>
                             </div>
-                        </template>
-                    </td>
+                        </td>
 
-                    <!------connection info------->
-                    <td>
-                        <span class="text-medium-emphasis">
-                            {{ item.connectionInfo }}
-                        </span>
-                    </td>
+                        <!------notification icons------->
+                        <td width="2%">
+                            <div class="d-flex align-center ga-1">
+                                <v-icon
+                                    v-if="item.pendingLockScreen"
+                                    :color="NOTIFICATION_META.LOCK_SCREEN.color"
+                                    :icon="NOTIFICATION_META.LOCK_SCREEN.icon"
+                                ></v-icon>
+                                <v-icon
+                                    v-if="item.pendingRaiseHand"
+                                    :color="NOTIFICATION_META.RAISE_HAND.color"
+                                    :icon="NOTIFICATION_META.RAISE_HAND.icon"
+                                ></v-icon>
+                            </div>
+                        </td>
 
-                    <!------status------->
-                    <td>
-                        <EnumChip
-                            :color="getStatusColor(item)"
-                            :label="translateStatus(item)"
-                        />
-                    </td>
+                        <!------client name------->
+                        <td>
+                            <span class="font-weight-bold">
+                                {{ item.nameOrSession }}
+                            </span>
+                        </td>
 
-                    <!------battery indicator------->
-                    <td v-if="showBatteryColumn">
-                        <v-chip
-                            :color="
-                                getIndicatorColor(getBatteryIndicator(item))
-                            "
-                            size="small"
-                        >
-                            {{ getBatteryIndicator(item)?.indicatorValue }}
-                        </v-chip>
-                    </td>
+                        <!------client groups------->
+                        <td>
+                            <template
+                                v-for="(
+                                    clientGroup, groupIndex
+                                ) in item.clientGroups"
+                                :key="clientGroup.id"
+                            >
+                                <div>
+                                    <v-chip
+                                        class="mb-2"
+                                        :class="[groupIndex == 0 ? 'mt-2' : '']"
+                                        color="primary"
+                                        size="small"
+                                        variant="tonal"
+                                        @click.stop="
+                                            openClientGroupDialog(clientGroup)
+                                        "
+                                    >
+                                        {{ clientGroup.name }}
+                                    </v-chip>
+                                </div>
+                            </template>
+                        </td>
 
-                    <!------wlan indicator------->
-                    <td v-if="showWlanColumn">
-                        <v-chip
-                            :color="getIndicatorColor(getWlanIndicator(item))"
-                            size="small"
-                        >
-                            {{ getWlanIndicator(item)?.indicatorValue }}
-                        </v-chip>
-                    </td>
+                        <!------connection info------->
+                        <td>
+                            <span class="text-medium-emphasis">
+                                {{ item.connectionInfo }}
+                            </span>
+                        </td>
 
-                    <!------navigation button------->
-                    <td align="right">
-                        <v-icon
-                            icon="mdi-chevron-right"
-                            style="font-size: 30px"
-                            @click.stop="
-                                goToMonitoringDetails(
-                                    examId,
-                                    item.connectionToken,
-                                    route.query,
-                                )
-                            "
-                        >
-                        </v-icon>
-                    </td>
-                </tr>
-            </template>
-        </v-data-table>
+                        <!------status------->
+                        <td>
+                            <EnumChip
+                                :color="getStatusColor(item)"
+                                :label="translateStatus(item)"
+                            />
+                        </td>
+
+                        <!------battery indicator------->
+                        <td v-if="showBatteryColumn">
+                            <v-chip
+                                :color="
+                                    getIndicatorColor(getBatteryIndicator(item))
+                                "
+                                size="small"
+                            >
+                                {{ getBatteryIndicator(item)?.indicatorValue }}
+                            </v-chip>
+                        </td>
+
+                        <!------wlan indicator------->
+                        <td v-if="showWlanColumn">
+                            <v-chip
+                                :color="
+                                    getIndicatorColor(getWlanIndicator(item))
+                                "
+                                size="small"
+                            >
+                                {{ getWlanIndicator(item)?.indicatorValue }}
+                            </v-chip>
+                        </td>
+
+                        <!------navigation button------->
+                        <td align="right">
+                            <v-icon
+                                icon="mdi-chevron-right"
+                                style="font-size: 30px"
+                                @click.stop="
+                                    goToMonitoringDetails(
+                                        examId,
+                                        item.connectionToken,
+                                        route.query,
+                                    )
+                                "
+                            >
+                            </v-icon>
+                        </td>
+                    </tr>
+                </template>
+            </v-data-table>
+        </div>
     </div>
     <!-----------group dialog---------->
     <v-dialog v-model="clientGroupDialog" max-width="800">
@@ -199,7 +199,6 @@ import {
     VChip,
     VDataTable,
     VDialog,
-    VDivider,
     VIcon,
     VSkeletonLoader,
 } from "vuetify/components";
@@ -363,11 +362,16 @@ const {
 
 const isActionArmed = computed(() => armedAction.value != null);
 
-// While no action is armed the table is shifted left, hiding the fixed-width
-// selection column behind the overflow-hidden wrapper.
+// While no action is armed the table is widened by the selection column and
+// shifted left, hiding that column behind the overflow-hidden wrapper while
+// the remaining columns stay flush with the right edge.
 const tableSlideStyle = computed(() => ({
+    width: isActionArmed.value
+        ? "100%"
+        : `calc(100% + ${SELECTION_COLUMN_WIDTH}px)`,
+    maxWidth: "none",
     marginLeft: isActionArmed.value ? "0px" : `-${SELECTION_COLUMN_WIDTH}px`,
-    transition: `margin-left 0.3s ${SELECTION_EASE}`,
+    transition: `margin-left 0.3s ${SELECTION_EASE}, width 0.3s ${SELECTION_EASE}`,
 }));
 
 function getRowStyle(row: MonitoringRow) {
@@ -384,10 +388,6 @@ function handleRowClick(row: MonitoringRow) {
     }
     toggleRowSelection(row);
 }
-
-const isFiltered = computed(
-    () => !monitoringStore.isNoFilterSelected || !!monitoringStore.searchName,
-);
 
 //= ========events & watchers================
 onMounted(async () => {

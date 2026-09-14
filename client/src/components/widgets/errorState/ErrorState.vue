@@ -4,6 +4,8 @@
         :icon="icon"
         :headline="headline"
         :title="message"
+        :text="details"
+        :color="color"
     >
         <template v-if="backLink" #actions>
             <v-btn
@@ -27,8 +29,10 @@ import type { ErrorStateBackLink } from "./types.ts";
 
 defineProps<{
     icon: string;
-    headline: string;
     message: string;
+    headline?: string;
+    details?: string;
+    color?: string;
     backLink?: ErrorStateBackLink;
 }>();
 </script>

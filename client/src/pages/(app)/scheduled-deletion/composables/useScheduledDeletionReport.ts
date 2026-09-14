@@ -23,7 +23,7 @@ export const useScheduledDeletionReport = (id: string) => {
 
     const reportItems: Ref<KeyValueItem[]> = computed(() => {
         if (scheduledDelete.value) {
-            return [
+            var items: KeyValueItem[] = [
                 {
                     key: "name",
                     type: "basic",
@@ -68,29 +68,37 @@ export const useScheduledDeletionReport = (id: string) => {
                         ),
                     },
                 },
-                {
+            ];
+
+            if (scheduledDelete.value.startTime) {
+                items.push({
                     key: "startTime",
                     type: "basic",
                     label: i18n.global.t("scheduledDelete.report.startTime"),
                     value: {
                         type: "string",
                         value: formatTimestampToFullDate(
-                            scheduledDelete.value.startTime ?? 0,
+                            scheduledDelete.value.startTime,
                         ),
                     },
-                },
-                {
+                });
+            }
+
+            if (scheduledDelete.value.endTime) {
+                items.push({
                     key: "endTime",
                     type: "basic",
                     label: i18n.global.t("scheduledDelete.report.endTime"),
                     value: {
                         type: "string",
                         value: formatTimestampToFullDate(
-                            scheduledDelete.value.endTime ?? 0,
+                            scheduledDelete.value.endTime,
                         ),
                     },
-                },
-            ];
+                });
+            }
+
+            return items;
         }
         return [];
     });

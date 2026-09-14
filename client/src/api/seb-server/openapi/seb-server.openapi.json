@@ -6625,6 +6625,56 @@
                 "security": [{ "oauth": [] }]
             }
         },
+        "/admin-api/v1/monitoring/{parentModelId}/notification/unlock-screens": {
+            "post": {
+                "tags": ["exam-monitoring-controller"],
+                "operationId": "unlockScreens",
+                "parameters": [
+                    {
+                        "name": "parentModelId",
+                        "in": "path",
+                        "required": true,
+                        "schema": { "type": "integer" }
+                    }
+                ],
+                "requestBody": {
+                    "content": {
+                        "application/x-www-form-urlencoded": {
+                            "schema": {
+                                "type": "object",
+                                "properties": {
+                                    "institutionId": { "type": "integer" },
+                                    "connectionToken": { "type": "string" }
+                                },
+                                "required": ["connectionToken"]
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": { "description": "OK" },
+                    "400": {
+                        "$ref": "#/components/responses/Error400BadRequest"
+                    },
+                    "401": {
+                        "$ref": "#/components/responses/Error401Unauthorized"
+                    },
+                    "403": {
+                        "$ref": "#/components/responses/Error403Forbidden"
+                    },
+                    "404": {
+                        "$ref": "#/components/responses/Error404NotFound"
+                    },
+                    "429": {
+                        "$ref": "#/components/responses/Error429TooManyRequests"
+                    },
+                    "500": {
+                        "$ref": "#/components/responses/Error500InternalServerError"
+                    }
+                },
+                "security": [{ "oauth": [] }]
+            }
+        },
         "/admin-api/v1/monitoring/{parentModelId}/instruction": {
             "post": {
                 "tags": ["exam-monitoring-controller"],
@@ -21545,17 +21595,6 @@
                 "properties": {
                     "id": { "type": "integer" },
                     "enableScreenProctoring": { "type": "boolean" },
-                    "spsServiceURL": { "type": "string" },
-                    "spsAPIKey": { "type": "string" },
-                    "spsAPISecret": {
-                        "type": "object",
-                        "properties": { "empty": { "type": "boolean" } }
-                    },
-                    "spsAccountId": { "type": "string" },
-                    "spsAccountPassword": {
-                        "type": "object",
-                        "properties": { "empty": { "type": "boolean" } }
-                    },
                     "spsCollectingStrategy": {
                         "type": "string",
                         "enum": ["EXAM", "APPLY_SEB_GROUPS"]
@@ -21919,7 +21958,7 @@
                                 "EDIT_RESTRICTED_SEB_SETTINGS",
                                 "EDIT_BASIC_SETTINGS",
                                 "EDIT_SCREEN_PROCTORING",
-                                "EDIT_SEB_KEYS",
+                                "SHOW_SEB_KEYS",
                                 "EDIT_SUPERVISORS",
                                 "EDIT_CLIENT_GROUPS",
                                 "APPLY_DISABLE_TEST_RUN",
@@ -22075,7 +22114,8 @@
                 "type": "object",
                 "properties": {
                     "miss": { "type": "boolean" },
-                    "pnot": { "type": "boolean" },
+                    "p-ls": { "type": "boolean" },
+                    "p-rh": { "type": "boolean" },
                     "cdat": { "$ref": "#/components/schemas/ClientConnection" },
                     "iVal": {
                         "type": "array",
@@ -22486,7 +22526,7 @@
                     "grantChecked": { "type": "boolean" },
                     "grantDenied": { "type": "boolean" },
                     "sebversionDenied": { "type": "boolean" },
-                    "pendingNotification": { "type": "boolean" },
+                    "nf": { "type": "integer", "format": "int32" },
                     "st": {
                         "type": "string",
                         "enum": [
@@ -22498,12 +22538,11 @@
                             "DISABLED"
                         ]
                     },
-                    "lat": { "type": "integer" },
                     "iv": {
                         "type": "object",
                         "additionalProperties": { "type": "string" }
                     },
-                    "nf": { "type": "integer", "format": "int32" },
+                    "lat": { "type": "integer" },
                     "id": { "type": "integer" }
                 }
             },
@@ -22535,16 +22574,16 @@
                         "type": "array",
                         "items": { "type": "integer", "format": "int32" }
                     },
-                    "im": {
-                        "type": "array",
-                        "items": { "type": "integer", "format": "int32" }
-                    },
                     "cgm": {
                         "type": "object",
                         "additionalProperties": {
                             "type": "integer",
                             "format": "int32"
                         }
+                    },
+                    "im": {
+                        "type": "array",
+                        "items": { "type": "integer", "format": "int32" }
                     }
                 }
             },

@@ -57,7 +57,7 @@
 </template>
 
 <script setup lang="ts">
-import { computed, ref } from "vue";
+import { computed, ref, watch } from "vue";
 import {
     VBtn,
     VDialog,
@@ -157,4 +157,19 @@ const handleSelect = async (template: ExamTemplateSelection) => {
         }
     }
 };
+
+// With only one template to choose from, it is preselected; the step is
+// still shown so the user sees which template got applied.
+watch(
+    () => examTemplates.value?.content,
+    (templates) => {
+        if (
+            templates?.length === 1 &&
+            store.selectedExamTemplate === undefined
+        ) {
+            void handleSelect(templates[0]);
+        }
+    },
+    { immediate: true },
+);
 </script>
