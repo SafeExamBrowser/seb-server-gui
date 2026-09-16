@@ -22,7 +22,6 @@ export const useArchiveExams = (
             selectedType.value,
             selectedStatus.value,
         );
-        params.active = "true";
         if (params.status) {
             // if selected, make sure they are correct (no UP_COMING, TEST_RUN possible)
             if (
