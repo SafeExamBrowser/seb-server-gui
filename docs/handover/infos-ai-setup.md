@@ -13,7 +13,7 @@ Dieses Dokument gibt einen Überblick über die Arbeit mit AI [Agenten](https://
 
 - **Workflow:** [aihero.dev/skills](https://www.aihero.dev/skills) erklärt den Workflow, nach dem wir arbeiten (inkl. Doku und Erklärvideos). Kurzfassung: Idee per [Grilling](https://www.aihero.dev/ai-coding-dictionary/grilling) klar definieren / Gegenfragen provozieren → [Spec](https://www.aihero.dev/ai-coding-dictionary/spec) → [Tickets](https://www.aihero.dev/ai-coding-dictionary/ticket) → Umsetzung. Dazu gibt es ein gutes [Intro-Video](https://www.youtube.com/watch?v=v4F1gFy-hqg).
 - **Der Mensch bleibt dabei** ([Human-in-the-Loop](https://www.aihero.dev/ai-coding-dictionary/human-in-the-loop)): Der Mensch plant zusammen mit dem Agenten, der Code wird reviewed, der Agent wird auf die richtige Bahn zurückgebracht, wenn er sich verirrt. Ob man den Code auf GitHub oder lokal reviewed, ist egal. Hauptsache, man tut es. Damit stellt man nicht nur die Codequalität sicher, sondern auch, dass man nicht den Überblick verliert.
-- **Verifikation während der Entwicklung:** Der Agent muss die vorhandenen Verifikationstools verwenden (siehe Feedback-Loops). Mit Playwright-[MCP](https://www.aihero.dev/ai-coding-dictionary/mcp) kann der Agent die Änderung selbständig im Browser gegen den laufenden Dev-Server testen, v.a. dort wo automatisierte Tests (noch) fehlen. Sobald wir eine saubere E2E-Testabdeckung haben, verliert dies an Bedeutung (automatische Tests sind billiger und schneller). Während der Entwicklung bleibt es für Claude aber ein wichtiges [Tool](https://www.aihero.dev/ai-coding-dictionary/tool).
+- **Verifikation während der Entwicklung:** Der Agent muss die vorhandenen Verifikationstools verwenden (siehe Feedback-Loops). Mit Playwright-[MCP](https://www.aihero.dev/ai-coding-dictionary/mcp) kann der Agent die Änderung selbständig im Browser gegen den laufenden Dev-Server testen, v.a. dort wo automatisierte Tests (noch) fehlen. Sobald wir eine saubere automatisierte Testabdeckung haben, verliert dies an Bedeutung (automatische Tests sind billiger und schneller). Während der Entwicklung bleibt es für Claude aber ein wichtiges [Tool](https://www.aihero.dev/ai-coding-dictionary/tool).
 
 ## Setup & Werkzeuge
 
@@ -33,7 +33,7 @@ Dieses Dokument gibt einen Überblick über die Arbeit mit AI [Agenten](https://
 
 ## Empfehlungen
 
-1. **e2e-Testabdeckung aufbauen.** Stärkt den Feedback-Loop der Agenten und reduziert manuelle Arbeit.
+1. **Automatisierte Testabdeckung aufbauen.** Stärkt den Feedback-Loop der Agenten und reduziert manuelle Arbeit. Siehe Empfehlung 1 in [infos-projekt.md](infos-projekt.md) zu konkreten Strategie.
 2. **Einfach mal ausprobieren.** Solange man in der Sandbox ist, kann man kaum Schaden anrichten, der sich nicht mit Git wieder rückgängig machen lässt.
 3. **Verstehen und am Ball bleiben.** Die Videos und Posts auf [AI-Hero](https://www.aihero.dev/) sind Gold wert. Es gibt auch Kurse.
 4. `.claude/rules/client.md` **pflegen.** Jedes Mal, wenn man im Code-Review denselben Fehler zweimal korrigiert, gehört eine Regel dazu ins File.
