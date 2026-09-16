@@ -1,4 +1,9 @@
-<!-- TODO @andrei: use Suspense for this, once it's stable https://vuejs.org/guide/built-ins/suspense.html -->
+<!--
+TODO @andrei: Refactor LoadingFallbackComponent:
+- accept undefined / no value for loading so LoadingFallbackComponent can optionally be used as ErrorBoundary only
+- if there is no error/loading, ensure that data is defined, otherwise throw (see https://vuejs.org/guide/components/slots.html#scoped-slots)
+- use Suspense for this, once it's stable https://vuejs.org/guide/built-ins/suspense.html
+ -->
 <template>
     <div
         v-if="messages.length > 0"

@@ -3,7 +3,7 @@ import { computed, ref } from "vue";
 import { appErrorToMessage, toAppError } from "@/services/errors/toAppError.ts";
 import type { AppError } from "@/services/errors/types.ts";
 
-// TODO @alain: consider using https://tanstack.com/query/latest/docs/framework/vue/overview for this
+// TODO @andrei: replace this and all useages of it by TanStackQuery
 export const useFetch = <T>(
     fetchFunction: () => Promise<T | null>,
     options?: { immediate?: boolean },
