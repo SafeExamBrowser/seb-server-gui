@@ -435,7 +435,7 @@
                 "tooltip": "Delete Schedule Task"
             },
             "disabled": {
-                "tooltip": "if a scheduled deletion already exists, the button could be disabled and a tooltip explaining why could be displayed on mouseover."
+                "tooltip": "You cannot schedule more than one deletion task at a time."
             }
         },
         "hints": {
