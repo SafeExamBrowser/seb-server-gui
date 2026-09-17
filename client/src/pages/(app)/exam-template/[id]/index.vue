@@ -85,6 +85,15 @@ const dataTestId = "examTemplateDetail";
 
 const { t } = useI18n();
 
+// TODO @andrei: fix this, once we switched to TanStackQuery
+// - This currently fetches all data and passes it to the boxes via props (propdrilling)
+// - The boxes then still manage their internal state based on the initial data from outside. This leads to syncing problems, because
+//   when data changes from inside the box, the outside representation of the data is stale and needs to be updated manually.
+// - This happens e.g. with indicators and client groups (check the code)
+// - With TanStackQuery, we can just "fetch the data twice" (`useExamTemplateQuery`): once for the basic settings and once for
+//   the respective box. We would only write our code like we would fetch twice but TanstackQuery would
+//   cache the data under the hood and only hit the server once – This is one of the big benefits of TanStackQuery.
+// - The stale data / syncing problem can be solved by using optimistic updates (https://tanstack.com/query/latest/docs/framework/vue/guides/optimistic-updates)
 const {
     examTemplateId,
     title,
