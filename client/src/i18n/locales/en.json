@@ -530,7 +530,7 @@
             },
             "indicators": {
                 "title": "Add Indicators",
-                "subtitle": "TODO: translate (Kristina)"
+                "subtitle": "Add the indicators, you want for your exam template."
             },
             "clientGroup": {
                 "title": "Add Groups",
@@ -538,7 +538,7 @@
             },
             "summary": {
                 "title": "Overview Exam Template",
-                "subtitle": "TODO: translate (Kristina)",
+                "subtitle": "Go back to change something in your Exam Template or click Save to finish creating your Exam Template.",
                 "emptyValue": "No data",
                 "notFoundValue": "Not found",
                 "sections": {
@@ -913,7 +913,7 @@
                 "message": {
                     "API_NOT_SUPPORTED": "The Assessment Tool (API) is not supported",
                     "MISSING_ATTRIBUTE": "There are missing attributes. Please make sure you have set all needed attributes",
-                    "TOKEN_REQUEST": "Access ist denied. Please make sure your client credentials or access token is correct",
+                    "TOKEN_REQUEST": "Access is denied. Please make sure your client credentials or access token is correct",
                     "QUIZ_ACCESS_API_REQUEST": "Failed to load quizzes from Assessment Tool",
                     "QUIZ_RESTRICTION_API_REQUEST": "Failed to apply SEB restriction on the Assessment Tool",
                     "TEMPLATE_CREATION": "Failed to apply SEB Server templates for Assessment Tool integration",
@@ -922,7 +922,7 @@
             },
             "success": {
                 "title": "Test Assessment Tool",
-                "message": "Successully connected to Assessment Tool"
+                "message": "Successfully connected to Assessment Tool"
             }
         }
     },
@@ -1139,7 +1139,7 @@
     "sebSettings": {
         "pwdMismatch": "The password and confirm password must match",
         "pwdSpaces": "The value must not start or end with a space.",
-        "noNegNumber": "Cant be a negative number",
+        "noNegNumber": "Can not be a negative number",
         "importDialog": {
             "addButtonTitle": "Import",
             "confirmButtonTitle": "Import",
@@ -1363,7 +1363,7 @@
                 "browserWindowWebViewClassicHideDeprecationNote_tooltip": "Classic WebView is deprecated on macOS and no longer supported on iOS/iPadOS! The used SEB assessment solution integration/settings might no longer work and need to be updated to support the modern WebView. This warning is displayed on top of browser windows/tabs when settings require the classic WebView. You can disable this warning being displayed, but if you are the vendor of an assessment system which isn't yet compatible with the modern WebView, you need to update your integration now (use SEB Javascript API instead of HTTP header check for BEK/CK, see safeexambrowser.org/developer).",
                 "enableRightMouse": "Enable right mouse button (Mac)",
                 "enableRightMouse_tooltip": "Enable to access context menu for Web Inspector in SEB for macOS (use ONLY for debugging). Disable to prevent right mouse button actions/context menu for sharing content (with modern WebView) and in browser plugins/video players",
-                "enableJavaScript": "Eneable Java Script (Mac)",
+                "enableJavaScript": "Enable Java Script (Mac)",
                 "blockPopUpWindows": "Block Pop-Up Windows (Mac)"
             },
             "restrictions": {
@@ -1781,7 +1781,7 @@
                 "minMacOSVersion_3": "OS X 10.10 Yosemite",
                 "minMacOSVersion_4": "OS X 10.11 El Capitan",
                 "minMacOSVersion_5": "OS X 10.12 Sierra",
-                "minMacOSVersion_6": "OS X 10.13 Hight Sierra",
+                "minMacOSVersion_6": "OS X 10.13 High Sierra",
                 "minMacOSVersion_7": "OS X 10.14 Mojave",
                 "minMacOSVersion_8": "OS X 10.15 Catalina",
                 "minMacOSVersion_9": "OS X 11 Big Sur",
@@ -1859,10 +1859,10 @@
             "sebVersion": {
                 "title": "Allowed SEB Versions",
                 "sebAllowedVersions": "Allowed SEB Versions",
-                "sebAllowedVersions_note1": "Allows to specify one or more specific SEB version(s) that are excepted. A version restriction needs to have to following format:",
+                "sebAllowedVersions_note1": "Allows to specify one or more specific SEB version(s) that are excepted. A version restriction needs to have the following format:",
                 "sebAllowedVersions_format": "OS.Major.Minor.[Patch].[AE].[min]",
                 "sebAllowedVersions_note2": "Please enter one restriction per line, e.g. Win.3.9.min to allow all SEB for Windows versions starting with 3.9 or newer.",
-                "sebAllowedVersions_info": "List of text inputs which represent either a specific or a minimal SEB version which is allowed to access the (exam) session using current settings. The version string has the following format: [OS.mayor.minor(.patch)(.AE)(.min)], OS and mayor version are mandatory, OS is either 'Win', 'Mac' or 'iOS', 'min' indicates if version shall be interpreted as minimal version this and all above are valid. AE indicates a Alliance Edition version.",
+                "sebAllowedVersions_info": "List of text inputs which represent either a specific or a minimal SEB version which is allowed to access the (exam) session using current settings. The version string has the following format: [OS.major.minor(.patch)(.min)], OS and major version are mandatory, OS is either 'Win', 'Mac' or 'iOS', 'min' indicates if version shall be interpreted as minimal version this and all above are valid.",
                 "sebAllowedVersions_valmsg": "At least one SEB Version has wrong format"
             }
         },
@@ -1885,7 +1885,7 @@
             "insideSebEnableEaseOfAccess": "Enable Ease of Access",
             "insideSebEnableEaseOfAccess_tooltip": "Shows options when the button 'Ease of Access' in the lower left corner is clicked, which offers help e.g. to visually or aurally handicapped persons, like the Magnifier Glass.",
             "insideSebEnableNetworkConnectionSelector": "Enable network connection selector",
-            "insideSebEnableNetworkConnectionSelector_tooltip": "Activates the button which allows to connect to WiFi networks, introduces in Windows 10",
+            "insideSebEnableNetworkConnectionSelector_tooltip": "Activates the button which allows to connect to WiFi networks, introduced in Windows 10",
             "setVmwareConfiguration": "Set VMware configuration",
             "setVmwareConfiguration_tooltip": "Determines whether the configuration value for VMware Client Shade will be set by SEB",
             "enableFindPrinter": "Enable find printer in system print dialog"
@@ -1920,7 +1920,7 @@
         "proctoring": {
             "title": "",
             "remoteProctoringViewShow": "Proctoring View Display Policy",
-            "remoteProctoringViewShow_tooltip": "Controls the general policy for the initial display of the proctoring Window in SEB. Theses setting have no effect on the proctor's broadcast or chat function.",
+            "remoteProctoringViewShow_tooltip": "Controls the general policy for the initial display of the proctoring Window in SEB. These setting have no effect on the proctor's broadcast or chat function.",
             "remoteProctoringViewShow_0": "Never",
             "remoteProctoringViewShow_1": "Allow to Show",
             "remoteProctoringViewShow_2": "Allow to Hide",
@@ -2090,14 +2090,14 @@
             "unlock": "Unlock",
             "lockSeb": "Lock SEB Clients",
             "unlockSeb": "Unlock SEB Clients",
-            "lockAction": "This actions locks all selected SEB clients",
-            "unlockAction": "This actions unlocks all selected and locked SEB clients",
+            "lockAction": "This action locks all selected SEB clients",
+            "unlockAction": "This action unlocks all selected and locked SEB clients",
             "quit": "Quit",
             "quitSeb": "Quit SEB Clients",
-            "quitAction": "This actions quits all selected SEB clients",
+            "quitAction": "This action quits all selected SEB clients",
             "quitQuestion": "Are you sure to quit all selected SEB clients?",
             "cancelSeb": "Mark Clients as canceled",
-            "cancelAction": "This actions marks all selected SEB clients as canceled"
+            "cancelAction": "This action marks all selected SEB clients as canceled"
         }
     },
     "monitoringOverview": {
@@ -2135,7 +2135,7 @@
                 "proctor": "Proctor",
                 "viewList": "View List"
             },
-            "noSPSAccess": "You have no access to the screen proctoring gallery view since you are not assigned as a supporter to the Exam. Please assign your user account to the Exam supporter list to get gallery access."
+            "noSPSAccess": "You have no access to the screen proctoring gallery view since you are not assigned as a supervisor to the Exam. Please assign your user account to the Exam Supervisor list to get gallery access."
         },
         "notifications": {
             "notifications": "Notifications"
@@ -2617,7 +2617,7 @@
                 "PASSWORD_MISMATCH": "The new password does not match the confirmed password",
                 "MISSING_PASSWORD": "Missing password",
                 "LMS_WARNINGS": "Warnings from the LMS",
-                "EXAM_CONSISTENCY_VALIDATION_SUPPORTER": "No Exam Supporter defined for the Exam",
+                "EXAM_CONSISTENCY_VALIDATION_SUPPORTER": "No Exam Supervisor defined for the Exam",
                 "EXAM_CONSISTENCY_VALIDATION_CONFIG": "No SEB Exam Configuration defined for the Exam",
                 "EXAM_CONSISTENCY_VALIDATION_SEB_RESTRICTION": "SEB restriction API available but Exam not restricted on LMS side yet",
                 "EXAM_CONSISTENCY_VALIDATION_INDICATOR": "No Indicator defined for the Exam",

@@ -163,6 +163,15 @@
                 <v-row>
                     <CheckboxSetting
                         v-model="singleValues"
+                        name="allowVirtualMachine"
+                        label="sebSettings.securityView.overall.allowVirtualMachine"
+                        :tooltip="true"
+                        :disabled="context.readonly"
+                    />
+                </v-row>
+                <v-row>
+                    <CheckboxSetting
+                        v-model="singleValues"
                         name="allowedDisplaysIgnoreFailure"
                         label="sebSettings.securityView.overall.allowedDisplaysIgnoreFailure"
                         :tooltip="false"
