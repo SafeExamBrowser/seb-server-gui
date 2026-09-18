@@ -30,11 +30,18 @@ const existingConfig = {
 
 const editedName = "e2e-edit-connection-config-changed";
 
+const existingCertificate = "e2e-existing-cert";
+// The i18n label of the pseudo-option that opens the upload dialog.
+const addCertificateOption = "Add Certificate";
+
 // Seeded rows (shared with the read spec) for the real list -> edit navigation.
 const searchName = "e2e-getall-connection-config";
 const seededActiveId = 9001;
 
-async function mockConfigLoad(page: Page) {
+async function mockConfigLoad(
+    page: Page,
+    config: Record<string, unknown> = existingConfig,
+) {
     await page.route(
         connectionConfigurationByIdRequest(EDIT_CONFIG_ID),
         (route) => {
@@ -44,7 +51,7 @@ async function mockConfigLoad(page: Page) {
             return route.fulfill({
                 status: 200,
                 contentType: "application/json",
-                body: JSON.stringify(existingConfig),
+                body: JSON.stringify(config),
             });
         },
     );
@@ -167,5 +174,35 @@ test.describe("04 Connection Configurations - EDIT", () => {
         await expect(connectionConfigurations.page).toHaveURL(
             new RegExp(`/connection-configuration/${seededActiveId}`),
         );
+    });
+
+    test("F the Add Certificate option opens the upload dialog and cancel keeps the loaded certificate", async ({
+        connectionConfigurationEdit,
+    }) => {
+        await mockConfigLoad(connectionConfigurationEdit.page, {
+            ...existingConfig,
+            cert_alias: existingCertificate,
+        });
+        await connectionConfigurationEdit.mockCertificates({
+            aliases: [existingCertificate],
+        });
+        await connectionConfigurationEdit.goto();
+        await connectionConfigurationEdit.expectSelectedCertificate(
+            existingCertificate,
+        );
+        await connectionConfigurationEdit.saveButton.expectDisabled();
+
+        await connectionConfigurationEdit.openCertificateUploadDialog(
+            addCertificateOption,
+        );
+        await connectionConfigurationEdit.uploadDialog.cancel();
+
+        await test.step("the selection and the pristine form survive the round trip", async () => {
+            await connectionConfigurationEdit.uploadDialog.expectHidden();
+            await connectionConfigurationEdit.expectSelectedCertificate(
+                existingCertificate,
+            );
+            await connectionConfigurationEdit.saveButton.expectDisabled();
+        });
     });
 });

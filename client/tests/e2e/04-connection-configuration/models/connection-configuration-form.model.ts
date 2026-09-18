@@ -1,10 +1,15 @@
-import { type Locator, type Page } from "@playwright/test";
+import { expect, type Locator, type Page } from "@playwright/test";
 
 import {
     CONNECTION_CONFIG_FIELD,
     connectionConfigurationFormConfig,
 } from "@/pages/(app)/connection-configuration/connectionConfigurationFormConfig.ts";
 
+import { CertificateUploadDialogModel } from "../../03-certificate/models/certificate-upload-dialog.model";
+import {
+    CERTIFICATE_API_REQUEST,
+    type CertificateRow,
+} from "../../03-certificate/models/certificates-list.model";
 import {
     type FormFieldSpec,
     FormPageModel,
@@ -111,6 +116,7 @@ export type ConnectionConfigurationFallbackInput = {
 
 export class ConnectionConfigurationFormModel extends FormPageModel {
     readonly certSelect: Locator;
+    readonly uploadDialog: CertificateUploadDialogModel;
     readonly fallbackSwitch: Locator;
 
     constructor(page: Page, prefix: string, route: string) {
@@ -121,6 +127,10 @@ export class ConnectionConfigurationFormModel extends FormPageModel {
         });
         this.certSelect = page.getByTestId(
             `${prefix}-encryptWithCertificate-select`,
+        );
+        this.uploadDialog = new CertificateUploadDialogModel(
+            page,
+            `${prefix}-${connectionConfigurationFormConfig.certificateUploadSuffix}`,
         );
         // The fallback v-switch renders a role="checkbox" input; target it via the row wrapper
         // (the data-testid on the v-switch itself lands on the input, so a nested role lookup
@@ -134,6 +144,46 @@ export class ConnectionConfigurationFormModel extends FormPageModel {
     // Vuetify option-select helper rather than the FormFieldModel select flow.
     async selectCertificate(optionText: string) {
         await selectVuetifyOptionByName(this.page, this.certSelect, optionText);
+    }
+
+    async expectSelectedCertificate(alias: string) {
+        await expect(this.certSelect).toContainText(alias);
+    }
+
+    // Picking the "Add Certificate" pseudo-option closes the menu and opens the upload dialog
+    // beside the select. Vuetify tears the menu content down only after its leave transition,
+    // so wait for the listbox to unmount before asserting the dialog survived it.
+    async openCertificateUploadDialog(optionText: string) {
+        await this.selectCertificate(optionText);
+        await expect(this.page.locator("[role='listbox']")).toHaveCount(0);
+        await this.uploadDialog.expectVisible();
+    }
+
+    // The mock backend serves an empty certificate list; specs that need options in the cert
+    // picker serve it from mutable state so an upload route can append to it.
+    async mockCertificates(state: { aliases: string[] }) {
+        await this.page.route(CERTIFICATE_API_REQUEST, async (route) => {
+            if (route.request().method() !== "GET") {
+                return route.fallback();
+            }
+            const content: CertificateRow[] = state.aliases.map((alias) => ({
+                alias,
+                validityFrom: "2025-01-01T00:00:00Z",
+                validityTo: "2027-01-01T00:00:00Z",
+                certType: ["DIGITAL_SIGNATURE"],
+            }));
+            await route.fulfill({
+                status: 200,
+                contentType: "application/json",
+                body: JSON.stringify({
+                    number_of_pages: 1,
+                    page_number: 1,
+                    page_size: 500,
+                    complete: true,
+                    content,
+                }),
+            });
+        });
     }
 
     // The fallback FormBuilder only mounts once this switch is on; enabling it reveals the
