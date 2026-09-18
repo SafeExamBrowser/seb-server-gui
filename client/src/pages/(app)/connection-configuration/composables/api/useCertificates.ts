@@ -4,10 +4,12 @@ import type { GetCertificatesData } from "@/api/seb-server/generated/hey-api/typ
 import i18n from "@/i18n";
 import { useCertificatesQuery } from "@/pages/(app)/certificate/api/useCertificatesQuery.ts";
 
+export const UPLOAD_CERTIFICATE_OPTION = "__UPLOAD__";
+
 export const useCertificates = () => {
     const uploadOption = {
         label: i18n.global.t("certificates.createDialog.addButtonTitle"),
-        value: "__UPLOAD__",
+        value: UPLOAD_CERTIFICATE_OPTION,
     };
 
     const query = ref<GetCertificatesData["query"]>({

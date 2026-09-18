@@ -27,4 +27,7 @@ export const connectionConfigurationFormConfig = {
     // (`<prefix>-<suffix>-field-<name>`).
     mainFormSuffix: "main-form",
     fallbackFormSuffix: "fallback-form",
+    // The certificate upload FormDialog beside the cert select derives its dialog test-ids
+    // from `<prefix>-<suffix>`.
+    certificateUploadSuffix: "certificateUpload",
 } as const;
