@@ -44,7 +44,8 @@
                         />
 
                         <v-select
-                            v-model="encryptWithCertificate"
+                            :model-value="encryptWithCertificate"
+                            clearable
                             data-testid="editConnectionConfiguration-encryptWithCertificate-select"
                             density="compact"
                             :disabled="certificatesLoading"
@@ -59,6 +60,9 @@
                             :loading="certificatesLoading"
                             :menu-props="{ maxHeight: 240 }"
                             variant="outlined"
+                            @update:model-value="
+                                handleEncryptWithCertificateChange
+                            "
                         >
                             <template #item="{ props, item }">
                                 <v-list-item v-bind="props">
@@ -363,13 +367,13 @@ watch(
 
 const certificateUploadDialogOpen = ref(false);
 
-watch(encryptWithCertificate, (selected, previous) => {
-    if (selected !== UPLOAD_CERTIFICATE_OPTION) {
+function handleEncryptWithCertificateChange(value: string | null) {
+    if (value === UPLOAD_CERTIFICATE_OPTION) {
+        certificateUploadDialogOpen.value = true;
         return;
     }
-    encryptWithCertificate.value = previous;
-    certificateUploadDialogOpen.value = true;
-});
+    encryptWithCertificate.value = value ?? undefined;
+}
 
 async function onCertImported(key: CertKey) {
     await loadCertificates();
