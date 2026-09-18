@@ -150,6 +150,16 @@ export class ConnectionConfigurationFormModel extends FormPageModel {
         await expect(this.certSelect).toContainText(alias);
     }
 
+    async expectNoCertificateSelected() {
+        await expect(
+            this.certSelect.locator(".v-select__selection"),
+        ).toHaveCount(0);
+    }
+
+    async clearCertificate() {
+        await this.certSelect.locator(".v-field__clearable").click();
+    }
+
     // Picking the "Add Certificate" pseudo-option closes the menu and opens the upload dialog
     // beside the select. Vuetify tears the menu content down only after its leave transition,
     // so wait for the listbox to unmount before asserting the dialog survived it.

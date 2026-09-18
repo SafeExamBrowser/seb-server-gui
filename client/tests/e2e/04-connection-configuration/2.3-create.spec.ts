@@ -241,4 +241,45 @@ test.describe("04 Connection Configurations - CREATE", () => {
             uploadedCertificate,
         );
     });
+
+    test("G clearing the selected certificate omits cert_alias from the create request", async ({
+        connectionConfigurationCreate,
+    }) => {
+        const page = connectionConfigurationCreate.page;
+        await connectionConfigurationCreate.mockCertificates({
+            aliases: [existingCertificate],
+        });
+        await page.route(CONNECTION_CONFIG_CREATE_REQUEST, async (route) => {
+            if (route.request().method() !== "POST") {
+                return route.fallback();
+            }
+            await route.fulfill({
+                status: 200,
+                contentType: "application/json",
+                body: JSON.stringify(createdConfig),
+            });
+        });
+        const createRequest = waitForRequest(
+            page,
+            "POST",
+            CONNECTION_CONFIG_CREATE_REQUEST,
+        );
+
+        await connectionConfigurationCreate.goto();
+        await connectionConfigurationCreate.fillForm(mainInput);
+        await connectionConfigurationCreate.selectCertificate(
+            existingCertificate,
+        );
+        await connectionConfigurationCreate.expectSelectedCertificate(
+            existingCertificate,
+        );
+        await connectionConfigurationCreate.clearCertificate();
+        await connectionConfigurationCreate.expectNoCertificateSelected();
+        await connectionConfigurationCreate.submit();
+
+        const body = new URLSearchParams(
+            (await createRequest).postData() ?? "",
+        );
+        expect(body.has("cert_alias")).toBe(false);
+    });
 });

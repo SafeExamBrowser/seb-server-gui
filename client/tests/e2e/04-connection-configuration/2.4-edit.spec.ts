@@ -205,4 +205,45 @@ test.describe("04 Connection Configurations - EDIT", () => {
             await connectionConfigurationEdit.saveButton.expectDisabled();
         });
     });
+
+    test("G clearing the loaded certificate saves the configuration without cert_alias", async ({
+        connectionConfigurationEdit,
+    }) => {
+        const page = connectionConfigurationEdit.page;
+        await mockConfigLoad(page, {
+            ...existingConfig,
+            cert_alias: existingCertificate,
+        });
+        await connectionConfigurationEdit.mockCertificates({
+            aliases: [existingCertificate],
+        });
+        await page.route(CONNECTION_CONFIG_SAVE_REQUEST, async (route) => {
+            if (route.request().method() !== "PUT") {
+                return route.fallback();
+            }
+            await route.fulfill({
+                status: 200,
+                contentType: "application/json",
+                body: JSON.stringify(existingConfig),
+            });
+        });
+        const saveRequest = waitForRequest(
+            page,
+            "PUT",
+            CONNECTION_CONFIG_SAVE_REQUEST,
+        );
+
+        await connectionConfigurationEdit.goto();
+        await connectionConfigurationEdit.expectSelectedCertificate(
+            existingCertificate,
+        );
+        await connectionConfigurationEdit.clearCertificate();
+        await connectionConfigurationEdit.expectNoCertificateSelected();
+        await connectionConfigurationEdit.saveButton.expectEnabled();
+        await connectionConfigurationEdit.submit();
+
+        const body = JSON.parse((await saveRequest).postData() ?? "{}");
+        expect(body).not.toHaveProperty("cert_alias");
+        await expectToHaveUrl(page, "connection-configuration");
+    });
 });
