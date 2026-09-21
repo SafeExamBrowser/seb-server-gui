@@ -55,7 +55,7 @@ export function getPermittedProcessArguments(
         const vals = line.split("|");
         result.push({
             active: vals[0].split("=")[1] === "true",
-            argument: vals[1].split("=")[1],
+            argument: replaceTableValueEscapes(vals[1]).split("=")[1],
         });
     });
 
@@ -67,14 +67,18 @@ export function argumentsToString(args: PermittedProcessArgument[]): string {
     args.forEach((item) => {
         if (result.length === 0) {
             result =
-                result + "active=" + item.active + "|argument=" + item.argument;
+                result +
+                "active=" +
+                item.active +
+                "|argument=" +
+                escapeTableValue(item.argument);
         } else {
             result =
                 result +
                 ",active=" +
                 item.active +
                 "|argument=" +
-                item.argument;
+                escapeTableValue(item.argument);
         }
     });
     return result;
@@ -86,4 +90,16 @@ export function getSettingId(
 ): number {
     const prop = rowVals.get(name);
     return prop ? prop.id : 0;
+}
+
+function escapeTableValue(value: string) {
+    const escaped = value
+        .replaceAll(",", "__COMMA__")
+        .replaceAll("|", "__PIPE__");
+    console.info(escaped);
+    return escaped;
+}
+
+function replaceTableValueEscapes(value: string) {
+    return value.replaceAll("__COMMA__", ",").replaceAll("__PIPE__", "|");
 }
