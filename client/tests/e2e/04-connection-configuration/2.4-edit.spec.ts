@@ -30,11 +30,18 @@ const existingConfig = {
 
 const editedName = "e2e-edit-connection-config-changed";
 
+const existingCertificate = "e2e-existing-cert";
+// The i18n label of the pseudo-option that opens the upload dialog.
+const addCertificateOption = "Add Certificate";
+
 // Seeded rows (shared with the read spec) for the real list -> edit navigation.
 const searchName = "e2e-getall-connection-config";
 const seededActiveId = 9001;
 
-async function mockConfigLoad(page: Page) {
+async function mockConfigLoad(
+    page: Page,
+    config: Record<string, unknown> = existingConfig,
+) {
     await page.route(
         connectionConfigurationByIdRequest(EDIT_CONFIG_ID),
         (route) => {
@@ -44,7 +51,7 @@ async function mockConfigLoad(page: Page) {
             return route.fulfill({
                 status: 200,
                 contentType: "application/json",
-                body: JSON.stringify(existingConfig),
+                body: JSON.stringify(config),
             });
         },
     );
@@ -167,5 +174,76 @@ test.describe("04 Connection Configurations - EDIT", () => {
         await expect(connectionConfigurations.page).toHaveURL(
             new RegExp(`/connection-configuration/${seededActiveId}`),
         );
+    });
+
+    test("F the Add Certificate option opens the upload dialog and cancel keeps the loaded certificate", async ({
+        connectionConfigurationEdit,
+    }) => {
+        await mockConfigLoad(connectionConfigurationEdit.page, {
+            ...existingConfig,
+            cert_alias: existingCertificate,
+        });
+        await connectionConfigurationEdit.mockCertificates({
+            aliases: [existingCertificate],
+        });
+        await connectionConfigurationEdit.goto();
+        await connectionConfigurationEdit.expectSelectedCertificate(
+            existingCertificate,
+        );
+        await connectionConfigurationEdit.saveButton.expectDisabled();
+
+        await connectionConfigurationEdit.openCertificateUploadDialog(
+            addCertificateOption,
+        );
+        await connectionConfigurationEdit.uploadDialog.cancel();
+
+        await test.step("the selection and the pristine form survive the round trip", async () => {
+            await connectionConfigurationEdit.uploadDialog.expectHidden();
+            await connectionConfigurationEdit.expectSelectedCertificate(
+                existingCertificate,
+            );
+            await connectionConfigurationEdit.saveButton.expectDisabled();
+        });
+    });
+
+    test("G clearing the loaded certificate saves the configuration without cert_alias", async ({
+        connectionConfigurationEdit,
+    }) => {
+        const page = connectionConfigurationEdit.page;
+        await mockConfigLoad(page, {
+            ...existingConfig,
+            cert_alias: existingCertificate,
+        });
+        await connectionConfigurationEdit.mockCertificates({
+            aliases: [existingCertificate],
+        });
+        await page.route(CONNECTION_CONFIG_SAVE_REQUEST, async (route) => {
+            if (route.request().method() !== "PUT") {
+                return route.fallback();
+            }
+            await route.fulfill({
+                status: 200,
+                contentType: "application/json",
+                body: JSON.stringify(existingConfig),
+            });
+        });
+        const saveRequest = waitForRequest(
+            page,
+            "PUT",
+            CONNECTION_CONFIG_SAVE_REQUEST,
+        );
+
+        await connectionConfigurationEdit.goto();
+        await connectionConfigurationEdit.expectSelectedCertificate(
+            existingCertificate,
+        );
+        await connectionConfigurationEdit.clearCertificate();
+        await connectionConfigurationEdit.expectNoCertificateSelected();
+        await connectionConfigurationEdit.saveButton.expectEnabled();
+        await connectionConfigurationEdit.submit();
+
+        const body = JSON.parse((await saveRequest).postData() ?? "{}");
+        expect(body).not.toHaveProperty("cert_alias");
+        await expectToHaveUrl(page, "connection-configuration");
     });
 });

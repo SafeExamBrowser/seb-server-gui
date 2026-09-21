@@ -1,5 +1,6 @@
 import { CONNECTION_CONFIG_FIELD } from "@/pages/(app)/connection-configuration/connectionConfigurationFormConfig.ts";
 
+import { CERTIFICATE_MUTATION_REQUEST } from "../03-certificate/models/certificates-list.model";
 import { expect, test } from "../shared/fixtures/table-list-fixtures";
 import { expectToHaveUrl } from "../utils/helpers";
 import { expectNoRequest, waitForRequest } from "../utils/networkAssertions";
@@ -30,6 +31,17 @@ const createdConfig = {
     vdiSetup: "NO",
     sebServerFallback: true,
     active: true,
+};
+
+const existingCertificate = "e2e-existing-cert";
+const uploadedCertificate = "e2e-uploaded-cert";
+// The i18n label of the pseudo-option that opens the upload dialog.
+const addCertificateOption = "Add Certificate";
+
+const pemFile = {
+    name: "e2e-upload-cert.pem",
+    mimeType: "application/x-pem-file",
+    buffer: Buffer.from("e2e-pem-file-bytes"),
 };
 
 test.describe("04 Connection Configurations - CREATE", () => {
@@ -157,5 +169,117 @@ test.describe("04 Connection Configurations - CREATE", () => {
             .field(CONNECTION_CONFIG_FIELD.name)
             .expectError();
         await expect(page).toHaveURL(/\/connection-configuration\/create/);
+    });
+
+    test("E the Add Certificate option opens the upload dialog and cancel keeps the selection", async ({
+        connectionConfigurationCreate,
+    }) => {
+        await connectionConfigurationCreate.mockCertificates({
+            aliases: [existingCertificate],
+        });
+        await connectionConfigurationCreate.goto();
+        await connectionConfigurationCreate.selectCertificate(
+            existingCertificate,
+        );
+        await connectionConfigurationCreate.expectSelectedCertificate(
+            existingCertificate,
+        );
+
+        await connectionConfigurationCreate.openCertificateUploadDialog(
+            addCertificateOption,
+        );
+        await connectionConfigurationCreate.uploadDialog.cancel();
+
+        await connectionConfigurationCreate.uploadDialog.expectHidden();
+        await connectionConfigurationCreate.expectSelectedCertificate(
+            existingCertificate,
+        );
+    });
+
+    test("F an uploaded certificate becomes the selected encryption certificate", async ({
+        connectionConfigurationCreate,
+    }) => {
+        const page = connectionConfigurationCreate.page;
+        const state = { aliases: [existingCertificate] };
+
+        await connectionConfigurationCreate.mockCertificates(state);
+        await page.route(CERTIFICATE_MUTATION_REQUEST, (route) => {
+            if (route.request().method() !== "POST") {
+                return route.fallback();
+            }
+            state.aliases = [...state.aliases, uploadedCertificate];
+            return route.fulfill({
+                status: 200,
+                contentType: "application/json",
+                body: JSON.stringify({
+                    alias: uploadedCertificate,
+                    validityFrom: "2025-01-01T00:00:00Z",
+                    validityTo: "2027-01-01T00:00:00Z",
+                    certType: ["DIGITAL_SIGNATURE"],
+                }),
+            });
+        });
+
+        const uploadRequest = waitForRequest(
+            page,
+            "POST",
+            CERTIFICATE_MUTATION_REQUEST,
+        );
+
+        await connectionConfigurationCreate.goto();
+        await connectionConfigurationCreate.openCertificateUploadDialog(
+            addCertificateOption,
+        );
+        await connectionConfigurationCreate.uploadDialog.fill(pemFile);
+        await connectionConfigurationCreate.uploadDialog.submit();
+
+        expect((await uploadRequest).headers()["importfile"]).toBe(
+            pemFile.name,
+        );
+        await connectionConfigurationCreate.uploadDialog.expectHidden();
+        await connectionConfigurationCreate.expectSelectedCertificate(
+            uploadedCertificate,
+        );
+    });
+
+    test("G clearing the selected certificate omits cert_alias from the create request", async ({
+        connectionConfigurationCreate,
+    }) => {
+        const page = connectionConfigurationCreate.page;
+        await connectionConfigurationCreate.mockCertificates({
+            aliases: [existingCertificate],
+        });
+        await page.route(CONNECTION_CONFIG_CREATE_REQUEST, async (route) => {
+            if (route.request().method() !== "POST") {
+                return route.fallback();
+            }
+            await route.fulfill({
+                status: 200,
+                contentType: "application/json",
+                body: JSON.stringify(createdConfig),
+            });
+        });
+        const createRequest = waitForRequest(
+            page,
+            "POST",
+            CONNECTION_CONFIG_CREATE_REQUEST,
+        );
+
+        await connectionConfigurationCreate.goto();
+        await connectionConfigurationCreate.fillForm(mainInput);
+        await connectionConfigurationCreate.selectCertificate(
+            existingCertificate,
+        );
+        await connectionConfigurationCreate.expectSelectedCertificate(
+            existingCertificate,
+        );
+        await connectionConfigurationCreate.clearCertificate();
+        await connectionConfigurationCreate.expectNoCertificateSelected();
+        await connectionConfigurationCreate.submit();
+
+        const body = new URLSearchParams(
+            (await createRequest).postData() ?? "",
+        );
+        expect(body.has("cert_alias")).toBe(false);
     });
 });
