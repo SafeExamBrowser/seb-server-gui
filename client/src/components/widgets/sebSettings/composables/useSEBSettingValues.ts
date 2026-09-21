@@ -12,6 +12,7 @@ import {
     SEBSettingTableValue,
 } from "@/models/seb-server/sebSettings.ts";
 import { ViewType } from "@/models/seb-server/sebSettingsEnums.ts";
+import { notify } from "@/services/notifications/notify.ts";
 import * as sebSettingsService from "@/services/seb-server/sebSettingsService.ts";
 import { stringToBoolean } from "@/utils/generalUtils.ts";
 import { translate } from "@/utils/generalUtils.ts";
