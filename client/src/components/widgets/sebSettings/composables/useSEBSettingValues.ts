@@ -18,6 +18,7 @@ import { stringToBoolean } from "@/utils/generalUtils.ts";
 import { translate } from "@/utils/generalUtils.ts";
 
 import { useFetchViewValues } from "./api/useFetchViewValues.ts";
+import { notify } from "@/services/notifications/notify.ts";
 
 // This is used for inter tab communication of Security tab and Registry tab.
 // The Security tab ignoreSEBService set this value on change and the Registry
@@ -94,6 +95,10 @@ export const useSEBSettingValues = (
         } as SEBSettingsTableModel;
     });
 
+    if (errorFetchSebSettingsView.value !== undefined) {
+        notify.serverError(errorFetchSebSettingsView.value);
+    }
+
     const errorSebSettingsView = computed(() =>
         [errorFetchSebSettingsView.value].filter(
             (error) => error !== undefined,
@@ -160,15 +165,20 @@ export const useSEBSettingValues = (
         if (containerId === null) return;
         const setting = getSingleValue(name);
         if (!setting) return;
-        await sebSettingsService.updateSEBSettingValue(
-            containerId,
-            setting.id.toString(),
-            value,
-            isExam,
-        );
 
-        // also update the stored value
-        setting.value = value;
+        try {
+            await sebSettingsService.updateSEBSettingValue(
+                containerId,
+                setting.id.toString(),
+                value,
+                isExam,
+            );
+
+            // also update the stored value
+            setting.value = value;
+        } catch (err) {
+            notify.serverError(err);
+        }
     }
 
     async function saveTableRow(values: SEBSettingTableValue[]) {
