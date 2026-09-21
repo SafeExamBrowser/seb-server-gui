@@ -96,7 +96,6 @@ function escapeTableValue(value: string) {
     const escaped = value
         .replaceAll(",", "__COMMA__")
         .replaceAll("|", "__PIPE__");
-    console.info(escaped);
     return escaped;
 }
 
