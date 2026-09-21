@@ -18,7 +18,6 @@ import { stringToBoolean } from "@/utils/generalUtils.ts";
 import { translate } from "@/utils/generalUtils.ts";
 
 import { useFetchViewValues } from "./api/useFetchViewValues.ts";
-import { notify } from "@/services/notifications/notify.ts";
 
 // This is used for inter tab communication of Security tab and Registry tab.
 // The Security tab ignoreSEBService set this value on change and the Registry
