@@ -94,10 +94,6 @@ export const useSEBSettingValues = (
         } as SEBSettingsTableModel;
     });
 
-    if (errorFetchSebSettingsView.value !== undefined) {
-        notify.serverError(errorFetchSebSettingsView.value);
-    }
-
     const errorSebSettingsView = computed(() =>
         [errorFetchSebSettingsView.value].filter(
             (error) => error !== undefined,

@@ -228,10 +228,6 @@
                         :disabled="context.readonly"
                     />
                 </v-row>
-            </v-col>
-
-            <v-col class="text-body-large">
-                <SettingsTitle label="sebSettings.browser.agent" />
                 <v-row>
                     <CheckboxSetting
                         v-model="singleValues"
@@ -251,20 +247,17 @@
                         :disabled="context.readonly"
                     />
                 </v-row>
+            </v-col>
+
+            <v-col class="text-body-large">
+                <SettingsTitle label="sebSettings.browser.agent" />
+
                 <v-row>
                     <TextSetting
                         v-model="singleValues"
                         name="browserUserAgent"
                         label="sebSettings.browser.browserUserAgent"
-                        :tooltip="true"
-                        :disabled="context.readonly"
-                    />
-                </v-row>
-                <v-row>
-                    <TextSetting
-                        v-model="singleValues"
-                        name="browserWindowTitleSuffix"
-                        label="sebSettings.browser.windowTitleSuffix"
+                        :show-label="true"
                         :tooltip="true"
                         :disabled="context.readonly"
                     />

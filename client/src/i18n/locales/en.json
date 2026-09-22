@@ -1229,20 +1229,20 @@
                 "title": "iOS Status Bar",
                 "mobileStatusBarAppearance": "Appearance",
                 "mobileStatusBarAppearance_0": "None",
-                "mobileStatusBarAppearance_1": "Light",
-                "mobileStatusBarAppearance_2": "Dark",
+                "mobileStatusBarAppearance_1": "White on Black",
+                "mobileStatusBarAppearance_2": "Black on White",
                 "mobileStatusBarAppearanceExtended": "Appearance on devices with FaceID",
                 "mobileStatusBarAppearanceExtended_0": "Inferred",
-                "mobileStatusBarAppearanceExtended_1": "Light",
-                "mobileStatusBarAppearanceExtended_2": "Dark",
-                "mobileStatusBarAppearanceExtended_3": "None Dark",
-                "mobileStatusBarAppearanceExtended_4": "None Light"
+                "mobileStatusBarAppearanceExtended_1": "White on Black",
+                "mobileStatusBarAppearanceExtended_2": "Black on White",
+                "mobileStatusBarAppearanceExtended_3": "None - Black",
+                "mobileStatusBarAppearanceExtended_4": "None - White"
             },
             "task_bar": {
                 "title": "SEB Taskbar / Dock",
                 "height": "Dock height",
                 "height_tooltip": "SEB dock height in points (pixel height*2 on Retina displays)",
-                "showTaskBar": "Show SEB taskbar",
+                "showTaskBar": "Show SEB taskbar / dock",
                 "showTaskBar_tooltip": "The SEB task bar shows and switches between open browser windows, allowed resources and applications and displays additional controls",
                 "showSideMenu": "Show side menu",
                 "raiseHandButtonShow": "Show raise hand button",
@@ -1491,10 +1491,10 @@
             "files": "Allow uploading files",
             "files_tooltip": "Allows uploading files, selected manually (or on macOS automatically). Currently also setting 'allow downloading and uploading files' needs to be enabled",
             "allowDownload": "Allow downloading files",
-            "useTemp": "Use temporary download / upload directory (Win)",
-            "photos": "Allow Uploading Photos and Files",
+            "useTemp": "Use temporary download / upload directory",
+            "photos": "Allow Uploading Photos and Files (iOS)",
             "photos_tooltip": "Uploading allows to access camera, the full photo library and iCloud Drive and therefore is insecure!",
-            "openDownloads": "Open Files After Downloading",
+            "openDownloads": "Open Files After Downloading (Mac / iOS)",
             "openDownloads_tooltip": "Downloaded files will be opened with the according application, which has to be set correctly in the system for each used file type. Usually to be used with permitted third party applications ",
             "filetypes": {
                 "title": "File types to be downloaded",
@@ -1543,7 +1543,7 @@
             },
             "deepLinking": {
                 "title": "Exam Deep Linking",
-                "startURLAllowDeepLink": "Allow Deep Linking for Exams",
+                "startURLAllowDeepLink": "Allow Deep Linking for Exams (Mac / iOS)",
                 "startURLAllowDeepLink_tooltip": "Deep linking allows to directly open various exams using just one exam config file placed somewhere in the path hierarchy of a sebs:// or Universal Link (which needs to start with the Start URL string)."
             },
             "query": {
@@ -1555,7 +1555,7 @@
         "applicationView": {
             "allowSwitchToApplications": "Allow switching to third party application (Mac)",
             "allowSwitchToApplications_tooltip": "Decreases security of the kiosk mode by allowing process switcher (Cmd+Tab).\nThe blacked out background of SEB also doesn't cover some alerts and modal windows in this mode.",
-            "autoQuitApplications": "Automatically quit prohibited applications",
+            "autoQuitApplications": "Automatically quit prohibited applications (Mac)",
             "autoQuitApplications_tooltip": "Decreases security of the kiosk mode by allowing process switcher (Cmd+Tab).\nThe blacked out background of SEB also doesn't cover some alerts and modal windows in this mode.",
             "allowFlashFullscreen": "SEB will attempt to quit prohibited applications automatically but nicely, allowing them to save edited documents",
             "permittedProcess": {
@@ -1597,7 +1597,7 @@
                 "allowShareSheet": "Allow share sheet",
                 "allowManualStart": "Allow manual start",
                 "allowNetworkAccess": "Allow network access",
-                "teamIdentifier": "Team Identifier",
+                "teamIdentifier": "Identifier",
                 "allowOpenAndSavePanel_tooltip": "When using AAC Assessment Mode,\nSEB blocks the macOS Open File and Save As panel.\nUsers cannot browse the file system and open files manually\nin most permitted apps with AAC Multi App Mode.",
                 "allowShareSheet_tooltip": "When using AAC Assessment Mode, SEB blocks the macOS share sheet.\nUsers cannot share documents in permitted apps with AAC Multi App Mode.",
                 "allowManualStart_tooltip": "Allow user to start the additional application with its Dock icon.\nOtherwise the app can be started by downloading and opening its documents",
@@ -1812,8 +1812,7 @@
                 "blockScreenShotsLegacy": "Block screen shots (Legacy)",
                 "allowWindowCapture": "Allow window capture (screen shots)",
                 "screenSharingMacEnforceBlocked": "Enforce blocking screen sharing on Mac",
-                "enableMacOSAAC": "Prefer Assessment Mode (AAC)",
-                "enableMacOSAAC_tooltip": "Automatic Assessment Configuration (AAC) Assessment Mode is available from macOS Monterey 12.1 (and Catalina 10.15.4 and >= 10.15.6). It blocks various macOS  (which cannot be allowed optionally, like screen capture/sharing, Siri, Dictation)",
+                "enablePrivateClipboardMacEnforce": "Enforce private clipboard",
                 "allowMacOSVersionNumberCheckFull": "Check full macOS version number",
                 "allowMacOSVersionNumberCheckFull_tooltip": "In addition to major version, check also for allowed minor and patch version number",
                 "allowMacOSVersionNumberMajor": "Allow major version number",
@@ -1845,7 +1844,9 @@
                 "allowiOSVersionNumberMajor_11": "iOS Version 11",
                 "allowiOSVersionNumberMajor_12": "iOS Version 12",
                 "allowiOSVersionNumberMinor": "Minor version number",
-                "allowiOSVersionNumberPatch": "Patch version number"
+                "allowiOSVersionNumberPatch": "Patch version number",
+                "mobileEnableModernAAC": "Enable Modern ACC",
+                "mobileEnableModernAAC_tooltip": "Enable Modern AAC API for Multi App Mode on iPadOS 17.7.1 - 18. On iPadOS 18.1 or newer it is activated automatically if permitted processes for iPadOS are configured."
             },
             "clipboard": {
                 "0": "Allow",

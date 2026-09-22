@@ -146,21 +146,29 @@
                 </v-row>
 
                 <v-row>
-                    <CheckboxSetting
+                    <NumberSetting
                         v-model="singleValues"
                         name="defaultPageZoomLevel"
                         label="sebSettings.userView.zoom.defaultPageZoomLevel"
                         :tooltip="true"
                         :disabled="context.readonly"
+                        :show-label="true"
+                        :min="0.25"
+                        :max="4.0"
+                        :precision="2"
                     />
                 </v-row>
                 <v-row>
-                    <CheckboxSetting
+                    <NumberSetting
                         v-model="singleValues"
                         name="defaultTextZoomLevel"
                         label="sebSettings.userView.zoom.defaultTextZoomLevel"
                         :tooltip="true"
                         :disabled="context.readonly"
+                        :show-label="true"
+                        :min="0.9"
+                        :max="3.5"
+                        :precision="2"
                     />
                 </v-row>
 
@@ -241,6 +249,7 @@
                 <SettingsTitle
                     label="sebSettings.userView.spellChecker.title"
                 />
+
                 <v-row>
                     <CheckboxSetting
                         v-model="singleValues"
@@ -273,44 +282,8 @@
                 <v-row>
                     <CheckboxSetting
                         v-model="singleValues"
-                        name="showTaskBar"
-                        label="sebSettings.userView.task_bar.showTaskBar"
-                        :tooltip="true"
-                        :disabled="context.readonly"
-                    />
-                </v-row>
-                <v-row>
-                    <CheckboxSetting
-                        v-model="singleValues"
-                        name="showSideMenu"
-                        label="sebSettings.userView.task_bar.showSideMenu"
-                        :tooltip="false"
-                        :disabled="context.readonly"
-                    />
-                </v-row>
-                <v-row>
-                    <CheckboxSetting
-                        v-model="singleValues"
-                        name="raiseHandButtonShow"
-                        label="sebSettings.userView.task_bar.raiseHandButtonShow"
-                        :tooltip="false"
-                        :disabled="context.readonly"
-                    />
-                </v-row>
-                <v-row>
-                    <CheckboxSetting
-                        v-model="singleValues"
-                        name="raiseHandButtonAlwaysPromptMessage"
-                        label="sebSettings.userView.task_bar.raiseHandButtonAlwaysPromptMessage"
-                        :tooltip="true"
-                        :disabled="context.readonly"
-                    />
-                </v-row>
-                <v-row>
-                    <CheckboxSetting
-                        v-model="singleValues"
-                        name="allowWlan"
-                        label="sebSettings.userView.task_bar.allowWlan"
+                        name="enableScrollLock"
+                        label="sebSettings.userView.task_bar.enableScrollLock"
                         :tooltip="true"
                         :disabled="context.readonly"
                     />
@@ -327,9 +300,19 @@
                 <v-row>
                     <CheckboxSetting
                         v-model="singleValues"
-                        name="showReloadButton"
-                        label="sebSettings.userView.task_bar.showReloadButton"
+                        name="raiseHandButtonAlwaysPromptMessage"
+                        label="sebSettings.userView.task_bar.raiseHandButtonAlwaysPromptMessage"
                         :tooltip="true"
+                        :disabled="context.readonly"
+                    />
+                </v-row>
+
+                <v-row>
+                    <CheckboxSetting
+                        v-model="singleValues"
+                        name="showBackToStartButton"
+                        label="sebSettings.userView.task_bar.showBackToStartButton"
+                        :tooltip="false"
                         :disabled="context.readonly"
                     />
                 </v-row>
@@ -354,9 +337,9 @@
                 <v-row>
                     <CheckboxSetting
                         v-model="singleValues"
-                        name="showBackToStartButton"
-                        label="sebSettings.userView.task_bar.showBackToStartButton"
-                        :tooltip="false"
+                        name="showNavigationButtons"
+                        label="sebSettings.userView.task_bar.showNavigationButtons"
+                        :tooltip="true"
                         :disabled="context.readonly"
                     />
                 </v-row>
@@ -372,26 +355,26 @@
                 <v-row>
                     <CheckboxSetting
                         v-model="singleValues"
-                        name="enableScrollLock"
-                        label="sebSettings.userView.task_bar.enableScrollLock"
-                        :tooltip="true"
-                        :disabled="context.readonly"
-                    />
-                </v-row>
-                <v-row>
-                    <CheckboxSetting
-                        v-model="singleValues"
-                        name="showScrollLockButton"
-                        label="sebSettings.userView.task_bar.showScrollLockButton"
-                        :tooltip="true"
-                        :disabled="context.readonly"
-                    />
-                </v-row>
-                <v-row>
-                    <CheckboxSetting
-                        v-model="singleValues"
                         name="showQuitButton"
                         label="sebSettings.userView.task_bar.showQuitButton"
+                        :tooltip="true"
+                        :disabled="context.readonly"
+                    />
+                </v-row>
+                <v-row>
+                    <CheckboxSetting
+                        v-model="singleValues"
+                        name="raiseHandButtonShow"
+                        label="sebSettings.userView.task_bar.raiseHandButtonShow"
+                        :tooltip="false"
+                        :disabled="context.readonly"
+                    />
+                </v-row>
+                <v-row>
+                    <CheckboxSetting
+                        v-model="singleValues"
+                        name="showReloadButton"
+                        label="sebSettings.userView.task_bar.showReloadButton"
                         :tooltip="true"
                         :disabled="context.readonly"
                     />
@@ -408,8 +391,35 @@
                 <v-row>
                     <CheckboxSetting
                         v-model="singleValues"
-                        name="showNavigationButtons"
-                        label="sebSettings.userView.task_bar.showNavigationButtons"
+                        name="showScrollLockButton"
+                        label="sebSettings.userView.task_bar.showScrollLockButton"
+                        :tooltip="true"
+                        :disabled="context.readonly"
+                    />
+                </v-row>
+                <v-row>
+                    <CheckboxSetting
+                        v-model="singleValues"
+                        name="showTaskBar"
+                        label="sebSettings.userView.task_bar.showTaskBar"
+                        :tooltip="true"
+                        :disabled="context.readonly"
+                    />
+                </v-row>
+                <v-row>
+                    <CheckboxSetting
+                        v-model="singleValues"
+                        name="showSideMenu"
+                        label="sebSettings.userView.task_bar.showSideMenu"
+                        :tooltip="false"
+                        :disabled="context.readonly"
+                    />
+                </v-row>
+                <v-row>
+                    <CheckboxSetting
+                        v-model="singleValues"
+                        name="allowWlan"
+                        label="sebSettings.userView.task_bar.allowWlan"
                         :tooltip="true"
                         :disabled="context.readonly"
                     />
@@ -488,6 +498,7 @@ import SliderSetting from "./components/inputFields/SliderSetting.vue";
 import SettingsTitle from "./components/SettingsTitle.vue";
 import { useSEBSettingValues } from "./composables/useSEBSettingValues.ts";
 import { SEBSettingsContext } from "./types.ts";
+import NumberSetting from "@/components/widgets/sebSettings/components/inputFields/NumberSetting.vue";
 
 const props = defineProps<{
     context: SEBSettingsContext;

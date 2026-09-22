@@ -332,15 +332,6 @@
                 <v-row>
                     <CheckboxSetting
                         v-model="singleValues"
-                        name="enableMacOSAAC"
-                        label="sebSettings.securityView.macOS.enableMacOSAAC"
-                        :tooltip="true"
-                        :disabled="context.readonly"
-                    />
-                </v-row>
-                <v-row>
-                    <CheckboxSetting
-                        v-model="singleValues"
                         name="aacDnsPrePinning"
                         label="sebSettings.securityView.macOS.aacDnsPrePinning"
                         :tooltip="true"
@@ -437,6 +428,17 @@
                         :disabled="context.readonly"
                     />
                 </v-row>
+
+                <v-row>
+                    <CheckboxSetting
+                        v-model="singleValues"
+                        name="enablePrivateClipboardMacEnforce"
+                        label="sebSettings.securityView.macOS.enablePrivateClipboardMacEnforce"
+                        :tooltip="false"
+                        :disabled="context.readonly"
+                    />
+                </v-row>
+
                 <v-row>
                     <CheckboxSetting
                         v-model="singleValues"
@@ -477,37 +479,43 @@
                 <v-row>
                     <CheckboxSetting
                         v-model="singleValues"
-                        name="allowMacOSVersionNumberMajor"
-                        label="sebSettings.securityView.macOS.allowMacOSVersionNumberMajor"
+                        name="detectAccessibilityApps"
+                        label="sebSettings.securityView.macOS.detectAccessibilityApps"
                         :tooltip="true"
                         :disabled="context.readonly"
                     />
                 </v-row>
                 <v-row>
-                    <CheckboxSetting
+                    <NumberSetting
+                        v-model="singleValues"
+                        name="allowMacOSVersionNumberMajor"
+                        label="sebSettings.securityView.macOS.allowMacOSVersionNumberMajor"
+                        :tooltip="true"
+                        :disabled="context.readonly"
+                        :show-label="true"
+                        :min="10"
+                    />
+                </v-row>
+                <v-row>
+                    <NumberSetting
                         v-model="singleValues"
                         name="allowMacOSVersionNumberMinor"
                         label="sebSettings.securityView.macOS.allowMacOSVersionNumberMinor"
                         :tooltip="false"
                         :disabled="context.readonly"
+                        :show-label="true"
+                        :min="0"
                     />
                 </v-row>
                 <v-row>
-                    <CheckboxSetting
+                    <NumberSetting
                         v-model="singleValues"
                         name="allowMacOSVersionNumberPatch"
                         label="sebSettings.securityView.macOS.allowMacOSVersionNumberPatch"
                         :tooltip="false"
                         :disabled="context.readonly"
-                    />
-                </v-row>
-                <v-row>
-                    <CheckboxSetting
-                        v-model="singleValues"
-                        name="detectAccessibilityApps"
-                        label="sebSettings.securityView.macOS.detectAccessibilityApps"
-                        :tooltip="true"
-                        :disabled="context.readonly"
+                        :show-label="true"
+                        :min="0"
                     />
                 </v-row>
 
@@ -570,6 +578,15 @@
                         :disabled="context.readonly"
                     />
                 </v-row>
+                <v-row>
+                    <CheckboxSetting
+                        v-model="singleValues"
+                        name="mobileEnableModernAAC"
+                        label="sebSettings.securityView.ios.mobileEnableModernAAC"
+                        :tooltip="true"
+                        :disabled="context.readonly"
+                    />
+                </v-row>
 
                 <v-row>
                     <NumberSetting
@@ -583,13 +600,14 @@
                     />
                 </v-row>
                 <v-row>
-                    <SelectionSetting
+                    <NumberSetting
                         v-model="singleValues"
                         name="allowiOSVersionNumberMajor"
                         label="sebSettings.securityView.ios.allowiOSVersionNumberMajor"
-                        :labels="false"
+                        :show-label="true"
                         :tooltip="false"
                         :disabled="context.readonly"
+                        :min="9"
                     />
                 </v-row>
 

@@ -9,6 +9,7 @@
             hide-details
             :min="min"
             :max="max"
+            :precision="precision"
             max-width="600"
             @update:model-value="saveValue()"
         >
@@ -40,6 +41,7 @@ const props = defineProps<{
     disabled?: boolean;
     min?: number;
     max?: number;
+    precision?: number;
 }>();
 
 const numberValue = ref<number>(
