@@ -28,10 +28,11 @@
 </template>
 
 <script setup lang="ts">
-import { computed } from "vue";
+import { computed, watchEffect } from "vue";
 import { VProgressCircular } from "vuetify/components";
 
 import ErrorState from "@/components/widgets/errorState/ErrorState.vue";
+import { markErrorHandled } from "@/services/errors/handledErrors.ts";
 import { appErrorToMessage } from "@/services/errors/toAppError.ts";
 import type { AppError } from "@/services/errors/types.ts";
 
@@ -45,4 +46,13 @@ const messages = computed(() =>
         typeof error === "string" ? error : appErrorToMessage(error),
     ),
 );
+
+watchEffect(() => {
+    props.errors?.forEach((error) => {
+        if (typeof error === "string") {
+            return;
+        }
+        markErrorHandled(error);
+    });
+});
 </script>

@@ -40,13 +40,6 @@
                 @remove="onRemovePill"
                 @clear-all="list.clearAll"
             />
-            <!-- TODO @andrei: properly display errors, once we have a proper generic error component -->
-            <div v-if="deleteFlow.error">
-                {{ deleteFlow.error }}
-            </div>
-            <div v-else-if="copyFlow.error">
-                {{ copyFlow.error }}
-            </div>
             <LoadingFallbackComponent :loading="false" :errors="list.errors">
                 <EntityTable
                     class="px-2 pt-2"
@@ -113,7 +106,7 @@ const { isUnmet } = useActionPrerequisites(addRequires);
 
 const addDisabled = computed(() => isUnmet(addRequires));
 
-const { list, deleteFlow, copyFlow } = useExamTemplateOverview();
+const { list, deleteFlow } = useExamTemplateOverview();
 
 const { filtersOpen, activePills, onRemovePill } = useListFilterPanel({
     search: { applied: () => list.searchField, clear: list.onClearSearch },

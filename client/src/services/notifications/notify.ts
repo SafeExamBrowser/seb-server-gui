@@ -1,12 +1,17 @@
 import { ref } from "vue";
 
+import i18n from "@/i18n";
 import {
     getBackendMessageLines,
     getBackendMessageTitle,
+    hasUntranslatableContent,
 } from "@/services/errors/backendErrorText.ts";
+import { formatErrorReport } from "@/services/errors/errorReport.ts";
+import { markErrorHandled } from "@/services/errors/handledErrors.ts";
 import { toAppError } from "@/services/errors/toAppError.ts";
 import { transportErrorDedupeKey } from "@/services/errors/transport.ts";
 import type { APIMessage, AppError } from "@/services/errors/types.ts";
+import { copyToClipboard } from "@/utils/clipboard.ts";
 
 export type NotificationKind =
     | "success"
@@ -106,6 +111,33 @@ function enqueue(input: NotificationInput): string {
     return id;
 }
 
+function copyDetailsAction(
+    error: AppError,
+    opts: BackendNotifyOptions,
+): Pick<NotificationInput, "actionLabel" | "onAction"> {
+    if (opts.actionLabel || opts.onAction) {
+        return { actionLabel: opts.actionLabel, onAction: opts.onAction };
+    }
+    if (!hasUntranslatableContent(error, opts.onlyMessages)) {
+        return {};
+    }
+    const report = formatErrorReport(error);
+    return {
+        actionLabel: i18n.global.t("errors.backend.unexpected.copyAction"),
+        onAction: () => {
+            void copyToClipboard(report).then((copied) => {
+                if (!copied) {
+                    return;
+                }
+                enqueue({
+                    kind: "success",
+                    title: i18n.global.t("errors.backend.unexpected.copied"),
+                });
+            });
+        },
+    };
+}
+
 function severityForError(error: AppError): NotificationKind {
     if (error.kind === "rate-limit") {
         return "warning";
@@ -157,17 +189,21 @@ export const notify = {
         opts: BackendNotifyOptions = {},
     ): NotifyServerErrorResult {
         const appError = toAppError(error);
+        markErrorHandled(appError);
         const title =
             opts.titleOverride ??
             getBackendMessageTitle(appError, {
                 contextLabel: opts.contextLabel,
                 method: appError.method,
+                onlyMessages: opts.onlyMessages,
             });
         const lines = getBackendMessageLines(appError, opts.onlyMessages);
         const kind = severityForError(appError);
+        const action = copyDetailsAction(appError, opts);
         // Transport-class failures (offline / 5xx / rate-limit) share a coarse
-        // dedupe key, so the interceptor's toast and a page reacting to the
-        // same failure collapse into a single notification.
+        // dedupe key, so the interceptor's toast, its deferred unhandled-error
+        // fallback and a page reacting to the same failure collapse into a
+        // single notification.
         const dedupeKey = opts.dedupeKey ?? transportErrorDedupeKey(appError);
         const ids: string[] = [];
 
@@ -181,8 +217,7 @@ export const notify = {
                         dedupeKey: dedupeKey
                             ? `${dedupeKey}:${index}`
                             : undefined,
-                        actionLabel: opts.actionLabel,
-                        onAction: opts.onAction,
+                        ...action,
                     }),
                 );
             });
@@ -193,8 +228,7 @@ export const notify = {
                     title,
                     text: lines.join("\n"),
                     dedupeKey,
-                    actionLabel: opts.actionLabel,
-                    onAction: opts.onAction,
+                    ...action,
                 }),
             );
         }

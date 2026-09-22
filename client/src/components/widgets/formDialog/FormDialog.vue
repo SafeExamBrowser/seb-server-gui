@@ -113,6 +113,7 @@ import { IconValue } from "vuetify/lib/composables/icons.mjs";
 import BoxActionButton from "@/components/widgets/BoxActionButton.vue";
 import FormBuilder from "@/components/widgets/formBuilder/FormBuilder.vue";
 import { FormField } from "@/components/widgets/formBuilder/types";
+import { markErrorHandled } from "@/services/errors/handledErrors.ts";
 import { errorMessageOf } from "@/services/errors/toAppError.ts";
 
 const props = withDefaults(
@@ -184,6 +185,7 @@ const handleFormSubmit = async () => {
         await props.onSubmit(item.value);
         isDialogOpen.value = false;
     } catch (err) {
+        markErrorHandled(err);
         errorMessage.value = errorMessageOf(err);
     } finally {
         submitting.value = false;
