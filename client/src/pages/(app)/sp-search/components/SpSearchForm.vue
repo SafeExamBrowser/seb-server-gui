@@ -26,15 +26,6 @@
                 <v-icon start size="small" icon="mdi-refresh" />
                 {{ $t("general.clearAll") }}
             </v-btn>
-            <v-btn
-                icon="mdi-chevron-left"
-                variant="text"
-                size="small"
-                density="comfortable"
-                :aria-label="$t('searchForm.hideSearch')"
-                :data-testid="`${dataTestId}-collapse-button`"
-                @click="handleCollapse"
-            />
         </div>
 
         <!------------ body ------------->
@@ -273,10 +264,6 @@ function handleSearch() {
 // chip; the parent re-runs the search from its submitted snapshot.
 function clearFilter(key: SpSearchFilterKey) {
     filters[key] = "";
-}
-
-function handleCollapse() {
-    emit("collapse");
 }
 
 function handleEscape() {
