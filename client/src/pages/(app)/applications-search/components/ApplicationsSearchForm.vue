@@ -26,15 +26,6 @@
                 <v-icon start size="small" icon="mdi-refresh" />
                 {{ $t("general.clearAll") }}
             </v-btn>
-            <v-btn
-                icon="mdi-chevron-left"
-                variant="text"
-                size="small"
-                density="comfortable"
-                :aria-label="$t('searchForm.hideSearch')"
-                :data-testid="`${dataTestId}-collapse-button`"
-                @click="emit('collapse')"
-            />
         </div>
 
         <!------------ body ------------->

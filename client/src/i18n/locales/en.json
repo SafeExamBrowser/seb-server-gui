@@ -2605,6 +2605,16 @@
             },
             "fieldFallback": "{field}: {rule}",
             "rateLimit": "Too many requests. Please slow down and try again.",
+            "unexpected": {
+                "title": "Unexpected Error",
+                "text": "An unexpected error has occurred.",
+                "copyAction": "Copy details",
+                "copied": "Error details copied to clipboard"
+            },
+            "network": {
+                "title": "Connection problem",
+                "text": "The server could not be reached. Please check your connection and try again."
+            },
             "codes": {
                 "GENERIC": "Generic error",
                 "BAD_REQUEST": "Bad Request",

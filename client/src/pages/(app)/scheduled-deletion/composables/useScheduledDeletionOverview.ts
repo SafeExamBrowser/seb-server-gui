@@ -47,7 +47,6 @@ export const useScheduledDeletionOverview = () => {
     const {
         deleteDialogOpen,
         deleteDetailText,
-        deleteError,
         deleteLoading,
         openDeleteDialog,
         confirmDelete,
@@ -94,7 +93,6 @@ export const useScheduledDeletionOverview = () => {
         deleteFlow: reactive({
             dialogOpen: deleteDialogOpen,
             detailText: deleteDetailText,
-            error: deleteError,
             confirm: confirmDelete,
         }),
     };
