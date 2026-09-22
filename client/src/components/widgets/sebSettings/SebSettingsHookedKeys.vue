@@ -57,15 +57,6 @@
                 <v-row>
                     <CheckboxSetting
                         v-model="singleValues"
-                        name="enableStartMenu"
-                        label="sebSettings.hotKeys.enableStartMenu"
-                        :tooltip="false"
-                        :disabled="context.readonly"
-                    />
-                </v-row>
-                <v-row>
-                    <CheckboxSetting
-                        v-model="singleValues"
                         name="enableRightMouse"
                         label="sebSettings.hotKeys.enableRightMouse"
                         :tooltip="true"
@@ -178,7 +169,7 @@
                         label="sebSettings.hotKeys.enableF10"
                         :tooltip="false"
                         :disabled="context.readonly"
-                    />>
+                    />
                 </v-row>
                 <v-row>
                     <CheckboxSetting
