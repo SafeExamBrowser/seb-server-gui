@@ -1,6 +1,7 @@
 import type { Ref } from "vue";
 
 import type { ApplyBackendErrorsResult } from "@/services/errors/formErrorMapping.ts";
+import { markErrorHandled } from "@/services/errors/handledErrors.ts";
 import type { AppError } from "@/services/errors/types.ts";
 import { notify } from "@/services/notifications/notify.ts";
 
@@ -20,6 +21,7 @@ export async function submitWithFormErrors<T>({
     try {
         return await run();
     } catch (thrown) {
+        markErrorHandled(thrown);
         const result = applyErrors(thrown);
         if (!result?.fullyHandled) {
             notify.serverError(result?.appError ?? error.value, {

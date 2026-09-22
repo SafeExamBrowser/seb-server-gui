@@ -4,6 +4,7 @@ import {
     getBackendMessageLines,
     getBackendMessageTitle,
 } from "@/services/errors/backendErrorText.ts";
+import { markErrorHandled } from "@/services/errors/handledErrors.ts";
 import { toAppError } from "@/services/errors/toAppError.ts";
 import { transportErrorDedupeKey } from "@/services/errors/transport.ts";
 import type { APIMessage, AppError } from "@/services/errors/types.ts";
@@ -157,6 +158,7 @@ export const notify = {
         opts: BackendNotifyOptions = {},
     ): NotifyServerErrorResult {
         const appError = toAppError(error);
+        markErrorHandled(appError);
         const title =
             opts.titleOverride ??
             getBackendMessageTitle(appError, {
@@ -166,8 +168,9 @@ export const notify = {
         const lines = getBackendMessageLines(appError, opts.onlyMessages);
         const kind = severityForError(appError);
         // Transport-class failures (offline / 5xx / rate-limit) share a coarse
-        // dedupe key, so the interceptor's toast and a page reacting to the
-        // same failure collapse into a single notification.
+        // dedupe key, so the interceptor's toast, its deferred unhandled-error
+        // fallback and a page reacting to the same failure collapse into a
+        // single notification.
         const dedupeKey = opts.dedupeKey ?? transportErrorDedupeKey(appError);
         const ids: string[] = [];
 
