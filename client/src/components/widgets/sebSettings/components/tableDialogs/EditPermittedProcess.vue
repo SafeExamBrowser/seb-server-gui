@@ -125,6 +125,37 @@
                                 </v-text-field>
                             </v-col>
                         </v-row>
+                        <!------------Description------------->
+                        <v-row>
+                            <v-col>
+                                <v-tooltip
+                                    activator="parent"
+                                    location="top left"
+                                    max-width="400"
+                                >
+                                    {{
+                                        translate(
+                                            "sebSettings.applicationView.permittedProcess.description_tooltip",
+                                        )
+                                    }}
+                                </v-tooltip>
+                                <v-text-field
+                                    v-model="
+                                        props.permittedProcess!.description
+                                    "
+                                    density="compact"
+                                    :label="
+                                        translate(
+                                            'sebSettings.applicationView.permittedProcess.description',
+                                        )
+                                    "
+                                    :disabled="props.readOnly"
+                                    hide-details
+                                    variant="outlined"
+                                >
+                                </v-text-field>
+                            </v-col>
+                        </v-row>
                         <!------------Original Name------------->
                         <v-row>
                             <v-col>

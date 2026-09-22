@@ -122,21 +122,31 @@ export const useSEBSettingValues = (
     }
 
     function getBooleanValue(name: string): boolean {
-        const singleValue = getSingleValue(name);
-        if (!singleValue) {
+        try {
+            const singleValue = getSingleValue(name);
+            if (!singleValue) {
+                return false;
+            }
+
+            return stringToBoolean(singleValue.value);
+        } catch (err) {
+            notify.serverError(err);
             return false;
         }
-
-        return stringToBoolean(singleValue.value);
     }
 
     function getNumberValue(name: string): number {
-        const singleValue = getSingleValue(name);
-        if (!singleValue) {
+        try {
+            const singleValue = getSingleValue(name);
+            if (!singleValue) {
+                return 0;
+            }
+
+            return Number(singleValue.value);
+        } catch (err) {
+            notify.serverError(err);
             return 0;
         }
-
-        return Number(singleValue.value);
     }
 
     function getAttributes(
@@ -181,14 +191,20 @@ export const useSEBSettingValues = (
     }
 
     async function saveTableRow(values: SEBSettingTableValue[]) {
-        values.forEach((tableValue) => {
-            sebSettingsService.updateSEBSettingValue(
+        values.forEach((tableValue) => saveTableCell(tableValue));
+    }
+
+    async function saveTableCell(cellValue: SEBSettingsValue) {
+        try {
+            await sebSettingsService.updateSEBSettingValue(
                 containerId,
-                tableValue.id.toString(),
-                tableValue.value,
+                cellValue.id.toString(),
+                cellValue.value,
                 isExam,
             );
-        });
+        } catch (err) {
+            notify.serverError(err);
+        }
     }
 
     async function addTableRow(

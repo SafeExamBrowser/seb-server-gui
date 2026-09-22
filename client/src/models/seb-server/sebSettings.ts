@@ -9,6 +9,7 @@ export type PermittedProcess = {
     os: string;
     executable: string;
     title: string;
+    description: string;
     originalName: string;
     signature: string;
     path: string;
@@ -27,6 +28,7 @@ export type PermittedProcess = {
         os: number;
         executable: number;
         title: number;
+        description: number;
         originalName: number;
         signature: number;
         path: number;

@@ -5,6 +5,10 @@ import type { AxiosInstance, AxiosRequestConfig } from "axios";
 import { useAuthStore } from "@/composables/store/useAuthStore";
 import { toAppError } from "@/services/errors/toAppError.ts";
 import { transportErrorDedupeKey } from "@/services/errors/transport.ts";
+import {
+    needsUnhandledFallback,
+    scheduleUnhandledErrorToast,
+} from "@/services/errors/unhandledErrors.ts";
 import { notify } from "@/services/notifications/notify.ts";
 
 type AuthType = NonNullable<AxiosRequestConfig["_authType"]>;
@@ -70,9 +74,13 @@ export const configureApiAxios = (
             }
 
             const appError = toAppError(error);
+            const skipToast = Boolean(error?.config?._skipErrorToast);
             const transportKey = transportErrorDedupeKey(appError);
-            if (transportKey && !error?.config?._skipErrorToast) {
+            if (transportKey && !skipToast) {
                 notify.serverError(appError, { dedupeKey: transportKey });
+            }
+            if (needsUnhandledFallback(appError, skipToast)) {
+                scheduleUnhandledErrorToast(appError);
             }
             return Promise.reject(appError);
         },
