@@ -488,6 +488,7 @@ import { useTemplateRef } from "vue";
 import { VCol, VRow } from "vuetify/components";
 
 import LoadingFallbackComponent from "@/components/widgets/loadingFallbackComponent/LoadingFallbackComponent.vue";
+import NumberSetting from "@/components/widgets/sebSettings/components/inputFields/NumberSetting.vue";
 import { ViewType } from "@/models/seb-server/sebSettingsEnums.ts";
 
 import CheckboxSetting from "./components/inputFields/CheckboxSetting.vue";
@@ -498,7 +499,6 @@ import SliderSetting from "./components/inputFields/SliderSetting.vue";
 import SettingsTitle from "./components/SettingsTitle.vue";
 import { useSEBSettingValues } from "./composables/useSEBSettingValues.ts";
 import { SEBSettingsContext } from "./types.ts";
-import NumberSetting from "@/components/widgets/sebSettings/components/inputFields/NumberSetting.vue";
 
 const props = defineProps<{
     context: SEBSettingsContext;
