@@ -3,7 +3,13 @@ import {
     SEBSettingAttribute,
     SEBSettingsValue,
 } from "@/models/seb-server/sebSettings.ts";
+import { notify } from "@/services/notifications/notify";
 import { stringToBoolean } from "@/utils/generalUtils.ts";
+
+export const LIST_SEPARATOR: string = ",";
+export const EMBEDDED_LIST_SEPARATOR: string = "|";
+export const ESCAPE_LIST_SEPARATOR: string = "__COMMA__";
+export const ESCAPE_EMBEDDED_LIST_SEPARATOR: string = "__PIPE__";
 
 export function getStringValue(
     rowVals: Map<string, SEBSettingsValue>,
@@ -52,11 +58,18 @@ export function getPermittedProcessArguments(
 
     const list = args.split(",");
     list.forEach((line) => {
-        const vals = line.split("|");
-        result.push({
-            active: vals[0].split("=")[1] === "true",
-            argument: replaceTableValueEscapes(vals[1]).split("=")[1],
-        });
+        try {
+            const vals = line.split("|");
+            result.push({
+                active: vals[0].split("=")[1] === "true",
+                argument: replaceTableValueEscapes(vals[1]).split("=")[1],
+            });
+        } catch (err) {
+            notify.warning(
+                "Argument Parsing Error",
+                "Unable to parse an argument value: " + err,
+            );
+        }
     });
 
     return result;
@@ -94,11 +107,13 @@ export function getSettingId(
 
 function escapeTableValue(value: string) {
     const escaped = value
-        .replaceAll(",", "__COMMA__")
-        .replaceAll("|", "__PIPE__");
+        .replaceAll(LIST_SEPARATOR, ESCAPE_LIST_SEPARATOR)
+        .replaceAll(EMBEDDED_LIST_SEPARATOR, ESCAPE_EMBEDDED_LIST_SEPARATOR);
     return escaped;
 }
 
 function replaceTableValueEscapes(value: string) {
-    return value.replaceAll("__COMMA__", ",").replaceAll("__PIPE__", "|");
+    return value
+        .replaceAll(ESCAPE_LIST_SEPARATOR, LIST_SEPARATOR)
+        .replaceAll(ESCAPE_EMBEDDED_LIST_SEPARATOR, EMBEDDED_LIST_SEPARATOR);
 }
