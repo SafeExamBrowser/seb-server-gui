@@ -5,6 +5,7 @@ import i18n from "@/i18n";
 import { ConfigurationExamMapping } from "@/models/seb-server/configurationNode";
 import { Exam } from "@/models/seb-server/exam.ts";
 import { GUIAction } from "@/services/ability.ts";
+import { getConfigurationNode } from "@/services/seb-server/configurationNodeService.ts";
 import { formatIsoToReadableDateTime } from "@/utils/timeUtils.ts";
 
 import { useSebSettingsConfigNode } from "./api/useSebSettingsConfigNode.ts";
@@ -55,11 +56,22 @@ export const useSebSettings = (
         ];
     });
 
+    const reloadConfigNode = async () => {
+        if (configMapping.value) {
+            configNode.value = await getConfigurationNode(
+                String(configMapping.value.configurationNodeId),
+            );
+        }
+    };
+
     return {
         editHidden,
         editDisabled,
+        configNode,
         lastModifiedItems,
         lastModifiedLoading,
         error,
+
+        reloadConfigNode,
     };
 };
