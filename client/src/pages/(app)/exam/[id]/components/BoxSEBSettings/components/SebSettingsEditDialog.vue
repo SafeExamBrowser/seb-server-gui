@@ -30,7 +30,7 @@ const { examId, editDisabled, activeSebClients, notifyPublished } =
         examId: number;
         editDisabled: boolean;
         activeSebClients: number;
-        notifyPublished?: () => void;
+        notifyPublished: () => void;
     }>();
 
 const dialogOpen = ref(false);
