@@ -165,13 +165,7 @@
                     class="px-6 mt-4 text-body-medium text-grey-darken-1"
                 >
                     {{ $t("connectionConfigurations.hints.lastUpdatedAt")
-                    }}{{ formatDate(config.lastUpdateTime)
-                    }}{{
-                        config.lastUpdateUser
-                            ? $t("connectionConfigurations.hints.by") +
-                              config.lastUpdateUser
-                            : ""
-                    }}
+                    }}{{ formatDate(config.lastUpdateTime) }}
                 </div>
 
                 <div class="d-flex justify-end ga-2 px-6 pb-4">
