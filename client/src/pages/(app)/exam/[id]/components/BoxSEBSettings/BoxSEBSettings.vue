@@ -6,6 +6,7 @@
                 :exam-id="examId"
                 :edit-disabled="editDisabled"
                 :active-seb-clients="activeSebClients ?? 0"
+                :notify-published="reloadExamDetails"
             />
         </template>
 
@@ -28,7 +29,7 @@ import LoadingFallbackComponent from "@/components/widgets/loadingFallbackCompon
 import SebSettingsEditDialog from "./components/SebSettingsEditDialog.vue";
 import { useActiveSebClients } from "./composables/api/useActiveSebClients.ts";
 
-const { examId } = defineProps<{
+const { examId, lastModifiedItems } = defineProps<{
     examId: number;
     editHidden: boolean;
     editDisabled: boolean;
@@ -37,4 +38,10 @@ const { examId } = defineProps<{
 }>();
 
 const { data: activeSebClients } = useActiveSebClients(examId);
+
+function reloadExamDetails(): void {
+    // TODO @andrei this is the SEB Settings publish hook that gets called after SEB Settings has changed
+    //              this should update the lastModifiedItems from the KeyValueItem
+    //              and the ConfigKey form the SEBKeys Box
+}
 </script>

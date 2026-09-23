@@ -83,6 +83,7 @@ const props = defineProps<{
     context: SEBSettingsContext;
     dialogTitle: string;
     activeSEBClientConnection: number;
+    notifyPublished?: () => void;
 }>();
 
 const open = defineModel<boolean>({ required: true });
@@ -98,6 +99,9 @@ const closeDialog = async (apply: boolean) => {
             props.context.containerId,
             props.context.isExam,
         );
+        if (props.notifyPublished) {
+            props.notifyPublished();
+        }
         return;
     }
 
