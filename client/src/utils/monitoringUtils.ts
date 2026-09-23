@@ -41,6 +41,27 @@ export const CONNECTION_STATUS_DISPLAY_ORDER = [
     ConnectionStatusEnum.MISSING,
 ] as const;
 
+const CONNECTION_STATUS_LABEL_I18N_KEYS: Record<ConnectionStatusEnum, string> =
+    {
+        [ConnectionStatusEnum.UNDEFINED]: "UNDEFINED",
+        [ConnectionStatusEnum.CONNECTION_REQUESTED]: "CONNECTION_REQUESTED",
+        [ConnectionStatusEnum.READY]: "READY",
+        [ConnectionStatusEnum.ACTIVE]: "ACTIVE",
+        [ConnectionStatusEnum.DISABLED]: "DISABLED",
+        [ConnectionStatusEnum.MISSING]: "MISSING",
+        [ConnectionStatusEnum.CLOSED]: "CLOSED",
+    };
+
+export function getConnectionStatusLabel(status: string): string {
+    const connectionStatus =
+        generalUtils.findEnumValue(ConnectionStatusEnum, status) ??
+        ConnectionStatusEnum.UNDEFINED;
+
+    return generalUtils.translate(
+        CONNECTION_STATUS_LABEL_I18N_KEYS[connectionStatus],
+    );
+}
+
 export function getConnectionStatusColor(status: string): string {
     const connectionStatus = generalUtils.findEnumValue(
         ConnectionStatusEnum,

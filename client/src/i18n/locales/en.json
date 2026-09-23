@@ -2258,14 +2258,7 @@
             "close": "Close",
             "statusFilterLabel": "Filter by status",
             "statuses": {
-                "ALL": "All",
-                "ACTIVE": "Active",
-                "READY": "Ready",
-                "DISABLED": "Disabled",
-                "MISSING": "Missing",
-                "CLOSED": "Closed",
-                "CONNECTION_REQUESTED": "Connection Requested",
-                "UNDEFINED": "Undefined"
+                "ALL": "All"
             }
         }
     },

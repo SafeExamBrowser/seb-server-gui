@@ -44,6 +44,7 @@
                             :edit-disabled="sebSettingsEditDisabled"
                             :last-modified-items="lastModifiedItems"
                             :last-modified-loading="lastModifiedLoading"
+                            :update-data="reloadConfig"
                         />
                     </template>
 
@@ -51,9 +52,11 @@
                         <BoxSEBKeys
                             :last-modified-items="lastModifiedItems"
                             :last-modified-loading="lastModifiedLoading"
+                            :config-node="computed(() => configNode)"
                             :edit-disabled="sebKeysEditDisabled()"
                             :exam-id="examId"
-                            :has-b-e-k="exam?.lmsSetupId != null"
+                            :items="sebKeys.items"
+                            :seb-keys="sebKeys.data"
                         />
                     </template>
 
@@ -81,6 +84,7 @@
 </template>
 
 <script setup lang="ts">
+import { computed } from "vue";
 import { useI18n } from "vue-i18n";
 
 import BasicGrid from "@/components/layout/BasicGrid.vue";
@@ -125,6 +129,7 @@ const {
     examWithURL,
     basicSettings,
     sebSettings,
+    sebKeys,
     supervisors,
     actions,
 } = useExamDetailPage();
@@ -140,8 +145,10 @@ const {
 const {
     editHidden: sebSettingsEditHidden,
     editDisabled: sebSettingsEditDisabled,
+    configNode,
     lastModifiedItems,
     lastModifiedLoading,
+    reloadConfigNode,
 } = sebSettings;
 
 const {
@@ -173,5 +180,10 @@ function sebKeysEditDisabled(): boolean {
         exam.value.status == ExamStatusEnum.ARCHIVED ||
         exam.value.lmsSetupId == null
     );
+}
+
+function reloadConfig() {
+    reloadConfigNode();
+    sebKeys.value.reloadConfigKey();
 }
 </script>

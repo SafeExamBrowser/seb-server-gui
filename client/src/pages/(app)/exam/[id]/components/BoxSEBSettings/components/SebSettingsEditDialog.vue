@@ -13,6 +13,7 @@
         v-model="dialogOpen"
         :context="context"
         :active-s-e-b-client-connection="activeSebClients"
+        :notify-published="notifyPublished"
         :dialog-title="dialogTitleKey"
     />
 </template>
@@ -24,11 +25,13 @@ import BoxActionButton from "@/components/widgets/BoxActionButton.vue";
 import SebSettingsDialog from "@/components/widgets/sebSettings/SebSettingsDialog.vue";
 import { SEBSettingsContext } from "@/components/widgets/sebSettings/types.ts";
 
-const { examId, editDisabled, activeSebClients } = defineProps<{
-    examId: number;
-    editDisabled: boolean;
-    activeSebClients: number;
-}>();
+const { examId, editDisabled, activeSebClients, notifyPublished } =
+    defineProps<{
+        examId: number;
+        editDisabled: boolean;
+        activeSebClients: number;
+        notifyPublished?: () => void;
+    }>();
 
 const dialogOpen = ref(false);
 
