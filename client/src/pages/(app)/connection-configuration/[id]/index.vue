@@ -343,10 +343,9 @@ watch(
         pingInterval.value = toSeconds(fetched.sebServerPingTime) ?? 1;
         asymmetricOnlyEncryption.value = Boolean(fetched.cert_encryption_asym);
         encryptWithCertificate.value = fetched.cert_alias || undefined;
-        // The read model no longer carries the write-only password values (they
-        // come back only as { empty } indicators), so start the inputs empty.
-        configurationPassword.value = "";
-        confirmConfigurationPassword.value = "";
+
+        configurationPassword.value = fetched.encryptSecret || undefined;
+        confirmConfigurationPassword.value = fetched.encryptSecret || undefined;
 
         withFallback.value = Boolean(fetched.sebServerFallback);
         fallbackStartUrl.value = fetched.startURL || undefined;
@@ -355,10 +354,12 @@ watch(
             toSeconds(fetched.sebServerFallbackAttemptInterval) ?? 2;
         connectionTimeout.value =
             toSeconds(fetched.sebServerFallbackTimeout) ?? 30;
-        fallbackPassword.value = "";
-        confirmFallbackPassword.value = "";
-        quitPassword.value = "";
-        confirmQuitPassword.value = "";
+        fallbackPassword.value =
+            fetched.sebServerFallbackPasswordHash || undefined;
+        confirmFallbackPassword.value =
+            fetched.sebServerFallbackPasswordHash || undefined;
+        quitPassword.value = fetched.hashedQuitPassword || undefined;
+        confirmQuitPassword.value = fetched.hashedQuitPassword || undefined;
 
         snapshot();
     },
