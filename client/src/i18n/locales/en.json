@@ -912,6 +912,7 @@
                 "title": "Test Assessment Tool Connection failed",
                 "message": {
                     "API_NOT_SUPPORTED": "The Assessment Tool (API) is not supported",
+                    "API_ACCESS_DENIED": "No Access to the The Assessment Tool (API)",
                     "MISSING_ATTRIBUTE": "There are missing attributes. Please make sure you have set all needed attributes",
                     "TOKEN_REQUEST": "Access is denied. Please make sure your client credentials or access token is correct",
                     "QUIZ_ACCESS_API_REQUEST": "Failed to load quizzes from Assessment Tool",
@@ -2170,10 +2171,10 @@
             "notifications": "Notifications",
             "indicators": "Indicators",
             "searchPlaceholder": "Search Clients",
-            "lockClients": "Lock selected clients",
-            "unlockClients": "Unlock selected clients",
-            "quitClients": "Quit selected clients",
-            "cancelClients": "Cancel selected clients"
+            "lockClients": "Lock clients",
+            "unlockClients": "Unlock clients",
+            "quitClients": "Quit clients",
+            "cancelClients": "Cancel clients"
         },
         "actions": {
             "lockTitle": "Lock clients",
