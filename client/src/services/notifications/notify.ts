@@ -184,6 +184,27 @@ export const notify = {
     ): string {
         return enqueue({ kind: "client-error", title, text, ...opts });
     },
+    assessmentToolError(
+        opts: BackendNotifyOptions = {},
+        title: string,
+        text: string,
+        details?: string,
+    ): string {
+        const appError: AppError = {
+            kind: "backend",
+            messages: [
+                {
+                    messageCode: "",
+                    details: details,
+                },
+            ],
+            fieldErrors: [],
+            globalMessages: [],
+            raw: details,
+        };
+        const action = copyDetailsAction(appError, opts);
+        return enqueue({ kind: "server-error", title, text, ...action });
+    },
     serverError(
         error: unknown,
         opts: BackendNotifyOptions = {},
