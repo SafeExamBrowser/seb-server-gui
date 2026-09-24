@@ -2171,10 +2171,10 @@
             "notifications": "Notifications",
             "indicators": "Indicators",
             "searchPlaceholder": "Search Clients",
-            "lockClients": "Lock selected clients",
-            "unlockClients": "Unlock selected clients",
-            "quitClients": "Quit selected clients",
-            "cancelClients": "Cancel selected clients"
+            "lockClients": "Lock clients",
+            "unlockClients": "Unlock clients",
+            "quitClients": "Quit clients",
+            "cancelClients": "Cancel clients"
         },
         "actions": {
             "lockTitle": "Lock clients",
