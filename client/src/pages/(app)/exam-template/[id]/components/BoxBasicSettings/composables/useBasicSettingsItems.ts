@@ -1,37 +1,40 @@
 import { computed, Ref } from "vue";
 
 import { KeyValueItem } from "@/components/widgets/keyValueList/types.ts";
-import { useClientConfigurationNames } from "@/composables/useClientConfigurationNames.ts";
 import i18n from "@/i18n";
 import { BasicSettings } from "@/models/examTemplate.ts";
 import {
     ExamTypeEnum,
     toSelectableExamType,
 } from "@/models/seb-server/examFiltersEnum.ts";
+import { useConnectionConfigurationQuery } from "@/pages/(app)/connection-configuration/api/useConnectionConfigurationQuery";
 
 export const useBasicSettingsItems = (basicSettings: Ref<BasicSettings>) => {
-    const {
-        data: clientConfigurationNames,
-        loading: loadingClientConfigurationNames,
-    } = useClientConfigurationNames();
+    const clientConfigId = computed(() =>
+        basicSettings.value.clientConfigurationId
+            ? String(basicSettings.value.clientConfigurationId)
+            : undefined,
+    );
+
+    const { data: clientConfiguration, isLoading: loading } =
+        useConnectionConfigurationQuery(clientConfigId);
 
     const clientConfigurationValue = computed(() => {
-        if (!basicSettings.value.clientConfigurationId) {
+        if (!clientConfigId.value) {
+            return i18n.global.t("general.noData");
+        }
+        if (loading.value) {
+            return i18n.global.t("general.noData");
+        }
+        if (!clientConfiguration.value) {
             return i18n.global.t("general.noData");
         }
 
-        // avoid flickering by waiting for the names request to resolve
-        if (loadingClientConfigurationNames.value) {
-            return "";
+        if (clientConfiguration.value?.active) {
+            return clientConfiguration.value.name;
+        } else {
+            return `${clientConfiguration.value.name} -- (${i18n.global.t("general.inactive")})`;
         }
-
-        return (
-            clientConfigurationNames.value?.find(
-                (clientConfiguration) =>
-                    clientConfiguration.modelId ===
-                    String(basicSettings.value.clientConfigurationId),
-            )?.name ?? i18n.global.t("general.noData")
-        );
     });
 
     const items = computed<KeyValueItem[]>(() => {

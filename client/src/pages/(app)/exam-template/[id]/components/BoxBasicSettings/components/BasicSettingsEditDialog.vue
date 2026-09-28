@@ -59,6 +59,8 @@ import {
     toSelectableExamType,
 } from "@/models/seb-server/examFiltersEnum.ts";
 import { useExamTemplateBasicSettingsFields } from "@/pages/(app)/exam-template/composables/useExamTemplateBasicSettingsFields.ts";
+import { notify } from "@/services/notifications/notify";
+import { getConnectionConfigurationById } from "@/services/seb-server/connectionConfigurationService";
 
 const { basicSettings } = defineProps<{ basicSettings: BasicSettings }>();
 
@@ -98,13 +100,35 @@ const { formFields, loading, errors } = useExamTemplateBasicSettingsFields(
     },
 );
 
-const handleButtonEditClick = () => {
+const handleButtonEditClick = async () => {
     nameTransient.value = basicSettings.name;
     descriptionTransient.value = basicSettings.description;
     examTypeTransient.value = toSelectableExamType(basicSettings.examType);
-    clientConfigurationTransient.value = toSelectableClientConfigurationId(
-        basicSettings.clientConfigurationId,
-    );
+
+    if (basicSettings.clientConfigurationId) {
+        const cc = await getConnectionConfigurationById(
+            String(basicSettings.clientConfigurationId),
+        );
+        if (cc.active === true) {
+            clientConfigurationTransient.value =
+                toSelectableClientConfigurationId(
+                    basicSettings.clientConfigurationId,
+                );
+        } else {
+            clientConfigurationTransient.value = undefined;
+            notify.info(
+                "Inactive Client Configuration",
+                'There is an inactive client configuration set for this template. Please either re-active the client configuration with name: "' +
+                    cc.name +
+                    ' "or select an active client configuration and save the template',
+            );
+        }
+    } else {
+        clientConfigurationTransient.value = toSelectableClientConfigurationId(
+            basicSettings.clientConfigurationId,
+        );
+    }
+
     lmsIntegrationTransient.value = basicSettings.lmsIntegration;
     institutionalDefaultTransient.value = basicSettings.institutionalDefault;
     screenProctoringEnabledTransient.value =
