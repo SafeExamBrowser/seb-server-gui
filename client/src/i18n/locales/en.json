@@ -2267,7 +2267,12 @@
         "message": "You are not allowed to view this page",
         "backToHome": "Back to home"
     },
+    "notFound": {
+        "message": "The page you requested does not exist",
+        "backToHome": "Back to home"
+    },
     "titles": {
+        "pageNotFound": "Page not found",
         "navigationOverview": "Navigation Overview",
         "exams": "Exams",
         "examsOverview": "Exams Overview",

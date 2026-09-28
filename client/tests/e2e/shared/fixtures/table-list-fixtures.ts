@@ -19,6 +19,7 @@ import { AnalyzeListModel } from "../../08-analyze/models/analyze-list.model";
 import { ArchiveListModel } from "../../09-archive/models/archive-list.model";
 import { loginAsServerAdmin } from "../../utils/authenticate";
 import { installMockBackend } from "../mocks/mock-backend";
+import { NotFoundPageModel } from "../page-models/layout/not-found-page.model";
 import { ProfileMenuModel } from "../page-models/layout/profile-menu.model";
 
 type Fixtures = {
@@ -28,6 +29,7 @@ type Fixtures = {
     userAccountRegister: UserAccountRegisterModel;
     userAccountProfile: UserAccountProfileModel;
     profileMenu: ProfileMenuModel;
+    notFoundPage: NotFoundPageModel;
     institutions: InstitutionsListModel;
     connectionConfigurations: ConnectionConfigurationsListModel;
     connectionConfigurationCreate: ConnectionConfigurationCreateModel;
@@ -72,6 +74,11 @@ export const test = base.extend<Fixtures>({
         await installMockBackend(page, testInfo.project.name);
         await loginAsServerAdmin(page);
         await use(new ProfileMenuModel(page));
+    },
+    notFoundPage: async ({ page }, use, testInfo) => {
+        await installMockBackend(page, testInfo.project.name);
+        await loginAsServerAdmin(page);
+        await use(new NotFoundPageModel(page));
     },
     institutions: async ({ page }, use, testInfo) => {
         await installMockBackend(page, testInfo.project.name);
