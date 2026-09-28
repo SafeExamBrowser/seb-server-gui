@@ -569,8 +569,8 @@
                 "title": "Basic Settings",
                 "dialogTitle": "Edit Basic Settings",
                 "inactiveClientConfig": {
-                    "title": "Inactive Client Configuration Selected: ",
-                    "text": "There is an inactive client configuration set for this template. Please either re-active the client configuration or select an active client configuration and save the template."
+                    "title": "Inactive Connection Configuration Selected: ",
+                    "text": "There is an inactive connection configuration set for this template. Please either re-active the connection configuration or select an active connection configuration and save the template."
                 }
             },
             "sebSettings": {
