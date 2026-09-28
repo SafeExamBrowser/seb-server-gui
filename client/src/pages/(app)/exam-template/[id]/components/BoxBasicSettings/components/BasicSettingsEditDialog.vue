@@ -48,6 +48,7 @@ import {
 import BoxActionButton from "@/components/widgets/BoxActionButton.vue";
 import FormBuilder from "@/components/widgets/formBuilder/FormBuilder.vue";
 import LoadingFallbackComponent from "@/components/widgets/loadingFallbackComponent/LoadingFallbackComponent.vue";
+import i18n from "@/i18n";
 import { BasicSettings } from "@/models/examTemplate.ts";
 import {
     toApiClientConfigurationId,
@@ -116,11 +117,11 @@ const handleButtonEditClick = async () => {
                 );
         } else {
             clientConfigurationTransient.value = undefined;
-            notify.info(
-                "Inactive Client Configuration",
-                'There is an inactive client configuration set for this template. Please either re-active the client configuration with name: "' +
-                    cc.name +
-                    ' "or select an active client configuration and save the template',
+            notify.warning(
+                `${i18n.global.t("examTemplateDetail.boxes.basicSettings.inactiveClientConfig.title")} ${cc.name}`,
+                i18n.global.t(
+                    "examTemplateDetail.boxes.basicSettings.inactiveClientConfig.text",
+                ),
             );
         }
     } else {
