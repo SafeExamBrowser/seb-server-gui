@@ -30,7 +30,7 @@ export const useBasicSettingsItems = (basicSettings: Ref<BasicSettings>) => {
             return i18n.global.t("general.noData");
         }
 
-        if (clientConfiguration.value?.active) {
+        if (clientConfiguration.value.active) {
             return clientConfiguration.value.name;
         } else {
             return `${clientConfiguration.value.name} - (${i18n.global.t("general.inactive")})`;
