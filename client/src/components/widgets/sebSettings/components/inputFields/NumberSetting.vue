@@ -59,7 +59,7 @@ async function saveValue() {
             numberValue.value.toString(),
         );
     } else {
-        if (props.min) {
+        if (props.min !== undefined) {
             numberValue.value = props.min;
             props.modelValue.saveSingleValue(props.name, props.min.toString());
         } else {

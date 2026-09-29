@@ -1,101 +1,95 @@
 <template>
-    <v-main data-testid="register-page-container">
+    <v-main class="bg-background" data-testid="register-page-container">
         <v-container class="fill-height d-flex align-center justify-center">
-            <v-row class="w-100 justify-center">
-                <v-col cols="12" lg="8" md="6" sm="6">
-                    <v-card class="pa-8">
-                        <div class="d-flex ml-15 mr-15 justify-center">
-                            <v-img
-                                alt="SEB Logo"
-                                class="mb-4"
-                                :max-width="150"
-                                src="/img/seb-logo-no-border.png"
+            <v-card class="pa-8 w-100" max-width="600">
+                <div class="d-flex ml-15 mr-15 justify-center">
+                    <v-img
+                        alt="SEB Logo"
+                        class="mb-4"
+                        :max-width="150"
+                        src="/img/seb-logo-no-border.png"
+                    />
+                </div>
+                <div class="d-flex ml-15 mr-15 mt-5 justify-center">
+                    <div class="text-title-large">
+                        {{ translate("userAccount.registerPage.title") }}
+                    </div>
+                </div>
+
+                <div v-if="registerSuccess" class="mt-10">
+                    <div data-testid="register-success-alert">
+                        <AlertMsg
+                            :alert-props="{
+                                title: '',
+                                color: 'success',
+                                type: 'alert',
+                                textKey: 'register-success',
+                            }"
+                        />
+                    </div>
+                </div>
+
+                <v-card-title class="mt-10">
+                    {{ translate("titles.register") }}
+                </v-card-title>
+                <v-card-subtitle>
+                    {{
+                        translate(
+                            "userAccount.registerPage.info.accountRegistrationInfo",
+                        )
+                    }}
+                </v-card-subtitle>
+
+                <v-card-text class="pt-12">
+                    <LoadingFallbackComponent
+                        :loading="loading"
+                        :errors="errors"
+                    >
+                        <template v-if="!registerSuccess">
+                            <FormBuilder
+                                ref="formRef"
+                                :fields="formFields"
+                                data-testid="register-form"
+                                @submit="handleRegister"
                             />
-                        </div>
-                        <div class="d-flex ml-15 mr-15 mt-5 justify-center">
-                            <div class="text-title-large">
-                                {{
-                                    translate("userAccount.registerPage.title")
-                                }}
-                            </div>
-                        </div>
 
-                        <div v-if="registerSuccess" class="mt-10">
-                            <div data-testid="register-success-alert">
-                                <AlertMsg
-                                    :alert-props="{
-                                        title: '',
-                                        color: 'success',
-                                        type: 'alert',
-                                        textKey: 'register-success',
-                                    }"
-                                />
-                            </div>
-                        </div>
-
-                        <v-card-title class="mt-10">
-                            {{ translate("titles.register") }}
-                        </v-card-title>
-                        <v-card-subtitle>
-                            {{
-                                translate(
-                                    "userAccount.registerPage.info.accountRegistrationInfo",
-                                )
-                            }}
-                        </v-card-subtitle>
-
-                        <v-card-text class="pt-12">
-                            <LoadingFallbackComponent
-                                :loading="loading"
-                                :errors="errors"
+                            <v-btn
+                                block
+                                class="mt-4"
+                                color="primary"
+                                data-testid="register-submit-btn"
+                                :loading="registerLoading"
+                                rounded="sm"
+                                @click="handleRegister"
                             >
-                                <template v-if="!registerSuccess">
-                                    <FormBuilder
-                                        ref="formRef"
-                                        :fields="formFields"
-                                        data-testid="register-form"
-                                        @submit="handleRegister"
-                                    />
+                                {{
+                                    translate(
+                                        "userAccount.registerPage.buttons.register",
+                                    )
+                                }}
+                            </v-btn>
+                        </template>
 
-                                    <v-btn
-                                        block
-                                        class="mt-4"
-                                        color="primary"
-                                        data-testid="register-submit-btn"
-                                        :loading="registerLoading"
-                                        rounded="sm"
-                                        @click="handleRegister"
-                                    >
-                                        {{
-                                            translate(
-                                                "userAccount.registerPage.buttons.register",
-                                            )
-                                        }}
-                                    </v-btn>
-                                </template>
-
-                                <div class="text-center mt-7">
-                                    <span>{{
-                                        translate(
-                                            "userAccount.registerPage.info.alreadyHaveAccount",
-                                        )
-                                    }}</span>
-                                    <RouterLink
-                                        data-testid="register-login-link"
-                                        :to="{ name: '/(public)/login/' }"
-                                    >
-                                        {{
-                                            translate(
-                                                "userAccount.registerPage.buttons.login",
-                                            )
-                                        }}
-                                    </RouterLink>
-                                </div>
-                            </LoadingFallbackComponent>
-                        </v-card-text>
-                    </v-card>
-                </v-col>
-            </v-row>
+                        <div class="text-center mt-7">
+                            <span>{{
+                                translate(
+                                    "userAccount.registerPage.info.alreadyHaveAccount",
+                                )
+                            }}</span>
+                            <RouterLink
+                                data-testid="register-login-link"
+                                :to="{ name: '/(public)/login/' }"
+                            >
+                                {{
+                                    translate(
+                                        "userAccount.registerPage.buttons.login",
+                                    )
+                                }}
+                            </RouterLink>
+                        </div>
+                    </LoadingFallbackComponent>
+                </v-card-text>
+            </v-card>
         </v-container>
     </v-main>
 </template>
@@ -109,11 +103,9 @@ import {
     VCardSubtitle,
     VCardText,
     VCardTitle,
-    VCol,
     VContainer,
     VImg,
     VMain,
-    VRow,
 } from "vuetify/components";
 
 import AlertMsg from "@/components/widgets/AlertMsg.vue";

@@ -508,7 +508,7 @@
         "steps": {
             "naming": {
                 "title": "Define Basic Settings",
-                "subtitle": "Fill out the form. Create a SEB Client Template and a Connection Configuration, if you haven't done so already."
+                "subtitle": "Fill out the form. Create a Connection Configuration, if you haven't done so already."
             },
             "seb-settings": {
                 "title": "Enter SEB Settings",
@@ -567,7 +567,11 @@
         "boxes": {
             "basicSettings": {
                 "title": "Basic Settings",
-                "dialogTitle": "Edit Basic Settings"
+                "dialogTitle": "Edit Basic Settings",
+                "inactiveClientConfig": {
+                    "title": "Inactive Connection Configuration Selected: ",
+                    "text": "There is an inactive connection configuration set for this template. Please either re-active the connection configuration or select an active connection configuration and save the template."
+                }
             },
             "sebSettings": {
                 "title": "SEB Settings",
@@ -2267,7 +2271,12 @@
         "message": "You are not allowed to view this page",
         "backToHome": "Back to home"
     },
+    "notFound": {
+        "message": "The page you requested does not exist",
+        "backToHome": "Back to home"
+    },
     "titles": {
+        "pageNotFound": "Page not found",
         "navigationOverview": "Navigation Overview",
         "exams": "Exams",
         "examsOverview": "Exams Overview",
