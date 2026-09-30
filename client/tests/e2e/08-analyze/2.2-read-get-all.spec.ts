@@ -136,9 +136,7 @@ test.describe("08 Analyze - READ Get All", () => {
         );
 
         await analyzeExams.page.goto(analyzeExams.config.route);
-        await expect(
-            analyzeExams.page.getByText(/Something went wrong:/i),
-        ).toBeVisible();
+        await analyzeExams.errorState.expectVisible();
     });
 
     test("E row actions: showSPS is conditional, downloadSEBLogs always fires the export request", async ({

@@ -170,9 +170,7 @@ test.describe("01 User Accounts - READ Get All", () => {
         );
 
         await userAccounts.page.goto(userAccounts.config.route);
-        await expect(
-            userAccounts.page.getByText(/Something went wrong:/i),
-        ).toBeVisible();
+        await userAccounts.errorState.expectVisible();
     });
 
     test("E row actions open confirm dialogs and cancel leaves data unchanged", async ({
