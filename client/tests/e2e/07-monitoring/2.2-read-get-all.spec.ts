@@ -131,9 +131,7 @@ test.describe("07 Monitoring - READ Get All", () => {
         );
 
         await monitoringExams.page.goto(monitoringExams.config.route);
-        await expect(
-            monitoringExams.page.getByText(/Something went wrong:/i),
-        ).toBeVisible();
+        await monitoringExams.errorState.expectVisible();
     });
 
     test("E row click and the navigate action both open the monitoring detail page", async ({

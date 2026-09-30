@@ -134,9 +134,7 @@ test.describe("09 Archive - READ Get All", () => {
         );
 
         await archiveExams.page.goto(archiveExams.config.route);
-        await expect(
-            archiveExams.page.getByText(/Something went wrong:/i),
-        ).toBeVisible();
+        await archiveExams.errorState.expectVisible();
     });
 
     test("E archive action is hidden for already-archived rows; cancel leaves status unchanged", async ({

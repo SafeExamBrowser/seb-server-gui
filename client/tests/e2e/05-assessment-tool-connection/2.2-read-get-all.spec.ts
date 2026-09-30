@@ -159,9 +159,7 @@ test.describe("05 Assessment Tools - READ Get All", () => {
         );
 
         await assessmentTools.page.goto(assessmentTools.config.route);
-        await expect(
-            assessmentTools.page.getByText(/Something went wrong:/i),
-        ).toBeVisible();
+        await assessmentTools.errorState.expectVisible();
     });
 
     test("E row actions open confirm dialogs and cancel leaves data unchanged", async ({

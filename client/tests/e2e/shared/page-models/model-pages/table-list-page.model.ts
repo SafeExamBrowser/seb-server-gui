@@ -13,6 +13,7 @@ import type {
 import { BasicSettingsPageModel } from "../layout/basic-settings-page.model";
 import { ConfirmDialogModel } from "../widgets/confirm-dialog.model";
 import { EntityTableModel } from "../widgets/entity-table.model";
+import { ErrorStateModel } from "../widgets/error-state.model";
 import { SearchBarModel } from "../widgets/search-bar.model";
 
 export class TableListPageModel {
@@ -23,6 +24,7 @@ export class TableListPageModel {
     readonly table: EntityTableModel;
     readonly deleteDialog: ConfirmDialogModel;
     readonly statusDialog: ConfirmDialogModel;
+    readonly errorState: ErrorStateModel;
 
     constructor(page: Page, config: TableListPageConfig) {
         this.page = page;
@@ -40,6 +42,7 @@ export class TableListPageModel {
             config.testIdBase,
             "status",
         );
+        this.errorState = new ErrorStateModel(page);
     }
 
     async goto() {

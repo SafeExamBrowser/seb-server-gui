@@ -127,9 +127,7 @@ test.describe("06 Exams - READ Get All", () => {
         );
 
         await exams.page.goto(exams.config.route);
-        await expect(
-            exams.page.getByText(/Something went wrong:/i),
-        ).toBeVisible();
+        await exams.errorState.expectVisible();
     });
 
     test("E row click and the navigate action both open the exam detail page", async ({
