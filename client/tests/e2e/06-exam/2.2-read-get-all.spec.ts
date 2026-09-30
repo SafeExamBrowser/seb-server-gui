@@ -1,4 +1,5 @@
 import { expect, test } from "../shared/fixtures/table-list-fixtures";
+import { expectNoRequest } from "../utils/networkAssertions";
 import { EXAM_COLUMN } from "./models/exams-list.model";
 
 const searchName = "e2e-getall-exam";
@@ -130,7 +131,7 @@ test.describe("06 Exams - READ Get All", () => {
         await exams.errorState.expectVisible();
     });
 
-    test("E row click and the navigate action both open the exam detail page", async ({
+    test("E the navigate action opens the exam detail page, the row itself is not clickable", async ({
         exams,
     }) => {
         await exams.goto();
@@ -144,15 +145,18 @@ test.describe("06 Exams - READ Get All", () => {
             );
         });
 
-        await test.step("clicking the row itself also navigates", async () => {
+        await test.step("clicking a row with the exclude-from-deletion action does not navigate", async () => {
             await exams.page.goto(exams.config.route);
             await exams.expectListRequestSucceeded(() =>
                 exams.search(searchName),
             );
-            await exams.table.row(runningId).click();
-            await expect(exams.page).toHaveURL(
-                new RegExp(`/exam/${runningId}$`),
-            );
+            await expectNoRequest({
+                page: exams.page,
+                method: "GET",
+                urlRegex: new RegExp(`/exam/${runningId}(?:$|\\?)`),
+                action: () => exams.table.row(runningId).click(),
+            });
+            await expect(exams.page).toHaveURL(/\/exam\?/);
         });
     });
 
