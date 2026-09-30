@@ -1220,10 +1220,10 @@
             },
             "browser_window": {
                 "title": "Browser Window Toolbar",
-                "enableToolbar": "Enable browser window toolbar",
+                "enableToolbar": "Enable browser window toolbar (Mac/iOS)",
                 "enableToolbar_tooltip": "Displays a toolbar on top of the browser window which can also be hidden by the user",
-                "addrBar": "Allow address bar for main window (Win)",
-                "newAddrBar": "Allow address bar for additional window (Win)",
+                "addrBar": "Show address bar for main window (Win)",
+                "newAddrBar": "Show address bar for additional window (Win)",
                 "allowDev": "Show developer tools in window menu (Win)",
                 "hideTool": "Hide toolbar as default (Mac)",
                 "hideTool_tooltip": "Hide browser window toolbar by default. It can be shown again by using the View menu or Alt-Command-T.",
