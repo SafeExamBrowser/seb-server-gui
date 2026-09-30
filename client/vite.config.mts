@@ -64,6 +64,15 @@ export default ({ mode, command }: ConfigEnv) => {
 
         define: { "process.env": {} },
 
+        optimizeDeps: {
+            include: [
+                "chart.js",
+                "date-fns-tz",
+                "moment-timezone",
+                "vue-chartjs",
+            ],
+        },
+
         ssr: {
             noExternal: ["vuetify"],
         },
