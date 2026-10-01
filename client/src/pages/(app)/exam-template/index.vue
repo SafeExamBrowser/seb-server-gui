@@ -90,6 +90,7 @@ import {
     Prerequisite,
     useActionPrerequisites,
 } from "@/composables/useActionPrerequisites.ts";
+import { useAbilities } from "@/services/ability.ts";
 
 import { useExamTemplateOverview } from "./composables/useExamTemplateOverview.ts";
 
@@ -100,9 +101,9 @@ definePage({
 });
 
 const dataTestId = "examTemplates";
-
+const abilities = useAbilities();
 const addRequires = [Prerequisite.CONNECTION_CONFIGURATION];
-const { isUnmet } = useActionPrerequisites(addRequires);
+const { isUnmet } = useActionPrerequisites(abilities, addRequires);
 
 const addDisabled = computed(() => isUnmet(addRequires));
 
