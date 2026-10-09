@@ -1,0 +1,31 @@
+import { Page } from "@playwright/test";
+
+import { LoginPageModel } from "../shared/page-models/models/user-account/login-page.model.ts";
+import { expectToHaveUrl } from "./helpers.ts";
+
+const SEB_SERVER_ADMIN_USERNAME = "testmain";
+const SEB_SERVER_ADMIN_PASSWORD = "testmain";
+
+export async function loginAsServerAdmin(
+    page: Page,
+    username: string = SEB_SERVER_ADMIN_USERNAME,
+    password: string = SEB_SERVER_ADMIN_PASSWORD,
+) {
+    const loginPage = new LoginPageModel(page);
+    await loginPage.goto();
+    await loginPage.login(username, password);
+
+    await expectToHaveUrl(page, "navigation-overview");
+}
+
+export async function loginAsTestAdmin(
+    page: Page,
+    username: string = SEB_SERVER_ADMIN_USERNAME,
+    password: string = SEB_SERVER_ADMIN_PASSWORD,
+) {
+    const loginPage = new LoginPageModel(page);
+    await loginPage.goto();
+    await loginPage.login(username, password);
+
+    await expectToHaveUrl(page, "navigation-overview");
+}
