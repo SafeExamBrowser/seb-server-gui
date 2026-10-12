@@ -25,6 +25,8 @@ export default defineConfig({
     retries: isCI ? 2 : 0,
     workers: isCI ? 1 : undefined,
 
+    timeout: 10_000,
+
     reporter: reporters,
 
     outputDir,

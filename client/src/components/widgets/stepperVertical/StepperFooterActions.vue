@@ -1,10 +1,11 @@
 <template>
     <div class="d-flex align-center justify-end ga-3 px-6 py-4">
-        <v-btn v-if="currentStep > 0" variant="outlined" @click="emit('prev')">
+        <v-btn v-if="currentStep > 0" variant="outlined" data-testid="stepper-previous" @click="emit('prev')">
             {{ $t("general.backButton") }}
         </v-btn>
         <v-btn
             color="primary"
+            :data-testid='isLast ? "stepper-save" : "stepper-next"'
             :disabled="!currentStepEnabled"
             @click="handleNext"
         >

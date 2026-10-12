@@ -2,10 +2,14 @@
     <StepItem
         :title="$t('createTemplateExam.steps.seb-settings.title')"
         :subtitle="$t('createTemplateExam.steps.seb-settings.subtitle')"
+        data-testid="exam-template-step2"
     >
         <v-container class="ma-0 pa-0" :max-width="thresholds.xxl">
             <LoadingFallbackComponent :loading="loading" :errors="errors">
-                <SEBSettings v-model="temporaryConfigTemplateKey" />
+                <SEBSettings
+                    v-model="temporaryConfigTemplateKey"
+                    data-testid="exam-template-step2"
+                />
             </LoadingFallbackComponent>
         </v-container>
     </StepItem>

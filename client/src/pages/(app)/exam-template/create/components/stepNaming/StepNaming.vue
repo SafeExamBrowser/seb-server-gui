@@ -2,12 +2,12 @@
     <StepItem
         :title="$t('createTemplateExam.steps.naming.title')"
         :subtitle="$t('createTemplateExam.steps.naming.subtitle')"
-        data-test-id="exam-template-step1"
     >
         <v-container class="ma-0 pa-0" :max-width="thresholds.sm">
             <LoadingFallbackComponent :loading="loading" :errors="errors">
                 <FormBuilder
                     v-model="useStepNamingStore().isReady"
+                    data-testid="exam-template-step1"
                     :fields="formFields"
                 />
             </LoadingFallbackComponent>

@@ -4,7 +4,10 @@
         :subtitle="$t('createTemplateExam.steps.summary.subtitle')"
     >
         <LoadingFallbackComponent :loading="loading" :errors="errors">
-            <WizardSummary :sections="summarySections" />
+            <WizardSummary
+                :sections="summarySections"
+                data-testid="exam-template-step6"
+            />
         </LoadingFallbackComponent>
     </StepItem>
 </template>

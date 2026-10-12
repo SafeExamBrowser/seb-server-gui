@@ -32,7 +32,7 @@ const fields: FormFieldSpec[] = [
     },
 ];
 
-export type RegisterInput = {
+export type RegisterInputPublic = {
     institutionId: string;
     username: string;
     name: string;
@@ -42,25 +42,28 @@ export type RegisterInput = {
     confirmPassword: string;
 };
 
+export type RegisterInput = {
+    username: string;
+    name: string;
+    surname: string;
+    email: string;
+    password: string;
+};
+
 export const REGISTER_REQUEST = /\/register(?:$|\?)/i;
 export const INSTITUTION_INFO_REQUEST = /\/info\/institution(?:$|\?)/i;
 
 export class UserAccountRegisterModel extends FormPageModel {
-    constructor(
-        page: Page
-    ) {
+    constructor(page: Page) {
         super(page, {
             route: ROUTE,
             testPrefix: PREFIX,
             fields,
             saveTestId: "register-submit-btn",
         });
-
     }
 
-    // Institution auto-selects when a single one is available, and the timezone
-    // defaults from the browser, so only the remaining required fields are filled.
-    async fillForm(input: RegisterInput) {
+    async fillFormPublic(input: RegisterInputPublic) {
         await this.fill({
             [USER_ACCOUNT_FIELD.institutionId]: input.institutionId,
             [USER_ACCOUNT_FIELD.username]: input.username,
@@ -69,6 +72,19 @@ export class UserAccountRegisterModel extends FormPageModel {
             [USER_ACCOUNT_FIELD.email]: input.email,
             [USER_ACCOUNT_FIELD.password]: input.password,
             [USER_ACCOUNT_FIELD.confirmPassword]: input.confirmPassword,
+        });
+    }
+
+    // Institution auto-selects when a single one is available, and the timezone
+    // defaults from the browser, so only the remaining required fields are filled.
+    async fillForm(input: RegisterInput) {
+        await this.fill({
+            [USER_ACCOUNT_FIELD.username]: input.username,
+            [USER_ACCOUNT_FIELD.name]: input.name,
+            [USER_ACCOUNT_FIELD.surname]: input.surname,
+            [USER_ACCOUNT_FIELD.email]: input.email,
+            [USER_ACCOUNT_FIELD.password]: input.password,
+            [USER_ACCOUNT_FIELD.confirmPassword]: input.password,
         });
     }
 

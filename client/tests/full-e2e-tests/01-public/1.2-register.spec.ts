@@ -36,7 +36,7 @@ test.describe("01 Public - Register", () => {
         //check if register button is visible
         await register.expectVisible();
 
-        await register.fillForm(registerUserValid1);
+        await register.fillFormPublic(registerUserValid1);
 
         await register.submit();
 
@@ -51,7 +51,7 @@ test.describe("01 Public - Register", () => {
         //check if register button is visible
         await register.expectVisible();
 
-        await register.fillForm(registerUserValid1);
+        await register.fillFormPublic(registerUserValid1);
 
         await register.submit();
 
@@ -72,7 +72,7 @@ test.describe("01 Public - Register", () => {
         //check if register button is visible
         await register.expectVisible();
 
-        await register.fillForm(registerUserinvalid1);
+        await register.fillFormPublic(registerUserinvalid1);
 
         await register.submit();
 
