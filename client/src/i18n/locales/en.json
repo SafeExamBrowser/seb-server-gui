@@ -1850,7 +1850,7 @@
                 "allowiOSVersionNumberMajor_12": "iOS Version 12",
                 "allowiOSVersionNumberMinor": "Minor version number",
                 "allowiOSVersionNumberPatch": "Patch version number",
-                "mobileEnableModernAAC": "Enable Modern ACC",
+                "mobileEnableModernAAC": "Use modern AAC API (iOS)",
                 "mobileEnableModernAAC_tooltip": "Enable Modern AAC API for Multi App Mode on iPadOS 17.7.1 - 18. On iPadOS 18.1 or newer it is activated automatically if permitted processes for iPadOS are configured."
             },
             "clipboard": {
