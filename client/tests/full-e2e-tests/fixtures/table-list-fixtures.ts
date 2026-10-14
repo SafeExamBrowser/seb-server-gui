@@ -1,5 +1,6 @@
 import { test as base } from "@playwright/test";
 
+import { ExamTemplateModel } from "../../shared/page-models/models/exam-template/exam-template.model.ts";
 import { ExamTemplateCreateModel } from "../../shared/page-models/models/exam-template/exam-template-create.model.ts";
 import { LoginPageModel } from "../../shared/page-models/models/user-account/login-page.model.ts"
 import { UserAccountRegisterModel } from "../../shared/page-models/models/user-account/user-account-register.model.ts";
@@ -11,6 +12,7 @@ type Fixtures = {
     login: LoginPageModel;
     register: UserAccountRegisterModel;
     examTemplateCreate: ExamTemplateCreateModel;
+    examTemplate: ExamTemplateModel;
 };
 
 export const test = base.extend<Fixtures>({
@@ -25,6 +27,11 @@ export const test = base.extend<Fixtures>({
     examTemplateCreate: async ({ page }, use) => {
         await loginAsTestAdmin(page);
         await use(new ExamTemplateCreateModel(page));
+    },
+
+    examTemplate: async ({ page }, use) => {
+        // await loginAsTestAdmin(page);
+        await use(new ExamTemplateModel(page));
     },
 });
 

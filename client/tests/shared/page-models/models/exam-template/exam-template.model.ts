@@ -1,20 +1,20 @@
-import { expect, type Locator, type Page } from "@playwright/test";
-import {
-    type FormFieldSpec,
-    FormPageModel,
-} from "../../generic-models/form-page.model.ts";
-import BasicPage from "@/components/layout/pages/BasicPage.vue";
+import { expect, type Page } from "@playwright/test";
 
 
 const ROUTE = "/exam-template/:id";
 
 
-export class ExamTemplateModel extends BasicPage{
-    // constructor(page: Page) {}
+export class ExamTemplateModel {
+    readonly page: Page;
 
-    // async expectStepVisible(step: number) {
-    //     await expect(
-    //         this.page.getByTestId("exam-template-step" + step),
-    //     ).toBeVisible();
-    // }
+    constructor(page: Page) {
+        this.page = page;
+    }
+
+    async expectExamTemplateTitleVisible(title: string) {
+        await expect(
+            // this.page.getByTestId("exam-template-title"),
+            this.page.getByTestId("examTemplateDetail-page-title"),
+        ).toHaveText(title);
+    }
 }

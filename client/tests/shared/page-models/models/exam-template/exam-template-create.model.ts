@@ -107,4 +107,10 @@ export class ExamTemplateCreateModel extends FormPageModel {
     async saveExamTemplate() {
         await this.stepperSaveButton.click();
     }
+
+    async expectExamTemplateVisible() {
+        await expect(
+            this.page.getByTestId("exam-template-title)"),
+        ).toBeVisible();
+    }
 }

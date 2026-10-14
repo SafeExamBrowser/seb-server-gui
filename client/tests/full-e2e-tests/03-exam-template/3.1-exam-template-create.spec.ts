@@ -1,9 +1,8 @@
-import { expect } from "../../e2e-tests/fixtures/table-list-fixtures.ts";
 import { test } from "../fixtures/table-list-fixtures";
 
 
 
-const EXAM_TEMPLATE_NAME = "testNew123";
+const EXAM_TEMPLATE_NAME = "NadimTest3";
 
 const examTemplateCreateNamingValid1 = {
     name: EXAM_TEMPLATE_NAME,
@@ -20,7 +19,7 @@ const examTemplateCreateNamingValid1 = {
 test.describe("03 Exam Template - Start", () => {
     test.use({ timezoneId: "UTC" });
 
-    test("A basic check", async ({ examTemplateCreate }) => {
+    test("A basic check", async ({ examTemplateCreate, examTemplate }) => {
         //step 1 - naming
         await examTemplateCreate.goto();
 
@@ -67,6 +66,7 @@ test.describe("03 Exam Template - Start", () => {
         await examTemplateCreate.saveExamTemplate();
 
         //successful creation
+        await examTemplate.expectExamTemplateTitleVisible(EXAM_TEMPLATE_NAME);
 
     });
 
