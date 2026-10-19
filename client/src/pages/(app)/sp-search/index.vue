@@ -8,6 +8,7 @@
         <template #PanelLeft>
             <SpSearchForm
                 ref="searchForm"
+                :initial-state="initialFormState"
                 :data-test-id="dataTestId"
                 @search="handleSearch"
                 @collapse="handleCollapseFilters"
@@ -199,6 +200,8 @@ import {
 } from "vuetify/components";
 
 import BasicPage from "@/components/layout/pages/BasicPage.vue";
+import { useSearchQuerySync } from "@/components/widgets/searches/composables/useSearchQuerySync";
+import type { SearchQueryValues } from "@/components/widgets/searches/types";
 import { OptionalParSearchSessions } from "@/models/screen-proctoring/optionalParamters";
 import SearchSessionTable from "@/pages/(app)/sp-search/components/SearchSessionTable.vue";
 import SpSearchForm from "@/pages/(app)/sp-search/components/SpSearchForm.vue";
@@ -207,6 +210,11 @@ import {
     SpSearchFilterKey,
     SpSearchQuery,
 } from "@/pages/(app)/sp-search/types";
+import {
+    formStateFromQuery,
+    formStateToQuery,
+    SP_SEARCH_QUERY_KEYS,
+} from "@/pages/(app)/sp-search/utils/searchFormState";
 import { searchSessionsDay } from "@/services/screen-proctoring/searchService.ts";
 import { useTableStore } from "@/stores/store";
 import * as spConstants from "@/utils/sp-constants";
@@ -244,6 +252,13 @@ const tableStore = useTableStore();
 const searchForm = ref<InstanceType<typeof SpSearchForm>>();
 const submittedQuery = ref<SpSearchQuery>();
 const searchParameters = ref<OptionalParSearchSessions>();
+
+// the submitted search lives in the URL query
+const searchQuerySync = useSearchQuerySync(
+    SP_SEARCH_QUERY_KEYS,
+    handleExternalQueryChange,
+);
+const initialFormState = formStateFromQuery(searchQuerySync.initialValues);
 
 const filterChipLabels = computed<Record<SpSearchFilterKey, string>>(() => ({
     examName: t("searchForm.examName"),
@@ -284,6 +299,7 @@ async function handleSearch(query: SpSearchQuery) {
     // every new search starts with all day panels collapsed
     sessionPanels.value = [];
     submittedQuery.value = query;
+    await searchQuerySync.writeValues(formStateToQuery(query));
 
     searchParameters.value = {
         examName: toSearchValue(query.filters.examName),
@@ -362,6 +378,10 @@ function handleRemoveFilter(key: SpSearchFilterKey) {
         ...query,
         filters: { ...query.filters, [key]: "" },
     });
+}
+
+function handleExternalQueryChange(values: SearchQueryValues) {
+    searchForm.value?.restore(formStateFromQuery(values));
 }
 
 function handleToggleFilters() {

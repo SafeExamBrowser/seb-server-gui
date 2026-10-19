@@ -70,9 +70,12 @@ import {
 } from "@/components/widgets/searches/timeRange/timeRangeUtils";
 import type { TimeRangeSelection } from "@/components/widgets/searches/timeRange/types";
 import type { ApplicationsSearchQuery } from "@/pages/(app)/applications-search/types";
+import { createDefaultTimeRange } from "@/pages/(app)/applications-search/utils/searchFormState";
 
-withDefaults(
+const props = withDefaults(
     defineProps<{
+        // only read on setup; later changes go through `restore`
+        initialTimeRange: TimeRangeSelection;
         dataTestId?: string;
     }>(),
     { dataTestId: undefined },
@@ -83,17 +86,7 @@ const emit = defineEmits<{
     collapse: [];
 }>();
 
-const createDefaultTimeRange = (): TimeRangeSelection => ({
-    mode: undefined,
-    periodAmount: 1,
-    periodUnit: 4,
-    fromDate: undefined,
-    fromTime: "00:00",
-    toDate: undefined,
-    toTime: "23:59",
-});
-
-const timeRange = ref<TimeRangeSelection>(createDefaultTimeRange());
+const timeRange = ref<TimeRangeSelection>({ ...props.initialTimeRange });
 const timeRangeSelector = ref<InstanceType<typeof TimeRangeModeSelector>>();
 
 const clearAllAvailable = computed(() => timeRange.value.mode !== undefined);
@@ -106,6 +99,7 @@ function handleSearch() {
     const [fromTime, toTime] = computeTimeRange(timeRange.value);
 
     emit("search", {
+        timeRange: { ...timeRange.value },
         fromTime,
         toTime,
         summary: buildTimeRangeSummary(timeRange.value, fromTime, toTime),
@@ -119,14 +113,20 @@ function handleEscape() {
     handleReset();
 }
 
-// Resetting re-runs the default unbounded search right away, mirroring the
-// screen proctoring search form.
-function handleReset() {
-    timeRange.value = createDefaultTimeRange();
+// Replaces the draft, e.g. when back/forward navigation changes the URL, and
+// runs the search right away.
+function restore(selection: TimeRangeSelection) {
+    timeRange.value = { ...selection };
     handleSearch();
 }
 
-defineExpose({ reset: handleReset });
+// Resetting re-runs the default unbounded search right away, mirroring the
+// screen proctoring search form.
+function handleReset() {
+    restore(createDefaultTimeRange());
+}
+
+defineExpose({ restore, reset: handleReset });
 </script>
 
 <style scoped>
