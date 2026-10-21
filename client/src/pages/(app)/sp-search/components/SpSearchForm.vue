@@ -162,7 +162,6 @@
 
 <script setup lang="ts">
 import { computed, onMounted, reactive, ref } from "vue";
-import { useRoute } from "vue-router";
 import {
     VBtn,
     VDivider,
@@ -183,14 +182,18 @@ import type { TimeRangeSelection } from "@/components/widgets/searches/timeRange
 import type {
     SpSearchFilterKey,
     SpSearchFilters,
+    SpSearchFormState,
     SpSearchQuery,
 } from "@/pages/(app)/sp-search/types";
+import { createDefaultFormState } from "@/pages/(app)/sp-search/utils/searchFormState";
 import * as spConstants from "@/utils/sp-constants";
 
 import SpSearchField from "./SpSearchField.vue";
 
-withDefaults(
+const props = withDefaults(
     defineProps<{
+        // only read on setup; later changes go through `restore`
+        initialState: SpSearchFormState;
         dataTestId?: string;
     }>(),
     { dataTestId: undefined },
@@ -201,40 +204,9 @@ const emit = defineEmits<{
     collapse: [];
 }>();
 
-const route = useRoute();
-// The analyze view hands over an exam name to pre-fill the exam filter.
-const queryExamName = route.query["examName"];
+const filters = reactive<SpSearchFilters>({ ...props.initialState.filters });
 
-const createEmptyFilters = (): SpSearchFilters => ({
-    examName: "",
-    groupName: "",
-    loginName: "",
-    ipAddress: "",
-    machineName: "",
-    metadataApplication: "",
-    metadataBrowserTitle: "",
-    metadataActivityDetails: "",
-    metadataWindowTitle: "",
-});
-
-// No time mode is selected initially; the initial search on mount runs
-// unbounded and the user opts into "period" or "between".
-const createDefaultTimeRange = (): TimeRangeSelection => ({
-    mode: undefined,
-    periodAmount: 1,
-    periodUnit: 2,
-    fromDate: undefined,
-    fromTime: "00:00",
-    toDate: undefined,
-    toTime: "23:59",
-});
-
-const filters = reactive<SpSearchFilters>({
-    ...createEmptyFilters(),
-    examName: queryExamName ? queryExamName.toString() : "",
-});
-
-const timeRange = ref<TimeRangeSelection>(createDefaultTimeRange());
+const timeRange = ref<TimeRangeSelection>({ ...props.initialState.timeRange });
 
 const openGroups = ref<string[]>([]);
 const timeRangeSelector = ref<InstanceType<typeof TimeRangeModeSelector>>();
@@ -254,6 +226,7 @@ function handleSearch() {
 
     emit("search", {
         filters: { ...filters },
+        timeRange: { ...timeRange.value },
         fromTime,
         toTime,
         summary: buildTimeRangeSummary(timeRange.value, fromTime, toTime),
@@ -273,15 +246,21 @@ function handleEscape() {
     handleReset();
 }
 
-// Resetting re-runs the default search right away (previous behaviour of the
-// old form's "Cancel" button).
-function handleReset() {
-    Object.assign(filters, createEmptyFilters());
-    timeRange.value = createDefaultTimeRange();
+// Replaces the draft, e.g. when back/forward navigation changes the URL, and
+// runs the search right away.
+function restore(state: SpSearchFormState) {
+    Object.assign(filters, state.filters);
+    timeRange.value = { ...state.timeRange };
     handleSearch();
 }
 
-defineExpose({ clearFilter, reset: handleReset });
+// Resetting re-runs the default search right away (previous behaviour of the
+// old form's "Cancel" button).
+function handleReset() {
+    restore(createDefaultFormState());
+}
+
+defineExpose({ clearFilter, restore, reset: handleReset });
 </script>
 
 <style scoped>
