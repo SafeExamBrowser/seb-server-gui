@@ -7,6 +7,7 @@
             <LoadingFallbackComponent :loading="loading" :errors="errors">
                 <v-select
                     v-model="store.selectedAssessmentToolId"
+                    data-testid="create-exam-assessment-tool-select"
                     :label="
                         $t('createExam.steps.assessmentTool.fields.tool.label')
                     "

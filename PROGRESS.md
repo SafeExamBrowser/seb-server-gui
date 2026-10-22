@@ -107,3 +107,28 @@ AI_ASSISTANT_ENABLED=false → GET /api/assistant/config → 404
   suggested questions answered (sources chips, monitoring calls listed, guide answer),
   thumbs-down wrote a line to `server/assistant-feedback.jsonl` and shows the thanks
   state. Screenshot: `docs/assistant-poc/assistant-panel.png`.
+
+## 2026-10-22 — Piece 3 · Guide
+
+- Added `driver.js@1.10.2` (exact pin) to `client/`.
+- `client/src/components/assistant/guides.ts`: `create-exam` guide with 4 steps:
+  nav rail Exams (`layout-exam-button`), prepare button on the exams list
+  (`exams-add-button`), assessment-tool select in the first wizard step, wizard next
+  button. New stable testids added (noted): `create-exam-assessment-tool-select` on the
+  `v-select` in `StepAssessmentTool.vue`, `stepper-next-button` on the next/save button
+  in the shared `StepperFooterActions.vue`.
+- `composables/useAssistantGuide.ts`: starts driver.js with ring + "n · title" badge in
+  the callout, Back/Next/Done, `showProgress` ("1 of 4"). Before each step the target
+  element is awaited; if missing, the step's route is pushed via `typedTo` first.
+- "Show me" button (`assistant-show-me-button`) on answers whose `guide` matches a
+  known guide. The panel stays open while the guide runs.
+- Context line fallback: pages without `meta.titleKey` (e.g. the create wizard) show
+  `route.path` instead of the internal route name.
+
+### Verification (Piece 3)
+
+- Browser (Playwright MCP, mocked stack): asked "How do I create an exam?", clicked
+  "Show me", stepped 1→4: step 1 highlights the nav entry on any page, Next navigates
+  to `/exam`, then `/exam/create`, step 4 highlights the wizard next button, Done closes.
+  Panel stayed open throughout. Screenshot: `docs/assistant-poc/assistant-guide.png`.
+- `typecheck:app`, `lint:check:all`, `prettier:check:all`, `test:unit` still pass.

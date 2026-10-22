@@ -5,6 +5,7 @@
         </v-btn>
         <v-btn
             color="primary"
+            data-testid="stepper-next-button"
             :disabled="!currentStepEnabled"
             @click="handleNext"
         >

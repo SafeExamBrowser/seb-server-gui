@@ -16,6 +16,19 @@
             {{ entry.text }}
         </div>
 
+        <v-btn
+            v-if="entry.guide !== undefined && hasGuide(entry.guide)"
+            class="text-none mt-2"
+            color="primary"
+            data-testid="assistant-show-me-button"
+            prepend-icon="mdi-cursor-default-click-outline"
+            size="small"
+            variant="tonal"
+            @click="handleShowMe"
+        >
+            {{ $t("assistant.showMe") }}
+        </v-btn>
+
         <div v-if="entry.sources.length > 0" class="mt-2">
             <div class="text-body-small text-medium-emphasis">
                 {{ $t("assistant.sources") }}
@@ -81,6 +94,7 @@
 <script setup lang="ts">
 import { VBtn, VChip } from "vuetify/components";
 
+import { useAssistantGuide } from "./composables/useAssistantGuide";
 import { useAssistantStore } from "./composables/useAssistantStore";
 import type { AssistantEntry } from "./types";
 
@@ -89,6 +103,13 @@ const props = defineProps<{
 }>();
 
 const assistantStore = useAssistantStore();
+const { hasGuide, startGuide } = useAssistantGuide();
+
+async function handleShowMe() {
+    if (props.entry.guide !== undefined) {
+        await startGuide(props.entry.guide);
+    }
+}
 
 async function handleThumbsUp() {
     await assistantStore.sendFeedback(props.entry.id, "up");

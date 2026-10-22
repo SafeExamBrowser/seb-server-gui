@@ -2703,6 +2703,19 @@
         "thumbsUp": "Good answer",
         "thumbsDown": "Bad answer",
         "feedbackThanks": "Thanks for the feedback",
-        "showMe": "Show me"
+        "showMe": "Show me",
+        "guideBack": "Back",
+        "guideNext": "Next",
+        "guideDone": "Done",
+        "guideCreateExam": {
+            "step1Title": "Open Exams",
+            "step1Text": "Everything around exams lives here. Click Exams in the navigation rail.",
+            "step2Title": "Start the preparation",
+            "step2Text": "This button opens the wizard that prepares a new exam from a quiz.",
+            "step3Title": "Pick the assessment tool",
+            "step3Text": "Choose the assessment tool (LMS) that hosts the quiz you want to run as an exam.",
+            "step4Title": "Continue through the steps",
+            "step4Text": "Use this button to move through the wizard: quiz, template, client groups, supervisors and summary."
+        }
     }
 }

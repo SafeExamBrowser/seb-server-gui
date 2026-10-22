@@ -162,7 +162,7 @@ const suggestions = computed(() => [
 
 const pageTitle = computed(() => {
     const titleKey = route.meta.titleKey;
-    return titleKey === undefined ? String(route.name ?? "") : t(titleKey);
+    return titleKey === undefined ? route.path : t(titleKey);
 });
 
 const contextLine = computed(() =>
