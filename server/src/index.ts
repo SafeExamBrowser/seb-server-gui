@@ -4,6 +4,7 @@ import { fileURLToPath } from "node:url";
 import { parseEnv } from "./utils/env.js";
 import { logInfo } from "./utils/logger.js";
 import { createBackend } from "./utils/createBackend.js";
+import { createAssistantRouter } from "./assistant/router.js";
 
 const app = express();
 const env = parseEnv();
@@ -21,6 +22,10 @@ const spsProxy = createBackend({
   basicAuthUsername: env.PROCTOR_SERVER_USERNAME,
   basicAuthPassword: env.PROCTOR_SERVER_PASSWORD,
 });
+
+// assistant routes are handled by the gateway itself, so they are mounted
+// before the catch-all /api proxy below
+app.use("/api/assistant", createAssistantRouter(env));
 
 // everything that's prefixed with '/api/sps' is proxied to sps
 app.use("/api/sps", (req, res) => {

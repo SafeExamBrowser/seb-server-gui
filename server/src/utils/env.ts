@@ -11,6 +11,11 @@ const envSchema = z.object({
   PROCTOR_SERVER_DEFAULT_URL: z.string().default("/admin-api/v1"),
   PROCTOR_SERVER_USERNAME: z.string(),
   PROCTOR_SERVER_PASSWORD: z.string(),
+  AI_ASSISTANT_ENABLED: z.stringbool().default(false),
+  AI_API_BASE_URL: z.url().optional(),
+  AI_API_KEY: z.string().optional(),
+  AI_MODEL: z.string().optional(),
+  AI_MOCK: z.stringbool().default(false),
 });
 
 export type Env = z.infer<typeof envSchema>;
