@@ -132,3 +132,55 @@ AI_ASSISTANT_ENABLED=false → GET /api/assistant/config → 404
   to `/exam`, then `/exam/create`, step 4 highlights the wizard next button, Done closes.
   Panel stayed open throughout. Screenshot: `docs/assistant-poc/assistant-guide.png`.
 - `typecheck:app`, `lint:check:all`, `prettier:check:all`, `test:unit` still pass.
+
+## 2026-10-22 — Piece 4 · Tests and demo
+
+- New `client/tests/e2e/11-assistant/11.1-assistant-panel.spec.ts` using
+  `installMockBackend` + `page.route` mocks for `/api/assistant/*`:
+  A panel opens/closes from the header, B answer with source chip,
+  C thumbs-down POSTs to the feedback route (+ thanks state),
+  D guide marker → "Show me" → first driver.js highlight on `layout-exam-button`.
+- `DEMO.md` at the repo root: start instructions, env vars, 10-minute script,
+  model recommendation (Ollama + `qwen2.5:7b-instruct`), known limitations.
+
+## Final status
+
+### What works
+
+- Gateway `/api/assistant/{config,chat,feedback}` behind `AI_ASSISTANT_ENABLED`
+  (404 + unchanged GUI when off), `express.json` scoped to the assistant router.
+- Knowledge base: 4150 entries from `messages.properties` + `en.json`, keyword
+  retrieval, sources returned as help-text keys and rendered as chips.
+- Live look-up `list_running_exams` with the logged-in user's own bearer token;
+  calls listed under the answer.
+- Chat panel (384 px, pushes content), welcome state, suggestions, context line,
+  thumbs up/down → `server/assistant-feedback.jsonl`, loading/error states.
+- `create-exam` guide: 4 steps across 3 pages with ring, numbered callout,
+  Back/Next/Done; panel stays open.
+- Mock mode (`AI_MOCK=true`) covers the whole demo deterministically; model mode
+  falls back to mock on any model error.
+
+### Partial / not done
+
+- **No real model was reachable in this environment** — model mode
+  (`AI_API_BASE_URL`) is implemented but untested against a live endpoint.
+  See DEMO.md §3 for the suggested setup (Ollama + qwen2.5:7b-instruct).
+- No SSE streaming, no second guide, no animated cursor (stretch goals skipped).
+- Numbered badge sits in the callout title ("1 · …") + "1 of 4" progress, not as
+  a separate badge glued to the ring (design handoff was unreachable, see Piece 0).
+
+### Key assumptions
+
+All listed per piece above; the load-bearing ones: design link unreachable →
+built from the task's layout description; `../seb-server` absent → help texts
+downloaded from GitHub into `server/data/messages.properties` (committed);
+raw role names in the context line; `/monitoring` rows filtered to `RUNNING`.
+
+### Last commands run
+
+- `client/`: `npm run typecheck:app` ✓, `npm run format:check:all` ✓ (lint+prettier),
+  `npm run test:unit` ✓ (24 tests), `npm run typecheck:playwright` ✓,
+  `npx playwright test tests/e2e/11-assistant --project=chromium` ✓ (4 passed),
+  `npx playwright test tests/e2e/10-layout tests/e2e/06-exam --project=chromium` ✓
+  (11 passed — sanity for the touched layout/exam pages).
+- `server/`: `npm run build` ✓.
