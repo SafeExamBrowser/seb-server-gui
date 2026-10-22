@@ -189,6 +189,20 @@ raw role names in the context line; `/monitoring` rows filtered to `RUNNING`.
 - SSE streaming and the animated show-cursor overlay were not done (kept the
   surface small and stable instead).
 
+## 2026-10-22 — Fix · guides over-triggering with a real model
+
+- With Ollama/qwen2.5:7b-instruct, any "how do I…" question tended to get a
+  `[[guide:create-exam]]` marker attached (small-model prompt-following).
+- Tightened the system prompt (markers ONLY for their exact topics, otherwise
+  none) and added a gateway guard: a parsed guide is dropped unless the question
+  contains topic terms (`create-exam` ⇢ "exam"; `connect-moodle` ⇢ "moodle",
+  "assessment tool", "lms"). Unknown guide ids are dropped too.
+- Verified against the user's live Ollama (`host.docker.internal:11434`):
+  password question → answer with 3 sources, no guide; create-exam question →
+  `guide: create-exam`. Mock mode regression: create-exam/connect-moodle keep
+  their guides, quit password has none. Real-model source citing remains
+  inconsistent (sometimes 0 chips) — known limitation.
+
 ### Last commands run
 
 - `client/`: `npm run typecheck:app` ✓, `npm run format:check:all` ✓ (lint+prettier),

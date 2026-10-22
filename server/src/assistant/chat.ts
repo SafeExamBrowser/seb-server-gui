@@ -65,6 +65,23 @@ export const parseRawAnswer = (
   return { answer, sources: [...sources], ...(guide ? { guide } : {}) };
 };
 
+// Small models over-trigger the guide markers (any "how do I…" question tends
+// to get [[guide:create-exam]] attached), so a parsed guide is only kept when
+// the question is plausibly about that guide's topic.
+const GUIDE_QUESTION_TERMS: Record<string, string[]> = {
+  "create-exam": ["exam"],
+  "connect-moodle": ["moodle", "assessment tool", "lms"],
+};
+
+const guideMatchesQuestion = (guide: string, question: string) => {
+  const terms = GUIDE_QUESTION_TERMS[guide];
+  if (terms === undefined) {
+    return false;
+  }
+  const normalized = question.toLowerCase();
+  return terms.some((term) => normalized.includes(term));
+};
+
 const buildSystemPrompt = (
   entries: KnowledgeEntry[],
   context?: ChatContext,
@@ -83,8 +100,8 @@ const buildSystemPrompt = (
     "Answer questions about SEB Server and its settings ONLY from the help-text entries below and from tool results.",
     "If the entries and tool results do not contain the answer, say that you do not know.",
     "Cite every help-text entry you used with a marker of the form [[source:ENTRY_KEY]] at the end of your answer.",
-    "When the user asks how to create an exam, add the marker [[guide:create-exam]] on its own line.",
-    "When the user asks how to connect a Moodle or another assessment tool, add the marker [[guide:connect-moodle]] on its own line.",
+    "Guide markers: add [[guide:create-exam]] on its own line ONLY when the question is about creating or preparing an exam. Add [[guide:connect-moodle]] on its own line ONLY when the question is about connecting a Moodle or another assessment tool (LMS).",
+    "For every other question output no guide marker at all. Never attach a guide that does not match the question.",
     "Use the list_running_exams tool when the user asks which exams are running.",
     "Answer in short plain text. No markdown.",
     contextLine,
@@ -288,6 +305,12 @@ export const answerChat = async (
     }
   }
 
+  const parsed = parseRawAnswer(raw.raw, offeredKeys);
+  if (parsed.guide !== undefined && !guideMatchesQuestion(parsed.guide, question)) {
+    logInfo(`assistant: dropped mismatched guide "${parsed.guide}"`);
+    delete parsed.guide;
+  }
+
   logInfo(`assistant: answered "${question.slice(0, 80)}"`);
-  return { ...parseRawAnswer(raw.raw, offeredKeys), calls: raw.calls };
+  return { ...parsed, calls: raw.calls };
 };
