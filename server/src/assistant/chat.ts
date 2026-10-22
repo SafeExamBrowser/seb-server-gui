@@ -84,6 +84,7 @@ const buildSystemPrompt = (
     "If the entries and tool results do not contain the answer, say that you do not know.",
     "Cite every help-text entry you used with a marker of the form [[source:ENTRY_KEY]] at the end of your answer.",
     "When the user asks how to create an exam, add the marker [[guide:create-exam]] on its own line.",
+    "When the user asks how to connect a Moodle or another assessment tool, add the marker [[guide:connect-moodle]] on its own line.",
     "Use the list_running_exams tool when the user asks which exams are running.",
     "Answer in short plain text. No markdown.",
     contextLine,
@@ -118,6 +119,18 @@ const mockAnswer = async (
   if (normalized.includes("running")) {
     const lookup = await listRunningExams(env, authorization);
     return { raw: formatRunningExams(lookup), calls: lookup.calls };
+  }
+
+  if (normalized.includes("moodle")) {
+    return {
+      raw: [
+        "You connect a Moodle as an assessment tool: open the Assessment Tool Connections under Settings, add a connection, pick the Moodle type and enter the Moodle URL and credentials.",
+        "I can walk you through it on the page.",
+        "[[source:sebserver.lmssetup.type.MOODLE_PLUGIN.tooltip]]",
+        "[[guide:connect-moodle]]",
+      ].join("\n"),
+      calls: [],
+    };
   }
 
   if (normalized.includes("create an exam")) {

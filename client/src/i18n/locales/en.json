@@ -2716,6 +2716,16 @@
             "step3Text": "Choose the assessment tool (LMS) that hosts the quiz you want to run as an exam.",
             "step4Title": "Continue through the steps",
             "step4Text": "Use this button to move through the wizard: quiz, template, client groups, supervisors and summary."
+        },
+        "guideConnectMoodle": {
+            "step1Title": "Open the navigation overview",
+            "step1Text": "Assessment tool connections live under Settings in the navigation overview.",
+            "step2Title": "Add a connection",
+            "step2Text": "This button opens the form for a new assessment tool connection.",
+            "step3Title": "Pick Moodle as type",
+            "step3Text": "Select the Moodle type here, then fill in the Moodle URL and credentials below.",
+            "step4Title": "Save the connection",
+            "step4Text": "Save to test and store the connection. Afterwards its quizzes can be prepared as exams."
         }
     }
 }

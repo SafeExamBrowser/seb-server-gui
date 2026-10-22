@@ -125,7 +125,8 @@ gateway, no model and no SEB Server — only the Vite dev server on 8082.
   `en.json` (top 40 entries) — no embeddings; niche phrasing can miss.
 - The model is instructed to cite `[[source:KEY]]`; small models sometimes
   cite sloppily, in which case chips may be missing on real-model answers.
-- One guide (`create-exam`), one live look-up (`list_running_exams`).
+- Two guides (`create-exam`, `connect-moodle` — try "How do I connect a
+  Moodle?"), one live look-up (`list_running_exams`).
 - Answers are not streamed (one response per question).
 - The context line shows raw role names (no translated labels).
 - `/monitoring` rows whose status isn't `RUNNING` are filtered out of the

@@ -176,6 +176,19 @@ built from the task's layout description; `../seb-server` absent → help texts
 downloaded from GitHub into `server/data/messages.properties` (committed);
 raw role names in the context line; `/monitoring` rows filtered to `RUNNING`.
 
+## 2026-10-22 — Stretch · Second guide "connect-moodle"
+
+- Added the `connect-moodle` guide (4 steps: navigation-overview toggle →
+  `assessmentTools-add-button` → `createAssessmentTool-main-form-field-lmsType` →
+  `createAssessmentTool-save-button`; all existing testids, none added).
+- Gateway: mock answer for questions containing "moodle" (source
+  `sebserver.lmssetup.type.MOODLE_PLUGIN.tooltip` + `[[guide:connect-moodle]]`),
+  system prompt extended with the marker instruction.
+- Verified end to end in the browser (4 steps across 3 pages). Full chromium e2e
+  suite ran after the layout changes: **189 passed**.
+- SSE streaming and the animated show-cursor overlay were not done (kept the
+  surface small and stable instead).
+
 ### Last commands run
 
 - `client/`: `npm run typecheck:app` ✓, `npm run format:check:all` ✓ (lint+prettier),
