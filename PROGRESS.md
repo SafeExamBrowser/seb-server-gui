@@ -77,3 +77,33 @@ POST /api/assistant/feedback → 204
 
 AI_ASSISTANT_ENABLED=false → GET /api/assistant/config → 404
 ```
+
+## 2026-10-22 — Piece 2 · Panel in the GUI
+
+- New `client/src/components/assistant/`: `AssistantPanel.vue`, `AssistantMessage.vue`,
+  `assistantService.ts` (axios instance → bearer token sent), `types.ts`,
+  `composables/useAssistantStore.ts` (Pinia setup store: enabled/open/messages/loading/error).
+- `ContainerLayout.vue` loads `/api/assistant/config` on mount; with `enabled:false`
+  (or 404 when the flag is off) nothing new renders.
+- "Assistant" button (icon + label) in `ContainerHeader.vue` next to the profile menu,
+  `data-testid="assistant-open-button"`, only rendered when enabled.
+- Panel is a 384 px right-hand flex column in `ContainerLayout.vue` that pushes the page
+  content, `data-testid="assistant-panel"`. Header (icon, "Assistant", AI chip, context
+  line, new conversation, close), welcome state with the three suggested questions,
+  message list, textarea footer with the disclaimer line.
+- Answers show text with preserved line breaks, "Sources" chips
+  (`assistant-source-chip`), the SEB Server calls made, thumbs up/down
+  (`assistant-thumbs-up`/`-down`) with a "Thanks for the feedback" state.
+- All strings under `assistant.*` in `en.json` (static keys only).
+- Roles in the context line are shown as raw role names: the existing translated-role
+  helper uses a template-literal i18n key, which `.claude/rules/client.md` forbids.
+
+### Verification (Piece 2)
+
+- `npm run typecheck:app`, `lint:check:all`, `prettier:check:all`, `test:unit`
+  (24 tests) all pass in `client/`.
+- Browser check via Playwright MCP against the Vite dev server (8082) + gateway in
+  `AI_MOCK=true` (3001) + a stub SEB backend (18080): login, open panel, all three
+  suggested questions answered (sources chips, monitoring calls listed, guide answer),
+  thumbs-down wrote a line to `server/assistant-feedback.jsonl` and shows the thanks
+  state. Screenshot: `docs/assistant-poc/assistant-panel.png`.

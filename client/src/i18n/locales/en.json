@@ -2680,5 +2680,29 @@
                 "username-notunique": "This Username is already in use. Please choose another one."
             }
         }
+    },
+    "assistant": {
+        "title": "Assistant",
+        "aiChip": "AI",
+        "openButton": "Assistant",
+        "close": "Close assistant",
+        "newConversation": "New conversation",
+        "context": "Context: {page} · as {roles}",
+        "welcomeNotice": "You are chatting with an AI",
+        "welcomeHint": "Ask about SEB Server settings, your running exams or how to get something done.",
+        "suggestedQuitPassword": "What does the quit password do?",
+        "suggestedRunningExams": "Which of my exams are running right now?",
+        "suggestedCreateExam": "How do I create an exam?",
+        "inputPlaceholder": "Ask about SEB Server…",
+        "send": "Send",
+        "disclaimer": "AI-generated answers can be wrong. Check the sources.",
+        "working": "Working…",
+        "error": "The Assistant is not available right now.",
+        "sources": "Sources",
+        "calls": "SEB Server calls",
+        "thumbsUp": "Good answer",
+        "thumbsDown": "Bad answer",
+        "feedbackThanks": "Thanks for the feedback",
+        "showMe": "Show me"
     }
 }

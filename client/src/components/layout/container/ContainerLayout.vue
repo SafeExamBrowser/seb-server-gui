@@ -52,16 +52,26 @@
             >
                 <RouterView />
             </div>
+
+            <div
+                v-if="assistantStore.enabled && assistantStore.isOpen"
+                class="flex-shrink-0"
+                :style="{ width: '384px', minHeight: 0 }"
+            >
+                <AssistantPanel />
+            </div>
         </div>
     </div>
 </template>
 
 <script setup lang="ts">
-import { computed } from "vue";
+import { computed, onMounted } from "vue";
 import { useI18n } from "vue-i18n";
 import { RouterView, useRoute } from "vue-router";
 import { VCard } from "vuetify/components";
 
+import AssistantPanel from "@/components/assistant/AssistantPanel.vue";
+import { useAssistantStore } from "@/components/assistant/composables/useAssistantStore";
 import NotAllowedPage from "@/components/layout/pages/NotAllowedPage.vue";
 import { useCurrentUserQuery } from "@/composables/useCurrentUser";
 import { useInstitutionBranding } from "@/composables/useInstitutionBranding";
@@ -80,6 +90,11 @@ const { logout } = useLogout();
 const { data: user } = useCurrentUserQuery();
 const { institutionName, institutionLogo } = useInstitutionBranding();
 const ability = useAbilities();
+const assistantStore = useAssistantStore();
+
+onMounted(() => {
+    void assistantStore.loadConfig();
+});
 
 const homeRoute = typedTo({ name: "/(app)/" });
 const navigationOverviewRoute = typedTo({

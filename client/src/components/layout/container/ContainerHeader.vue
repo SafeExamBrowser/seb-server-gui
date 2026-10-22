@@ -57,6 +57,23 @@
         </v-card>
 
         <v-card
+            v-if="assistantStore.enabled"
+            class="d-flex align-center rounded-lg px-2 py-2"
+            elevation="1"
+        >
+            <v-btn
+                class="text-none"
+                color="primary"
+                data-testid="assistant-open-button"
+                prepend-icon="mdi-creation"
+                variant="text"
+                @click="handleToggleAssistant"
+            >
+                {{ $t("assistant.openButton") }}
+            </v-btn>
+        </v-card>
+
+        <v-card
             class="d-flex align-center rounded-lg pe-2 ps-3 py-2 ga-2"
             elevation="1"
         >
@@ -71,11 +88,25 @@
 <script setup lang="ts">
 import type { RouteLocationAsRelative } from "vue-router";
 import { RouterLink } from "vue-router";
-import { VAvatar, VCard, VDivider, VImg, VSpacer } from "vuetify/components";
+import {
+    VAvatar,
+    VBtn,
+    VCard,
+    VDivider,
+    VImg,
+    VSpacer,
+} from "vuetify/components";
 
+import { useAssistantStore } from "@/components/assistant/composables/useAssistantStore";
 import type { UserAccount } from "@/models/userAccount";
 
 import ContainerProfileMenu from "./ContainerProfileMenu.vue";
+
+const assistantStore = useAssistantStore();
+
+function handleToggleAssistant() {
+    assistantStore.toggle();
+}
 
 defineProps<{
     homeRoute: RouteLocationAsRelative;
