@@ -161,6 +161,208 @@ const EXAM_TEMPLATE_NAMES = [9201, 9202].map((id) => ({
     name: `e2e-exam-template-${id}`,
 }));
 
+const EXAM_TEMPLATES = [
+        {
+            id: 7,
+            institutionId: 11,
+            name: "NadimTest1",
+            description: "test",
+            examType: "BYOD",
+            supporter: ["test-main"],
+            configurationTemplateId: 16,
+            institutionalDefault: false,
+            lmsIntegration: true,
+            clientConfigurationId: 1001,
+            indicatorTemplates: [],
+            CLIENT_GROUP_TEMPLATES: [],
+            EXAM_ATTRIBUTES: {
+                spsCollectingStrategy: "APPLY_SEB_GROUPS",
+                spsCollectingGroupName: "Fallback Group",
+                enableScreenProctoring: "true",
+                spsSEBGroupsSelection: "",
+            },
+        },
+        {
+            id: 6,
+            institutionId: 11,
+            name: "NadimTest12341234",
+            description: "test",
+            examType: "BYOD",
+            supporter: ["test-main"],
+            configurationTemplateId: 14,
+            institutionalDefault: false,
+            lmsIntegration: true,
+            clientConfigurationId: 1001,
+            indicatorTemplates: [],
+            CLIENT_GROUP_TEMPLATES: [],
+            EXAM_ATTRIBUTES: {
+                spsCollectingStrategy: "APPLY_SEB_GROUPS",
+                spsCollectingGroupName: "Fallback Group",
+                enableScreenProctoring: "true",
+                spsSEBGroupsSelection: "",
+            },
+        },
+        {
+            id: 8,
+            institutionId: 11,
+            name: "NadimTest2",
+            description: "test",
+            examType: "BYOD",
+            supporter: ["test-main"],
+            configurationTemplateId: 18,
+            institutionalDefault: false,
+            lmsIntegration: true,
+            clientConfigurationId: 1001,
+            indicatorTemplates: [],
+            CLIENT_GROUP_TEMPLATES: [],
+            EXAM_ATTRIBUTES: {
+                spsCollectingStrategy: "APPLY_SEB_GROUPS",
+                spsCollectingGroupName: "Fallback Group",
+                enableScreenProctoring: "true",
+                spsSEBGroupsSelection: "",
+            },
+        },
+        {
+            id: 9,
+            institutionId: 11,
+            name: "NadimTest3",
+            description: "test",
+            examType: "BYOD",
+            supporter: ["test-main"],
+            configurationTemplateId: 20,
+            institutionalDefault: false,
+            lmsIntegration: true,
+            clientConfigurationId: 1001,
+            indicatorTemplates: [],
+            CLIENT_GROUP_TEMPLATES: [],
+            EXAM_ATTRIBUTES: {
+                spsCollectingStrategy: "APPLY_SEB_GROUPS",
+                spsCollectingGroupName: "Fallback Group",
+                enableScreenProctoring: "true",
+                spsSEBGroupsSelection: "",
+            },
+        },
+        {
+            id: 10,
+            institutionId: 11,
+            name: "NadimTest4",
+            description: "test",
+            examType: "BYOD",
+            supporter: ["test-main"],
+            configurationTemplateId: 22,
+            institutionalDefault: false,
+            lmsIntegration: true,
+            clientConfigurationId: 1001,
+            indicatorTemplates: [],
+            CLIENT_GROUP_TEMPLATES: [],
+            EXAM_ATTRIBUTES: {
+                spsCollectingStrategy: "APPLY_SEB_GROUPS",
+                spsCollectingGroupName: "Fallback Group",
+                enableScreenProctoring: "true",
+                spsSEBGroupsSelection: "",
+            },
+        },
+        {
+            id: 11,
+            institutionId: 11,
+            name: "NadimTest5",
+            description: "test",
+            examType: "BYOD",
+            supporter: ["test-main"],
+            configurationTemplateId: 25,
+            institutionalDefault: true,
+            lmsIntegration: true,
+            clientConfigurationId: 1001,
+            indicatorTemplates: [],
+            CLIENT_GROUP_TEMPLATES: [],
+            EXAM_ATTRIBUTES: {
+                spsCollectingStrategy: "APPLY_SEB_GROUPS",
+                spsCollectingGroupName: "Fallback Group",
+                enableScreenProctoring: "true",
+                spsSEBGroupsSelection: "",
+            },
+        },
+        {
+            id: 2,
+            institutionId: 11,
+            name: "test",
+            description: "test",
+            examType: "MANAGED",
+            supporter: ["create-tests"],
+            configurationTemplateId: 2,
+            institutionalDefault: false,
+            lmsIntegration: false,
+            clientConfigurationId: 1005,
+            indicatorTemplates: [],
+            CLIENT_GROUP_TEMPLATES: [],
+            EXAM_ATTRIBUTES: {
+                spsCollectingStrategy: "APPLY_SEB_GROUPS",
+                enableScreenProctoring: "false",
+            },
+        },
+        {
+            id: 1,
+            institutionId: 11,
+            name: "test template nadim",
+            examType: "MANAGED",
+            supporter: ["test-main"],
+            configurationTemplateId: 1,
+            institutionalDefault: false,
+            lmsIntegration: false,
+            clientConfigurationId: 1001,
+            indicatorTemplates: [],
+            CLIENT_GROUP_TEMPLATES: [],
+            EXAM_ATTRIBUTES: {
+                spsCollectingStrategy: "APPLY_SEB_GROUPS",
+                enableScreenProctoring: "false",
+            },
+        },
+        {
+            id: 3,
+            institutionId: 11,
+            name: "test12341234",
+            description: "test",
+            examType: "BYOD",
+            supporter: ["test-main"],
+            configurationTemplateId: 10,
+            institutionalDefault: false,
+            lmsIntegration: true,
+            clientConfigurationId: 1001,
+            indicatorTemplates: [],
+            CLIENT_GROUP_TEMPLATES: [],
+            EXAM_ATTRIBUTES: {
+                spsCollectingStrategy: "APPLY_SEB_GROUPS",
+                spsCollectingGroupName: "Fallback Group",
+                enableScreenProctoring: "true",
+                spsSEBGroupsSelection: "",
+            },
+        },
+        {
+            id: 5,
+            institutionId: 11,
+            name: "testNew123",
+            description: "test",
+            examType: "BYOD",
+            supporter: ["test-main"],
+            configurationTemplateId: 12,
+            institutionalDefault: false,
+            lmsIntegration: true,
+            clientConfigurationId: 1001,
+            indicatorTemplates: [],
+            CLIENT_GROUP_TEMPLATES: [],
+            EXAM_ATTRIBUTES: {
+                spsCollectingStrategy: "APPLY_SEB_GROUPS",
+                spsCollectingGroupName: "Fallback Group",
+                enableScreenProctoring: "true",
+                spsSEBGroupsSelection: "",
+            },
+        },
+];
+
+
+
+
+
 // Mirrors the V200 per-browser user rows plus fillers so the paging and
 // items-per-page steps of the read template have something to page over.
 function userAccountRows(browser: string) {
@@ -363,18 +565,39 @@ function matchesCommaList(row: Row, field: string, value: string | null) {
     return value.split(",").includes(String(row[field]));
 }
 
-// Same shape as pagedEnvelope but for the exam family: the text filter is
+function examRows(rows: Row[], params: URLSearchParams): Row[] {
+    return rows.filter(
+        (row) =>
+            textContains(row, "name", params.get("name")) &&
+            matchesCommaList(row, "description", params.get("description")) &&
+            matchesCommaList(row, "examType", params.get("examType")),
+    );
+}
+
+function examTemplateRows(rows: Row[], params: URLSearchParams): Row[] {
+    return rows.filter(
+        (row) =>
+            textContains(row, "name", params.get("name")) &&
+            matchesCommaList(row, "description", params.get("description")) &&
+            matchesCommaList(row, "examType", params.get("examType")),
+    );
+}
+
+// Same shape as pagedEnvelope but for the exam & exam-template family: the text filter is
 // always `quizName`, and `status`/`type` are comma-list filters instead of
 // the institution family's exact `active`/`institutionId` filters.
-function pagedExamEnvelope(rows: Row[], url: URL): Row[] | object {
+// or name`, and `description`, `exam-type`
+function pagedSpecificEnvelope(rows: Row[], url: URL, type: string): Row[] | object {
     const params = url.searchParams;
 
-    let filtered = rows.filter(
-        (row) =>
-            textContains(row, "quizName", params.get("quizName")) &&
-            matchesCommaList(row, "status", params.get("status")) &&
-            matchesCommaList(row, "type", params.get("type")),
-    );
+    let filtered: Row[] = [];
+    if(type == "exam"){
+        filtered = examRows(rows, params);
+    }
+
+    if(type == "examTemplate"){
+        filtered = examTemplateRows(rows, params);
+    }
 
     const sort = params.get("sort");
     if (sort) {
@@ -400,6 +623,7 @@ function pagedExamEnvelope(rows: Row[], url: URL): Row[] | object {
         content: filtered.slice(start, start + pageSize),
     };
 }
+
 
 function json(route: Route, body: unknown, status = 200) {
     return route.fulfill({
@@ -588,9 +812,15 @@ export async function installMockBackend(page: Page, browser: string) {
         ),
     );
 
+    // --- exam-template---------------------------------------------
+    // await page.route(
+    //     /\/api\/admin-api\/v1\/exam-template\/names(?:$|\?)/,
+    //     getOnly((route) => json(route, EXAM_TEMPLATE_NAMES)),
+
+    // );
     await page.route(
-        /\/api\/admin-api\/v1\/exam-template\/names(?:$|\?)/,
-        getOnly((route) => json(route, EXAM_TEMPLATE_NAMES)),
+        /\/api\/admin-api\/v1\/exam-template(?:$|\?)/i,
+        getOnly((route, url) => json(route, pagedSpecificEnvelope(EXAM_TEMPLATES, url, "examTemplate"))),
     );
 
     // --- certificates (empty default; certificate specs mock their own list, this
@@ -603,20 +833,24 @@ export async function installMockBackend(page: Page, browser: string) {
     // --- exams (06-exam and 09-archive both read the plain /exam collection) ---
     await page.route(
         /\/api\/exam(?:$|\?)/,
-        getOnly((route, url) => json(route, pagedExamEnvelope(EXAMS, url))),
+        getOnly((route, url) =>
+            json(route, pagedSpecificEnvelope(EXAMS, url, "exam")),
+        ),
     );
 
     // --- monitoring (07-monitoring) ---------------------------------------------
     await page.route(
         /\/api\/monitoring(?:$|\?)/,
-        getOnly((route, url) => json(route, pagedExamEnvelope(EXAMS, url))),
+        getOnly((route, url) =>
+            json(route, pagedSpecificEnvelope(EXAMS, url, "exam")),
+        ),
     );
 
     // --- analyze / finished exams (08-analyze) ----------------------------------
     await page.route(
         /\/api\/monitoring\/finishedexams(?:$|\?)/,
         getOnly((route, url) =>
-            json(route, pagedExamEnvelope(FINISHED_EXAMS, url)),
+            json(route, pagedSpecificEnvelope(FINISHED_EXAMS, url, "exam")),
         ),
     );
 

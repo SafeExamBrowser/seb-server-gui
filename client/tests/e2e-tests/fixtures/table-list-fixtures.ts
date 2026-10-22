@@ -21,6 +21,8 @@ import { loginAsServerAdmin } from "../../utils/authenticate.ts";
 import { installMockBackend } from "../mocks/mock-backend.ts";
 import { NotFoundPageModel } from "../../shared/page-models/layout/not-found-page.model.ts";
 import { ProfileMenuModel } from "../../shared/page-models/layout/profile-menu.model.ts";
+import { ExamTemplateModel } from "../../shared/page-models/models/exam-template/exam-template.model.ts";
+import { ExamTemplateListModel } from "../../shared/page-models/models/exam-template/exam-template-list.model.ts";
 
 type Fixtures = {
     userAccounts: UserAccountsListModel;
@@ -42,6 +44,9 @@ type Fixtures = {
     monitoringExams: MonitoringListModel;
     analyzeExams: AnalyzeListModel;
     archiveExams: ArchiveListModel;
+
+    examTemplates: ExamTemplateListModel;
+    examTemplate: ExamTemplateModel;
 };
 
 export const test = base.extend<Fixtures>({
@@ -139,6 +144,12 @@ export const test = base.extend<Fixtures>({
         await installMockBackend(page, testInfo.project.name);
         await loginAsServerAdmin(page);
         await use(new ArchiveListModel(page));
+    },
+
+    examTemplates: async ({ page }, use, testInfo) => {
+        await installMockBackend(page, testInfo.project.name);
+        await loginAsServerAdmin(page);
+        await use(new ExamTemplateListModel(page));
     },
 });
 

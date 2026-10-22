@@ -2,7 +2,7 @@ import { test } from "../fixtures/table-list-fixtures";
 
 
 
-const EXAM_TEMPLATE_NAME = "NadimTest3";
+const EXAM_TEMPLATE_NAME = "NadimTest5";
 
 const examTemplateCreateNamingValid1 = {
     name: EXAM_TEMPLATE_NAME,
