@@ -19,7 +19,7 @@ const examTemplateCreateNamingValid1 = {
 test.describe("03 Exam Template - Start", () => {
     test.use({ timezoneId: "UTC" });
 
-    test("A basic check", async ({ examTemplateCreate, examTemplate }) => {
+    test("A create basic exam template", async ({ examTemplateCreate, examTemplate }) => {
         //step 1 - naming
         await examTemplateCreate.goto();
 
