@@ -9,6 +9,7 @@
             hide-details
             :min="min"
             :max="max"
+            :precision="precision"
             max-width="600"
             @update:model-value="saveValue()"
         >
@@ -40,6 +41,7 @@ const props = defineProps<{
     disabled?: boolean;
     min?: number;
     max?: number;
+    precision?: number;
 }>();
 
 const numberValue = ref<number>(
@@ -57,7 +59,7 @@ async function saveValue() {
             numberValue.value.toString(),
         );
     } else {
-        if (props.min) {
+        if (props.min !== undefined) {
             numberValue.value = props.min;
             props.modelValue.saveSingleValue(props.name, props.min.toString());
         } else {

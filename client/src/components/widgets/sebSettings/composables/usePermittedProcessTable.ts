@@ -136,6 +136,11 @@ export const usePermittedProcessTable = (
                 attributes,
                 "permittedProcesses.title",
             ),
+            description: getStringValue(
+                rowVals,
+                attributes,
+                "permittedProcesses.description",
+            ),
             signature: getStringValue(
                 rowVals,
                 attributes,
@@ -211,6 +216,10 @@ export const usePermittedProcessTable = (
                     "permittedProcesses.originalName",
                 ),
                 title: getSettingId(rowVals, "permittedProcesses.title"),
+                description: getSettingId(
+                    rowVals,
+                    "permittedProcesses.description",
+                ),
                 signature: getSettingId(
                     rowVals,
                     "permittedProcesses.signature",
@@ -269,6 +278,7 @@ export const usePermittedProcessTable = (
             executable: "",
             originalName: "",
             title: "",
+            description: "",
             signature: "",
             path: "",
             iconInTaskbar: true,
@@ -287,6 +297,7 @@ export const usePermittedProcessTable = (
                 executable: -1,
                 originalName: -1,
                 title: -1,
+                description: -1,
                 signature: -1,
                 path: -1,
                 iconInTaskbar: -1,
@@ -355,6 +366,10 @@ export const usePermittedProcessTable = (
             {
                 id: selectedRow.value.ids.title,
                 value: selectedRow.value.title,
+            },
+            {
+                id: selectedRow.value.ids.description,
+                value: selectedRow.value.description,
             },
             {
                 id: selectedRow.value.ids.originalName,

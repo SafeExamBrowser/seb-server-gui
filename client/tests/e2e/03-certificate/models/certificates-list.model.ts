@@ -4,6 +4,7 @@ import { certificateListConfig } from "@/pages/(app)/certificate/certificateList
 
 import { TableListPageModel } from "../../shared/page-models/model-pages/table-list-page.model";
 import type { TableListPageConfig } from "../../shared/types/table-list-page.types";
+import { CertificateUploadDialogModel } from "./certificate-upload-dialog.model";
 
 export type CertificateRow = {
     alias: string;
@@ -17,6 +18,10 @@ export type CertificateRow = {
 // because the app route (/certificate) equals the wire path and would match otherwise.
 export const CERTIFICATE_API_REQUEST = /\/admin-api\/v1\/certificate(?:\?|$)/i;
 
+// The upload POST hits the bare collection path (no query params), unlike the list GET;
+// registered after the list mock, this route wins the LIFO match for the mutations.
+export const CERTIFICATE_MUTATION_REQUEST = /\/admin-api\/v1\/certificate$/i;
+
 const config: TableListPageConfig = {
     route: certificateListConfig.route,
     testIdBase: certificateListConfig.testIdBase,
@@ -28,8 +33,19 @@ const config: TableListPageConfig = {
 };
 
 export class CertificatesListModel extends TableListPageModel {
+    readonly uploadDialog: CertificateUploadDialogModel;
+
     constructor(page: Page) {
         super(page, config);
+        this.uploadDialog = new CertificateUploadDialogModel(
+            page,
+            certificateListConfig.testIdBase,
+        );
+    }
+
+    async openUploadDialog() {
+        await this.layout.addButton.click();
+        await this.uploadDialog.expectVisible();
     }
 
     // Certificates are stored as parsed keystore blobs, so the list is mocked:

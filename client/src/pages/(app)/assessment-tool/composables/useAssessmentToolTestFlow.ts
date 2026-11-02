@@ -12,6 +12,8 @@ import { notify } from "@/services/notifications/notify.ts";
 const TEST_ERROR_MESSAGE_KEYS = {
     API_NOT_SUPPORTED:
         "assessmentToolConnections.test.error.message.API_NOT_SUPPORTED",
+    API_ACCESS_DENIED:
+        "assessmentToolConnections.test.error.message.API_ACCESS_DENIED",
     MISSING_ATTRIBUTE:
         "assessmentToolConnections.test.error.message.MISSING_ATTRIBUTE",
     TOKEN_REQUEST: "assessmentToolConnections.test.error.message.TOKEN_REQUEST",
@@ -52,11 +54,15 @@ export const useAssessmentToolTestFlow = (config: {
 
             if (result.errors && result.errors.length > 0) {
                 result.errors.forEach((err) =>
-                    notify.warning(
+                    notify.assessmentToolError(
+                        {
+                            contextLabel: config.contextLabel,
+                        },
                         i18n.global.t(
                             "assessmentToolConnections.test.error.title",
                         ),
                         errorBody(err),
+                        err.errorMessage,
                     ),
                 );
                 return;

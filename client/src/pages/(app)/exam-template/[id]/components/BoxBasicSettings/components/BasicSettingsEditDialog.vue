@@ -48,6 +48,7 @@ import {
 import BoxActionButton from "@/components/widgets/BoxActionButton.vue";
 import FormBuilder from "@/components/widgets/formBuilder/FormBuilder.vue";
 import LoadingFallbackComponent from "@/components/widgets/loadingFallbackComponent/LoadingFallbackComponent.vue";
+import i18n from "@/i18n";
 import { BasicSettings } from "@/models/examTemplate.ts";
 import {
     toApiClientConfigurationId,
@@ -59,6 +60,8 @@ import {
     toSelectableExamType,
 } from "@/models/seb-server/examFiltersEnum.ts";
 import { useExamTemplateBasicSettingsFields } from "@/pages/(app)/exam-template/composables/useExamTemplateBasicSettingsFields.ts";
+import { notify } from "@/services/notifications/notify";
+import { getConnectionConfigurationById } from "@/services/seb-server/connectionConfigurationService";
 
 const { basicSettings } = defineProps<{ basicSettings: BasicSettings }>();
 
@@ -98,13 +101,35 @@ const { formFields, loading, errors } = useExamTemplateBasicSettingsFields(
     },
 );
 
-const handleButtonEditClick = () => {
+const handleButtonEditClick = async () => {
     nameTransient.value = basicSettings.name;
     descriptionTransient.value = basicSettings.description;
     examTypeTransient.value = toSelectableExamType(basicSettings.examType);
-    clientConfigurationTransient.value = toSelectableClientConfigurationId(
-        basicSettings.clientConfigurationId,
-    );
+
+    if (basicSettings.clientConfigurationId) {
+        const cc = await getConnectionConfigurationById(
+            String(basicSettings.clientConfigurationId),
+        );
+        if (cc.active === true) {
+            clientConfigurationTransient.value =
+                toSelectableClientConfigurationId(
+                    basicSettings.clientConfigurationId,
+                );
+        } else {
+            clientConfigurationTransient.value = undefined;
+            notify.warning(
+                `${i18n.global.t("examTemplateDetail.boxes.basicSettings.inactiveClientConfig.title")} ${cc.name}`,
+                i18n.global.t(
+                    "examTemplateDetail.boxes.basicSettings.inactiveClientConfig.text",
+                ),
+            );
+        }
+    } else {
+        clientConfigurationTransient.value = toSelectableClientConfigurationId(
+            basicSettings.clientConfigurationId,
+        );
+    }
+
     lmsIntegrationTransient.value = basicSettings.lmsIntegration;
     institutionalDefaultTransient.value = basicSettings.institutionalDefault;
     screenProctoringEnabledTransient.value =

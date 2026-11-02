@@ -44,7 +44,8 @@
                         />
 
                         <v-select
-                            v-model="encryptWithCertificate"
+                            :model-value="encryptWithCertificate"
+                            clearable
                             data-testid="editConnectionConfiguration-encryptWithCertificate-select"
                             density="compact"
                             :disabled="certificatesLoading"
@@ -59,40 +60,27 @@
                             :loading="certificatesLoading"
                             :menu-props="{ maxHeight: 240 }"
                             variant="outlined"
-                            @update:model-value="handleCertChange"
+                            @update:model-value="
+                                handleEncryptWithCertificateChange
+                            "
                         >
                             <template #item="{ props, item }">
                                 <v-list-item v-bind="props">
                                     <template #prepend>
                                         <v-icon
-                                            v-if="item.value === '__UPLOAD__'"
-                                        >
-                                            <FormDialog
-                                                icon-activator="mdi-plus-circle-outline"
-                                                color-activator="primary"
-                                                label-activator=""
-                                                size-activator="large"
-                                                label-activator-visible
-                                                :label-cancel="
-                                                    $t('general.cancelButton')
-                                                "
-                                                :label-submit="
-                                                    $t(
-                                                        'certificates.createDialog.confirmButtonTitle',
-                                                    )
-                                                "
-                                                form-id="form-certificate-upload"
-                                                :get-form-fields="getFormFields"
-                                                :get-item="getEmptyItem"
-                                                :on-submit="
-                                                    handleUploadCertificate
-                                                "
-                                            />
-                                        </v-icon>
+                                            v-if="
+                                                item.value ===
+                                                UPLOAD_CERTIFICATE_OPTION
+                                            "
+                                            color="primary"
+                                            icon="mdi-plus-circle-outline"
+                                        />
                                     </template>
                                 </v-list-item>
                                 <v-divider
-                                    v-if="item.value === '__UPLOAD__'"
+                                    v-if="
+                                        item.value === UPLOAD_CERTIFICATE_OPTION
+                                    "
                                     class="my-1"
                                 />
                             </template>
@@ -109,6 +97,27 @@
                                 </div>
                             </template>
                         </v-select>
+
+                        <FormDialog
+                            v-model="certificateUploadDialogOpen"
+                            hide-activator
+                            icon-activator="mdi-plus-circle-outline"
+                            color-activator="primary"
+                            :label-activator="
+                                $t('certificates.createDialog.addButtonTitle')
+                            "
+                            :label-cancel="$t('general.cancelButton')"
+                            :label-submit="
+                                $t(
+                                    'certificates.createDialog.confirmButtonTitle',
+                                )
+                            "
+                            form-id="form-certificate-upload"
+                            :get-form-fields="getFormFields"
+                            :get-item="getEmptyItem"
+                            :on-submit="handleUploadCertificate"
+                            data-test-id="editConnectionConfiguration-certificateUpload"
+                        />
 
                         <v-divider class="my-4" />
 
@@ -156,13 +165,7 @@
                     class="px-6 mt-4 text-body-medium text-grey-darken-1"
                 >
                     {{ $t("connectionConfigurations.hints.lastUpdatedAt")
-                    }}{{ formatDate(config.lastUpdateTime)
-                    }}{{
-                        config.lastUpdateUser
-                            ? $t("connectionConfigurations.hints.by") +
-                              config.lastUpdateUser
-                            : ""
-                    }}
+                    }}{{ formatDate(config.lastUpdateTime) }}
                 </div>
 
                 <div class="d-flex justify-end ga-2 px-6 pb-4">
@@ -221,7 +224,10 @@ import { useCertificateCreateForm } from "@/pages/(app)/certificate/composables/
 import { CertKey } from "@/pages/(app)/certificate/types/types.ts";
 import { useConnectionConfigurationQuery } from "@/pages/(app)/connection-configuration/api/useConnectionConfigurationQuery.ts";
 import { useEditConnectionConfigurationMutation } from "@/pages/(app)/connection-configuration/api/useEditConnectionConfigurationMutation.ts";
-import { useCertificates } from "@/pages/(app)/connection-configuration/composables/api/useCertificates.ts";
+import {
+    UPLOAD_CERTIFICATE_OPTION,
+    useCertificates,
+} from "@/pages/(app)/connection-configuration/composables/api/useCertificates.ts";
 import { useConnectionConfigurationFormFields } from "@/pages/(app)/connection-configuration/composables/useConnectionConfigurationFormFields.ts";
 import { typedTo } from "@/router/typedTo";
 import { applyBackendFieldErrors } from "@/services/errors/formErrorMapping.ts";
@@ -331,10 +337,9 @@ watch(
         pingInterval.value = toSeconds(fetched.sebServerPingTime) ?? 1;
         asymmetricOnlyEncryption.value = Boolean(fetched.cert_encryption_asym);
         encryptWithCertificate.value = fetched.cert_alias || undefined;
-        // The read model no longer carries the write-only password values (they
-        // come back only as { empty } indicators), so start the inputs empty.
-        configurationPassword.value = "";
-        confirmConfigurationPassword.value = "";
+
+        configurationPassword.value = fetched.encryptSecret || undefined;
+        confirmConfigurationPassword.value = fetched.encryptSecret || undefined;
 
         withFallback.value = Boolean(fetched.sebServerFallback);
         fallbackStartUrl.value = fetched.startURL || undefined;
@@ -343,20 +348,26 @@ watch(
             toSeconds(fetched.sebServerFallbackAttemptInterval) ?? 2;
         connectionTimeout.value =
             toSeconds(fetched.sebServerFallbackTimeout) ?? 30;
-        fallbackPassword.value = "";
-        confirmFallbackPassword.value = "";
-        quitPassword.value = "";
-        confirmQuitPassword.value = "";
+        fallbackPassword.value =
+            fetched.sebServerFallbackPasswordHash || undefined;
+        confirmFallbackPassword.value =
+            fetched.sebServerFallbackPasswordHash || undefined;
+        quitPassword.value = fetched.hashedQuitPassword || undefined;
+        confirmQuitPassword.value = fetched.hashedQuitPassword || undefined;
 
         snapshot();
     },
     { immediate: true },
 );
 
-function handleCertChange(val: string | undefined) {
-    if (val === "__UPLOAD__") {
-        encryptWithCertificate.value = undefined;
+const certificateUploadDialogOpen = ref(false);
+
+function handleEncryptWithCertificateChange(value: string | null) {
+    if (value === UPLOAD_CERTIFICATE_OPTION) {
+        certificateUploadDialogOpen.value = true;
+        return;
     }
+    encryptWithCertificate.value = value ?? undefined;
 }
 
 async function onCertImported(key: CertKey) {

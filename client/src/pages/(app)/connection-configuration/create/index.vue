@@ -30,7 +30,8 @@
                     />
 
                     <v-select
-                        v-model="encryptWithCertificate"
+                        :model-value="encryptWithCertificate"
+                        clearable
                         data-testid="createConnectionConfiguration-encryptWithCertificate-select"
                         density="compact"
                         :disabled="certificatesLoading"
@@ -45,36 +46,23 @@
                         :loading="certificatesLoading"
                         :menu-props="{ maxHeight: 240 }"
                         variant="outlined"
-                        @update:model-value="handleCertChange"
+                        @update:model-value="handleEncryptWithCertificateChange"
                     >
                         <template #item="{ props, item }">
                             <v-list-item v-bind="props">
                                 <template #prepend>
-                                    <v-icon v-if="item.value === '__UPLOAD__'">
-                                        <FormDialog
-                                            icon-activator="mdi-plus-circle-outline"
-                                            color-activator="primary"
-                                            label-activator=""
-                                            size-activator="large"
-                                            label-activator-visible
-                                            :label-cancel="
-                                                $t('general.cancelButton')
-                                            "
-                                            :label-submit="
-                                                $t(
-                                                    'certificates.createDialog.confirmButtonTitle',
-                                                )
-                                            "
-                                            form-id="form-certificate-upload"
-                                            :get-form-fields="getFormFields"
-                                            :get-item="getEmptyItem"
-                                            :on-submit="handleUploadCertificate"
-                                        />
-                                    </v-icon>
+                                    <v-icon
+                                        v-if="
+                                            item.value ===
+                                            UPLOAD_CERTIFICATE_OPTION
+                                        "
+                                        color="primary"
+                                        icon="mdi-plus-circle-outline"
+                                    />
                                 </template>
                             </v-list-item>
                             <v-divider
-                                v-if="item.value === '__UPLOAD__'"
+                                v-if="item.value === UPLOAD_CERTIFICATE_OPTION"
                                 class="my-1"
                             />
                         </template>
@@ -92,6 +80,25 @@
                             </div>
                         </template>
                     </v-select>
+
+                    <FormDialog
+                        v-model="certificateUploadDialogOpen"
+                        hide-activator
+                        icon-activator="mdi-plus-circle-outline"
+                        color-activator="primary"
+                        :label-activator="
+                            $t('certificates.createDialog.addButtonTitle')
+                        "
+                        :label-cancel="$t('general.cancelButton')"
+                        :label-submit="
+                            $t('certificates.createDialog.confirmButtonTitle')
+                        "
+                        form-id="form-certificate-upload"
+                        :get-form-fields="getFormFields"
+                        :get-item="getEmptyItem"
+                        :on-submit="handleUploadCertificate"
+                        data-test-id="createConnectionConfiguration-certificateUpload"
+                    />
 
                     <v-divider class="my-4" />
 
@@ -187,7 +194,10 @@ import {
 import { useCertificateCreateForm } from "@/pages/(app)/certificate/composables/useCertificateCreateForm.ts";
 import { CertKey } from "@/pages/(app)/certificate/types/types.ts";
 import { useCreateConnectionConfigurationMutation } from "@/pages/(app)/connection-configuration/api/useCreateConnectionConfigurationMutation.ts";
-import { useCertificates } from "@/pages/(app)/connection-configuration/composables/api/useCertificates.ts";
+import {
+    UPLOAD_CERTIFICATE_OPTION,
+    useCertificates,
+} from "@/pages/(app)/connection-configuration/composables/api/useCertificates.ts";
 import { useConnectionConfigurationFormFields } from "@/pages/(app)/connection-configuration/composables/useConnectionConfigurationFormFields.ts";
 import { applyBackendFieldErrors } from "@/services/errors/formErrorMapping.ts";
 import { submitWithFormErrors } from "@/services/errors/submitWithFormErrors.ts";
@@ -241,10 +251,14 @@ const {
 const mainFormRef = ref<InstanceType<typeof FormBuilder>>();
 const fallbackFormRef = ref<InstanceType<typeof FormBuilder>>();
 
-function handleCertChange(val: string | undefined) {
-    if (val === "__UPLOAD__") {
-        encryptWithCertificate.value = undefined;
+const certificateUploadDialogOpen = ref(false);
+
+function handleEncryptWithCertificateChange(value: string | null) {
+    if (value === UPLOAD_CERTIFICATE_OPTION) {
+        certificateUploadDialogOpen.value = true;
+        return;
     }
+    encryptWithCertificate.value = value ?? undefined;
 }
 
 async function onCertImported(key: CertKey) {

@@ -56,13 +56,12 @@ export const useExamTemplateOverview = () => {
     const {
         deleteDialogOpen,
         deleteDetailText,
-        deleteError,
         deleteLoading,
         openDeleteDialog,
         confirmDelete,
     } = useExamTemplateDeleteFlow({ onDeleteSuccess: reloadList });
 
-    const { copy, copyLoading, copyError } = useExamTemplateCopyFlow({
+    const { copy, copyLoading } = useExamTemplateCopyFlow({
         onCopySuccess: reloadList,
     });
 
@@ -104,11 +103,7 @@ export const useExamTemplateOverview = () => {
         deleteFlow: reactive({
             dialogOpen: deleteDialogOpen,
             detailText: deleteDetailText,
-            error: deleteError,
             confirm: confirmDelete,
-        }),
-        copyFlow: reactive({
-            error: copyError,
         }),
     };
 };

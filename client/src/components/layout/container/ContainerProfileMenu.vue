@@ -97,7 +97,7 @@
                 </div>
             </div>
 
-            <div class="d-flex border-b-thin">
+            <div v-if="quickActions.length > 0" class="d-flex border-b-thin">
                 <template
                     v-for="(action, idx) in quickActions"
                     :key="action.label"
@@ -229,16 +229,18 @@ const quickActions = computed(() => {
         target: undefined,
         to: typedTo({ name: "/(app)/profile/" }),
     };
-    const docs = {
-        key: "docs",
-        icon: "mdi-file-document-outline",
-        label: t("navigation.profileMenu.docs"),
-        href: "https://seb-server.readthedocs.io/en/latest/index.html",
-        rel: "noopener noreferrer",
-        target: "_blank",
-        to: undefined,
-    };
-    return isTeacherAccount.value ? [docs] : [profileSettings, docs];
+    // Docs link is hidden for all roles until the documentation is up to date.
+    // const docs = {
+    //     key: "docs",
+    //     icon: "mdi-file-document-outline",
+    //     label: t("navigation.profileMenu.docs"),
+    //     href: "https://seb-server.readthedocs.io/en/latest/index.html",
+    //     rel: "noopener noreferrer",
+    //     target: "_blank",
+    //     to: undefined,
+    // };
+    // return isTeacherAccount.value ? [docs] : [profileSettings, docs];
+    return isTeacherAccount.value ? [] : [profileSettings];
 });
 
 function translateUserRole(role: string): string {

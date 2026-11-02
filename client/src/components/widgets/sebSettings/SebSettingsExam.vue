@@ -159,8 +159,8 @@
                     <TextSetting
                         v-model="singleValues"
                         name="examSessionReconfigureConfigURL"
-                        label="ebSettings.examView.reconfigure.examSessionReconfigureConfigURL"
-                        :show-label="false"
+                        label="sebSettings.examView.reconfigure.examSessionReconfigureConfigURL"
+                        :show-label="true"
                         :tooltip="false"
                         :disabled="context.readonly"
                     />

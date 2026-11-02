@@ -37,6 +37,7 @@ declare module 'vue-router/auto-routes' {
       Record<never, never>,
       Record<never, never>,
       | '/(app)/'
+      | '/(app)/[...path]/'
       | '/(app)/analyze/'
       | '/(app)/applications-search/'
       | '/(app)/archive/'
@@ -79,6 +80,13 @@ declare module 'vue-router/auto-routes' {
       '/',
       Record<never, never>,
       Record<never, never>,
+      | never
+    >,
+    '/(app)/[...path]/': RouteRecordInfo<
+      '/(app)/[...path]/',
+      '/:path(.*)',
+      { path: ParamValue<true> },
+      { path: ParamValue<false> },
       | never
     >,
     '/(app)/analyze/': RouteRecordInfo<
@@ -380,6 +388,7 @@ declare module 'vue-router/auto-routes' {
       routes:
         | '/(app)'
         | '/(app)/'
+        | '/(app)/[...path]/'
         | '/(app)/analyze/'
         | '/(app)/applications-search/'
         | '/(app)/archive/'
@@ -424,6 +433,14 @@ declare module 'vue-router/auto-routes' {
     'src/pages/(app)/index.vue': {
       routes:
         | '/(app)/'
+      views:
+        | never
+      pathParamNames:
+        | never
+    }
+    'src/pages/(app)/[...path]/index.vue': {
+      routes:
+        | '/(app)/[...path]/'
       views:
         | never
       pathParamNames:

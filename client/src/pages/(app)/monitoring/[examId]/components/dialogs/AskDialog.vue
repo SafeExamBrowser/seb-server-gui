@@ -110,14 +110,25 @@
                             "
                             style="max-width: 260px"
                         >
+                            <template #selection="{ item }">
+                                <v-avatar
+                                    v-if="item.color"
+                                    :color="item.color"
+                                    size="11"
+                                    class="mr-2"
+                                />
+                                {{ item.label }}
+                            </template>
                             <template #item="{ props, item, index }">
                                 <v-list-item v-bind="props">
-                                    <template #prepend>
-                                        <v-chip
-                                            size="x-small"
-                                            variant="tonal"
-                                            class="mr-2"
-                                        >
+                                    <template v-if="item.color" #prepend>
+                                        <v-avatar
+                                            :color="item.color"
+                                            size="11"
+                                        />
+                                    </template>
+                                    <template #append>
+                                        <v-chip size="x-small" variant="tonal">
                                             {{ item.count }}
                                         </v-chip>
                                     </template>
@@ -221,6 +232,7 @@ import { computed, ref, watch } from "vue";
 import { useI18n } from "vue-i18n";
 import { useRouter } from "vue-router";
 import {
+    VAvatar,
     VBtn,
     VCard,
     VCardText,
@@ -243,6 +255,11 @@ import { ConnectionStatusEnum } from "@/models/seb-server/connectionStatusEnum.t
 import { getAskAndStore } from "@/pages/(app)/monitoring/[examId]/client/composables/useMonitoringData.ts";
 import * as examService from "@/services/seb-server/examService.ts";
 import { useMonitoringStore } from "@/stores/seb-server/monitoringStore.ts";
+import {
+    CONNECTION_STATUS_DISPLAY_ORDER,
+    getConnectionStatusColor,
+    getConnectionStatusLabel,
+} from "@/utils/monitoringUtils.ts";
 
 import AskConnectionListItem from "./ask/AskConnectionListItem.vue";
 import AskGrantFooter from "./ask/AskGrantFooter.vue";
@@ -309,25 +326,22 @@ const statusCounts = computed<Record<"ALL" | ConnectionStatusEnum, number>>(
     },
 );
 
-const statusItems = computed(() => {
-    const others = allStatuses.filter(
-        (s) =>
-            s !== ConnectionStatusEnum.ACTIVE &&
-            s !== ConnectionStatusEnum.UNDEFINED,
-    );
-    const ordered: Array<"ALL" | ConnectionStatusEnum> = [
-        "ALL",
-        ConnectionStatusEnum.ACTIVE,
-        ...others,
-        ConnectionStatusEnum.UNDEFINED,
-    ];
+const STATUS_FILTER_OPTIONS: Array<"ALL" | ConnectionStatusEnum> = [
+    "ALL",
+    ...CONNECTION_STATUS_DISPLAY_ORDER,
+];
 
-    return ordered.map((v) => ({
-        value: v,
-        label: trStatus(v),
-        count: statusCounts.value[v],
-    }));
-});
+const statusItems = computed(() =>
+    STATUS_FILTER_OPTIONS.map((value) => ({
+        value,
+        label:
+            value === "ALL"
+                ? t("monitoringDetails.monitoringASKDialog.statuses.ALL")
+                : getConnectionStatusLabel(value),
+        count: statusCounts.value[value],
+        color: value === "ALL" ? undefined : getConnectionStatusColor(value),
+    })),
+);
 
 const normalizeStatus = (s?: string): ConnectionStatusEnum => {
     const up = (s ?? ConnectionStatusEnum.UNDEFINED).toUpperCase();
@@ -357,28 +371,6 @@ function onGrantKey() {
         String(firstConnId.value),
     );
     getAskAndStore(examId);
-}
-
-const STATUS_LABEL_I18N_KEYS: Record<"ALL" | ConnectionStatusEnum, string> = {
-    ALL: "monitoringDetails.monitoringASKDialog.statuses.ALL",
-    [ConnectionStatusEnum.UNDEFINED]:
-        "monitoringDetails.monitoringASKDialog.statuses.UNDEFINED",
-    [ConnectionStatusEnum.CONNECTION_REQUESTED]:
-        "monitoringDetails.monitoringASKDialog.statuses.CONNECTION_REQUESTED",
-    [ConnectionStatusEnum.READY]:
-        "monitoringDetails.monitoringASKDialog.statuses.READY",
-    [ConnectionStatusEnum.ACTIVE]:
-        "monitoringDetails.monitoringASKDialog.statuses.ACTIVE",
-    [ConnectionStatusEnum.DISABLED]:
-        "monitoringDetails.monitoringASKDialog.statuses.DISABLED",
-    [ConnectionStatusEnum.MISSING]:
-        "monitoringDetails.monitoringASKDialog.statuses.MISSING",
-    [ConnectionStatusEnum.CLOSED]:
-        "monitoringDetails.monitoringASKDialog.statuses.CLOSED",
-};
-
-function trStatus(value: "ALL" | ConnectionStatusEnum) {
-    return t(STATUS_LABEL_I18N_KEYS[value]);
 }
 
 watch(selectedAskIdx, () => {

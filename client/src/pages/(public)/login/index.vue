@@ -1,5 +1,5 @@
 <template>
-    <v-main data-testid="login-page-container">
+    <v-main class="bg-background" data-testid="login-page-container">
         <v-container class="fill-height d-flex align-center justify-center">
             <v-card class="pa-10" :loading="isLoading" :disabled="isLoading">
                 <template #loader="{ isActive }">

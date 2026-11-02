@@ -8,6 +8,7 @@
         <template #PanelLeft>
             <ApplicationsSearchForm
                 ref="searchForm"
+                :initial-time-range="initialTimeRange"
                 :data-test-id="dataTestId"
                 @search="handleSearch"
                 @collapse="filtersOpen = false"
@@ -269,11 +270,19 @@ import {
 
 import BasicPage from "@/components/layout/pages/BasicPage.vue";
 import EntityTable from "@/components/widgets/entity-table/EntityTable.vue";
+import { useSearchQuerySync } from "@/components/widgets/searches/composables/useSearchQuerySync";
+import {
+    TIME_RANGE_QUERY_KEYS,
+    timeRangeFromQuery,
+    timeRangeToQuery,
+} from "@/components/widgets/searches/timeRange/timeRangeQuery";
+import type { SearchQueryValues } from "@/components/widgets/searches/types";
 
 import ApplicationsSearchForm from "./components/ApplicationsSearchForm.vue";
 import ApplicationsSearchMetadata from "./components/ApplicationsSearchMetadata.vue";
 import { useApplicationsSearch } from "./composables/useApplicationsSearch";
 import type { ApplicationsSearchQuery } from "./types";
+import { createDefaultTimeRange } from "./utils/searchFormState";
 
 definePage({
     meta: {
@@ -290,12 +299,29 @@ const search = useApplicationsSearch();
 
 const searchForm = ref<InstanceType<typeof ApplicationsSearchForm>>();
 
+// the submitted time range lives in the URL query
+const searchQuerySync = useSearchQuerySync(
+    TIME_RANGE_QUERY_KEYS,
+    handleExternalQueryChange,
+);
+const initialTimeRange = timeRangeFromQuery(
+    searchQuerySync.initialValues,
+    createDefaultTimeRange(),
+);
+
 const activeChipsAvailable = computed(
     () => Boolean(search.activeSummary) || search.metadataAvailable,
 );
 
 async function handleSearch(query: ApplicationsSearchQuery) {
+    searchQuerySync.writeValues(timeRangeToQuery(query.timeRange));
     await search.runSearch(query);
+}
+
+function handleExternalQueryChange(values: SearchQueryValues) {
+    searchForm.value?.restore(
+        timeRangeFromQuery(values, createDefaultTimeRange()),
+    );
 }
 
 function handleClearAll() {

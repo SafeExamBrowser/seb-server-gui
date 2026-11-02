@@ -435,7 +435,7 @@
                 "tooltip": "Delete Schedule Task"
             },
             "disabled": {
-                "tooltip": "if a scheduled deletion already exists, the button could be disabled and a tooltip explaining why could be displayed on mouseover."
+                "tooltip": "You cannot schedule more than one deletion task at a time."
             }
         },
         "hints": {
@@ -508,7 +508,7 @@
         "steps": {
             "naming": {
                 "title": "Define Basic Settings",
-                "subtitle": "Fill out the form. Create a SEB Client Template and a Connection Configuration, if you haven't done so already."
+                "subtitle": "Fill out the form. Create a Connection Configuration, if you haven't done so already."
             },
             "seb-settings": {
                 "title": "Enter SEB Settings",
@@ -530,7 +530,7 @@
             },
             "indicators": {
                 "title": "Add Indicators",
-                "subtitle": "TODO: translate (Kristina)"
+                "subtitle": "Add the indicators, you want for your exam template."
             },
             "clientGroup": {
                 "title": "Add Groups",
@@ -538,7 +538,7 @@
             },
             "summary": {
                 "title": "Overview Exam Template",
-                "subtitle": "TODO: translate (Kristina)",
+                "subtitle": "Go back to change something in your Exam Template or click Save to finish creating your Exam Template.",
                 "emptyValue": "No data",
                 "notFoundValue": "Not found",
                 "sections": {
@@ -567,7 +567,11 @@
         "boxes": {
             "basicSettings": {
                 "title": "Basic Settings",
-                "dialogTitle": "Edit Basic Settings"
+                "dialogTitle": "Edit Basic Settings",
+                "inactiveClientConfig": {
+                    "title": "Inactive Connection Configuration Selected: ",
+                    "text": "There is an inactive connection configuration set for this template. Please either re-active the connection configuration or select an active connection configuration and save the template."
+                }
             },
             "sebSettings": {
                 "title": "SEB Settings",
@@ -912,8 +916,9 @@
                 "title": "Test Assessment Tool Connection failed",
                 "message": {
                     "API_NOT_SUPPORTED": "The Assessment Tool (API) is not supported",
+                    "API_ACCESS_DENIED": "No Access to the The Assessment Tool (API)",
                     "MISSING_ATTRIBUTE": "There are missing attributes. Please make sure you have set all needed attributes",
-                    "TOKEN_REQUEST": "Access ist denied. Please make sure your client credentials or access token is correct",
+                    "TOKEN_REQUEST": "Access is denied. Please make sure your client credentials or access token is correct",
                     "QUIZ_ACCESS_API_REQUEST": "Failed to load quizzes from Assessment Tool",
                     "QUIZ_RESTRICTION_API_REQUEST": "Failed to apply SEB restriction on the Assessment Tool",
                     "TEMPLATE_CREATION": "Failed to apply SEB Server templates for Assessment Tool integration",
@@ -922,7 +927,7 @@
             },
             "success": {
                 "title": "Test Assessment Tool",
-                "message": "Successully connected to Assessment Tool"
+                "message": "Successfully connected to Assessment Tool"
             }
         }
     },
@@ -1139,7 +1144,7 @@
     "sebSettings": {
         "pwdMismatch": "The password and confirm password must match",
         "pwdSpaces": "The value must not start or end with a space.",
-        "noNegNumber": "Cant be a negative number",
+        "noNegNumber": "Can not be a negative number",
         "importDialog": {
             "addButtonTitle": "Import",
             "confirmButtonTitle": "Import",
@@ -1215,10 +1220,10 @@
             },
             "browser_window": {
                 "title": "Browser Window Toolbar",
-                "enableToolbar": "Enable browser window toolbar",
+                "enableToolbar": "Enable browser window toolbar (Mac/iOS)",
                 "enableToolbar_tooltip": "Displays a toolbar on top of the browser window which can also be hidden by the user",
-                "addrBar": "Allow address bar for main window (Win)",
-                "newAddrBar": "Allow address bar for additional window (Win)",
+                "addrBar": "Show address bar for main window (Win)",
+                "newAddrBar": "Show address bar for additional window (Win)",
                 "allowDev": "Show developer tools in window menu (Win)",
                 "hideTool": "Hide toolbar as default (Mac)",
                 "hideTool_tooltip": "Hide browser window toolbar by default. It can be shown again by using the View menu or Alt-Command-T.",
@@ -1229,20 +1234,20 @@
                 "title": "iOS Status Bar",
                 "mobileStatusBarAppearance": "Appearance",
                 "mobileStatusBarAppearance_0": "None",
-                "mobileStatusBarAppearance_1": "Light",
-                "mobileStatusBarAppearance_2": "Dark",
+                "mobileStatusBarAppearance_1": "White on Black",
+                "mobileStatusBarAppearance_2": "Black on White",
                 "mobileStatusBarAppearanceExtended": "Appearance on devices with FaceID",
                 "mobileStatusBarAppearanceExtended_0": "Inferred",
-                "mobileStatusBarAppearanceExtended_1": "Light",
-                "mobileStatusBarAppearanceExtended_2": "Dark",
-                "mobileStatusBarAppearanceExtended_3": "None Dark",
-                "mobileStatusBarAppearanceExtended_4": "None Light"
+                "mobileStatusBarAppearanceExtended_1": "White on Black",
+                "mobileStatusBarAppearanceExtended_2": "Black on White",
+                "mobileStatusBarAppearanceExtended_3": "None - Black",
+                "mobileStatusBarAppearanceExtended_4": "None - White"
             },
             "task_bar": {
                 "title": "SEB Taskbar / Dock",
                 "height": "Dock height",
                 "height_tooltip": "SEB dock height in points (pixel height*2 on Retina displays)",
-                "showTaskBar": "Show SEB taskbar",
+                "showTaskBar": "Show SEB taskbar / dock",
                 "showTaskBar_tooltip": "The SEB task bar shows and switches between open browser windows, allowed resources and applications and displays additional controls",
                 "showSideMenu": "Show side menu",
                 "raiseHandButtonShow": "Show raise hand button",
@@ -1363,7 +1368,7 @@
                 "browserWindowWebViewClassicHideDeprecationNote_tooltip": "Classic WebView is deprecated on macOS and no longer supported on iOS/iPadOS! The used SEB assessment solution integration/settings might no longer work and need to be updated to support the modern WebView. This warning is displayed on top of browser windows/tabs when settings require the classic WebView. You can disable this warning being displayed, but if you are the vendor of an assessment system which isn't yet compatible with the modern WebView, you need to update your integration now (use SEB Javascript API instead of HTTP header check for BEK/CK, see safeexambrowser.org/developer).",
                 "enableRightMouse": "Enable right mouse button (Mac)",
                 "enableRightMouse_tooltip": "Enable to access context menu for Web Inspector in SEB for macOS (use ONLY for debugging). Disable to prevent right mouse button actions/context menu for sharing content (with modern WebView) and in browser plugins/video players",
-                "enableJavaScript": "Eneable Java Script (Mac)",
+                "enableJavaScript": "Enable Java Script (Mac)",
                 "blockPopUpWindows": "Block Pop-Up Windows (Mac)"
             },
             "restrictions": {
@@ -1491,10 +1496,10 @@
             "files": "Allow uploading files",
             "files_tooltip": "Allows uploading files, selected manually (or on macOS automatically). Currently also setting 'allow downloading and uploading files' needs to be enabled",
             "allowDownload": "Allow downloading files",
-            "useTemp": "Use temporary download / upload directory (Win)",
-            "photos": "Allow Uploading Photos and Files",
+            "useTemp": "Use temporary download / upload directory",
+            "photos": "Allow Uploading Photos and Files (iOS)",
             "photos_tooltip": "Uploading allows to access camera, the full photo library and iCloud Drive and therefore is insecure!",
-            "openDownloads": "Open Files After Downloading",
+            "openDownloads": "Open Files After Downloading (Mac / iOS)",
             "openDownloads_tooltip": "Downloaded files will be opened with the according application, which has to be set correctly in the system for each used file type. Usually to be used with permitted third party applications ",
             "filetypes": {
                 "title": "File types to be downloaded",
@@ -1543,7 +1548,7 @@
             },
             "deepLinking": {
                 "title": "Exam Deep Linking",
-                "startURLAllowDeepLink": "Allow Deep Linking for Exams",
+                "startURLAllowDeepLink": "Allow Deep Linking for Exams (Mac / iOS)",
                 "startURLAllowDeepLink_tooltip": "Deep linking allows to directly open various exams using just one exam config file placed somewhere in the path hierarchy of a sebs:// or Universal Link (which needs to start with the Start URL string)."
             },
             "query": {
@@ -1555,7 +1560,7 @@
         "applicationView": {
             "allowSwitchToApplications": "Allow switching to third party application (Mac)",
             "allowSwitchToApplications_tooltip": "Decreases security of the kiosk mode by allowing process switcher (Cmd+Tab).\nThe blacked out background of SEB also doesn't cover some alerts and modal windows in this mode.",
-            "autoQuitApplications": "Automatically quit prohibited applications",
+            "autoQuitApplications": "Automatically quit prohibited applications (Mac)",
             "autoQuitApplications_tooltip": "Decreases security of the kiosk mode by allowing process switcher (Cmd+Tab).\nThe blacked out background of SEB also doesn't cover some alerts and modal windows in this mode.",
             "allowFlashFullscreen": "SEB will attempt to quit prohibited applications automatically but nicely, allowing them to save edited documents",
             "permittedProcess": {
@@ -1597,7 +1602,7 @@
                 "allowShareSheet": "Allow share sheet",
                 "allowManualStart": "Allow manual start",
                 "allowNetworkAccess": "Allow network access",
-                "teamIdentifier": "Team Identifier",
+                "teamIdentifier": "Identifier",
                 "allowOpenAndSavePanel_tooltip": "When using AAC Assessment Mode,\nSEB blocks the macOS Open File and Save As panel.\nUsers cannot browse the file system and open files manually\nin most permitted apps with AAC Multi App Mode.",
                 "allowShareSheet_tooltip": "When using AAC Assessment Mode, SEB blocks the macOS share sheet.\nUsers cannot share documents in permitted apps with AAC Multi App Mode.",
                 "allowManualStart_tooltip": "Allow user to start the additional application with its Dock icon.\nOtherwise the app can be started by downloading and opening its documents",
@@ -1781,7 +1786,7 @@
                 "minMacOSVersion_3": "OS X 10.10 Yosemite",
                 "minMacOSVersion_4": "OS X 10.11 El Capitan",
                 "minMacOSVersion_5": "OS X 10.12 Sierra",
-                "minMacOSVersion_6": "OS X 10.13 Hight Sierra",
+                "minMacOSVersion_6": "OS X 10.13 High Sierra",
                 "minMacOSVersion_7": "OS X 10.14 Mojave",
                 "minMacOSVersion_8": "OS X 10.15 Catalina",
                 "minMacOSVersion_9": "OS X 11 Big Sur",
@@ -1812,8 +1817,7 @@
                 "blockScreenShotsLegacy": "Block screen shots (Legacy)",
                 "allowWindowCapture": "Allow window capture (screen shots)",
                 "screenSharingMacEnforceBlocked": "Enforce blocking screen sharing on Mac",
-                "enableMacOSAAC": "Prefer Assessment Mode (AAC)",
-                "enableMacOSAAC_tooltip": "Automatic Assessment Configuration (AAC) Assessment Mode is available from macOS Monterey 12.1 (and Catalina 10.15.4 and >= 10.15.6). It blocks various macOS  (which cannot be allowed optionally, like screen capture/sharing, Siri, Dictation)",
+                "enablePrivateClipboardMacEnforce": "Enforce private clipboard",
                 "allowMacOSVersionNumberCheckFull": "Check full macOS version number",
                 "allowMacOSVersionNumberCheckFull_tooltip": "In addition to major version, check also for allowed minor and patch version number",
                 "allowMacOSVersionNumberMajor": "Allow major version number",
@@ -1845,7 +1849,9 @@
                 "allowiOSVersionNumberMajor_11": "iOS Version 11",
                 "allowiOSVersionNumberMajor_12": "iOS Version 12",
                 "allowiOSVersionNumberMinor": "Minor version number",
-                "allowiOSVersionNumberPatch": "Patch version number"
+                "allowiOSVersionNumberPatch": "Patch version number",
+                "mobileEnableModernAAC": "Use modern AAC API (iOS)",
+                "mobileEnableModernAAC_tooltip": "Enable Modern AAC API for Multi App Mode on iPadOS 17.7.1 - 18. On iPadOS 18.1 or newer it is activated automatically if permitted processes for iPadOS are configured."
             },
             "clipboard": {
                 "0": "Allow",
@@ -1859,10 +1865,10 @@
             "sebVersion": {
                 "title": "Allowed SEB Versions",
                 "sebAllowedVersions": "Allowed SEB Versions",
-                "sebAllowedVersions_note1": "Allows to specify one or more specific SEB version(s) that are excepted. A version restriction needs to have to following format:",
+                "sebAllowedVersions_note1": "Allows to specify one or more specific SEB version(s) that are excepted. A version restriction needs to have the following format:",
                 "sebAllowedVersions_format": "OS.Major.Minor.[Patch].[AE].[min]",
                 "sebAllowedVersions_note2": "Please enter one restriction per line, e.g. Win.3.9.min to allow all SEB for Windows versions starting with 3.9 or newer.",
-                "sebAllowedVersions_info": "List of text inputs which represent either a specific or a minimal SEB version which is allowed to access the (exam) session using current settings. The version string has the following format: [OS.mayor.minor(.patch)(.AE)(.min)], OS and mayor version are mandatory, OS is either 'Win', 'Mac' or 'iOS', 'min' indicates if version shall be interpreted as minimal version this and all above are valid. AE indicates a Alliance Edition version.",
+                "sebAllowedVersions_info": "List of text inputs which represent either a specific or a minimal SEB version which is allowed to access the (exam) session using current settings. The version string has the following format: [OS.major.minor(.patch)(.min)], OS and major version are mandatory, OS is either 'Win', 'Mac' or 'iOS', 'min' indicates if version shall be interpreted as minimal version this and all above are valid.",
                 "sebAllowedVersions_valmsg": "At least one SEB Version has wrong format"
             }
         },
@@ -1885,7 +1891,7 @@
             "insideSebEnableEaseOfAccess": "Enable Ease of Access",
             "insideSebEnableEaseOfAccess_tooltip": "Shows options when the button 'Ease of Access' in the lower left corner is clicked, which offers help e.g. to visually or aurally handicapped persons, like the Magnifier Glass.",
             "insideSebEnableNetworkConnectionSelector": "Enable network connection selector",
-            "insideSebEnableNetworkConnectionSelector_tooltip": "Activates the button which allows to connect to WiFi networks, introduces in Windows 10",
+            "insideSebEnableNetworkConnectionSelector_tooltip": "Activates the button which allows to connect to WiFi networks, introduced in Windows 10",
             "setVmwareConfiguration": "Set VMware configuration",
             "setVmwareConfiguration_tooltip": "Determines whether the configuration value for VMware Client Shade will be set by SEB",
             "enableFindPrinter": "Enable find printer in system print dialog"
@@ -1899,8 +1905,8 @@
             "enableAltTab": "Enable Alt-Tab",
             "enableAltF4": "Enable Alt-F4",
             "enableStartMenu": "Enable Start Menu",
-            "enableRightMouse": "Enable right mouse button (Mac)",
-            "enableRightMouse_tooltip": "Enable to access context menu for Web Inspector in SEB for macOS (use ONLY for debugging).",
+            "enableRightMouse": "Enable right mouse button",
+            "enableRightMouse_tooltip": "The right mouse button has to be enabled for users to be able to use the context menu for spell checking.",
             "enablePrintScreen": "Enable PrintScreen",
             "enableAltMouseWheel": "Enable Alt-Mousewheel",
             "enableAltMouseWheel_tooltip": "Corresponds to 'Allow browsing back/forward' in Browser pane. Disabling browsing to previously visited pages may increase security, because browsing back might allow to leave an exam",
@@ -1920,7 +1926,7 @@
         "proctoring": {
             "title": "",
             "remoteProctoringViewShow": "Proctoring View Display Policy",
-            "remoteProctoringViewShow_tooltip": "Controls the general policy for the initial display of the proctoring Window in SEB. Theses setting have no effect on the proctor's broadcast or chat function.",
+            "remoteProctoringViewShow_tooltip": "Controls the general policy for the initial display of the proctoring Window in SEB. These setting have no effect on the proctor's broadcast or chat function.",
             "remoteProctoringViewShow_0": "Never",
             "remoteProctoringViewShow_1": "Allow to Show",
             "remoteProctoringViewShow_2": "Allow to Hide",
@@ -2090,14 +2096,14 @@
             "unlock": "Unlock",
             "lockSeb": "Lock SEB Clients",
             "unlockSeb": "Unlock SEB Clients",
-            "lockAction": "This actions locks all selected SEB clients",
-            "unlockAction": "This actions unlocks all selected and locked SEB clients",
+            "lockAction": "This action locks all selected SEB clients",
+            "unlockAction": "This action unlocks all selected and locked SEB clients",
             "quit": "Quit",
             "quitSeb": "Quit SEB Clients",
-            "quitAction": "This actions quits all selected SEB clients",
+            "quitAction": "This action quits all selected SEB clients",
             "quitQuestion": "Are you sure to quit all selected SEB clients?",
             "cancelSeb": "Mark Clients as canceled",
-            "cancelAction": "This actions marks all selected SEB clients as canceled"
+            "cancelAction": "This action marks all selected SEB clients as canceled"
         }
     },
     "monitoringOverview": {
@@ -2135,7 +2141,7 @@
                 "proctor": "Proctor",
                 "viewList": "View List"
             },
-            "noSPSAccess": "You have no access to the screen proctoring gallery view since you are not assigned as a supporter to the Exam. Please assign your user account to the Exam supporter list to get gallery access."
+            "noSPSAccess": "You have no access to the screen proctoring gallery view since you are not assigned as a supervisor to the Exam. Please assign your user account to the Exam Supervisor list to get gallery access."
         },
         "notifications": {
             "notifications": "Notifications"
@@ -2169,10 +2175,10 @@
             "notifications": "Notifications",
             "indicators": "Indicators",
             "searchPlaceholder": "Search Clients",
-            "lockClients": "Lock selected clients",
-            "unlockClients": "Unlock selected clients",
-            "quitClients": "Quit selected clients",
-            "cancelClients": "Cancel selected clients"
+            "lockClients": "Lock clients",
+            "unlockClients": "Unlock clients",
+            "quitClients": "Quit clients",
+            "cancelClients": "Cancel clients"
         },
         "actions": {
             "lockTitle": "Lock clients",
@@ -2257,14 +2263,7 @@
             "close": "Close",
             "statusFilterLabel": "Filter by status",
             "statuses": {
-                "ALL": "All",
-                "ACTIVE": "Active",
-                "READY": "Ready",
-                "DISABLED": "Disabled",
-                "MISSING": "Missing",
-                "CLOSED": "Closed",
-                "CONNECTION_REQUESTED": "Connection Requested",
-                "UNDEFINED": "Undefined"
+                "ALL": "All"
             }
         }
     },
@@ -2272,7 +2271,12 @@
         "message": "You are not allowed to view this page",
         "backToHome": "Back to home"
     },
+    "notFound": {
+        "message": "The page you requested does not exist",
+        "backToHome": "Back to home"
+    },
     "titles": {
+        "pageNotFound": "Page not found",
         "navigationOverview": "Navigation Overview",
         "exams": "Exams",
         "examsOverview": "Exams Overview",
@@ -2604,6 +2608,16 @@
             },
             "fieldFallback": "{field}: {rule}",
             "rateLimit": "Too many requests. Please slow down and try again.",
+            "unexpected": {
+                "title": "Unexpected Error",
+                "text": "An unexpected error has occurred.",
+                "copyAction": "Copy details",
+                "copied": "Error details copied to clipboard"
+            },
+            "network": {
+                "title": "Connection problem",
+                "text": "The server could not be reached. Please check your connection and try again."
+            },
             "codes": {
                 "GENERIC": "Generic error",
                 "BAD_REQUEST": "Bad Request",
@@ -2617,7 +2631,7 @@
                 "PASSWORD_MISMATCH": "The new password does not match the confirmed password",
                 "MISSING_PASSWORD": "Missing password",
                 "LMS_WARNINGS": "Warnings from the LMS",
-                "EXAM_CONSISTENCY_VALIDATION_SUPPORTER": "No Exam Supporter defined for the Exam",
+                "EXAM_CONSISTENCY_VALIDATION_SUPPORTER": "No Exam Supervisor defined for the Exam",
                 "EXAM_CONSISTENCY_VALIDATION_CONFIG": "No SEB Exam Configuration defined for the Exam",
                 "EXAM_CONSISTENCY_VALIDATION_SEB_RESTRICTION": "SEB restriction API available but Exam not restricted on LMS side yet",
                 "EXAM_CONSISTENCY_VALIDATION_INDICATOR": "No Indicator defined for the Exam",

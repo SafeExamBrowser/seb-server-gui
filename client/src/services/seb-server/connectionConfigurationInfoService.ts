@@ -1,4 +1,5 @@
 import {
+    ConnectionConfiguration,
     ConnectionConfigurationName,
     ConnectionConfigurations,
 } from "@/models/seb-server/connectionConfiguration";
@@ -42,6 +43,19 @@ export const downloadExamConfig = async (
                 headers: {
                     accept: "application/octet-stream",
                 },
+            },
+        })
+    ).data;
+
+export const getConnectionConfiguration = async (
+    connectionId: number,
+): Promise<ConnectionConfiguration> =>
+    (
+        await apiService.getRequest({
+            url: `${baseUrl}/${connectionId}`,
+            options: {
+                _authType: "seb",
+                params: { active: "true" },
             },
         })
     ).data;

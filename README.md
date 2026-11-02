@@ -6,52 +6,67 @@ This is a sub-project of SEB Server. For full usage and installation, please vis
 
 ## Overview
 
-**This project is still under development and has not yet an official release or release data.**
+## Install SEB Server
 
-This project consists of two parts. A client component and a server component. The server contains no businesses logic but serves as a lightweight api gateway. The easiest way to build and deploy the project is via docker.
+For a complete guide to install SEB Server please go to `SEB Server Installation Guide <https://seb-server-setup.readthedocs.io/en/latest/overview.html>`\_
 
-# Development Setup
+## Getting started with SEB Server
 
-## Intro
+**NOTE**
 
-If you're just working on the frontend part (SEB Server GUI), this is the easiest way to have a working environment. This pulls the backend services (mariadb, seb-server and sps-webservice) from existing images
+    The following is the SEB Server User Guide for the SEB Server version 2.x. Since there is no actual User Guide for version 3.0 yet
+    you can use this as a reference. We will provide you with an actual SEB Server User Guide for version 3.x as soon as possible.
 
-## Setup docker containers
+For a complete SEB Server user guide please go to `SEB Server User Guide <https://seb-server.readthedocs.io/en/latest/#>`\_
 
-1. Run `docker-compose up -d`
+## Contributing to SEB Server
 
-## Setup the client
+We want to make contributing to this project as easy and transparent as possible, whether it's:
 
-1. `cd client`
-1. Start virtual node env: `nvm use`
-1. Install dependencies: `npm ci`
-1. Copy the example `.env` file and adapt it to your needs: `cp .env.example .env`
-1. Start the client: `npm run dev`
+- Give us a star
+- Reporting a bug
+- Submitting a fix
+- Proposing new features
+- Becoming a SEB Alliance member
 
-## Setup the server
+We use github to host code, to track issues and feature requests, as well as accept pull requests.
+And we use `Github issues <https://github.com/SafeExamBrowser/seb-server/issues>`\_ to track public bugs.
+Report a bug by [opening a new issue]();
 
-1. See `README.md` in `/server`
+**Before enter a new bug-report, ensure the bug was not already reported**
 
-## Confirm setup worked
+Please fill and provide all the information suggested by the bug-report template
+Great Bug Reports tend to have:
 
-1. Visit http://localhost:8082 and login to confirm that the full setup works
+- A quick summary and/or background
+- Steps to reproduce
+- Be specific and give sample code if you can. Can also be Pseudocode.
+- What you expected would happen
+- What actually happens
+- Notes (possibly including why you think this might be happening, or stuff you tried that didn't work)
 
-## Install the git hooks
+**We Use Git-Flow for Code Contributions**
 
-1. Run `cd client && nvm use && npm run prepare`
-1. Run `git config core.hooksPath` and verify, that the `hooksPath` was correctly set to `./client/.husky/_`
+Pull requests are the best way to propose changes to the codebase. We use `Github Flow <https://www.atlassian.com/git/tutorials/comparing-workflows/gitflow-workflow>`\_. We actively welcome your pull requests:
 
-The hooks run inside `client/`. `pre-commit` formats the staged files with Prettier. `pre-push` runs
-`npm run format:check:all` and `npm run typecheck:app`; if it rejects the push, run `npm run quality:fix:all`,
-commit and push again.
+1. Fork the repo and create your branch from `development`. The development branch always has the newest changes.
+2. If you've added code that should be tested, add tests.
+3. If you introduce new API also add clear documentation.
+4. Ensure the test suite passes.
+5. Make sure your code lints.
+6. Issue that pull request!
 
-## Find Login info
+**Use a Consistent Coding Style**
 
-- The setup comes with a static demo account: super-admin / admin
-- Alternatively you can run `docker-compose logs seb-server | grep "SEB Server initial admin-account"` to see the admin user and password that was generated for your instance of seb-server
+Have a close look to the existing code stile that is used within SEB Server and adapt to it as close as possible.
+We reserve the right to adapt contributed code to the code style matching SEB Server code style before or after a pull request.
 
-# AI info
+**Any contributions you make will be under the Mozilla Public License Version 2.0**
 
-- We use [Claude Code](https://claude.com/product/claude-code)
-- Shared config for Claude is in `.claude`
-- Skills are managed with [skills.sh](https://skills.sh). Runn `npx skills update` every now and then.
+In short, when you submit code changes, your submissions are understood to be under the same `Mozilla Public License <https://github.com/SafeExamBrowser/seb-server?tab=MPL-2.0-1-ov-file>`\_ that covers the project. Feel free to contact the maintainers if that's a concern.
+
+**Becoming a SEB Alliance member**
+
+The `SEB Alliance <https://www.safeexambrowser.org/alliance/members.html>`\_ is the body which sustains ongoing funding of the Safe Exam Browser open source project to continue its maintenance, development and support activities. ETH Zurich provides the infrastructure for the management and the software engineering of the SEB project and appoints an alliance manager who will provide administrative support to the SEB Alliance, and ensure the day-to-day running of the SEB Alliance. ETH Zurich leads the Alliance and offers different contribution levels to parties interested in the evolution of the SEB open source project.
+
+More information about `joining <https://www.safeexambrowser.org/alliance/join.html>`_ the Alliance is available in our `benefits <https://www.safeexambrowser.org/alliance/benefits.html>`_ and `documents <https://www.safeexambrowser.org/alliance/documents.html>`\_ section.

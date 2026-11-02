@@ -56,6 +56,7 @@ const {
 
 const handleClick = () => {
     if (props.exam) {
+        // if there is a default connection configuration set for the exam we use this
         var configId =
             props.exam.additionalAttributes.DEFAULT_CONNECTION_CONFIGURATION;
         if (configId != null) {
@@ -64,6 +65,7 @@ const handleClick = () => {
         }
     }
 
+    // otherwise open selection to select a connection configuration for download
     startConnectionDownload();
 };
 

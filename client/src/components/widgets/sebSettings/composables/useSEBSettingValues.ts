@@ -12,6 +12,7 @@ import {
     SEBSettingTableValue,
 } from "@/models/seb-server/sebSettings.ts";
 import { ViewType } from "@/models/seb-server/sebSettingsEnums.ts";
+import { notify } from "@/services/notifications/notify.ts";
 import * as sebSettingsService from "@/services/seb-server/sebSettingsService.ts";
 import { stringToBoolean } from "@/utils/generalUtils.ts";
 import { translate } from "@/utils/generalUtils.ts";
@@ -117,21 +118,31 @@ export const useSEBSettingValues = (
     }
 
     function getBooleanValue(name: string): boolean {
-        const singleValue = getSingleValue(name);
-        if (!singleValue) {
+        try {
+            const singleValue = getSingleValue(name);
+            if (!singleValue) {
+                return false;
+            }
+
+            return stringToBoolean(singleValue.value);
+        } catch (err) {
+            notify.serverError(err);
             return false;
         }
-
-        return stringToBoolean(singleValue.value);
     }
 
     function getNumberValue(name: string): number {
-        const singleValue = getSingleValue(name);
-        if (!singleValue) {
+        try {
+            const singleValue = getSingleValue(name);
+            if (!singleValue) {
+                return 0;
+            }
+
+            return Number(singleValue.value);
+        } catch (err) {
+            notify.serverError(err);
             return 0;
         }
-
-        return Number(singleValue.value);
     }
 
     function getAttributes(
@@ -159,26 +170,37 @@ export const useSEBSettingValues = (
         if (containerId === null) return;
         const setting = getSingleValue(name);
         if (!setting) return;
-        await sebSettingsService.updateSEBSettingValue(
-            containerId,
-            setting.id.toString(),
-            value,
-            isExam,
-        );
 
-        // also update the stored value
-        setting.value = value;
+        try {
+            await sebSettingsService.updateSEBSettingValue(
+                containerId,
+                setting.id.toString(),
+                value,
+                isExam,
+            );
+
+            // also update the stored value
+            setting.value = value;
+        } catch (err) {
+            notify.serverError(err);
+        }
     }
 
     async function saveTableRow(values: SEBSettingTableValue[]) {
-        values.forEach((tableValue) => {
-            sebSettingsService.updateSEBSettingValue(
+        values.forEach((tableValue) => saveTableCell(tableValue));
+    }
+
+    async function saveTableCell(cellValue: SEBSettingsValue) {
+        try {
+            await sebSettingsService.updateSEBSettingValue(
                 containerId,
-                tableValue.id.toString(),
-                tableValue.value,
+                cellValue.id.toString(),
+                cellValue.value,
                 isExam,
             );
-        });
+        } catch (err) {
+            notify.serverError(err);
+        }
     }
 
     async function addTableRow(

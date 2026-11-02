@@ -1,5 +1,9 @@
 <template>
-    <slot name="activator" :props="{ onClick: openDialog }">
+    <slot
+        v-if="!hideActivator"
+        name="activator"
+        :props="{ onClick: openDialog }"
+    >
         <v-btn
             v-if="labelActivatorVisible && labelActivator !== ''"
             class="text-none"
@@ -109,11 +113,13 @@ import { IconValue } from "vuetify/lib/composables/icons.mjs";
 import BoxActionButton from "@/components/widgets/BoxActionButton.vue";
 import FormBuilder from "@/components/widgets/formBuilder/FormBuilder.vue";
 import { FormField } from "@/components/widgets/formBuilder/types";
+import { markErrorHandled } from "@/services/errors/handledErrors.ts";
 import { errorMessageOf } from "@/services/errors/toAppError.ts";
 
 const props = withDefaults(
     defineProps<{
         disabled?: boolean;
+        hideActivator?: boolean;
         title?: string;
         iconActivator: IconValue;
         colorActivator: string;
@@ -133,6 +139,7 @@ const props = withDefaults(
     {
         title: "",
         disabled: false,
+        hideActivator: false,
         sizeActivator: undefined,
         labelActivatorVisible: false,
         dataTestId: undefined,
@@ -142,7 +149,7 @@ const props = withDefaults(
 const { thresholds: thresholdsRef } = useDisplay();
 const thresholds = computed(() => thresholdsRef.value);
 
-const isDialogOpen = ref(false);
+const isDialogOpen = defineModel<boolean>({ default: false });
 const item = ref<TTransient>(props.getItem());
 const isValid = ref<boolean>(false);
 const submitting = ref<boolean>(false);
@@ -178,6 +185,7 @@ const handleFormSubmit = async () => {
         await props.onSubmit(item.value);
         isDialogOpen.value = false;
     } catch (err) {
+        markErrorHandled(err);
         errorMessage.value = errorMessageOf(err);
     } finally {
         submitting.value = false;

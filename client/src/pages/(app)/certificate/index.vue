@@ -9,6 +9,34 @@
             <SettingsNavigation />
         </template>
 
+        <template #ActionButton>
+            <FormDialog
+                icon-activator="mdi-plus-circle-outline"
+                color-activator="primary"
+                :label-activator="
+                    $t('certificates.createDialog.addButtonTitle')
+                "
+                size-activator="large"
+                label-activator-visible
+                :label-cancel="$t('general.cancelButton')"
+                :label-submit="
+                    $t('certificates.createDialog.confirmButtonTitle')
+                "
+                form-id="form-certificate-upload"
+                :get-form-fields="uploadForm.getFormFields"
+                :get-item="uploadForm.getEmptyItem"
+                :on-submit="uploadForm.handleUpload"
+                :data-test-id="dataTestId"
+            >
+                <template #activator="{ props: activatorProps }">
+                    <AddButton
+                        v-bind="activatorProps"
+                        :data-test-id="dataTestId"
+                    />
+                </template>
+            </FormDialog>
+        </template>
+
         <template #PanelLeft>
             <SearchBar
                 v-model="list.searchInputValue"
@@ -64,10 +92,12 @@
 
 <script setup lang="ts">
 import BasicPage from "@/components/layout/pages/BasicPage.vue";
+import AddButton from "@/components/widgets/AddButton.vue";
 import DeleteConfirmDialog from "@/components/widgets/confirmDialog/DeleteConfirmDialog.vue";
 import EntityTable from "@/components/widgets/entity-table/EntityTable.vue";
 import FilterControlsRow from "@/components/widgets/filters/FilterControlsRow.vue";
 import { useListFilterPanel } from "@/components/widgets/filters/useListFilterPanel.ts";
+import FormDialog from "@/components/widgets/formDialog/FormDialog.vue";
 import LoadingFallbackComponent from "@/components/widgets/loadingFallbackComponent/LoadingFallbackComponent.vue";
 import SettingsNavigation from "@/components/widgets/navigation/SettingsNavigation.vue";
 import SearchBar from "@/components/widgets/searches/SearchBar.vue";
@@ -86,7 +116,7 @@ definePage({
 
 const dataTestId = certificateListConfig.testIdBase;
 
-const { list, deleteFlow } = useCertificatesOverview();
+const { list, deleteFlow, uploadForm } = useCertificatesOverview();
 
 const { filtersOpen, activePills, onRemovePill } = useListFilterPanel({
     search: { applied: () => list.searchField, clear: list.onClearSearch },

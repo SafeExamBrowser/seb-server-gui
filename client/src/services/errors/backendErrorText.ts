@@ -7,9 +7,11 @@ import type {
     BackendFieldError,
 } from "@/services/errors/types.ts";
 
-const ERROR_CODE_NAMES: Record<string, string> = Object.fromEntries(
+export const ERROR_CODE_NAMES: Record<string, string> = Object.fromEntries(
     Object.entries(ErrorCode).map(([name, code]) => [code, name]),
 );
+
+type BackendError = Extract<AppError, { kind: "backend" }>;
 
 const translate = (
     key: string,
@@ -56,51 +58,88 @@ function getFieldLabel(domain: string | undefined, field: string): string {
 const validationMessageKey = (rule: string): string =>
     `errors.backend.validation.${rule.replace(/\./g, "-")}`;
 
-export function getBackendFieldErrorText(error: BackendFieldError): string {
-    const { domain, backendField, rule, ruleParams } = error;
+function translateBackendFieldError(
+    error: BackendFieldError,
+): string | undefined {
+    const { backendField, rule, ruleParams } = error;
     const field = backendField ?? "";
-
     const candidates = rule
         ? [`${field}.${rule}`, `${rule}.${ruleParams[0] ?? ""}`, rule]
         : [];
-    const translated = translateFirst(
+    return translateFirst(
         candidates.map(validationMessageKey),
         error.apiMessage.attributes ?? [],
     );
-    if (translated) {
-        return translated;
-    }
-
-    return translate("errors.backend.fieldFallback", {
-        field: getFieldLabel(domain, field),
-        rule: rule ?? "",
-    });
 }
 
-function getApiMessageLine(message: APIMessage): string {
+export function getBackendFieldErrorText(error: BackendFieldError): string {
+    return (
+        translateBackendFieldError(error) ??
+        translate("errors.backend.fieldFallback", {
+            field: getFieldLabel(error.domain, error.backendField ?? ""),
+            rule: error.rule ?? "",
+        })
+    );
+}
+
+function translateApiMessage(message: APIMessage): string | undefined {
     const fieldError = parseBackendFieldError(message);
     if (fieldError) {
-        return getBackendFieldErrorText(fieldError);
+        return translateBackendFieldError(fieldError);
     }
 
     const codeName = ERROR_CODE_NAMES[message.messageCode];
-    const codeText =
-        (codeName
-            ? translateFirst([`errors.backend.codes.${codeName}`])
-            : undefined) ?? message.systemMessage;
-    if (codeText) {
-        return message.details ? `${codeText} (${message.details})` : codeText;
+    const codeText = codeName
+        ? translateFirst([`errors.backend.codes.${codeName}`])
+        : undefined;
+    if (!codeText) {
+        return undefined;
     }
+    return message.details ? `${codeText} (${message.details})` : codeText;
+}
 
-    if (message.details) {
-        return message.details;
+export function isApiMessageTranslatable(message: APIMessage): boolean {
+    return translateApiMessage(message) !== undefined;
+}
+
+function backendMessageSource(
+    error: BackendError,
+    onlyMessages?: APIMessage[],
+): APIMessage[] {
+    return (
+        onlyMessages ??
+        (error.globalMessages.length > 0
+            ? error.globalMessages
+            : error.messages)
+    );
+}
+
+export function hasUntranslatableContent(
+    error: AppError,
+    onlyMessages?: APIMessage[],
+): boolean {
+    if (error.kind === "backend") {
+        return backendMessageSource(error, onlyMessages).some(
+            (message) => !isApiMessageTranslatable(message),
+        );
     }
-    return translate("errors.backend.title.generic");
+    return error.kind === "unknown";
+}
+
+function serverStatusTitle(status: number | undefined): string | undefined {
+    if (status === undefined || status < 500) {
+        return undefined;
+    }
+    return translateFirst([`errors.backend.http.${status}`]);
 }
 
 export function getBackendMessageTitle(
     error: AppError,
-    context?: { contextLabel?: string; method?: string },
+    context?: {
+        contextLabel?: string;
+        method?: string;
+        onlyMessages?: APIMessage[];
+    },
 ): string {
     const contextLabel = context?.contextLabel;
     const method = context?.method?.toLowerCase();
@@ -117,6 +156,13 @@ export function getBackendMessageTitle(
     }
 
     if (error.kind === "backend") {
+        const source = backendMessageSource(error, context?.onlyMessages);
+        if (!source.some(isApiMessageTranslatable)) {
+            return (
+                serverStatusTitle(error.status) ??
+                translate("errors.backend.unexpected.title")
+            );
+        }
         const onlyFieldErrors =
             error.fieldErrors.length > 0 && error.globalMessages.length === 0;
         if (onlyFieldErrors) {
@@ -133,15 +179,13 @@ export function getBackendMessageTitle(
             translate("errors.backend.title.generic")
         );
     }
-    if (error.kind === "unknown" && error.status !== undefined) {
-        const statusTitle = translateFirst([
-            `errors.backend.http.${error.status}`,
-        ]);
-        if (statusTitle) {
-            return statusTitle;
-        }
+    if (error.kind === "network") {
+        return translate("errors.backend.network.title");
     }
-    return translate("errors.backend.title.generic");
+    return (
+        serverStatusTitle(error.status) ??
+        translate("errors.backend.unexpected.title")
+    );
 }
 
 export function getBackendMessageLines(
@@ -149,15 +193,18 @@ export function getBackendMessageLines(
     onlyMessages?: APIMessage[],
 ): string[] {
     if (error.kind === "backend") {
-        const source =
-            onlyMessages ??
-            (error.globalMessages.length > 0
-                ? error.globalMessages
-                : error.messages);
-        return source.map(getApiMessageLine);
+        const lines = backendMessageSource(error, onlyMessages).map(
+            (message) =>
+                translateApiMessage(message) ??
+                translate("errors.backend.unexpected.text"),
+        );
+        return [...new Set(lines)];
     }
     if (error.kind === "rate-limit") {
         return [translate("errors.backend.rateLimit")];
     }
-    return [error.message];
+    if (error.kind === "network") {
+        return [translate("errors.backend.network.text")];
+    }
+    return [translate("errors.backend.unexpected.text")];
 }

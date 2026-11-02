@@ -84,7 +84,7 @@ definePage({
 });
 
 const ability = useAbilities();
-const { isUnmet, unmet } = useActionPrerequisites();
+const { isUnmet, unmet } = useActionPrerequisites(ability);
 
 function resolvePrerequisites(items: NavigationSectionItem[]) {
     return items.map((item) => {

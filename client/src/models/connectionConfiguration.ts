@@ -48,6 +48,7 @@ export const connectionConfigurationSchema = zSebClientConfig
         vdiSetup: true,
         sebServerFallback: true,
         startURL: true,
+        encryptSecret: true,
         sebServerFallbackTimeout: true,
         sebServerFallbackAttempts: true,
         sebServerFallbackAttemptInterval: true,
@@ -55,6 +56,8 @@ export const connectionConfigurationSchema = zSebClientConfig
         cert_encryption_asym: true,
         active: true,
         lastUpdateUser: true,
+        sebServerFallbackPasswordHash: true,
+        hashedQuitPassword: true,
     })
     .extend({
         id: requiredId,

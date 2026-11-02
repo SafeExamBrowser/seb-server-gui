@@ -191,8 +191,8 @@ export const useProhibitedProcessTable = (
             active: true,
             os: "1",
             executable: "",
-            originalName: "",
             description: "",
+            originalName: "",
             identifier: "",
             strongKill: false,
             ignoreInAAC: true,
@@ -200,8 +200,8 @@ export const useProhibitedProcessTable = (
                 active: -1,
                 os: -1,
                 executable: -1,
-                originalName: -1,
                 description: -1,
+                originalName: -1,
                 identifier: -1,
                 strongKill: -1,
                 ignoreInAAC: -1,
@@ -258,11 +258,11 @@ export const useProhibitedProcessTable = (
             },
             {
                 id: selectedRow.value.ids.executable,
-                value: selectedRow.value.executable.toString(),
+                value: selectedRow.value.executable,
             },
             {
                 id: selectedRow.value.ids.description,
-                value: selectedRow.value.description.toString(),
+                value: selectedRow.value.description,
             },
             {
                 id: selectedRow.value.ids.originalName,

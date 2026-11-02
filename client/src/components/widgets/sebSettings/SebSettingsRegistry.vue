@@ -64,9 +64,10 @@
             </v-row>
             <v-row>
                 <CheckboxSetting
+                    ref="setVmwareConfiguration"
                     v-model="singleValues"
-                    name="insideSebEnableVmWareClientShade"
-                    label="sebSettings.registry.insideSebEnableVmWareClientShade"
+                    name="setVmwareConfiguration"
+                    label="sebSettings.registry.setVmwareConfiguration"
                     :tooltip="true"
                     :disabled="context.readonly || !ignoreSEBService"
                 />
@@ -74,10 +75,14 @@
             <v-row>
                 <CheckboxSetting
                     v-model="singleValues"
-                    name="insideSebEnableEaseOfAccess"
-                    label="sebSettings.registry.insideSebEnableEaseOfAccess"
+                    name="insideSebEnableVmWareClientShade"
+                    label="sebSettings.registry.insideSebEnableVmWareClientShade"
                     :tooltip="true"
-                    :disabled="context.readonly || !ignoreSEBService"
+                    :disabled="
+                        context.readonly ||
+                        !ignoreSEBService ||
+                        !setVmwareConfigurationRef?.boolVal
+                    "
                 />
             </v-row>
             <v-row>
@@ -101,15 +106,6 @@
             <v-row>
                 <CheckboxSetting
                     v-model="singleValues"
-                    name="setVmwareConfiguration"
-                    label="sebSettings.registry.setVmwareConfiguration"
-                    :tooltip="true"
-                    :disabled="context.readonly || !ignoreSEBService"
-                />
-            </v-row>
-            <v-row>
-                <CheckboxSetting
-                    v-model="singleValues"
                     name="enableFindPrinter"
                     label="sebSettings.registry.enableFindPrinter"
                     :tooltip="false"
@@ -121,6 +117,7 @@
 </template>
 
 <script setup lang="ts">
+import { useTemplateRef } from "vue";
 import { VCol, VRow } from "vuetify/components";
 
 import LoadingFallbackComponent from "@/components/widgets/loadingFallbackComponent/LoadingFallbackComponent.vue";
@@ -144,4 +141,6 @@ const { singleValues, loadingSebSettingsView, errorSebSettingsView } =
         props.context.containerId,
         ViewType.REGISTRY,
     );
+
+const setVmwareConfigurationRef = useTemplateRef("setVmwareConfiguration");
 </script>

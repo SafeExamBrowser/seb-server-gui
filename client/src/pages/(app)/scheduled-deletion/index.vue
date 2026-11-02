@@ -41,10 +41,6 @@
                 @remove="onRemovePill"
                 @clear-all="list.clearAll"
             />
-            <!-- TODO @andrei: properly display errors, once we have a proper generic error component -->
-            <div v-if="deleteFlow.error">
-                {{ deleteFlow.error }}
-            </div>
             <LoadingFallbackComponent :loading="false" :errors="list.errors">
                 <EntityTable
                     class="px-2 pt-2"

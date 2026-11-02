@@ -124,7 +124,7 @@ const prepareRequires = [
     Prerequisite.EXAM_TEMPLATE,
     Prerequisite.ASSESSMENT_TOOL_CONNECTION,
 ];
-const { isUnmet } = useActionPrerequisites(prepareRequires);
+const { isUnmet } = useActionPrerequisites(abilities, prepareRequires);
 
 const prepareDisabled = computed(() => isUnmet(prepareRequires));
 

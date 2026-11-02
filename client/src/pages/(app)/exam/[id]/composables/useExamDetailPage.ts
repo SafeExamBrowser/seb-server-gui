@@ -6,6 +6,7 @@ import type { BreadCrumbItem } from "@/components/widgets/breadCrumb/types.ts";
 import { useMutation } from "@/composables/useMutation.ts";
 import i18n from "@/i18n";
 import { Exam } from "@/models/seb-server/exam.ts";
+import { useSEBKeyItems } from "@/pages/(app)/exam/[id]/components/BoxSEBKeys/composables/useSEBKeyItems.ts";
 import { isNotFoundError } from "@/services/errors/toAppError.ts";
 import { notify } from "@/services/notifications/notify.ts";
 import * as examService from "@/services/seb-server/examService.ts";
@@ -101,6 +102,13 @@ export const useExamDetailPage = () => {
     );
     const sebSettings = useSebSettings(exam, configMapping);
     const supervisors = useSupervisorsBox(exam, updateExam);
+    const sebKeys = computed(() =>
+        useSEBKeyItems(
+            exam.value?.lmsSetupId != null,
+            exam.value?.id.toString() ?? "",
+            sebSettings.configNode,
+        ),
+    );
 
     const loading = computed(
         () =>
@@ -181,6 +189,7 @@ export const useExamDetailPage = () => {
         examWithURL,
         basicSettings,
         sebSettings,
+        sebKeys,
         supervisors,
         actions: {
             handleTestRunToggle,

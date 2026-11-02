@@ -3,6 +3,7 @@ import { computed } from "vue";
 import { useAssessmentTools } from "@/composables/useAssessmentTools.ts";
 import { useClientConfigurationNames } from "@/composables/useClientConfigurationNames.ts";
 import { useExamTemplateNames } from "@/composables/useExamTemplateNames.ts";
+import { AbilityLike, GUIComponent } from "@/services/ability";
 
 export enum Prerequisite {
     CONNECTION_CONFIGURATION = "CONNECTION_CONFIGURATION",
@@ -20,23 +21,26 @@ interface PrerequisiteAnswer {
 // Only the prerequisites in `scope` are fetched; anything outside it stays
 // unresolved forever and therefore counts as met, like every other unknown.
 export const useActionPrerequisites = (
+    abilities: AbilityLike,
     scope: Prerequisite[] = Object.values(Prerequisite),
 ) => {
-    const connectionConfigurations = scope.includes(
-        Prerequisite.CONNECTION_CONFIGURATION,
-    )
-        ? useClientConfigurationNames()
-        : undefined;
-    const assessmentTools = scope.includes(
-        Prerequisite.ASSESSMENT_TOOL_CONNECTION,
-    )
-        ? useAssessmentTools()
-        : undefined;
+    const connectionConfigurations =
+        scope.includes(Prerequisite.CONNECTION_CONFIGURATION) &&
+        abilities.canView(GUIComponent.CONNECTION_CONFIGURATIONS)
+            ? useClientConfigurationNames()
+            : undefined;
+    const assessmentTools =
+        scope.includes(Prerequisite.ASSESSMENT_TOOL_CONNECTION) &&
+        abilities.canView(GUIComponent.ASSESSMENT_TOOLS)
+            ? useAssessmentTools()
+            : undefined;
     // The exam template answer must reflect a template created moments ago on another page, so
     // this observer opts out of the project's default staleness.
-    const examTemplates = scope.includes(Prerequisite.EXAM_TEMPLATE)
-        ? useExamTemplateNames({ staleTime: 0 })
-        : undefined;
+    const examTemplates =
+        scope.includes(Prerequisite.EXAM_TEMPLATE) &&
+        abilities.canView(GUIComponent.EXAM_TEMPLATES)
+            ? useExamTemplateNames({ staleTime: 0 })
+            : undefined;
 
     const answers = computed<Record<Prerequisite, PrerequisiteAnswer>>(() => ({
         [Prerequisite.CONNECTION_CONFIGURATION]: {
