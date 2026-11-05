@@ -1,5 +1,4 @@
 import { computed, Ref } from "vue";
-import { RuleAliases } from "vuetify/labs/rules";
 
 import {
     ClientGroupForTable,
@@ -8,6 +7,7 @@ import {
     clientGroupTransientToClientGroup,
     clientGroupTransientToClientGroupExisting,
     isFallbackGroup,
+    RuleAliases,
 } from "@/components/widgets/clientGroupsTable/types.ts";
 import { CrudTableConfig } from "@/components/widgets/crudTable/types.ts";
 import i18n from "@/i18n";

@@ -15,7 +15,7 @@
 <script setup lang="ts">
 import { computed } from "vue";
 import { useI18n } from "vue-i18n";
-import { useRules } from "vuetify/labs/rules";
+import { useRules } from "vuetify";
 
 import FieldScreenProctoringEnabled from "@/components/widgets/clientGroupsTable/components/FieldScreenProctoringEnabled.vue";
 import { useTable } from "@/components/widgets/clientGroupsTable/composables/useTable.ts";

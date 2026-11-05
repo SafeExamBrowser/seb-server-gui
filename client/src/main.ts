@@ -2,7 +2,7 @@
 import "@mdi/font/css/materialdesignicons.css";
 
 import { createApp } from "vue";
-import { createRulesPlugin } from "vuetify/labs/rules";
+import { createRulesPlugin } from "vuetify";
 
 import { registerPlugins } from "@/plugins";
 import vuetify from "@/plugins/vuetify";

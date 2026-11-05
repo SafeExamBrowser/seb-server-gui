@@ -17,6 +17,8 @@ import {
     FALLBACK_GROUP_TYPE_LABEL_I18N_KEYS,
 } from "@/utils/clientGroup.ts";
 
+export type { RuleAliases } from "vuetify/lib/composables/rules/rules.js";
+
 export type ClientGroupTransient = {
     id?: number; // absent for new groups; present (real id) only when editing
     name?: string;

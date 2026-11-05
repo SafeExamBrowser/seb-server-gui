@@ -1,7 +1,9 @@
 import { Ref } from "vue";
-import { RuleAliases } from "vuetify/labs/rules";
 
-import { ClientGroupTransient } from "@/components/widgets/clientGroupsTable/types.ts";
+import {
+    ClientGroupTransient,
+    RuleAliases,
+} from "@/components/widgets/clientGroupsTable/types.ts";
 import { FormField } from "@/components/widgets/formBuilder/types.ts";
 import { ClientGroupEnum } from "@/models/seb-server/clientGroupEnum.ts";
 import { ClientGroupExisting } from "@/models/seb-server/examTemplate.ts";
