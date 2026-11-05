@@ -3,9 +3,14 @@
         v-model="open"
         data-testid="changePassword-dialog"
         max-width="600"
+        :aria-labelledby="titleId"
     >
         <v-card class="pa-4">
-            <v-card-title class="text-title-large font-weight-bold mb-2 mt-2">
+            <v-card-title
+                :id="titleId"
+                tag="h2"
+                class="text-title-large font-weight-bold mb-2 mt-2"
+            >
                 {{ $t("userAccount.changePassword.title") }}
             </v-card-title>
             <v-card-subtitle v-if="username" class="pb-4">
@@ -46,7 +51,7 @@
 </template>
 
 <script setup lang="ts">
-import { ref, watch } from "vue";
+import { ref, useId, watch } from "vue";
 import {
     VBtn,
     VCard,
@@ -76,6 +81,7 @@ defineProps<{
 }>();
 
 const open = defineModel<boolean>({ required: true });
+const titleId = useId();
 
 const emit = defineEmits<{
     submit: [
