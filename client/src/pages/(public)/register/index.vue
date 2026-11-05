@@ -11,9 +11,9 @@
                     />
                 </div>
                 <div class="d-flex ml-15 mr-15 mt-5 justify-center">
-                    <div class="text-title-large">
+                    <h1 class="text-title-large">
                         {{ translate("userAccount.registerPage.title") }}
-                    </div>
+                    </h1>
                 </div>
 
                 <div v-if="registerSuccess" class="mt-10">
@@ -29,7 +29,7 @@
                     </div>
                 </div>
 
-                <v-card-title class="mt-10">
+                <v-card-title tag="h2" class="mt-10">
                     {{ translate("titles.register") }}
                 </v-card-title>
                 <v-card-subtitle>
