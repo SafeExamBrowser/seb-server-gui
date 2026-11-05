@@ -1,5 +1,5 @@
 import { computed, Ref } from "vue";
-import { useRules } from "vuetify/labs/rules";
+import { useRules } from "vuetify";
 
 import {
     FormField,

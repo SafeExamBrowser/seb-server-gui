@@ -17,8 +17,7 @@ export const useCreateExamWithURL = () => {
     const { data, loading, error, mutateData } = useMutation(
         async (payload: CreateExamWithURLPar): Promise<CreateExamResult> => {
             const response = (await createExamWithURL(payload)) as
-                | Exam
-                | APIMessage[];
+                Exam | APIMessage[];
 
             if (Array.isArray(response)) {
                 const examId = response[0]?.details;

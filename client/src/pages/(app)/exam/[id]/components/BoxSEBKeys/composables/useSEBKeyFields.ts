@@ -1,5 +1,5 @@
 import { computed, ref } from "vue";
-import { useRules } from "vuetify/labs/rules";
+import { useRules } from "vuetify";
 
 import { FormField } from "@/components/widgets/formBuilder/types.ts";
 import i18n from "@/i18n";

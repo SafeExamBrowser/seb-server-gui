@@ -1,4 +1,4 @@
-ARG NODE_VERSION=24.15.0
+ARG NODE_VERSION=24.22.2
 
 # Build client
 FROM node:${NODE_VERSION} AS client-builder
