@@ -1,0 +1,14 @@
+# Keep the build context equal to a clean checkout. Without this file, a local
+# `docker build` copies the host's node_modules, build output and .env files
+# into the build stages (CI builds from a clean checkout and is unaffected).
+.git
+**/node_modules
+**/dist
+**/.env
+**/.env.local
+**/.env.*.local
+client/playwright-report
+client/test-results
+client/blob-report
+client/playwright/.cache
+client/playwright/.auth
