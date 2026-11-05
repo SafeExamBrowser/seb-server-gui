@@ -17,9 +17,9 @@
                     />
                 </div>
                 <div class="d-flex ml-15 mr-15 mt-5 justify-center">
-                    <div class="text-title-large" data-testid="login-title">
+                    <h1 class="text-title-large" data-testid="login-title">
                         {{ translate("loginPage.title") }}
-                    </div>
+                    </h1>
                 </div>
 
                 <div class="mt-10">
@@ -35,7 +35,7 @@
                     </div>
                 </div>
 
-                <v-card-title class="mt-10">
+                <v-card-title tag="h2" class="mt-10">
                     {{ translate("loginPage.signIn") }}
                 </v-card-title>
                 <v-card-subtitle>

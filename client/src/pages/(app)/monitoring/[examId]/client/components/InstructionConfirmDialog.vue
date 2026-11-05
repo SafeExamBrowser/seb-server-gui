@@ -2,6 +2,8 @@
     <v-card>
         <v-toolbar color="transparent">
             <v-toolbar-title
+                :id="titleId"
+                tag="h2"
                 class="text-title-large"
                 :text="getTitle()"
             ></v-toolbar-title>
@@ -98,6 +100,7 @@ const emit = defineEmits<{
 
 // props
 const props = defineProps<{
+    titleId: string;
     examId: string;
     instructionType: InstructionEnum | null;
     isUnlockScreens: boolean;

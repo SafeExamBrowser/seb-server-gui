@@ -138,11 +138,18 @@
     </v-data-table-server>
 
     <!-----------delete sessions confirmation---------->
-    <v-dialog v-if="isUserAdmin" v-model="dialog" max-width="400">
+    <v-dialog
+        v-if="isUserAdmin"
+        v-model="dialog"
+        max-width="400"
+        :aria-labelledby="dialogTitleId"
+    >
         <v-sheet class="pa-4 rounded-lg" elevation="1">
             <v-row class="justify-end">
                 <v-col>
-                    <div class="text-title-large">Delete selected sessions</div>
+                    <h2 :id="dialogTitleId" class="text-title-large">
+                        Delete selected sessions
+                    </h2>
                 </v-col>
             </v-row>
 
@@ -198,7 +205,7 @@
 </template>
 
 <script setup lang="ts">
-import { ref } from "vue";
+import { ref, useId } from "vue";
 import {
     VBtn,
     VCol,
@@ -269,6 +276,7 @@ const sessionTableHeaders = ref([
 
 // dialog - delete sessions
 const dialog = ref(false);
+const dialogTitleId = useId();
 
 // error handling
 const errorAvailable = ref<boolean>();

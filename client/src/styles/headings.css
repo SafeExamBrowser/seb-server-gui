@@ -1,0 +1,18 @@
+/*
+ * Headings are used for document structure (screen readers), not for looks:
+ * strip the browser defaults so the Vuetify classes on the element alone decide
+ * its appearance. Lives in Vuetify's reset layer so every Vuetify class wins;
+ * must be imported after "vuetify/styles/main.css", which sets the layer order.
+ */
+@layer vuetify-core.reset {
+    h1,
+    h2,
+    h3,
+    h4,
+    h5,
+    h6 {
+        margin: 0;
+        font-size: inherit;
+        font-weight: inherit;
+    }
+}

@@ -1,8 +1,8 @@
 <template>
     <v-row>
         <v-col class="font-weight-bold pt-8 pb-0"
-            >{{ translate(props.label)
-            }}<v-divider class="border-opacity-25" :thickness="5"> </v-divider>
+            ><h3>{{ translate(props.label) }}</h3>
+            <v-divider class="border-opacity-25" :thickness="5"> </v-divider>
             <v-tooltip
                 v-if="tooltip"
                 activator="parent"

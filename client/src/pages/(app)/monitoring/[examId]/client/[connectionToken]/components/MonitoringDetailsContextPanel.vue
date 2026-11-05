@@ -38,11 +38,11 @@
             <!-- notifications (shown right under the status — they are important) -->
             <template v-if="hasNotifications">
                 <div ref="notificationsRef" class="d-flex flex-column ga-2">
-                    <span
+                    <h2
                         class="text-body-small font-weight-bold text-uppercase text-medium-emphasis"
                     >
                         {{ $t("monitoringDetails.main.notifications") }}
-                    </span>
+                    </h2>
 
                     <!-- raised hand -->
                     <v-card
@@ -119,11 +119,11 @@
                 v-if="monitoringStore.clientGroupsSingle.length > 0"
                 class="d-flex flex-column ga-2"
             >
-                <span
+                <h2
                     class="text-body-small font-weight-bold text-uppercase text-medium-emphasis"
                 >
                     {{ $t("monitoringDetails.info.groups") }}
-                </span>
+                </h2>
                 <div class="d-flex flex-wrap ga-2">
                     <v-chip
                         v-for="clientGroup in monitoringStore.clientGroupsSingle"
@@ -138,11 +138,11 @@
 
             <!-- SEB info -->
             <div v-if="sebInfoParts.length > 0" class="d-flex flex-column ga-2">
-                <span
+                <h2
                     class="text-body-small font-weight-bold text-uppercase text-medium-emphasis"
                 >
                     {{ $t("monitoringDetails.info.sebInfo") }}
-                </span>
+                </h2>
                 <div class="d-flex flex-wrap ga-2">
                     <v-chip
                         v-for="(info, index) in sebInfoParts"
@@ -160,11 +160,11 @@
             <template v-if="showIndicators">
                 <v-divider />
                 <div class="d-flex flex-column ga-1">
-                    <span
+                    <h2
                         class="text-body-small font-weight-bold text-uppercase text-medium-emphasis"
                     >
                         {{ $t("monitoringDetails.info.indicators") }}
-                    </span>
+                    </h2>
                     <div
                         v-for="indicator in filteredIndicators"
                         :key="indicator.id"
@@ -233,8 +233,13 @@
             </div>
         </div>
 
-        <v-dialog v-model="instructionConfirmDialog" max-width="600">
+        <v-dialog
+            v-model="instructionConfirmDialog"
+            max-width="600"
+            :aria-labelledby="instructionConfirmDialogTitleId"
+        >
             <InstructionConfirmDialog
+                :title-id="instructionConfirmDialogTitleId"
                 :exam-id="examId"
                 :connection-tokens="connectionToken"
                 :instruction-type="selectedInstructionType"
@@ -248,7 +253,7 @@
 </template>
 
 <script setup lang="ts">
-import { computed, type CSSProperties, nextTick, ref, watch } from "vue";
+import { computed, type CSSProperties, nextTick, ref, useId, watch } from "vue";
 import {
     VBtn,
     VCard,
@@ -456,6 +461,7 @@ const showIndicators = computed(
 
 //= ==============instruction confirm dialog====================
 const instructionConfirmDialog = ref(false);
+const instructionConfirmDialogTitleId = useId();
 const selectedInstructionType = ref<InstructionEnum | null>(null);
 const isSelectedInstructionUnlock = ref(false);
 

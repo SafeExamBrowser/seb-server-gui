@@ -2,6 +2,7 @@
     <ErrorState
         icon="mdi-magnify-remove-outline"
         headline="404"
+        :heading-level="1"
         :message="message"
         :back-link="backLink"
     />

@@ -6,9 +6,13 @@
         @click="handleButtonEditClick"
     />
 
-    <v-dialog v-model="dialogOpen" :max-width="thresholds.sm">
+    <v-dialog
+        v-model="dialogOpen"
+        :max-width="thresholds.sm"
+        :aria-labelledby="titleId"
+    >
         <v-card>
-            <v-card-title>
+            <v-card-title :id="titleId" tag="h2">
                 {{ $t("examDetail.boxes.basicSettings.title") }}
             </v-card-title>
             <v-card-text>
@@ -32,7 +36,7 @@
 </template>
 
 <script setup lang="ts">
-import { computed, ref } from "vue";
+import { computed, ref, useId } from "vue";
 import { useDisplay } from "vuetify";
 import {
     VBtn,
@@ -82,6 +86,7 @@ const emit = defineEmits<{
 }>();
 
 const dialogOpen = ref(false);
+const titleId = useId();
 const formReady = ref(false);
 
 const quizNameTransient = ref<string>();

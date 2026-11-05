@@ -1,4 +1,5 @@
 <template>
+    <h1 class="d-sr-only">{{ $t("titles.screenProctoring") }}</h1>
     <ProctoringViewPage :session-id-prop="sessionId" />
 </template>
 
