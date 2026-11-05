@@ -2,6 +2,8 @@
     <v-card>
         <v-toolbar color="transparent">
             <v-toolbar-title
+                :id="titleId"
+                tag="h2"
                 class="text-title-large"
                 :text="examTemplate?.name"
             ></v-toolbar-title>
@@ -44,6 +46,7 @@ import { ExamTemplateSelection } from "@/models/examTemplate.ts";
 
 defineProps<{
     examTemplate: ExamTemplateSelection | null;
+    titleId: string;
 }>();
 
 const emit = defineEmits<{
