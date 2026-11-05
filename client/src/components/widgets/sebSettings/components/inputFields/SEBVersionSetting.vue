@@ -88,13 +88,11 @@ function isSEBVersionValid(version: string): boolean {
     }
 
     // check os
-    if (
-        !(
-            sections[0] === OS_WINDOWS_IDENTIFIER ||
-            sections[0] === OS_MAC_IDENTIFIER ||
-            sections[0] === OS_IOS_IDENTIFIER
-        )
-    ) {
+    if (!(
+        sections[0] === OS_WINDOWS_IDENTIFIER ||
+        sections[0] === OS_MAC_IDENTIFIER ||
+        sections[0] === OS_IOS_IDENTIFIER
+    )) {
         return false;
     }
 

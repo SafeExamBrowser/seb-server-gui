@@ -3,13 +3,7 @@ import { expect, type Locator, type Page } from "@playwright/test";
 import { selectVuetifyOptionByName } from "../../../utils/helpers";
 
 export type FormFieldType =
-    | "text"
-    | "password"
-    | "textarea"
-    | "number"
-    | "select"
-    | "switch"
-    | "file";
+    "text" | "password" | "textarea" | "number" | "select" | "switch" | "file";
 
 export type FormFieldFile = {
     name: string;

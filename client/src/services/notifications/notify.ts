@@ -14,11 +14,7 @@ import type { APIMessage, AppError } from "@/services/errors/types.ts";
 import { copyToClipboard } from "@/utils/clipboard.ts";
 
 export type NotificationKind =
-    | "success"
-    | "info"
-    | "warning"
-    | "client-error"
-    | "server-error";
+    "success" | "info" | "warning" | "client-error" | "server-error";
 
 export type NotificationItem = {
     title?: string;
