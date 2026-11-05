@@ -1,4 +1,5 @@
 <template>
+    <h1 class="d-sr-only">{{ $t("titles.screenProctoring") }}</h1>
     <v-row v-if="!showError">
         <!-----------video player---------->
         <v-col>
@@ -136,7 +137,7 @@
                         <thead>
                             <tr>
                                 <th class="text-left text-no-wrap">
-                                    <h3 class="text-title-small">
+                                    <h3 class="text-title-small my-3">
                                         SEB Session Info
                                     </h3>
                                 </th>
@@ -156,7 +157,7 @@
                         <thead>
                             <tr>
                                 <th class="text-left text-no-wrap">
-                                    <h3 class="text-title-small">
+                                    <h3 class="text-title-small my-3">
                                         Screenshot Metadata
                                     </h3>
                                 </th>
