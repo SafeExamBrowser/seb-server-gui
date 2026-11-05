@@ -1,9 +1,9 @@
 <template>
     <v-card border elevation="1" rounded="lg" class="h-100">
         <div class="d-flex align-center ga-2 px-5 py-4 bg-background">
-            <span class="text-body-medium font-weight-bold">
+            <h2 class="text-body-medium font-weight-bold">
                 {{ $t("monitoringOverview.groups.groups") }}
-            </span>
+            </h2>
             <v-spacer />
             <span
                 v-if="groupCount > 0"
@@ -31,9 +31,9 @@
                         <div
                             class="d-flex align-start justify-space-between ga-2 px-5 pt-5 pb-3 bg-background"
                         >
-                            <div class="text-body-large font-weight-bold">
+                            <h3 class="text-body-large font-weight-bold">
                                 {{ getGroupName(clientGroupItem) }}
-                            </div>
+                            </h3>
                             <v-chip
                                 color="surface"
                                 variant="flat"
@@ -128,9 +128,9 @@
                         <div
                             class="d-flex align-start justify-space-between ga-2 px-5 pt-5 pb-4 bg-background"
                         >
-                            <div class="text-body-large font-weight-bold">
+                            <h3 class="text-body-large font-weight-bold">
                                 {{ $t("monitoringOverview.groups.spsGroup") }}
-                            </div>
+                            </h3>
                             <v-chip
                                 color="surface"
                                 variant="flat"
