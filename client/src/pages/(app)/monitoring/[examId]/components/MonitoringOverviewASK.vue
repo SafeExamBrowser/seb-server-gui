@@ -36,9 +36,11 @@
     <v-dialog
         v-model="askDialog"
         max-width="1200"
+        :aria-labelledby="askDialogTitleId"
         @after-leave="restoreLauncherFocus"
     >
         <AskDialog
+            :title-id="askDialogTitleId"
             :app-signature-keys="appSignatureKeys"
             @close-ask-dialog="closeAskDialog"
         />
@@ -46,7 +48,7 @@
 </template>
 
 <script setup lang="ts">
-import { type ComponentPublicInstance, computed, ref } from "vue";
+import { type ComponentPublicInstance, computed, ref, useId } from "vue";
 import { useI18n } from "vue-i18n";
 import { VAvatar, VCard, VDialog, VIcon } from "vuetify/components";
 
@@ -64,6 +66,7 @@ const appSignatureKeys = computed<AppSignatureKeysWithGrantValues[]>(
     () => monitoringStore.appSignatureKeys ?? [],
 );
 const askDialog = ref(false);
+const askDialogTitleId = useId();
 const askKeyCount = computed(() => appSignatureKeys.value?.length ?? 0);
 
 const askButtonLabel = computed(
