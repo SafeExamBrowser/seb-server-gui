@@ -2,6 +2,8 @@
     <v-card v-if="argumentsTable">
         <v-toolbar color="transparent">
             <v-toolbar-title
+                :id="titleId"
+                tag="h2"
                 class="text-title-large"
                 :text="
                     translate(
@@ -644,6 +646,7 @@ const emit = defineEmits<{
 const props = defineProps<{
     permittedProcess: PermittedProcess | null;
     readOnly: boolean;
+    titleId: string;
 }>();
 
 const osItems = [
