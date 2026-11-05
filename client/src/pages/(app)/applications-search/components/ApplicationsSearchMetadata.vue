@@ -4,9 +4,9 @@
         <div
             class="d-flex align-center flex-wrap ga-3 px-5 py-4 bg-blue-lighten-5"
         >
-            <span class="text-subtitle-1 font-weight-bold">
+            <h2 class="text-subtitle-1 font-weight-bold">
                 {{ examObject.exam.name }}
-            </span>
+            </h2>
             <v-spacer />
             <span class="text-body-2 text-medium-emphasis">
                 {{

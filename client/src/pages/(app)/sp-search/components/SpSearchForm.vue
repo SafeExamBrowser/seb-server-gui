@@ -11,9 +11,9 @@
             :style="{ minHeight: '56px' }"
         >
             <v-icon icon="mdi-magnify" color="primary" />
-            <span class="text-subtitle-1 font-weight-bold flex-grow-1">
+            <h2 class="text-subtitle-1 font-weight-bold flex-grow-1">
                 {{ $t("titles.spSearch") }}
-            </span>
+            </h2>
             <v-btn
                 v-if="clearAllAvailable"
                 variant="text"
