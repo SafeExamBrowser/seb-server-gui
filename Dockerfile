@@ -16,13 +16,20 @@ RUN npm ci
 COPY server/ .
 RUN npm run build
 
+# Install server runtime dependencies only (no build tooling), on the same
+# base as the final image
+FROM node:${NODE_VERSION}-alpine AS server-deps
+WORKDIR /app/server
+COPY server/package*.json ./
+RUN npm ci --omit=dev
+
 # Create final image
 FROM node:${NODE_VERSION}-alpine
 WORKDIR /app
 ENV SERVE_CLIENT=true
 COPY --from=server-builder /app/server/dist ./server/dist
 COPY --from=client-builder /app/client/dist ./server/dist/views
-COPY --from=server-builder /app/server/node_modules ./node_modules
+COPY --from=server-deps /app/server/node_modules ./node_modules
 
 EXPOSE 3001
 
