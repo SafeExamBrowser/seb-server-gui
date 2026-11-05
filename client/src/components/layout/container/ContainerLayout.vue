@@ -23,7 +23,7 @@
                 :ability="ability"
             />
 
-            <div
+            <main
                 v-if="notAllowed"
                 class="flex-1-1-0 overflow-y-auto pa-3 ma-n3"
                 data-testid="not-allowed-page-container"
@@ -33,9 +33,10 @@
                     :message="$t('notAllowed.message')"
                     :back-link="notAllowedBackLink"
                 />
-            </div>
+            </main>
             <v-card
                 v-else-if="isPageBlue"
+                tag="main"
                 class="flex-1-1-0 rounded-lg overflow-y-auto pa-4"
                 color="primary"
                 :data-testid="`${pageTestId}-page-container`"
@@ -44,14 +45,14 @@
             >
                 <RouterView />
             </v-card>
-            <div
+            <main
                 v-else
                 class="flex-1-1-0 overflow-y-auto pa-3 ma-n3"
                 :data-testid="`${pageTestId}-page-container`"
                 :style="{ minHeight: 0, minWidth: 0 }"
             >
                 <RouterView />
-            </div>
+            </main>
         </div>
     </div>
 </template>

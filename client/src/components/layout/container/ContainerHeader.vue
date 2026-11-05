@@ -1,5 +1,5 @@
 <template>
-    <div
+    <header
         class="d-flex align-stretch flex-shrink-0 ga-4 pt-2 pb-2 px-6"
         data-testid="layout-app-bar"
     >
@@ -65,7 +65,7 @@
                 @logout="$emit('logout')"
             />
         </v-card>
-    </div>
+    </header>
 </template>
 
 <script setup lang="ts">
