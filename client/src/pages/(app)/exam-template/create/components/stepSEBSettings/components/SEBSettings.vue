@@ -7,6 +7,7 @@
                 >
                     <SectionSubtitle
                         :name="$t('createTemplateExam.steps.seb-settings.name')"
+                        :level="3"
                     />
                 </div>
             </v-col>
