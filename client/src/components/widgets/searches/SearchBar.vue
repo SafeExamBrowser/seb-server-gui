@@ -8,9 +8,9 @@
             :style="{ minHeight: '56px' }"
         >
             <v-icon icon="mdi-filter-variant" color="primary" />
-            <span class="text-subtitle-1 font-weight-bold flex-grow-1">
+            <h2 class="text-subtitle-1 font-weight-bold flex-grow-1">
                 {{ $t("general.filters") }}
-            </span>
+            </h2>
             <v-btn
                 v-if="clearAllCount > 0"
                 variant="text"
