@@ -1,8 +1,8 @@
 <template>
     <div v-if="visibleItems.length > 0">
-        <h4 v-if="showTitle" class="text-body-large font-weight-bold mb-3">
+        <h2 v-if="showTitle" class="text-body-large font-weight-bold mt-5 mb-3">
             {{ title.toUpperCase() }}
-        </h4>
+        </h2>
 
         <NavigationItem
             v-for="item in visibleItems"
