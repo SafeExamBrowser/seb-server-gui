@@ -1,5 +1,5 @@
 <template>
-    <CrudTable :config="tableConfig">
+    <CrudTable :config="tableConfig" :heading-level="headingLevel">
         <template #item.type="{ item }">
             {{ getTranslatedType(item) }}
         </template>
@@ -24,10 +24,12 @@ import ChipThreshold from "@/components/widgets/chipThreshold/ChipThreshold.vue"
 import CrudTable from "@/components/widgets/crudTable/CrudTable.vue";
 import { useTable } from "@/components/widgets/indicatorsTable/composables/useTable.ts";
 import { IndicatorsTableDeps } from "@/components/widgets/indicatorsTable/types.ts";
+import type { HeadingLevel } from "@/components/widgets/types";
 import { IndicatorExisting } from "@/models/seb-server/examTemplate.ts";
 
-const { deps } = defineProps<{
+const { deps, headingLevel = undefined } = defineProps<{
     deps: IndicatorsTableDeps;
+    headingLevel?: HeadingLevel;
 }>();
 
 const { t } = useI18n();

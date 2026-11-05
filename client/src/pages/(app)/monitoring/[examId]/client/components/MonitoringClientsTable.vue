@@ -174,8 +174,13 @@
         </div>
     </div>
     <!-----------group dialog---------->
-    <v-dialog v-model="clientGroupDialog" max-width="800">
+    <v-dialog
+        v-model="clientGroupDialog"
+        max-width="800"
+        :aria-labelledby="clientGroupDialogTitleId"
+    >
         <ClientGroupInfoDialog
+            :title-id="clientGroupDialogTitleId"
             :client-group="clientGroupToView"
             @close-client-group-dialog="closeClientGroupDialog"
         >
@@ -190,6 +195,7 @@ import {
     onMounted,
     onUnmounted,
     ref,
+    useId,
     watch,
 } from "vue";
 import { useI18n } from "vue-i18n";
@@ -274,6 +280,7 @@ const REFRESH_INTERVAL: number = 2000;
 
 // dialogs
 const clientGroupDialog = ref<boolean>(false);
+const clientGroupDialogTitleId = useId();
 const clientGroupToView = ref<ClientGroup | null>(null);
 
 // table

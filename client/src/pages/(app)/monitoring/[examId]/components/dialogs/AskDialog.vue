@@ -1,8 +1,13 @@
 <template>
     <v-card>
         <v-toolbar color="transparent" class="ma-3">
-            <v-toolbar-title class="text-headline-small font-weight-black">
-                {{ $t("monitoringDetails.monitoringASKDialog.title") }}
+            <v-toolbar-title
+                tag="h2"
+                class="text-headline-small font-weight-black"
+            >
+                <span :id="titleId">
+                    {{ $t("monitoringDetails.monitoringASKDialog.title") }}
+                </span>
                 <v-btn
                     icon="mdi-refresh"
                     class="mr-2"
@@ -264,6 +269,10 @@ import {
 import AskConnectionListItem from "./ask/AskConnectionListItem.vue";
 import AskGrantFooter from "./ask/AskGrantFooter.vue";
 import AskKeyListItem from "./ask/AskKeyListItem.vue";
+
+defineProps<{
+    titleId: string;
+}>();
 
 const store = useMonitoringStore();
 const router = useRouter();

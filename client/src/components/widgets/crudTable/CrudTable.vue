@@ -6,7 +6,7 @@
         hide-default-footer
     >
         <template #top>
-            <TableHeader :label="config.title">
+            <TableHeader :label="config.title" :heading-level="headingLevel">
                 <CrudCreate
                     v-if="!accessHidden"
                     :label="config.createConfig.title"
@@ -54,9 +54,11 @@ import CrudActions from "@/components/widgets/crudTable/components/CrudActions.v
 import CrudCreate from "@/components/widgets/crudTable/components/CrudCreate.vue";
 import { CrudTableConfig } from "@/components/widgets/crudTable/types";
 import TableHeader from "@/components/widgets/TableHeader.vue";
+import type { HeadingLevel } from "@/components/widgets/types";
 
 const props = defineProps<{
     config: CrudTableConfig<TItem, TTransient>;
+    headingLevel?: HeadingLevel;
 }>();
 
 const accessHidden = computed(

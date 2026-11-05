@@ -3,7 +3,7 @@
         :title="$t('createTemplateExam.steps.indicators.title')"
         :subtitle="$t('createTemplateExam.steps.indicators.subtitle')"
     >
-        <IndicatorsTable :deps="tableDeps" />
+        <IndicatorsTable :deps="tableDeps" :heading-level="3" />
     </StepItem>
 </template>
 

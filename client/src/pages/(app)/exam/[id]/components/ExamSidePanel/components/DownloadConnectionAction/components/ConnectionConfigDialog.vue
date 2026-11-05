@@ -1,7 +1,11 @@
 <template>
-    <v-dialog v-model="model" max-width="500">
+    <v-dialog v-model="model" max-width="500" :aria-labelledby="titleId">
         <v-card>
-            <v-card-title class="text-title-large font-weight-bold">
+            <v-card-title
+                :id="titleId"
+                tag="h2"
+                class="text-title-large font-weight-bold"
+            >
                 {{ $t("examDetail.sidePanel.connectionDialog.title") }}
             </v-card-title>
 
@@ -39,7 +43,7 @@
 </template>
 
 <script setup lang="ts">
-import { ref, watch } from "vue";
+import { ref, useId, watch } from "vue";
 import {
     VBtn,
     VCard,
@@ -53,6 +57,7 @@ import {
 import { ConnectionConfiguration } from "@/models/seb-server/connectionConfiguration.ts";
 
 const model = defineModel<boolean>({ required: true });
+const titleId = useId();
 
 const props = defineProps<{
     connectionConfigurations: ConnectionConfiguration[];

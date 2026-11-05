@@ -1,7 +1,7 @@
 <template>
-    <div class="text-headline-large font-weight-bold" :data-testid="dataTestId">
+    <h1 class="text-headline-large font-weight-bold" :data-testid="dataTestId">
         {{ name }}
-    </div>
+    </h1>
 </template>
 
 <script setup lang="ts">

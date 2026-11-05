@@ -26,7 +26,7 @@
         <v-row>
             <v-col class="font-weight-bold pt-8 pb-0">
                 <v-row>
-                    <v-col>{{
+                    <v-col tag="h3">{{
                         translate(
                             "sebSettings.applicationView.permittedProcess.settingName",
                         )
@@ -141,8 +141,10 @@
             v-if="permittedProcessTable"
             v-model="permittedProcessTable.dialog.value"
             max-width="800"
+            :aria-labelledby="permittedProcessDialogTitleId"
         >
             <EditPermittedProcess
+                :title-id="permittedProcessDialogTitleId"
                 :permitted-process="permittedProcessTable.selectedRow.value"
                 :read-only="context.readonly"
                 @close-edit-permitted-process="
@@ -156,7 +158,7 @@
         <v-row>
             <v-col class="font-weight-bold pt-8 pb-0">
                 <v-row>
-                    <v-col>{{
+                    <v-col tag="h3">{{
                         translate(
                             "sebSettings.applicationView.prohibitedProcess.settingName",
                         )
@@ -252,8 +254,10 @@
             v-if="prohibitedProcessTable"
             v-model="prohibitedProcessTable.dialog.value"
             max-width="800"
+            :aria-labelledby="prohibitedProcessDialogTitleId"
         >
             <EditProhibitedProcess
+                :title-id="prohibitedProcessDialogTitleId"
                 :prohibited-process="prohibitedProcessTable.selectedRow.value"
                 :read-only="context.readonly"
                 @close-edit-prohibited-process="
@@ -266,6 +270,7 @@
 </template>
 
 <script setup lang="ts">
+import { useId } from "vue";
 import { useI18n } from "vue-i18n";
 import {
     VBtn,
@@ -311,6 +316,9 @@ const {
     props.context.containerId,
     ViewType.APPLICATION,
 );
+
+const permittedProcessDialogTitleId = useId();
+const prohibitedProcessDialogTitleId = useId();
 
 const { permittedProcessTable, tableHeaders: permittedProcessTableHeaders } =
     usePermittedProcessTable(tableValues, singleValues);

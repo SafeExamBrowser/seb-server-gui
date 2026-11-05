@@ -26,12 +26,16 @@
             </template>
         </v-data-table>
 
-        <v-dialog v-model="dialogOpen" :max-width="thresholds.sm">
+        <v-dialog
+            v-model="dialogOpen"
+            :max-width="thresholds.sm"
+            :aria-labelledby="titleId"
+        >
             <v-card
                 class="d-flex flex-column"
                 :height="`min(${thresholds.sm}px, 90vh)`"
             >
-                <v-card-title>
+                <v-card-title :id="titleId" tag="h2">
                     {{ $t("boxSupervisors.dialogTitle") }}
                 </v-card-title>
                 <v-card-text class="flex-grow-1 overflow-hidden">
@@ -55,7 +59,7 @@
 </template>
 
 <script setup lang="ts">
-import { computed, ref } from "vue";
+import { computed, ref, useId } from "vue";
 import { useI18n } from "vue-i18n";
 import { useDisplay } from "vuetify";
 import {
@@ -123,6 +127,7 @@ const selectedSupervisors = computed(() =>
 );
 
 const dialogOpen = ref(false);
+const titleId = useId();
 const workingIds = ref<string[]>([]);
 
 const handleButtonEditClick = () => {

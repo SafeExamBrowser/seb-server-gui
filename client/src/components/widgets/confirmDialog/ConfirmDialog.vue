@@ -1,5 +1,10 @@
 <template>
-    <v-dialog v-model="model" max-width="500" :persistent="loading">
+    <v-dialog
+        v-model="model"
+        max-width="500"
+        :persistent="loading"
+        :aria-labelledby="titleId"
+    >
         <v-card rounded="lg" :data-testid="testIds?.root">
             <v-btn
                 v-if="icon"
@@ -14,6 +19,8 @@
             </v-btn>
 
             <v-card-title
+                :id="titleId"
+                tag="h2"
                 class="text-title-large font-weight-bold"
                 :data-testid="testIds?.title"
             >
@@ -60,6 +67,7 @@
 </template>
 
 <script setup lang="ts">
+import { useId } from "vue";
 import {
     VBtn,
     VCard,
@@ -112,4 +120,6 @@ withDefaults(
 const emit = defineEmits<{
     confirm: [];
 }>();
+
+const titleId = useId();
 </script>

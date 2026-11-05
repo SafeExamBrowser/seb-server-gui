@@ -6,52 +6,15 @@ This is a sub-project of SEB Server. For full usage and installation, please vis
 
 ## Overview
 
-**This project is still under development and has not yet an official release or release data.**
+## Install SEB Server
 
-This project consists of two parts. A client component and a server component. The server contains no businesses logic but serves as a lightweight api gateway. The easiest way to build and deploy the project is via docker.
+For a complete guide to install SEB Server please go to [SEB Server Installation Guide](https://seb-server-setup.readthedocs.io/en/latest/overview.html)
 
-# Development Setup
+## Getting started with SEB Server
 
-## Intro
+**NOTE**
 
-If you're just working on the frontend part (SEB Server GUI), this is the easiest way to have a working environment. This pulls the backend services (mariadb, seb-server and sps-webservice) from existing images
+    The following is the SEB Server User Guide for the SEB Server version 2.x. Since there is no actual User Guide for version 3.0 yet
+    you can use this as a reference. We will provide you with an actual SEB Server User Guide for version 3.x as soon as possible.
 
-## Setup docker containers
-
-1. Run `docker-compose up -d`
-
-## Setup the client
-
-1. `cd client`
-1. Start virtual node env: `nvm use`
-1. Install dependencies: `npm ci`
-1. Copy the example `.env` file and adapt it to your needs: `cp .env.example .env`
-1. Start the client: `npm run dev`
-
-## Setup the server
-
-1. See `README.md` in `/server`
-
-## Confirm setup worked
-
-1. Visit http://localhost:8082 and login to confirm that the full setup works
-
-## Install the git hooks
-
-1. Run `cd client && nvm use && npm run prepare`
-1. Run `git config core.hooksPath` and verify, that the `hooksPath` was correctly set to `./client/.husky/_`
-
-The hooks run inside `client/`. `pre-commit` formats the staged files with Prettier. `pre-push` runs
-`npm run format:check:all` and `npm run typecheck:app`; if it rejects the push, run `npm run quality:fix:all`,
-commit and push again.
-
-## Find Login info
-
-- The setup comes with a static demo account: super-admin / admin
-- Alternatively you can run `docker-compose logs seb-server | grep "SEB Server initial admin-account"` to see the admin user and password that was generated for your instance of seb-server
-
-# AI info
-
-- We use [Claude Code](https://claude.com/product/claude-code)
-- Shared config for Claude is in `.claude`
-- Skills are managed with [skills.sh](https://skills.sh). Runn `npx skills update` every now and then.
+For a complete SEB Server user guide please go to [SEB Server User Guide](https://seb-server.readthedocs.io/en/latest/#)

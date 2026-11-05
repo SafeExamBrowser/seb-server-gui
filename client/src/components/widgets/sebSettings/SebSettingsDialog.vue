@@ -1,11 +1,18 @@
 <template>
-    <v-dialog v-model="open" height="80vh" max-width="1200">
+    <v-dialog
+        v-model="open"
+        height="80vh"
+        max-width="1200"
+        :aria-labelledby="titleId"
+    >
         <v-card class="pa-5" max-width="1200">
             <v-row>
                 <v-col>
                     <v-row>
                         <v-toolbar color="transparent">
                             <v-toolbar-title
+                                :id="titleId"
+                                tag="h2"
                                 class="text-title-large"
                                 :text="translate(props.dialogTitle)"
                             ></v-toolbar-title>
@@ -62,7 +69,7 @@
 </template>
 
 <script setup lang="ts">
-import { watch } from "vue";
+import { useId, watch } from "vue";
 import {
     VBtn,
     VCard,
@@ -87,6 +94,7 @@ const props = defineProps<{
 }>();
 
 const open = defineModel<boolean>({ required: true });
+const titleId = useId();
 
 let closedByButton = false;
 

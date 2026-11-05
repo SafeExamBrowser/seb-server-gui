@@ -2,7 +2,7 @@
     <v-card border elevation="1" rounded="lg" class="flex-grow-1">
         <v-card-title v-if="title" class="pb-0">
             <div class="d-flex align-center ga-2 pt-2 pb-3 border-b-md">
-                <SectionSubtitle :name="title" />
+                <SectionSubtitle :name="title" :level="headingLevel" />
                 <v-spacer />
                 <slot name="action" />
             </div>
@@ -17,8 +17,10 @@
 import { VCard, VCardText, VCardTitle, VSpacer } from "vuetify/components";
 
 import SectionSubtitle from "@/components/widgets/SectionSubtitle.vue";
+import type { HeadingLevel } from "@/components/widgets/types";
 
 defineProps<{
     title?: string;
+    headingLevel?: HeadingLevel;
 }>();
 </script>

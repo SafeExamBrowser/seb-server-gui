@@ -4,7 +4,7 @@
             <v-row>
                 <v-col>
                     <legend>
-                        <SectionSubtitle :name="label" />
+                        <SectionSubtitle :name="label" :level="3" />
                     </legend>
                 </v-col>
                 <v-col cols="auto">

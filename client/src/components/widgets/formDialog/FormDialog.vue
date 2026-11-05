@@ -33,13 +33,18 @@
         v-model="isDialogOpen"
         :max-width="thresholds.sm"
         :persistent="submitting"
+        :aria-labelledby="titleId"
     >
         <v-card
-            :title="labelActivator"
             :data-testid="
                 dataTestId ? `${dataTestId}-create-dialog` : undefined
             "
         >
+            <template #title>
+                <h2 :id="titleId" class="text-truncate">
+                    {{ labelActivator }}
+                </h2>
+            </template>
             <template #text>
                 <FormBuilder
                     v-model="isValid"
@@ -98,7 +103,7 @@
 
 <script setup lang="ts" generic="TTransient">
 import type { Ref, UnwrapRef } from "vue";
-import { computed, ref, watch } from "vue";
+import { computed, ref, useId, watch } from "vue";
 import { useDisplay } from "vuetify";
 import {
     VAlert,
@@ -150,6 +155,7 @@ const { thresholds: thresholdsRef } = useDisplay();
 const thresholds = computed(() => thresholdsRef.value);
 
 const isDialogOpen = defineModel<boolean>({ default: false });
+const titleId = useId();
 const item = ref<TTransient>(props.getItem());
 const isValid = ref<boolean>(false);
 const submitting = ref<boolean>(false);
