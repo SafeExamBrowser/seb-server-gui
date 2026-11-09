@@ -1,6 +1,6 @@
 <template>
     <div>
-        <SectionSubtitle :name="section.label" />
+        <SectionSubtitle :name="section.label" :level="3" />
         <div class="rounded-lg mt-2 pa-4 bg-surface-container-low">
             <KeyValueList
                 v-if="section.items.length > 0"

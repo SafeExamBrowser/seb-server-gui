@@ -47,8 +47,13 @@
             </v-list>
         </LoadingFallbackComponent>
 
-        <v-dialog v-model="infoDialogOpen" max-width="600">
+        <v-dialog
+            v-model="infoDialogOpen"
+            max-width="600"
+            :aria-labelledby="infoDialogTitleId"
+        >
             <ExamTemplateDialog
+                :title-id="infoDialogTitleId"
                 :exam-template="infoDialogTemplate"
                 @close-exam-template-dialog="infoDialogOpen = false"
             />
@@ -57,7 +62,7 @@
 </template>
 
 <script setup lang="ts">
-import { computed, ref, watch } from "vue";
+import { computed, ref, useId, watch } from "vue";
 import {
     VBtn,
     VDialog,
@@ -83,6 +88,7 @@ import { useExamTemplates } from "./composables/api/useExamTemplates.ts";
 import { useStepExamTemplateStore } from "./composables/store/useStepExamTemplateStore.ts";
 
 const infoDialogOpen = ref(false);
+const infoDialogTitleId = useId();
 const infoDialogTemplate = ref<ExamTemplateSelection | null>(null);
 
 const openInfoDialog = (template: ExamTemplateSelection) => {

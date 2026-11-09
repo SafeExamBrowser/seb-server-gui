@@ -168,9 +168,9 @@
                             </template>
                             <div class="proctor-info">
                                 <div class="proctor-info__group">
-                                    <div class="proctor-info__title">
+                                    <h2 class="proctor-info__title">
                                         SEB Session Info
-                                    </div>
+                                    </h2>
                                     <div
                                         v-for="(value, key) in sessionInfodata"
                                         :key="key"
@@ -186,9 +186,9 @@
                                 </div>
 
                                 <div class="proctor-info__group">
-                                    <div class="proctor-info__title">
+                                    <h2 class="proctor-info__title">
                                         Screenshot Metadata
-                                    </div>
+                                    </h2>
                                     <div
                                         v-for="(
                                             value, key

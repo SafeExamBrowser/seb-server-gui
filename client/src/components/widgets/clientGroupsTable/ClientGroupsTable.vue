@@ -1,5 +1,5 @@
 <template>
-    <CrudTable :config="tableConfig">
+    <CrudTable :config="tableConfig" :heading-level="headingLevel">
         <template #item.type="{ item }">
             {{ getTranslatedType(item) }}
         </template>
@@ -15,7 +15,7 @@
 <script setup lang="ts">
 import { computed } from "vue";
 import { useI18n } from "vue-i18n";
-import { useRules } from "vuetify/labs/rules";
+import { useRules } from "vuetify";
 
 import FieldScreenProctoringEnabled from "@/components/widgets/clientGroupsTable/components/FieldScreenProctoringEnabled.vue";
 import { useTable } from "@/components/widgets/clientGroupsTable/composables/useTable.ts";
@@ -26,10 +26,12 @@ import {
     TYPE_LABEL_I18N_KEYS,
 } from "@/components/widgets/clientGroupsTable/types.ts";
 import CrudTable from "@/components/widgets/crudTable/CrudTable.vue";
+import type { HeadingLevel } from "@/components/widgets/types";
 import { isScreenProctoringAllowedForGroups } from "@/models/seb-server/screenProctoring.ts";
 
-const { deps } = defineProps<{
+const { deps, headingLevel = undefined } = defineProps<{
     deps: ClientGroupsTableDeps;
+    headingLevel?: HeadingLevel;
 }>();
 
 const { t } = useI18n();

@@ -8,6 +8,9 @@
         :text="details"
         :color="color"
     >
+        <template v-if="headingLevel" #title>
+            <component :is="`h${headingLevel}`">{{ message }}</component>
+        </template>
         <template v-if="backLink" #actions>
             <v-btn
                 class="rounded"
@@ -26,6 +29,8 @@
 <script setup lang="ts">
 import { VBtn, VEmptyState } from "vuetify/components";
 
+import type { HeadingLevel } from "@/components/widgets/types";
+
 import { ERROR_STATE_TEST_ID } from "./errorStateContracts.ts";
 import type { ErrorStateBackLink } from "./types.ts";
 
@@ -36,5 +41,6 @@ defineProps<{
     details?: string;
     color?: string;
     backLink?: ErrorStateBackLink;
+    headingLevel?: HeadingLevel;
 }>();
 </script>

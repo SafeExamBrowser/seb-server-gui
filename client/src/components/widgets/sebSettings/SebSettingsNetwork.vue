@@ -9,7 +9,7 @@
                 <v-row>
                     <v-col class="font-weight-bold pt-8 pb-0">
                         <v-row>
-                            <v-col>{{
+                            <v-col tag="h3">{{
                                 translate(
                                     "sebSettings.networkView.filterGroupTitle",
                                 )
@@ -155,7 +155,7 @@
         <v-row>
             <v-col class="font-weight-bold pt-8 pb-0">
                 <v-row>
-                    <v-col>{{
+                    <v-col tag="h3">{{
                         translate("sebSettings.networkView.proxies")
                     }}</v-col>
                 </v-row>
@@ -582,8 +582,10 @@
             v-if="urlFilterRuleTable"
             v-model="urlFilterRuleTable.dialog.value"
             max-width="800"
+            :aria-labelledby="urlFilterRuleDialogTitleId"
         >
             <EditURLFilterRule
+                :title-id="urlFilterRuleDialogTitleId"
                 :read-only="context.readonly"
                 :url-filter-rule="urlFilterRuleTable.selectedRow.value"
                 @close-edit-u-r-l-filter-rule="urlFilterRuleTable.closeDialog"
@@ -594,7 +596,7 @@
 </template>
 
 <script setup lang="ts">
-import { useTemplateRef } from "vue";
+import { useId, useTemplateRef } from "vue";
 import { useI18n } from "vue-i18n";
 import {
     VBtn,
@@ -643,6 +645,8 @@ const {
     props.context.containerId,
     ViewType.NETWORK,
 );
+
+const urlFilterRuleDialogTitleId = useId();
 
 const { urlFilterRuleTable, tableHeaders } = useURLFilterRuleTable(
     tableValues,

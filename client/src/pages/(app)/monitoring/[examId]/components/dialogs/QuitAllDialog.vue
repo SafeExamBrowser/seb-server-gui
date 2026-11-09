@@ -2,6 +2,8 @@
     <v-card width="600">
         <v-toolbar color="transparent">
             <v-toolbar-title
+                :id="titleId"
+                tag="h2"
                 class="text-title-large"
                 :text="translate('monitoringOverview.quitAll.title')"
             ></v-toolbar-title>
@@ -76,6 +78,10 @@ import {
 } from "vuetify/components";
 
 import { translate } from "@/utils/generalUtils.ts";
+
+defineProps<{
+    titleId: string;
+}>();
 
 const emit = defineEmits<{
     (e: "closeQuitAllDialog", value: string): void;

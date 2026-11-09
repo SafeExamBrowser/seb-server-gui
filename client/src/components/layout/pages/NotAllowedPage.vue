@@ -2,6 +2,7 @@
     <ErrorState
         icon="mdi-lock-outline"
         headline="403"
+        :heading-level="1"
         :message="message"
         :back-link="backLink"
     />

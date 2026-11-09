@@ -14,6 +14,7 @@ import { useConsecutiveExamNames } from "./api/useConsecutiveExamNames.ts";
 export const useBasicSettingsItems = (
     examId: number,
     basicSettings: Ref<BasicSettings>,
+    examWithURL: Ref<boolean>,
 ) => {
     const {
         data: consecutiveExamNames,
@@ -55,10 +56,7 @@ export const useBasicSettingsItems = (
             },
         ];
 
-        if (
-            basicSettings.value.quiz_description !== undefined &&
-            basicSettings.value.quiz_description !== ""
-        ) {
+        if (examWithURL.value) {
             result.push({
                 key: "description",
                 type: "basic",

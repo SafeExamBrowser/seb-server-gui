@@ -1,8 +1,8 @@
 import { computed, Ref } from "vue";
-import { RuleAliases } from "vuetify/labs/rules";
 
 import {
     ClientGroupTransient,
+    RuleAliases,
     TYPE_LABEL_I18N_KEYS,
 } from "@/components/widgets/clientGroupsTable/types.ts";
 import { FormField } from "@/components/widgets/formBuilder/types.ts";

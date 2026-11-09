@@ -5,9 +5,13 @@
         @click="handleButtonEditClick"
     />
 
-    <v-dialog v-model="dialogOpen" :max-width="thresholds.sm">
+    <v-dialog
+        v-model="dialogOpen"
+        :max-width="thresholds.sm"
+        :aria-labelledby="titleId"
+    >
         <v-card>
-            <v-card-title>
+            <v-card-title :id="titleId" tag="h2">
                 {{ $t("examTemplateDetail.boxes.basicSettings.dialogTitle") }}
             </v-card-title>
             <v-card-text>
@@ -33,7 +37,7 @@
 </template>
 
 <script setup lang="ts">
-import { computed, ref } from "vue";
+import { computed, ref, useId } from "vue";
 import { useDisplay } from "vuetify";
 import {
     VBtn,
@@ -73,6 +77,7 @@ const { thresholds: thresholdsRef } = useDisplay();
 const thresholds = computed(() => thresholdsRef.value);
 
 const dialogOpen = ref(false);
+const titleId = useId();
 const formReady = ref(false);
 
 const nameTransient = ref<string>();

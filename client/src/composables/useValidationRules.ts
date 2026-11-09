@@ -1,5 +1,5 @@
+import { useRules } from "vuetify";
 import type { VInput } from "vuetify/components";
-import { useRules } from "vuetify/labs/rules";
 
 import i18n from "@/i18n";
 

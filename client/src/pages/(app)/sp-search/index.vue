@@ -84,7 +84,7 @@
 
                 <v-spacer />
 
-                <span
+                <h2
                     v-if="searchResultAvailable && !noResultsFound"
                     class="text-body-small text-medium-emphasis font-weight-medium text-no-wrap"
                 >
@@ -93,7 +93,7 @@
                             count: sessionsDays.length,
                         })
                     }}
-                </span>
+                </h2>
                 <v-btn
                     variant="text"
                     class="text-none"

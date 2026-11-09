@@ -1,7 +1,9 @@
 import { computed, Ref } from "vue";
-import { RuleAliases } from "vuetify/labs/rules";
 
-import { ClientGroupTransient } from "@/components/widgets/clientGroupsTable/types.ts";
+import {
+    ClientGroupTransient,
+    RuleAliases,
+} from "@/components/widgets/clientGroupsTable/types.ts";
 import { FormField } from "@/components/widgets/formBuilder/types.ts";
 import i18n from "@/i18n";
 

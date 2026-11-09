@@ -8,12 +8,12 @@
                     elevation="0"
                 >
                     <v-app-bar-title class="mb-12">
-                        <div
+                        <h1
                             class="text-headline-large font-weight-bold mt-3"
                             data-testid="navigationOverview-title-text"
                         >
                             {{ translate("titles.navigationOverview") }}
-                        </div>
+                        </h1>
                     </v-app-bar-title>
 
                     <v-row class="mt-4 mb-16 mr-0">

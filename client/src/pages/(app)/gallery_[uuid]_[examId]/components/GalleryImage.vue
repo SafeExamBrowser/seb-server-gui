@@ -110,7 +110,11 @@
     <!-------------------------->
 
     <!-----------expanded image---------->
-    <v-dialog v-model="dialog" max-width="1100">
+    <v-dialog
+        v-model="dialog"
+        max-width="1100"
+        :aria-labelledby="dialogLabelId"
+    >
         <v-card class="overflow-hidden" rounded="lg" :style="lightboxCardStyle">
             <template v-if="screenshot">
                 <v-img
@@ -192,6 +196,7 @@
                     :style="lightboxFootStyle"
                 >
                     <div
+                        :id="dialogLabelId"
                         class="flex-grow-1 text-white text-body-medium font-weight-bold text-truncate"
                     >
                         {{ screenshot.clientName }} /
@@ -219,7 +224,7 @@
 </template>
 
 <script setup lang="ts">
-import { computed, onBeforeMount, ref } from "vue";
+import { computed, onBeforeMount, ref, useId } from "vue";
 import { useRoute } from "vue-router";
 import {
     VAvatar,
@@ -264,6 +269,7 @@ const examId = computed(() => {
 
 // dialog - expanded image
 const dialog = ref(false);
+const dialogLabelId = useId();
 const metaOpen = ref(true);
 
 // accessibility

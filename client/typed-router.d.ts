@@ -211,8 +211,8 @@ declare module 'vue-router/auto-routes' {
     '/(app)/gallery_[uuid]_[examId]/': RouteRecordInfo<
       '/(app)/gallery_[uuid]_[examId]/',
       '/gallery_:uuid()_:examId',
-      { uuid: ParamValue<true>, examId: ParamValue<true> },
-      { uuid: ParamValue<false>, examId: ParamValue<false> },
+      { examId: ParamValue<true>, uuid: ParamValue<true> },
+      { examId: ParamValue<false>, uuid: ParamValue<false> },
       | never
     >,
     '/(app)/institution/': RouteRecordInfo<
@@ -260,8 +260,8 @@ declare module 'vue-router/auto-routes' {
     '/(app)/monitoring/[examId]/client/[connectionToken]/': RouteRecordInfo<
       '/(app)/monitoring/[examId]/client/[connectionToken]/',
       '/monitoring/:examId/client/:connectionToken',
-      { examId: ParamValue<true>, connectionToken: ParamValue<true> },
-      { examId: ParamValue<false>, connectionToken: ParamValue<false> },
+      { connectionToken: ParamValue<true>, examId: ParamValue<true> },
+      { connectionToken: ParamValue<false>, examId: ParamValue<false> },
       | never
     >,
     '/(app)/navigation-overview/': RouteRecordInfo<

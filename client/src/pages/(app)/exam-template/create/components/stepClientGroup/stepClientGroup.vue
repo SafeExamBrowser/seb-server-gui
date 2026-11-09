@@ -6,6 +6,7 @@
         <ClientGroupsTable
             :deps="tableDeps"
             data-testid="exam-template-step5"
+            :heading-level="3"
         />
     </StepItem>
 </template>

@@ -1,11 +1,17 @@
 <template>
-    <div class="text-primary text-title-large">
+    <component :is="`h${level}`" class="text-primary text-title-large">
         {{ name }}
-    </div>
+    </component>
 </template>
 
 <script setup lang="ts">
-defineProps<{
-    name: string;
-}>();
+import type { HeadingLevel } from "@/components/widgets/types";
+
+withDefaults(
+    defineProps<{
+        name: string;
+        level?: HeadingLevel;
+    }>(),
+    { level: 2 },
+);
 </script>

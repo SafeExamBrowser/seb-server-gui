@@ -2,6 +2,8 @@
     <v-card>
         <v-toolbar color="transparent">
             <v-toolbar-title
+                :id="titleId"
+                tag="h2"
                 class="text-title-large"
                 text="Group"
             ></v-toolbar-title>
@@ -223,6 +225,7 @@ import { translate } from "@/utils/generalUtils.ts";
 // props
 const props = defineProps<{
     clientGroup: ClientGroup | null;
+    titleId: string;
 }>();
 
 // i18n

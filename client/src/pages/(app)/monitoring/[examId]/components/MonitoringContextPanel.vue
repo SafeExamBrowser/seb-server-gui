@@ -111,8 +111,13 @@
                     >
                         {{ $t("monitoringOverview.quitAll.button") }}
                     </v-btn>
-                    <v-dialog v-model="quitAllDialog" max-width="800">
+                    <v-dialog
+                        v-model="quitAllDialog"
+                        max-width="800"
+                        :aria-labelledby="quitAllDialogTitleId"
+                    >
                         <QuitAllDialog
+                            :title-id="quitAllDialogTitleId"
                             @close-quit-all-dialog="closeQuitAllDialog"
                         />
                     </v-dialog>
@@ -123,7 +128,7 @@
 </template>
 
 <script setup lang="ts">
-import { computed, onUnmounted, ref } from "vue";
+import { computed, onUnmounted, ref, useId } from "vue";
 import { VAvatar, VBtn, VDialog, VDivider } from "vuetify/components";
 
 import { ExamStatusEnum } from "@/models/seb-server/examFiltersEnum.ts";
@@ -197,6 +202,7 @@ onUnmounted(() => {
 });
 
 const quitAllDialog = ref(false);
+const quitAllDialogTitleId = useId();
 
 function openQuitAllDialog() {
     quitAllDialog.value = true;

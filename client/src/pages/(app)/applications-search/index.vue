@@ -143,9 +143,9 @@
                             icon="mdi-file-document-outline"
                             color="primary"
                         />
-                        <span class="text-subtitle-1 font-weight-bold">
+                        <h2 class="text-subtitle-1 font-weight-bold">
                             {{ $t("applicationsSearch.selectExams") }}
-                        </span>
+                        </h2>
                         <v-chip size="small" variant="tonal">
                             {{ search.examCount }}
                         </v-chip>

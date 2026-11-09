@@ -135,7 +135,7 @@
                 <v-row class="font-weight-bold pt-8 pb-0">
                     <v-col class="text-body-large">
                         <v-row>
-                            <v-col class="font-weight-bold">{{
+                            <v-col tag="h3" class="font-weight-bold">{{
                                 translate(
                                     "sebSettings.updownloadView.filetypes.title",
                                 )
@@ -246,8 +246,10 @@
             v-if="fileTypeTable"
             v-model="fileTypeTable.dialog.value"
             max-width="800"
+            :aria-labelledby="fileTypeDialogTitleId"
         >
             <EditFileDownloadRule
+                :title-id="fileTypeDialogTitleId"
                 :read-only="context.readonly"
                 :file-type="fileTypeTable.selectedRow.value"
                 @close-file-type-dialog="fileTypeTable.closeDialog"
@@ -258,6 +260,7 @@
 </template>
 
 <script setup lang="ts">
+import { useId } from "vue";
 import { useI18n } from "vue-i18n";
 import {
     VBtn,
@@ -302,6 +305,8 @@ const {
     props.context.containerId,
     ViewType.DOWN_UPLOAD,
 );
+
+const fileTypeDialogTitleId = useId();
 
 const { fileTypeTable, tableHeaders } = useFileTypeTable(
     tableValues,
