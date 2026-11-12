@@ -2,8 +2,12 @@
 
 set -e
 
-# Go to repo root (parent of the github folder)
-cd "$(dirname "$0")/.."
+# LEGACY: see README.md next to this script. Moves the git tag sprint-testing to the
+# current commit, which makes legacy-tag-build.yml rebuild and push
+# sebadmin/seb-server-gui:sprint-testing. Formerly github/deploy-auto-testing.sh.
+
+# Go to repo root (two levels up from .github/legacy)
+cd "$(dirname "$0")/../.."
 
 TAG_NAME="sprint-testing"
 

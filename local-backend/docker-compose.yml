@@ -1,3 +1,8 @@
+# Local backend for GUI development. Not used by CI. See README.md next to this file.
+# The project name is pinned so containers and the database volume started from the
+# old location (repo root) are picked up again instead of clashing with new ones.
+name: seb-server-gui
+
 services:
   mariadb:
     image: "mariadb:10.5"
@@ -9,7 +14,6 @@ services:
       - "3307:3306"
     volumes:
       - seb-server-demo-mariadb:/var/lib/mysql
-      - ./config/mariadb/config.cnf:/etc/mysql/conf.d/config.cnf
     networks:
       - seb-server-network
     restart: unless-stopped
@@ -57,6 +61,8 @@ services:
       - sebserver_webservice_api_admin_accessTokenValiditySeconds=3600
 
     volumes:
+      # The image's start command reads config from this folder, and the image
+      # doesn't contain it. Mounting any folder makes it exist; there is no config in it.
       - .:/sebserver/config/spring
     ports:
       - "8080:8080"
@@ -111,6 +117,7 @@ services:
       - sps_api_admin_accessTokenValiditySeconds=3600
 
     volumes:
+      # Same reason as for seb-server above.
       - .:/sebsps/config/spring
     ports:
       - "8090:8090"
@@ -121,7 +128,7 @@ services:
     restart: unless-stopped
 
   # Uncomment this if you don't want to run the seb-server-gui yourself
-  # You have to run `docker build -t seb-server-gui:local .` for building the image before starting the container
+  # You have to run `docker build -t seb-server-gui:local .` (from the repo root) for building the image before starting the container
   # seb-server-gui:
   #   image: "seb-server-gui:local"
   #   container_name: seb-server-gui
