@@ -2,7 +2,10 @@ name: PR
 
 on:
   pull_request:
-    branches: [main]
+    # client and server are required checks on these branches (rulesets in .github/rulesets/).
+    # main only requires allowed-source. Don't add paths: filters: a skipped required check
+    # stays pending and blocks the merge.
+    branches: [development, "dev-[0-9]*"]
 
 permissions:
   contents: read
@@ -24,7 +27,7 @@ jobs:
         working-directory: client
     steps:
       - uses: actions/checkout@v7.0.1
-      - uses: actions/setup-node@v7.0.0
+      - uses: actions/setup-node@v7.1.0
         with:
           node-version-file: client/.nvmrc
           cache: npm
@@ -44,7 +47,7 @@ jobs:
         working-directory: server
     steps:
       - uses: actions/checkout@v7.0.1
-      - uses: actions/setup-node@v7.0.0
+      - uses: actions/setup-node@v7.1.0
         with:
           node-version-file: client/.nvmrc
           cache: npm

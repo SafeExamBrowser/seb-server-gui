@@ -1,0 +1,36 @@
+name: allowed-source
+
+# Decides which branch may be merged into which. Required check in the release-lines and main
+# rulesets (.github/rulesets/).
+#   into development: anything
+#   into dev-x.y:     anything except development (the trunk never flows into a frozen line)
+#   into main:        only dev-x.y, and only from this repo (a fork's dev-3.0 doesn't count)
+# No branches: filter, so it reports on every PR, including PRs into main.
+# Use pull_request, never pull_request_target: this job needs no token and no secrets.
+
+on:
+  pull_request:
+    types: [opened, reopened, synchronize, edited] # edited = retargeted to another base
+
+permissions: {}
+
+jobs:
+  allowed-source:
+    name: allowed-source # must match the required check in the rulesets
+    runs-on: ubuntu-latest
+    timeout-minutes: 2
+    steps:
+      - name: Check head branch against base branch
+        env:
+          BASE: ${{ github.base_ref }}
+          HEAD: ${{ github.head_ref }}
+          SAME_REPO: ${{ github.event.pull_request.head.repo.full_name == github.repository }}
+        run: |
+          ok=false
+          case "$BASE" in
+            dev-[0-9]*) [[ $HEAD != development ]] && ok=true ;;              # any name, but never the trunk
+            main)       [[ $SAME_REPO == true && $HEAD == dev-[0-9]* ]] && ok=true ;;
+            *)          ok=true ;;                                          # development takes anything
+          esac
+          $ok || { echo "::error::$HEAD may not be merged into $BASE (same repo: $SAME_REPO)"; exit 1; }
+          echo "$HEAD -> $BASE is allowed"
