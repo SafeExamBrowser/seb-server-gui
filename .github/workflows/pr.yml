@@ -2,7 +2,10 @@ name: PR
 
 on:
   pull_request:
-    branches: [main]
+    # client and server are required checks on these branches (rulesets in .github/rulesets/).
+    # main only requires allowed-source. Don't add paths: filters: a skipped required check
+    # stays pending and blocks the merge.
+    branches: [development, "dev-[0-9]*"]
 
 permissions:
   contents: read
