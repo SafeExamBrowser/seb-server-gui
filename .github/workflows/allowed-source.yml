@@ -3,22 +3,26 @@ name: allowed-source
 # Decides which branch may be merged into which. Required check in the release-lines and main
 # rulesets (.github/rulesets/).
 #   into development: anything
-#   into dev-x.y:     anything except development (the trunk never flows into a frozen line)
+#   into dev-x.y:     anything except development (the trunk never flows into a frozen line),
+#                     and no commits from development that dev-x.y doesn't have yet, whatever the
+#                     branch is called (e.g. a fix branch cut from development by mistake)
 #   into main:        only dev-x.y, and only from this repo (a fork's dev-3.0 doesn't count)
 # No branches: filter, so it reports on every PR, including PRs into main.
-# Use pull_request, never pull_request_target: this job needs no token and no secrets.
+# Use pull_request, never pull_request_target: the token stays read-only and there are no
+# secrets, also for PRs from forks.
 
 on:
   pull_request:
     types: [opened, reopened, synchronize, edited] # edited = retargeted to another base
 
-permissions: {}
+permissions:
+  contents: read # the history check reads the git history, nothing else
 
 jobs:
   allowed-source:
     name: allowed-source # must match the required check in the rulesets
     runs-on: ubuntu-latest
-    timeout-minutes: 2
+    timeout-minutes: 5
     steps:
       - name: Check head branch against base branch
         env:
@@ -34,3 +38,34 @@ jobs:
           esac
           $ok || { echo "::error::$HEAD may not be merged into $BASE (same repo: $SAME_REPO)"; exit 1; }
           echo "$HEAD -> $BASE is allowed"
+
+      - uses: actions/checkout@v7.0.1
+        if: startsWith(github.base_ref, 'dev-')
+        with:
+          fetch-depth: 0 # all branches and their history
+          persist-credentials: false
+
+      - name: Check that development's history stays out of the release line
+        if: startsWith(github.base_ref, 'dev-')
+        env:
+          BASE: ${{ github.base_ref }}
+          HEAD_SHA: ${{ github.event.pull_request.head.sha }}
+        run: |
+          case "$BASE" in
+            dev-[0-9]*) ;;
+            *) echo "$BASE is not a release line, nothing to check"; exit 0 ;;
+          esac
+          # development's own line (its first-parent history: PR merge and squash commits) that the
+          # release line doesn't have yet. A branch cut from development, or one that merged
+          # development in, contains some of it. A fix branch cut from dev-x.y doesn't, even if it
+          # was also merged into development.
+          trunk=$(git rev-list --first-parent origin/development "^origin/$BASE" | sort)
+          pr=$(git rev-list "$HEAD_SHA" "^origin/$BASE" | sort)
+          bad=$(comm -12 <(echo "$trunk") <(echo "$pr"))
+          if [[ -n $bad ]]; then
+            n=$(wc -l <<<"$bad" | tr -d ' ')
+            echo "::error::This PR contains $n commit(s) from development that $BASE doesn't have. Cut the branch from $BASE instead, or cherry-pick the fix."
+            git log --oneline --no-decorate --no-walk $(head -20 <<<"$bad")
+            exit 1
+          fi
+          echo "No commits from development that $BASE doesn't have"
