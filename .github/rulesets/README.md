@@ -13,7 +13,7 @@ gh api -X POST repos/$R/rulesets      --input .github/rulesets/<file>.json # cre
 | File                 | Branches                      | Required checks                      | Merge methods        |
 | -------------------- | ----------------------------- | ------------------------------------ | -------------------- |
 | `development.json`   | `development`                 | `client`, `server`                   | squash, merge commit |
-| `release-lines.json` | `dev-[0-9]*` (e.g. `dev-3.0`) | `client`, `server`, `allowed-source` | squash               |
+| `release-lines.json` | `dev-[0-9]*` (e.g. `dev-3.0`) | `client`, `server`, `allowed-source` | squash, merge commit |
 | `main.json`          | `main`                        | `allowed-source`                     | merge commit         |
 
 All three: PR required, no force push, no deletion, conversations resolved, empty bypass list.
@@ -29,8 +29,13 @@ Why some settings are the way they are:
 - **`dev-[0-9]*`, never `dev-*`**: `dev-*` would also match a branch called `dev-e2e-tests`.
 - **`do_not_enforce_on_create: true`** on release lines, so a new `dev-3.1` can be pushed
   before any check has run on it.
-- **The release-lines deletion rule** also protects `dev-3.0` when a `dev-3.0` → `main` PR is
-  merged ("Automatically delete head branches" is on).
+- **The release-lines deletion rule** keeps `dev-3.0` alive when a `dev-3.0` → `development`
+  back-merge or a `dev-3.0` → `main` release PR is merged ("Automatically delete head branches"
+  is on, and rulesets prevent it). With an empty bypass list, even admins can't delete a
+  `dev-x.y` branch without editing the ruleset first.
+- **Back-merges and releases must be merge commits, never squash.** A squash loses the link to
+  `dev-3.0`, and the next back-merge hits the same conflicts again. `main` only allows merge
+  commits; on `development` and `dev-x.y`, pick "Create a merge commit" for those PRs.
 - Status checks from GitHub Actions need `"integration_id": 15368`. The check names are the
   job names in `.github/workflows/pr.yml` and `allowed-source.yml`.
 - **Never enable "Require review from Code Owners"**: `.github/CODEOWNERS` only has placeholder

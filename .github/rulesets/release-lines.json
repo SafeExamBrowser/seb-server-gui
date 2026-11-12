@@ -23,7 +23,7 @@
         "require_extra_approval_for_unattributed_changes": true,
         "required_reviewers": [],
         "dismissal_restriction": { "enabled": false, "allowed_actors": [] },
-        "allowed_merge_methods": ["squash"]
+        "allowed_merge_methods": ["squash", "merge"]
       }
     },
     {
