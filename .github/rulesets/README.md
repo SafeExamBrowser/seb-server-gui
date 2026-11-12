@@ -36,6 +36,11 @@ Why some settings are the way they are:
 - **Back-merges and releases must be merge commits, never squash.** A squash loses the link to
   `dev-3.0`, and the next back-merge hits the same conflicts again. `main` only allows merge
   commits; on `development` and `dev-x.y`, pick "Create a merge commit" for those PRs.
+- **Check results belong to the commit, not the PR.** The newest result for a check name on a
+  commit counts for every PR with that head commit. `allowed-source` handles this itself: every
+  run checks all open PRs on the commit and fails if any of them isn't allowed (close that PR,
+  then re-run the check). `client` and `server` don't: if one branch is open as a PR into both
+  `development` and `dev-3.0`, the newest `client`/`server` run counts for both PRs.
 - Status checks from GitHub Actions need `"integration_id": 15368`. The check names are the
   job names in `.github/workflows/pr.yml` and `allowed-source.yml`.
 - **Never enable "Require review from Code Owners"**: `.github/CODEOWNERS` only has placeholder
