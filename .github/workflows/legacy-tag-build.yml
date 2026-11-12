@@ -1,4 +1,9 @@
-name: Build and Push to Docker Hub
+# LEGACY: the old tag-driven release path. See .github/legacy/README.md.
+# Pushing any git tag rebuilds the image from source and pushes it to Docker Hub
+# as sebadmin/seb-server-gui:<tag> (e.g. sprint-testing, v3.0-latest, v3.0.1).
+# Kept unchanged until the new pipeline (build.yml / release.yml) is complete,
+# then deleted. Formerly docker-build-push.yml.
+name: "Legacy · any tag → Docker Hub"
 
 on:
   workflow_dispatch:
