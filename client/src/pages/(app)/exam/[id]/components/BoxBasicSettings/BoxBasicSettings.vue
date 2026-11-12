@@ -47,6 +47,7 @@ const emit = defineEmits<{
 const { items, consecutiveExamNames, loading, errors } = useBasicSettingsItems(
     examId,
     computed(() => basicSettings),
+    computed(() => examWithURL),
 );
 
 const handleChange = (value: BasicSettings) => emit("change", value);
