@@ -10,11 +10,11 @@ gh api -X PUT  repos/$R/rulesets/<id> --input .github/rulesets/<file>.json # upd
 gh api -X POST repos/$R/rulesets      --input .github/rulesets/<file>.json # create
 ```
 
-| File                 | Branches                      | Required checks                      | Merge methods        |
-| -------------------- | ----------------------------- | ------------------------------------ | -------------------- |
-| `development.json`   | `development`                 | `client`, `server`                   | squash, merge commit |
-| `release-lines.json` | `dev-[0-9]*` (e.g. `dev-3.0`) | `client`, `server`, `allowed-source` | squash, merge commit |
-| `main.json`          | `main`                        | `allowed-source`                     | merge commit         |
+| File                 | Branches                      | Required checks                             | Merge methods        |
+| -------------------- | ----------------------------- | ------------------------------------------- | -------------------- |
+| `development.json`   | `development`                 | `client`, `server`, `e2e`                   | squash, merge commit |
+| `release-lines.json` | `dev-[0-9]*` (e.g. `dev-3.0`) | `client`, `server`, `e2e`, `allowed-source` | squash, merge commit |
+| `main.json`          | `main`                        | `allowed-source`                            | merge commit         |
 
 All three: PR required, no force push, no deletion, conversations resolved, empty bypass list.
 
@@ -39,8 +39,8 @@ Why some settings are the way they are:
 - **Check results belong to the commit, not the PR.** The newest result for a check name on a
   commit counts for every PR with that head commit. `allowed-source` handles this itself: every
   run checks all open PRs on the commit and fails if any of them isn't allowed (close that PR,
-  then re-run the check). `client` and `server` don't: if one branch is open as a PR into both
-  `development` and `dev-3.0`, the newest `client`/`server` run counts for both PRs.
+  then re-run the check). `client`, `server` and `e2e` don't: if one branch is open as a PR into
+  both `development` and `dev-3.0`, the newest run of each counts for both PRs.
 - Status checks from GitHub Actions need `"integration_id": 15368`. The check names are the
   job names in `.github/workflows/pr.yml` and `allowed-source.yml`.
 - **Never enable "Require review from Code Owners"**: `.github/CODEOWNERS` only has placeholder
