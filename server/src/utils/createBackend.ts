@@ -1,6 +1,7 @@
-import { createProxyServer } from "http-proxy-3";
-import { logError, logRequest } from "./logger.js";
 import type { Request, Response } from "express";
+import { createProxyServer } from "http-proxy-3";
+
+import { logError, logRequest } from "./logger.js";
 
 const prepareProxyRequest = ({
   req,
@@ -55,7 +56,9 @@ export const createBackend = ({
   });
 
   proxy.on("error", (err, req, res) => {
-    logError(`${req.method ?? "?"} ${baseUrl}${req.url ?? "/"} → ${err.message || err.name}`);
+    logError(
+      `${req.method ?? "?"} ${baseUrl}${req.url ?? "/"} → ${err.message || err.name}`,
+    );
     if ("writeHead" in res && !res.headersSent) {
       res.writeHead(502);
     }
