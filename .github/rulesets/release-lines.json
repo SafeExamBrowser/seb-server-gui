@@ -34,6 +34,7 @@
         "required_status_checks": [
           { "context": "client", "integration_id": 15368 },
           { "context": "server", "integration_id": 15368 },
+          { "context": "e2e", "integration_id": 15368 },
           { "context": "allowed-source", "integration_id": 15368 }
         ]
       }
