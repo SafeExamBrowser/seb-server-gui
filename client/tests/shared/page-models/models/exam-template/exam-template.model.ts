@@ -1,8 +1,10 @@
 import { expect, type Locator, type Page } from "@playwright/test";
+
 import en from "@/i18n/locales/en.json" with { type: "json" };
 
 import { BasicPageModel } from "../../generic-models/basic-page.model.ts";
 import { ErrorStateModel } from "../../widgets/error-state.model.ts";
+import type { ExamTemplateNamingInput } from "./exam-template-create.model.ts";
 
 const ROUTE = "/exam-template/:id";
 const PREFIX = "examTemplateDetail";
@@ -58,6 +60,37 @@ export class ExamTemplateModel extends BasicPageModel {
                 name: enabled ? en.general.true : en.general.false,
             }),
         ).toBeVisible();
+    }
+
+    async expectBasicSettings(expected: ExamTemplateNamingInput) {
+        await this.expectBasicSettingText(
+            en.examTemplate.fields.name.label,
+            expected.name,
+        );
+        await this.expectBasicSettingText(
+            en.examTemplate.fields.description.label,
+            expected.description,
+        );
+        await this.expectBasicSettingText(
+            en.examTemplate.fields.examType.label,
+            expected.examType,
+        );
+        await this.expectBasicSettingText(
+            en.examTemplate.fields.clientConfiguration.label,
+            expected.clientConfiguration,
+        );
+        await this.expectBasicSettingFlag(
+            en.examTemplate.fields.lmsIntegration.label,
+            expected.lmsIntegration,
+        );
+        await this.expectBasicSettingFlag(
+            en.examTemplate.fields.institutionalDefault.label,
+            expected.institutionalDefault,
+        );
+        await this.expectBasicSettingFlag(
+            en.screenProctoring.enabled.label,
+            expected.screenProctoringEnabled,
+        );
     }
 
     async expectSEBSettingsLastModified(value: string) {

@@ -8,12 +8,15 @@ const EXAM_TEMPLATE_NAME = "NadimTest5";
 const examTemplateCreateNamingValid1 = {
     name: EXAM_TEMPLATE_NAME,
     description: "test",
-    examType: "BYOD",
+    examType: en.BYOD,
     clientConfiguration: CLIENT_CONFIGURATIONS[0].name,
     lmsIntegration: true,
     institutionalDefault: true,
     screenProctoringEnabled: true,
 };
+
+const supervisor1 = { username: "jdoe", fullName: "Doe John" };
+const supervisor2 = { username: "msmith", fullName: "Smith Maria" };
 
 const EXAM_TEMPLATE_NAME_2 = "NadimTest6";
 
@@ -75,8 +78,10 @@ test.describe("11 Exam Template - Create", () => {
         await examTemplateCreate.expectStepVisible(3);
         await examTemplateCreate.expectStepperNextButtonVisible();
 
-        await examTemplateCreate.expectSupervisorRowVisible("jdoe");
-        await examTemplateCreate.selectSupervisorRow("jdoe");
+        await examTemplateCreate.expectSupervisorRowVisible(
+            supervisor1.username,
+        );
+        await examTemplateCreate.selectSupervisorRow(supervisor1.username);
 
         await examTemplateCreate.goToNextStep();
 
@@ -100,6 +105,30 @@ test.describe("11 Exam Template - Create", () => {
 
         //successful creation
         await examTemplate.expectExamTemplateTitleVisible(EXAM_TEMPLATE_NAME);
+
+        await test.step("detail page shows what was created", async () => {
+            //reload, so the page shows what the backend stored and not what is left in the wizard state
+            await examTemplate.page.reload();
+            await examTemplate.expectExamTemplateTitleVisible(
+                EXAM_TEMPLATE_NAME,
+            );
+
+            await examTemplate.expectBasicSettings(
+                examTemplateCreateNamingValid1,
+            );
+
+            await examTemplate.expectSupervisorRowVisible(
+                supervisor1.username,
+                supervisor1.fullName,
+            );
+
+            //no groups were added, screen proctoring adds its fallback group as the only row
+            await examTemplate.expectClientGroupRowVisible(
+                en.clientGroups.fields.type.types.SCREEN_PROCTORING_FALLBACK,
+                en.clientGroups.fields.type.types.SCREEN_PROCTORING_FALLBACK,
+            );
+            await examTemplate.expectClientGroupRowCount(1);
+        });
     });
 
     test("B create exam template with indicators, groups and seb settings", async ({
@@ -137,8 +166,10 @@ test.describe("11 Exam Template - Create", () => {
         await examTemplateCreate.expectStepVisible(3);
         await examTemplateCreate.expectStepperNextButtonVisible();
 
-        await examTemplateCreate.expectSupervisorRowVisible("msmith");
-        await examTemplateCreate.selectSupervisorRow("msmith");
+        await examTemplateCreate.expectSupervisorRowVisible(
+            supervisor2.username,
+        );
+        await examTemplateCreate.selectSupervisorRow(supervisor2.username);
 
         await examTemplateCreate.goToNextStep();
 
@@ -186,5 +217,40 @@ test.describe("11 Exam Template - Create", () => {
 
         //successful creation
         await examTemplate.expectExamTemplateTitleVisible(EXAM_TEMPLATE_NAME_2);
+
+        await test.step("detail page shows what was created", async () => {
+            //reload, so the page shows what the backend stored and not what is left in the wizard state
+            await examTemplate.page.reload();
+            await examTemplate.expectExamTemplateTitleVisible(
+                EXAM_TEMPLATE_NAME_2,
+            );
+
+            await examTemplate.expectBasicSettings(
+                examTemplateCreateNamingValid2,
+            );
+            await examTemplate.expectSupervisorRowVisible(
+                supervisor2.username,
+                supervisor2.fullName,
+            );
+
+            //indicators were added without thresholds
+            for (const indicator of indicators) {
+                await examTemplate.expectIndicatorRowVisible(
+                    indicator.name,
+                    indicator.type,
+                    [],
+                );
+            }
+
+            await examTemplate.expectClientGroupRowVisible(
+                ipRangeGroup.name,
+                en.clientGroups.fields.type.types.IP_V4_RANGE,
+            );
+            await examTemplate.expectClientGroupRowVisible(
+                clientOSGroup.name,
+                en.clientGroups.fields.type.types.CLIENT_OS,
+            );
+            await examTemplate.expectClientGroupRowCount(2);
+        });
     });
 });
