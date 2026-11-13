@@ -1,6 +1,7 @@
 <template>
     <v-empty-state
         class="fill-height"
+        :data-testid="ERROR_STATE_TEST_ID"
         :icon="icon"
         :headline="headline"
         :title="message"
@@ -25,6 +26,7 @@
 <script setup lang="ts">
 import { VBtn, VEmptyState } from "vuetify/components";
 
+import { ERROR_STATE_TEST_ID } from "./errorStateContracts.ts";
 import type { ErrorStateBackLink } from "./types.ts";
 
 defineProps<{
