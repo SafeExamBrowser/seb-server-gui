@@ -4,6 +4,7 @@ import {
     CLIENT_CONFIGURATIONS,
     CREATED_CONFIGURATION_TEMPLATE,
     CREATED_CONFIGURATION_TEMPLATE_SETTINGS,
+    CREATED_EXAM_ID,
     CREATED_EXAM_TEMPLATE_ID,
     EXAM_TEMPLATE_1,
     EXAM_TEMPLATE_1_CLIENT_CONFIGURATION,
@@ -15,6 +16,7 @@ import {
     GUI_ABILITIES,
     INSTITUTION_NAMES,
     INSTITUTIONS,
+    LMS_QUIZZES,
     LMS_SETUPS,
     MOCK_CURRENT_USER,
     MOCK_PASSWORD,
@@ -32,7 +34,7 @@ import {
 // non-matching methods drop through to the routes below.
 
 // Re-exported so existing spec imports keep working.
-export { MOCK_CURRENT_USER,MOCK_PASSWORD, MOCK_USERNAME };
+export { MOCK_CURRENT_USER, MOCK_PASSWORD, MOCK_USERNAME };
 
 type Row = Record<string, unknown>;
 
@@ -311,6 +313,21 @@ export async function installMockBackend(page: Page, browser: string) {
         }),
     );
 
+    // --- exams of an assessment tool (exam create wizard: "select exam") -------
+    await page.route(
+        /\/api\/admin-api\/v1\/quiz(?:$|\?)/,
+        getOnly((route, url) => {
+            const params = url.searchParams;
+            const quizzes = LMS_QUIZZES.filter(
+                (quiz) =>
+                    quiz.lms_setup_id === Number(params.get("lms_setup")) &&
+                    textContains(quiz, "quiz_name", params.get("name")),
+            );
+            // pagedEnvelope answers complete: true, which ends the wizard's polling right away
+            return json(route, pagedEnvelope(quizzes, url, []));
+        }),
+    );
+
     // --- connection configurations (client_configuration) ----------------------
     await page.route(
         /\/api\/admin-api\/v1\/client_configuration(?:$|\?)/,
@@ -484,11 +501,86 @@ export async function installMockBackend(page: Page, browser: string) {
     );
 
     // --- exams (06-exam and 09-archive both read the plain /exam collection) ---
+    // the exam imported by the create wizard, so the list and its detail page show what was imported
+    let createdExam: Row | undefined;
+
+    await page.route(/\/api\/exam(?:$|\?)/, (route) => {
+        const request = route.request();
+
+        if (request.method() === "GET") {
+            const exams = createdExam ? [...EXAMS, createdExam] : EXAMS;
+            return json(
+                route,
+                pagedSpecificEnvelope(exams, new URL(request.url()), "exam"),
+            );
+        }
+        if (request.method() !== "POST") {
+            return route.fallback();
+        }
+
+        // the import is posted form-urlencoded (apiService.postRequest)
+        const body = new URLSearchParams(request.postData() ?? "");
+        const quiz = LMS_QUIZZES.find(
+            (candidate) => candidate.quiz_id === body.get("quiz_id"),
+        );
+        if (!quiz) {
+            return json(
+                route,
+                [
+                    {
+                        messageCode: "1002",
+                        systemMessage: "quiz not found (mock)",
+                    },
+                ],
+                400,
+            );
+        }
+
+        // like the real backend: name, times and urls come from the assessment tool,
+        // the rest from what the wizard sent
+        createdExam = {
+            id: CREATED_EXAM_ID,
+            institutionId: quiz.institutionId,
+            lmsSetupId: quiz.lms_setup_id,
+            externalId: quiz.quiz_id,
+            lmsAvailable: true,
+            quizName: quiz.quiz_name,
+            quiz_description: quiz.quiz_description,
+            quiz_start_url: quiz.quiz_start_url,
+            quizStartTime: quiz.quiz_start_time,
+            quizEndTime: quiz.quiz_end_time,
+            type: body.get("type"),
+            examTemplateId: Number(body.get("examTemplateId")),
+            quitPassword: body.get("quitPassword") ?? undefined,
+            supporter: [
+                ...body.getAll("supporter"),
+                ...body.getAll("supporter[]"),
+            ],
+            owner: MOCK_CURRENT_USER.uuid,
+            status: "UP_COMING",
+            active: true,
+            lmsSebRestriction: false,
+            lastModified: Date.now(),
+            additionalAttributes: {},
+            followupId: null,
+            excludeFromDeletion: false,
+        };
+        return json(route, createdExam);
+    });
+
     await page.route(
-        /\/api\/exam(?:$|\?)/,
-        getOnly((route, url) =>
-            json(route, pagedSpecificEnvelope(EXAMS, url, "exam")),
-        ),
+        /\/api\/exam\/(\d+)(?:$|\?)/,
+        getOnly((route, url) => {
+            const id = Number(url.pathname.split("/").pop());
+            if (createdExam && id === CREATED_EXAM_ID) {
+                return json(route, createdExam);
+            }
+            const exam = EXAMS.find((candidate) => candidate.id === id);
+            if (!exam) {
+                return json(route, {}, 404);
+            }
+            return json(route, exam);
+        }),
     );
 
     // --- monitoring (07-monitoring) ---------------------------------------------

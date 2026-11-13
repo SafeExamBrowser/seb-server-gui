@@ -128,6 +128,46 @@ export const LMS_SETUPS = [true, false, false, false, false, true].map(
     }),
 );
 
+// The exams ("quizzes" in the api) the mocked assessment tools offer for import, i.e. what the
+// exam create wizard lists after an assessment tool was selected. /admin-api/v1/quiz answers in
+// snake_case (QuizData). Fixed dates in the future, so they can always be imported as upcoming exams.
+// Only the active tools (9101, 9106) are offered by the wizard, so the quizzes hang off those.
+export const LMS_QUIZZES = [
+    {
+        tool: LMS_SETUPS[0],
+        name: "e2e-lms-quiz-01 Algorithms Final",
+        day: "2030-06-01",
+    },
+    {
+        tool: LMS_SETUPS[0],
+        name: "e2e-lms-quiz-02 Linear Algebra Midterm",
+        day: "2030-06-02",
+    },
+    {
+        tool: LMS_SETUPS[0],
+        name: "e2e-lms-quiz-03 Physics Lab Test",
+        day: "2030-06-03",
+    },
+    {
+        tool: LMS_SETUPS[5],
+        name: "e2e-lms-quiz-04 Statistics Final",
+        day: "2030-06-04",
+    },
+].map(({ tool, name, day }, index) => ({
+    quiz_id: `e2e-quiz-${index + 1}`,
+    institutionId: tool.institutionId,
+    lms_setup_id: tool.id,
+    lms_setup_type: tool.lmsType,
+    quiz_name: name,
+    quiz_description: `${name} (from ${tool.name})`,
+    quiz_start_time: `${day}T08:00:00.000Z`,
+    quiz_end_time: `${day}T10:00:00.000Z`,
+    quiz_start_url: `${tool.lmsUrl}/mod/quiz/view.php?id=${index + 1}`,
+}));
+
+// the id the mock assigns to the exam imported by the exam create wizard
+export const CREATED_EXAM_ID = 9501;
+
 // Mirrors the V230 connection-configuration seed rows (ids 9001-9006).
 export const CLIENT_CONFIGURATIONS = [true, false, true, true, true, true].map(
     (active, index) => ({

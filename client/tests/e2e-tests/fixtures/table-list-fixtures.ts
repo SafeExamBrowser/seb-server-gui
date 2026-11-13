@@ -12,6 +12,8 @@ import { CertificatesListModel } from "../../shared/page-models/models/certifica
 import { ConnectionConfigurationCreateModel } from "../../shared/page-models/models/connection-configuration/connection-configuration-create.model.ts";
 import { ConnectionConfigurationEditModel } from "../../shared/page-models/models/connection-configuration/connection-configuration-edit.model.ts";
 import { ConnectionConfigurationsListModel } from "../../shared/page-models/models/connection-configuration/connection-configurations-list.model.ts";
+import { ExamModel } from "../../shared/page-models/models/exam/exam.model.ts";
+import { ExamCreateModel } from "../../shared/page-models/models/exam/exam-create.model.ts";
 import { ExamsListModel } from "../../shared/page-models/models/exam/exams-list.model.ts";
 import { ExamTemplateModel } from "../../shared/page-models/models/exam-template/exam-template.model.ts";
 import { ExamTemplateCreateModel } from "../../shared/page-models/models/exam-template/exam-template-create.model.ts";
@@ -42,6 +44,8 @@ type Fixtures = {
     assessmentToolCreate: AssessmentToolCreateModel;
     assessmentToolEdit: AssessmentToolEditModel;
     exams: ExamsListModel;
+    examCreate: ExamCreateModel;
+    exam: ExamModel;
     monitoringExams: MonitoringListModel;
     analyzeExams: AnalyzeListModel;
     archiveExams: ArchiveListModel;
@@ -116,6 +120,12 @@ export const test = base.extend<Fixtures>({
     },
     exams: async ({ page }, use) => {
         await use(new ExamsListModel(page));
+    },
+    examCreate: async ({ page }, use) => {
+        await use(new ExamCreateModel(page));
+    },
+    exam: async ({ page }, use) => {
+        await use(new ExamModel(page));
     },
     monitoringExams: async ({ page }, use) => {
         await use(new MonitoringListModel(page));
