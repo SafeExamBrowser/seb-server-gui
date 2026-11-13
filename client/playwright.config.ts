@@ -54,5 +54,9 @@ export default defineConfig({
     },
 
     // Chromium only, locally and in CI.
-    projects: [{ name: "chromium", use: { ...devices["Desktop Chrome"] } }],
+    projects: [
+        { name: "chromium", use: { ...devices["Desktop Chrome"] }},
+        { name: "setup", testMatch: /auth\.setup\.ts/ },
+    ]
+    ,
 });

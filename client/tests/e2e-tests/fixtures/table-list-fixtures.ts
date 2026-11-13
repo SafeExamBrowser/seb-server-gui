@@ -1,5 +1,6 @@
 import { test as base } from "@playwright/test";
 
+import { SERVER_ADMIN_STORAGE_STATE } from "../../config/auth.ts";
 import { NotFoundPageModel } from "../../shared/page-models/layout/not-found-page.model.ts";
 import { ProfileMenuModel } from "../../shared/page-models/layout/profile-menu.model.ts";
 import { AnalyzeListModel } from "../../shared/page-models/models/analyze/analyze-list.model.ts";
@@ -22,9 +23,6 @@ import { UserAccountEditModel } from "../../shared/page-models/models/user-accou
 import { UserAccountProfileModel } from "../../shared/page-models/models/user-account/user-account-profile.model.ts";
 import { UserAccountRegisterModel } from "../../shared/page-models/models/user-account/user-account-register.model.ts";
 import { UserAccountsListModel } from "../../shared/page-models/models/user-account/user-accounts-list.model.ts";
-import {
-    loginAsServerAdmin,
-} from "../../utils/authenticate.ts";
 import { installMockBackend } from "../mocks/mock-backend.ts";
 
 type Fixtures = {
@@ -51,119 +49,90 @@ type Fixtures = {
     examTemplates: ExamTemplateListModel;
     examTemplate: ExamTemplateModel;
     examTemplateCreate: ExamTemplateCreateModel;
+
+    // installed for every test, so the app never reaches a real backend
+    mockBackend: undefined;
 };
 
 export const test = base.extend<Fixtures>({
-    userAccounts: async ({ page }, use, testInfo) => {
-        await installMockBackend(page, testInfo.project.name);
-        await loginAsServerAdmin(page);
-        await use(new UserAccountsListModel(page));
-    },
-    userAccountCreate: async ({ page }, use, testInfo) => {
-        await installMockBackend(page, testInfo.project.name);
-        await loginAsServerAdmin(page);
-        await use(new UserAccountCreateModel(page));
-    },
-    userAccountEdit: async ({ page }, use, testInfo) => {
-        await installMockBackend(page, testInfo.project.name);
-        await loginAsServerAdmin(page);
-        await use(new UserAccountEditModel(page));
-    },
-    userAccountRegister: async ({ page }, use, testInfo) => {
-        // Register is a public page; it must work without authentication.
-        await installMockBackend(page, testInfo.project.name);
+    // every test starts logged in as server admin (see tests/config/auth.setup.ts);
+    // specs that need a logged-out visitor override this with LOGGED_OUT_STORAGE_STATE
+    storageState: SERVER_ADMIN_STORAGE_STATE,
+
+    mockBackend: [
+        async ({ page }, use, testInfo) => {
+            await installMockBackend(page, testInfo.project.name);
+            await use(undefined);
+        },
+        { auto: true },
+    ],
+
+    // Register is a public page; its spec runs logged out (LOGGED_OUT_STORAGE_STATE).
+    userAccountRegister: async ({ page }, use) => {
         await use(new UserAccountRegisterModel(page));
     },
-    userAccountProfile: async ({ page }, use, testInfo) => {
-        await installMockBackend(page, testInfo.project.name);
-        await loginAsServerAdmin(page);
+
+    userAccounts: async ({ page }, use) => {
+        await use(new UserAccountsListModel(page));
+    },
+    userAccountCreate: async ({ page }, use) => {
+        await use(new UserAccountCreateModel(page));
+    },
+    userAccountEdit: async ({ page }, use) => {
+        await use(new UserAccountEditModel(page));
+    },
+    userAccountProfile: async ({ page }, use) => {
         await use(new UserAccountProfileModel(page));
     },
-    profileMenu: async ({ page }, use, testInfo) => {
-        await installMockBackend(page, testInfo.project.name);
-        await loginAsServerAdmin(page);
+    profileMenu: async ({ page }, use) => {
         await use(new ProfileMenuModel(page));
     },
-    notFoundPage: async ({ page }, use, testInfo) => {
-        await installMockBackend(page, testInfo.project.name);
-        await loginAsServerAdmin(page);
+    notFoundPage: async ({ page }, use) => {
         await use(new NotFoundPageModel(page));
     },
-    institutions: async ({ page }, use, testInfo) => {
-        await installMockBackend(page, testInfo.project.name);
-        await loginAsServerAdmin(page);
+    institutions: async ({ page }, use) => {
         await use(new InstitutionsListModel(page));
     },
-    connectionConfigurations: async ({ page }, use, testInfo) => {
-        await installMockBackend(page, testInfo.project.name);
-        await loginAsServerAdmin(page);
+    connectionConfigurations: async ({ page }, use) => {
         await use(new ConnectionConfigurationsListModel(page));
     },
-    connectionConfigurationCreate: async ({ page }, use, testInfo) => {
-        await installMockBackend(page, testInfo.project.name);
-        await loginAsServerAdmin(page);
+    connectionConfigurationCreate: async ({ page }, use) => {
         await use(new ConnectionConfigurationCreateModel(page));
     },
-    connectionConfigurationEdit: async ({ page }, use, testInfo) => {
-        await installMockBackend(page, testInfo.project.name);
-        await loginAsServerAdmin(page);
+    connectionConfigurationEdit: async ({ page }, use) => {
         await use(new ConnectionConfigurationEditModel(page));
     },
-    certificates: async ({ page }, use, testInfo) => {
-        await installMockBackend(page, testInfo.project.name);
-        await loginAsServerAdmin(page);
+    certificates: async ({ page }, use) => {
         await use(new CertificatesListModel(page));
     },
-    assessmentTools: async ({ page }, use, testInfo) => {
-        await installMockBackend(page, testInfo.project.name);
-        await loginAsServerAdmin(page);
+    assessmentTools: async ({ page }, use) => {
         await use(new AssessmentToolsListModel(page));
     },
-    assessmentToolCreate: async ({ page }, use, testInfo) => {
-        await installMockBackend(page, testInfo.project.name);
-        await loginAsServerAdmin(page);
+    assessmentToolCreate: async ({ page }, use) => {
         await use(new AssessmentToolCreateModel(page));
     },
-    assessmentToolEdit: async ({ page }, use, testInfo) => {
-        await installMockBackend(page, testInfo.project.name);
-        await loginAsServerAdmin(page);
+    assessmentToolEdit: async ({ page }, use) => {
         await use(new AssessmentToolEditModel(page));
     },
-    exams: async ({ page }, use, testInfo) => {
-        await installMockBackend(page, testInfo.project.name);
-        await loginAsServerAdmin(page);
+    exams: async ({ page }, use) => {
         await use(new ExamsListModel(page));
     },
-    monitoringExams: async ({ page }, use, testInfo) => {
-        await installMockBackend(page, testInfo.project.name);
-        await loginAsServerAdmin(page);
+    monitoringExams: async ({ page }, use) => {
         await use(new MonitoringListModel(page));
     },
-    analyzeExams: async ({ page }, use, testInfo) => {
-        await installMockBackend(page, testInfo.project.name);
-        await loginAsServerAdmin(page);
+    analyzeExams: async ({ page }, use) => {
         await use(new AnalyzeListModel(page));
     },
-    archiveExams: async ({ page }, use, testInfo) => {
-        await installMockBackend(page, testInfo.project.name);
-        await loginAsServerAdmin(page);
+    archiveExams: async ({ page }, use) => {
         await use(new ArchiveListModel(page));
     },
-
-    examTemplates: async ({ page }, use, testInfo) => {
-        await installMockBackend(page, testInfo.project.name);
-        await loginAsServerAdmin(page);
+    examTemplates: async ({ page }, use) => {
         await use(new ExamTemplateListModel(page));
     },
-
-    examTemplateCreate: async ({ page }, use, testInfo) => {
-        await installMockBackend(page, testInfo.project.name);
-        await loginAsServerAdmin(page);
+    examTemplateCreate: async ({ page }, use) => {
         await use(new ExamTemplateCreateModel(page));
     },
-
     examTemplate: async ({ page }, use) => {
-        // await loginAsTestAdmin(page);
         await use(new ExamTemplateModel(page));
     },
 });

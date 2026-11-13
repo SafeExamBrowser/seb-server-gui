@@ -1,19 +1,22 @@
-import { expect, test } from "../fixtures/table-list-fixtures";
-import { installMockBackend } from "../mocks/mock-backend";
+import { LOGGED_OUT_STORAGE_STATE } from "../../config/auth.ts";
 import { LoginPageModel } from "../../shared/page-models/models/user-account/login-page.model.ts";
 import { expectToHaveUrl } from "../../utils/helpers";
+import { expect, test } from "../fixtures/table-list-fixtures";
 
 const unknownPath = "/this-route-does-not-exist";
 
 test.describe("10 Layout - NOT FOUND PAGE", () => {
-    test("A logged-out visitors are redirected to the login page", async ({
-        page,
-    }, testInfo) => {
-        await installMockBackend(page, testInfo.project.name);
-        await page.goto(unknownPath);
+    test.describe("logged out", () => {
+        test.use({ storageState: LOGGED_OUT_STORAGE_STATE });
 
-        await new LoginPageModel(page).expectVisible();
-        await expectToHaveUrl(page, "login");
+        test("A logged-out visitors are redirected to the login page", async ({
+            page,
+        }) => {
+            await page.goto(unknownPath);
+
+            await new LoginPageModel(page).expectVisible();
+            await expectToHaveUrl(page, "login");
+        });
     });
 
     test("B logged-in users see the 404 page inside the app layout", async ({

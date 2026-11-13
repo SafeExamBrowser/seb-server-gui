@@ -2,12 +2,13 @@ import type { Page } from "@playwright/test";
 
 import { USER_ACCOUNT_FIELD } from "@/pages/(app)/user-account/userAccountFormConfig.ts";
 
-import { expect, test } from "../fixtures/table-list-fixtures";
-import { expectNoRequest, waitForRequest } from "../../utils/networkAssertions";
+import { LOGGED_OUT_STORAGE_STATE } from "../../config/auth.ts";
 import {
     INSTITUTION_INFO_REQUEST,
     REGISTER_REQUEST,
 } from "../../shared/page-models/models/user-account/user-account-register.model.ts";
+import { expectNoRequest, waitForRequest } from "../../utils/networkAssertions";
+import { expect, test } from "../fixtures/table-list-fixtures";
 
 const input = {
     username: "e2e-register-account",
@@ -44,7 +45,7 @@ async function mockInstitutions(page: Page) {
 }
 
 test.describe("01 User Accounts - REGISTER", () => {
-    test.use({ timezoneId: "UTC" });
+    test.use({ timezoneId: "UTC", storageState: LOGGED_OUT_STORAGE_STATE });
 
     test("A builds the register request from the form fields and shows success", async ({
         userAccountRegister,

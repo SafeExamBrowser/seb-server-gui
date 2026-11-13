@@ -1,8 +1,16 @@
 import type { Page, Route } from "@playwright/test";
+
 import {
     CLIENT_CONFIGURATIONS,
-    EXAMS,
+    CREATED_CONFIGURATION_TEMPLATE,
+    CREATED_CONFIGURATION_TEMPLATE_SETTINGS,
+    CREATED_EXAM_TEMPLATE_ID,
+    EXAM_TEMPLATE_1,
+    EXAM_TEMPLATE_1_CLIENT_CONFIGURATION,
+    EXAM_TEMPLATE_1_CONFIGURATION_NODE,
+    EXAM_TEMPLATE_NAMES,
     EXAM_TEMPLATES,
+    EXAMS,
     FINISHED_EXAMS,
     GUI_ABILITIES,
     INSTITUTION_NAMES,
@@ -11,6 +19,7 @@ import {
     MOCK_CURRENT_USER,
     MOCK_PASSWORD,
     MOCK_USERNAME,
+    SUPERVISORS,
     TOKEN_RESPONSE,
     userAccountRows,
 } from "./mock-data";
@@ -23,7 +32,7 @@ import {
 // non-matching methods drop through to the routes below.
 
 // Re-exported so existing spec imports keep working.
-export { MOCK_USERNAME, MOCK_PASSWORD, MOCK_CURRENT_USER };
+export { MOCK_CURRENT_USER,MOCK_PASSWORD, MOCK_USERNAME };
 
 type Row = Record<string, unknown>;
 
@@ -264,6 +273,11 @@ export async function installMockBackend(page: Page, browser: string) {
     );
 
     await page.route(
+        /\/api\/admin-api\/v1\/useraccount\/supervisors(?:$|\?)/,
+        getOnly((route) => json(route, SUPERVISORS)),
+    );
+
+    await page.route(
         /\/api\/admin-api\/v1\/useraccount\/(?!me(?:$|\/|\?)|password(?:$|\?)|supervisors(?:$|\?)|register(?:$|\?))[^/?]+(?:$|\?)/,
         getOnly((route, url) => {
             const uuid = decodeURIComponent(
@@ -309,9 +323,10 @@ export async function installMockBackend(page: Page, browser: string) {
         /\/api\/admin-api\/v1\/client_configuration\/\d+(?:$|\?)/,
         getOnly((route, url) => {
             const id = Number(url.pathname.split("/").pop());
-            const configuration = CLIENT_CONFIGURATIONS.find(
-                (candidate) => candidate.id === id,
-            );
+            const configuration = [
+                ...CLIENT_CONFIGURATIONS,
+                EXAM_TEMPLATE_1_CLIENT_CONFIGURATION,
+            ].find((candidate) => candidate.id === id);
             if (!configuration) {
                 return json(route, {}, 404);
             }
@@ -357,12 +372,11 @@ export async function installMockBackend(page: Page, browser: string) {
     );
 
     // --- exam-template---------------------------------------------
-    // (EXAM_TEMPLATE_NAMES lives in ./mockData; import it again if you re-enable this route)
-    // await page.route(
-    //     /\/api\/admin-api\/v1\/exam-template\/names(?:$|\?)/,
-    //     getOnly((route) => json(route, EXAM_TEMPLATE_NAMES)),
+    await page.route(
+        /\/api\/admin-api\/v1\/exam-template\/names(?:$|\?)/,
+        getOnly((route) => json(route, EXAM_TEMPLATE_NAMES)),
+    );
 
-    // );
     await page.route(
         /\/api\/admin-api\/v1\/exam-template(?:$|\?)/i,
         getOnly((route, url) =>
@@ -371,6 +385,95 @@ export async function installMockBackend(page: Page, browser: string) {
                 pagedSpecificEnvelope(EXAM_TEMPLATES, url, "examTemplate"),
             ),
         ),
+    );
+
+    // the template saved by the create wizard, so its detail page shows what was created
+    let createdExamTemplate: Row | undefined;
+
+    await page.route(
+        /\/api\/admin-api\/v1\/exam-template\/create(?:$|\?)/i,
+        (route) => {
+            if (route.request().method() !== "POST") {
+                return route.fallback();
+            }
+            createdExamTemplate = {
+                ...route.request().postDataJSON(),
+                id: CREATED_EXAM_TEMPLATE_ID,
+                institutionId: CREATED_CONFIGURATION_TEMPLATE.institutionId,
+            };
+            return json(route, createdExamTemplate);
+        },
+    );
+
+    await page.route(
+        /\/api\/admin-api\/v1\/exam-template\/(\d+)(?:$|\?)/i,
+        getOnly((route, url) => {
+            const id = Number(url.pathname.split("/").pop());
+            if (createdExamTemplate && id === CREATED_EXAM_TEMPLATE_ID) {
+                return json(route, createdExamTemplate);
+            }
+            return json(route, EXAM_TEMPLATE_1);
+        }),
+    );
+
+    // --- SEB settings of the temporary configuration template (exam-template wizard step 2)
+    await page.route(
+        /\/api\/admin-api\/v1\/exam-template\/create-config-template(?:$|\?)/i,
+        (route) => json(route, CREATED_CONFIGURATION_TEMPLATE),
+    );
+
+    const sebSettings = new Map(
+        CREATED_CONFIGURATION_TEMPLATE_SETTINGS.map((setting) => [
+            setting.id,
+            { ...setting },
+        ]),
+    );
+
+    await page.route(
+        /\/api\/config-template\/seb-settings\/\d+(?:$|\?)/,
+        (route) => {
+            const request = route.request();
+            const url = new URL(request.url());
+
+            if (request.method() === "POST") {
+                const { id, value } = request.postDataJSON();
+                const setting = sebSettings.get(Number(id));
+                if (!setting) {
+                    return json(route, {}, 404);
+                }
+                setting.value = String(value);
+                return json(route, { id: setting.id, value: setting.value });
+            }
+
+            return json(route, {
+                viewType: url.searchParams.get("viewType"),
+                configurationNodeId: CREATED_CONFIGURATION_TEMPLATE.id,
+                configurationId: CREATED_CONFIGURATION_TEMPLATE.id,
+                attributes: {},
+                singleValues: Object.fromEntries(
+                    [...sebSettings.values()].map((setting) => [
+                        setting.name,
+                        { id: setting.id, value: setting.value },
+                    ]),
+                ),
+                tableValues: {},
+            });
+        },
+    );
+
+    // --- configuration nodes (SEB Settings box on the exam-template detail page)
+    await page.route(
+        /\/api\/configuration-node\/\d+(?:$|\?)/,
+        getOnly((route, url) => {
+            const id = url.pathname.split("/").pop();
+            if (id === String(CREATED_CONFIGURATION_TEMPLATE.id)) {
+                return json(route, CREATED_CONFIGURATION_TEMPLATE);
+            }
+            if (id !== EXAM_TEMPLATE_1_CONFIGURATION_NODE.id) {
+                return json(route, {}, 404);
+            }
+            return json(route, EXAM_TEMPLATE_1_CONFIGURATION_NODE);
+        }),
     );
 
     // --- certificates (empty default; certificate specs mock their own list, this

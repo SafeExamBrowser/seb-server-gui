@@ -65,6 +65,17 @@ export async function selectVuetifyFirstOption(
     await expect(listbox).toBeHidden();
 }
 
+export async function expectVuetifySwitch(
+    container: Locator,
+    label: string,
+    checked: boolean,
+) {
+    //vuetify renders v-switch as a checkbox
+    await expect(
+        container.getByRole("checkbox", { name: label, exact: true }),
+    ).toBeChecked({ checked });
+}
+
 //navigate
 export async function navigateTo(page: Page, route: string) {
     await page.goto(route);
