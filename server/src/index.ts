@@ -1,9 +1,11 @@
-import express from "express";
 import path from "node:path";
 import { fileURLToPath } from "node:url";
+
+import express from "express";
+
+import { createBackend } from "./utils/createBackend.js";
 import { parseEnv } from "./utils/env.js";
 import { logInfo } from "./utils/logger.js";
-import { createBackend } from "./utils/createBackend.js";
 
 const app = express();
 const env = parseEnv();

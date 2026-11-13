@@ -2,7 +2,10 @@ name: PR
 
 on:
   pull_request:
-    branches: [main]
+    # client, server and e2e are required checks on these branches (rulesets in .github/rulesets/).
+    # main only requires allowed-source. Don't add paths: filters: a skipped required check
+    # stays pending and blocks the merge.
+    branches: [development, "dev-[0-9]*"]
 
 permissions:
   contents: read
@@ -35,6 +38,34 @@ jobs:
       - run: npm run test:unit
       - run: npm run typecheck:playwright
 
+  # The mocked suite (tests/e2e), Chromium only. Playwright starts the dev server itself. The full
+  # suite needs a real backend and runs against the test server, not here.
+  e2e:
+    name: e2e
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    defaults:
+      run:
+        working-directory: client
+    steps:
+      - uses: actions/checkout@v7.0.1
+      - uses: actions/setup-node@v7.1.0
+        with:
+          node-version-file: client/.nvmrc
+          cache: npm
+          cache-dependency-path: client/package-lock.json
+      - run: npm ci
+      - run: npx playwright install --with-deps --only-shell chromium
+      - run: npm run test:e2e
+      - if: ${{ failure() }}
+        uses: actions/upload-artifact@v7.0.2
+        with:
+          name: playwright-report
+          path: |
+            client/playwright-report
+            client/test-results
+          retention-days: 7
+
   server:
     name: server
     runs-on: ubuntu-latest
@@ -51,3 +82,6 @@ jobs:
           cache-dependency-path: server/package-lock.json
       - run: npm ci
       - run: npm run build
+      # Check only; fixing is up to the dev (npm run format:fix:all). --if-present: dev-3.0 predates
+      # the server lint setup, so the step is skipped there.
+      - run: npm run format:check:all --if-present

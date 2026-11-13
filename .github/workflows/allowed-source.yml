@@ -1,0 +1,104 @@
+name: allowed-source
+
+# Decides which branch may be merged into which. Required check in the release-lines and main
+# rulesets (.github/rulesets/).
+#   into development: anything
+#   into dev-x.y:     anything except development (the trunk never flows into a frozen line),
+#                     and no commits from development that dev-x.y doesn't have yet, whatever the
+#                     branch is called (e.g. a fix branch cut from development by mistake)
+#   into main:        only dev-x.y, and only from this repo (a fork's dev-3.0 doesn't count)
+# Check results belong to the commit, not the PR: the newest allowed-source result on a commit
+# counts for every PR with that head commit. So every run checks all open PRs on the commit, and
+# only passes if all of them are allowed.
+# No branches: filter, so it reports on every PR, including PRs into main.
+# Use pull_request, never pull_request_target: the token stays read-only and there are no
+# secrets, also for PRs from forks.
+
+on:
+  pull_request:
+    types: [opened, reopened, synchronize, edited] # edited = retargeted to another base
+
+permissions:
+  contents: read # the history check reads the git history
+  pull-requests: read # to find the other open PRs on the same commit
+
+jobs:
+  allowed-source:
+    name: allowed-source # must match the required check in the rulesets
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - uses: actions/checkout@v7.0.1
+        with:
+          fetch-depth: 0 # all branches and their history
+          persist-credentials: false
+
+      - name: Check every open PR on this commit
+        env:
+          GH_TOKEN: ${{ github.token }}
+          REPO: ${{ github.repository }}
+          HEAD_SHA: ${{ github.event.pull_request.head.sha }}
+          PR: ${{ github.event.pull_request.number }}
+          BASE: ${{ github.base_ref }}
+          HEAD_REF: ${{ github.head_ref }}
+          HEAD_REPO: ${{ github.event.pull_request.head.repo.full_name }}
+        run: |
+          # Is <head> allowed into <base>? If not, says why and returns 1.
+          allowed() { # number base head head_repo
+            local n=$1 base=$2 head=$3 same=false trunk pr bad
+            [[ $4 == "$REPO" ]] && same=true
+            case "$base" in
+              dev-[0-9]*)
+                if [[ $head == development ]]; then # any name, but never the trunk
+                  echo "::error::#$n: development may not be merged into $base"
+                  return 1
+                fi
+                # development's own line (its first-parent history: PR merge and squash commits)
+                # that the release line doesn't have yet. A branch cut from development, or one that
+                # merged development in, contains some of it. A fix branch cut from dev-x.y doesn't,
+                # even if it was also merged into development.
+                if ! trunk=$(git rev-list --first-parent origin/development "^origin/$base" | sort) ||
+                  ! pr=$(git rev-list "$HEAD_SHA" "^origin/$base" | sort); then
+                  echo "::error::#$n: can't read the history of $base"
+                  return 1
+                fi
+                bad=$(comm -12 <(echo "$trunk") <(echo "$pr"))
+                if [[ -n $bad ]]; then
+                  echo "::error::#$n: contains $(wc -l <<<"$bad" | tr -d ' ') commit(s) from development that $base doesn't have. Cut the branch from $base instead, or cherry-pick the fix."
+                  git log --oneline --no-decorate --no-walk $(head -20 <<<"$bad")
+                  return 1
+                fi
+                ;;
+              main)
+                if [[ $same != true || $head != dev-[0-9]* ]]; then
+                  echo "::error::#$n: $head may not be merged into main (same repo: $same)"
+                  return 1
+                fi
+                ;;
+            esac # development takes anything
+            echo "#$n: $head -> $base is allowed"
+          }
+
+          # This PR comes from the event (it's the newest state); the others from the API.
+          if ! others=$(gh api --paginate "repos/$REPO/pulls?state=open&per_page=100" |
+            jq -r --arg sha "$HEAD_SHA" --argjson me "$PR" \
+              '.[] | select(.head.sha == $sha and .number != $me)
+                   | [.number, .base.ref, .head.ref, (.head.repo.full_name // "")] | @tsv'); then
+            echo "::error::Couldn't list the open PRs"
+            exit 1
+          fi
+
+          ok=true
+          allowed "$PR" "$BASE" "$HEAD_REF" "$HEAD_REPO" || ok=false
+          while IFS=$'\t' read -r n base head repo; do
+            if [[ -n $n ]]; then
+              allowed "$n" "$base" "$head" "$repo" || ok=false
+            fi
+          done <<<"$others"
+
+          if ! $ok; then
+            if [[ -n $others ]]; then
+              echo "::error::Check results belong to the commit, not the PR, so every open PR on ${HEAD_SHA::8} has to be allowed. Close the PR that isn't, then re-run this check."
+            fi
+            exit 1
+          fi

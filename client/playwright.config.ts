@@ -8,6 +8,17 @@ const isCI = !!process.env.CI;
 
 const baseURL = process.env.BASE_URL || "http://localhost:8082/";
 
+// Without BASE_URL, Playwright starts the dev server itself (or reuses one that's already running
+// locally). The backend is mocked, so the proxy target only has to be a valid URL.
+const webServer = process.env.BASE_URL
+    ? undefined
+    : {
+          command: "npm run dev",
+          url: baseURL,
+          reuseExistingServer: !isCI,
+          env: { VITE_DEV_API_SERVER_TARGET: "http://localhost:3001" },
+      };
+
 const ignoreHTTPSErrors = process.env.E2E_IGNORE_HTTPS_ERRORS === "true";
 
 const outputDir = process.env.E2E_OUTPUT_DIR || "test-results";
@@ -23,11 +34,13 @@ export default defineConfig({
     fullyParallel: true,
     forbidOnly: isCI,
     retries: isCI ? 2 : 0,
-    workers: isCI ? 1 : undefined,
+    workers: isCI ? 2 : undefined,
 
     // timeout: 10_000,
 
     reporter: reporters,
+
+    webServer,
 
     outputDir,
 
@@ -40,9 +53,6 @@ export default defineConfig({
         },
     },
 
-    projects: [
-        { name: "chromium", use: { ...devices["Desktop Chrome"] } },
-        { name: "firefox", use: { ...devices["Desktop Firefox"] } },
-        { name: "webkit", use: { ...devices["Desktop Safari"] } },
-    ],
+    // Chromium only, locally and in CI.
+    projects: [{ name: "chromium", use: { ...devices["Desktop Chrome"] } }],
 });
