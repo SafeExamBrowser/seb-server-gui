@@ -43,7 +43,10 @@ jobs:
   # against the test server, not here.
   e2e:
     name: e2e
-    runs-on: ubuntu-latest
+    # Release lines keep the Playwright version they were cut with, and older Playwright versions
+    # can't install on the newest runner image (dev-3.0's 1.60 fails on ubuntu-26.04). So PRs into
+    # dev-x.y run on a fixed image, PRs into development on the latest one.
+    runs-on: ${{ github.base_ref == 'development' && 'ubuntu-latest' || 'ubuntu-24.04' }}
     timeout-minutes: 20
     defaults:
       run:
