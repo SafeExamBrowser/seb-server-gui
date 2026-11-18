@@ -94,6 +94,7 @@ export const useRegisterFormFields = () => {
             type: "select" as const,
             name: "institutionId",
             model: institutionId,
+            dataTestId: "institution-select",
             label: i18n.global.t("userAccount.fields.institution.label"),
             options: institutionOptions.value,
             required: fieldValidation.institutionId.required,

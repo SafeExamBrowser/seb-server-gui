@@ -9,6 +9,7 @@
         floating
         :title="title"
         :bread-crumb="breadCrumb"
+        data-testid="exam-template-title"
         :data-test-id="dataTestId"
     >
         <template #PanelMain>
