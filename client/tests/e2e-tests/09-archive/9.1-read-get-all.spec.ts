@@ -1,6 +1,6 @@
-import { expect, test } from "../fixtures/table-list-fixtures";
-import { expectNoRequest } from "../../utils/networkAssertions";
 import { ARCHIVE_COLUMN } from "../../shared/page-models/models/archive/archive-list.model.ts";
+import { expectNoRequest } from "../../utils/networkAssertions";
+import { expect, test } from "../fixtures/table-list-fixtures";
 
 // useArchiveExams.ts defaults status to "ARCHIVED,FINISHED,RUNNING" whenever
 // no status filter is selected, so the up-coming/test-run seeded exams are

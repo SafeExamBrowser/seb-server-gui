@@ -2,8 +2,8 @@ import { type Page } from "@playwright/test";
 
 import { certificateListConfig } from "@/pages/(app)/certificate/certificateListConfig.ts";
 
-import { TableListPageModel } from "../../generic-models/table-list-page.model.ts";
 import type { TableListPageConfig } from "../../../types/table-list-page.types.ts";
+import { TableListPageModel } from "../../generic-models/table-list-page.model.ts";
 import { CertificateUploadDialogModel } from "./certificate-upload-dialog.model.ts";
 
 export type CertificateRow = {

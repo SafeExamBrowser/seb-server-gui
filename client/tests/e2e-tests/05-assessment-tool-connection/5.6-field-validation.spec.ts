@@ -1,7 +1,7 @@
 import { ASSESSMENT_TOOL_FIELD } from "@/pages/(app)/assessment-tool/assessmentToolFormConfig.ts";
 
-import { expect, test } from "../fixtures/table-list-fixtures";
 import { ASSESSMENT_TOOL_CREATE_REQUEST } from "../../shared/page-models/models/assessment-tool/assessment-tool-create.model.ts";
+import { expect, test } from "../fixtures/table-list-fixtures";
 
 // Valid form input: every case submits a form the frontend rules accept, so the POST always
 // fires and the BACKEND is what "rejects" it. That isolates the frontend's backend-error

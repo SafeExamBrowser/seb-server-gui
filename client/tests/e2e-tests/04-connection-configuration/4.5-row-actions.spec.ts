@@ -1,8 +1,8 @@
 import type { Page } from "@playwright/test";
 
-import { expect, test } from "../fixtures/table-list-fixtures";
-import type { HttpMethod } from "../../utils/networkAssertions";
 import { connectionConfigurationRowRequests } from "../../shared/page-models/models/connection-configuration/connection-configurations-list.model.ts";
+import type { HttpMethod } from "../../utils/networkAssertions";
+import { expect, test } from "../fixtures/table-list-fixtures";
 
 // Fixed shared seed rows (no browser suffix); the read spec relies on the same ids.
 const searchName = "e2e-getall-connection-config";

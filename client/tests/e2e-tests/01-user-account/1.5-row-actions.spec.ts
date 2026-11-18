@@ -1,9 +1,9 @@
 import type { Page } from "@playwright/test";
 
-import { expect, test } from "../fixtures/table-list-fixtures";
+import { userAccountRowRequests } from "../../shared/page-models/models/user-account/user-accounts-list.model.ts";
 import { addBrowserSuffixToText } from "../../utils/helpers";
 import type { HttpMethod } from "../../utils/networkAssertions";
-import { userAccountRowRequests } from "../../shared/page-models/models/user-account/user-accounts-list.model.ts";
+import { expect, test } from "../fixtures/table-list-fixtures";
 
 const searchSurname = "000-testgetall";
 const activeUserUuid = "seb-user-account-getall-active";

@@ -1,5 +1,5 @@
-import { expect, test } from "../fixtures/table-list-fixtures";
 import { certificateRows } from "../../shared/page-models/models/certificate/certificates-list.model.ts";
+import { expect, test } from "../fixtures/table-list-fixtures";
 
 // The delete DELETE hits the bare collection path (no query params), unlike the list GET;
 // registered after the list mock, this route wins the LIFO match for the mutations.

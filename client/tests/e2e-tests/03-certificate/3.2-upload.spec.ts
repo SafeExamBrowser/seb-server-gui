@@ -1,10 +1,10 @@
-import { expect, test } from "../fixtures/table-list-fixtures";
-import { waitForRequest } from "../../utils/networkAssertions";
 import {
     CERTIFICATE_MUTATION_REQUEST,
     type CertificateRow,
     certificateRows,
 } from "../../shared/page-models/models/certificate/certificates-list.model.ts";
+import { waitForRequest } from "../../utils/networkAssertions";
+import { expect, test } from "../fixtures/table-list-fixtures";
 
 const pemFile = {
     name: "e2e-upload-cert.pem",

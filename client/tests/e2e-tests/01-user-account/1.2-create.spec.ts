@@ -1,9 +1,9 @@
 import { USER_ACCOUNT_FIELD } from "@/pages/(app)/user-account/userAccountFormConfig.ts";
 
-import { expect, test } from "../fixtures/table-list-fixtures";
+import { USER_ACCOUNT_CREATE_REQUEST } from "../../shared/page-models/models/user-account/user-account-create.model.ts";
 import { expectToHaveUrl } from "../../utils/helpers";
 import { expectNoRequest, waitForRequest } from "../../utils/networkAssertions";
-import { USER_ACCOUNT_CREATE_REQUEST } from "../../shared/page-models/models/user-account/user-account-create.model.ts";
+import { expect, test } from "../fixtures/table-list-fixtures";
 
 const input = {
     institution: "SEB Server",

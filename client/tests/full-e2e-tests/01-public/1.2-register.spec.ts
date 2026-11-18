@@ -1,4 +1,3 @@
-import i18n from "@/i18n";
 import { expect } from "../../e2e-tests/fixtures/table-list-fixtures.ts";
 import { test } from "../fixtures/table-list-fixtures";
 

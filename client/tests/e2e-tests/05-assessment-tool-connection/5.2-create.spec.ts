@@ -1,9 +1,9 @@
 import { ASSESSMENT_TOOL_FIELD } from "@/pages/(app)/assessment-tool/assessmentToolFormConfig.ts";
 
-import { expect, test } from "../fixtures/table-list-fixtures";
+import { ASSESSMENT_TOOL_CREATE_REQUEST } from "../../shared/page-models/models/assessment-tool/assessment-tool-create.model.ts";
 import { expectToHaveUrl } from "../../utils/helpers";
 import { expectNoRequest, waitForRequest } from "../../utils/networkAssertions";
-import { ASSESSMENT_TOOL_CREATE_REQUEST } from "../../shared/page-models/models/assessment-tool/assessment-tool-create.model.ts";
+import { expect, test } from "../fixtures/table-list-fixtures";
 
 const mainInput = {
     name: "e2e-create-assessment-tool",

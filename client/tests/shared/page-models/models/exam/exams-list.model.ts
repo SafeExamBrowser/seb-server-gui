@@ -1,7 +1,7 @@
 import { type Page } from "@playwright/test";
 
-import { TableListPageModel } from "../../generic-models/table-list-page.model.ts";
 import type { TableListPageConfig } from "../../../types/table-list-page.types.ts";
+import { TableListPageModel } from "../../generic-models/table-list-page.model.ts";
 
 // Exam has no exam*ListConfig.ts (unlike institution/certificate/...): the
 // list page hard-codes its route and testIdBase directly in index.vue.

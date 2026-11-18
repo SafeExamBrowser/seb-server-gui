@@ -1,7 +1,7 @@
 import { CONNECTION_CONFIG_FIELD } from "@/pages/(app)/connection-configuration/connectionConfigurationFormConfig.ts";
 
-import { expect, test } from "../fixtures/table-list-fixtures";
 import { CONNECTION_CONFIG_CREATE_REQUEST } from "../../shared/page-models/models/connection-configuration/connection-configuration-create.model.ts";
+import { expect, test } from "../fixtures/table-list-fixtures";
 
 // Valid form input: every case submits a form the frontend rules accept, so the POST always
 // fires and the BACKEND is what "rejects" it. That isolates the frontend's backend-error

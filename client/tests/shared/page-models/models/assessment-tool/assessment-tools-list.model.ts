@@ -8,9 +8,9 @@ import {
 } from "@/components/widgets/filters/filterContracts.ts";
 import { assessmentToolListConfig } from "@/pages/(app)/assessment-tool/assessmentToolListConfig.ts";
 
-import { TableListPageModel } from "../../generic-models/table-list-page.model.ts";
-import type { TableListPageConfig } from "../../../types/table-list-page.types.ts";
 import { entityRowActionRequests } from "../../../../utils/entityRowRequests.ts";
+import type { TableListPageConfig } from "../../../types/table-list-page.types.ts";
+import { TableListPageModel } from "../../generic-models/table-list-page.model.ts";
 
 export const assessmentToolRowRequests = entityRowActionRequests("/lms-setup");
 

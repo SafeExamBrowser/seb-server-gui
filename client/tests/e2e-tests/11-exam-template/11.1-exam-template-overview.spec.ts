@@ -1,9 +1,8 @@
-import { expect, test } from "../fixtures/table-list-fixtures";
-import { expectNoRequest } from "../../utils/networkAssertions";
 import {
     EXAM_TEMPLATE_LIST_COLUMN,
     ExamTemplateListModel,
 } from "../../shared/page-models/models/exam-template/exam-template-list.model.ts";
+import { expect, test } from "../fixtures/table-list-fixtures";
 
 const searchName = "NadimTest1";
 

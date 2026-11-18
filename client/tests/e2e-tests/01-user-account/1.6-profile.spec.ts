@@ -2,12 +2,12 @@ import type { Page } from "@playwright/test";
 
 import { USER_ACCOUNT_FIELD } from "@/pages/(app)/user-account/userAccountFormConfig.ts";
 
-import { expect, test } from "../fixtures/table-list-fixtures";
-import { waitForRequest } from "../../utils/networkAssertions";
 import {
     CHANGE_PASSWORD_REQUEST,
     PROFILE_SAVE_REQUEST,
 } from "../../shared/page-models/models/user-account/user-account-profile.model.ts";
+import { waitForRequest } from "../../utils/networkAssertions";
+import { expect, test } from "../fixtures/table-list-fixtures";
 
 // The profile page hydrates from the logged-in admin (testmain).
 const currentUser = {

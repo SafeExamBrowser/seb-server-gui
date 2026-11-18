@@ -5,16 +5,16 @@ import {
     connectionConfigurationFormConfig,
 } from "@/pages/(app)/connection-configuration/connectionConfigurationFormConfig.ts";
 
+import { selectVuetifyOptionByName } from "../../../../utils/helpers.ts";
+import {
+    type FormFieldSpec,
+    FormPageModel,
+} from "../../generic-models/form-page.model.ts";
 import { CertificateUploadDialogModel } from "../certificate/certificate-upload-dialog.model.ts";
 import {
     CERTIFICATE_API_REQUEST,
     type CertificateRow,
 } from "../certificate/certificates-list.model.ts";
-import {
-    type FormFieldSpec,
-    FormPageModel,
-} from "../../generic-models/form-page.model.ts";
-import { selectVuetifyOptionByName } from "../../../../utils/helpers.ts";
 
 // The create/edit form is split across two FormBuilders that namespace their fields under
 // their own base test-id (`<prefix>-main-form` / `<prefix>-fallback-form`), plus a raw cert

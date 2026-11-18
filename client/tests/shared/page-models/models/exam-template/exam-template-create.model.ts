@@ -14,7 +14,6 @@ const PREFIX = "";
 
 const STEP1_NAMING_FORM = "exam-template-step1";
 const STEP2_SEB_SETTINGS = "exam-template-step2";
-const STEP3_SUPERVISORS_TABLE = "exam-template-step3";
 const STEP4_INDICATORS_TABLE = "exam-template-step4";
 const STEP5_GROUPS_TABLE = "exam-template-step5";
 const STEP6_SUMMARY = "exam-template-step6";

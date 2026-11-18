@@ -6,8 +6,8 @@ import {
 } from "@/components/widgets/filters/filterContracts.ts";
 import { institutionListConfig } from "@/pages/(app)/institution/institutionListConfig.ts";
 
-import { TableListPageModel } from "../../generic-models/table-list-page.model.ts";
 import type { TableListPageConfig } from "../../../types/table-list-page.types.ts";
+import { TableListPageModel } from "../../generic-models/table-list-page.model.ts";
 
 const config: TableListPageConfig = {
     route: institutionListConfig.route,

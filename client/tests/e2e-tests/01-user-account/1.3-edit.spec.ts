@@ -2,14 +2,14 @@ import type { Page } from "@playwright/test";
 
 import { USER_ACCOUNT_FIELD } from "@/pages/(app)/user-account/userAccountFormConfig.ts";
 
-import { expect, test } from "../fixtures/table-list-fixtures";
-import { addBrowserSuffixToText, expectToHaveUrl } from "../../utils/helpers";
-import { waitForRequest } from "../../utils/networkAssertions";
 import {
     EDIT_USER_UUID,
     USER_ACCOUNT_SAVE_REQUEST,
     userAccountByIdRequest,
 } from "../../shared/page-models/models/user-account/user-account-edit.model.ts";
+import { addBrowserSuffixToText, expectToHaveUrl } from "../../utils/helpers";
+import { waitForRequest } from "../../utils/networkAssertions";
+import { expect, test } from "../fixtures/table-list-fixtures";
 
 const existingUser = {
     uuid: EDIT_USER_UUID,

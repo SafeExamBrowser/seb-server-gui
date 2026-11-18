@@ -1,6 +1,6 @@
-import { expect, test } from "../fixtures/table-list-fixtures";
-import { waitForRequest } from "../../utils/networkAssertions";
 import { ANALYZE_COLUMN } from "../../shared/page-models/models/analyze/analyze-list.model.ts";
+import { waitForRequest } from "../../utils/networkAssertions";
+import { expect, test } from "../fixtures/table-list-fixtures";
 
 // The finishedexams resource only ever contains finished/archived exams
 // (see mock-backend.ts FINISHED_EXAMS), independent of any status filter.

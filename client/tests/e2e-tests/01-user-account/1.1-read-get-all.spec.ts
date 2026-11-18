@@ -1,7 +1,7 @@
 import { USER_ACCOUNT_COLUMN } from "@/pages/(app)/user-account/userAccountListConfig.ts";
 
-import { expect, test } from "../fixtures/table-list-fixtures";
 import { addBrowserSuffixToText } from "../../utils/helpers";
+import { expect, test } from "../fixtures/table-list-fixtures";
 
 const searchSurname = "000-testgetall";
 const activeUserUuid = "seb-user-account-getall-active";

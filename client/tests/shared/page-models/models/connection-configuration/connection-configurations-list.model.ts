@@ -7,9 +7,9 @@ import {
 } from "@/components/widgets/filters/filterContracts.ts";
 import { connectionConfigurationListConfig } from "@/pages/(app)/connection-configuration/connectionConfigurationListConfig.ts";
 
-import { TableListPageModel } from "../../generic-models/table-list-page.model.ts";
-import type { TableListPageConfig } from "../../../types/table-list-page.types.ts";
 import { entityRowActionRequests } from "../../../../utils/entityRowRequests.ts";
+import type { TableListPageConfig } from "../../../types/table-list-page.types.ts";
+import { TableListPageModel } from "../../generic-models/table-list-page.model.ts";
 
 export const connectionConfigurationRowRequests = entityRowActionRequests(
     "/client_configuration",

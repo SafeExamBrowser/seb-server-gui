@@ -1,10 +1,10 @@
 import { CONNECTION_CONFIG_FIELD } from "@/pages/(app)/connection-configuration/connectionConfigurationFormConfig.ts";
 
 import { CERTIFICATE_MUTATION_REQUEST } from "../../shared/page-models/models/certificate/certificates-list.model.ts";
-import { expect, test } from "../fixtures/table-list-fixtures";
+import { CONNECTION_CONFIG_CREATE_REQUEST } from "../../shared/page-models/models/connection-configuration/connection-configuration-create.model.ts";
 import { expectToHaveUrl } from "../../utils/helpers";
 import { expectNoRequest, waitForRequest } from "../../utils/networkAssertions";
-import { CONNECTION_CONFIG_CREATE_REQUEST } from "../../shared/page-models/models/connection-configuration/connection-configuration-create.model.ts";
+import { expect, test } from "../fixtures/table-list-fixtures";
 
 const mainInput = {
     name: "e2e-create-connection-config",

@@ -1,5 +1,5 @@
-import { expect, test } from "../fixtures/table-list-fixtures";
 import { MONITORING_COLUMN } from "../../shared/page-models/models/monitoring/monitoring-list.model.ts";
+import { expect, test } from "../fixtures/table-list-fixtures";
 
 const searchName = "e2e-getall-exam";
 const testRunId = 9202;

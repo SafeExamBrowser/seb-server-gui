@@ -1,12 +1,10 @@
-import { expect, test } from "../fixtures/table-list-fixtures";
-import { expectNoRequest } from "../../utils/networkAssertions";
 import { EXAM_COLUMN } from "../../shared/page-models/models/exam/exams-list.model.ts";
+import { expectNoRequest } from "../../utils/networkAssertions";
+import { expect, test } from "../fixtures/table-list-fixtures";
 
 const searchName = "e2e-getall-exam";
 const upcomingId = 9201;
 const runningId = 9203;
-const finishedByodId = 9204;
-const finishedUndefinedId = 9206;
 
 test.describe("06 Exams - READ Get All", () => {
     test("A searches by name and shows the matching row", async ({ exams }) => {
