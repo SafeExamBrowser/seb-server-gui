@@ -1,7 +1,6 @@
 import { expect } from "../../e2e-tests/fixtures/table-list-fixtures.ts";
 import { test } from "../fixtures/table-list-fixtures";
 
-
 const registerUserValid1 = {
     institutionId: "SEB Server",
     username: "e2e-register-account",
@@ -25,9 +24,7 @@ const registerUserinvalid1 = {
 test.describe("01 Public - Register", () => {
     test.use({ timezoneId: "UTC" });
 
-    test("A register valid user", async ({
-        register,
-    }) => {
+    test("A register valid user", async ({ register }) => {
         const page = register.page;
 
         await register.goto();
@@ -63,7 +60,9 @@ test.describe("01 Public - Register", () => {
         ).toBeVisible();
     });
 
-    test("C enter wrong confirm password & invalid email", async ({ register }) => {
+    test("C enter wrong confirm password & invalid email", async ({
+        register,
+    }) => {
         const page = register.page;
 
         await register.goto();
@@ -93,5 +92,4 @@ test.describe("01 Public - Register", () => {
             ),
         ).toBeVisible();
     });
-
 });

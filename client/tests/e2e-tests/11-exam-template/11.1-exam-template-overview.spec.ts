@@ -18,7 +18,6 @@ const EXAM_TYPE_MANAGED_DEVICES = "MANAGED";
 const templateIdUNDEFINED = "9";
 const EXAM_TYPE_NOT_DEFINED = "UNDEFINED";
 
-
 test.describe("11 Exam Template - READ Get All", () => {
     test("A searches by name and shows the matching row", async ({
         examTemplates,
@@ -94,7 +93,10 @@ test.describe("11 Exam Template - READ Get All", () => {
 
         await test.step("sort by name descending sort=-name", async () => {
             await examTemplates.expectListRequestSucceeded(
-                () => examTemplates.table.sortByColumn(EXAM_TEMPLATE_LIST_COLUMN.name),
+                () =>
+                    examTemplates.table.sortByColumn(
+                        EXAM_TEMPLATE_LIST_COLUMN.name,
+                    ),
                 { urlMustContain: [/[?&]sort=-name(?:&|$)/i] },
             );
         });
@@ -142,14 +144,16 @@ test.describe("11 Exam Template - READ Get All", () => {
     test("D shows error UI when the list request fails with 500", async ({
         examTemplates,
     }) => {
-        await examTemplates.page.route(/\/api\/admin-api\/v1\/exam-template(?:$|\?)/i, (route) =>
-            route.fulfill({
-                status: 500,
-                contentType: "application/json",
-                body: JSON.stringify({
-                    message: "Internal Server Error (forced by Playwright)",
+        await examTemplates.page.route(
+            /\/api\/admin-api\/v1\/exam-template(?:$|\?)/i,
+            (route) =>
+                route.fulfill({
+                    status: 500,
+                    contentType: "application/json",
+                    body: JSON.stringify({
+                        message: "Internal Server Error (forced by Playwright)",
+                    }),
                 }),
-            }),
         );
 
         await examTemplates.page.goto(examTemplates.config.route);
@@ -169,22 +173,33 @@ test.describe("11 Exam Template - READ Get All", () => {
         });
     });
 
-    test("F shows the empty state when nothing matches", async ({ examTemplates }) => {
+    test("F shows the empty state when nothing matches", async ({
+        examTemplates,
+    }) => {
         await examTemplates.goto();
         await examTemplates.expectListRequestSucceeded(() =>
             examTemplates.search("zzz-no-such-exam-000"),
         );
-        await expect(examTemplates.page.getByText("No Data Available")).toBeVisible();
+        await expect(
+            examTemplates.page.getByText("No Data Available"),
+        ).toBeVisible();
     });
 
-    test("G add button navigates to the create page", async ({ examTemplates }) => {
+    test("G add button navigates to the create page", async ({
+        examTemplates,
+    }) => {
         await examTemplates.goto();
         await examTemplates.layout.addButton.click();
         await expect(examTemplates.page).toHaveURL(/\/exam-template\/create/);
     });
 
-    async function testExamTypeFilter(examTemplates: ExamTemplateListModel, examTypeFilter: string, expectedId: string) {
-        const escapeRegExp = (s: string) => s.replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
+    async function testExamTypeFilter(
+        examTemplates: ExamTemplateListModel,
+        examTypeFilter: string,
+        expectedId: string,
+    ) {
+        const escapeRegExp = (s: string) =>
+            s.replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
 
         await examTemplates.expectListRequestSucceeded(
             () => examTemplates.toggleExamTypeFilter(examTypeFilter),
@@ -200,5 +215,4 @@ test.describe("11 Exam Template - READ Get All", () => {
 
         await examTemplates.table.expectRowVisible(expectedId);
     }
-
 });

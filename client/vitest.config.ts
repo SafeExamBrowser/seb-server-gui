@@ -20,7 +20,7 @@ export default (async () => {
                 name: "unit",
                 environment: "jsdom",
                 globals: true,
-                include: ["tests/unit/**/*.{test,spec}.{ts,tsx,js}"],
+                include: ["tests/unit-tests/**/*.{test,spec}.{ts,tsx,js}"],
                 exclude: ["node_modules", "dist", "**/*.stories.*"],
             },
         }),

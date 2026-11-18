@@ -1,7 +1,5 @@
 import { test } from "../fixtures/table-list-fixtures";
 
-
-
 const EXAM_TEMPLATE_NAME = "NadimTest5";
 
 const examTemplateCreateNamingValid1 = {
@@ -14,12 +12,13 @@ const examTemplateCreateNamingValid1 = {
     screenProctoringEnabled: true,
 };
 
-
-
 test.describe("03 Exam Template - Start", () => {
     test.use({ timezoneId: "UTC" });
 
-    test("A create basic exam template", async ({ examTemplateCreate, examTemplate }) => {
+    test("A create basic exam template", async ({
+        examTemplateCreate,
+        examTemplate,
+    }) => {
         //step 1 - naming
         await examTemplateCreate.goto();
 
@@ -28,7 +27,6 @@ test.describe("03 Exam Template - Start", () => {
 
         await examTemplateCreate.fillFormNaming(examTemplateCreateNamingValid1);
         await examTemplateCreate.goToNextStep();
-
 
         //step 2 - seb settings
         await examTemplateCreate.expectStepVisible(2);
@@ -45,7 +43,6 @@ test.describe("03 Exam Template - Start", () => {
 
         await examTemplateCreate.goToNextStep();
 
-
         //step 4 - indicators
         await examTemplateCreate.expectStepVisible(4);
         await examTemplateCreate.expectStepperNextButtonVisible();
@@ -58,7 +55,6 @@ test.describe("03 Exam Template - Start", () => {
 
         await examTemplateCreate.goToNextStep();
 
-
         //step 6 - overview
         await examTemplateCreate.expectStepVisible(6);
         await examTemplateCreate.expectStepperSaveButtonVisible();
@@ -67,7 +63,5 @@ test.describe("03 Exam Template - Start", () => {
 
         //successful creation
         await examTemplate.expectExamTemplateTitleVisible(EXAM_TEMPLATE_NAME);
-
     });
-
 });

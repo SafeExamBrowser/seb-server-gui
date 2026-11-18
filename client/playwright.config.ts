@@ -33,7 +33,7 @@ const reporters: ReporterDescription[] = isCI
     : [["html", { outputFolder: reportDir, open: "never" }]];
 
 export default defineConfig({
-    testDir: "tests",
+    testDir: "tests/e2e-tests",
     globalSetup: "./tests/config/global-setup.ts",
     fullyParallel: true,
     forbidOnly: isCI,
@@ -59,8 +59,15 @@ export default defineConfig({
 
     // Chromium only, locally and in CI.
     projects: [
-        { name: "chromium", use: { ...devices["Desktop Chrome"] }},
-        { name: "setup", testMatch: /auth\.setup\.ts/ },
-    ]
-    ,
+        {
+            name: "chromium",
+            use: { ...devices["Desktop Chrome"] },
+            dependencies: ["setup"],
+        },
+        {
+            name: "setup",
+            testDir: "tests/config",
+            testMatch: /auth\.setup\.ts/,
+        },
+    ],
 });

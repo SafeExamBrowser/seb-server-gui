@@ -8,7 +8,6 @@ import {
     FormPageModel,
 } from "../../generic-models/form-page.model.ts";
 
-
 const ROUTE = "/exam-template/create";
 const PREFIX = "";
 
@@ -18,15 +17,26 @@ const STEP4_INDICATORS_TABLE = "exam-template-step4";
 const STEP5_GROUPS_TABLE = "exam-template-step5";
 const STEP6_SUMMARY = "exam-template-step6";
 
-
 const fields: FormFieldSpec[] = [
     { name: "name", type: "text", formTestId: STEP1_NAMING_FORM },
     { name: "description", type: "text", formTestId: STEP1_NAMING_FORM },
     { name: "examType", type: "select", formTestId: STEP1_NAMING_FORM },
-    { name: "clientConfiguration", type: "select", formTestId: STEP1_NAMING_FORM },
+    {
+        name: "clientConfiguration",
+        type: "select",
+        formTestId: STEP1_NAMING_FORM,
+    },
     { name: "lmsIntegration", type: "switch", formTestId: STEP1_NAMING_FORM },
-    { name: "institutionalDefault", type: "switch", formTestId: STEP1_NAMING_FORM },
-    { name: "screenProctoringEnabled", type: "switch", formTestId: STEP1_NAMING_FORM },
+    {
+        name: "institutionalDefault",
+        type: "switch",
+        formTestId: STEP1_NAMING_FORM,
+    },
+    {
+        name: "screenProctoringEnabled",
+        type: "switch",
+        formTestId: STEP1_NAMING_FORM,
+    },
 ];
 
 export type ExamTemplateNamingInput = {

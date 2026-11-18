@@ -2,11 +2,9 @@ import { test as base } from "@playwright/test";
 
 import { ExamTemplateModel } from "../../shared/page-models/models/exam-template/exam-template.model.ts";
 import { ExamTemplateCreateModel } from "../../shared/page-models/models/exam-template/exam-template-create.model.ts";
-import { LoginPageModel } from "../../shared/page-models/models/user-account/login-page.model.ts"
+import { LoginPageModel } from "../../shared/page-models/models/user-account/login-page.model.ts";
 import { UserAccountRegisterModel } from "../../shared/page-models/models/user-account/user-account-register.model.ts";
 import { loginAsTestAdmin } from "../../utils/authenticate.ts";
-
-
 
 type Fixtures = {
     login: LoginPageModel;

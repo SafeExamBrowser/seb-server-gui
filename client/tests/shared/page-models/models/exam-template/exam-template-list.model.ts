@@ -1,4 +1,4 @@
-import { expect,type Page } from "@playwright/test";
+import { expect, type Page } from "@playwright/test";
 
 import type { TableListPageConfig } from "../../../types/table-list-page.types.ts";
 import { TableListPageModel } from "../../generic-models/table-list-page.model.ts";
