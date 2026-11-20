@@ -1,4 +1,9 @@
-name: Build and Push to Docker Hub
+# LEGACY: the old tag-driven release path. See .github/legacy/README.md.
+# Pushing any git tag rebuilds the image from source and pushes it to Docker Hub
+# as sebadmin/seb-server-gui:<tag> (e.g. sprint-testing, v3.0-latest, v3.0.1).
+# Kept unchanged until the new pipeline (build.yml, release buttons) has released once,
+# then deleted (see .github/PIPELINE.md). Formerly docker-build-push.yml.
+name: "Legacy · any tag → Docker Hub"
 
 on:
   workflow_dispatch:
@@ -13,12 +18,12 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout seb-server-gui repo
-        uses: actions/checkout@v6.0.2
+        uses: actions/checkout@v7.0.1
         with:
           path: seb
           clean: false
       - name: Checkout Cobenian/shai-hulud-detect
-        uses: actions/checkout@v6.0.2
+        uses: actions/checkout@v7.0.1
         with:
           repository: Cobenian/shai-hulud-detect
           path: hulud
@@ -43,16 +48,16 @@ jobs:
         run: echo "TAG_NAME=default_version${{ matrix.tag_suffix }}" >> $GITHUB_ENV
 
       - name: Checkout code
-        uses: actions/checkout@v6.0.2
+        uses: actions/checkout@v7.0.1
 
       - name: Login to DockerHub
-        uses: docker/login-action@v4.1.0
+        uses: docker/login-action@v4.8.0
         with:
           username: ${{ secrets.DOCKERHUB_ADMIN_USERNAME }}
           password: ${{ secrets.DOCKERHUB_ADMIN_TOKEN }}
 
       - name: Build and push Docker image
-        uses: docker/build-push-action@v7.1.0
+        uses: docker/build-push-action@v7.4.0
         with:
           context: .
           push: true
