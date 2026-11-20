@@ -12,11 +12,11 @@ Anything legacy is easy to spot:
 
 ## What a tag push does
 
-| You push the git tag                                  | Workflow that runs                | Result on Docker Hub                                                                         |
-| ----------------------------------------------------- | --------------------------------- | -------------------------------------------------------------------------------------------- |
-| any tag, e.g. `sprint-testing`, `v3.0.1`, `v3.0-latest` | `legacy-tag-build.yml`            | `sebadmin/seb-server-gui:<tag>`, rebuilt from the tagged commit                              |
-| `auto-testing-deploy`                                 | `legacy-auto-testing-deploy.yml`  | `sebadmin/seb-server-gui-auto-testing:auto-testing-deploy` and `…:auto-testing-deploy-single-host` |
-|                                                       | **and** `legacy-tag-build.yml`    | `sebadmin/seb-server-gui:auto-testing-deploy`                                                |
+| You push the git tag                                    | Workflow that runs               | Result on Docker Hub                                                                               |
+| ------------------------------------------------------- | -------------------------------- | -------------------------------------------------------------------------------------------------- |
+| any tag, e.g. `sprint-testing`, `v3.0.1`, `v3.0-latest` | `legacy-tag-build.yml`           | `sebadmin/seb-server-gui:<tag>`, rebuilt from the tagged commit                                    |
+| `auto-testing-deploy`                                   | `legacy-auto-testing-deploy.yml` | `sebadmin/seb-server-gui-auto-testing:auto-testing-deploy` and `…:auto-testing-deploy-single-host` |
+|                                                         | **and** `legacy-tag-build.yml`   | `sebadmin/seb-server-gui:auto-testing-deploy`                                                      |
 
 A tag runs the workflow files **at the tagged commit**. A tag on a commit from before
 this folder existed runs the old file names (`docker-build-push.yml`,
@@ -34,6 +34,10 @@ This used to be `github/deploy-auto-testing.sh`.
 
 ## When this goes away
 
-When the new release workflow handles `v*` tags. Until then `legacy-tag-build.yml`
-reacts to **every** tag, so the new workflow and this one must never both react to
-the same tag (phase 5 of the CI/CD plan).
+After the first release through the new Release stable button. The delete list is in
+[`../PIPELINE.md`](../PIPELINE.md#legacy-what-gets-deleted-and-when).
+
+Until then `legacy-tag-build.yml` reacts to **every** tag pushed by a person. The new
+release buttons push their tags with `GITHUB_TOKEN`, which doesn't start other
+workflows, so the two never both react to the same tag. Once the buttons exist, don't
+push release tags by hand: it would rebuild and overwrite the released image.
