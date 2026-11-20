@@ -1,0 +1,115 @@
+# Builds one image on every push to development or a release line (dev-x.y) and pushes it,
+# privately, to ghcr under the branch name: ghcr.io/safeexambrowser/seb-server-gui:development,
+# …:dev-3.0. This is the only place images get built: the nightly e2e and the release buttons
+# only add names to an image built here, they never rebuild. See .github/PIPELINE.md.
+# Keep this file byte-identical on development and every dev-x.y.
+name: Build
+
+on:
+  push:
+    branches: [development, "dev-[0-9]*"]
+
+# Builds of one branch never overtake each other. A newer push replaces a pending one, so the
+# name always ends up on the newest build.
+concurrency:
+  group: build-${{ github.ref_name }}
+  cancel-in-progress: false
+
+permissions:
+  contents: read
+
+# Job names must not be client, server, e2e or allowed-source: those are required PR checks.
+jobs:
+  # The same scan as the legacy tag builds. It runs a script from another repo, so this job
+  # gets no write permissions and no credentials.
+  scan:
+    name: scan
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - name: Checkout seb-server-gui
+        uses: actions/checkout@v7.0.1
+        with:
+          path: seb
+          persist-credentials: false
+      - name: Checkout Cobenian/shai-hulud-detect
+        uses: actions/checkout@v7.0.1
+        with:
+          repository: Cobenian/shai-hulud-detect
+          path: hulud
+          persist-credentials: false
+      - # Fails the build on exit codes 1 or 2
+        name: Security scan with Shai-Hulud Detector
+        run: |
+          chmod +x ./hulud/shai-hulud-detector.sh
+          ./hulud/shai-hulud-detector.sh ./seb
+
+  build:
+    name: build
+    needs: scan
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    permissions:
+      contents: read
+      packages: write # push to ghcr
+    steps:
+      - uses: actions/checkout@v7.0.1
+        with:
+          persist-credentials: false
+
+      - name: Image name
+        id: image
+        run: |
+          . .github/scripts/images.sh
+          echo "name=$(internal_image)" >> "$GITHUB_OUTPUT"
+
+      - uses: docker/login-action@v4.8.0
+        with:
+          registry: ghcr.io
+          username: ${{ github.actor }}
+          password: ${{ github.token }}
+
+      - name: Build and push
+        id: push
+        uses: docker/build-push-action@v7.4.0
+        with:
+          context: .
+          push: true
+          # One plain image instead of an index with attestations: ghcr-cleanup.sh can then
+          # safely delete untagged versions, and copying the image by digest keeps the digest.
+          provenance: false
+          sbom: false
+          tags: ${{ steps.image.outputs.name }}:${{ github.ref_name }}
+          # revision: the commit, for the nightly e2e (tests from that commit, ✓/✗ on it) and the
+          # release buttons (git tags on it). source: links the ghcr package to this repo.
+          labels: |
+            org.opencontainers.image.revision=${{ github.sha }}
+            org.opencontainers.image.source=${{ github.server_url }}/${{ github.repository }}
+
+      - name: Summary
+        env:
+          IMAGE: ${{ steps.image.outputs.name }}:${{ github.ref_name }}
+          DIGEST: ${{ steps.push.outputs.digest }}
+        run: |
+          {
+            echo "### Built \`$IMAGE\`"
+            echo
+            echo "- digest: \`$DIGEST\`"
+            echo "- commit: \`$GITHUB_SHA\`"
+          } >> "$GITHUB_STEP_SUMMARY"
+
+  cleanup:
+    name: cleanup
+    needs: build
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    permissions:
+      contents: read
+      packages: write # delete old untagged versions
+    steps:
+      - uses: actions/checkout@v7.0.1
+        with:
+          persist-credentials: false
+      - run: .github/scripts/ghcr-cleanup.sh
+        env:
+          GH_TOKEN: ${{ github.token }}
