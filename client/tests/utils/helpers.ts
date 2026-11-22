@@ -143,3 +143,8 @@ export const EXAM_TYPE_LABELS: Record<string, string> = {
     BYOD: en.BYOD,
     VDI: en.VDI,
 };
+
+// placeholder body for skeleton functions; passing the parameters keeps them "used"
+export function notImplemented(...args: unknown[]): never {
+    throw new Error(`not implemented (${args.length} args)`);
+}

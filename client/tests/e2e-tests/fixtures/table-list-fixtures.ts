@@ -19,7 +19,10 @@ import { ExamTemplateModel } from "../../shared/page-models/models/exam-template
 import { ExamTemplateCreateModel } from "../../shared/page-models/models/exam-template/exam-template-create.model.ts";
 import { ExamTemplateListModel } from "../../shared/page-models/models/exam-template/exam-template-list.model.ts";
 import { InstitutionsListModel } from "../../shared/page-models/models/institution/institutions-list.model.ts";
+import { MonitoringClientModel } from "../../shared/page-models/models/monitoring/monitoring-client.model.ts";
+import { MonitoringClientsModel } from "../../shared/page-models/models/monitoring/monitoring-clients.model.ts";
 import { MonitoringListModel } from "../../shared/page-models/models/monitoring/monitoring-list.model.ts";
+import { MonitoringOverviewModel } from "../../shared/page-models/models/monitoring/monitoring-overview.model.ts";
 import { UserAccountCreateModel } from "../../shared/page-models/models/user-account/user-account-create.model.ts";
 import { UserAccountEditModel } from "../../shared/page-models/models/user-account/user-account-edit.model.ts";
 import { UserAccountProfileModel } from "../../shared/page-models/models/user-account/user-account-profile.model.ts";
@@ -47,6 +50,9 @@ type Fixtures = {
     examCreate: ExamCreateModel;
     exam: ExamModel;
     monitoringExams: MonitoringListModel;
+    monitoringOverview: MonitoringOverviewModel;
+    monitoringClients: MonitoringClientsModel;
+    monitoringClient: MonitoringClientModel;
     analyzeExams: AnalyzeListModel;
     archiveExams: ArchiveListModel;
 
@@ -129,6 +135,15 @@ export const test = base.extend<Fixtures>({
     },
     monitoringExams: async ({ page }, use) => {
         await use(new MonitoringListModel(page));
+    },
+    monitoringOverview: async ({ page }, use) => {
+        await use(new MonitoringOverviewModel(page));
+    },
+    monitoringClients: async ({ page }, use) => {
+        await use(new MonitoringClientsModel(page));
+    },
+    monitoringClient: async ({ page }, use) => {
+        await use(new MonitoringClientModel(page));
     },
     analyzeExams: async ({ page }, use) => {
         await use(new AnalyzeListModel(page));
