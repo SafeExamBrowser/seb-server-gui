@@ -2,7 +2,7 @@ import { expect, type Locator, type Page } from "@playwright/test";
 
 import en from "@/i18n/locales/en.json" with { type: "json" };
 
-import { BasicPageModel } from "../../generic-models/basic-page.model.ts";
+import { DetailPageModel } from "../../generic-models/detail-page.model.ts";
 import { ErrorStateModel } from "../../widgets/error-state.model.ts";
 import type { ExamTemplateNamingInput } from "./exam-template-create.model.ts";
 
@@ -10,7 +10,7 @@ const ROUTE = "/exam-template/:id";
 const PREFIX = "examTemplateDetail";
 const PAGE_TEST_ID = "exam-template-detail-page";
 
-export class ExamTemplateModel extends BasicPageModel {
+export class ExamTemplateModel extends DetailPageModel {
     readonly errorState: ErrorStateModel;
     readonly breadCrumb: Locator;
 
@@ -41,25 +41,6 @@ export class ExamTemplateModel extends BasicPageModel {
             ),
         ).toBeVisible();
         await expect(this.page.getByText(userName)).toBeVisible();
-    }
-
-    // A key-value row is `<div><b>label</b><span>value</span></div>`.
-    basicSettingValue(label: string) {
-        return this.page
-            .locator("b", { hasText: new RegExp(`^\\s*${label}\\s*$`) })
-            .locator("xpath=following-sibling::span");
-    }
-
-    async expectBasicSettingText(label: string, value: string) {
-        await expect(this.basicSettingValue(label)).toHaveText(value);
-    }
-
-    async expectBasicSettingFlag(label: string, enabled: boolean) {
-        await expect(
-            this.basicSettingValue(label).getByRole("img", {
-                name: enabled ? en.general.true : en.general.false,
-            }),
-        ).toBeVisible();
     }
 
     async expectBasicSettings(expected: ExamTemplateNamingInput) {
@@ -133,13 +114,6 @@ export class ExamTemplateModel extends BasicPageModel {
         }
     }
 
-    //------------supervisors-------------
-    async expectSupervisorRowVisible(username: string, fullName: string) {
-        const row = this.tableRow(this.box(en.boxSupervisors.title), username);
-        await expect(row).toBeVisible();
-        await expect(row).toContainText(fullName);
-    }
-
     async expectClientGroupRowVisible(name: string, type: string) {
         const row = this.tableRow(
             this.crudTable(en.clientGroups.entityNamePlural),
@@ -164,26 +138,11 @@ export class ExamTemplateModel extends BasicPageModel {
     }
 
     //---------------basic ui elements------
-    // the boxes have no test ids, so they are located by their heading
-    box(title: string) {
-        return this.page
-            .locator(".v-card")
-            .filter({ has: this.page.getByRole("heading", { name: title }) });
-    }
-
     // the crud tables (indicators, groups) render their title inside the table
     crudTable(title: string) {
         return this.page
             .locator(".v-data-table")
             .filter({ has: this.page.getByRole("heading", { name: title }) });
-    }
-
-    //only body rows, the header row can contain the same text (e.g. "Screen Proctoring")
-    tableRow(table: Locator, text: string) {
-        return table
-            .locator("tbody")
-            .getByRole("row")
-            .filter({ hasText: text });
     }
 
     async clickBreadCrumb(label: string) {

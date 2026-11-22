@@ -1,5 +1,7 @@
 import { expect, Locator, Page, TestInfo } from "@playwright/test";
 
+import en from "@/i18n/locales/en.json" with { type: "json" };
+
 export function generateUniqueUsername(prefix = "e2e") {
     const d = new Date();
     const pad = (n: number) => String(n).padStart(2, "0");
@@ -107,3 +109,37 @@ export function addBrowserSuffixToText(
     const browserSuffix = suffixForProject(testInfo.project.name).toLowerCase();
     return `${text}-${browserSuffix}`;
 }
+
+//the browser runs in UTC (the specs set timezoneId: "UTC"), so the expected date has to be formatted in UTC too
+//mirrors formatIsoToReadableDateTime in src/utils/timeUtils.ts
+export function formatDateTimeUTC(iso: string) {
+    const date = new Date(iso);
+    const datePart = date.toLocaleDateString("en-US", {
+        year: "numeric",
+        month: "long",
+        day: "numeric",
+        timeZone: "UTC",
+    });
+    const timePart = date.toLocaleTimeString("en-US", {
+        hour: "2-digit",
+        minute: "2-digit",
+        hour12: false,
+        timeZone: "UTC",
+    });
+    return `${datePart} • ${timePart}`;
+}
+
+//"jdoe (Doe John)" -> username "jdoe", full name "Doe John" (same as src/utils/userAccount.ts)
+export function splitSupervisorName(name: string) {
+    return {
+        username: name.match(/^(.+?) \(/)?.[1] ?? name,
+        fullName: name.match(/\((.*?)\)/)?.[1] ?? "",
+    };
+}
+
+//the label the exam detail page shows for an exam type (useBasicSettingsItems in src)
+export const EXAM_TYPE_LABELS: Record<string, string> = {
+    MANAGED: en.MANAGED,
+    BYOD: en.BYOD,
+    VDI: en.VDI,
+};

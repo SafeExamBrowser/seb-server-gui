@@ -1,7 +1,11 @@
 import { ErrorCode } from "@/api/seb-server/generated/hey-api/types.gen.ts";
 import en from "@/i18n/locales/en.json" with { type: "json" };
 
-import { expectVuetifySwitch } from "../../utils/helpers";
+import {
+    expectVuetifySwitch,
+    formatDateTimeUTC,
+    splitSupervisorName,
+} from "../../utils/helpers";
 import { expect, test } from "../fixtures/table-list-fixtures";
 import {
     EXAM_TEMPLATE_1,
@@ -251,30 +255,3 @@ test.describe("11 Exam Template - Detail", () => {
         );
     });
 });
-
-//the browser runs in UTC (see test.use above), so the expected date has to be formatted in UTC too
-//mirrors formatIsoToReadableDateTime in src/utils/timeUtils.ts
-function formatDateTimeUTC(iso: string) {
-    const date = new Date(iso);
-    const datePart = date.toLocaleDateString("en-US", {
-        year: "numeric",
-        month: "long",
-        day: "numeric",
-        timeZone: "UTC",
-    });
-    const timePart = date.toLocaleTimeString("en-US", {
-        hour: "2-digit",
-        minute: "2-digit",
-        hour12: false,
-        timeZone: "UTC",
-    });
-    return `${datePart} • ${timePart}`;
-}
-
-//"jdoe (Doe John)" -> username "jdoe", full name "Doe John" (same as src/utils/userAccount.ts)
-function splitSupervisorName(name: string) {
-    return {
-        username: name.match(/^(.+?) \(/)?.[1] ?? name,
-        fullName: name.match(/\((.*?)\)/)?.[1] ?? "",
-    };
-}

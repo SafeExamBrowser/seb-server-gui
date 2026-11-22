@@ -1,11 +1,17 @@
 import en from "@/i18n/locales/en.json" with { type: "json" };
 
+import {
+    EXAM_TYPE_LABELS,
+    formatDateTimeUTC,
+    splitSupervisorName,
+} from "../../utils/helpers";
 import { expect, test } from "../fixtures/table-list-fixtures";
 import {
     CREATED_EXAM_ID,
     EXAM_TEMPLATES,
     LMS_QUIZZES,
     LMS_SETUPS,
+    SUPERVISORS,
 } from "../mocks/mock-data";
 
 const IMPORT_EXAM_URL = /\/api\/exam(?:$|\?)/;
@@ -13,7 +19,7 @@ const IMPORT_EXAM_URL = /\/api\/exam(?:$|\?)/;
 const assessmentTool = LMS_SETUPS[0];
 const quiz = LMS_QUIZZES[0];
 const examTemplate = EXAM_TEMPLATES[0];
-const supervisorUsername = "ljohnson";
+const supervisor = splitSupervisorName(SUPERVISORS[3].name);
 const quitPassword = "e2e-quit-password";
 
 test.describe("06 Exam - Prepare exam", () => {
@@ -59,7 +65,7 @@ test.describe("06 Exam - Prepare exam", () => {
             await examCreate.expectStepVisible(
                 en.createExam.steps.supervisors.title,
             );
-            await examCreate.selectSupervisor(supervisorUsername);
+            await examCreate.selectSupervisor(supervisor.username);
             await examCreate.goToNextStep();
         });
 
@@ -101,6 +107,20 @@ test.describe("06 Exam - Prepare exam", () => {
             //reload, so the page shows what the backend stored and not what is left in the wizard state
             await exam.page.reload();
             await exam.expectExamTitleVisible(quiz.quiz_name);
+
+            //name, url and times come from the assessment tool, the type from the exam template
+            await exam.expectBasicSettings({
+                name: quiz.quiz_name,
+                startUrl: quiz.quiz_start_url,
+                start: formatDateTimeUTC(quiz.quiz_start_time),
+                end: formatDateTimeUTC(quiz.quiz_end_time),
+                examType: EXAM_TYPE_LABELS[examTemplate.examType],
+            });
+
+            await exam.expectSupervisorRowVisible(
+                supervisor.username,
+                supervisor.fullName,
+            );
         });
     });
 });

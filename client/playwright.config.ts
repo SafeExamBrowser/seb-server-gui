@@ -33,7 +33,8 @@ const reporters: ReporterDescription[] = isCI
     : [["html", { outputFolder: reportDir, open: "never" }]];
 
 export default defineConfig({
-    testDir: "tests/e2e-tests",
+    testDir: "tests/",
+    testIgnore: "**/unit-tests/**",
     globalSetup: "./tests/config/global-setup.ts",
     fullyParallel: true,
     forbidOnly: isCI,
