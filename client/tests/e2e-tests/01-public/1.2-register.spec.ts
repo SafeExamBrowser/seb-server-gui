@@ -1,4 +1,4 @@
-import { expect } from "../../e2e-tests/fixtures/table-list-fixtures.ts";
+import { expect } from "../../mock-tests/fixtures/table-list-fixtures.ts";
 import { test } from "../fixtures/table-list-fixtures";
 
 const registerUserValid1 = {

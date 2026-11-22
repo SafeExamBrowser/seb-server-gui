@@ -47,7 +47,7 @@ durch und er schreibt mit. Was rauskommt ist aber eher ein Entwurf als fertiger 
 
 ## Ausführen
 
-Eigene Config, weil die bestehende `playwright.config.ts` auf `../e2e-tests` zeigt und unseren Ordner
+Eigene Config, weil die bestehende `playwright.config.ts` auf `../mock-tests` zeigt und unseren Ordner
 gar nicht sieht:
 
 npx playwright test -c playwright.full-e2e.config.ts --headed oder dann einfach das play button in der IDE benutzen
@@ -72,7 +72,7 @@ Vue-Komponente ein passendes Test-Modell gibt. Interessant sind für dich vor al
 Bau deine zwei Tests dann so um, dass sie das benutzen. Am Ende sollte im Test stehen, _was_
 getestet wird, und nicht, wie man auf einen Button klickt.
 
-Ein Punkt dabei ist mir wichtig: der Ordner `../e2e-tests` arbeitet gegen ein gemocktes Backend. Wir
+Ein Punkt dabei ist mir wichtig: der Ordner `../mock-tests` arbeitet gegen ein gemocktes Backend. Wir
 übernehmen die Seiten-Modelle, aber nicht das Mocking. Also kein `page.route` und kein
 `installMockBackend` bei den full-e2e drin, sonst testen wir am Ende wieder nur ein gemocktes be.
 

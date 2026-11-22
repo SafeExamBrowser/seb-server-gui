@@ -1,6 +1,6 @@
 import { test as setup } from "@playwright/test";
 
-import { installMockBackend } from "../e2e-tests/mocks/mock-backend.ts";
+import { installMockBackend } from "../mock-tests/mocks/mock-backend.ts";
 import { loginAsServerAdmin } from "../utils/authenticate.ts";
 import { SERVER_ADMIN_STORAGE_STATE } from "./auth.ts";
 
