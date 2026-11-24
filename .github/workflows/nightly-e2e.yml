@@ -1,0 +1,123 @@
+# The nightly e2e. Goes through the lines one after the other (development, then every dev-x.y):
+# tests the image build.yml last pushed for the line, writes ✓/✗ on the commit it was built from
+# and, only if green, gives exactly that image the name <line>-tested (development-tested,
+# dev-3.0-tested), which uat runs. Nothing is rebuilt. The steps are in
+# .github/scripts/nightly-e2e.sh. See .github/PIPELINE.md.
+# Keep this file byte-identical on development and every dev-x.y.
+name: Nightly e2e
+
+on:
+  # By hand only for now. After a few good runs a schedule is added here, e.g.
+  #   schedule:
+  #     - cron: "0 1 * * *"
+  # Scheduled runs use this file on development.
+  workflow_dispatch:
+
+# Never two runs at once: once the e2e server exists, it's the queue.
+concurrency:
+  group: e2e-server
+  cancel-in-progress: false
+
+permissions:
+  contents: read
+
+env:
+  HUSKY: 0
+
+# Job names must not be client, server, e2e or allowed-source: those are required PR checks.
+jobs:
+  lines:
+    name: lines
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    outputs:
+      list: ${{ steps.list.outputs.list }}
+    steps:
+      - uses: actions/checkout@v7.0.1
+        with:
+          persist-credentials: false
+      - id: list
+        run: echo "list=$(.github/scripts/nightly-e2e.sh lines)" >> "$GITHUB_OUTPUT"
+        env:
+          GH_TOKEN: ${{ github.token }}
+
+  # One job per line, shown as "test (development)", "test (dev-3.0)".
+  test:
+    needs: lines
+    strategy:
+      max-parallel: 1 # one line after the other
+      fail-fast: false # a red line doesn't stop the next one
+      matrix:
+        line: ${{ fromJSON(needs.lines.outputs.list) }}
+    # Same rule as pr.yml: release lines keep the Playwright version they were cut with, which
+    # can't install on the newest runner image. If the e2e server needs our own runner inside ETH,
+    # this is the line to change (and that runner must never take pull-request workflows).
+    runs-on: ${{ matrix.line == 'development' && 'ubuntu-latest' || 'ubuntu-24.04' }}
+    timeout-minutes: 30
+    permissions:
+      contents: read
+      statuses: write # ✓/✗ on the tested commit
+      packages: write # move <line>-tested
+    env:
+      E2E_MODE: ${{ vars.E2E_MODE }}
+      GH_TOKEN: ${{ github.token }}
+      LINE: ${{ matrix.line }}
+    steps:
+      # The scripts, from the branch this workflow runs on. The tests come from the tested commit.
+      - uses: actions/checkout@v7.0.1
+        with:
+          persist-credentials: false
+
+      - uses: docker/login-action@v4.8.0
+        with:
+          registry: ghcr.io
+          username: ${{ github.actor }}
+          password: ${{ github.token }}
+
+      # 1. Pin the image by digest. 2. Skip if its commit already has a result.
+      - name: Pin image
+        id: pin
+        run: .github/scripts/nightly-e2e.sh pin "$LINE"
+
+      # 3. Test, with the tests of the commit the image was built from, so tests and app match.
+      - name: Checkout the tested commit
+        if: steps.pin.outputs.test == 'true'
+        uses: actions/checkout@v7.0.1
+        with:
+          ref: ${{ steps.pin.outputs.revision }}
+          path: tested
+          persist-credentials: false
+      - if: steps.pin.outputs.test == 'true'
+        uses: actions/setup-node@v7.1.0
+        with:
+          node-version-file: tested/client/.nvmrc
+          cache: npm
+          cache-dependency-path: tested/client/package-lock.json
+      - name: Install
+        if: steps.pin.outputs.test == 'true'
+        working-directory: tested/client
+        run: |
+          npm ci
+          npx playwright install --with-deps --only-shell chromium
+      - name: Test
+        id: test
+        if: steps.pin.outputs.test == 'true'
+        run: .github/scripts/nightly-e2e.sh test "$IMAGE" tested/client
+        env:
+          IMAGE: ${{ steps.pin.outputs.image }}
+
+      # 4. Report. 5. Only if green, move <line>-tested.
+      - if: always() && steps.pin.outputs.test == 'true'
+        uses: actions/upload-artifact@v7.0.2
+        with:
+          name: e2e-report-${{ matrix.line }}
+          path: tested/client/playwright-report
+          retention-days: 30
+          overwrite: true # a re-run of the job uploads it again
+      - name: Commit status and -tested
+        if: always() && steps.pin.outputs.test == 'true'
+        run: .github/scripts/nightly-e2e.sh report "$LINE" "$IMAGE" "$REVISION" "$OUTCOME"
+        env:
+          IMAGE: ${{ steps.pin.outputs.image }}
+          REVISION: ${{ steps.pin.outputs.revision }}
+          OUTCOME: ${{ steps.test.outcome }}
