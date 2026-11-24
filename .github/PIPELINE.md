@@ -11,29 +11,29 @@ one has released once.
 
 ## Workflows
 
-| File                                       | Runs on                                      | Does                                                                                                       |
-| ------------------------------------------ | -------------------------------------------- | ---------------------------------------------------------------------------------------------------------- |
-| `workflows/pr.yml`                         | PRs into `development` and `dev-x.y`         | Required checks `client`, `server`, `e2e` (mocked suite)                                                   |
-| `workflows/allowed-source.yml`             | every PR                                     | Required check: which branch may be merged into which                                                      |
-| `workflows/build.yml`                      | push to `development` and `dev-x.y`          | Scan, build, push `ghcr…:<branch>`; delete old untagged versions                                           |
-| `workflows/nightly-e2e.yml`                | **not built yet** (every night, or by hand)  | One line after the other: test the newest image, ✓/✗ on its commit; if green, move `<branch>-tested` to it |
-| `workflows/release-latest.yml`             | **not built yet** (button, from a `dev-x.y`) | Publish `dev-x.y-tested` as `vX.Y-latest` on Docker Hub                                                    |
-| `workflows/release-stable.yml`             | **not built yet** (button, from a `dev-x.y`) | Publish `dev-x.y-tested` as `vX.Y.Z`, `vX.Y-stable`, `vX.Y-latest`; git tags `vX.Y.Z` and `vX.Y-stable`    |
-| `workflows/legacy-tag-build.yml`           | **legacy**: any tag push                     | Rebuilds from the tagged commit and pushes `sebadmin/seb-server-gui:<tag>` to Docker Hub                   |
-| `workflows/legacy-auto-testing-deploy.yml` | **legacy**: tag `auto-testing-deploy`        | Rebuilds `sebadmin/seb-server-gui-auto-testing`                                                            |
+| File                                       | Runs on                                              | Does                                                                                                       |
+| ------------------------------------------ | ---------------------------------------------------- | ---------------------------------------------------------------------------------------------------------- |
+| `workflows/pr.yml`                         | PRs into `development` and `dev-x.y`                 | Required checks `client`, `server`, `e2e` (mocked suite)                                                   |
+| `workflows/allowed-source.yml`             | every PR                                             | Required check: which branch may be merged into which                                                      |
+| `workflows/build.yml`                      | push to `development` and `dev-x.y`                  | Scan, build, push `ghcr…:<branch>`; delete old untagged versions                                           |
+| `workflows/nightly-e2e.yml`                | by hand for now; every night once the schedule is on | One line after the other: test the newest image, ✓/✗ on its commit; if green, move `<branch>-tested` to it |
+| `workflows/release-latest.yml`             | **not built yet** (button, from a `dev-x.y`)         | Publish `dev-x.y-tested` as `vX.Y-latest` on Docker Hub                                                    |
+| `workflows/release-stable.yml`             | **not built yet** (button, from a `dev-x.y`)         | Publish `dev-x.y-tested` as `vX.Y.Z`, `vX.Y-stable`, `vX.Y-latest`; git tags `vX.Y.Z` and `vX.Y-stable`    |
+| `workflows/legacy-tag-build.yml`           | **legacy**: any tag push                             | Rebuilds from the tagged commit and pushes `sebadmin/seb-server-gui:<tag>` to Docker Hub                   |
+| `workflows/legacy-auto-testing-deploy.yml` | **legacy**: tag `auto-testing-deploy`                | Rebuilds `sebadmin/seb-server-gui-auto-testing`                                                            |
 
 ## Images
 
 Builds and tested builds are private, on ghcr. Releases are public, on Docker Hub, where the
 servers and the institutions running the GUI on Kubernetes pull them from.
 
-| Name                                   | Where                                             | Moved by                                | Used by                                 |
-| -------------------------------------- | ------------------------------------------------- | --------------------------------------- | --------------------------------------- |
-| `development`, `dev-x.y`               | `ghcr.io/safeexambrowser/seb-server-gui`, private | every push (`build.yml`)                | dev (playground), nightly e2e           |
-| `development-tested`, `dev-x.y-tested` | `ghcr.io/safeexambrowser/seb-server-gui`, private | a green nightly run (**not built yet**) | uat                                     |
-| `vX.Y-latest`                          | `docker.io/sebadmin/seb-server-gui`, public       | Release latest and Release stable       | anyone who wants the newest tested X.Y  |
-| `vX.Y.Z`                               | `docker.io/sebadmin/seb-server-gui`, public       | Release stable, never moves             | prod, institutions pinning a version    |
-| `vX.Y-stable`                          | `docker.io/sebadmin/seb-server-gui`, public       | Release stable                          | institutions following the newest patch |
+| Name                                   | Where                                             | Moved by                          | Used by                                 |
+| -------------------------------------- | ------------------------------------------------- | --------------------------------- | --------------------------------------- |
+| `development`, `dev-x.y`               | `ghcr.io/safeexambrowser/seb-server-gui`, private | every push (`build.yml`)          | dev (playground), nightly e2e           |
+| `development-tested`, `dev-x.y-tested` | `ghcr.io/safeexambrowser/seb-server-gui`, private | a green nightly e2e               | uat                                     |
+| `vX.Y-latest`                          | `docker.io/sebadmin/seb-server-gui`, public       | Release latest and Release stable | anyone who wants the newest tested X.Y  |
+| `vX.Y.Z`                               | `docker.io/sebadmin/seb-server-gui`, public       | Release stable, never moves       | prod, institutions pinning a version    |
+| `vX.Y-stable`                          | `docker.io/sebadmin/seb-server-gui`, public       | Release stable                    | institutions following the newest patch |
 
 There's deliberately no plain `latest`, so pulling without a tag never gets a test build.
 
@@ -48,11 +48,29 @@ docker inspect --format '{{index .Config.Labels "org.opencontainers.image.revisi
   ghcr.io/safeexambrowser/seb-server-gui:development
 ```
 
+## Nightly e2e
+
+By hand for now: Actions › Nightly e2e › Run workflow, from `development`. The schedule is added
+once a few runs have been good. For each line (`development`, then every `dev-x.y`), one after
+the other:
+
+1. Pins the line's image by digest and reads the commit it was built from. A push during the run
+   can't change what's tested.
+2. Skips the line if that commit already has a ✓ or ✗. A ✗ stays until the next push to the line.
+   A run that couldn't test (setup failed, cancelled) writes an error instead, and the next run
+   tests the commit again.
+3. Checks out that commit (tests and app match), starts the image in the runner with dummy backend
+   settings and runs the mocked suite against it.
+4. Uploads the Playwright report (`e2e-report-<line>`, kept 30 days) and writes `e2e/image` ✓/✗
+   on the commit, linking to the run.
+5. Only if green: gives exactly that image (same digest) the name `<line>-tested` too.
+
 ## Scripts
 
 | File                       | Does                                                                                   |
 | -------------------------- | -------------------------------------------------------------------------------------- |
-| `scripts/images.sh`        | The image names, in one place (sourced by the workflows)                               |
+| `scripts/images.sh`        | The image names, in one place (sourced by the workflows and scripts)                   |
+| `scripts/nightly-e2e.sh`   | The nightly e2e, per line: pin, skip, test, report, move `-tested`                     |
 | `scripts/ghcr-cleanup.sh`  | Deletes old untagged ghcr versions, keeps the newest 20; tagged ones are never touched |
 | `scripts/e2e-on-server.sh` | **Placeholder**: deploy one image to the e2e server and run the full suite against it  |
 
@@ -66,9 +84,9 @@ These wait for the servers. Each has one switch, so nothing else needs to change
 | Where the nightly e2e runs                                            | GitHub-hosted if the e2e server is reachable, else our own runner inside ETH           | `runs-on` in `nightly-e2e.yml`  |
 | Servers: dev on `development`, uat on `-tested`, pull secret for ghcr | Rancher setup (sysadmins)                                                              | nothing in this repo            |
 
-Until `E2E_MODE=server`, the nightly e2e will start the image inside the GitHub runner and run
-the mocked suite against it (commit status `e2e/image`). With the server it runs the full
-suite (commit status `e2e/full`).
+Until `E2E_MODE=server`, the nightly e2e starts the image inside the GitHub runner and runs the
+mocked suite against it (commit status `e2e/image`). With the server it runs the full suite
+(commit status `e2e/full`).
 
 ## Legacy: what gets deleted, and when
 
