@@ -1,0 +1,63 @@
+# Button "Release latest": publishes the newest tested image of a release line as vX.Y-latest.
+# Gives dev-x.y-tested a version vX.Y.Z (the one it got from an earlier release, else the next
+# free one), publishes it under that version and moves only vX.Y-latest there; vX.Y-stable stays.
+# Git tag vX.Y.Z on the commit the image was built from. Nothing is built.
+# Run it from the dev-x.y branch (Use workflow from). The steps are in .github/scripts/release.sh.
+# See .github/PIPELINE.md. Keep this file byte-identical on development and every dev-x.y.
+name: Release latest
+
+on:
+  workflow_dispatch:
+    inputs:
+      dry_run:
+        description: Dry run (only show what would happen)
+        type: boolean
+        default: true
+
+# One release at a time, so two can't take the same version.
+concurrency:
+  group: release
+  cancel-in-progress: false
+
+permissions:
+  contents: read
+
+env:
+  PUBLIC_IMAGE: ${{ vars.PUBLIC_IMAGE }}
+
+# Job names must not be client, server, e2e or allowed-source: those are required PR checks.
+jobs:
+  release:
+    name: release latest
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    permissions:
+      contents: write # the git tag vX.Y.Z
+      packages: read # dev-x.y-tested on ghcr
+    steps:
+      # Unlike the other workflows, keeps the credentials: release.sh pushes the git tags with them.
+      - uses: actions/checkout@v7.0.1
+        with:
+          fetch-depth: 0 # all tags, for the next free version
+
+      - name: Where to publish
+        id: target
+        run: .github/scripts/release.sh target
+
+      - uses: docker/login-action@v4.8.0
+        with:
+          registry: ghcr.io
+          username: ${{ github.actor }}
+          password: ${{ github.token }}
+      # The official image with the Docker Hub account the old release path uses too, a rehearsal
+      # (repo variable PUBLIC_IMAGE) with its own account.
+      - uses: docker/login-action@v4.8.0
+        with:
+          registry: ${{ steps.target.outputs.registry }}
+          username: ${{ steps.target.outputs.official == 'true' && secrets.DOCKERHUB_ADMIN_USERNAME || secrets.REHEARSAL_REGISTRY_USERNAME }}
+          password: ${{ steps.target.outputs.official == 'true' && secrets.DOCKERHUB_ADMIN_TOKEN || secrets.REHEARSAL_REGISTRY_TOKEN }}
+
+      - name: Release
+        run: .github/scripts/release.sh latest
+        env:
+          DRY_RUN: ${{ inputs.dry_run }}
