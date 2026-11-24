@@ -71,8 +71,34 @@ export const MONITORING_INDICATORS: MockIndicator[] = [];
 
 export const MONITORING_CLIENT_GROUPS: OverviewClientGroup[] = [];
 
+function connection(
+    id: number,
+    status: ConnectionStatusEnum,
+    flags = 0,
+): MockMonitoringConnection {
+    return {
+        id,
+        connectionToken: `token-${id}`,
+        examUserSessionId: `student-${id}`,
+        sebInfo: "SEB 3.9 (Windows)",
+        groupIds: [],
+        status,
+        flags,
+        indicatorValues: {},
+    };
+}
+
 // one connection per state, plus one with a pending lock and one with a raised hand
-export const MONITORING_CONNECTIONS: MockMonitoringConnection[] = [];
+export const MONITORING_CONNECTIONS = [
+    connection(1, ConnectionStatusEnum.CONNECTION_REQUESTED),
+    connection(2, ConnectionStatusEnum.READY),
+    connection(3, ConnectionStatusEnum.ACTIVE),
+    connection(4, ConnectionStatusEnum.CLOSED),
+    connection(5, ConnectionStatusEnum.DISABLED),
+    connection(6, ConnectionStatusEnum.MISSING, NOTIFICATION_FLAGS.MISSING),
+    connection(7, ConnectionStatusEnum.ACTIVE, NOTIFICATION_FLAGS.LOCK_PENDING),
+    connection(8, ConnectionStatusEnum.ACTIVE, NOTIFICATION_FLAGS.RAISE_HAND),
+];
 
 export const MONITORING_NOTIFICATIONS: ClientNotification[] = [];
 
@@ -89,11 +115,37 @@ export function connectionsInState(
     connections: MockMonitoringConnection[],
     status: ConnectionStatusEnum,
 ): MockMonitoringConnection[] {
-    return notImplemented(connections, status);
+    return connections.filter((c) => c.status === status);
 }
 
 export function buildMonitoringOverview(
     connections: MockMonitoringConnection[],
 ): MonitoringOverview {
-    return notImplemented(connections);
+    const count = (status: ConnectionStatusEnum) =>
+        connectionsInState(connections, status).length;
+    const flagged = (flag: number) =>
+        connections.filter((c) => c.flags & flag).length;
+
+    return {
+        clientStates: {
+            total: connections.length,
+            CONNECTION_REQUESTED: count(
+                ConnectionStatusEnum.CONNECTION_REQUESTED,
+            ),
+            READY: count(ConnectionStatusEnum.READY),
+            ACTIVE: count(ConnectionStatusEnum.ACTIVE),
+            DISABLED: count(ConnectionStatusEnum.DISABLED),
+            MISSING: count(ConnectionStatusEnum.MISSING),
+            CLOSED: count(ConnectionStatusEnum.CLOSED),
+        },
+        clientGroups: MONITORING_CLIENT_GROUPS,
+        indicators: {},
+        notifications: {
+            total:
+                flagged(NOTIFICATION_FLAGS.LOCK_PENDING) +
+                flagged(NOTIFICATION_FLAGS.RAISE_HAND),
+            LOCK_SCREEN: flagged(NOTIFICATION_FLAGS.LOCK_PENDING),
+            RAISE_HAND: flagged(NOTIFICATION_FLAGS.RAISE_HAND),
+        },
+    };
 }

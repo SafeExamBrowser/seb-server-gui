@@ -1,6 +1,12 @@
 // All hardcoded fixture data for the mocked SEB Server backend.
 // The request-handling logic lives in mockBackend.ts.
 
+import {
+    MONITORED_EXAM,
+    MONITORED_EXAM_WITH_SPS,
+    NOT_RUNNING_EXAM,
+} from "./monitoring-mock-data.ts";
+
 export const MOCK_USERNAME = "testmain";
 export const MOCK_PASSWORD = "testmain";
 
@@ -773,6 +779,9 @@ export const EXAMS = [
         status: "FINISHED",
         excludeFromDeletion: false,
     },
+    MONITORED_EXAM,
+    MONITORED_EXAM_WITH_SPS,
+    NOT_RUNNING_EXAM,
 ];
 
 // getExamsForAnalysis hits a dedicated `/monitoring/finishedexams` resource

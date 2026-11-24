@@ -32,6 +32,7 @@
                     color="surface"
                     rounded="lg"
                     class="d-inline-flex align-center ga-2 px-4 py-2"
+                    data-testid="monitoring-detail-page-connections-total"
                 >
                     <v-icon color="primary" size="18">
                         mdi-account-multiple-outline

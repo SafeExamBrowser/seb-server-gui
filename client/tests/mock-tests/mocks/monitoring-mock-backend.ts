@@ -10,7 +10,12 @@ import type {
 } from "@/models/seb-server/monitoring.ts";
 
 import { notImplemented } from "../../utils/helpers.ts";
-import type { MockMonitoringConnection } from "./monitoring-mock-data.ts";
+import { getOnly, json } from "./mock-backend.ts";
+import {
+    buildMonitoringOverview,
+    type MockMonitoringConnection,
+    MONITORING_CONNECTIONS,
+} from "./monitoring-mock-data.ts";
 
 // changed by the action routes, so the next poll returns the new state
 export type MonitoringMockState = {
@@ -27,7 +32,6 @@ export type MonitoringFilterHeaders = {
 };
 
 // Routes (registered after the generic ones in mock-backend.ts, so they win):
-// GET  /exam/:id                                     monitored exams
 // GET  /indicator?examId                             MONITORING_INDICATORS
 // GET  /client-group?examId                          MONITORING_CLIENT_GROUPS
 // GET  /monitoring/overview/:examId                  buildMonitoringOverview(state)
@@ -43,11 +47,35 @@ export type MonitoringFilterHeaders = {
 // GET  /seb-client-event/search                      CLIENT_EVENTS, paged and filtered
 // GET  /sps/proctoring/screenshot-data/*             404, so the proctoring view hides itself
 export async function installMonitoringMocks(page: Page): Promise<void> {
-    return notImplemented(page);
+    const state = createMonitoringState();
+
+    // the catch-all's {} would crash getAskAndStore, which maps over both lists
+    await page.route(
+        /\/api\/exam\/\d+\/(?:sebkeyinfo|grant)(?:$|\?)/,
+        getOnly((route) => json(route, [])),
+    );
+
+    await page.route(
+        /\/api\/monitoring\/overview\/\d+(?:$|\?)/,
+        getOnly((route) =>
+            json(
+                route,
+                buildMonitoringOverview([...state.connections.values()]),
+            ),
+        ),
+    );
 }
 
 export function createMonitoringState(): MonitoringMockState {
-    return notImplemented();
+    return {
+        connections: new Map(
+            MONITORING_CONNECTIONS.map((c) => [
+                c.connectionToken,
+                structuredClone(c),
+            ]),
+        ),
+        notifications: new Map(),
+    };
 }
 
 export function parseFilterHeaders(

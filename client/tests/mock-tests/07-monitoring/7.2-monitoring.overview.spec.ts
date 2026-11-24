@@ -1,12 +1,47 @@
+import en from "@/i18n/locales/en.json" with { type: "json" };
+import { ConnectionStatusEnum } from "@/models/seb-server/connectionStatusEnum.ts";
+
 import { test } from "../fixtures/table-list-fixtures";
+import {
+    buildMonitoringOverview,
+    MONITORED_EXAM_ID,
+    MONITORING_CONNECTIONS,
+} from "../mocks/monitoring-mock-data.ts";
 
 test.describe("07 Monitoring - Overview", () => {
     test.use({ timezoneId: "UTC" });
 
-    test.fixme("A shows the total and the count per client state", async () => {
-        await test.step("open the overview of the monitored exam", async () => {});
-        await test.step("total in the header matches buildMonitoringOverview", async () => {});
-        await test.step("every state row shows its count", async () => {});
+    test("A shows the total and the count per client state", async ({
+        monitoringOverview,
+    }) => {
+        const overview = buildMonitoringOverview(MONITORING_CONNECTIONS);
+
+        await test.step("open the overview of the monitored exam", async () => {
+            await monitoringOverview.goto(MONITORED_EXAM_ID);
+        });
+
+        await test.step("total in the header matches buildMonitoringOverview", async () => {
+            await monitoringOverview.expectConnectionsTotal(
+                overview.clientStates.total,
+            );
+        });
+
+        await test.step("every state row shows its count", async () => {
+            const states = [
+                ConnectionStatusEnum.CONNECTION_REQUESTED,
+                ConnectionStatusEnum.READY,
+                ConnectionStatusEnum.ACTIVE,
+                ConnectionStatusEnum.CLOSED,
+                ConnectionStatusEnum.DISABLED,
+                ConnectionStatusEnum.MISSING,
+            ] as const;
+            for (const state of states) {
+                await monitoringOverview.expectStateCount(
+                    en[state],
+                    overview.clientStates[state] ?? 0,
+                );
+            }
+        });
     });
 
     test.fixme("B clicking a state opens the client list filtered by that state", async () => {

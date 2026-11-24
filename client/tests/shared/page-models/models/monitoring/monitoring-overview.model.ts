@@ -1,4 +1,6 @@
-import { type Locator, type Page } from "@playwright/test";
+import { expect, type Locator, type Page } from "@playwright/test";
+
+import en from "@/i18n/locales/en.json" with { type: "json" };
 
 import { notImplemented } from "../../../../utils/helpers.ts";
 import { BasicPageModel } from "../../generic-models/basic-page.model.ts";
@@ -18,17 +20,35 @@ export class MonitoringOverviewModel extends BasicPageModel {
 
     //------------header-------------
     async expectConnectionsTotal(total: number) {
-        return notImplemented(total);
+        await expect(
+            this.page.getByTestId(`${PREFIX}-connections-total`),
+        ).toHaveText(
+            new RegExp(
+                `^${total}\\s*${en.monitoringOverview.infos.connections}$`,
+            ),
+        );
     }
 
     //------------client states box-------------
+    private clientStatesBox(): Locator {
+        return this.page.locator(".v-card").filter({
+            has: this.page.getByRole("heading", {
+                name: en.monitoringOverview.clientStates.clientStates,
+            }),
+        });
+    }
+
     // a state row is "<dot> <label> <count>" inside the "Client States" box
     stateRow(label: string): Locator {
-        return notImplemented(label);
+        return this.clientStatesBox()
+            .getByText(label, { exact: true })
+            .locator("..");
     }
 
     async expectStateCount(label: string, count: number) {
-        return notImplemented(label, count);
+        await expect(this.stateRow(label).locator("span").last()).toHaveText(
+            String(count),
+        );
     }
 
     async clickState(label: string) {

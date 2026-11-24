@@ -180,7 +180,7 @@ function pagedSpecificEnvelope(
     };
 }
 
-function json(route: Route, body: unknown, status = 200) {
+export function json(route: Route, body: unknown, status = 200) {
     return route.fulfill({
         status,
         contentType: "application/json",
@@ -188,7 +188,7 @@ function json(route: Route, body: unknown, status = 200) {
     });
 }
 
-function getOnly(
+export function getOnly(
     handler: (route: Route, url: URL) => Promise<void> | void,
 ): (route: Route) => Promise<void> | void {
     return (route) => {

@@ -29,6 +29,7 @@ import { UserAccountProfileModel } from "../../shared/page-models/models/user-ac
 import { UserAccountRegisterModel } from "../../shared/page-models/models/user-account/user-account-register.model.ts";
 import { UserAccountsListModel } from "../../shared/page-models/models/user-account/user-accounts-list.model.ts";
 import { installMockBackend } from "../mocks/mock-backend.ts";
+import { installMonitoringMocks } from "../mocks/monitoring-mock-backend.ts";
 
 type Fixtures = {
     userAccounts: UserAccountsListModel;
@@ -72,6 +73,8 @@ export const test = base.extend<Fixtures>({
     mockBackend: [
         async ({ page }, use, testInfo) => {
             await installMockBackend(page, testInfo.project.name);
+            // after the generic routes, so the monitoring ones win
+            await installMonitoringMocks(page);
             await use(undefined);
         },
         { auto: true },

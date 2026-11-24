@@ -19,49 +19,60 @@ test.describe("03 Exam Template - Start", () => {
         examTemplateCreate,
         examTemplate,
     }) => {
-        //step 1 - naming
-        await examTemplateCreate.goto();
+        await test.step("step 1 - naming", async () => {
+            await examTemplateCreate.goto();
 
-        await examTemplateCreate.expectStepVisible(1);
-        await examTemplateCreate.expectStepperNextButtonVisible();
+            await examTemplateCreate.expectStepVisible(1);
+            await examTemplateCreate.expectStepperNextButtonVisible();
 
-        await examTemplateCreate.fillFormNaming(examTemplateCreateNamingValid1);
-        await examTemplateCreate.goToNextStep();
+            await examTemplateCreate.fillFormNaming(
+                examTemplateCreateNamingValid1,
+            );
+            await examTemplateCreate.goToNextStep();
+        });
 
-        //step 2 - seb settings
-        await examTemplateCreate.expectStepVisible(2);
-        await examTemplateCreate.expectStepperNextButtonVisible();
+        await test.step("step 2 - seb settings", async () => {
+            await examTemplateCreate.expectStepVisible(2);
+            await examTemplateCreate.expectStepperNextButtonVisible();
 
-        await examTemplateCreate.goToNextStep();
+            await examTemplateCreate.goToNextStep();
+        });
 
-        //step 3 - exam supervisors
-        await examTemplateCreate.expectStepVisible(3);
-        await examTemplateCreate.expectStepperNextButtonVisible();
+        await test.step("step 3 - exam supervisors", async () => {
+            await examTemplateCreate.expectStepVisible(3);
+            await examTemplateCreate.expectStepperNextButtonVisible();
 
-        await examTemplateCreate.expectSupervisorRowVisible("testmain");
-        await examTemplateCreate.selectSupervisorRow("testmain");
+            await examTemplateCreate.expectSupervisorRowVisible("testmain");
+            await examTemplateCreate.selectSupervisorRow("testmain");
 
-        await examTemplateCreate.goToNextStep();
+            await examTemplateCreate.goToNextStep();
+        });
 
-        //step 4 - indicators
-        await examTemplateCreate.expectStepVisible(4);
-        await examTemplateCreate.expectStepperNextButtonVisible();
+        await test.step("step 4 - indicators", async () => {
+            await examTemplateCreate.expectStepVisible(4);
+            await examTemplateCreate.expectStepperNextButtonVisible();
 
-        await examTemplateCreate.goToNextStep();
+            await examTemplateCreate.goToNextStep();
+        });
 
-        //step 5 - groups
-        await examTemplateCreate.expectStepVisible(5);
-        await examTemplateCreate.expectStepperNextButtonVisible();
+        await test.step("step 5 - groups", async () => {
+            await examTemplateCreate.expectStepVisible(5);
+            await examTemplateCreate.expectStepperNextButtonVisible();
 
-        await examTemplateCreate.goToNextStep();
+            await examTemplateCreate.goToNextStep();
+        });
 
-        //step 6 - overview
-        await examTemplateCreate.expectStepVisible(6);
-        await examTemplateCreate.expectStepperSaveButtonVisible();
+        await test.step("step 6 - overview", async () => {
+            await examTemplateCreate.expectStepVisible(6);
+            await examTemplateCreate.expectStepperSaveButtonVisible();
 
-        await examTemplateCreate.saveExamTemplate();
+            await examTemplateCreate.saveExamTemplate();
+        });
 
-        //successful creation
-        await examTemplate.expectExamTemplateTitleVisible(EXAM_TEMPLATE_NAME);
+        await test.step("successful creation", async () => {
+            await examTemplate.expectExamTemplateTitleVisible(
+                EXAM_TEMPLATE_NAME,
+            );
+        });
     });
 });
