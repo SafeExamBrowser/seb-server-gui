@@ -100,13 +100,47 @@ While the repo variable `PUBLIC_IMAGE` is set, the buttons publish there instead
 - Git tags get the prefix `rehearsal/` (`rehearsal/v3.0.3`, `rehearsal/v3.0-stable`), so the real
   ones stay untouched. The versions continue from the real ones.
 
-To go live, delete the variable `PUBLIC_IMAGE` (the buttons then log in with
-`DOCKERHUB_ADMIN_USERNAME` and `DOCKERHUB_ADMIN_TOKEN`, like the old release path), the two
-`REHEARSAL_REGISTRY_*` secrets and the rehearsal tags:
+To go live, see the next section.
 
-```sh
-git push origin --delete $(git ls-remote --tags --refs origin 'refs/tags/rehearsal/*' | cut -f2)
-```
+## Going live: from the rehearsal to production
+
+While the repo variable `PUBLIC_IMAGE` exists, every release is a rehearsal. Going live means the
+buttons publish to `docker.io/sebadmin/seb-server-gui`, which the servers and the institutions
+pull. For them nothing changes: the names stay the same, only what puts the images there.
+
+**Before**
+
+- The rehearsal worked: Release latest, then Release stable reusing that version, and a second
+  run of the same button that changes nothing.
+- Agreed that every button press gives the image a version, so a version number alone no longer
+  means stable (see "Releasing").
+- The secrets `DOCKERHUB_ADMIN_USERNAME` and `DOCKERHUB_ADMIN_TOKEN` still work and may push to
+  `sebadmin/seb-server-gui`. The old release path uses them: its last run is under Actions ›
+  "Legacy · any tag → Docker Hub".
+- uat has signed off the commit `dev-x.y-tested` is on. Note it for the commit field.
+
+**Switch** (Settings › Secrets and variables › Actions)
+
+1. Delete the variable `PUBLIC_IMAGE`. From then on the buttons publish to
+   `docker.io/sebadmin/seb-server-gui` and log in with `DOCKERHUB_ADMIN_*`.
+2. Delete the secrets `REHEARSAL_REGISTRY_USERNAME` and `REHEARSAL_REGISTRY_TOKEN`.
+3. Delete the rehearsal git tags:
+   ```sh
+   git push origin --delete $(git ls-remote --tags --refs origin 'refs/tags/rehearsal/*' | cut -f2)
+   ```
+4. On the Docker Hub account the rehearsal used: revoke its access token (app.docker.com ›
+   Account settings › Personal access tokens) and delete the rehearsal repository.
+
+**First real release**
+
+5. Release stable on `dev-x.y` as a dry run. The summary must have no "Rehearsal" line, publish to
+   `docker.io/sebadmin/seb-server-gui`, take the next real version (for 3.0: `v3.0.3`) and show
+   the git tags without a prefix.
+6. The same without dry run, with the commit uat signed off.
+7. Check the summary: `vX.Y.Z`, `vX.Y-stable` and `vX.Y-latest` are the new version; the git
+   tags `vX.Y.Z` and `vX.Y-stable` are on the commit.
+8. A PR `dev-x.y` → `main` as the archive (merge commit).
+9. Then the legacy cleanup below.
 
 ## Scripts
 
@@ -143,7 +177,9 @@ Kept until the first release has gone through the Release stable button. Then:
 3. Add a tag ruleset to `rulesets/`: version tags `vX.Y.Z` can't be moved or deleted
    (`vX.Y-stable` still moves).
 4. Delete the unused secret `DOCKERHUB_PASSWORD`.
-5. Update this file.
+5. Delete the git tag `vX.Y-latest` (`v3.0-latest`): nothing moves it any more. The Docker Hub
+   name `vX.Y-latest` stays; the buttons move it.
+6. Update this file.
 
 Until step 2, every tag pushed by a person still starts `legacy-tag-build.yml` and rebuilds the
 Docker Hub name of that tag. Once the buttons exist, don't push release tags by hand. (Tags
