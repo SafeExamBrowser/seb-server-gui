@@ -98,7 +98,11 @@ While the repo variable `PUBLIC_IMAGE` is set, the buttons publish there instead
 - Secrets `REHEARSAL_REGISTRY_USERNAME` and `REHEARSAL_REGISTRY_TOKEN`: the account and an access
   token with Read & Write.
 - Git tags get the prefix `rehearsal/` (`rehearsal/v3.0.3`, `rehearsal/v3.0-stable`), so the real
-  ones stay untouched. The versions continue from the real ones.
+  ones stay untouched. The versions continue from the real ones. The tag messages name the image,
+  so the rehearsal account is visible in them until the tags are deleted when going live.
+- In the run's log and summary, account names show as `***`: GitHub hides secret values, and the
+  Docker Hub usernames are secrets. The "Rehearsal" line and the `rehearsal/` prefix say which it
+  is.
 
 To go live, see the next section.
 
@@ -124,7 +128,7 @@ pull. For them nothing changes: the names stay the same, only what puts the imag
 1. Delete the variable `PUBLIC_IMAGE`. From then on the buttons publish to
    `docker.io/sebadmin/seb-server-gui` and log in with `DOCKERHUB_ADMIN_*`.
 2. Delete the secrets `REHEARSAL_REGISTRY_USERNAME` and `REHEARSAL_REGISTRY_TOKEN`.
-3. Delete the rehearsal git tags:
+3. Delete the rehearsal git tags (their messages name the rehearsal account):
    ```sh
    git push origin --delete $(git ls-remote --tags --refs origin 'refs/tags/rehearsal/*' | cut -f2)
    ```
@@ -133,12 +137,13 @@ pull. For them nothing changes: the names stay the same, only what puts the imag
 
 **First real release**
 
-5. Release stable on `dev-x.y` as a dry run. The summary must have no "Rehearsal" line, publish to
-   `docker.io/sebadmin/seb-server-gui`, take the next real version (for 3.0: `v3.0.3`) and show
-   the git tags without a prefix.
+5. Release stable on `dev-x.y` as a dry run. The summary must have no "Rehearsal" line, take the
+   next real version (for 3.0: `v3.0.3`) and show the git tags without the `rehearsal/` prefix.
+   The image shows as `docker.io/***/seb-server-gui` (see "Rehearsal").
 6. The same without dry run, with the commit uat signed off.
 7. Check the summary: `vX.Y.Z`, `vX.Y-stable` and `vX.Y-latest` are the new version; the git
-   tags `vX.Y.Z` and `vX.Y-stable` are on the commit.
+   tags `vX.Y.Z` and `vX.Y-stable` are on the commit. On hub.docker.com, `sebadmin/seb-server-gui`
+   › Tags shows the three names with the same digest.
 8. A PR `dev-x.y` → `main` as the archive (merge commit).
 9. Then the legacy cleanup below.
 
