@@ -52,7 +52,7 @@ export class MonitoringOverviewModel extends BasicPageModel {
     }
 
     async clickState(label: string) {
-        return notImplemented(label);
+        await this.stateRow(label).click();
     }
 
     //------------notifications / indicators box-------------
@@ -61,41 +61,66 @@ export class MonitoringOverviewModel extends BasicPageModel {
     }
 
     async clickNotification(label: string) {
-        return notImplemented(label);
+        await this.page
+            .locator(".v-card")
+            .filter({
+                has: this.page.getByRole("heading", {
+                    name: en.monitoringOverview.notifications.notifications,
+                }),
+            })
+            .getByText(label, { exact: true })
+            .click();
     }
 
     //------------groups-------------
     groupTile(groupName: string): Locator {
-        return notImplemented(groupName);
+        return this.page
+            .getByRole("heading", { name: groupName, exact: true, level: 3 })
+            .locator("xpath=ancestor::div[contains(@class, 'v-sheet')][1]");
     }
 
-    async expectGroupClients(
-        groupName: string,
-        activeClients: number,
-        clientAmount: number,
-    ) {
-        return notImplemented(groupName, activeClients, clientAmount);
+    // the tile only shows the active clients, not the total
+    async expectGroupClients(groupName: string, activeClients: number) {
+        await expect(this.groupTile(groupName).locator(".v-chip")).toHaveText(
+            new RegExp(
+                `^${activeClients}\\s*${en.monitoringOverview.groups.clients.trim()}$`,
+            ),
+        );
     }
 
     async clickGroupList(groupName: string) {
-        return notImplemented(groupName);
+        await this.groupTile(groupName)
+            .getByRole("button", {
+                name: en.monitoringOverview.groups.buttons.viewList,
+            })
+            .click();
     }
 
     //------------quit all-------------
     async openQuitAllDialog(): Promise<Locator> {
-        return notImplemented();
+        await this.page
+            .getByRole("button", { name: en.monitoringOverview.quitAll.button })
+            .click();
+        const dialog = this.page.getByRole("dialog", {
+            name: en.monitoringOverview.quitAll.title,
+        });
+        await expect(dialog).toBeVisible();
+        return dialog;
     }
 
     async confirmQuitAll(confirmText: string) {
-        return notImplemented(confirmText);
-    }
-
-    async expectQuitAllSubmitDisabled() {
-        return notImplemented();
+        const dialog = this.page.getByRole("dialog", {
+            name: en.monitoringOverview.quitAll.title,
+        });
+        await dialog.getByRole("textbox").fill(confirmText);
+        await dialog
+            .getByRole("button", { name: en.monitoringOverview.quitAll.doQuit })
+            .click();
     }
 
     //------------monitoring not possible-------------
     async expectMonitoringDisabledWarning(text: string) {
-        return notImplemented(text);
+        await expect(this.page.getByText(text, { exact: true })).toBeVisible();
+        await expect(this.pageTitle).toBeHidden();
     }
 }

@@ -69,19 +69,33 @@ export const NOT_RUNNING_EXAM = {
 
 export const MONITORING_INDICATORS: MockIndicator[] = [];
 
-export const MONITORING_CLIENT_GROUPS: OverviewClientGroup[] = [];
+export const ROOM_A_GROUP_ID = 9701;
+
+// clientAmount and activeClients are counted from the connections in buildMonitoringOverview
+export const MONITORING_CLIENT_GROUPS: Omit<
+    OverviewClientGroup,
+    "clientAmount" | "activeClients"
+>[] = [
+    {
+        id: ROOM_A_GROUP_ID,
+        name: "Room A",
+        type: "IP_V4_RANGE",
+        typeValue: "10.0.0.1 - 10.0.0.50",
+    },
+];
 
 function connection(
     id: number,
     status: ConnectionStatusEnum,
     flags = 0,
+    groupIds: number[] = [],
 ): MockMonitoringConnection {
     return {
         id,
         connectionToken: `token-${id}`,
         examUserSessionId: `student-${id}`,
         sebInfo: "SEB 3.9 (Windows)",
-        groupIds: [],
+        groupIds,
         status,
         flags,
         indicatorValues: {},
@@ -91,12 +105,17 @@ function connection(
 // one connection per state, plus one with a pending lock and one with a raised hand
 export const MONITORING_CONNECTIONS = [
     connection(1, ConnectionStatusEnum.CONNECTION_REQUESTED),
-    connection(2, ConnectionStatusEnum.READY),
-    connection(3, ConnectionStatusEnum.ACTIVE),
+    connection(2, ConnectionStatusEnum.READY, 0, [ROOM_A_GROUP_ID]),
+    connection(3, ConnectionStatusEnum.ACTIVE, 0, [ROOM_A_GROUP_ID]),
     connection(4, ConnectionStatusEnum.CLOSED),
     connection(5, ConnectionStatusEnum.DISABLED),
     connection(6, ConnectionStatusEnum.MISSING, NOTIFICATION_FLAGS.MISSING),
-    connection(7, ConnectionStatusEnum.ACTIVE, NOTIFICATION_FLAGS.LOCK_PENDING),
+    connection(
+        7,
+        ConnectionStatusEnum.ACTIVE,
+        NOTIFICATION_FLAGS.LOCK_PENDING,
+        [ROOM_A_GROUP_ID],
+    ),
     connection(8, ConnectionStatusEnum.ACTIVE, NOTIFICATION_FLAGS.RAISE_HAND),
 ];
 
@@ -138,7 +157,19 @@ export function buildMonitoringOverview(
             MISSING: count(ConnectionStatusEnum.MISSING),
             CLOSED: count(ConnectionStatusEnum.CLOSED),
         },
-        clientGroups: MONITORING_CLIENT_GROUPS,
+        clientGroups: MONITORING_CLIENT_GROUPS.map((group) => {
+            const members = connections.filter((c) =>
+                c.groupIds.includes(group.id),
+            );
+            return {
+                ...group,
+                clientAmount: members.length,
+                activeClients: connectionsInState(
+                    members,
+                    ConnectionStatusEnum.ACTIVE,
+                ).length,
+            };
+        }),
         indicators: {},
         notifications: {
             total:

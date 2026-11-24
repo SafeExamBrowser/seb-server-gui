@@ -1,6 +1,7 @@
 import { type Page } from "@playwright/test";
 
 import type { ClientInstruction } from "@/models/seb-server/clientInstruction.ts";
+import { ConnectionStatusEnum } from "@/models/seb-server/connectionStatusEnum.ts";
 import type {
     ClientEventResponse,
     ClientNotification,
@@ -14,8 +15,17 @@ import { getOnly, json } from "./mock-backend.ts";
 import {
     buildMonitoringOverview,
     type MockMonitoringConnection,
+    MONITORED_EXAM_ID,
+    MONITORED_EXAM_WITH_SPS_ID,
+    MONITORING_CLIENT_GROUPS,
     MONITORING_CONNECTIONS,
+    NOTIFICATION_FLAGS,
 } from "./monitoring-mock-data.ts";
+
+const NOTIFICATION_FLAG_BY_TYPE: Record<string, number> = {
+    LOCK_SCREEN: NOTIFICATION_FLAGS.LOCK_PENDING,
+    RAISE_HAND: NOTIFICATION_FLAGS.RAISE_HAND,
+};
 
 // changed by the action routes, so the next poll returns the new state
 export type MonitoringMockState = {
@@ -64,6 +74,77 @@ export async function installMonitoringMocks(page: Page): Promise<void> {
             ),
         ),
     );
+
+    await page.route(
+        /\/api\/client-group(?:$|\?)/,
+        getOnly((route, url) => {
+            const examId = Number(url.searchParams.get("examId"));
+            if (
+                examId !== MONITORED_EXAM_ID &&
+                examId !== MONITORED_EXAM_WITH_SPS_ID
+            ) {
+                return route.fallback();
+            }
+            return json(route, {
+                number_of_pages: 1,
+                page_number: 1,
+                page_size: MONITORING_CLIENT_GROUPS.length,
+                content: MONITORING_CLIENT_GROUPS.map(({ id, name, type }) => ({
+                    id,
+                    examId,
+                    name,
+                    type,
+                })),
+            });
+        }),
+    );
+
+    await page.route(
+        /\/api\/monitoring\/connections\/(\d+)(?:$|\?)/,
+        getOnly((route, url) => {
+            const filter = parseFilterHeaders(route.request().headers());
+            const connections = filterConnections(
+                [...state.connections.values()],
+                filter,
+            );
+            return json(route, {
+                examId: Number(url.pathname.split("/").pop()),
+                monitoringConnectionData: {
+                    cons: connections.map(toCompactConnection),
+                    sm: [],
+                    cgm: {},
+                    im: [],
+                },
+                screenProctoringData: [],
+            });
+        }),
+    );
+
+    await page.route(
+        /\/api\/monitoring\/\d+\/static-client-data(?:$|\?)/,
+        (route) => {
+            const modelIds = new URLSearchParams(
+                route.request().postData() ?? "",
+            )
+                .get("modelIds")
+                ?.split(",")
+                .map(Number);
+            return json(route, {
+                staticClientConnectionData: [...state.connections.values()]
+                    .filter((c) => modelIds?.includes(c.id))
+                    .map(toStaticClientData),
+                duplications: [],
+            });
+        },
+    );
+
+    await page.route(/\/api\/monitoring\/\d+\/quitAll(?:$|\?)/, (route) => {
+        if (route.request().method() !== "POST") {
+            return route.fallback();
+        }
+        quitAll(state);
+        return json(route, {});
+    });
 }
 
 export function createMonitoringState(): MonitoringMockState {
@@ -81,26 +162,71 @@ export function createMonitoringState(): MonitoringMockState {
 export function parseFilterHeaders(
     headers: Record<string, string>,
 ): MonitoringFilterHeaders {
-    return notImplemented(headers);
+    const list = (name: string) =>
+        (headers[name] ?? "")
+            .split(",")
+            .map((value) => value.trim())
+            .filter(Boolean);
+
+    return {
+        showAll: headers["show-all"] === "true",
+        states: list("show-states"),
+        clientGroups: list("show-client-groups"),
+        notifications: list("show-notifications"),
+        indicators: list("show-indicators"),
+    };
 }
 
 export function filterConnections(
     connections: MockMonitoringConnection[],
     filter: MonitoringFilterHeaders,
 ): MockMonitoringConnection[] {
-    return notImplemented(connections, filter);
+    if (filter.showAll) {
+        return connections;
+    }
+
+    // shortcut: show-indicators is ignored, add it once a spec filters by indicator
+    return connections.filter(
+        (c) =>
+            (filter.states.length === 0 || filter.states.includes(c.status)) &&
+            (filter.clientGroups.length === 0 ||
+                c.groupIds.some((id) =>
+                    filter.clientGroups.includes(String(id)),
+                )) &&
+            (filter.notifications.length === 0 ||
+                filter.notifications.some(
+                    (type) => c.flags & (NOTIFICATION_FLAG_BY_TYPE[type] ?? 0),
+                )),
+    );
 }
 
 export function toCompactConnection(
     connection: MockMonitoringConnection,
 ): MonitoringClientConnection {
-    return notImplemented(connection);
+    return {
+        id: connection.id,
+        nf: connection.flags,
+        st: connection.status,
+        iv: Object.fromEntries(
+            Object.entries(connection.indicatorValues).map(([id, value]) => [
+                id,
+                String(value),
+            ]),
+        ),
+    };
 }
 
 export function toStaticClientData(
     connection: MockMonitoringConnection,
 ): StaticClientConnectionData {
-    return notImplemented(connection);
+    return {
+        id: connection.id,
+        connectionToken: connection.connectionToken,
+        examUserSessionId: connection.examUserSessionId,
+        ask: "",
+        seb_info: connection.sebInfo,
+        cg: connection.groupIds,
+    };
 }
 
 export function toSingleConnection(
@@ -132,7 +258,11 @@ export function disableConnections(
 }
 
 export function quitAll(state: MonitoringMockState): void {
-    return notImplemented(state);
+    for (const connection of state.connections.values()) {
+        if (connection.status === ConnectionStatusEnum.ACTIVE) {
+            connection.status = ConnectionStatusEnum.CLOSED;
+        }
+    }
 }
 
 export function confirmNotification(

@@ -1,4 +1,4 @@
-import { type Locator, type Page } from "@playwright/test";
+import { expect, type Locator, type Page } from "@playwright/test";
 
 import { MonitoringBulkActionEnum } from "@/models/seb-server/monitoringEnums.ts";
 
@@ -38,18 +38,30 @@ export class MonitoringClientsModel extends BasicPageModel {
         return notImplemented(examId, query);
     }
 
+    // the url is on the client list and its query is exactly the given one
+    async expectQuery(examId: number, query: Record<string, string>) {
+        await expect(this.page).toHaveURL(new RegExp(`${this.url(examId)}\\?`));
+        const params = new URL(this.page.url()).searchParams;
+        expect(Object.fromEntries(params)).toEqual(query);
+    }
+
     //------------table-------------
     // the rows have no test ids, they are located by the user name / session column
     rows(): Locator {
-        return notImplemented();
+        return this.page.locator(".v-data-table tbody tr");
     }
 
     row(sessionName: string): Locator {
-        return notImplemented(sessionName);
+        return this.rows().filter({
+            has: this.page.getByText(sessionName, { exact: true }),
+        });
     }
 
     async expectRowNames(sessionNames: string[]) {
-        return notImplemented(sessionNames);
+        await expect(this.rows()).toHaveCount(sessionNames.length);
+        for (const sessionName of sessionNames) {
+            await expect(this.row(sessionName)).toBeVisible();
+        }
     }
 
     async expectRowStatus(sessionName: string, statusLabel: string) {
