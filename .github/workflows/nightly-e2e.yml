@@ -7,11 +7,16 @@
 name: Nightly e2e
 
 on:
-  # By hand only for now. After a few good runs a schedule is added here, e.g.
-  #   schedule:
-  #     - cron: "0 1 * * *"
-  # Scheduled runs use this file on development.
+  # Every night. Scheduled runs use this file on development.
+  schedule:
+    - cron: "0 1 * * *" # 01:00 UTC
+  # By hand: Actions › Nightly e2e › Run workflow.
   workflow_dispatch:
+    inputs:
+      retest:
+        description: Test a commit with ✗ again (e.g. after a flaky failure)
+        type: boolean
+        default: false
 
 # Never two runs at once: once the e2e server exists, it's the queue.
 concurrency:
@@ -62,6 +67,7 @@ jobs:
       E2E_MODE: ${{ vars.E2E_MODE }}
       GH_TOKEN: ${{ github.token }}
       LINE: ${{ matrix.line }}
+      RETEST: ${{ inputs.retest }} # empty on scheduled runs
     steps:
       # The scripts, from the branch this workflow runs on. The tests come from the tested commit.
       - uses: actions/checkout@v7.0.1

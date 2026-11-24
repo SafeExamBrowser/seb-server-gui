@@ -6,7 +6,8 @@
 #       The lines to test, as JSON: development, then every dev-x.y branch.
 #   nightly-e2e.sh pin <line>
 #       1. Pins the line's image by digest and reads the commit it was built from, so a push during
-#          the run can't change what's tested. 2. Says to skip if that commit already has a result.
+#          the run can't change what's tested. 2. Says to skip if that commit already has a result
+#          (a ✗ not with RETEST=true, the retest checkbox).
 #          Writes image (name@digest), revision and test (true/false) to $GITHUB_OUTPUT.
 #   nightly-e2e.sh test <image@digest> <client dir>
 #       3. Tests exactly that image, with the e2e tests in <client dir> (the tested commit's client/).
@@ -70,10 +71,11 @@ pin() {
     exit 1
   fi
 
-  # Only a finished result counts. error (set up failed, cancelled) is tested again.
+  # Only a finished result counts. error (set up failed, cancelled) is tested again, failure too
+  # with RETEST=true. A ✓ never is: if it turned ✗, <line>-tested would point at a red image.
   state=$(gh api "repos/$GITHUB_REPOSITORY/commits/$revision/status" \
     -q ".statuses[] | select(.context == \"$context\") | .state")
-  if [[ $state == success || $state == failure ]]; then
+  if [[ $state == success || ($state == failure && ${RETEST:-} != true) ]]; then
     test=false
   fi
 

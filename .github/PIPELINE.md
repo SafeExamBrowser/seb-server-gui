@@ -5,35 +5,34 @@ buttons publish.** Every push to `development` or a release line (`dev-x.y`) bui
 Testing and releasing only add names to that image; it's never rebuilt, so what was tested is
 byte for byte what gets released.
 
-The pipeline is being built in stages. Rows marked **not built yet** are planned; rows marked
-**placeholder** exist but wait for the servers; **legacy** is the old way, kept until the new
-one has released once.
+The pipeline is being built in stages. Rows marked **placeholder** exist but wait for the
+servers; **legacy** is the old way, kept until the new one has released once.
 
 ## Workflows
 
-| File                                       | Runs on                                              | Does                                                                                                       |
-| ------------------------------------------ | ---------------------------------------------------- | ---------------------------------------------------------------------------------------------------------- |
-| `workflows/pr.yml`                         | PRs into `development` and `dev-x.y`                 | Required checks `client`, `server`, `e2e` (mocked suite)                                                   |
-| `workflows/allowed-source.yml`             | every PR                                             | Required check: which branch may be merged into which                                                      |
-| `workflows/build.yml`                      | push to `development` and `dev-x.y`                  | Scan, build, push `ghcr…:<branch>`; delete old untagged versions                                           |
-| `workflows/nightly-e2e.yml`                | by hand for now; every night once the schedule is on | One line after the other: test the newest image, ✓/✗ on its commit; if green, move `<branch>-tested` to it |
-| `workflows/release-latest.yml`             | **not built yet** (button, from a `dev-x.y`)         | Publish `dev-x.y-tested` as `vX.Y-latest` on Docker Hub                                                    |
-| `workflows/release-stable.yml`             | **not built yet** (button, from a `dev-x.y`)         | Publish `dev-x.y-tested` as `vX.Y.Z`, `vX.Y-stable`, `vX.Y-latest`; git tags `vX.Y.Z` and `vX.Y-stable`    |
-| `workflows/legacy-tag-build.yml`           | **legacy**: any tag push                             | Rebuilds from the tagged commit and pushes `sebadmin/seb-server-gui:<tag>` to Docker Hub                   |
-| `workflows/legacy-auto-testing-deploy.yml` | **legacy**: tag `auto-testing-deploy`                | Rebuilds `sebadmin/seb-server-gui-auto-testing`                                                            |
+| File                                       | Runs on                               | Does                                                                                                                            |
+| ------------------------------------------ | ------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------- |
+| `workflows/pr.yml`                         | PRs into `development` and `dev-x.y`  | Required checks `client`, `server`, `e2e` (mocked suite)                                                                        |
+| `workflows/allowed-source.yml`             | every PR                              | Required check: which branch may be merged into which                                                                           |
+| `workflows/build.yml`                      | push to `development` and `dev-x.y`   | Scan, build, push `ghcr…:<branch>`; delete old untagged versions                                                                |
+| `workflows/nightly-e2e.yml`                | every night at 01:00 UTC, and by hand | One line after the other: test the newest image, ✓/✗ on its commit; if green, move `<branch>-tested` to it                      |
+| `workflows/release-latest.yml`             | button, run from a `dev-x.y`          | Give `dev-x.y-tested` a version `vX.Y.Z` (its own or the next free one), publish it, move `vX.Y-latest` there; git tag `vX.Y.Z` |
+| `workflows/release-stable.yml`             | button, run from a `dev-x.y`          | The same, but moves `vX.Y-stable` and `vX.Y-latest`; git tags `vX.Y.Z` and `vX.Y-stable`                                        |
+| `workflows/legacy-tag-build.yml`           | **legacy**: any tag push              | Rebuilds from the tagged commit and pushes `sebadmin/seb-server-gui:<tag>` to Docker Hub                                        |
+| `workflows/legacy-auto-testing-deploy.yml` | **legacy**: tag `auto-testing-deploy` | Rebuilds `sebadmin/seb-server-gui-auto-testing`                                                                                 |
 
 ## Images
 
 Builds and tested builds are private, on ghcr. Releases are public, on Docker Hub, where the
 servers and the institutions running the GUI on Kubernetes pull them from.
 
-| Name                                   | Where                                             | Moved by                          | Used by                                 |
-| -------------------------------------- | ------------------------------------------------- | --------------------------------- | --------------------------------------- |
-| `development`, `dev-x.y`               | `ghcr.io/safeexambrowser/seb-server-gui`, private | every push (`build.yml`)          | dev (playground), nightly e2e           |
-| `development-tested`, `dev-x.y-tested` | `ghcr.io/safeexambrowser/seb-server-gui`, private | a green nightly e2e               | uat                                     |
-| `vX.Y-latest`                          | `docker.io/sebadmin/seb-server-gui`, public       | Release latest and Release stable | anyone who wants the newest tested X.Y  |
-| `vX.Y.Z`                               | `docker.io/sebadmin/seb-server-gui`, public       | Release stable, never moves       | prod, institutions pinning a version    |
-| `vX.Y-stable`                          | `docker.io/sebadmin/seb-server-gui`, public       | Release stable                    | institutions following the newest patch |
+| Name                                   | Where                                             | Moved by                                                 | Used by                                                                        |
+| -------------------------------------- | ------------------------------------------------- | -------------------------------------------------------- | ------------------------------------------------------------------------------ |
+| `development`, `dev-x.y`               | `ghcr.io/safeexambrowser/seb-server-gui`, private | every push (`build.yml`)                                 | dev (playground), nightly e2e                                                  |
+| `development-tested`, `dev-x.y-tested` | `ghcr.io/safeexambrowser/seb-server-gui`, private | a green nightly e2e                                      | uat                                                                            |
+| `vX.Y.Z`                               | `docker.io/sebadmin/seb-server-gui`, public       | the button that gives the image its version; never moves | prod, institutions pinning a version                                           |
+| `vX.Y-stable`                          | `docker.io/sebadmin/seb-server-gui`, public       | Release stable                                           | institutions following the newest stable release                               |
+| `vX.Y-latest`                          | `docker.io/sebadmin/seb-server-gui`, public       | Release latest and Release stable                        | institutions following the newest release (uat may not have signed it off yet) |
 
 There's deliberately no plain `latest`, so pulling without a tag never gets a test build.
 
@@ -50,13 +49,13 @@ docker inspect --format '{{index .Config.Labels "org.opencontainers.image.revisi
 
 ## Nightly e2e
 
-By hand for now: Actions › Nightly e2e › Run workflow, from `development`. The schedule is added
-once a few runs have been good. For each line (`development`, then every `dev-x.y`), one after
-the other:
+Every night at 01:00 UTC, and by hand: Actions › Nightly e2e › Run workflow, from `development`.
+For each line (`development`, then every `dev-x.y`), one after the other:
 
 1. Pins the line's image by digest and reads the commit it was built from. A push during the run
    can't change what's tested.
-2. Skips the line if that commit already has a ✓ or ✗. A ✗ stays until the next push to the line.
+2. Skips the line if that commit already has a ✓ or ✗. A ✗ stays until the next push to the line,
+   or until a run by hand with **Test a commit with ✗ again** ticked (e.g. after a flaky failure).
    A run that couldn't test (setup failed, cancelled) writes an error instead, and the next run
    tests the commit again.
 3. Checks out that commit (tests and app match), starts the image in the runner with dummy backend
@@ -65,12 +64,57 @@ the other:
    on the commit, linking to the run.
 5. Only if green: gives exactly that image (same digest) the name `<line>-tested` too.
 
+## Releasing
+
+Actions › **Release latest** or **Release stable** › Run workflow, with **Use workflow from:
+`dev-x.y`**. **Dry run** is ticked by default: the run's summary shows what would happen
+(version, image, commit, which names and tags move) and nothing changes. Untick it to release.
+
+Both buttons take `dev-x.y-tested`, the newest image with a green nightly e2e:
+
+1. Pin it by digest and read the commit it was built from.
+2. Give it a version `vX.Y.Z`: the one it got from an earlier release, else the next free one.
+   An image never gets two versions.
+3. Publish it as `vX.Y.Z` and move the pointers there: Release latest moves `vX.Y-latest`,
+   Release stable moves `vX.Y-stable` and `vX.Y-latest`.
+4. Git: an annotated tag `vX.Y.Z` on that commit if the version is new; Release stable also moves
+   the tag `vX.Y-stable` there. The tag's message says which button made it.
+
+Release stable can also take a version (instead of the next free one) and the commit uat signed
+off; it refuses if `dev-x.y-tested` is another commit by then. Both refuse if there's no
+`dev-x.y-tested`, if its commit isn't on the branch, if a version on Docker Hub already holds
+another image (versions are never overwritten) and if `vX.Y-latest` or `vX.Y-stable` would go back
+to an older version. If a run fails halfway, run it again: it skips what's done.
+
+Afterwards, as before: a PR `dev-x.y` → `main` as the archive (merge commit).
+
+### Rehearsal
+
+While the repo variable `PUBLIC_IMAGE` is set, the buttons publish there instead of
+`docker.io/sebadmin/seb-server-gui`, e.g. to a private Docker Hub repository:
+
+- `PUBLIC_IMAGE`: the full name, e.g. `docker.io/<account>/seb-server-gui`. Create the repository
+  first, as private: a push would create it with the account's default visibility.
+- Secrets `REHEARSAL_REGISTRY_USERNAME` and `REHEARSAL_REGISTRY_TOKEN`: the account and an access
+  token with Read & Write.
+- Git tags get the prefix `rehearsal/` (`rehearsal/v3.0.3`, `rehearsal/v3.0-stable`), so the real
+  ones stay untouched. The versions continue from the real ones.
+
+To go live, delete the variable `PUBLIC_IMAGE` (the buttons then log in with
+`DOCKERHUB_ADMIN_USERNAME` and `DOCKERHUB_ADMIN_TOKEN`, like the old release path), the two
+`REHEARSAL_REGISTRY_*` secrets and the rehearsal tags:
+
+```sh
+git push origin --delete $(git ls-remote --tags --refs origin 'refs/tags/rehearsal/*' | cut -f2)
+```
+
 ## Scripts
 
 | File                       | Does                                                                                   |
 | -------------------------- | -------------------------------------------------------------------------------------- |
 | `scripts/images.sh`        | The image names, in one place (sourced by the workflows and scripts)                   |
 | `scripts/nightly-e2e.sh`   | The nightly e2e, per line: pin, skip, test, report, move `-tested`                     |
+| `scripts/release.sh`       | The release buttons: pin, version, publish, git tags                                   |
 | `scripts/ghcr-cleanup.sh`  | Deletes old untagged ghcr versions, keeps the newest 20; tagged ones are never touched |
 | `scripts/e2e-on-server.sh` | **Placeholder**: deploy one image to the e2e server and run the full suite against it  |
 
