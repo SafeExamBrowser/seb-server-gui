@@ -459,8 +459,9 @@ export async function installMockBackend(page: Page, browser: string) {
     );
 
     // --- institutions ---------------------------------------------------------
-    await page.route(/\/api\/info\/institution(?:$|\?)/, (route) =>
-        json(route, INSTITUTION_NAMES),
+    await page.route(
+        /\/api\/admin-api\/v1\/info\/institution(?:$|\?)/,
+        (route) => json(route, INSTITUTION_NAMES),
     );
 
     await page.route(

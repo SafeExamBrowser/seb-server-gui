@@ -87,9 +87,7 @@ test.describe("03 Certificates - READ Get All", () => {
         );
 
         await certificates.page.goto(certificates.config.route);
-        await expect(
-            certificates.page.getByText(/Something went wrong:/i),
-        ).toBeVisible();
+        await certificates.errorState.expectVisible();
     });
 
     test("E delete button opens the confirm dialog and cancel keeps the row", async ({

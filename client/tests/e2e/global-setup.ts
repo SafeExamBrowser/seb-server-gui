@@ -13,8 +13,8 @@ export default async function globalSetup(config: FullConfig) {
         }
     } catch (error) {
         throw new Error(
-            `e2e setup: the dev server at ${baseURL} is not reachable. ` +
-                "Start it with `npm run dev` before running the e2e suite.",
+            `e2e setup: ${baseURL} is not reachable. ` +
+                "Check BASE_URL, or unset it so Playwright starts the dev server.",
             { cause: error },
         );
     }

@@ -169,9 +169,7 @@ test.describe("04 Connection Configurations - READ Get All", () => {
         await connectionConfigurations.page.goto(
             connectionConfigurations.config.route,
         );
-        await expect(
-            connectionConfigurations.page.getByText(/Something went wrong:/i),
-        ).toBeVisible();
+        await connectionConfigurations.errorState.expectVisible();
     });
 
     test("E row actions open confirm dialogs and cancel leaves data unchanged", async ({

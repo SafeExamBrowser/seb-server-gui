@@ -114,9 +114,7 @@ test.describe("02 Institutions - READ Get All", () => {
         );
 
         await institutions.page.goto(institutions.config.route);
-        await expect(
-            institutions.page.getByText(/Something went wrong:/i),
-        ).toBeVisible();
+        await institutions.errorState.expectVisible();
     });
 
     test("E row actions open confirm dialogs and cancel leaves data unchanged", async ({
