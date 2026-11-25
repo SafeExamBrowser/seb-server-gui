@@ -8,6 +8,7 @@
             <SupervisorPicker
                 v-if="supervisors"
                 v-model="stepSupervisorsStore.selectedSupervisorIds"
+                data-testid="exam-template-step3"
                 :supervisors="supervisors"
             />
         </LoadingFallbackComponent>

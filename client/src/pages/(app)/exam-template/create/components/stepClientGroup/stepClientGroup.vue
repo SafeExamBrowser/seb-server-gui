@@ -3,7 +3,11 @@
         :title="$t('createTemplateExam.steps.clientGroup.title')"
         :subtitle="$t('createTemplateExam.steps.clientGroup.subtitle')"
     >
-        <ClientGroupsTable :deps="tableDeps" :heading-level="3" />
+        <ClientGroupsTable
+            :deps="tableDeps"
+            data-testid="exam-template-step5"
+            :heading-level="3"
+        />
     </StepItem>
 </template>
 

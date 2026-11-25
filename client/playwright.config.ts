@@ -33,12 +33,15 @@ const reporters: ReporterDescription[] = isCI
     : [["html", { outputFolder: reportDir, open: "never" }]];
 
 export default defineConfig({
-    testDir: "tests/e2e",
-    globalSetup: "./tests/e2e/global-setup.ts",
+    testDir: "tests/",
+    testIgnore: "**/unit-tests/**",
+    globalSetup: "./tests/config/global-setup.ts",
     fullyParallel: true,
     forbidOnly: isCI,
     retries: isCI ? 2 : 0,
     workers: isCI ? 4 : undefined, // the runners have 4 vCPUs, and vite preview needs almost none
+
+    // timeout: 10_000,
 
     reporter: reporters,
 
@@ -56,5 +59,16 @@ export default defineConfig({
     },
 
     // Chromium only, locally and in CI.
-    projects: [{ name: "chromium", use: { ...devices["Desktop Chrome"] } }],
+    projects: [
+        {
+            name: "chromium",
+            use: { ...devices["Desktop Chrome"] },
+            dependencies: ["setup"],
+        },
+        {
+            name: "setup",
+            testDir: "tests/config",
+            testMatch: /auth\.setup\.ts/,
+        },
+    ],
 });

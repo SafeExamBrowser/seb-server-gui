@@ -7,6 +7,7 @@
             <LoadingFallbackComponent :loading="loading" :errors="errors">
                 <FormBuilder
                     v-model="useStepNamingStore().isReady"
+                    data-testid="exam-template-step1"
                     :fields="formFields"
                 />
             </LoadingFallbackComponent>
