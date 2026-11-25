@@ -9,7 +9,9 @@ name: Nightly e2e
 on:
   # Every night. Scheduled runs use this file on development.
   schedule:
-    - cron: "0 1 * * *" # 01:00 UTC
+    # 01:23 UTC. Not on the full hour: GitHub delays or drops scheduled runs at its busiest times,
+    # and that's the start of every hour (no run came at 0 1 * * *).
+    - cron: "23 1 * * *"
   # By hand: Actions › Nightly e2e › Run workflow.
   workflow_dispatch:
     inputs:

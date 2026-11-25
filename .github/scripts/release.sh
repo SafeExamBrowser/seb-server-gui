@@ -114,6 +114,7 @@ copy() {
   if [[ $now == "$digest" ]]; then
     return
   fi
+  changed=true
   # --prefer-index=false copies the image as it is; otherwise a plain image gets wrapped in a new
   # index with a different digest.
   docker buildx imagetools create --prefer-index=false --tag "$to" "$image"
@@ -269,6 +270,7 @@ release() {
   fi
 
   # 3. The public names. The version first, so a pointer never points at an image without one.
+  changed=false
   copy "$version"
   for name in "${pointers[@]}"; do
     copy "$name"
@@ -293,13 +295,21 @@ Run:    $run" "$prefix$version" "$revision"
 Run: $run" "$stable_tag" "$revision" >/dev/null
     refs+=("+refs/tags/$stable_tag")
   fi
-  if ((${#refs[@]})) && ! git push --atomic origin "${refs[@]}"; then
-    fail "$public has $version, but pushing the git tags failed. Run the button again (without" \
-      "dry run): it skips what's done and pushes the tags."
+  if ((${#refs[@]})); then
+    if ! git push --atomic origin "${refs[@]}"; then
+      fail "$public has $version, but pushing the git tags failed. Run the button again (without" \
+        "dry run): it skips what's done and pushes the tags."
+    fi
+    changed=true
   fi
 
   say
-  say "Released. Now: v$xy-stable = $(describe "v$xy-stable"), v$xy-latest = $(describe "v$xy-latest")."
+  if $changed; then
+    say "Released. Now: v$xy-stable = $(describe "v$xy-stable"), v$xy-latest = $(describe "v$xy-latest")."
+  else
+    say "Nothing to do: everything was there already. v$xy-stable = $(describe "v$xy-stable")," \
+      "v$xy-latest = $(describe "v$xy-latest")."
+  fi
 }
 
 case ${1:-} in
