@@ -15,7 +15,7 @@ servers; **legacy** is the old way, kept until the new one has released once.
 | `workflows/pr.yml`                         | PRs into `development` and `dev-x.y`  | Required checks `client`, `server`, `e2e` (mocked suite)                                                                        |
 | `workflows/allowed-source.yml`             | every PR                              | Required check: which branch may be merged into which                                                                           |
 | `workflows/build.yml`                      | push to `development` and `dev-x.y`   | Scan, build, push `ghcr…:<branch>`; delete old untagged versions                                                                |
-| `workflows/nightly-e2e.yml`                | every night at 01:00 UTC, and by hand | One line after the other: test the newest image, ✓/✗ on its commit; if green, move `<branch>-tested` to it                      |
+| `workflows/nightly-e2e.yml`                | every night at 01:23 UTC, and by hand | One line after the other: test the newest image, ✓/✗ on its commit; if green, move `<branch>-tested` to it                      |
 | `workflows/release-latest.yml`             | button, run from a `dev-x.y`          | Give `dev-x.y-tested` a version `vX.Y.Z` (its own or the next free one), publish it, move `vX.Y-latest` there; git tag `vX.Y.Z` |
 | `workflows/release-stable.yml`             | button, run from a `dev-x.y`          | The same, but moves `vX.Y-stable` and `vX.Y-latest`; git tags `vX.Y.Z` and `vX.Y-stable`                                        |
 | `workflows/legacy-tag-build.yml`           | **legacy**: any tag push              | Rebuilds from the tagged commit and pushes `sebadmin/seb-server-gui:<tag>` to Docker Hub                                        |
@@ -49,7 +49,7 @@ docker inspect --format '{{index .Config.Labels "org.opencontainers.image.revisi
 
 ## Nightly e2e
 
-Every night at 01:00 UTC, and by hand: Actions › Nightly e2e › Run workflow, from `development`.
+Every night at 01:23 UTC, and by hand: Actions › Nightly e2e › Run workflow, from `development`.
 For each line (`development`, then every `dev-x.y`), one after the other:
 
 1. Pins the line's image by digest and reads the commit it was built from. A push during the run
