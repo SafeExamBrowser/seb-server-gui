@@ -173,12 +173,12 @@ const hasNotifications = computed(
     () => monitoringStore.monitoringOverviewData?.notifications != null,
 );
 
-const hasIndicators = computed(
-    () =>
-        monitoringStore.monitoringOverviewData?.indicators.BATTERY_STATUS !=
-            null &&
-        monitoringStore.monitoringOverviewData?.indicators.WLAN_STATUS != null,
-);
+const hasIndicators = computed(() => {
+    const indicators = monitoringStore.monitoringOverviewData?.indicators;
+    return (
+        indicators?.BATTERY_STATUS != null || indicators?.WLAN_STATUS != null
+    );
+});
 
 const hasGroups = computed(
     () =>
