@@ -6,7 +6,7 @@ Testing and releasing only add names to that image; it's never rebuilt, so what 
 byte for byte what gets released.
 
 The pipeline is being built in stages. Rows marked **placeholder** exist but wait for the
-servers; **legacy** is the old way, kept until the new one has released once.
+servers; **legacy** is the old way: disabled, and deleted once the new one has released for real.
 
 ## Workflows
 
@@ -18,8 +18,8 @@ servers; **legacy** is the old way, kept until the new one has released once.
 | `workflows/nightly-e2e.yml`                | every night at 01:23 UTC, and by hand | One line after the other: test the newest image, ✓/✗ on its commit; if green, move `<branch>-tested` to it                      |
 | `workflows/release-latest.yml`             | button, run from a `dev-x.y`          | Give `dev-x.y-tested` a version `vX.Y.Z` (its own or the next free one), publish it, move `vX.Y-latest` there; git tag `vX.Y.Z` |
 | `workflows/release-stable.yml`             | button, run from a `dev-x.y`          | The same, but moves `vX.Y-stable` and `vX.Y-latest`; git tags `vX.Y.Z` and `vX.Y-stable`                                        |
-| `workflows/legacy-tag-build.yml`           | **legacy**: any tag push              | Rebuilds from the tagged commit and pushes `sebadmin/seb-server-gui:<tag>` to Docker Hub                                        |
-| `workflows/legacy-auto-testing-deploy.yml` | **legacy**: tag `auto-testing-deploy` | Rebuilds `sebadmin/seb-server-gui-auto-testing`                                                                                 |
+| `workflows/legacy-tag-build.yml`           | **legacy**: any tag push              | **Disabled.** Rebuilds from the tagged commit and pushes `sebadmin/seb-server-gui:<tag>` to Docker Hub                          |
+| `workflows/legacy-auto-testing-deploy.yml` | **legacy**: tag `auto-testing-deploy` | **Disabled.** Rebuilds `sebadmin/seb-server-gui-auto-testing`                                                                   |
 
 ## Images
 
@@ -75,16 +75,36 @@ Both buttons take `dev-x.y-tested`, the newest image with a green nightly e2e:
 1. Pin it by digest and read the commit it was built from.
 2. Give it a version `vX.Y.Z`: the one it got from an earlier release, else the next free one.
    An image never gets two versions.
-3. Publish it as `vX.Y.Z` and move the pointers there: Release latest moves `vX.Y-latest`,
+3. Git: an annotated tag `vX.Y.Z` on that commit if the version is new; Release stable also moves
+   the tag `vX.Y-stable` there. The tag's message says which button made it. First, so a refused
+   push changes nothing.
+4. Publish it as `vX.Y.Z` and move the pointers there: Release latest moves `vX.Y-latest`,
    Release stable moves `vX.Y-stable` and `vX.Y-latest`.
-4. Git: an annotated tag `vX.Y.Z` on that commit if the version is new; Release stable also moves
-   the tag `vX.Y-stable` there. The tag's message says which button made it.
 
 Release stable can also take a version (instead of the next free one) and the commit uat signed
 off; it refuses if `dev-x.y-tested` is another commit by then. Both refuse if there's no
 `dev-x.y-tested`, if its commit isn't on the branch, if a version on Docker Hub already holds
-another image (versions are never overwritten) and if `vX.Y-latest` or `vX.Y-stable` would go back
-to an older version. If a run fails halfway, run it again: it skips what's done.
+another image (versions are never overwritten), if `vX.Y-latest` or `vX.Y-stable` would go back
+to an older version and if the git tags would start a workflow that isn't disabled (see below). If
+a run fails halfway, run it again: it skips what's done.
+
+### The release App
+
+The buttons push the git tags as the GitHub App `seb-server-gui-release` (org settings › Developer
+settings › GitHub Apps), not with the workflow's own token (`GITHUB_TOKEN`): that one may not push
+a tag on a commit whose `.github/workflows/` differs from the newest commit of every branch. The
+tested commit's often does, as soon as a workflow changed after it. GitHub's message is "refusing to
+allow a GitHub App to create or update workflow … without `workflows` permission", through the
+API too.
+
+- Permissions: Contents and Workflows, read and write. Installed on this repo only.
+- Repo variable `RELEASE_APP_CLIENT_ID` (its Client ID), secret `RELEASE_APP_PRIVATE_KEY` (a
+  private key). If the key is lost: generate a new one on the App's page, replace the secret,
+  delete the old key there. Each run gets a token that ends with the job.
+- Unlike `GITHUB_TOKEN`'s, the App's tags start workflows: every workflow of the tagged commit
+  that listens to tag pushes. The legacy ones would rebuild from source and publish under the
+  tag's name, so they're disabled (see "Legacy"), and the buttons refuse while any such workflow
+  is enabled.
 
 Afterwards, as before: a PR `dev-x.y` → `main` as the archive (merge commit).
 
@@ -121,6 +141,8 @@ pull. For them nothing changes: the names stay the same, only what puts the imag
 - The secrets `DOCKERHUB_ADMIN_USERNAME` and `DOCKERHUB_ADMIN_TOKEN` still work and may push to
   `sebadmin/seb-server-gui`. The old release path uses them: its last run is under Actions ›
   "Legacy · any tag → Docker Hub".
+- The legacy workflows are still disabled (Actions lists them as disabled), and the rehearsal's
+  git tags were pushed by `seb-server-gui-release[bot]` (see "The release App").
 - uat has signed off the commit `dev-x.y-tested` is on. Note it for the commit field.
 
 **Switch** (Settings › Secrets and variables › Actions)
@@ -173,12 +195,18 @@ mocked suite against it (commit status `e2e/image`). With the server it runs the
 
 ## Legacy: what gets deleted, and when
 
-Kept until the first release has gone through the Release stable button. Then:
+`legacy-tag-build.yml`, `legacy-auto-testing-deploy.yml` and `docker-build-push.yml` (the first
+one's old name, still in older commits) are disabled (Actions › the workflow › ⋯ › Disable
+workflow): they'd rebuild and publish on every tag the release App pushes. Never enable them
+again. A tag pushed by hand doesn't build anything any more either.
+
+The files are kept until the first release has gone through the Release stable button. Then:
 
 1. Tell whoever maintains `seb-server-setup`: it references the Docker Hub names `demo` and
-   `sprint-testing`, which nothing updates any more after this.
+   `sprint-testing`, which nothing updates any more.
 2. Delete `workflows/legacy-tag-build.yml`, `workflows/legacy-auto-testing-deploy.yml` and
-   `legacy/`, on `development` and every `dev-x.y`.
+   `legacy/`, on `development` and every `dev-x.y`. The workflows stay disabled: older commits
+   still have the files, and a tag on one of them would start them.
 3. Add a tag ruleset to `rulesets/`: version tags `vX.Y.Z` can't be moved or deleted
    (`vX.Y-stable` still moves).
 4. Delete the unused secret `DOCKERHUB_PASSWORD`.
@@ -186,9 +214,7 @@ Kept until the first release has gone through the Release stable button. Then:
    name `vX.Y-latest` stays; the buttons move it.
 6. Update this file.
 
-Until step 2, every tag pushed by a person still starts `legacy-tag-build.yml` and rebuilds the
-Docker Hub name of that tag. Once the buttons exist, don't push release tags by hand. (Tags
-pushed by a workflow with `GITHUB_TOKEN` don't start other workflows.)
+Don't push release tags by hand: the buttons make them.
 
 ## Rules for files in `.github/`
 

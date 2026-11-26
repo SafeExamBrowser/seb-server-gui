@@ -10,11 +10,11 @@
 #       1. Pins <line>-tested by digest and reads the commit it was built from.
 #       2. Gives it a version vX.Y.Z: the one it got from an earlier release, else the next free
 #          one (stable: or the one typed). An image never gets two versions.
-#       3. Publishes it as vX.Y.Z and moves the pointers there:
+#       3. Git: an annotated tag vX.Y.Z on that commit if the version is new; stable also moves
+#          the tag vX.Y-stable there. First, so a refused push changes nothing.
+#       4. Publishes it as vX.Y.Z and moves the pointers there:
 #            latest  vX.Y-latest
 #            stable  vX.Y-stable and vX.Y-latest
-#       4. Git: an annotated tag vX.Y.Z on that commit if the version is new; stable also moves
-#          the tag vX.Y-stable there.
 #       Safe to run again after a failure: what's already done is skipped.
 #
 # Env:
@@ -25,8 +25,12 @@
 #   PUBLIC_IMAGE  repo variable, optional: anything but the official image is a rehearsal. Its git
 #                 tags get the prefix rehearsal/, so the real ones stay untouched; its versions
 #                 continue from the real ones.
+#   APP_SLUG      the release App's name (steps.app.outputs.app-slug): the tags' author
+#   GH_TOKEN      a token that may read the repo's workflows (actions: read)
 # Needs docker logged in to ghcr (read) and to the public registry (write), and a checkout of the
-# line with all tags and credentials that may push tags.
+# line with all tags and the release App's credentials: the workflow's own token may not push a
+# tag on a commit whose .github/workflows/ differs from every branch tip, which a tested commit's
+# often does (see PIPELINE.md).
 set -euo pipefail
 
 here=$(dirname "$0")
@@ -107,6 +111,66 @@ describe() {
   echo "an image without a version (${now:7:12})"
 }
 
+# Whether the workflow file on stdin starts on a tag push: on create, on push without a filter,
+# or on push with a tags filter. A push with only a branches filter doesn't.
+starts_on_tags() {
+  awk '
+    function decide() {
+      if (event == "create" || (event == "push" && (tags || !branches))) yes = 1
+    }
+    /^on:/ {
+      on = 1
+      rest = $0
+      sub(/^on:[ \t]*/, "", rest)
+      sub(/#.*/, "", rest)
+      if (rest ~ /(^|[^a-z_-])(push|create)([^a-z_-]|$)/) yes = 1
+      next
+    }
+    !on || /^[ \t]*(#.*)?$/ { next }
+    /^[^ \t]/ { exit }
+    {
+      match($0, /^[ \t]*/)
+      if (!level) level = RLENGTH
+      if (RLENGTH == level) {
+        decide()
+        event = $0
+        sub(/^[ \t]*(- )?/, "", event)
+        sub(/[ \t]*(:.*|#.*)?$/, "", event)
+        tags = branches = 0
+      } else if ($0 ~ /^[ \t]*tags(-ignore)?:/) {
+        tags = 1
+      } else if ($0 ~ /^[ \t]*branches(-ignore)?:/) {
+        branches = 1
+      }
+    }
+    END {
+      decide()
+      exit !yes
+    }
+  '
+}
+
+# A tag pushed by the release App starts every workflow of the tagged commit that listens to tag
+# pushes. The legacy ones rebuild from source and publish to the official image under the tag's
+# name, so each of them has to be disabled (Actions › the workflow › ⋯ › Disable workflow).
+# Deleting its file isn't enough: the tagged commit still has it.
+check_tag_workflows() {
+  local f state blocking=()
+  for f in $(git ls-tree --name-only "$revision" .github/workflows/); do
+    if git show "$revision:$f" | starts_on_tags; then
+      state=$(gh api "repos/$GITHUB_REPOSITORY/actions/workflows/${f##*/}" --jq .state 2>/dev/null) ||
+        state="unknown to GitHub"
+      if [[ $state != disabled_manually ]]; then
+        blocking+=("${f##*/} ($state)")
+      fi
+    fi
+  done
+  if ((${#blocking[@]})); then
+    fail "The git tags would start ${blocking[*]}, which can publish to $(official_image)." \
+      "Disable it first: Actions › the workflow › ⋯ › Disable workflow."
+  fi
+}
+
 # Gives the pinned image the name <public>:<name>, unless it has it already.
 copy() {
   local to=$public:$1 now
@@ -117,7 +181,8 @@ copy() {
   changed=true
   # --prefer-index=false copies the image as it is; otherwise a plain image gets wrapped in a new
   # index with a different digest.
-  docker buildx imagetools create --prefer-index=false --tag "$to" "$image"
+  docker buildx imagetools create --prefer-index=false --tag "$to" "$image" ||
+    fail "Copying to $to failed. Run the button again: it continues where it stopped."
   now=$(digest_of "$to")
   if [[ $now != "$digest" ]]; then
     fail "$to has another digest after copying (${now:-none}), not $digest."
@@ -221,6 +286,10 @@ release() {
     fi
   done
 
+  if $new || [[ $kind == stable && $current != "$revision" ]]; then
+    check_tag_workflows
+  fi
+
   # The plan.
   if [[ $dry == true ]]; then
     say "### Dry run: Release $kind on $line (nothing changes)"
@@ -269,17 +338,17 @@ release() {
     return
   fi
 
-  # 3. The public names. The version first, so a pointer never points at an image without one.
+  # 3. The git tags, first: if the push is refused, nothing has changed. Pushed as the release
+  # App, so they start the workflows check_tag_workflows looked at.
   changed=false
-  copy "$version"
-  for name in "${pointers[@]}"; do
-    copy "$name"
-  done
-
-  # 4. The git tags. Pushed with the workflow's token, so they don't start other workflows.
-  git config user.name "github-actions[bot]"
-  git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
   local refs=() run=${GITHUB_SERVER_URL:-}/${GITHUB_REPOSITORY:-}/actions/runs/${GITHUB_RUN_ID:-}
+  local bot="${APP_SLUG:-}[bot]" id
+  if [[ -z ${APP_SLUG:-} ]]; then
+    fail "APP_SLUG is empty: the workflow passes the release App's name."
+  fi
+  id=$(gh api "users/$bot" --jq .id) || fail "Can't find the GitHub user $bot."
+  git config user.name "$bot"
+  git config user.email "$id+$bot@users.noreply.github.com"
   if $new; then
     git tag --annotate --message "Release $kind $version
 
@@ -297,11 +366,17 @@ Run: $run" "$stable_tag" "$revision" >/dev/null
   fi
   if ((${#refs[@]})); then
     if ! git push --atomic origin "${refs[@]}"; then
-      fail "$public has $version, but pushing the git tags failed. Run the button again (without" \
-        "dry run): it skips what's done and pushes the tags."
+      fail "Pushing the git tags failed, so nothing changed: $public is as it was."
     fi
     changed=true
   fi
+
+  # 4. The public names. The version first, so a pointer never points at an image without one.
+  # If a copy fails, running the button again continues: the version is on the commit's tag now.
+  copy "$version"
+  for name in "${pointers[@]}"; do
+    copy "$name"
+  done
 
   say
   if $changed; then

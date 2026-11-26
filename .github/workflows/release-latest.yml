@@ -32,13 +32,25 @@ jobs:
     runs-on: ubuntu-latest
     timeout-minutes: 10
     permissions:
-      contents: write # the git tag vX.Y.Z
+      actions: read # which workflows the git tags would start (release.sh)
+      contents: read
       packages: read # dev-x.y-tested on ghcr
     steps:
+      # The git tags are pushed as the release App (repo variable RELEASE_APP_CLIENT_ID, secret
+      # RELEASE_APP_PRIVATE_KEY). The workflow's own token may not push a tag on a commit whose
+      # .github/workflows/ differs from every branch tip (see PIPELINE.md).
+      - uses: actions/create-github-app-token@v3.4.0
+        id: app
+        with:
+          client-id: ${{ vars.RELEASE_APP_CLIENT_ID }}
+          private-key: ${{ secrets.RELEASE_APP_PRIVATE_KEY }}
+          permission-contents: write
+          permission-workflows: write
       # Unlike the other workflows, keeps the credentials: release.sh pushes the git tags with them.
       - uses: actions/checkout@v7.0.1
         with:
           fetch-depth: 0 # all tags, for the next free version
+          token: ${{ steps.app.outputs.token }}
 
       - name: Where to publish
         id: target
@@ -60,4 +72,6 @@ jobs:
       - name: Release
         run: .github/scripts/release.sh latest
         env:
+          APP_SLUG: ${{ steps.app.outputs.app-slug }}
+          GH_TOKEN: ${{ github.token }}
           DRY_RUN: ${{ inputs.dry_run }}
