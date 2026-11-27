@@ -308,12 +308,13 @@ export type Exam = {
     additionalAttributes?: {
         [key: string]: string;
     };
-    quiz_start_url?: string;
     quiz_description?: string;
+    quiz_start_url?: string;
 };
 
 export type ClientGroupTemplate = {
     id?: number;
+    examTemplateId?: number;
     name: string;
     type: 'NONE' | 'IP_V4_RANGE' | 'CLIENT_OS' | 'NAME_ALPHABETICAL_RANGE';
     color?: string;
@@ -324,7 +325,6 @@ export type ClientGroupTemplate = {
     nameRangeStartLetter?: string;
     nameRangeEndLetter?: string;
     screenProctoringEnabled?: boolean;
-    examTemplateId?: number;
 };
 
 /**
@@ -813,30 +813,6 @@ export type ClientInstruction = {
     };
 };
 
-export type ProctoringRoomConnection = {
-    serverType?: 'JITSI_MEET' | 'ZOOM';
-    connectionToken?: string;
-    serverHost?: string;
-    serverURL?: string;
-    roomName?: string;
-    subject?: string;
-    accessToken?: {
-        empty?: boolean;
-    };
-    sdkToken?: {
-        empty?: boolean;
-    };
-    roomKey?: {
-        empty?: boolean;
-    };
-    apiKey?: {
-        empty?: boolean;
-    };
-    meetingId?: string;
-    userName?: string;
-    roomData?: string;
-};
-
 export type SecurityKey = {
     id?: number;
     institutionId: number;
@@ -868,30 +844,6 @@ export type ScreenProctoringSettings = {
     spsSEBGroupsSelection?: string;
     bundled?: boolean;
     changeStrategyConfirm?: boolean;
-};
-
-export type ProctoringServiceSettings = {
-    id?: number;
-    enableProctoring?: boolean;
-    serverType?: 'JITSI_MEET' | 'ZOOM';
-    serverURL?: string;
-    collectingRoomSize?: number;
-    enabledFeatures?: Array<'TOWN_HALL' | 'ONE_TO_ONE' | 'BROADCAST' | 'ENABLE_CHAT'>;
-    serviceInUse?: boolean;
-    appKey?: string;
-    appSecret?: {
-        empty?: boolean;
-    };
-    accountId?: string;
-    clientId?: string;
-    clientSecret?: {
-        empty?: boolean;
-    };
-    sdkKey?: string;
-    sdkSecret?: {
-        empty?: boolean;
-    };
-    useZoomAppClientForCollectingRoom?: boolean;
 };
 
 export type Value = {
@@ -1386,12 +1338,12 @@ export type ClientMonitoringDataView = {
     grantChecked?: boolean;
     grantDenied?: boolean;
     sebversionDenied?: boolean;
-    nf?: number;
     st?: 'UNDEFINED' | 'CONNECTION_REQUESTED' | 'READY' | 'ACTIVE' | 'CLOSED' | 'DISABLED';
+    nf?: number;
+    lat?: number;
     iv?: {
         [key: string]: string;
     };
-    lat?: number;
     id?: number;
 };
 
@@ -1414,21 +1366,6 @@ export type ProctoringGroupMonitoringData = {
     uuid?: string;
     name?: string;
     size?: number;
-};
-
-export type RemoteProctoringRoom = {
-    id?: number;
-    examId?: number;
-    name?: string;
-    size?: number;
-    subject?: string;
-    townhallRoom?: boolean;
-    breakOutConnections?: Array<string>;
-    joinKey?: {
-        empty?: boolean;
-    };
-    roomData?: string;
-    isOpen?: boolean;
 };
 
 export type ScreenProctoringGroup = {
@@ -2052,73 +1989,6 @@ export const ErrorCode = {
  */
 export type ErrorCode = typeof ErrorCode[keyof typeof ErrorCode];
 
-export type ClientGroupTemplateWritable = {
-    id?: number;
-    examId?: number;
-    name: string;
-    type: 'NONE' | 'IP_V4_RANGE' | 'CLIENT_OS' | 'NAME_ALPHABETICAL_RANGE';
-    color?: string;
-    icon?: string;
-    ipRangeStart?: string;
-    ipRangeEnd?: string;
-    clientOS?: 'NONE' | 'WINDOWS' | 'MAC_OS' | 'I_OS' | 'IPAD_OS' | 'I_OS_OR_IPAD_OS';
-    nameRangeStartLetter?: string;
-    nameRangeEndLetter?: string;
-    screenProctoringEnabled?: boolean;
-    examTemplateId?: number;
-};
-
-/**
- * Exam template read, create and update model.
- */
-export type ExamTemplateWritable = {
-    /**
-     * Exam template identifier (PK). Not set on create.
-     */
-    id?: number;
-    /**
-     * Institution identifier the exam template belongs to. Derived from the current user on create; required on update.
-     */
-    institutionId?: number;
-    /**
-     * Unique name of the exam template.
-     */
-    name: string;
-    /**
-     * Free-text description of the exam template.
-     */
-    description?: string;
-    /**
-     * Exam type preset applied to exams created from this template.
-     */
-    examType?: 'UNDEFINED' | 'MANAGED' | 'BYOD' | 'VDI';
-    supporter?: Array<string>;
-    /**
-     * Identifier of the configuration template holding the SEB settings.
-     */
-    configurationTemplateId?: number;
-    /**
-     * Whether this is the institutional default exam template.
-     */
-    institutionalDefault: boolean;
-    /**
-     * Whether assessment tool (LMS) integration is enabled for exams created from this template.
-     */
-    lmsIntegration: boolean;
-    /**
-     * Identifier of the preselected connection configuration.
-     */
-    clientConfigurationId?: number;
-    indicatorTemplates: Array<IndicatorTemplate>;
-    CLIENT_GROUP_TEMPLATES: Array<ClientGroupTemplateWritable>;
-    /**
-     * Additional exam attributes as key-value pairs (enableScreenProctoring, spsCollectingStrategy, spsCollectingGroupName, spsSEBGroupsSelection, quitPassword). Always present.
-     */
-    EXAM_ATTRIBUTES: {
-        [key: string]: string;
-    };
-};
-
 export type MultiValueMapStringStringWritable = {
     all?: {
         [key: string]: string;
@@ -2262,30 +2132,6 @@ export type ScheduledDeleteInfoWritable = {
     };
     errorInfo?: string;
     errorType?: 'UNDEFINED' | 'SERVER_ERROR' | 'DATABASE_CONSTRAINT_ERROR' | 'DATA_INCONSISTENCY_ERROR' | 'EXCLUDED_FROM_DELETION';
-};
-
-export type PageExamTemplateWritable = {
-    /**
-     * The number of available pages for the specified page size.
-     */
-    number_of_pages?: number;
-    /**
-     * The actual page number. Starting with 1.
-     */
-    page_number?: number;
-    /**
-     * The the actual size of a page
-     */
-    page_size?: number;
-    /**
-     * The page sort column name
-     */
-    sort?: string;
-    /**
-     * The actual content objects of the page. Might be empty.
-     */
-    content?: Array<ExamTemplateWritable>;
-    complete?: boolean;
 };
 
 export type HandshakeDeleteData = {
@@ -5192,7 +5038,7 @@ export type GetExamTemplatesResponses = {
 export type GetExamTemplatesResponse = GetExamTemplatesResponses[keyof GetExamTemplatesResponses];
 
 export type CreateExamTemplateData = {
-    body: ExamTemplateWritable;
+    body: ExamTemplate;
     path?: never;
     query?: {
         /**
@@ -5243,7 +5089,7 @@ export type CreateExamTemplateResponses = {
 export type CreateExamTemplateResponse = CreateExamTemplateResponses[keyof CreateExamTemplateResponses];
 
 export type EditExamTemplateData = {
-    body: ExamTemplateWritable;
+    body: ExamTemplate;
     path?: never;
     query?: never;
     url: '/admin-api/v1/exam-template';
@@ -8481,254 +8327,6 @@ export type ToggleTestRunForExamResponses = {
 
 export type ToggleTestRunForExamResponse = ToggleTestRunForExamResponses[keyof ToggleTestRunForExamResponses];
 
-export type ActivateTownhallData = {
-    body?: never;
-    path: {
-        modelId: number;
-    };
-    query?: {
-        institutionId?: number;
-        subject?: string;
-    };
-    url: '/admin-api/v1/monitoring/proctoring/{modelId}activate-towhall-room';
-};
-
-export type ActivateTownhallErrors = {
-    /**
-     * Bad request, e.g. field validation or an illegal argument. The body is usually a list of APIMessage, but may be absent for some illegal-argument cases.
-     */
-    400: Array<ApiMessage>;
-    /**
-     * Unauthorized. Body is an APIMessage or a list of APIMessage.
-     */
-    401: ApiMessage | Array<ApiMessage>;
-    /**
-     * Forbidden. Body is a list of APIMessage.
-     */
-    403: Array<ApiMessage>;
-    /**
-     * Resource not found. Body is a list of APIMessage.
-     */
-    404: Array<ApiMessage>;
-    /**
-     * Too many requests (rate limit). Body is the rate-limit code as plain text.
-     */
-    429: string;
-    /**
-     * Unexpected internal server error. Body is a list of APIMessage.
-     */
-    500: Array<ApiMessage>;
-};
-
-export type ActivateTownhallError = ActivateTownhallErrors[keyof ActivateTownhallErrors];
-
-export type ActivateTownhallResponses = {
-    /**
-     * OK
-     */
-    200: ProctoringRoomConnection;
-};
-
-export type ActivateTownhallResponse = ActivateTownhallResponses[keyof ActivateTownhallResponses];
-
-export type SendReconfigurationAttributesData = {
-    body?: never;
-    path: {
-        modelId: number;
-    };
-    query?: {
-        institutionId?: number;
-        id?: string;
-        receive_audio?: string;
-        receive_video?: string;
-        allow_chat?: string;
-    };
-    url: '/admin-api/v1/monitoring/proctoring/{modelId}/reconfiguration-attributes';
-};
-
-export type SendReconfigurationAttributesErrors = {
-    /**
-     * Bad request, e.g. field validation or an illegal argument. The body is usually a list of APIMessage, but may be absent for some illegal-argument cases.
-     */
-    400: Array<ApiMessage>;
-    /**
-     * Unauthorized. Body is an APIMessage or a list of APIMessage.
-     */
-    401: ApiMessage | Array<ApiMessage>;
-    /**
-     * Forbidden. Body is a list of APIMessage.
-     */
-    403: Array<ApiMessage>;
-    /**
-     * Resource not found. Body is a list of APIMessage.
-     */
-    404: Array<ApiMessage>;
-    /**
-     * Too many requests (rate limit). Body is the rate-limit code as plain text.
-     */
-    429: string;
-    /**
-     * Unexpected internal server error. Body is a list of APIMessage.
-     */
-    500: Array<ApiMessage>;
-};
-
-export type SendReconfigurationAttributesError = SendReconfigurationAttributesErrors[keyof SendReconfigurationAttributesErrors];
-
-export type SendReconfigurationAttributesResponses = {
-    /**
-     * OK
-     */
-    200: unknown;
-};
-
-export type OpenBreakOutRoomData = {
-    body?: never;
-    path: {
-        modelId: number;
-    };
-    query: {
-        institutionId?: number;
-        subject?: string;
-        SEBConnectionToken: string;
-    };
-    url: '/admin-api/v1/monitoring/proctoring/{modelId}/open';
-};
-
-export type OpenBreakOutRoomErrors = {
-    /**
-     * Bad request, e.g. field validation or an illegal argument. The body is usually a list of APIMessage, but may be absent for some illegal-argument cases.
-     */
-    400: Array<ApiMessage>;
-    /**
-     * Unauthorized. Body is an APIMessage or a list of APIMessage.
-     */
-    401: ApiMessage | Array<ApiMessage>;
-    /**
-     * Forbidden. Body is a list of APIMessage.
-     */
-    403: Array<ApiMessage>;
-    /**
-     * Resource not found. Body is a list of APIMessage.
-     */
-    404: Array<ApiMessage>;
-    /**
-     * Too many requests (rate limit). Body is the rate-limit code as plain text.
-     */
-    429: string;
-    /**
-     * Unexpected internal server error. Body is a list of APIMessage.
-     */
-    500: Array<ApiMessage>;
-};
-
-export type OpenBreakOutRoomError = OpenBreakOutRoomErrors[keyof OpenBreakOutRoomErrors];
-
-export type OpenBreakOutRoomResponses = {
-    /**
-     * OK
-     */
-    200: ProctoringRoomConnection;
-};
-
-export type OpenBreakOutRoomResponse = OpenBreakOutRoomResponses[keyof OpenBreakOutRoomResponses];
-
-export type NotifyProctoringRoomOpenedData = {
-    body?: {
-        institutionId?: number;
-        roomName: string;
-    };
-    path: {
-        modelId: number;
-    };
-    query?: never;
-    url: '/admin-api/v1/monitoring/proctoring/{modelId}/notify-open-room';
-};
-
-export type NotifyProctoringRoomOpenedErrors = {
-    /**
-     * Bad request, e.g. field validation or an illegal argument. The body is usually a list of APIMessage, but may be absent for some illegal-argument cases.
-     */
-    400: Array<ApiMessage>;
-    /**
-     * Unauthorized. Body is an APIMessage or a list of APIMessage.
-     */
-    401: ApiMessage | Array<ApiMessage>;
-    /**
-     * Forbidden. Body is a list of APIMessage.
-     */
-    403: Array<ApiMessage>;
-    /**
-     * Resource not found. Body is a list of APIMessage.
-     */
-    404: Array<ApiMessage>;
-    /**
-     * Too many requests (rate limit). Body is the rate-limit code as plain text.
-     */
-    429: string;
-    /**
-     * Unexpected internal server error. Body is a list of APIMessage.
-     */
-    500: Array<ApiMessage>;
-};
-
-export type NotifyProctoringRoomOpenedError = NotifyProctoringRoomOpenedErrors[keyof NotifyProctoringRoomOpenedErrors];
-
-export type NotifyProctoringRoomOpenedResponses = {
-    /**
-     * OK
-     */
-    200: unknown;
-};
-
-export type CloseProctoringRoomData = {
-    body?: never;
-    path: {
-        modelId: number;
-    };
-    query: {
-        institutionId?: number;
-        roomName: string;
-    };
-    url: '/admin-api/v1/monitoring/proctoring/{modelId}/close';
-};
-
-export type CloseProctoringRoomErrors = {
-    /**
-     * Bad request, e.g. field validation or an illegal argument. The body is usually a list of APIMessage, but may be absent for some illegal-argument cases.
-     */
-    400: Array<ApiMessage>;
-    /**
-     * Unauthorized. Body is an APIMessage or a list of APIMessage.
-     */
-    401: ApiMessage | Array<ApiMessage>;
-    /**
-     * Forbidden. Body is a list of APIMessage.
-     */
-    403: Array<ApiMessage>;
-    /**
-     * Resource not found. Body is a list of APIMessage.
-     */
-    404: Array<ApiMessage>;
-    /**
-     * Too many requests (rate limit). Body is the rate-limit code as plain text.
-     */
-    429: string;
-    /**
-     * Unexpected internal server error. Body is a list of APIMessage.
-     */
-    500: Array<ApiMessage>;
-};
-
-export type CloseProctoringRoomError = CloseProctoringRoomErrors[keyof CloseProctoringRoomErrors];
-
-export type CloseProctoringRoomResponses = {
-    /**
-     * OK
-     */
-    200: unknown;
-};
-
 export type DeactivateLmsSetupData = {
     body?: unknown;
     path: {
@@ -9326,104 +8924,6 @@ export type ScreenProctoringActivationResponses = {
 
 export type ScreenProctoringActivationResponse = ScreenProctoringActivationResponses[keyof ScreenProctoringActivationResponses];
 
-export type GetProctoringServiceSettingsData = {
-    body?: never;
-    path: {
-        modelId: number;
-    };
-    query?: {
-        institutionId?: number;
-    };
-    url: '/admin-api/v1/exam/{modelId}/proctoring';
-};
-
-export type GetProctoringServiceSettingsErrors = {
-    /**
-     * Bad request, e.g. field validation or an illegal argument. The body is usually a list of APIMessage, but may be absent for some illegal-argument cases.
-     */
-    400: Array<ApiMessage>;
-    /**
-     * Unauthorized. Body is an APIMessage or a list of APIMessage.
-     */
-    401: ApiMessage | Array<ApiMessage>;
-    /**
-     * Forbidden. Body is a list of APIMessage.
-     */
-    403: Array<ApiMessage>;
-    /**
-     * Resource not found. Body is a list of APIMessage.
-     */
-    404: Array<ApiMessage>;
-    /**
-     * Too many requests (rate limit). Body is the rate-limit code as plain text.
-     */
-    429: string;
-    /**
-     * Unexpected internal server error. Body is a list of APIMessage.
-     */
-    500: Array<ApiMessage>;
-};
-
-export type GetProctoringServiceSettingsError = GetProctoringServiceSettingsErrors[keyof GetProctoringServiceSettingsErrors];
-
-export type GetProctoringServiceSettingsResponses = {
-    /**
-     * OK
-     */
-    200: ProctoringServiceSettings;
-};
-
-export type GetProctoringServiceSettingsResponse = GetProctoringServiceSettingsResponses[keyof GetProctoringServiceSettingsResponses];
-
-export type SaveProctoringServiceSettingsData = {
-    body: ProctoringServiceSettings;
-    path: {
-        modelId: number;
-    };
-    query?: {
-        institutionId?: number;
-    };
-    url: '/admin-api/v1/exam/{modelId}/proctoring';
-};
-
-export type SaveProctoringServiceSettingsErrors = {
-    /**
-     * Bad request, e.g. field validation or an illegal argument. The body is usually a list of APIMessage, but may be absent for some illegal-argument cases.
-     */
-    400: Array<ApiMessage>;
-    /**
-     * Unauthorized. Body is an APIMessage or a list of APIMessage.
-     */
-    401: ApiMessage | Array<ApiMessage>;
-    /**
-     * Forbidden. Body is a list of APIMessage.
-     */
-    403: Array<ApiMessage>;
-    /**
-     * Resource not found. Body is a list of APIMessage.
-     */
-    404: Array<ApiMessage>;
-    /**
-     * Too many requests (rate limit). Body is the rate-limit code as plain text.
-     */
-    429: string;
-    /**
-     * Unexpected internal server error. Body is a list of APIMessage.
-     */
-    500: Array<ApiMessage>;
-};
-
-export type SaveProctoringServiceSettingsError = SaveProctoringServiceSettingsErrors[keyof SaveProctoringServiceSettingsErrors];
-
-export type SaveProctoringServiceSettingsResponses = {
-    /**
-     * OK
-     */
-    200: Exam;
-};
-
-export type SaveProctoringServiceSettingsResponse = SaveProctoringServiceSettingsResponses[keyof SaveProctoringServiceSettingsResponses];
-
 export type GetSebSettingsData = {
     body?: never;
     path: {
@@ -9476,7 +8976,7 @@ export type GetSebSettingsResponse = GetSebSettingsResponses[keyof GetSebSetting
 export type SaveSingleValueData = {
     body?: {
         id: number;
-        value: string;
+        value?: string;
     };
     path: {
         modelId: number;
@@ -9762,7 +9262,7 @@ export type CopyExamTemplateResponses = {
 export type CopyExamTemplateResponse = CopyExamTemplateResponses[keyof CopyExamTemplateResponses];
 
 export type FullCreateExamTemplateData = {
-    body: ExamTemplateWritable;
+    body: ExamTemplate;
     path?: never;
     query?: {
         institutionId?: number;
@@ -10204,7 +9704,7 @@ export type GetSebSettings1Response = GetSebSettings1Responses[keyof GetSebSetti
 export type SaveSingleValue1Data = {
     body?: {
         id: number;
-        value: string;
+        value?: string;
     };
     path: {
         modelId: number;
@@ -13708,155 +13208,6 @@ export type GetFullMonitoringPageDataResponses = {
 
 export type GetFullMonitoringPageDataResponse = GetFullMonitoringPageDataResponses[keyof GetFullMonitoringPageDataResponses];
 
-export type GetTownhallRoomData = {
-    body?: never;
-    path: {
-        modelId: number;
-    };
-    query?: {
-        institutionId?: number;
-    };
-    url: '/admin-api/v1/monitoring/proctoring/{modelId}towhall-room-data';
-};
-
-export type GetTownhallRoomErrors = {
-    /**
-     * Bad request, e.g. field validation or an illegal argument. The body is usually a list of APIMessage, but may be absent for some illegal-argument cases.
-     */
-    400: Array<ApiMessage>;
-    /**
-     * Unauthorized. Body is an APIMessage or a list of APIMessage.
-     */
-    401: ApiMessage | Array<ApiMessage>;
-    /**
-     * Forbidden. Body is a list of APIMessage.
-     */
-    403: Array<ApiMessage>;
-    /**
-     * Resource not found. Body is a list of APIMessage.
-     */
-    404: Array<ApiMessage>;
-    /**
-     * Too many requests (rate limit). Body is the rate-limit code as plain text.
-     */
-    429: string;
-    /**
-     * Unexpected internal server error. Body is a list of APIMessage.
-     */
-    500: Array<ApiMessage>;
-};
-
-export type GetTownhallRoomError = GetTownhallRoomErrors[keyof GetTownhallRoomErrors];
-
-export type GetTownhallRoomResponses = {
-    /**
-     * OK
-     */
-    200: RemoteProctoringRoom;
-};
-
-export type GetTownhallRoomResponse = GetTownhallRoomResponses[keyof GetTownhallRoomResponses];
-
-export type IsTownhallRoomAvialbaleData = {
-    body?: never;
-    path: {
-        modelId: number;
-    };
-    query?: {
-        institutionId?: number;
-    };
-    url: '/admin-api/v1/monitoring/proctoring/{modelId}towhall-available';
-};
-
-export type IsTownhallRoomAvialbaleErrors = {
-    /**
-     * Bad request, e.g. field validation or an illegal argument. The body is usually a list of APIMessage, but may be absent for some illegal-argument cases.
-     */
-    400: Array<ApiMessage>;
-    /**
-     * Unauthorized. Body is an APIMessage or a list of APIMessage.
-     */
-    401: ApiMessage | Array<ApiMessage>;
-    /**
-     * Forbidden. Body is a list of APIMessage.
-     */
-    403: Array<ApiMessage>;
-    /**
-     * Resource not found. Body is a list of APIMessage.
-     */
-    404: Array<ApiMessage>;
-    /**
-     * Too many requests (rate limit). Body is the rate-limit code as plain text.
-     */
-    429: string;
-    /**
-     * Unexpected internal server error. Body is a list of APIMessage.
-     */
-    500: Array<ApiMessage>;
-};
-
-export type IsTownhallRoomAvialbaleError = IsTownhallRoomAvialbaleErrors[keyof IsTownhallRoomAvialbaleErrors];
-
-export type IsTownhallRoomAvialbaleResponses = {
-    /**
-     * OK
-     */
-    200: string;
-};
-
-export type IsTownhallRoomAvialbaleResponse = IsTownhallRoomAvialbaleResponses[keyof IsTownhallRoomAvialbaleResponses];
-
-export type GetProctorRoomConnectionData = {
-    body?: never;
-    path: {
-        modelId: number;
-    };
-    query: {
-        institutionId?: number;
-        roomName: string;
-        subject?: string;
-    };
-    url: '/admin-api/v1/monitoring/proctoring/{modelId}';
-};
-
-export type GetProctorRoomConnectionErrors = {
-    /**
-     * Bad request, e.g. field validation or an illegal argument. The body is usually a list of APIMessage, but may be absent for some illegal-argument cases.
-     */
-    400: Array<ApiMessage>;
-    /**
-     * Unauthorized. Body is an APIMessage or a list of APIMessage.
-     */
-    401: ApiMessage | Array<ApiMessage>;
-    /**
-     * Forbidden. Body is a list of APIMessage.
-     */
-    403: Array<ApiMessage>;
-    /**
-     * Resource not found. Body is a list of APIMessage.
-     */
-    404: Array<ApiMessage>;
-    /**
-     * Too many requests (rate limit). Body is the rate-limit code as plain text.
-     */
-    429: string;
-    /**
-     * Unexpected internal server error. Body is a list of APIMessage.
-     */
-    500: Array<ApiMessage>;
-};
-
-export type GetProctorRoomConnectionError = GetProctorRoomConnectionErrors[keyof GetProctorRoomConnectionErrors];
-
-export type GetProctorRoomConnectionResponses = {
-    /**
-     * OK
-     */
-    200: ProctoringRoomConnection;
-};
-
-export type GetProctorRoomConnectionResponse = GetProctorRoomConnectionResponses[keyof GetProctorRoomConnectionResponses];
-
 export type GetScreenProctoringGroupsOfExamData = {
     body?: never;
     path: {
@@ -13905,105 +13256,6 @@ export type GetScreenProctoringGroupsOfExamResponses = {
 };
 
 export type GetScreenProctoringGroupsOfExamResponse = GetScreenProctoringGroupsOfExamResponses[keyof GetScreenProctoringGroupsOfExamResponses];
-
-export type GetAllClientConnectionsInRoomData = {
-    body?: never;
-    path: {
-        modelId: number;
-    };
-    query: {
-        institutionId?: number;
-        id: string;
-    };
-    url: '/admin-api/v1/monitoring/proctoring/{modelId}/room-connections';
-};
-
-export type GetAllClientConnectionsInRoomErrors = {
-    /**
-     * Bad request, e.g. field validation or an illegal argument. The body is usually a list of APIMessage, but may be absent for some illegal-argument cases.
-     */
-    400: Array<ApiMessage>;
-    /**
-     * Unauthorized. Body is an APIMessage or a list of APIMessage.
-     */
-    401: ApiMessage | Array<ApiMessage>;
-    /**
-     * Forbidden. Body is a list of APIMessage.
-     */
-    403: Array<ApiMessage>;
-    /**
-     * Resource not found. Body is a list of APIMessage.
-     */
-    404: Array<ApiMessage>;
-    /**
-     * Too many requests (rate limit). Body is the rate-limit code as plain text.
-     */
-    429: string;
-    /**
-     * Unexpected internal server error. Body is a list of APIMessage.
-     */
-    500: Array<ApiMessage>;
-};
-
-export type GetAllClientConnectionsInRoomError = GetAllClientConnectionsInRoomErrors[keyof GetAllClientConnectionsInRoomErrors];
-
-export type GetAllClientConnectionsInRoomResponses = {
-    /**
-     * OK
-     */
-    200: Array<ClientConnection>;
-};
-
-export type GetAllClientConnectionsInRoomResponse = GetAllClientConnectionsInRoomResponses[keyof GetAllClientConnectionsInRoomResponses];
-
-export type GetCollectingRoomsOfExamData = {
-    body?: never;
-    path: {
-        modelId: number;
-    };
-    query?: {
-        institutionId?: number;
-    };
-    url: '/admin-api/v1/monitoring/proctoring/{modelId}/collecting-rooms';
-};
-
-export type GetCollectingRoomsOfExamErrors = {
-    /**
-     * Bad request, e.g. field validation or an illegal argument. The body is usually a list of APIMessage, but may be absent for some illegal-argument cases.
-     */
-    400: Array<ApiMessage>;
-    /**
-     * Unauthorized. Body is an APIMessage or a list of APIMessage.
-     */
-    401: ApiMessage | Array<ApiMessage>;
-    /**
-     * Forbidden. Body is a list of APIMessage.
-     */
-    403: Array<ApiMessage>;
-    /**
-     * Resource not found. Body is a list of APIMessage.
-     */
-    404: Array<ApiMessage>;
-    /**
-     * Too many requests (rate limit). Body is the rate-limit code as plain text.
-     */
-    429: string;
-    /**
-     * Unexpected internal server error. Body is a list of APIMessage.
-     */
-    500: Array<ApiMessage>;
-};
-
-export type GetCollectingRoomsOfExamError = GetCollectingRoomsOfExamErrors[keyof GetCollectingRoomsOfExamErrors];
-
-export type GetCollectingRoomsOfExamResponses = {
-    /**
-     * OK
-     */
-    200: Array<RemoteProctoringRoom>;
-};
-
-export type GetCollectingRoomsOfExamResponse = GetCollectingRoomsOfExamResponses[keyof GetCollectingRoomsOfExamResponses];
 
 export type GetOverviewDataData = {
     body?: never;
