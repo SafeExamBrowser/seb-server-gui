@@ -6828,290 +6828,6 @@
                 "security": [{ "oauth": [] }]
             }
         },
-        "/admin-api/v1/monitoring/proctoring/{modelId}activate-towhall-room": {
-            "post": {
-                "tags": ["exam-proctoring-controller"],
-                "operationId": "activateTownhall",
-                "parameters": [
-                    {
-                        "name": "institutionId",
-                        "in": "query",
-                        "required": false,
-                        "schema": { "type": "integer" }
-                    },
-                    {
-                        "name": "modelId",
-                        "in": "path",
-                        "required": true,
-                        "schema": { "type": "integer" }
-                    },
-                    {
-                        "name": "subject",
-                        "in": "query",
-                        "required": false,
-                        "schema": { "type": "string" }
-                    }
-                ],
-                "responses": {
-                    "200": {
-                        "description": "OK",
-                        "content": {
-                            "application/json": {
-                                "schema": {
-                                    "$ref": "#/components/schemas/ProctoringRoomConnection"
-                                }
-                            }
-                        }
-                    },
-                    "400": {
-                        "$ref": "#/components/responses/Error400BadRequest"
-                    },
-                    "401": {
-                        "$ref": "#/components/responses/Error401Unauthorized"
-                    },
-                    "403": {
-                        "$ref": "#/components/responses/Error403Forbidden"
-                    },
-                    "404": {
-                        "$ref": "#/components/responses/Error404NotFound"
-                    },
-                    "429": {
-                        "$ref": "#/components/responses/Error429TooManyRequests"
-                    },
-                    "500": {
-                        "$ref": "#/components/responses/Error500InternalServerError"
-                    }
-                },
-                "security": [{ "oauth": [] }]
-            }
-        },
-        "/admin-api/v1/monitoring/proctoring/{modelId}/reconfiguration-attributes": {
-            "post": {
-                "tags": ["exam-proctoring-controller"],
-                "operationId": "sendReconfigurationAttributes",
-                "parameters": [
-                    {
-                        "name": "institutionId",
-                        "in": "query",
-                        "required": false,
-                        "schema": { "type": "integer" }
-                    },
-                    {
-                        "name": "modelId",
-                        "in": "path",
-                        "required": true,
-                        "schema": { "type": "integer" }
-                    },
-                    {
-                        "name": "id",
-                        "in": "query",
-                        "required": false,
-                        "schema": { "type": "string" }
-                    },
-                    {
-                        "name": "receive_audio",
-                        "in": "query",
-                        "required": false,
-                        "schema": { "type": "string", "default": "false" }
-                    },
-                    {
-                        "name": "receive_video",
-                        "in": "query",
-                        "required": false,
-                        "schema": { "type": "string", "default": "false" }
-                    },
-                    {
-                        "name": "allow_chat",
-                        "in": "query",
-                        "required": false,
-                        "schema": { "type": "string", "default": "false" }
-                    }
-                ],
-                "responses": {
-                    "200": { "description": "OK" },
-                    "400": {
-                        "$ref": "#/components/responses/Error400BadRequest"
-                    },
-                    "401": {
-                        "$ref": "#/components/responses/Error401Unauthorized"
-                    },
-                    "403": {
-                        "$ref": "#/components/responses/Error403Forbidden"
-                    },
-                    "404": {
-                        "$ref": "#/components/responses/Error404NotFound"
-                    },
-                    "429": {
-                        "$ref": "#/components/responses/Error429TooManyRequests"
-                    },
-                    "500": {
-                        "$ref": "#/components/responses/Error500InternalServerError"
-                    }
-                },
-                "security": [{ "oauth": [] }]
-            }
-        },
-        "/admin-api/v1/monitoring/proctoring/{modelId}/open": {
-            "post": {
-                "tags": ["exam-proctoring-controller"],
-                "operationId": "openBreakOutRoom",
-                "parameters": [
-                    {
-                        "name": "institutionId",
-                        "in": "query",
-                        "required": false,
-                        "schema": { "type": "integer" }
-                    },
-                    {
-                        "name": "modelId",
-                        "in": "path",
-                        "required": true,
-                        "schema": { "type": "integer" }
-                    },
-                    {
-                        "name": "subject",
-                        "in": "query",
-                        "required": false,
-                        "schema": { "type": "string" }
-                    },
-                    {
-                        "name": "SEBConnectionToken",
-                        "in": "query",
-                        "required": true,
-                        "schema": { "type": "string" }
-                    }
-                ],
-                "responses": {
-                    "200": {
-                        "description": "OK",
-                        "content": {
-                            "application/json": {
-                                "schema": {
-                                    "$ref": "#/components/schemas/ProctoringRoomConnection"
-                                }
-                            }
-                        }
-                    },
-                    "400": {
-                        "$ref": "#/components/responses/Error400BadRequest"
-                    },
-                    "401": {
-                        "$ref": "#/components/responses/Error401Unauthorized"
-                    },
-                    "403": {
-                        "$ref": "#/components/responses/Error403Forbidden"
-                    },
-                    "404": {
-                        "$ref": "#/components/responses/Error404NotFound"
-                    },
-                    "429": {
-                        "$ref": "#/components/responses/Error429TooManyRequests"
-                    },
-                    "500": {
-                        "$ref": "#/components/responses/Error500InternalServerError"
-                    }
-                },
-                "security": [{ "oauth": [] }]
-            }
-        },
-        "/admin-api/v1/monitoring/proctoring/{modelId}/notify-open-room": {
-            "post": {
-                "tags": ["exam-proctoring-controller"],
-                "operationId": "notifyProctoringRoomOpened",
-                "parameters": [
-                    {
-                        "name": "modelId",
-                        "in": "path",
-                        "required": true,
-                        "schema": { "type": "integer" }
-                    }
-                ],
-                "requestBody": {
-                    "content": {
-                        "application/x-www-form-urlencoded": {
-                            "schema": {
-                                "type": "object",
-                                "properties": {
-                                    "institutionId": { "type": "integer" },
-                                    "roomName": { "type": "string" }
-                                },
-                                "required": ["roomName"]
-                            }
-                        }
-                    }
-                },
-                "responses": {
-                    "200": { "description": "OK" },
-                    "400": {
-                        "$ref": "#/components/responses/Error400BadRequest"
-                    },
-                    "401": {
-                        "$ref": "#/components/responses/Error401Unauthorized"
-                    },
-                    "403": {
-                        "$ref": "#/components/responses/Error403Forbidden"
-                    },
-                    "404": {
-                        "$ref": "#/components/responses/Error404NotFound"
-                    },
-                    "429": {
-                        "$ref": "#/components/responses/Error429TooManyRequests"
-                    },
-                    "500": {
-                        "$ref": "#/components/responses/Error500InternalServerError"
-                    }
-                },
-                "security": [{ "oauth": [] }]
-            }
-        },
-        "/admin-api/v1/monitoring/proctoring/{modelId}/close": {
-            "post": {
-                "tags": ["exam-proctoring-controller"],
-                "operationId": "closeProctoringRoom",
-                "parameters": [
-                    {
-                        "name": "institutionId",
-                        "in": "query",
-                        "required": false,
-                        "schema": { "type": "integer" }
-                    },
-                    {
-                        "name": "modelId",
-                        "in": "path",
-                        "required": true,
-                        "schema": { "type": "integer" }
-                    },
-                    {
-                        "name": "roomName",
-                        "in": "query",
-                        "required": true,
-                        "schema": { "type": "string" }
-                    }
-                ],
-                "responses": {
-                    "200": { "description": "OK" },
-                    "400": {
-                        "$ref": "#/components/responses/Error400BadRequest"
-                    },
-                    "401": {
-                        "$ref": "#/components/responses/Error401Unauthorized"
-                    },
-                    "403": {
-                        "$ref": "#/components/responses/Error403Forbidden"
-                    },
-                    "404": {
-                        "$ref": "#/components/responses/Error404NotFound"
-                    },
-                    "429": {
-                        "$ref": "#/components/responses/Error429TooManyRequests"
-                    },
-                    "500": {
-                        "$ref": "#/components/responses/Error500InternalServerError"
-                    }
-                },
-                "security": [{ "oauth": [] }]
-            }
-        },
         "/admin-api/v1/lms-setup/{modelId}/inactive": {
             "post": {
                 "tags": ["lms-setup-controller"],
@@ -7766,116 +7482,6 @@
                 "security": [{ "oauth": [] }]
             }
         },
-        "/admin-api/v1/exam/{modelId}/proctoring": {
-            "get": {
-                "tags": ["exam-administration-controller"],
-                "operationId": "getProctoringServiceSettings",
-                "parameters": [
-                    {
-                        "name": "institutionId",
-                        "in": "query",
-                        "required": false,
-                        "schema": { "type": "integer" }
-                    },
-                    {
-                        "name": "modelId",
-                        "in": "path",
-                        "required": true,
-                        "schema": { "type": "integer" }
-                    }
-                ],
-                "responses": {
-                    "200": {
-                        "description": "OK",
-                        "content": {
-                            "application/json": {
-                                "schema": {
-                                    "$ref": "#/components/schemas/ProctoringServiceSettings"
-                                }
-                            }
-                        }
-                    },
-                    "400": {
-                        "$ref": "#/components/responses/Error400BadRequest"
-                    },
-                    "401": {
-                        "$ref": "#/components/responses/Error401Unauthorized"
-                    },
-                    "403": {
-                        "$ref": "#/components/responses/Error403Forbidden"
-                    },
-                    "404": {
-                        "$ref": "#/components/responses/Error404NotFound"
-                    },
-                    "429": {
-                        "$ref": "#/components/responses/Error429TooManyRequests"
-                    },
-                    "500": {
-                        "$ref": "#/components/responses/Error500InternalServerError"
-                    }
-                },
-                "security": [{ "oauth": [] }]
-            },
-            "post": {
-                "tags": ["exam-administration-controller"],
-                "operationId": "saveProctoringServiceSettings",
-                "parameters": [
-                    {
-                        "name": "institutionId",
-                        "in": "query",
-                        "required": false,
-                        "schema": { "type": "integer" }
-                    },
-                    {
-                        "name": "modelId",
-                        "in": "path",
-                        "required": true,
-                        "schema": { "type": "integer" }
-                    }
-                ],
-                "requestBody": {
-                    "content": {
-                        "application/json": {
-                            "schema": {
-                                "$ref": "#/components/schemas/ProctoringServiceSettings"
-                            }
-                        }
-                    },
-                    "required": true
-                },
-                "responses": {
-                    "200": {
-                        "description": "OK",
-                        "content": {
-                            "application/json": {
-                                "schema": {
-                                    "$ref": "#/components/schemas/Exam"
-                                }
-                            }
-                        }
-                    },
-                    "400": {
-                        "$ref": "#/components/responses/Error400BadRequest"
-                    },
-                    "401": {
-                        "$ref": "#/components/responses/Error401Unauthorized"
-                    },
-                    "403": {
-                        "$ref": "#/components/responses/Error403Forbidden"
-                    },
-                    "404": {
-                        "$ref": "#/components/responses/Error404NotFound"
-                    },
-                    "429": {
-                        "$ref": "#/components/responses/Error429TooManyRequests"
-                    },
-                    "500": {
-                        "$ref": "#/components/responses/Error500InternalServerError"
-                    }
-                },
-                "security": [{ "oauth": [] }]
-            }
-        },
         "/admin-api/v1/exam/seb-settings/{modelId}": {
             "get": {
                 "tags": ["exam-seb-settings-controller"],
@@ -7962,7 +7568,7 @@
                                     "id": { "type": "integer" },
                                     "value": { "type": "string" }
                                 },
-                                "required": ["id", "value"]
+                                "required": ["id"]
                             }
                         }
                     }
@@ -8761,7 +8367,7 @@
                                     "id": { "type": "integer" },
                                     "value": { "type": "string" }
                                 },
-                                "required": ["id", "value"]
+                                "required": ["id"]
                             }
                         }
                     }
@@ -12536,169 +12142,6 @@
                 "security": [{ "oauth": [] }]
             }
         },
-        "/admin-api/v1/monitoring/proctoring/{modelId}towhall-room-data": {
-            "get": {
-                "tags": ["exam-proctoring-controller"],
-                "operationId": "getTownhallRoom",
-                "parameters": [
-                    {
-                        "name": "institutionId",
-                        "in": "query",
-                        "required": false,
-                        "schema": { "type": "integer" }
-                    },
-                    {
-                        "name": "modelId",
-                        "in": "path",
-                        "required": true,
-                        "schema": { "type": "integer" }
-                    }
-                ],
-                "responses": {
-                    "200": {
-                        "description": "OK",
-                        "content": {
-                            "application/json": {
-                                "schema": {
-                                    "$ref": "#/components/schemas/RemoteProctoringRoom"
-                                }
-                            }
-                        }
-                    },
-                    "400": {
-                        "$ref": "#/components/responses/Error400BadRequest"
-                    },
-                    "401": {
-                        "$ref": "#/components/responses/Error401Unauthorized"
-                    },
-                    "403": {
-                        "$ref": "#/components/responses/Error403Forbidden"
-                    },
-                    "404": {
-                        "$ref": "#/components/responses/Error404NotFound"
-                    },
-                    "429": {
-                        "$ref": "#/components/responses/Error429TooManyRequests"
-                    },
-                    "500": {
-                        "$ref": "#/components/responses/Error500InternalServerError"
-                    }
-                },
-                "security": [{ "oauth": [] }]
-            }
-        },
-        "/admin-api/v1/monitoring/proctoring/{modelId}towhall-available": {
-            "get": {
-                "tags": ["exam-proctoring-controller"],
-                "operationId": "isTownhallRoomAvialbale",
-                "parameters": [
-                    {
-                        "name": "institutionId",
-                        "in": "query",
-                        "required": false,
-                        "schema": { "type": "integer" }
-                    },
-                    {
-                        "name": "modelId",
-                        "in": "path",
-                        "required": true,
-                        "schema": { "type": "integer" }
-                    }
-                ],
-                "responses": {
-                    "200": {
-                        "description": "OK",
-                        "content": {
-                            "application/json": {
-                                "schema": { "type": "string" }
-                            }
-                        }
-                    },
-                    "400": {
-                        "$ref": "#/components/responses/Error400BadRequest"
-                    },
-                    "401": {
-                        "$ref": "#/components/responses/Error401Unauthorized"
-                    },
-                    "403": {
-                        "$ref": "#/components/responses/Error403Forbidden"
-                    },
-                    "404": {
-                        "$ref": "#/components/responses/Error404NotFound"
-                    },
-                    "429": {
-                        "$ref": "#/components/responses/Error429TooManyRequests"
-                    },
-                    "500": {
-                        "$ref": "#/components/responses/Error500InternalServerError"
-                    }
-                },
-                "security": [{ "oauth": [] }]
-            }
-        },
-        "/admin-api/v1/monitoring/proctoring/{modelId}": {
-            "get": {
-                "tags": ["exam-proctoring-controller"],
-                "operationId": "getProctorRoomConnection",
-                "parameters": [
-                    {
-                        "name": "institutionId",
-                        "in": "query",
-                        "required": false,
-                        "schema": { "type": "integer" }
-                    },
-                    {
-                        "name": "modelId",
-                        "in": "path",
-                        "required": true,
-                        "schema": { "type": "integer" }
-                    },
-                    {
-                        "name": "roomName",
-                        "in": "query",
-                        "required": true,
-                        "schema": { "type": "string" }
-                    },
-                    {
-                        "name": "subject",
-                        "in": "query",
-                        "required": false,
-                        "schema": { "type": "string" }
-                    }
-                ],
-                "responses": {
-                    "200": {
-                        "description": "OK",
-                        "content": {
-                            "application/json": {
-                                "schema": {
-                                    "$ref": "#/components/schemas/ProctoringRoomConnection"
-                                }
-                            }
-                        }
-                    },
-                    "400": {
-                        "$ref": "#/components/responses/Error400BadRequest"
-                    },
-                    "401": {
-                        "$ref": "#/components/responses/Error401Unauthorized"
-                    },
-                    "403": {
-                        "$ref": "#/components/responses/Error403Forbidden"
-                    },
-                    "404": {
-                        "$ref": "#/components/responses/Error404NotFound"
-                    },
-                    "429": {
-                        "$ref": "#/components/responses/Error429TooManyRequests"
-                    },
-                    "500": {
-                        "$ref": "#/components/responses/Error500InternalServerError"
-                    }
-                },
-                "security": [{ "oauth": [] }]
-            }
-        },
         "/admin-api/v1/monitoring/proctoring/{modelId}/screenproctoring-groups": {
             "get": {
                 "tags": ["exam-proctoring-controller"],
@@ -12726,120 +12169,6 @@
                                     "type": "array",
                                     "items": {
                                         "$ref": "#/components/schemas/ScreenProctoringGroup"
-                                    }
-                                }
-                            }
-                        }
-                    },
-                    "400": {
-                        "$ref": "#/components/responses/Error400BadRequest"
-                    },
-                    "401": {
-                        "$ref": "#/components/responses/Error401Unauthorized"
-                    },
-                    "403": {
-                        "$ref": "#/components/responses/Error403Forbidden"
-                    },
-                    "404": {
-                        "$ref": "#/components/responses/Error404NotFound"
-                    },
-                    "429": {
-                        "$ref": "#/components/responses/Error429TooManyRequests"
-                    },
-                    "500": {
-                        "$ref": "#/components/responses/Error500InternalServerError"
-                    }
-                },
-                "security": [{ "oauth": [] }]
-            }
-        },
-        "/admin-api/v1/monitoring/proctoring/{modelId}/room-connections": {
-            "get": {
-                "tags": ["exam-proctoring-controller"],
-                "operationId": "getAllClientConnectionsInRoom",
-                "parameters": [
-                    {
-                        "name": "institutionId",
-                        "in": "query",
-                        "required": false,
-                        "schema": { "type": "integer" }
-                    },
-                    {
-                        "name": "modelId",
-                        "in": "path",
-                        "required": true,
-                        "schema": { "type": "integer" }
-                    },
-                    {
-                        "name": "id",
-                        "in": "query",
-                        "required": true,
-                        "schema": { "type": "string" }
-                    }
-                ],
-                "responses": {
-                    "200": {
-                        "description": "OK",
-                        "content": {
-                            "application/json": {
-                                "schema": {
-                                    "type": "array",
-                                    "items": {
-                                        "$ref": "#/components/schemas/ClientConnection"
-                                    }
-                                }
-                            }
-                        }
-                    },
-                    "400": {
-                        "$ref": "#/components/responses/Error400BadRequest"
-                    },
-                    "401": {
-                        "$ref": "#/components/responses/Error401Unauthorized"
-                    },
-                    "403": {
-                        "$ref": "#/components/responses/Error403Forbidden"
-                    },
-                    "404": {
-                        "$ref": "#/components/responses/Error404NotFound"
-                    },
-                    "429": {
-                        "$ref": "#/components/responses/Error429TooManyRequests"
-                    },
-                    "500": {
-                        "$ref": "#/components/responses/Error500InternalServerError"
-                    }
-                },
-                "security": [{ "oauth": [] }]
-            }
-        },
-        "/admin-api/v1/monitoring/proctoring/{modelId}/collecting-rooms": {
-            "get": {
-                "tags": ["exam-proctoring-controller"],
-                "operationId": "getCollectingRoomsOfExam",
-                "parameters": [
-                    {
-                        "name": "institutionId",
-                        "in": "query",
-                        "required": false,
-                        "schema": { "type": "integer" }
-                    },
-                    {
-                        "name": "modelId",
-                        "in": "path",
-                        "required": true,
-                        "schema": { "type": "integer" }
-                    }
-                ],
-                "responses": {
-                    "200": {
-                        "description": "OK",
-                        "content": {
-                            "application/json": {
-                                "schema": {
-                                    "type": "array",
-                                    "items": {
-                                        "$ref": "#/components/schemas/RemoteProctoringRoom"
                                     }
                                 }
                             }
@@ -20539,8 +19868,8 @@
                         "type": "object",
                         "additionalProperties": { "type": "string" }
                     },
-                    "quiz_start_url": { "type": "string" },
-                    "quiz_description": { "type": "string" }
+                    "quiz_description": { "type": "string" },
+                    "quiz_start_url": { "type": "string" }
                 },
                 "required": ["externalId", "institutionId", "type"]
             },
@@ -20548,7 +19877,7 @@
                 "type": "object",
                 "properties": {
                     "id": { "type": "integer" },
-                    "examId": { "type": "integer", "writeOnly": true },
+                    "examTemplateId": { "type": "integer" },
                     "name": {
                         "type": "string",
                         "maxLength": 255,
@@ -20580,8 +19909,7 @@
                     },
                     "nameRangeStartLetter": { "type": "string" },
                     "nameRangeEndLetter": { "type": "string" },
-                    "screenProctoringEnabled": { "type": "boolean" },
-                    "examTemplateId": { "type": "integer" }
+                    "screenProctoringEnabled": { "type": "boolean" }
                 },
                 "required": ["name", "type"]
             },
@@ -21514,39 +20842,6 @@
                 },
                 "required": ["examId", "type"]
             },
-            "ProctoringRoomConnection": {
-                "type": "object",
-                "properties": {
-                    "serverType": {
-                        "type": "string",
-                        "enum": ["JITSI_MEET", "ZOOM"]
-                    },
-                    "connectionToken": { "type": "string" },
-                    "serverHost": { "type": "string" },
-                    "serverURL": { "type": "string" },
-                    "roomName": { "type": "string" },
-                    "subject": { "type": "string" },
-                    "accessToken": {
-                        "type": "object",
-                        "properties": { "empty": { "type": "boolean" } }
-                    },
-                    "sdkToken": {
-                        "type": "object",
-                        "properties": { "empty": { "type": "boolean" } }
-                    },
-                    "roomKey": {
-                        "type": "object",
-                        "properties": { "empty": { "type": "boolean" } }
-                    },
-                    "apiKey": {
-                        "type": "object",
-                        "properties": { "empty": { "type": "boolean" } }
-                    },
-                    "meetingId": { "type": "string" },
-                    "userName": { "type": "string" },
-                    "roomData": { "type": "string" }
-                }
-            },
             "SecurityKey": {
                 "type": "object",
                 "properties": {
@@ -21611,52 +20906,6 @@
                     "spsSEBGroupsSelection": { "type": "string" },
                     "bundled": { "type": "boolean" },
                     "changeStrategyConfirm": { "type": "boolean" }
-                }
-            },
-            "ProctoringServiceSettings": {
-                "type": "object",
-                "properties": {
-                    "id": { "type": "integer" },
-                    "enableProctoring": { "type": "boolean" },
-                    "serverType": {
-                        "type": "string",
-                        "enum": ["JITSI_MEET", "ZOOM"]
-                    },
-                    "serverURL": { "type": "string" },
-                    "collectingRoomSize": {
-                        "type": "integer",
-                        "format": "int32"
-                    },
-                    "enabledFeatures": {
-                        "type": "array",
-                        "items": {
-                            "type": "string",
-                            "enum": [
-                                "TOWN_HALL",
-                                "ONE_TO_ONE",
-                                "BROADCAST",
-                                "ENABLE_CHAT"
-                            ]
-                        }
-                    },
-                    "serviceInUse": { "type": "boolean" },
-                    "appKey": { "type": "string" },
-                    "appSecret": {
-                        "type": "object",
-                        "properties": { "empty": { "type": "boolean" } }
-                    },
-                    "accountId": { "type": "string" },
-                    "clientId": { "type": "string" },
-                    "clientSecret": {
-                        "type": "object",
-                        "properties": { "empty": { "type": "boolean" } }
-                    },
-                    "sdkKey": { "type": "string" },
-                    "sdkSecret": {
-                        "type": "object",
-                        "properties": { "empty": { "type": "boolean" } }
-                    },
-                    "useZoomAppClientForCollectingRoom": { "type": "boolean" }
                 }
             },
             "Value": {
@@ -22526,7 +21775,6 @@
                     "grantChecked": { "type": "boolean" },
                     "grantDenied": { "type": "boolean" },
                     "sebversionDenied": { "type": "boolean" },
-                    "nf": { "type": "integer", "format": "int32" },
                     "st": {
                         "type": "string",
                         "enum": [
@@ -22538,11 +21786,12 @@
                             "DISABLED"
                         ]
                     },
+                    "nf": { "type": "integer", "format": "int32" },
+                    "lat": { "type": "integer" },
                     "iv": {
                         "type": "object",
                         "additionalProperties": { "type": "string" }
                     },
-                    "lat": { "type": "integer" },
                     "id": { "type": "integer" }
                 }
             },
@@ -22593,27 +21842,6 @@
                     "uuid": { "type": "string" },
                     "name": { "type": "string" },
                     "size": { "type": "integer", "format": "int32" }
-                }
-            },
-            "RemoteProctoringRoom": {
-                "type": "object",
-                "properties": {
-                    "id": { "type": "integer" },
-                    "examId": { "type": "integer" },
-                    "name": { "type": "string" },
-                    "size": { "type": "integer", "format": "int32" },
-                    "subject": { "type": "string" },
-                    "townhallRoom": { "type": "boolean" },
-                    "breakOutConnections": {
-                        "type": "array",
-                        "items": { "type": "string" }
-                    },
-                    "joinKey": {
-                        "type": "object",
-                        "properties": { "empty": { "type": "boolean" } }
-                    },
-                    "roomData": { "type": "string" },
-                    "isOpen": { "type": "boolean" }
                 }
             },
             "ScreenProctoringGroup": {

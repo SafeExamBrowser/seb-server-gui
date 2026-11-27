@@ -368,12 +368,13 @@ export const zExam = z.object({
     followupId: z.int().optional(),
     excludeFromDeletion: z.boolean().optional(),
     additionalAttributes: z.record(z.string(), z.string()).optional(),
-    quiz_start_url: z.string().optional(),
-    quiz_description: z.string().optional()
+    quiz_description: z.string().optional(),
+    quiz_start_url: z.string().optional()
 });
 
 export const zClientGroupTemplate = z.object({
     id: z.int().optional(),
+    examTemplateId: z.int().optional(),
     name: z.string().min(3).max(255),
     type: z.enum([
         'NONE',
@@ -395,8 +396,7 @@ export const zClientGroupTemplate = z.object({
     ]).optional(),
     nameRangeStartLetter: z.string().optional(),
     nameRangeEndLetter: z.string().optional(),
-    screenProctoringEnabled: z.boolean().optional(),
-    examTemplateId: z.int().optional()
+    screenProctoringEnabled: z.boolean().optional()
 });
 
 /**
@@ -872,30 +872,6 @@ export const zClientInstruction = z.object({
     attributes: z.record(z.string(), z.string()).optional()
 });
 
-export const zProctoringRoomConnection = z.object({
-    serverType: z.enum(['JITSI_MEET', 'ZOOM']).optional(),
-    connectionToken: z.string().optional(),
-    serverHost: z.string().optional(),
-    serverURL: z.string().optional(),
-    roomName: z.string().optional(),
-    subject: z.string().optional(),
-    accessToken: z.object({
-        empty: z.boolean().optional()
-    }).optional(),
-    sdkToken: z.object({
-        empty: z.boolean().optional()
-    }).optional(),
-    roomKey: z.object({
-        empty: z.boolean().optional()
-    }).optional(),
-    apiKey: z.object({
-        empty: z.boolean().optional()
-    }).optional(),
-    meetingId: z.string().optional(),
-    userName: z.string().optional(),
-    roomData: z.string().optional()
-});
-
 export const zSecurityKey = z.object({
     id: z.int().optional(),
     institutionId: z.int(),
@@ -930,35 +906,6 @@ export const zScreenProctoringSettings = z.object({
     spsSEBGroupsSelection: z.string().optional(),
     bundled: z.boolean().optional(),
     changeStrategyConfirm: z.boolean().optional()
-});
-
-export const zProctoringServiceSettings = z.object({
-    id: z.int().optional(),
-    enableProctoring: z.boolean().optional(),
-    serverType: z.enum(['JITSI_MEET', 'ZOOM']).optional(),
-    serverURL: z.string().optional(),
-    collectingRoomSize: z.int().min(-2147483648, { error: 'Invalid value: Expected int32 to be >= -2147483648' }).max(2147483647, { error: 'Invalid value: Expected int32 to be <= 2147483647' }).optional(),
-    enabledFeatures: z.array(z.enum([
-        'TOWN_HALL',
-        'ONE_TO_ONE',
-        'BROADCAST',
-        'ENABLE_CHAT'
-    ])).optional(),
-    serviceInUse: z.boolean().optional(),
-    appKey: z.string().optional(),
-    appSecret: z.object({
-        empty: z.boolean().optional()
-    }).optional(),
-    accountId: z.string().optional(),
-    clientId: z.string().optional(),
-    clientSecret: z.object({
-        empty: z.boolean().optional()
-    }).optional(),
-    sdkKey: z.string().optional(),
-    sdkSecret: z.object({
-        empty: z.boolean().optional()
-    }).optional(),
-    useZoomAppClientForCollectingRoom: z.boolean().optional()
 });
 
 export const zValue = z.object({
@@ -1363,7 +1310,6 @@ export const zClientMonitoringDataView = z.object({
     grantChecked: z.boolean().optional(),
     grantDenied: z.boolean().optional(),
     sebversionDenied: z.boolean().optional(),
-    nf: z.int().min(-2147483648, { error: 'Invalid value: Expected int32 to be >= -2147483648' }).max(2147483647, { error: 'Invalid value: Expected int32 to be <= 2147483647' }).optional(),
     st: z.enum([
         'UNDEFINED',
         'CONNECTION_REQUESTED',
@@ -1372,8 +1318,9 @@ export const zClientMonitoringDataView = z.object({
         'CLOSED',
         'DISABLED'
     ]).optional(),
-    iv: z.record(z.string(), z.string()).optional(),
+    nf: z.int().min(-2147483648, { error: 'Invalid value: Expected int32 to be >= -2147483648' }).max(2147483647, { error: 'Invalid value: Expected int32 to be <= 2147483647' }).optional(),
     lat: z.int().optional(),
+    iv: z.record(z.string(), z.string()).optional(),
     id: z.int().optional()
 });
 
@@ -1394,21 +1341,6 @@ export const zMonitoringFullPageData = z.object({
     examId: z.int().optional(),
     monitoringConnectionData: zMonitoringSebConnectionData.optional(),
     screenProctoringData: z.array(zProctoringGroupMonitoringData).optional()
-});
-
-export const zRemoteProctoringRoom = z.object({
-    id: z.int().optional(),
-    examId: z.int().optional(),
-    name: z.string().optional(),
-    size: z.int().min(-2147483648, { error: 'Invalid value: Expected int32 to be >= -2147483648' }).max(2147483647, { error: 'Invalid value: Expected int32 to be <= 2147483647' }).optional(),
-    subject: z.string().optional(),
-    townhallRoom: z.boolean().optional(),
-    breakOutConnections: z.array(z.string()).optional(),
-    joinKey: z.object({
-        empty: z.boolean().optional()
-    }).optional(),
-    roomData: z.string().optional(),
-    isOpen: z.boolean().optional()
 });
 
 export const zScreenProctoringGroup = z.object({
@@ -1677,58 +1609,6 @@ export const zErrorCode = z.enum([
     '1800'
 ]);
 
-export const zClientGroupTemplateWritable = z.object({
-    id: z.int().optional(),
-    examId: z.int().optional(),
-    name: z.string().min(3).max(255),
-    type: z.enum([
-        'NONE',
-        'IP_V4_RANGE',
-        'CLIENT_OS',
-        'NAME_ALPHABETICAL_RANGE'
-    ]),
-    color: z.string().optional(),
-    icon: z.string().optional(),
-    ipRangeStart: z.string().optional(),
-    ipRangeEnd: z.string().optional(),
-    clientOS: z.enum([
-        'NONE',
-        'WINDOWS',
-        'MAC_OS',
-        'I_OS',
-        'IPAD_OS',
-        'I_OS_OR_IPAD_OS'
-    ]).optional(),
-    nameRangeStartLetter: z.string().optional(),
-    nameRangeEndLetter: z.string().optional(),
-    screenProctoringEnabled: z.boolean().optional(),
-    examTemplateId: z.int().optional()
-});
-
-/**
- * Exam template read, create and update model.
- */
-export const zExamTemplateWritable = z.object({
-    id: z.int().optional(),
-    institutionId: z.int().optional(),
-    name: z.string().min(3).max(255),
-    description: z.string().min(0).max(4000).optional(),
-    examType: z.enum([
-        'UNDEFINED',
-        'MANAGED',
-        'BYOD',
-        'VDI'
-    ]).optional(),
-    supporter: z.array(z.string()).optional(),
-    configurationTemplateId: z.int().optional(),
-    institutionalDefault: z.boolean(),
-    lmsIntegration: z.boolean(),
-    clientConfigurationId: z.int().optional(),
-    indicatorTemplates: z.array(zIndicatorTemplate),
-    CLIENT_GROUP_TEMPLATES: z.array(zClientGroupTemplateWritable),
-    EXAM_ATTRIBUTES: z.record(z.string(), z.string())
-});
-
 export const zMultiValueMapStringStringWritable = z.object({
     all: z.record(z.string(), z.string()).optional(),
     empty: z.boolean().optional()
@@ -1822,15 +1702,6 @@ export const zPageScheduledDeleteWritable = z.object({
     page_size: z.int().gte(1).lte(2147483647).optional(),
     sort: z.string().optional(),
     content: z.array(zScheduledDeleteWritable).optional(),
-    complete: z.boolean().optional()
-});
-
-export const zPageExamTemplateWritable = z.object({
-    number_of_pages: z.int().min(-2147483648, { error: 'Invalid value: Expected int32 to be >= -2147483648' }).max(2147483647, { error: 'Invalid value: Expected int32 to be <= 2147483647' }).optional(),
-    page_number: z.int().gte(1).lte(2147483647).optional(),
-    page_size: z.int().gte(1).lte(2147483647).optional(),
-    sort: z.string().optional(),
-    content: z.array(zExamTemplateWritable).optional(),
     complete: z.boolean().optional()
 });
 
@@ -2470,7 +2341,7 @@ export const zGetExamTemplatesQuery = z.object({
  */
 export const zGetExamTemplatesResponse = zPageExamTemplate;
 
-export const zCreateExamTemplateBody = zExamTemplateWritable;
+export const zCreateExamTemplateBody = zExamTemplate;
 
 export const zCreateExamTemplateQuery = z.object({
     institutionId: z.int().optional()
@@ -2481,7 +2352,7 @@ export const zCreateExamTemplateQuery = z.object({
  */
 export const zCreateExamTemplateResponse = zExamTemplate;
 
-export const zEditExamTemplateBody = zExamTemplateWritable;
+export const zEditExamTemplateBody = zExamTemplate;
 
 /**
  * OK
@@ -3155,65 +3026,6 @@ export const zToggleTestRunForExamQuery = z.object({
  */
 export const zToggleTestRunForExamResponse = zExam;
 
-export const zActivateTownhallPath = z.object({
-    modelId: z.int()
-});
-
-export const zActivateTownhallQuery = z.object({
-    institutionId: z.int().optional(),
-    subject: z.string().optional()
-});
-
-/**
- * OK
- */
-export const zActivateTownhallResponse = zProctoringRoomConnection;
-
-export const zSendReconfigurationAttributesPath = z.object({
-    modelId: z.int()
-});
-
-export const zSendReconfigurationAttributesQuery = z.object({
-    institutionId: z.int().optional(),
-    id: z.string().optional(),
-    receive_audio: z.string().optional().default('false'),
-    receive_video: z.string().optional().default('false'),
-    allow_chat: z.string().optional().default('false')
-});
-
-export const zOpenBreakOutRoomPath = z.object({
-    modelId: z.int()
-});
-
-export const zOpenBreakOutRoomQuery = z.object({
-    institutionId: z.int().optional(),
-    subject: z.string().optional(),
-    SEBConnectionToken: z.string()
-});
-
-/**
- * OK
- */
-export const zOpenBreakOutRoomResponse = zProctoringRoomConnection;
-
-export const zNotifyProctoringRoomOpenedBody = z.object({
-    institutionId: z.int().optional(),
-    roomName: z.string()
-});
-
-export const zNotifyProctoringRoomOpenedPath = z.object({
-    modelId: z.int()
-});
-
-export const zCloseProctoringRoomPath = z.object({
-    modelId: z.int()
-});
-
-export const zCloseProctoringRoomQuery = z.object({
-    institutionId: z.int().optional(),
-    roomName: z.string()
-});
-
 export const zDeactivateLmsSetupBody = z.unknown();
 
 export const zDeactivateLmsSetupPath = z.object({
@@ -3366,34 +3178,6 @@ export const zScreenProctoringActivationQuery = z.object({
  */
 export const zScreenProctoringActivationResponse = zExam;
 
-export const zGetProctoringServiceSettingsPath = z.object({
-    modelId: z.int()
-});
-
-export const zGetProctoringServiceSettingsQuery = z.object({
-    institutionId: z.int().optional()
-});
-
-/**
- * OK
- */
-export const zGetProctoringServiceSettingsResponse = zProctoringServiceSettings;
-
-export const zSaveProctoringServiceSettingsBody = zProctoringServiceSettings;
-
-export const zSaveProctoringServiceSettingsPath = z.object({
-    modelId: z.int()
-});
-
-export const zSaveProctoringServiceSettingsQuery = z.object({
-    institutionId: z.int().optional()
-});
-
-/**
- * OK
- */
-export const zSaveProctoringServiceSettingsResponse = zExam;
-
 export const zGetSebSettingsPath = z.object({
     modelId: z.int()
 });
@@ -3422,7 +3206,7 @@ export const zGetSebSettingsResponse = zSebSettingsView;
 
 export const zSaveSingleValueBody = z.object({
     id: z.int(),
-    value: z.string()
+    value: z.string().optional()
 });
 
 export const zSaveSingleValuePath = z.object({
@@ -3486,7 +3270,7 @@ export const zCopyExamTemplatePath = z.object({
  */
 export const zCopyExamTemplateResponse = zExamTemplate;
 
-export const zFullCreateExamTemplateBody = zExamTemplateWritable;
+export const zFullCreateExamTemplateBody = zExamTemplate;
 
 export const zFullCreateExamTemplateQuery = z.object({
     institutionId: z.int().optional()
@@ -3609,7 +3393,7 @@ export const zGetSebSettings1Response = zSebSettingsView;
 
 export const zSaveSingleValue1Body = z.object({
     id: z.int(),
-    value: z.string()
+    value: z.string().optional()
 });
 
 export const zSaveSingleValue1Path = z.object({
@@ -4392,47 +4176,6 @@ export const zGetFullMonitoringPageDataQuery = z.object({
  */
 export const zGetFullMonitoringPageDataResponse = zMonitoringFullPageData;
 
-export const zGetTownhallRoomPath = z.object({
-    modelId: z.int()
-});
-
-export const zGetTownhallRoomQuery = z.object({
-    institutionId: z.int().optional()
-});
-
-/**
- * OK
- */
-export const zGetTownhallRoomResponse = zRemoteProctoringRoom;
-
-export const zIsTownhallRoomAvialbalePath = z.object({
-    modelId: z.int()
-});
-
-export const zIsTownhallRoomAvialbaleQuery = z.object({
-    institutionId: z.int().optional()
-});
-
-/**
- * OK
- */
-export const zIsTownhallRoomAvialbaleResponse = z.string();
-
-export const zGetProctorRoomConnectionPath = z.object({
-    modelId: z.int()
-});
-
-export const zGetProctorRoomConnectionQuery = z.object({
-    institutionId: z.int().optional(),
-    roomName: z.string(),
-    subject: z.string().optional()
-});
-
-/**
- * OK
- */
-export const zGetProctorRoomConnectionResponse = zProctoringRoomConnection;
-
 export const zGetScreenProctoringGroupsOfExamPath = z.object({
     modelId: z.int()
 });
@@ -4445,33 +4188,6 @@ export const zGetScreenProctoringGroupsOfExamQuery = z.object({
  * OK
  */
 export const zGetScreenProctoringGroupsOfExamResponse = z.array(zScreenProctoringGroup);
-
-export const zGetAllClientConnectionsInRoomPath = z.object({
-    modelId: z.int()
-});
-
-export const zGetAllClientConnectionsInRoomQuery = z.object({
-    institutionId: z.int().optional(),
-    id: z.string()
-});
-
-/**
- * OK
- */
-export const zGetAllClientConnectionsInRoomResponse = z.array(zClientConnection);
-
-export const zGetCollectingRoomsOfExamPath = z.object({
-    modelId: z.int()
-});
-
-export const zGetCollectingRoomsOfExamQuery = z.object({
-    institutionId: z.int().optional()
-});
-
-/**
- * OK
- */
-export const zGetCollectingRoomsOfExamResponse = z.array(zRemoteProctoringRoom);
 
 export const zGetOverviewDataPath = z.object({
     modelId: z.int()
